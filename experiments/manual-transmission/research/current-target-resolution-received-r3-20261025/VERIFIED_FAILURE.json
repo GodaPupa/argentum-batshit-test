@@ -1,0 +1,76 @@
+{
+  "status": "VERIFIED_FAILURE_ORIGINAL_MC08_TARGET_VIEW_COMPATIBILITY",
+  "source": "ea5538b6bf6935f2e15cf3c29db0d1f5917ff128",
+  "validation": "d5603e630a586ac87ad60ea7201fb472fdb3cda1",
+  "run": 40166823499,
+  "job": 121089477587,
+  "attempt": 1,
+  "artifact": {
+    "id": 12588704263,
+    "node_id": "MDg6QXJ0aWZhY3QxMjU4ODcwNDI2Mw==",
+    "name": "manual-current-target-resolution-r3-40166823499",
+    "size_in_bytes": 284107,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12588704263",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12588704263/zip",
+    "expired": false,
+    "digest": "sha256:445554a7344dddce635b98e8d24a47abe357577f69a8003c9a03512113c02341",
+    "created_at": "2026-10-25T06:01:34Z",
+    "updated_at": "2026-10-25T06:01:34Z",
+    "expires_at": "2027-01-23T05:47:54Z",
+    "workflow_run": {
+      "id": 40166823499,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-current-target-resolution-r3-20261025",
+      "head_sha": "d5603e630a586ac87ad60ea7201fb472fdb3cda1"
+    }
+  },
+  "manifest_entries": 121,
+  "normal_and_mutant_compilation": "PASS",
+  "positive_cases": {
+    "recording": 5,
+    "actor": 39,
+    "targeted": 42
+  },
+  "mutation_failures": {
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO01 spell preserves stale first and live second occurrence of one entity": 76,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO02 trigger preserves stale first and live second occurrence of one entity": 79,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO03 activation preserves stale first and live second occurrence of one entity": 82,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO04 spell maps selected group after omitted optional instance": 85,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO05 trigger maps selected group after omitted optional instance": 88,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO06 activation maps selected group after omitted optional instance": 91,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO07 modal spell keeps illegal occurrence out of its effect context": 94,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO08 splice tail keeps illegal occurrence out of its effect context": 97,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO09 modal trigger preserves original instance mapping": 100,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO15 all stale occurrences fizzle while preserving original target plan": 142,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO16 a wider variable group retains following named target and null positions": 150,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO19 divided damage discards illegal occurrence share without reallocating it": 182
+  },
+  "mutation_passes": [
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO10 current plan and resolution survive serialized state",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO11 mismatched flat targets fail atomically without legacy fallback",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO12 serialized stale expected plan cannot overwrite a newer current plan",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO13 legacy targets without authoritative plan retain legacy behavior",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO14 legacy retarget adapter cannot leave an authoritative view stale",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO17 divisions remain per occurrence and aggregate only surviving recipient views",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO18 modal and splice views move atomically and division stays with its slot",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO20 target transition cannot alter original division",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO21 paused modal and splice entries preserve resolved null slots and divisions",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO22 stale modal view rejects before the stack item is popped"
+  ],
+  "mutation_skips": [],
+  "focused": {
+    "cases": 842,
+    "passed": 841,
+    "failures": {
+      "com.wingedsheep.engine.scenarios.ModalTargetCaptureTest::MC08 provenance leaves existing target views and events unchanged": 113
+    },
+    "errors": 0,
+    "skips": 0
+  },
+  "diagnosis": "Fresh tracked modal trigger installs currentTargetPlan on TargetsComponent, while legacy continuation has no plan. Existing MC08 component equality assertion correctly detects changed target view. All12 negative assertions passed receiving; focused failure is normal production compatibility, not negative evidence. Broad/ordinary/Assay unexecuted.",
+  "next": "Repair current-authority storage/transport preserving original MC08 assertion, original target views and full per-occurrence resolution; qualify new immutable source after bounded review.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
