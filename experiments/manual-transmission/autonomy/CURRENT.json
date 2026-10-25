@@ -1,17 +1,17 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T19:48:45.751Z",
+  "updated_date": "2026-10-25T19:49:13.966Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "WAITING_EXTERNAL",
-  "owner": "manual-work-b83ec8b9-f5f0-8328-a4c2-33053a5655fd",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-b83ec8b9-f5f0-8328-a4c2-33053a5655fd",
-    "claimed_utc": "2026-10-25T19:45:48.103Z",
-    "renewed_utc": "2026-10-25T19:45:48.103Z",
-    "expires_utc": "2026-10-25T20:15:48.104Z",
-    "reason": "Receive terminal original player-relation run after explicit prior release and no successor."
+    "state": "RELEASED",
+    "owner": null,
+    "previous_owner": "manual-work-b83ec8b9-f5f0-8328-a4c2-33053a5655fd",
+    "released_utc": "2026-10-25T19:49:13.966Z",
+    "expires_utc": null,
+    "reason": "R2 qualification active; receiver prepared and prior independent next-source-facts review reused. No competing source mutation or qualification."
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -2875,10 +2875,10 @@
       "event": "push",
       "observed_status": "in_progress",
       "artifact": null,
-      "receiver_commit": null,
-      "receiver_path": null,
+      "receiver_commit": "7f0298d709f10ff8a6ff78176bd8d7a1ca434e26",
+      "receiver_path": "experiments/manual-transmission/research/fixed-recipient-player-relation-receiving-r2-20261025",
       "receiver_synthetic_checks": 10,
-      "receiver_immutable_readback_verified": false,
+      "receiver_immutable_readback_verified": true,
       "last_observed_utc": "2026-10-25T19:48:45.751Z",
       "next_source_facts_review": {
         "commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7",
@@ -3049,12 +3049,12 @@
     },
     "active_workflows": [
       {
-        "run": 40223311961,
-        "job": 121259359816,
+        "run": 40227752525,
+        "job": 121272665534,
         "attempt": 1,
         "event": "push",
         "status": "in_progress",
-        "head_sha": "27c5c854e97f7425eeaaacce4cc329aee00f03bd"
+        "head_sha": "29dd966d835424cf64ce3ee480e54474ec4c40ce"
       }
     ],
     "ownership": "Explicit same-owner release, not expiry-based clearing.",
@@ -3147,8 +3147,8 @@
       "ignored_unrelated_run": 34749202144,
       "newer_receipt": false
     },
-    "checked_utc": "2026-10-25T18:56:10.421Z",
-    "owner_liveness": "Same active invocation bdf37320-5e88-8331-b0f5-0ee523a09a7b; preceding owner explicitly released. All five active statuses reconciled; only unrelated ancient Pest queued.",
+    "checked_utc": "2026-10-25T19:49:13.966Z",
+    "owner_liveness": "Previous owner explicitly released and previous automation invocation completed. This invocation claimed, preserved R1 failure, dispatched one justified R2 and now explicitly releases.",
     "latest_commit": "1a40b0e1cdd958613bf0de7f491f68fe48d0fbc5",
     "canonical_receiver_commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7"
   },
@@ -3936,7 +3936,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External-only waiting on run40227752525. The exact original receiver is checkpointed and parser-checked. Isolated NEXT_SOURCE_FACTS review22acb78c is already complete and unchanged; no useful independent work remains before receiving this frozen legality candidate. R1 original failure is preserved; no feature acceptance.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
