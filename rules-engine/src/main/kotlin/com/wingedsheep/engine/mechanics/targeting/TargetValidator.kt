@@ -149,149 +149,213 @@ class TargetValidator {
                 if (error != null) return error
             }
 
-            // "Two/X target ..." — the same object or player can't be chosen more than once for a
-            // single instance of the word "target" (CR 601.2c; applies to abilities via 602.2b).
-            // Cross-requirement duplicates are a different "target" instance and stay legal by
-            // default — that distinctness is opt-in via TargetOther below.
-            if (targetsForReq.size > 1 && targetsForReq.distinct().size != targetsForReq.size) {
-                return "The same target can't be chosen more than once for ${requirement.description}"
-            }
+            val relationError = validateTargetRelations(state, requirement, targetsForReq,
+                targets.take(startIdx.coerceAtMost(targets.size)), casterId, sourceId, xValue)
+            if (relationError != null) return relationError
 
-            // "Another target" — must differ from any earlier target chosen for this same cast
-            if (requirement is TargetOther) {
-                val priorTargets = targets.subList(0, startIdx.coerceAtMost(targets.size))
-                for (target in targetsForReq) {
-                    if (priorTargets.any { it == target }) {
-                        return "Target must be different from the other chosen targets"
-                    }
-                }
-            }
-
-            // "... controlled by the same player" — every chosen target for this requirement
-            // must share a controller (Rule uses current control; projected state respects
-            // control-changing effects). No-op for single-target requirements.
-            if (requirement is TargetObject && requirement.sameController && targetsForReq.size > 1) {
-                val projected = state.projectedState
-                val controllers = targetsForReq.mapNotNull { target ->
-                    (target as? ChosenTarget.Permanent)?.let { perm ->
-                        projected.getController(perm.entityId)
-                            ?: state.getEntity(perm.entityId)?.get<ControllerComponent>()?.playerId
-                    }
-                }
-                if (controllers.toSet().size > 1) {
-                    return "Targets must be controlled by the same player"
-                }
-            }
-
-            // "... from a single graveyard" — every chosen card target for this requirement
-            // must share an owner (CR uses the graveyard's owner). No-op for single-target
-            // requirements and for non-card targets.
-            if (requirement is TargetObject && requirement.sameOwner && targetsForReq.size > 1) {
-                val owners = targetsForReq.mapNotNull { target ->
-                    (target as? ChosenTarget.Card)?.ownerId
-                }
-                if (owners.toSet().size > 1) {
-                    return "Targets must be from a single graveyard"
-                }
-            }
-
-            // "... that share a creature type" — every chosen permanent target must hold at least
-            // one creature type in common with all the others (Secret Tunnel). Uses projected
-            // subtypes so granted/changed types count. No-op for single-target requirements; a
-            // target with no creature types (or one off the battlefield) can never share, so the
-            // set is rejected.
-            if (requirement is TargetObject && requirement.sameCreatureType && targetsForReq.size > 1) {
-                val projected = state.projectedState
-                val subtypeSets = targetsForReq.map { target ->
-                    (target as? ChosenTarget.Permanent)
-                        ?.takeIf { it.entityId in state.getBattlefield() }
-                        ?.let { projected.getSubtypes(it.entityId) }
-                        ?: emptySet()
-                }
-                val shared = subtypeSets.reduce { acc, next -> acc intersect next }
-                if (shared.isEmpty()) {
-                    return "Targets must share a creature type"
-                }
-            }
-
-            // "... that share a card type" — every chosen permanent target must hold at least one
-            // *card type* (CR 205.2a) in common with all the others (Burglar's Plot). Projected
-            // types, so an animated land counts as a creature; supertypes are sieved out, so two
-            // legendary permanents don't qualify by both being legendary. No-op for single-target
-            // requirements; a target off the battlefield contributes nothing and rejects the set.
-            if (requirement is TargetObject && requirement.sameCardType && targetsForReq.size > 1) {
-                val projected = state.projectedState
-                val typeSets = targetsForReq.map { target ->
-                    (target as? ChosenTarget.Permanent)
-                        ?.takeIf { it.entityId in state.getBattlefield() }
-                        ?.let { perm -> projected.getTypes(perm.entityId).filterTo(mutableSetOf()) { it in CARD_TYPE_NAMES } }
-                        ?: emptySet()
-                }
-                val shared = typeSets.reduce { acc, next -> acc intersect next }
-                if (shared.isEmpty()) {
-                    return "Targets must share a card type"
-                }
-            }
-
-            // "... with total mana value N or less" — the summed mana value of the chosen card
-            // targets may not exceed the resolved cap (Fire Lord Sozin's "total mana value X or
-            // less"; XValue resolves against the paid [xValue]). CR 601.2c. No-op for non-card
-            // targets, which contribute 0.
-            val totalManaCap = (requirement as? TargetObject)?.totalManaValueAtMost
-            if (totalManaCap != null && targetsForReq.isNotEmpty()) {
-                val cap = try {
-                    DynamicAmountEvaluator().evaluate(
-                        state,
-                        totalManaCap,
-                        EffectContext(sourceId = sourceId, controllerId = casterId, xValue = xValue)
-                    ).coerceAtLeast(0)
-                } catch (_: Exception) {
-                    Int.MAX_VALUE
-                }
-                val summedManaValue = targetsForReq.sumOf { target ->
-                    (target as? ChosenTarget.Card)?.let { card ->
-                        state.getEntity(card.cardId)?.get<CardComponent>()?.manaValue ?: 0
-                    } ?: 0
-                }
-                if (summedManaValue > cap) {
-                    return "Targets must have total mana value $cap or less"
-                }
-            }
-
-            // "... with different names" — no two chosen targets for this requirement may share a
-            // name (Behold the Sinister Six!: "up to six target creature cards with different
-            // names"). CR 601.2c. Grouped by projected name on the battlefield, base card name in
-            // other zones (graveyard cards aren't projected).
-            if (requirement is TargetObject && requirement.differentNames && targetsForReq.size > 1) {
-                val names = targetsForReq.map { target ->
-                    val id = (target as? ChosenTarget.Permanent)?.entityId
-                        ?: (target as? ChosenTarget.Card)?.cardId
-                    id?.let {
-                        state.projectedState.getName(it) ?: state.getEntity(it)?.get<CardComponent>()?.name
-                    }
-                }
-                if (names.size != names.toSet().size) {
-                    return "Targets must have different names"
-                }
-            }
-
-            // "For each other player, ... up to one target creature that player controls" — no two
-            // chosen targets for this requirement may share a controller (Kaya, Spirits' Justice).
-            // CR 601.2c. Read from projected state so a control-change effect is respected.
-            if (requirement is TargetObject && requirement.differentControllers && targetsForReq.size > 1) {
-                val controllers = targetsForReq.map { target ->
-                    (target as? ChosenTarget.Permanent)?.entityId?.let { id ->
-                        state.projectedState.getController(id)
-                            ?: state.getEntity(id)?.get<ControllerComponent>()?.playerId
-                    }
-                }
-                if (controllers.size != controllers.toSet().size) {
-                    return "Targets must be controlled by different players"
-                }
-            }
         }
 
         return null
+    }
+
+    /** Shared set constraints; deliberately separate from declaration cardinality. */
+    private fun validateTargetRelations(
+        state: GameState,
+        requirement: TargetRequirement,
+        targetsForReq: List<ChosenTarget>,
+        priorTargets: List<ChosenTarget>,
+        casterId: EntityId,
+        sourceId: EntityId?,
+        xValue: Int?,
+    ): String? {
+    // "Two/X target ..." — the same object or player can't be chosen more than once for a
+    // single instance of the word "target" (CR 601.2c; applies to abilities via 602.2b).
+    // Cross-requirement duplicates are a different "target" instance and stay legal by
+    // default — that distinctness is opt-in via TargetOther below.
+    if (targetsForReq.size > 1 && targetsForReq.distinct().size != targetsForReq.size) {
+        return "The same target can't be chosen more than once for ${requirement.description}"
+    }
+
+    // "Another target" — must differ from any earlier target chosen for this same cast
+    if (requirement is TargetOther) {
+        for (target in targetsForReq) {
+            if (priorTargets.any { it == target }) {
+                return "Target must be different from the other chosen targets"
+            }
+        }
+    }
+
+    // "... controlled by the same player" — every chosen target for this requirement
+    // must share a controller (Rule uses current control; projected state respects
+    // control-changing effects). No-op for single-target requirements.
+    if (requirement is TargetObject && requirement.sameController && targetsForReq.size > 1) {
+        val projected = state.projectedState
+        val controllers = targetsForReq.mapNotNull { target ->
+            (target as? ChosenTarget.Permanent)?.let { perm ->
+                projected.getController(perm.entityId)
+                    ?: state.getEntity(perm.entityId)?.get<ControllerComponent>()?.playerId
+            }
+        }
+        if (controllers.toSet().size > 1) {
+            return "Targets must be controlled by the same player"
+        }
+    }
+
+    // "... from a single graveyard" — every chosen card target for this requirement
+    // must share an owner (CR uses the graveyard's owner). No-op for single-target
+    // requirements and for non-card targets.
+    if (requirement is TargetObject && requirement.sameOwner && targetsForReq.size > 1) {
+        val owners = targetsForReq.mapNotNull { target ->
+            (target as? ChosenTarget.Card)?.ownerId
+        }
+        if (owners.toSet().size > 1) {
+            return "Targets must be from a single graveyard"
+        }
+    }
+
+    // "... that share a creature type" — every chosen permanent target must hold at least
+    // one creature type in common with all the others (Secret Tunnel). Uses projected
+    // subtypes so granted/changed types count. No-op for single-target requirements; a
+    // target with no creature types (or one off the battlefield) can never share, so the
+    // set is rejected.
+    if (requirement is TargetObject && requirement.sameCreatureType && targetsForReq.size > 1) {
+        val projected = state.projectedState
+        val subtypeSets = targetsForReq.map { target ->
+            (target as? ChosenTarget.Permanent)
+                ?.takeIf { it.entityId in state.getBattlefield() }
+                ?.let { projected.getSubtypes(it.entityId) }
+                ?: emptySet()
+        }
+        val shared = subtypeSets.reduce { acc, next -> acc intersect next }
+        if (shared.isEmpty()) {
+            return "Targets must share a creature type"
+        }
+    }
+
+    // "... that share a card type" — every chosen permanent target must hold at least one
+    // *card type* (CR 205.2a) in common with all the others (Burglar's Plot). Projected
+    // types, so an animated land counts as a creature; supertypes are sieved out, so two
+    // legendary permanents don't qualify by both being legendary. No-op for single-target
+    // requirements; a target off the battlefield contributes nothing and rejects the set.
+    if (requirement is TargetObject && requirement.sameCardType && targetsForReq.size > 1) {
+        val projected = state.projectedState
+        val typeSets = targetsForReq.map { target ->
+            (target as? ChosenTarget.Permanent)
+                ?.takeIf { it.entityId in state.getBattlefield() }
+                ?.let { perm -> projected.getTypes(perm.entityId).filterTo(mutableSetOf()) { it in CARD_TYPE_NAMES } }
+                ?: emptySet()
+        }
+        val shared = typeSets.reduce { acc, next -> acc intersect next }
+        if (shared.isEmpty()) {
+            return "Targets must share a card type"
+        }
+    }
+
+    // "... with total mana value N or less" — the summed mana value of the chosen card
+    // targets may not exceed the resolved cap (Fire Lord Sozin's "total mana value X or
+    // less"; XValue resolves against the paid [xValue]). CR 601.2c. No-op for non-card
+    // targets, which contribute 0.
+    val totalManaCap = (requirement as? TargetObject)?.totalManaValueAtMost
+    if (totalManaCap != null && targetsForReq.isNotEmpty()) {
+        val cap = try {
+            DynamicAmountEvaluator().evaluate(
+                state,
+                totalManaCap,
+                EffectContext(sourceId = sourceId, controllerId = casterId, xValue = xValue)
+            ).coerceAtLeast(0)
+        } catch (_: Exception) {
+            Int.MAX_VALUE
+        }
+        val summedManaValue = targetsForReq.sumOf { target ->
+            (target as? ChosenTarget.Card)?.let { card ->
+                state.getEntity(card.cardId)?.get<CardComponent>()?.manaValue ?: 0
+            } ?: 0
+        }
+        if (summedManaValue > cap) {
+            return "Targets must have total mana value $cap or less"
+        }
+    }
+
+    // "... with different names" — no two chosen targets for this requirement may share a
+    // name (Behold the Sinister Six!: "up to six target creature cards with different
+    // names"). CR 601.2c. Grouped by projected name on the battlefield, base card name in
+    // other zones (graveyard cards aren't projected).
+    if (requirement is TargetObject && requirement.differentNames && targetsForReq.size > 1) {
+        val names = targetsForReq.map { target ->
+            val id = (target as? ChosenTarget.Permanent)?.entityId
+                ?: (target as? ChosenTarget.Card)?.cardId
+            id?.let {
+                state.projectedState.getName(it) ?: state.getEntity(it)?.get<CardComponent>()?.name
+            }
+        }
+        if (names.size != names.toSet().size) {
+            return "Targets must have different names"
+        }
+    }
+
+    // "For each other player, ... up to one target creature that player controls" — no two
+    // chosen targets for this requirement may share a controller (Kaya, Spirits' Justice).
+    // CR 601.2c. Read from projected state so a control-change effect is respected.
+    if (requirement is TargetObject && requirement.differentControllers && targetsForReq.size > 1) {
+        val controllers = targetsForReq.map { target ->
+            (target as? ChosenTarget.Permanent)?.entityId?.let { id ->
+                state.projectedState.getController(id)
+                    ?: state.getEntity(id)?.get<ControllerComponent>()?.playerId
+            }
+        }
+        if (controllers.size != controllers.toSet().size) {
+            return "Targets must be controlled by different players"
+        }
+    }
+        return null
+    }
+
+    /**
+     * Check one replacement against the original targeting context. Empty groups, amounts and
+     * target counts are fixed earlier; retargeting must not declare them again. Unchanged illegal
+     * occurrences may remain, but replacing another occurrence cannot invalidate a legal one.
+     * This method compares semantic validity, never diagnostic text.
+     */
+    internal fun replacementIsLegal(
+        state: GameState,
+        before: TargetSlotPlan,
+        after: TargetSlotPlan,
+        changed: TargetSlotAddress,
+        requirements: List<TargetRequirement>,
+        casterId: EntityId,
+        sourceId: EntityId,
+        sourceColors: Set<Color>,
+        sourceSubtypes: Set<String>,
+        sourceCardTypes: Set<String>,
+        targetingSourceType: TargetingSourceType,
+        xValue: Int?,
+    ): Boolean {
+        if (before.instances.size != requirements.size || after.instances.size != requirements.size) return false
+        if (before.addresses() != after.addresses() || changed !in before.addresses()) return false
+        if (before.addresses().any { it != changed && before.slot(it) != after.slot(it) }) return false
+        if (before.slot(changed).dividedAmount != after.slot(changed).dividedAmount) return false
+        fun current(slot: TargetSlot) = slot.objectRef?.let(state::isCurrentObject) ?: true
+        fun groups(plan: TargetSlotPlan) = plan.instances.map { instance ->
+            instance.slots.filter(::current).map { it.target }
+        }
+        val beforeGroups = groups(before)
+        val afterGroups = groups(after)
+        fun legal(plan: TargetSlotPlan, groups: List<List<ChosenTarget>>, address: TargetSlotAddress): Boolean {
+            val slot = plan.slot(address)
+            return current(slot) && validateSingleTarget(state, slot.target, requirements[address.instanceIndex],
+                casterId, sourceColors, sourceSubtypes, sourceId, xValue, groups.flatten(),
+                targetingSourceType, sourceCardTypes) == null
+        }
+        if (!legal(after, afterGroups, changed)) return false
+        for (address in before.addresses()) {
+            if (address != changed && legal(before, beforeGroups, address) && !legal(after, afterGroups, address)) return false
+        }
+        for (index in requirements.indices) {
+            fun relations(groups: List<List<ChosenTarget>>) = validateTargetRelations(state,
+                requirements[index], groups[index], groups.take(index).flatten(), casterId, sourceId, xValue) == null
+            if ((index == changed.instanceIndex || relations(beforeGroups)) && !relations(afterGroups)) return false
+        }
+        return true
     }
 
     /**
@@ -307,7 +371,8 @@ class TargetValidator {
         sourceId: EntityId? = null,
         xValue: Int? = null,
         allTargets: List<ChosenTarget> = emptyList(),
-        targetingSourceType: TargetingSourceType = TargetingSourceType.ANY
+        targetingSourceType: TargetingSourceType = TargetingSourceType.ANY,
+        sourceCardTypes: Set<String>? = null,
     ): String? {
         // A separately-chosen player target (target index 0 for "target player's graveyard"
         // spells) — lets a later requirement's filter resolve `OwnedByTargetPlayer` /
@@ -326,7 +391,7 @@ class TargetValidator {
             is TargetCreatureOrPlaneswalker -> validateCreatureOrPlaneswalkerTarget(state, target)
             is TargetSpellOrPermanent -> validateSpellOrPermanentTarget(state, target, requirement, casterId, sourceId, xValue)
             is TargetObject -> validateObjectTarget(state, target, requirement.filter, casterId, sourceId, xValue, chosenPlayerTarget)
-            is TargetOther -> validateSingleTarget(state, target, requirement.baseRequirement, casterId, sourceColors, sourceSubtypes, sourceId, xValue, allTargets, targetingSourceType)
+            is TargetOther -> validateSingleTarget(state, target, requirement.baseRequirement, casterId, sourceColors, sourceSubtypes, sourceId, xValue, allTargets, targetingSourceType, sourceCardTypes)
         }
         if (error != null) return error
 
@@ -353,7 +418,7 @@ class TargetValidator {
 
         // Check hexproof from card type, e.g. "hexproof from instants" (Rule 702.11b).
         // Elenda, Saint of Dusk.
-        val hexproofCardTypeError = checkHexproofFromCardType(state, target, casterId, sourceId)
+        val hexproofCardTypeError = checkHexproofFromCardType(state, target, casterId, sourceId, sourceCardTypes)
         if (hexproofCardTypeError != null) return hexproofCardTypeError
 
         // Check protection from each opponent (Rule 702.16e)
@@ -366,13 +431,24 @@ class TargetValidator {
 
         // Check protection from card type, e.g. "protection from instants and from sorceries"
         // (Rule 702.16). Sword of Wealth and Power.
-        val protectionFromCardTypeError = checkProtectionFromCardType(state, target, sourceId)
+        val protectionFromCardTypeError = checkProtectionFromCardType(state, target, sourceId, sourceCardTypes)
         if (protectionFromCardTypeError != null) return protectionFromCardTypeError
 
         // "Can't be enchanted" (CR 303.4): an Aura can't legally target a permanent with the
         // CANT_BE_ENCHANTED restriction (Guardian Beast). Only applies when the source is an Aura.
         val cantBeEnchantedError = checkCantBeEnchanted(state, target, sourceId)
         if (cantBeEnchantedError != null) return cantBeEnchantedError
+
+        if (sourceCardTypes != null && target is ChosenTarget.Permanent &&
+            SourceTypeTargeting.cantBeTargetedBySourceTypeAbility(state, target.entityId,
+                sourceId, targetingSourceType, sourceCardTypes)) return "Target rejects abilities from this source type"
+
+        if (sourceCardTypes != null && target is ChosenTarget.Permanent &&
+            targetingSourceType == TargetingSourceType.ABILITY &&
+            state.projectedState.getController(target.entityId) != casterId &&
+            com.wingedsheep.engine.mechanics.ControllerGrants.isActiveOn<
+                com.wingedsheep.engine.state.components.battlefield.CantBeTargetedByOpponentAbilitiesComponent
+            >(state, target.entityId)) return "Target rejects opponent abilities"
 
         // Check protection from color and creature subtype (Rule 702.16)
         return checkProtection(state, target, sourceColors, sourceSubtypes)
@@ -443,7 +519,8 @@ class TargetValidator {
     private fun checkProtectionFromCardType(
         state: GameState,
         target: ChosenTarget,
-        sourceId: EntityId?
+        sourceId: EntityId?,
+        sourceCardTypesOverride: Set<String>? = null,
     ): String? {
         if (sourceId == null) return null
         val entityId = when (target) {
@@ -452,8 +529,8 @@ class TargetValidator {
         }
         if (entityId !in state.getBattlefield()) return null
 
-        val sourceCardTypes = state.getEntity(sourceId)
-            ?.get<CardComponent>()?.typeLine?.cardTypes ?: return null
+        val sourceCardTypes = sourceCardTypesOverride?.mapNotNull { name -> CardType.entries.find { it.name == name } }
+            ?: state.getEntity(sourceId)?.get<CardComponent>()?.typeLine?.cardTypes ?: return null
         val projected = state.projectedState
         for (cardType in sourceCardTypes) {
             if (projected.hasKeyword(entityId, "PROTECTION_FROM_CARDTYPE_${cardType.name}")) {
@@ -583,7 +660,8 @@ class TargetValidator {
         state: GameState,
         target: ChosenTarget,
         casterId: EntityId,
-        sourceId: EntityId?
+        sourceId: EntityId?,
+        sourceCardTypesOverride: Set<String>? = null,
     ): String? {
         if (sourceId == null) return null
         val entityId = when (target) {
@@ -598,7 +676,7 @@ class TargetValidator {
         val projected = state.projectedState
         if (HexproofSuppression.isSuppressedForCaster(state, projected, entityId, casterId)) return null
 
-        for (cardType in SourceTypeTargeting.sourceCardTypes(state, sourceId)) {
+        for (cardType in (sourceCardTypesOverride ?: SourceTypeTargeting.sourceCardTypes(state, sourceId))) {
             if (projected.hasKeyword(entityId, "HEXPROOF_FROM_CARDTYPE_${cardType.uppercase()}")) {
                 val cardName = state.getEntity(entityId)?.get<CardComponent>()?.name ?: "target"
                 return "$cardName has hexproof from ${cardType.lowercase()}s"
