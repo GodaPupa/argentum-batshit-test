@@ -1,0 +1,76 @@
+{
+  "schema": "manual-source-history-diagnostic-v1",
+  "base_source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+  "base_tree": "96774dfd5794aa41aa1e739c0bedf1e3d408aa86",
+  "accepted_receipt": "7ee1fe7e3848146b6089a73e5fa5951d81e3a630",
+  "scope": "Five novel resolver source-history diagnostic cases on unchanged accepted production. No R5 requalification or original artifact re-audit. No implementation acceptance.",
+  "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CurrentTargetSourceHistoryDiagnosticTest.kt",
+  "files_sha256": {
+    "CurrentTargetSourceHistoryDiagnosticTest.kt": "4a4c563f76b6fc311755ffcc7e045b476f59203dec487a07f8e8aa8deb0d7233",
+    "gate.py": "ccd10de725ffee32eb84abe59e2590d62a35b42dc874a61c6d88e19d643a65a9",
+    "REVIEW.json": "d7e8afd386248c88064e3dce437553ce4395e1c4ab2793ceee0a8957ad6fd09b"
+  },
+  "expected_hypothesis": {
+    "cases": 5,
+    "passes": 3,
+    "assertion_failures": 2,
+    "failure_frames": [
+      81,
+      85
+    ],
+    "errors": 0,
+    "skips": 0
+  },
+  "alternative_valid_observation": "All5pass refutes diagnostic hypothesis; do not claim bug or need for resolver repair. Any other result is invalid diagnostic evidence requiring diagnosis of original logs, not an automatic rerun.",
+  "gates": [
+    "Exact source parent/tree/delta4 added paths, validation workflow only, run1attempt1",
+    "All143 protected source bindings plus accepted resolver hash,23goldens,82fixtures,v0.7 unchanged",
+    "Normal production and test compilation before executing diagnostic",
+    "Exactly5 named original raw cases, noerrors/noskips; either precise2failures+3controls or5passes",
+    "Tracked source unchanged after execution; full original logs/reports/source/protocol/workflow/patch/manifest preserved",
+    "Original artifact byte/hash/source/tree/validation/workflow/run/job/attempt receiving exactly once"
+  ],
+  "excluded": "No mutation, repair, card registration, official games/seeds, extra spending, main merge or multiplayer admission; no reinterpretation of accepted bounded R5 evidence.",
+  "synthetic_receiver_checks": [
+    {
+      "case": "exact",
+      "expected_accept": true,
+      "passed": true
+    },
+    {
+      "case": "allpass",
+      "expected_accept": true,
+      "passed": true
+    },
+    {
+      "case": "compile",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "case": "wrongtype",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "case": "wrongframe",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "case": "skip",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "case": "identity",
+      "expected_accept": false,
+      "passed": true
+    },
+    {
+      "case": "missing",
+      "expected_accept": false,
+      "passed": true
+    }
+  ]
+}
