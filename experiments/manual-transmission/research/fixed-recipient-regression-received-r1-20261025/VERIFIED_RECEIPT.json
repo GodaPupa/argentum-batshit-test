@@ -1,0 +1,483 @@
+{
+  "source": "388f6156ac726c17fd591a87ffbee1bb7224c170",
+  "tree": "ac74d8b6580acdda679816b7b6269ea99ca7c1d3",
+  "validation": "69b5d93883a162b3feb05608c36f5eb2311506cb",
+  "run": 40214114418,
+  "job": 121231431609,
+  "attempt": 1,
+  "artifact": 12607583599,
+  "artifact_bytes": 35030394,
+  "artifact_sha256": "0c796cb71e16e41bf2702db2e68ecd1226c6439e35b86e9113eada879960b74e",
+  "manifest_entries": 9272,
+  "gates": {
+    "recording": {
+      "modules": {
+        "ai": {
+          "suites": 2,
+          "rows": 5,
+          "passed": 5
+        }
+      },
+      "totals": {
+        "suites": 2,
+        "rows": 5,
+        "passed": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "actor": {
+      "modules": {
+        "gym": {
+          "suites": 4,
+          "rows": 39,
+          "passed": 39
+        }
+      },
+      "totals": {
+        "suites": 4,
+        "rows": 39,
+        "passed": 39,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "focused": {
+      "modules": {
+        "mtg-sdk": {
+          "suites": 1,
+          "rows": 2,
+          "passed": 2
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 1,
+          "rows": 5,
+          "passed": 5
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 2,
+          "rows": 10,
+          "passed": 10
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 1,
+          "rows": 3,
+          "passed": 3
+        },
+        "mtg-sets": {
+          "suites": 2,
+          "rows": 343,
+          "passed": 343
+        },
+        "rules-engine": {
+          "suites": 61,
+          "rows": 593,
+          "passed": 593
+        }
+      },
+      "totals": {
+        "suites": 68,
+        "rows": 956,
+        "passed": 956,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "broad": {
+      "modules": {
+        "mtg-sets/1993-1999/tests": {
+          "suites": 251,
+          "rows": 713,
+          "passed": 713
+        },
+        "mtg-sets/2000-2002/tests": {
+          "suites": 162,
+          "rows": 612,
+          "passed": 612
+        },
+        "mtg-sets/2003-2007/tests": {
+          "suites": 432,
+          "rows": 1432,
+          "passed": 1432
+        },
+        "mtg-sets/2008-2016/tests": {
+          "suites": 221,
+          "rows": 644,
+          "passed": 644
+        },
+        "mtg-sets/2017-2022/tests": {
+          "suites": 373,
+          "rows": 1085,
+          "passed": 1085
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 404,
+          "rows": 1283,
+          "passed": 1283
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 723,
+          "rows": 2072,
+          "passed": 2072
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 591,
+          "rows": 1606,
+          "passed": 1606
+        },
+        "mtg-sets/2026/tests": {
+          "suites": 452,
+          "rows": 1328,
+          "passed": 1328
+        },
+        "rules-engine": {
+          "suites": 655,
+          "rows": 4244,
+          "passed": 4244
+        }
+      },
+      "totals": {
+        "suites": 4264,
+        "rows": 15019,
+        "passed": 15019,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife == cost is payable (the boundary case)": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife > cost is payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife < cost is NOT payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantShroudToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantHexproofToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tOpponentsCantMakeYouSacrifice": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantOpponentsCantWinGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGameFromLife": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tStationUsingToughness": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tCantBeTargetedByOpponentAbilities": 2
+      }
+    },
+    "ordinary": {
+      "modules": {
+        "ai": {
+          "suites": 80,
+          "rows": 746,
+          "passed": 745,
+          "skipped": 1
+        },
+        "game-server": {
+          "suites": 82,
+          "rows": 561,
+          "passed": 557,
+          "skipped": 4
+        },
+        "gym-server": {
+          "suites": 2,
+          "rows": 11,
+          "passed": 11
+        },
+        "gym-trainer": {
+          "suites": 5,
+          "rows": 23,
+          "passed": 23
+        },
+        "gym": {
+          "suites": 143,
+          "rows": 535,
+          "passed": 500,
+          "skipped": 35
+        },
+        "mtg-sdk": {
+          "suites": 51,
+          "rows": 529,
+          "passed": 529
+        },
+        "mtg-search": {
+          "suites": 2,
+          "rows": 163,
+          "passed": 163
+        },
+        "mtg-sets/1993-1999/tests": {
+          "suites": 251,
+          "rows": 713,
+          "passed": 713
+        },
+        "mtg-sets/2000-2002/tests": {
+          "suites": 162,
+          "rows": 612,
+          "passed": 612
+        },
+        "mtg-sets/2003-2007/tests": {
+          "suites": 432,
+          "rows": 1432,
+          "passed": 1432
+        },
+        "mtg-sets/2008-2016/tests": {
+          "suites": 221,
+          "rows": 644,
+          "passed": 644
+        },
+        "mtg-sets/2017-2022/tests": {
+          "suites": 373,
+          "rows": 1085,
+          "passed": 1085
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 404,
+          "rows": 1283,
+          "passed": 1283
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 723,
+          "rows": 2072,
+          "passed": 2072
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 591,
+          "rows": 1606,
+          "passed": 1606
+        },
+        "mtg-sets/2026/tests": {
+          "suites": 452,
+          "rows": 1328,
+          "passed": 1328
+        },
+        "mtg-sets": {
+          "suites": 16,
+          "rows": 379,
+          "passed": 379
+        },
+        "mtgish-tooling": {
+          "suites": 20,
+          "rows": 147,
+          "passed": 144,
+          "skipped": 3
+        },
+        "oracle-assay": {
+          "suites": 39,
+          "rows": 568,
+          "passed": 568
+        },
+        "rules-engine": {
+          "suites": 655,
+          "rows": 4244,
+          "passed": 4244
+        }
+      },
+      "totals": {
+        "suites": 4704,
+        "rows": 18681,
+        "passed": 18638,
+        "skipped": 43,
+        "failures": 0,
+        "errors": 0
+      },
+      "failures": [],
+      "skips": [
+        "com.wingedsheep.ai.arena.ArenaBudgetScalingTest::budget scaling: strength is monotone in the decision budget",
+        "com.wingedsheep.gameserver.ai.benchmark.AIBenchmark::AI benchmark (10 game pairs)",
+        "com.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark::compact replay size over 10 random games (POR)",
+        "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest::a persistent yield set mid-game is captured and reproduced on reconstruction",
+        "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest::recorded games reconstruct to the full frame stream (no truncation)",
+        "com.wingedsheep.gym.BatshitEconomicsPreboardSmokeTest::five seeded preboard Argentum agent self-play games",
+        "com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest::inventory exact Phase 2 candidate decks without treating registry presence as rules qualification",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 1 fresh performance sample",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 1 untouched performance vector",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 2 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 3 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 4 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 5 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 6 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 7 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 8 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 fresh Goldfish Sample 1",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 rejected Sample 1 regression replay",
+        "com.wingedsheep.gym.PestControlGoldfishTest::reproduce rejected Pest Control Game 25 Scion provenance",
+        "com.wingedsheep.gym.PestControlMatchupBlockARunnerTest::execute frozen Pest Control versus Mono Red Madness Block A exactly once",
+        "com.wingedsheep.gym.PestControlTierOneGrixisComposedValidationTest::official artifact validates while synthetic shadow executes through complete stack",
+        "com.wingedsheep.gym.PestControlTierOneGrixisDisabledOfficialArtifactLoaderTest::authorized validation reads exact official bytes without exposing or consuming seeds",
+        "com.wingedsheep.gym.PestControlTierOneGrixisOfficialExecutionRunnerTest::execute frozen Grixis four-game vector exactly once",
+        "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialArtifactValidationTest::exact frozen twelve-game replication artifact validates without gameplay",
+        "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialExecutionRunnerTest::execute frozen Grixis twelve-game replication vector exactly once",
+        "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest::exact frozen artifact exposes only untouched Games 2 through 12 to continuation",
+        "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialExecutionRunnerTest::execute untouched Grixis Games 2 through 12 exactly once",
+        "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorComposedValidationTest::official frozen input validates while synthetic shadow runs through full stack",
+        "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest::execute frozen Mono-Blue Terror four-game vector exactly once",
+        "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest::exact frozen twelve-game Terror replication artifact validates without gameplay",
+        "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest::execute frozen Mono-Blue Terror twelve-game replication exactly once",
+        "com.wingedsheep.gym.PestControlTierOneMonsterTronOfficialExecutionRunnerTest::execute the four frozen Monster Tron assignments through the sealed one-shot boundary",
+        "com.wingedsheep.gym.PestControlTierOneMonsterTronOneShotBoundaryTest::pinned official bytes satisfy sealed binding without initialization",
+        "com.wingedsheep.gym.PestControlV2OfficialExecutionRunnerTest::validate or execute the frozen V2 official block through the fail-closed coordinator",
+        "com.wingedsheep.gym.PestControlV2OfficialSeedFreezeGeneratorTest::generate and quarantine exactly ten V2 official seeds without gameplay",
+        "com.wingedsheep.gym.PestControlV2QualificationHarnessValidationTest::validate exact frozen qualification inputs without initializing a game",
+        "com.wingedsheep.gym.PestControlV2QualificationReconcilerTest::reconcile both exact qualification shards into one fail-closed block",
+        "com.wingedsheep.gym.PestControlV2QualificationShardRunnerTest::validate or run one exact qualification shard through the fail-closed coordinator",
+        "com.wingedsheep.gym.PestControlV2QualifyingSmokeTest::one production Pest versus SoterX game reaches a legitimate audited terminal",
+        "com.wingedsheep.tooling.coverage.EmitterSmokeTest::Portal renders a high rate of whole, well-formed cards",
+        "com.wingedsheep.tooling.coverage.dashboard.DashboardTest::Analyzer classifies a set's cards into a partition that sums to the whole",
+        "com.wingedsheep.tooling.coverage.dashboard.DashboardTest::cross-set index carries the blocked cards behind each ranked capability"
+      ],
+      "duplicate_labels": {
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife == cost is payable (the boundary case)": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife > cost is payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife < cost is NOT payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantShroudToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantHexproofToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tOpponentsCantMakeYouSacrifice": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantOpponentsCantWinGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGameFromLife": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tStationUsingToughness": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tCantBeTargetedByOpponentAbilities": 2
+      }
+    },
+    "client": {
+      "passed": 34,
+      "cases": {
+        "web-client/src/store/slices/ui/pipelinePhases.test.ts": [
+          "\"choose both if you blight\" modal (Pyrrhic Strike) also collects the blight target",
+          "a cast with no targets asks for evidence 0 and lets the player confirm with none",
+          "a choose-N modal with an {X} cost (Profane Command) still announces X",
+          "an ExileForTotal cost takes the identical path with its own unit",
+          "collect evidence gates Confirm on the server weight table, not on client-side mana values",
+          "counts only the chosen targets, not every legal one",
+          "defers the manaSource phase past targeting when the cost scales with targets",
+          "keeps costPayment before targeting when the threshold is printed, not derived",
+          "keeps manaSource before targeting for an ordinary spell",
+          "offers the tap step but leaves auto-tap alone",
+          "opens a hand selection phase and exposes the eligible green card",
+          "opens manual payment even when auto-tap is enabled so life is selectable",
+          "opens manual payment for a Phyrexian-only cost with no mana sources",
+          "picks the sacrifice BEFORE manual mana-source selection, since it changes the cost owed",
+          "plain choose-N modal (Spree) runs only the modalModes phase",
+          "prices the picker on the targets the caster chose",
+          "runs no manaSource phase at all under auto-tap \u2014 the server prices the targets",
+          "runs the evidence picker after targeting, never before",
+          "runs the sacrifice step exactly once when auto-tap handles the mana",
+          "still runs manual mana selection after the taps when auto-tap is off",
+          "submits the chosen card through additionalCostPayment.exiledCards",
+          "waterbend gets the same treatment \u2014 the taps do not force a mana-source confirm"
+        ],
+        "web-client/src/store/slices/ui/publicTargetGroups.test.ts": [
+          "keeps mode and splice choices unchanged",
+          "later cost merge preserves captured public groups",
+          "legacy flat phase does not invent a group boundary",
+          "retains an omitted original group before a later choice",
+          "retains separate occurrences of the same recipient",
+          "revising an earlier requirement preserves only the revised groups",
+          "saves the omitted group before calling the legacy phase entrypoint"
+        ],
+        "web-client/src/store/slices/ui/targetingSlice.test.ts": [
+          "confirming a requirement snapshots it for goBackTargeting",
+          "confirming the last requirement submits all picks in requirement order",
+          "goBackTargeting is a no-op on the first requirement",
+          "goBackTargeting restores the previous requirement with its picks selected",
+          "re-confirming after a revised pick re-filters the next requirement"
+        ]
+      }
+    },
+    "assay": {
+      "status": "TOUCHSTONE_PASS_ORIGINAL_51_DIVERGENCES_RETAINED",
+      "remaining_gates": [],
+      "metrics": {
+        "Cards assayed": 2000,
+        "Ambiguous \u2014 distinct readings": 0,
+        "Print mismatch": 0,
+        "Normalization not invertible": 0,
+        "Full inverse not reproduced": 0,
+        "Redundant readings (same model)": 0
+      },
+      "corpus": {
+        "bytes": 25108904,
+        "sha256": "a1f17b0755da5cba940c9b1df71e758415e225ea9d97b9bf1bc699fedc3cfcc3"
+      },
+      "differential": {
+        "baseline_artifact_id": 12469559629,
+        "baseline_report_sha256": "14b77880d7ef45a8c3cfb5bc31ce340ed17aff6320bb32a577e30bf3f5a327e2",
+        "current_report_sha256": "14b77880d7ef45a8c3cfb5bc31ce340ed17aff6320bb32a577e30bf3f5a327e2",
+        "baseline_count": 51,
+        "current_count": 51,
+        "added": [],
+        "removed": [],
+        "changed": [],
+        "original_blocks_byte_identical": true,
+        "unresolved_original_cards": [
+          "Aragorn, the Uniter [LTR]",
+          "Arcane Epiphany [FDN]",
+          "Balm of Restoration [FEM]",
+          "Bloodhunter Bat [M13]",
+          "Bog Rats [DRK]",
+          "Boggart Sprite-Chaser [LRW]",
+          "Bolt Bend [WAR]",
+          "Bramblesnap [ROE]",
+          "Calamitous Tide [BLB]",
+          "Cryogen Relic [EOE]",
+          "Devout Chaplain [AVR]",
+          "Dragon's Prey [TDM]",
+          "Elvish Warmaster [KHM]",
+          "Epic Proportions [LRW]",
+          "Essence Fracture [ONS]",
+          "Experimental Synthesizer [NEO]",
+          "Gather the White Lotus [TLA]",
+          "Ghalta, Primal Hunger [RIX]",
+          "Ghoulish Procession [MID]",
+          "Goblin Digging Team [DRK]",
+          "Grow Extra Arms [SPM]",
+          "Hand of Justice [FEM]",
+          "Jaspera Sentinel [KHM]",
+          "Keeper of Fables [ELD]",
+          "Kithkin Greatheart [LRW]",
+          "Krosan Warchief [SCG]",
+          "Lathril, Blade of the Elves [KHC]",
+          "Merchant Scroll [HML]",
+          "Mistmeadow Council [ECL]",
+          "Offender at Large [MKM]",
+          "Pearl of Wisdom [BLB]",
+          "Quickbeam, Upstart Ent [LTR]",
+          "Raise the Past [FDN]",
+          "Rakish Scoundrel [MKM]",
+          "Saved by the Shell [TMT]",
+          "Scarecrow [DRK]",
+          "Second Breakfast [LTR]",
+          "Seize Opportunity [TDM]",
+          "Sethron, Hurloon General [JMP]",
+          "Shared Discovery [ROE]",
+          "Stress Dream [SOS]",
+          "Stronghold Machinist [NEM]",
+          "Taj-Nar Swordsmith [MRD]",
+          "Urban Retreat [SPM]",
+          "Vendetta [MMQ]",
+          "Venom's Hunger [SPM]",
+          "Viridian Longbow [MRD]",
+          "Walking Ballista [AER]",
+          "Winged Words [M20]",
+          "Wizard's Lightning [DOM]",
+          "Wizard's Retort [DOM]"
+        ]
+      }
+    }
+  },
+  "early_receipt_reused": "6f68a1cac910cc079f5c071f0463774453581f74",
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "gate_errors": [],
+  "state": "RECEIVED_INTERNAL_REGRESSIONS_ONLY_NOT_FEATURE_ACCEPTANCE"
+}
