@@ -1,0 +1,608 @@
+{
+  "status": "ACCEPTED_BOUNDED_CURRENT_TARGET_RESOLUTION_ONLY",
+  "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+  "tree": "96774dfd5794aa41aa1e739c0bedf1e3d408aa86",
+  "validation": "f77e5fa1dd11d8a9239ddb71a2cbe2d82778ff91",
+  "run": 40174213601,
+  "job": 121111303266,
+  "attempt": 1,
+  "artifact": {
+    "id": 12593042029,
+    "node_id": "MDg6QXJ0aWZhY3QxMjU5MzA0MjAyOQ==",
+    "name": "manual-current-target-resolution-r5-40174213601",
+    "size_in_bytes": 34534832,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12593042029",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12593042029/zip",
+    "expired": false,
+    "digest": "sha256:0ad51fe17bda6005cfca0045c6c360e823ddd0d004f65e5d5293f023f41fb86f",
+    "created_at": "2026-10-25T08:37:56Z",
+    "updated_at": "2026-10-25T08:37:56Z",
+    "expires_at": "2027-01-23T07:49:09Z",
+    "workflow_run": {
+      "id": 40174213601,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-current-target-resolution-r5-20261025",
+      "head_sha": "f77e5fa1dd11d8a9239ddb71a2cbe2d82778ff91"
+    }
+  },
+  "verified_manifest_entries": 9100,
+  "source_delta": [
+    "A\texperiments/manual-transmission/research/current-target-resolution-r1-20261025/DESIGN.md",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r1-20261025/PROTOCOL.json",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r1-20261025/gate.py",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r2-20261025/DESIGN.md",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r2-20261025/PROTOCOL.json",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r2-20261025/gate.py",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r3-20261025/DESIGN.md",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r3-20261025/PROTOCOL.json",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r3-20261025/gate.py",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r4-20261025/DESIGN.md",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r4-20261025/PROTOCOL.json",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r4-20261025/gate.py",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r5-20261025/DESIGN.md",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r5-20261025/PROTOCOL.json",
+    "A\texperiments/manual-transmission/research/current-target-resolution-r5-20261025/gate.py",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ModalEffectExecutor.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+    "A\trules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/CurrentTargetPlan.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/OriginalModalSpellCapture.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PublicTargetGroups.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/RetargetHistory.kt",
+    "M\trules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt",
+    "A\trules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CurrentTargetAuthorityBoundaryTest.kt",
+    "A\trules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CurrentTargetResolutionTest.kt"
+  ],
+  "compilation_controls": {
+    "normal": {
+      "stage": "normal",
+      "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+      "validation": "f77e5fa1dd11d8a9239ddb71a2cbe2d82778ff91",
+      "run": "40174213601",
+      "exit": 0,
+      "implementation_sha256": {
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/CurrentTargetPlan.kt": "d35e9a3775c61cb356cf387c197f18ca0cc5a103e3af17c87b1d347e5fb02333",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "75c71579803628c2d6cb7a5cebcbc595253fcab5c03ba496d91a4c31dda92db3"
+      },
+      "log_sha256": "44050757e868be03355060f377c3cc2777a883546f409d3ff4e1c34fbb1c837f",
+      "tests": 0,
+      "expected_disposition_verified": true,
+      "behavioral_evidence": false
+    },
+    "mutant": {
+      "stage": "mutant",
+      "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+      "validation": "f77e5fa1dd11d8a9239ddb71a2cbe2d82778ff91",
+      "run": "40174213601",
+      "exit": 0,
+      "implementation_sha256": {
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/CurrentTargetPlan.kt": "857d972e39329fe4b96926ec7195e4d23e02f8be4bafc6e59006ee5cc96228b0",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "934937b05975b66a73ed5eedacae2edc55848267a29a5375e86b870832e2b7ff"
+      },
+      "log_sha256": "eac38052d62c3d115e3a5d1a13e9f656d8af228b3b7b50ae9549705a5e8a9f17",
+      "tests": 0,
+      "expected_disposition_verified": true,
+      "behavioral_evidence": false
+    }
+  },
+  "stages": {
+    "recording": {
+      "totals": {
+        "suites": 2,
+        "rows": 5,
+        "passed": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "ai": {
+          "suites": 2,
+          "rows": 5,
+          "passed": 5
+        }
+      },
+      "duplicates": {},
+      "required_tasks": {
+        ":ai:test": "EXECUTED"
+      },
+      "identities_sha256": "6701f0764c046f05202fbab5d46f3f8ec90f4e1392941b81fba883dfef8c815e"
+    },
+    "actor": {
+      "totals": {
+        "suites": 4,
+        "rows": 39,
+        "passed": 39,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "gym": {
+          "suites": 4,
+          "rows": 39,
+          "passed": 39
+        }
+      },
+      "duplicates": {},
+      "required_tasks": {
+        ":gym:test": "EXECUTED"
+      },
+      "identities_sha256": "297e9ba1fe0c8c812c9f0fc88383903051ce2558668195e3be16122a3920c7f1"
+    },
+    "mutation": {
+      "totals": {
+        "suites": 2,
+        "rows": 29,
+        "passed": 15,
+        "failures": 14,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "rules-engine": {
+          "suites": 2,
+          "rows": 29,
+          "passed": 15,
+          "failures": 14
+        }
+      },
+      "duplicates": {},
+      "required_tasks": {
+        ":rules-engine:test": "FAILED"
+      },
+      "identities_sha256": "9157ceb65ce256555b6e27eb78b6def15b0895926f78055f41ef198a81ac3971"
+    },
+    "targeted": {
+      "totals": {
+        "suites": 5,
+        "rows": 61,
+        "passed": 61,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "rules-engine": {
+          "suites": 5,
+          "rows": 61,
+          "passed": 61
+        }
+      },
+      "duplicates": {},
+      "required_tasks": {
+        ":rules-engine:test": "EXECUTED"
+      },
+      "identities_sha256": "2036c5544dc363589652c43a12a07b3c51a631d8d16973d5cca433bd875f4c9a"
+    },
+    "focused": {
+      "totals": {
+        "suites": 61,
+        "rows": 849,
+        "passed": 849,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "mtg-sdk": {
+          "suites": 1,
+          "rows": 2,
+          "passed": 2
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 1,
+          "rows": 5,
+          "passed": 5
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 2,
+          "rows": 10,
+          "passed": 10
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 1,
+          "rows": 3,
+          "passed": 3
+        },
+        "mtg-sets": {
+          "suites": 2,
+          "rows": 343,
+          "passed": 343
+        },
+        "rules-engine": {
+          "suites": 54,
+          "rows": 486,
+          "passed": 486
+        }
+      },
+      "duplicates": {},
+      "required_tasks": {
+        ":mtg-sdk:test": "EXECUTED",
+        ":mtg-sets:2023:tests:test": "EXECUTED",
+        ":mtg-sets:2024:tests:test": "EXECUTED",
+        ":mtg-sets:2025:tests:test": "EXECUTED",
+        ":mtg-sets:test": "EXECUTED",
+        ":rules-engine:test": "EXECUTED"
+      },
+      "identities_sha256": "2eafaed061b0a451eb221c9b114e9c603b53bd2ee47e4aaa19a1450f3830f519"
+    },
+    "broad": {
+      "totals": {
+        "suites": 4257,
+        "rows": 14912,
+        "passed": 14912,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "mtg-sets/1993-1999/tests": {
+          "suites": 251,
+          "rows": 713,
+          "passed": 713
+        },
+        "mtg-sets/2000-2002/tests": {
+          "suites": 162,
+          "rows": 612,
+          "passed": 612
+        },
+        "mtg-sets/2003-2007/tests": {
+          "suites": 432,
+          "rows": 1432,
+          "passed": 1432
+        },
+        "mtg-sets/2008-2016/tests": {
+          "suites": 221,
+          "rows": 644,
+          "passed": 644
+        },
+        "mtg-sets/2017-2022/tests": {
+          "suites": 373,
+          "rows": 1085,
+          "passed": 1085
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 404,
+          "rows": 1283,
+          "passed": 1283
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 723,
+          "rows": 2072,
+          "passed": 2072
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 591,
+          "rows": 1606,
+          "passed": 1606
+        },
+        "mtg-sets/2026/tests": {
+          "suites": 452,
+          "rows": 1328,
+          "passed": 1328
+        },
+        "rules-engine": {
+          "suites": 648,
+          "rows": 4137,
+          "passed": 4137
+        }
+      },
+      "duplicates": {
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife == cost is payable (the boundary case)": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife > cost is payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife < cost is NOT payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantShroudToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantHexproofToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tOpponentsCantMakeYouSacrifice": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantOpponentsCantWinGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGameFromLife": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tStationUsingToughness": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tCantBeTargetedByOpponentAbilities": 2
+      },
+      "required_tasks": {
+        ":mtg-sets:1993-1999:tests:test": "EXECUTED",
+        ":mtg-sets:2000-2002:tests:test": "EXECUTED",
+        ":mtg-sets:2003-2007:tests:test": "EXECUTED",
+        ":mtg-sets:2008-2016:tests:test": "EXECUTED",
+        ":mtg-sets:2017-2022:tests:test": "EXECUTED",
+        ":mtg-sets:2023:tests:test": "EXECUTED",
+        ":mtg-sets:2024:tests:test": "EXECUTED",
+        ":mtg-sets:2025:tests:test": "EXECUTED",
+        ":mtg-sets:2026:tests:test": "EXECUTED",
+        ":rules-engine:test": "EXECUTED"
+      },
+      "identities_sha256": "56824eb6042efc72ca076c2b8f6492734bbec063b3c3a4732b5f8a20362edd62"
+    },
+    "ordinary": {
+      "totals": {
+        "suites": 4697,
+        "rows": 18574,
+        "passed": 18531,
+        "skipped": 43,
+        "failures": 0,
+        "errors": 0
+      },
+      "modules": {
+        "ai": {
+          "suites": 80,
+          "rows": 746,
+          "passed": 745,
+          "skipped": 1
+        },
+        "game-server": {
+          "suites": 82,
+          "rows": 561,
+          "passed": 557,
+          "skipped": 4
+        },
+        "gym": {
+          "suites": 143,
+          "rows": 535,
+          "passed": 500,
+          "skipped": 35
+        },
+        "gym-server": {
+          "suites": 2,
+          "rows": 11,
+          "passed": 11
+        },
+        "gym-trainer": {
+          "suites": 5,
+          "rows": 23,
+          "passed": 23
+        },
+        "mtg-sdk": {
+          "suites": 51,
+          "rows": 529,
+          "passed": 529
+        },
+        "mtg-search": {
+          "suites": 2,
+          "rows": 163,
+          "passed": 163
+        },
+        "mtg-sets/1993-1999/tests": {
+          "suites": 251,
+          "rows": 713,
+          "passed": 713
+        },
+        "mtg-sets/2000-2002/tests": {
+          "suites": 162,
+          "rows": 612,
+          "passed": 612
+        },
+        "mtg-sets/2003-2007/tests": {
+          "suites": 432,
+          "rows": 1432,
+          "passed": 1432
+        },
+        "mtg-sets/2008-2016/tests": {
+          "suites": 221,
+          "rows": 644,
+          "passed": 644
+        },
+        "mtg-sets/2017-2022/tests": {
+          "suites": 373,
+          "rows": 1085,
+          "passed": 1085
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 404,
+          "rows": 1283,
+          "passed": 1283
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 723,
+          "rows": 2072,
+          "passed": 2072
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 591,
+          "rows": 1606,
+          "passed": 1606
+        },
+        "mtg-sets/2026/tests": {
+          "suites": 452,
+          "rows": 1328,
+          "passed": 1328
+        },
+        "mtg-sets": {
+          "suites": 16,
+          "rows": 379,
+          "passed": 379
+        },
+        "mtgish-tooling": {
+          "suites": 20,
+          "rows": 147,
+          "passed": 144,
+          "skipped": 3
+        },
+        "oracle-assay": {
+          "suites": 39,
+          "rows": 568,
+          "passed": 568
+        },
+        "rules-engine": {
+          "suites": 648,
+          "rows": 4137,
+          "passed": 4137
+        }
+      },
+      "duplicates": {
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife == cost is payable (the boundary case)": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife > cost is payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife < cost is NOT payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantShroudToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantHexproofToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tOpponentsCantMakeYouSacrifice": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantOpponentsCantWinGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGameFromLife": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tStationUsingToughness": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tCantBeTargetedByOpponentAbilities": 2
+      },
+      "required_tasks": {
+        ":ai:test": "EXECUTED",
+        ":game-server:test": "EXECUTED",
+        ":gym:test": "EXECUTED",
+        ":gym-server:test": "EXECUTED",
+        ":gym-trainer:test": "EXECUTED",
+        ":mtg-sdk:test": "EXECUTED",
+        ":mtg-search:test": "EXECUTED",
+        ":mtg-sets:1993-1999:tests:test": "EXECUTED",
+        ":mtg-sets:2000-2002:tests:test": "EXECUTED",
+        ":mtg-sets:2003-2007:tests:test": "EXECUTED",
+        ":mtg-sets:2008-2016:tests:test": "EXECUTED",
+        ":mtg-sets:2017-2022:tests:test": "EXECUTED",
+        ":mtg-sets:2023:tests:test": "EXECUTED",
+        ":mtg-sets:2024:tests:test": "EXECUTED",
+        ":mtg-sets:2025:tests:test": "EXECUTED",
+        ":mtg-sets:2026:tests:test": "EXECUTED",
+        ":mtg-sets:test": "EXECUTED",
+        ":mtgish-tooling:test": "EXECUTED",
+        ":oracle-assay:test": "EXECUTED",
+        ":rules-engine:test": "EXECUTED"
+      },
+      "identities_sha256": "9208160da01f0329e3b96132813a348f4a739814c3dcae5887011895c7ca0ba2"
+    }
+  },
+  "client_cases": {
+    "web-client/src/store/slices/ui/pipelinePhases.test.ts": [
+      "\"choose both if you blight\" modal (Pyrrhic Strike) also collects the blight target",
+      "a cast with no targets asks for evidence 0 and lets the player confirm with none",
+      "a choose-N modal with an {X} cost (Profane Command) still announces X",
+      "an ExileForTotal cost takes the identical path with its own unit",
+      "collect evidence gates Confirm on the server weight table, not on client-side mana values",
+      "counts only the chosen targets, not every legal one",
+      "defers the manaSource phase past targeting when the cost scales with targets",
+      "keeps costPayment before targeting when the threshold is printed, not derived",
+      "keeps manaSource before targeting for an ordinary spell",
+      "offers the tap step but leaves auto-tap alone",
+      "opens a hand selection phase and exposes the eligible green card",
+      "opens manual payment even when auto-tap is enabled so life is selectable",
+      "opens manual payment for a Phyrexian-only cost with no mana sources",
+      "picks the sacrifice BEFORE manual mana-source selection, since it changes the cost owed",
+      "plain choose-N modal (Spree) runs only the modalModes phase",
+      "prices the picker on the targets the caster chose",
+      "runs no manaSource phase at all under auto-tap \u2014 the server prices the targets",
+      "runs the evidence picker after targeting, never before",
+      "runs the sacrifice step exactly once when auto-tap handles the mana",
+      "still runs manual mana selection after the taps when auto-tap is off",
+      "submits the chosen card through additionalCostPayment.exiledCards",
+      "waterbend gets the same treatment \u2014 the taps do not force a mana-source confirm"
+    ],
+    "web-client/src/store/slices/ui/publicTargetGroups.test.ts": [
+      "keeps mode and splice choices unchanged",
+      "later cost merge preserves captured public groups",
+      "legacy flat phase does not invent a group boundary",
+      "retains an omitted original group before a later choice",
+      "retains separate occurrences of the same recipient",
+      "revising an earlier requirement preserves only the revised groups",
+      "saves the omitted group before calling the legacy phase entrypoint"
+    ],
+    "web-client/src/store/slices/ui/targetingSlice.test.ts": [
+      "confirming a requirement snapshots it for goBackTargeting",
+      "confirming the last requirement submits all picks in requirement order",
+      "goBackTargeting is a no-op on the first requirement",
+      "goBackTargeting restores the previous requirement with its picks selected",
+      "re-confirming after a revised pick re-filters the next requirement"
+    ]
+  },
+  "assay": {
+    "status": "TOUCHSTONE_PASS_ORIGINAL_51_DIVERGENCES_RETAINED",
+    "remaining_gates": [],
+    "metrics": {
+      "Cards assayed": 2000,
+      "Ambiguous \u2014 distinct readings": 0,
+      "Print mismatch": 0,
+      "Normalization not invertible": 0,
+      "Full inverse not reproduced": 0,
+      "Redundant readings (same model)": 0
+    },
+    "corpus": {
+      "bytes": 25103857,
+      "sha256": "9963fb19f792ddcfeac580e21fbe8c2eb9353962389481a3f84d65eb219bb5ae"
+    },
+    "differential": {
+      "baseline_artifact_id": 12469559629,
+      "baseline_report_sha256": "14b77880d7ef45a8c3cfb5bc31ce340ed17aff6320bb32a577e30bf3f5a327e2",
+      "current_report_sha256": "14b77880d7ef45a8c3cfb5bc31ce340ed17aff6320bb32a577e30bf3f5a327e2",
+      "baseline_count": 51,
+      "current_count": 51,
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "original_blocks_byte_identical": true,
+      "unresolved_original_cards": [
+        "Aragorn, the Uniter [LTR]",
+        "Arcane Epiphany [FDN]",
+        "Balm of Restoration [FEM]",
+        "Bloodhunter Bat [M13]",
+        "Bog Rats [DRK]",
+        "Boggart Sprite-Chaser [LRW]",
+        "Bolt Bend [WAR]",
+        "Bramblesnap [ROE]",
+        "Calamitous Tide [BLB]",
+        "Cryogen Relic [EOE]",
+        "Devout Chaplain [AVR]",
+        "Dragon's Prey [TDM]",
+        "Elvish Warmaster [KHM]",
+        "Epic Proportions [LRW]",
+        "Essence Fracture [ONS]",
+        "Experimental Synthesizer [NEO]",
+        "Gather the White Lotus [TLA]",
+        "Ghalta, Primal Hunger [RIX]",
+        "Ghoulish Procession [MID]",
+        "Goblin Digging Team [DRK]",
+        "Grow Extra Arms [SPM]",
+        "Hand of Justice [FEM]",
+        "Jaspera Sentinel [KHM]",
+        "Keeper of Fables [ELD]",
+        "Kithkin Greatheart [LRW]",
+        "Krosan Warchief [SCG]",
+        "Lathril, Blade of the Elves [KHC]",
+        "Merchant Scroll [HML]",
+        "Mistmeadow Council [ECL]",
+        "Offender at Large [MKM]",
+        "Pearl of Wisdom [BLB]",
+        "Quickbeam, Upstart Ent [LTR]",
+        "Raise the Past [FDN]",
+        "Rakish Scoundrel [MKM]",
+        "Saved by the Shell [TMT]",
+        "Scarecrow [DRK]",
+        "Second Breakfast [LTR]",
+        "Seize Opportunity [TDM]",
+        "Sethron, Hurloon General [JMP]",
+        "Shared Discovery [ROE]",
+        "Stress Dream [SOS]",
+        "Stronghold Machinist [NEM]",
+        "Taj-Nar Swordsmith [MRD]",
+        "Urban Retreat [SPM]",
+        "Vendetta [MMQ]",
+        "Venom's Hunger [SPM]",
+        "Viridian Longbow [MRD]",
+        "Walking Ballista [AER]",
+        "Winged Words [M20]",
+        "Wizard's Lightning [DOM]",
+        "Wizard's Retort [DOM]"
+      ]
+    }
+  },
+  "protected_bindings": 143,
+  "authorized_resolver_successor": true,
+  "protected_goldens": 23,
+  "legacy_fixture_files": 82,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "spellskite_implemented": false,
+  "external_independent_review": false,
+  "remaining_component_gates": []
+}
