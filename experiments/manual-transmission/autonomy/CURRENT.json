@@ -1,18 +1,16 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T12:41:18.416Z",
+  "updated_date": "2026-10-25T13:42:37.674Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "ACTIVE",
+  "owner": "manual-work-a23b85e5-67ac-8322-a881-71b93d90508a",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "previous_owner": "manual-work-6adbe33033e481918659ce578f64f31e-a57e9bc2-b678-832b-a085-f78a9259cfd0",
-    "claimed_utc": "2026-10-25T12:40:52.005Z",
-    "released_utc": "2026-10-25T12:41:18.416Z",
-    "expires_utc": null,
-    "reason": "External-only waiting: sole qualification is in ordinary build; receiving infrastructure and independent next-dependency review were already completed. No active worker retained."
+    "state": "ACTIVE",
+    "owner": "manual-work-a23b85e5-67ac-8322-a881-71b93d90508a",
+    "claimed_utc": "2026-10-25T13:42:37.674Z",
+    "expires_utc": "2026-10-25T14:12:37.674Z",
+    "reason": "Receive terminal original source-characteristics R1 artifact; prior owner explicitly released, prior invocation completed, no active Manual workflow or newer receipt."
   },
   "last_qualified": {
     "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
@@ -2522,12 +2520,10 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-25T05:49:05.887Z",
-    "relevant_active_workflows": [
-      40166823499
-    ],
+    "last_checked_utc": "2026-10-25T13:42:37.674Z",
+    "relevant_active_workflows": [],
     "ignored_unrelated_ancient_run": 34749202144,
-    "current_worker": null,
+    "current_worker": "manual-work-a23b85e5-67ac-8322-a881-71b93d90508a",
     "observed_ledger_predecessor_blob": "a81602a1aa9659fe4a803a5046a5f690d722079a",
     "former_discussion_executor_paused": true,
     "intervention_watch_read_only": true,
@@ -2550,7 +2546,7 @@
       "chat_ref": null
     },
     "observed_utc": "2026-10-25T09:16:52.910Z",
-    "active_relevant_workflow": 40166823499,
+    "active_relevant_workflow": null,
     "queued_relevant_workflows": [],
     "waiting_relevant_workflows": [],
     "owner_reconciliation": {
@@ -2689,6 +2685,22 @@
       "receiver_commit": "619ba5a6d6ddc6c5e2e9e53a04a8c28a96ceac8f",
       "qualification_repeated": false,
       "diagnostic_reaudited": false
+    },
+    "source_characteristics_receiving": {
+      "at_utc": "2026-10-25T13:42:37.674Z",
+      "prior_release": "ee637979f98670d483819e625a7928b05862f6ea",
+      "prior_invocation_completed": "a57e9bc2-b678-832b-a085-f78a9259cfd0",
+      "current_invocation": "a23b85e5-67ac-8322-a881-71b93d90508a",
+      "terminal_run": 40191527984,
+      "newer_successor_or_receipt": false,
+      "statuses_checked": [
+        "in_progress",
+        "queued",
+        "waiting",
+        "requested",
+        "pending"
+      ],
+      "ignored_only": 34749202144
     }
   },
   "automation": {
@@ -2818,10 +2830,10 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "390bd1587480",
-    "work_owner": null,
+    "work_owner": "manual-work-a23b85e5-67ac-8322-a881-71b93d90508a",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "One R3 qualification active; original R2 failure preserved; no worker lease retained.",
+    "activity": "Receiving terminal source-characteristics R1 original artifact",
     "last_execution_owner": "manual-work-c3f6db49-resolver-r2"
   },
   "blockers": [],
