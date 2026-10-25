@@ -13,6 +13,9 @@ internal data class AbilitySourceCharacteristics(
     val colors: Set<Color> = emptySet(),
     val subtypes: Set<String> = emptySet(),
     val cardTypes: Set<String> = emptySet(),
+    val supertypes: Set<String> = emptySet(),
+    /** True only when captured identity proves the original source is no longer this visit. */
+    val originalSourceDeparted: Boolean = false,
 ) {
     companion object {
         fun resolve(
@@ -36,6 +39,9 @@ internal data class AbilitySourceCharacteristics(
             // A known departed visit without a snapshot has unknown characteristics. In particular,
             // a later visit must not fill missing fields in an old/partial serialized snapshot.
             return AbilitySourceCharacteristics(
+                originalSourceDeparted = (ref != null && ref.entityId == sourceId && !state.isCurrentObject(ref)) ||
+                    (ref == null && stamp != null && !liveOriginal),
+                supertypes = snapshot?.supertypes ?: emptySet(),
                 colors = snapshot?.colors?.mapNotNull { name -> Color.entries.find { it.name == name } }?.toSet() ?: emptySet(),
                 subtypes = snapshot?.subtypes ?: emptySet(),
                 cardTypes = snapshot?.typeLine?.cardTypes?.map { it.name }?.toSet() ?: emptySet(),
@@ -48,12 +54,14 @@ internal data class AbilitySourceCharacteristics(
                 return AbilitySourceCharacteristics(
                     colors = projected.getColors(sourceId).mapNotNull { name -> Color.entries.find { it.name == name } }.toSet(),
                     subtypes = projected.getSubtypes(sourceId),
+                    supertypes = projected.getSupertypes(sourceId),
                     cardTypes = projected.getTypes(sourceId).filter { name -> CardType.entries.any { it.name == name } }.toSet(),
                 )
             }
             val card = state.getEntity(sourceId)?.get<CardComponent>()
             return AbilitySourceCharacteristics(
                 colors = card?.colors ?: emptySet(),
+                supertypes = card?.typeLine?.supertypes?.map { it.name }?.toSet() ?: emptySet(),
                 subtypes = card?.typeLine?.subtypes?.map { it.value }?.toSet() ?: emptySet(),
                 cardTypes = card?.typeLine?.cardTypes?.map { it.name }?.toSet() ?: emptySet(),
             )
