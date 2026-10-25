@@ -1,0 +1,55 @@
+{
+  "state": "SOURCE_BOUND_DIAGNOSTIC_NOT_A_REPAIR_OR_ACCEPTANCE",
+  "base_source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+  "accepted_receipt": "7ee1fe7e3848146b6089a73e5fa5951d81e3a630",
+  "finding": "Triggered and activated resolution reads current source CardComponent colors and subtypes, ignoring lastKnownSourceSnapshot for protection target validation. Snapshot exists and survives serialization; lost-entity source yields empty colors. SourceTypeTargeting likewise reads live entity/projection. This is a hypothesis to test, not a received behavioral result.",
+  "source_locations": {
+    "StackResolver.kt": [
+      2846,
+      2938,
+      3735,
+      3746
+    ],
+    "StackComponents.kt": [
+      319,
+      384
+    ],
+    "SourceTypeTargeting.kt": [
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35
+    ]
+  },
+  "rule_source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+  "rule_effective_date": "2026-09-25",
+  "rule_checked_utc": "2026-10-25",
+  "rules": {
+    "608.2b": "When an ability source has left its zone, target-legality revalidation uses its last known information.",
+    "702.16b": "Protection restricts targeting by abilities based on their source characteristics."
+  },
+  "fixture_boundary": "Synthetic StackResolver consumer fixture with actual projected EntitySnapshot and full GameState serialization. Does not replace or re-run accepted real departure producer tests. Initial target selection occurs before protection is added; two departed-source controls must resolve normally, and live-source protection must block.",
+  "authority": "Diagnostic adds no production modifications. Existing protected resolver authorization covers current target occurrences and instance lookup, not a general source-characteristic rewrite. If original diagnostics demonstrate this failure, prepare a source-specific extension before modifying protected resolver beyond the admitted boundary.",
+  "remaining_authorized_work": "Trace fixed-recipient legality, original controller attribution, final-set relations, events and stale continuation requirements; do not register a card or infer multiplayer admission.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "external_independent_review": false,
+  "recovery": {
+    "original_failure_receipt": "dd19155810da944061a8cc6be202df392faa7bb5",
+    "original_run": 40178974689,
+    "executed_cases": 0,
+    "cause": "Mandatory EffectTarget omitted at fixture34:103/37:103; hidden workflow omitted by upload-artifact.",
+    "repair": "Two explicit ContextTarget(0) arguments, same assertion bytes and frames81/85. Workflow archived at validation-workflow.yml outside hidden paths.",
+    "source_checks": {
+      "Effects.kt_blob": "1904846d3b5ad489224784b5d9687c68f8b207ee",
+      "EffectTarget.kt_blob": "6329954f48574b1ae3026b09a77d6476b92a7d18",
+      "meaning": "Destroy requires explicit effect target; ContextTarget(0) denotes the sole indexed requirement."
+    },
+    "production_delta": 0,
+    "external_independent_review": false
+  }
+}
