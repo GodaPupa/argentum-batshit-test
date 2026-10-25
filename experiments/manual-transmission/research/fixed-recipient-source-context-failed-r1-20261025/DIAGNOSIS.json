@@ -1,0 +1,16 @@
+{
+  "state": "ORIGINAL_TEST_COMPILATION_FAILURE_NOT_BEHAVIORAL_EVIDENCE",
+  "run": 40238046467,
+  "artifact": 12615788612,
+  "bytes": 636468,
+  "sha256": "09c0291e31d76fdbf21c514b886fdde5a8af5470dc2b232760c31efbc57e91d5",
+  "manifest_entries": 195,
+  "cause": "Missing GameObjectFilter import in new fixture at43:99 and123:138; production compilation completed, test compilation failed. No mutant compilation or behavioral tests executed.",
+  "repair": "Import-only fixture correction on new immutable source; preserve production/assertions/mutant/frame pins.",
+  "tests_executed": 0,
+  "accepted": false,
+  "compiler_errors": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientSourceContextTest.kt:43:99 Unresolved reference 'GameObjectFilter'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientSourceContextTest.kt:123:138 Unresolved reference 'GameObjectFilter'."
+  ]
+}

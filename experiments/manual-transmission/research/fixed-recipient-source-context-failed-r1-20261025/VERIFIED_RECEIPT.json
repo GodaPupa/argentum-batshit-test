@@ -1,0 +1,104 @@
+{
+  "source": "03ad7b751270d1340e7efd945787b239518827fb",
+  "tree": "5b2c1ce641fb9f7bd5c732cb1cf5d6a95f610780",
+  "validation": "5e4aaa1a3923533fb88275ab39874a561438681b",
+  "run": 40238046467,
+  "job": 121303756639,
+  "attempt": 1,
+  "artifact": 12615788612,
+  "artifact_bytes": 636468,
+  "artifact_sha256": "09c0291e31d76fdbf21c514b886fdde5a8af5470dc2b232760c31efbc57e91d5",
+  "manifest_entries": 195,
+  "gates": {},
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "gate_errors": [
+    {
+      "gate": "compile-normal",
+      "error": "AssertionError: "
+    },
+    {
+      "gate": "compile-mutant",
+      "error": "KeyError: 'compile-mutant/gradle.log'"
+    },
+    {
+      "gate": "targeted",
+      "error": "AssertionError: "
+    },
+    {
+      "gate": "mutation",
+      "error": "AssertionError: "
+    },
+    {
+      "gate": "restored",
+      "error": "AssertionError: "
+    },
+    {
+      "gate": "forms",
+      "error": "KeyError: 'targeted/source/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt'"
+    }
+  ],
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "raw_available_reports": {
+    "targeted": {
+      "names": {},
+      "cases": {},
+      "modules": {},
+      "totals": {
+        "rows": 0,
+        "suites": 0,
+        "passed": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "mutation": {
+      "names": {},
+      "cases": {},
+      "modules": {},
+      "totals": {
+        "rows": 0,
+        "suites": 0,
+        "passed": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "restored": {
+      "names": {},
+      "cases": {},
+      "modules": {},
+      "totals": {
+        "rows": 0,
+        "suites": 0,
+        "passed": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    }
+  },
+  "original_failure_steps": [
+    {
+      "name": "Compile normal and mutant before executable controls",
+      "status": "completed",
+      "conclusion": "failure",
+      "number": 7,
+      "started_at": "2026-10-25T22:00:16Z",
+      "completed_at": "2026-10-25T22:04:43Z"
+    }
+  ]
+}
