@@ -1,0 +1,42 @@
+{
+  "status": "VERIFIED_FAILURE_ZERO_MUTATION_TESTS_NOT_BEHAVIORAL_EVIDENCE",
+  "source": "41dfad5616b0143df07dae6aa098539085a94a99",
+  "validation": "818ff6ef7d597b9323b028497814ca3fe378b1f0",
+  "run": 40158813599,
+  "job": 121065805389,
+  "attempt": 1,
+  "artifact": {
+    "id": 12586165301,
+    "node_id": "MDg6QXJ0aWZhY3QxMjU4NjE2NTMwMQ==",
+    "name": "manual-current-target-resolution-r1-40158813599",
+    "size_in_bytes": 173314,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12586165301",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12586165301/zip",
+    "expired": false,
+    "digest": "sha256:852accf1c779422ffdf6d9c67070f87d3a252bf9d430561157d115f526d99ed4",
+    "created_at": "2026-10-25T03:46:58Z",
+    "updated_at": "2026-10-25T03:46:58Z",
+    "expires_at": "2027-01-23T03:36:05Z",
+    "workflow_run": {
+      "id": 40158813599,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-current-target-resolution-r1-20261025",
+      "head_sha": "818ff6ef7d597b9323b028497814ca3fe378b1f0"
+    }
+  },
+  "manifest_entries": 56,
+  "normal_and_mutant_compilation": "PASS",
+  "positive_cases": {
+    "recording": 5,
+    "actor": 39,
+    "targeted": 42
+  },
+  "mutation_rows": 0,
+  "additional_harness_defect": "Archived SOURCE_DELTA used inherited95b0ab3 baseline (47 paths), while correct BINDING and API R5-to-R1 delta have15. Preserve and correct archive command on successor.",
+  "diagnosis": "Gradle method-style includes *CurrentTargetResolutionTest.CO01* through CO08 matched no Kotest tests. All42 targeted tests ran with class-level filter immediately before mutation. Runtime negative evidence absent; required later regressions correctly skipped.",
+  "next": "Repair only runner selection and exact receiver expectations on new immutable source; preserve production/tests/assertions and original archive. Clean inherited R5 protocol prose explicitly. Full qualification and original receiving still required.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
