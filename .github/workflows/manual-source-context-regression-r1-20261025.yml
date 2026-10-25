@@ -1,0 +1,171 @@
+name: Manual source context full regressions R1
+on:
+  push:
+    branches: [validation/manual-source-context-regression-r1-20261025]
+    paths: ['.github/workflows/manual-source-context-regression-r1-20261025.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: 1382dc0a1fc399e96f8419117b7354627ec43308
+  SOURCE_TREE: c859dcf0d0f537879a03271e028058f33573d07f
+  WORKFLOW: .github/workflows/manual-source-context-regression-r1-20261025.yml
+  RECORD: .manual-fixed-recipient-regression
+  EVIDENCE: manual-fixed-recipient-source-context-r1-evidence
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install locked recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum" "$EVIDENCE"
+      - name: Materialize frozen regression adapter and bind unchanged source
+        run: |
+          mkdir -p "$RECORD"
+          printf %s IiIiRnVsbCByZWdyZXNzaW9uIGNvbnRpbnVhdGlvbiBmb3IgdW5jaGFuZ2VkIHNvdXJjZTsgZWFybHkgb3JpZ2luYWwgY29udHJvbHMgYXJlIHJldXNlZC4iIiIKZnJvbSBwYXRobGliIGltcG9ydCBQYXRoCmltcG9ydCBoYXNobGliLGpzb24sb3Msc3lzLHRleHR3cmFwCk9VVD1QYXRoKCdtYW51YWwtZml4ZWQtcmVjaXBpZW50LXNvdXJjZS1jb250ZXh0LXIxLWV2aWRlbmNlJykKRUFSTFk9UGF0aCgnZXhwZXJpbWVudHMvbWFudWFsLXRyYW5zbWlzc2lvbi9yZXNlYXJjaC9maXhlZC1yZWNpcGllbnQtc291cmNlLWNvbnRleHQtcjEtMjAyNjEwMjUnKQpQUklPUj1QYXRoKCdleHBlcmltZW50cy9tYW51YWwtdHJhbnNtaXNzaW9uL3Jlc2VhcmNoL3NvdXJjZS1jaGFyYWN0ZXJpc3RpY3MtcjEtMjAyNjEwMjUnKQpzaGE9bGFtYmRhIGI6aGFzaGxpYi5zaGEyNTYoYikuaGV4ZGlnZXN0KCkKZ2F0ZT0oUFJJT1IvJ2dhdGUucHknKS5yZWFkX3RleHQoKQphc3NlcnQgc2hhKGdhdGUuZW5jb2RlKCkpPT0nMDZlMTVjMDg0MDgyNjFiY2RjZWM0MzExMGI2ZDcwZWJmN2I5MmU3ZWFkNmY2ZWMwMzEzNTlhZTkxYmU3OTY3YicKYXNzZXJ0IHNoYSgoUFJJT1IvJ1BST1RPQ09MLmpzb24nKS5yZWFkX2J5dGVzKCkpPT0nYTU5ZjcxODQ5ZmE1YzY5ZTZhNzc4ZTljMjIxYmJlMjVkMTZlNTg1OGM5MTAwMWJhMDY5MDc2ZmZmMTMyNjUzYScKYm9keT1nYXRlLnNwbGl0KCdcbm1vZGU9c3lzLmFyZ3ZbMV1cbicpWzBdCmFuY2hvcj0iICAgIGlmIHN0YWdlIGluIFBbJ2V4cGVjdGVkX2V4cGFuZGVkX2lkZW50aXR5X2NvdW50ZXJzJ106XG4iCmFzc2VydCBib2R5LmNvdW50KGFuY2hvcik9PTEKYm9keT1ib2R5LnJlcGxhY2UoJ0JPVU5ERURfU09VUkNFX0NIQVJBQ1RFUklTVElDU19OT1RfU1BFTExTS0lURV9PUl9NVUxUSVBMQVlFUicsJ0lOVEVSTkFMX0ZJWEVEX1JFQ0lQSUVOVF9SRUdSRVNTSU9OX05PVF9GRUFUVVJFX0FDQ0VQVEFOQ0UnKQpib2R5PWJvZHkucmVwbGFjZShhbmNob3IsIiAgICBmb3IgaWRlbnRpdHkgaW4gRVhUUkE6XG4gICAgICAgIGlmIHN0YWdlIGluIFsnZm9jdXNlZCcsJ2Jyb2FkJywnb3JkaW5hcnknXTpcbiAgICAgICAgICAgIGFzc2VydCBuYW1lcy5wb3AoJ3J1bGVzLWVuZ2luZVxcdCcraWRlbnRpdHkucmVwbGFjZSgnOjonLCdcXHQnLDEpLE5vbmUpPT0xXG4iK2FuY2hvcikKbnM9e307ZXhlYyhjb21waWxlKGJvZHksJ2Zyb3plbi1yZWdyZXNzaW9uLWJhc2UnLCdleGVjJyksbnMpCm5zWydPVVQnXT1PVVQKUD1uc1snUCddO2V4dHJhPWpzb24ubG9hZHMoKEVBUkxZLydQUk9UT0NPTC5qc29uJykucmVhZF90ZXh0KCkpWydwb3NpdGl2ZV9jYXNlcyddO25zWydFWFRSQSddPWV4dHJhCmZvciBpZGVudGl0eSBpbiBleHRyYToKICAgIGNscz1pZGVudGl0eS5zcGxpdCgnOjonKVswXS5yc3BsaXQoJy4nLDEpWy0xXQogICAgUFsnbmV3X3Rlc3RfY2FzZXMnXS5zZXRkZWZhdWx0KGNscyxbXSkuYXBwZW5kKGlkZW50aXR5KQpmb3IgY2xzIGluIFBbJ25ld190ZXN0X2Nhc2VzJ106UFsnbmV3X3Rlc3RfY2FzZXMnXVtjbHNdLnNvcnQoKQpmb3Iga2V5IGluIFsnZm9jdXNlZCcsJ2Jyb2FkJywnZW5naW5lJywnb3JkaW5hcnlfcGFzc2VzJ106UFsncG9zaXRpdmVfY291bnRzJ11ba2V5XSs9bGVuKGV4dHJhKQpkZWYgYmluZCgpOgogICAgZWFybHk9e307ZXhlYyhjb21waWxlKChFQVJMWS8nZ2F0ZS5weScpLnJlYWRfdGV4dCgpLnNwbGl0KCdcbm1vZGU9c3lzLmFyZ3ZbMV0nKVswXSwnZWFybHktc291cmNlLWJpbmRpbmcnLCdleGVjJyksZWFybHkpCiAgICBlYXJseVsnYmluZCddKCkKICAgIHN0YXJ0PWdhdGUuaW5kZXgoJyAgICBvbGRfcmVjaXBlID0gJyk7ZW5kPWdhdGUuaW5kZXgoIiAgICBmb3IgcGF0aCBpbiBzZXQoUFsnaW1wbGVtZW50YXRpb25fc2hhMjU2J10pIixzdGFydCkKICAgIHJlY2lwZV9ib2R5PXRleHR3cmFwLmRlZGVudChnYXRlW3N0YXJ0OmVuZF0pCiAgICBleGVjKHJlY2lwZV9ib2R5LG5zKQogICAgcmVjaXBlPShPVVQvJ3ZhbGlkYXRpb24uanVzdCcpLnJlYWRfdGV4dCgpCiAgICBhbmNob3I9Ii0tdGVzdHMgJypFbnRyeUNob2ljZUV2ZW50UHJvdmVuYW5jZVRlc3QnIgogICAgYXNzZXJ0IHJlY2lwZS5jb3VudChhbmNob3IpPT0xCiAgICByZWNpcGU9cmVjaXBlLnJlcGxhY2UoYW5jaG9yLGFuY2hvcisiIC0tdGVzdHMgJypGaXhlZFJlY2lwaWVudFJldGFyZ2V0aW5nVGVzdCcgLS10ZXN0cyAnKkZpeGVkUmVjaXBpZW50TXV0YXRpb25XaXRuZXNzVGVzdCcgLS10ZXN0cyAnKkZpeGVkUmVjaXBpZW50UGxheWVyUmVsYXRpb25UZXN0JyAtLXRlc3RzICcqRml4ZWRSZWNpcGllbnRTb3VyY2VDb250ZXh0VGVzdCciKQogICAgKE9VVC8ndmFsaWRhdGlvbi5qdXN0Jykud3JpdGVfdGV4dChyZWNpcGUpCiAgICAoT1VULydFRkZFQ1RJVkVfUFJPVE9DT0wuanNvbicpLndyaXRlX3RleHQoanNvbi5kdW1wcyhQLGluZGVudD0yKSsnXG4nKQogICAgKE9VVC8nRUZGRUNUSVZFX0dBVEUucHknKS53cml0ZV90ZXh0KGJvZHkpCiAgICBwcmVzZXJ2ZWQ9T1VULydwcmVzZXJ2ZWQnO3ByZXNlcnZlZC5ta2RpcihleGlzdF9vaz1UcnVlKQogICAgZm9yIGRpcmVjdG9yeSxuYW1lIGluIFsobnNbJ1IyJ10sJ0JJTkRJTkdTLmpzb24nKSwobnNbJ1IyJ10sJ0JBU0VMSU5FX1NLSVBTLmpzb24nKSwobnNbJ1I1J10sJ1FVQUxJRklFRF9EVVBMSUNBVEVTLmpzb24nKSwoUGF0aCgnZXhwZXJpbWVudHMvbWFudWFsLXRyYW5zbWlzc2lvbi9yZXNlYXJjaC9vcmRpbmFyeS1idWlsZC1yMS0yMDI2MTAyMicpLCdHT0xERU5TLmpzb24nKV06CiAgICAgICAgKHByZXNlcnZlZC9uYW1lKS53cml0ZV9ieXRlcygoZGlyZWN0b3J5L25hbWUpLnJlYWRfYnl0ZXMoKSkKICAgIChPVVQvJ1JFR1JFU1NJT05fQ09OVFJBQ1QuanNvbicpLndyaXRlX3RleHQoanNvbi5kdW1wcyhkaWN0KHNvdXJjZT1vcy5lbnZpcm9uWydTT1VSQ0UnXSxlYXJseV9yZWNlaXB0PSczNmQyMDBlOWFjNmIyODVlZTE0OGIyMDk5OTllMzNkYzQ5ZDlkY2ViJyxlYXJseV9ydW49NDAyNDIxMjUyNDcsZWFybHlfYXJ0aWZhY3Q9MTI2MTY0ODQ3OTUsZWFybHlfYXJ0aWZhY3Rfc2hhMjU2PSc4NThmZTFlNjk0ZDRiNWY5YWJiNjRhNjQzMzExOGMzZTM1NDhjN2I5ODJmN2JhYjAwODdhMGQ2OTU4M2U1OWQ3JyxleHRyYV9jYXNlcz1leHRyYSxwb3NpdGl2ZV9jb3VudHM9UFsncG9zaXRpdmVfY291bnRzJ10sc2NvcGU9J0lOVEVSTkFMX0NPTVBPTkVOVF9DT01QQVRJQklMSVRZX09OTFlfTk9fRkVBVFVSRV9BRE1JU1NJT04nLG9mZmljaWFsX2dhbWVzPTAsb2ZmaWNpYWxfc2VlZHM9MCxwcmVjaXNpb25fcmVzZXJ2ZWQ9MiksaW5kZW50PTIpKydcbicpCmRlZiBhc3NheSgpOgogICAgYm9keT0obnNbJ09MRCddLydjaGVja19hc3NheS5weScpLnJlYWRfdGV4dCgpLnJlcGxhY2UoJ3BhdXNlZC10b2tlbi1yNC1ldmlkZW5jZScsc3RyKE9VVCkpCiAgICBkZXN0PU9VVC8nYXNzYXknLydFRkZFQ1RJVkVfQ0hFQ0sucHknO2Rlc3QucGFyZW50Lm1rZGlyKHBhcmVudHM9VHJ1ZSxleGlzdF9vaz1UcnVlKTtkZXN0LndyaXRlX3RleHQoYm9keSkKICAgIG5zWydzdWJwcm9jZXNzJ10ucnVuKFtzeXMuZXhlY3V0YWJsZSxzdHIoZGVzdCldLGVudj1kaWN0KG9zLmVudmlyb24sUkVDT1JEPXN0cihuc1snUjInXSkpLGNoZWNrPVRydWUpCm1vZGU9c3lzLmFyZ3ZbMV0KaWYgbW9kZT09J2JpbmQnOmJpbmQoKQplbGlmIG1vZGU9PSdwcmVwYXJlJzpuc1sncHJlcGFyZSddKHN5cy5hcmd2WzJdKQplbGlmIG1vZGU9PSdyZWNlaXZlJzpuc1sncmVjZWl2ZSddKHN5cy5hcmd2WzJdKQplbGlmIG1vZGU9PSdjbGllbnQnOm5zWydjbGllbnRfcmVjZWl2ZSddKCkKZWxpZiBtb2RlPT0nYXNzYXknOmFzc2F5KCkKZWxpZiBtb2RlPT0naGFzaCc6CiAgICBtYW5pZmVzdD1PVVQvJ1NIQTI1NlNVTVMnCiAgICBtYW5pZmVzdC53cml0ZV90ZXh0KCcnLmpvaW4oc2hhKHAucmVhZF9ieXRlcygpKSsnICAnK3N0cihwLnJlbGF0aXZlX3RvKE9VVCkpKydcbicgZm9yIHAgaW4gc29ydGVkKE9VVC5yZ2xvYignKicpKSBpZiBwLmlzX2ZpbGUoKSBhbmQgcCE9bWFuaWZlc3QpKQplbHNlOnJhaXNlIFZhbHVlRXJyb3IobW9kZSkK | base64 -d > "$RECORD/gate.py"
+          python3 "$RECORD/gate.py" bind
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm, cache-dependency-path: web-client/package-lock.json}
+      - name: Client locked dependencies, typecheck and exact34 targeted transport cases
+        run: |
+          mkdir -p "$EVIDENCE/client"
+          (cd web-client && npm ci) 2>&1 | tee "$EVIDENCE/client/npm-ci.log"
+          set +e
+          (cd web-client && npm run typecheck) 2>&1 | tee "$EVIDENCE/client/typecheck.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/client/typecheck-exit.txt"
+          (cd web-client && npm test -- src/store/slices/ui/targetingSlice.test.ts src/store/slices/ui/pipelinePhases.test.ts src/store/slices/ui/publicTargetGroups.test.ts --reporter=json --outputFile="$GITHUB_WORKSPACE/$EVIDENCE/client/vitest.json") 2>&1 | tee "$EVIDENCE/client/vitest.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/client/test-exit.txt"
+          python3 "$RECORD/gate.py" client
+      - name: Early frozen baseline and four recorder compatibility boundaries
+        id: recording
+        run: |
+          python3 "$RECORD/gate.py" prepare recording
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" recording 2>&1 | tee "$EVIDENCE/recording/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/recording/exit.txt"
+          python3 "$RECORD/gate.py" receive recording
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Early39 actor boundary and hidden information safeguards
+        id: actor
+        run: |
+          python3 "$RECORD/gate.py" prepare actor
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" actor 2>&1 | tee "$EVIDENCE/actor/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/actor/exit.txt"
+          python3 "$RECORD/gate.py" receive actor
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Focused1047 cases with strict original report receiving
+        id: focused
+        run: |
+          python3 "$RECORD/gate.py" prepare focused
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" focused 2>&1 | tee "$EVIDENCE/focused/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/focused/exit.txt"
+          python3 "$RECORD/gate.py" receive focused
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Broad engine and nine card-era regressions
+        id: broad
+        run: |
+          python3 "$RECORD/gate.py" prepare broad
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" broad 2>&1 | tee "$EVIDENCE/broad/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/broad/exit.txt"
+          python3 "$RECORD/gate.py" receive broad
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Ordinary whole-project build and exact 43 historical skips
+        id: ordinary
+        run: |
+          python3 "$RECORD/gate.py" prepare ordinary
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" ordinary 2>&1 | tee "$EVIDENCE/ordinary/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/ordinary/exit.txt"
+          python3 "$RECORD/gate.py" receive ordinary
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Build Oracle Assay CLI
+        id: assay_build
+        run: |
+          mkdir -p "$EVIDENCE/assay"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" assay-build 2>&1 | tee "$EVIDENCE/assay/build.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/assay/build-exit.txt"
+          exit "$rc"
+      - name: Assay 2000-card corpus and preserve its exact original bytes
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" assay 2>&1 | tee "$EVIDENCE/assay/gate.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/assay/gate-exit.txt"
+          capture_rc=0
+          corpus="$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz"
+          if test -f "$corpus"; then
+            sha256sum "$corpus" > "$EVIDENCE/assay/oracle-bulk-sha256.txt" || capture_rc=1
+            wc -c "$corpus" > "$EVIDENCE/assay/oracle-bulk-bytes.txt" || capture_rc=1
+            cp "$corpus" "$EVIDENCE/assay/oracle-bulk-corpus.jsonl.gz" || capture_rc=1
+          else
+            capture_rc=1
+          fi
+          printf '%s\n' "$capture_rc" > "$EVIDENCE/assay/corpus-capture-exit.txt"
+          if test "$capture_rc" != 0; then exit "$capture_rc"; fi
+          exit "$rc"
+      - name: Preserve full original differential without reclassification
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" assay-differential 2>&1 | tee "$EVIDENCE/assay/differential.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/assay/differential-exit.txt"
+          exit "$rc"
+      - name: Receive Assay metrics and preserve all 51 original findings
+        if: always() && steps.assay_build.outcome != 'skipped'
+        run: python3 "$RECORD/gate.py" assay
+      - name: Recheck exact candidate and protected source bytes
+        if: always()
+        run: python3 "$RECORD/gate.py" bind
+      - name: Preserve complete original regression evidence
+        if: always()
+        run: |
+          mkdir -p "$EVIDENCE/protocol"
+          cp "$RECORD/gate.py" "$EVIDENCE/protocol/REGRESSION.py"
+          cp "$WORKFLOW" "$EVIDENCE/protocol/WORKFLOW.yml"
+          git rev-parse HEAD "$SOURCE^{tree}" > "$EVIDENCE/SOURCE_PINS.txt"
+          git diff --name-status f51196cc04babbd422274dcf68d94e7aa8a58c67 "$SOURCE" > "$EVIDENCE/SOURCE_DELTA.txt"
+          git status --porcelain --untracked-files=no > "$EVIDENCE/FINAL_TRACKED_CHANGES.txt"
+          python3 "$RECORD/gate.py" hash
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-source-context-regression-r1-${{ github.run_id }}
+          path: manual-fixed-recipient-source-context-r1-evidence/
+          retention-days: 90
+          if-no-files-found: error
+          include-hidden-files: true
