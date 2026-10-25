@@ -1,0 +1,26 @@
+{
+  "state": "NEXT_IMPLEMENTATION_SOURCE_BOUND_NOT_IMPLEMENTED",
+  "accepted_source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
+  "accepted_receipt": "4546c48dc4a06ba1c9f1bacef131dd80a9a5abcf",
+  "prior_integration_review": "28067e60c9887fce37a5bf91d9bed8427362c908",
+  "blocker_removed": "Original ability-source characteristics now resolve from original live visit or captured LKI with full original-artifact acceptance.",
+  "reviewed_blobs": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeTargetExecutor.kt": "c3cf7b0e7b722d143f62d43ef8c020dbdd301db9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ContestedRetargetExecutors.kt": "1caddb561ba7e9e3e00c9e423aca736176777279",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt": "259309b51a3f0f3092871013743b58ec0637d436"
+  },
+  "concrete_next_change": "Add a generic fixed-recipient authoritative-occurrence operation. Refactor single-target and relational checks into reusable typed paths, preserving all existing validateTargets behavior. Consume accepted AbilitySourceCharacteristics with original controller; preserve old illegal unchanged occurrences and never re-evaluate original target count/division.",
+  "remaining_integration": [
+    "Verify exact original stack visit, expected CurrentTargetPlan and recipient ObjectRef before atomic withCurrentTargetPlan update",
+    "Validate changed occurrence and final-set relational constraints without flattening omitted groups or rejecting unchanged illegal occurrences",
+    "SourceCardType override must reach candidate restriction checks; no protected resolver modification required by this seam",
+    "Emit correct BecomesTargetEvent and first-target/ward facts only on actual new targeting",
+    "Serialize server-authored distinct occurrence choices and stale-choice rejection through public server/client flow"
+  ],
+  "qualification": "Freeze coherent source/protocol/tests and executable controls before one qualification. Compile normal/mutants and targeted controls before broad regressions. Reuse accepted source-characteristics receipt; do not requalify or reaudit it merely to resume.",
+  "no_new_authorization_blocker_identified": true,
+  "external_independent_review": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
