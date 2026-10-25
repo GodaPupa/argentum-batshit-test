@@ -681,6 +681,7 @@ val engineSerializersModule = SerializersModule {
         subclass(ActivatedAbilityOnStackComponent::class)
         subclass(AbilityOnStackComponent::class)
         subclass(TargetsComponent::class)
+        subclass(com.wingedsheep.engine.mechanics.targeting.CurrentTargetPlanComponent::class)
         subclass(SpellContextComponent::class)
         subclass(SpellGrantedKeywordsComponent::class)
         subclass(SpellCopyTokenRidersComponent::class)
@@ -690,3 +691,4 @@ val engineSerializersModule = SerializersModule {
         subclass(ContinuousEffectSourceComponent::class)
     }
 }
+
