@@ -1,17 +1,20 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T07:00:47.737Z",
+  "updated_date": "2026-10-25T07:03:39.745Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "IN_PROGRESS",
-  "owner": "manual-work-765d0bd4-resolver-r3",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-765d0bd4-resolver-r3",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-25T06:49:16.182Z",
-    "expires_utc": "2026-10-25T07:26:45.113Z",
+    "expires_utc": "2026-10-25T07:03:39.745Z",
     "predecessor_blob": "05a5604428f232b25f1f2813982e02d2b27f5cf5",
-    "reason": "Explicit prior release and completed prior invocation verified; no newer receipt/successor or active relevant workflow; receive original R3 focused-stage failure."
+    "reason": "Explicit prior release and completed prior invocation verified; no newer receipt/successor or active relevant workflow; receive original R3 focused-stage failure.",
+    "last_owner": "manual-work-765d0bd4-resolver-r3",
+    "released_utc": "2026-10-25T07:03:39.745Z",
+    "release_reason": "Only external R4 qualification remains. Original R3 artifact received/preserved, bounded source-specific compatibility repair frozen/reviewed, original assertions preserved, one successor dispatched and exact receiving audit checkpointed/read back. No useful safely independent authorized work remains."
   },
   "last_qualified": {
     "source": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
@@ -35,7 +38,7 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Frozen reviewed R4 separate-trigger authority compatibility recovery",
+    "current_subproblem": "R4 separate-trigger authority compatibility qualification running",
     "source_candidate": "457a644a0f24289e90241f0bf12fa40a933edb43",
     "source_tree": "d3306e35cc1584e4f587118202ec25b924b51c84",
     "source_branch": "candidate/manual-current-target-resolution-r4-frozen-20261025",
@@ -68,7 +71,7 @@
     },
     "negative_scope": "Complete29 cases across original22 and new7 classes; exact14 assertions (original12 + TA02@53/TA03@58),15passes,zero skips/errors.",
     "source_delta": "Four production repairs,one added7-case test andthree added records vsR3;26cumulative paths vsR5. Originaltests/assertions unchanged.",
-    "next_executable_action": "Reconcile owner/newer receipts/successors. Do not duplicate or interrupt active R3 run40166823499. On terminal perform source-bound original receiving using auditoraf416870 and resolver_qualification.next_receiving_action. R1/R2 original failed evidence preserved; do not reaudit. R5 remains accepted without repeat. Any failure needs actual diagnosis before bounded successor.",
+    "next_executable_action": "Reconcile live owner, newer receipts/successors and all relevant workflow statuses. Do not duplicate or interrupt R4 run40171122250. On terminal receive its original artifact once using d5cda99b auditor and resolver_qualification.next_receiving_action. R3 original failure is preserved at ba81bffa; R1/R2/R5 evidence must not be reaudited. Failure requires actual diagnosis before a new immutable successor.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -2047,7 +2050,21 @@
       "status": "in_progress",
       "conclusion": null,
       "dispatched_utc": "2026-10-25T07:00:03Z",
-      "expected_artifact_name": "manual-current-target-resolution-r4-40171122250"
+      "expected_artifact_name": "manual-current-target-resolution-r4-40171122250",
+      "receiving_audit": {
+        "state": "PREPARED_NOT_EXECUTED",
+        "commit": "d5cda99b279da3f5c98438f07a755b1f5e0cc573",
+        "path": "experiments/manual-transmission/research/current-target-resolution-receiver-r4-20261025/RECEIVE_R4.py",
+        "blob": "ab47f122cd4ccdce335672c6aa49c32f532c132d",
+        "immutable_readback_verified": true,
+        "synthetic_checks": 7,
+        "synthetic_scope": "Parser-only accept/reject checks, not behavioral evidence; locked recipe reconstruction matches frozen gate."
+      },
+      "observed_utc": "2026-10-25T07:03:39.745Z",
+      "job_status": "in_progress",
+      "steps_observed": {
+        "status": "Build active; outcomes not yet received. No acceptance inferred."
+      }
     },
     "resolver_r1_failure": {
       "state": "FAILED_RECEIVED_NOT_ACCEPTED",
@@ -2303,6 +2320,17 @@
       "latest_task_status": "completed",
       "latest_task_completed_utc": "2026-10-24T21:44:11.326956Z",
       "newer_successor_found": false
+    },
+    "latest_resolver_recovery": {
+      "observed_utc": "2026-10-25T07:03:39.745Z",
+      "prior_owner_explicitly_released": true,
+      "prior_invocation": "c3f6db49-1f84-832c-87a4-1b315e9dfb7d",
+      "current_invocation": "765d0bd4-3f90-8323-9493-f995c143dfac",
+      "relevant_active_before_dispatch": [],
+      "ignored_unrelated_ancient_run": 34749202144,
+      "original_r3_receipt": "ba81bffa43a8ed588e48d6f64c78432336961266",
+      "successor_run": 40171122250,
+      "execution_admitted": true
     }
   },
   "automation": {
@@ -2317,7 +2345,7 @@
       "expectations_updated_utc": "2026-10-24T13:29:44.515Z",
       "expectations": "Strictly read-only; follow current Work WAITING_EXTERNAL ownership and single public target-group run40098055404. Accepted activation40091111694 remains accepted. No action for healthy waiting; receive original evidence before bounded acceptance. Watch enabled state unchanged."
     },
-    "handoff": "Single Work executor enabled; one R3 qualification active; ownership explicitly released WAITING_EXTERNAL; all safeguards unchanged.",
+    "handoff": "Single Work executor enabled; R4 run40171122250 active; owner explicitly released WAITING_EXTERNAL.",
     "execution_admitted": true,
     "former_discussion_executor": {
       "id": "6adbad91b90881918859ad0cba22b881",
@@ -2394,7 +2422,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
     "last_verified_enabled_utc": "2026-10-25T03:42:37.310Z",
-    "next_authorized_action": "Reconcile owner/newer receipts/successors. Do not duplicate or interrupt active R3 run40166823499. On terminal perform source-bound original receiving using auditoraf416870 and resolver_qualification.next_receiving_action. R1/R2 original failed evidence preserved; do not reaudit. R5 remains accepted without repeat. Any failure needs actual diagnosis before bounded successor.",
+    "next_authorized_action": "Reconcile live owner, newer receipts/successors and all relevant workflow statuses. Do not duplicate or interrupt R4 run40171122250. On terminal receive its original artifact once using d5cda99b auditor and resolver_qualification.next_receiving_action. R3 original failure is preserved at ba81bffa; R1/R2/R5 evidence must not be reaudited. Failure requires actual diagnosis before a new immutable successor.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2927,5 +2955,5 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "Only external R3 qualification remains; original R2 received/preserved, bounded zero-skip recovery dispatched, receiving auditor and synthetic rejection checks checkpointed/read back. No useful safely independent authorized work remains."
+  "actual_stopping_reason": "Only external R4 qualification remains. Original R3 artifact received/preserved, bounded source-specific compatibility repair frozen/reviewed, original assertions preserved, one successor dispatched and exact receiving audit checkpointed/read back. No useful safely independent authorized work remains."
 }
