@@ -1,16 +1,17 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T22:00:21.802Z",
+  "updated_date": "2026-10-25T22:01:45.814Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "ACTIVE",
-  "owner": "manual-work-0d4a42ec-6a34-832c-87a2-91381b3a370d",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-0d4a42ec-6a34-832c-87a2-91381b3a370d",
-    "claimed_utc": "2026-10-25T21:50:20.794Z",
-    "expires_utc": "2026-10-25T22:29:26.018Z",
-    "reason": "Receive terminal full relation regression original evidence, then authorized source-facts continuation."
+    "state": "RELEASED",
+    "owner": null,
+    "previous_owner": "manual-work-0d4a42ec-6a34-832c-87a2-91381b3a370d",
+    "released_utc": "2026-10-25T22:01:45.814Z",
+    "expires_utc": null,
+    "reason": "Frozen source-context qualification active; original receiver checkpointed and prior independent public-flow review reused."
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -34,32 +35,30 @@
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
     "current_subproblem": "Original-source player protection, supertypes, Aura spell/ability distinction and original source-visit exclusion.",
-    "source_candidate": "f51196cc04babbd422274dcf68d94e7aa8a58c67",
-    "source_tree": "fa3360ce717f376f6640d7f98901c4aa4f1ff19b",
-    "source_branch": "candidate/manual-fixed-recipient-preflight-r1-20261025",
-    "protocol": "experiments/manual-transmission/research/fixed-recipient-player-relation-r1-20261025/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/fixed-recipient-preflight-r1-20261025/DESIGN.md",
-    "validation": "1ee1126464cd39de9e0d3009db57645b57f8d314",
-    "validation_branch": "validation/manual-player-relation-regression-r1-20261025",
-    "workflow": ".github/workflows/manual-player-relation-regression-r1-20261025.yml",
+    "source_candidate": "03ad7b751270d1340e7efd945787b239518827fb",
+    "source_tree": "5b2c1ce641fb9f7bd5c732cb1cf5d6a95f610780",
+    "source_branch": null,
+    "protocol": "experiments/manual-transmission/research/fixed-recipient-source-context-r1-20261025/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/fixed-recipient-source-context-r1-20261025/DESIGN.md",
+    "validation": "5e4aaa1a3923533fb88275ab39874a561438681b",
+    "validation_branch": "validation/manual-fixed-recipient-source-context-r1-20261025",
+    "workflow": ".github/workflows/manual-fixed-recipient-source-context-r1-20261025.yml",
     "pending_runs": [
       40238046467
     ],
     "planned_not_observed": {
-      "normal_and_mutant_compilation": 2,
-      "targeted": 42,
-      "negative_failures": 2,
-      "negative_frames": [
-        35,
-        41
-      ],
-      "negative_errors": 0,
-      "negative_skips": 0,
-      "restored": 42
+      "normal": 133,
+      "restored": 133,
+      "mutant": 77,
+      "assertion_failures": 46,
+      "mutant_passes": 31,
+      "errors": 0,
+      "skips": 0,
+      "normal_and_mutant_compilations": 2
     },
-    "negative_scope": "One compiled recapture-and-source-color-loss mutant; exact2 FM assertion failures at35/41, no errors/skips/other failed tasks.",
-    "source_delta": "Exact7-path frozen early candidate: TargetValidator shared-check extraction, new internal occurrence operation, two test files and three protocol records. Accepted resolver/all other protected paths and original assertions unchanged.",
-    "next_executable_action": "Receive original source-context qualification after newer-receipt/successor reconciliation; exact133normal/restored,77mutant with46witnesses/31passes, both compilations, all source/protected/form gates. No feature acceptance.",
+    "negative_scope": "One compiled context-loss/wrong-controller mutant:77 cases, exactly46 frozen assertion witnesses and31passes,0errors/skips. No behavioral results claimed before original receiving.",
+    "source_delta": "Exactly8 files against received f51196cc:4 unprotected production files,1 new77-case test,3 frozen protocol/design/gate records. Protected resolver/other143bindings/23goldens/82fixtures and all original assertions unchanged.",
+    "next_executable_action": "Reconcile newer receipt/successor then receive original run40238046467/job121303756639/attempt1 using immutable receiver0f16ac1c0cc8d6ef7afa4aff5e227c5afec77898. Audit exact source03ad7b75/tree5b2c1ce6/validation5e4aaa1a/workfloweb2de9c4; original artifact bytes/digest/manifest, both compilations,133normal/restored identities,77mutant with46exact assertion frames/31passes/0errors/skips, all forms/restoration/protected bytes. Preserve/diagnose original failures. On pass continue mandatory same-source full compatibility and saved public option/ward/trigger reviewba31cec3; no feature/Spellskite/multiplayer admission.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -176,7 +175,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "f2b071e7dc60c3e4144a22706f97f2ce119410f8",
+    "validation_tree": "c663d7b2a82386263e0da0518d2cc5d41878ff73",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -3013,7 +3012,12 @@
       "workflow_id": 396429864,
       "event": "push",
       "observed_status": "in_progress",
-      "artifact": null
+      "artifact": null,
+      "receiver_commit": "0f16ac1c0cc8d6ef7afa4aff5e227c5afec77898",
+      "receiver_path": "experiments/manual-transmission/research/fixed-recipient-source-context-receiving-r1-20261025",
+      "receiver_immutable_readback_verified": true,
+      "last_observed_utc": "2026-10-25T22:01:45.814Z",
+      "public_flow_review_reused": "ba31cec35ca3cbb2f6c546178abcdce25c5659bb"
     }
   },
   "completion_contract": {
@@ -4030,7 +4034,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External-only wait on40238046467. Original relation full compatibility received once atb98555e3, coherent source-context successor implemented/frozen/dispatched with compiler-first controls, exact original receiver prepared and verified. Saved public-flow review already covers the next dependency; further dependent implementation/qualification waits for this source's evidence. No useful safely independent authorized work remains; no continuous ownership claimed.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
