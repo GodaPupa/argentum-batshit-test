@@ -1,0 +1,227 @@
+name: Manual current target resolution R4
+on:
+  push:
+    branches: [validation/manual-current-target-resolution-r4-20261025]
+    paths: ['.github/workflows/manual-current-target-resolution-r4-20261025.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: 457a644a0f24289e90241f0bf12fa40a933edb43
+  SOURCE_TREE: d3306e35cc1584e4f587118202ec25b924b51c84
+  WORKFLOW: .github/workflows/manual-current-target-resolution-r4-20261025.yml
+  RECORD: experiments/manual-transmission/research/current-target-resolution-r4-20261025
+  EVIDENCE: manual-current-target-resolution-r4-evidence
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install locked recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum" "$EVIDENCE"
+      - name: Bind exact bounded delta and 143 protected paths and authorized resolver
+        run: python3 "$RECORD/gate.py" bind
+      - uses: actions/setup-node@v4
+        with: {node-version: '22', cache: npm, cache-dependency-path: web-client/package-lock.json}
+      - name: Client locked dependencies, typecheck and exact34 targeted transport cases
+        run: |
+          mkdir -p "$EVIDENCE/client"
+          (cd web-client && npm ci) 2>&1 | tee "$EVIDENCE/client/npm-ci.log"
+          set +e
+          (cd web-client && npm run typecheck) 2>&1 | tee "$EVIDENCE/client/typecheck.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/client/typecheck-exit.txt"
+          (cd web-client && npm test -- src/store/slices/ui/targetingSlice.test.ts src/store/slices/ui/pipelinePhases.test.ts src/store/slices/ui/publicTargetGroups.test.ts --reporter=json --outputFile="$GITHUB_WORKSPACE/$EVIDENCE/client/vitest.json") 2>&1 | tee "$EVIDENCE/client/vitest.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/client/test-exit.txt"
+          python3 "$RECORD/gate.py" client
+      - name: Compile normal resolver and test implementation
+        run: |
+          python3 "$RECORD/gate.py" restore
+          python3 "$RECORD/gate.py" compile-prepare normal
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" compile-engine 2>&1 | tee "$EVIDENCE/compilation/normal/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/compilation/normal/exit.txt"
+          python3 "$RECORD/gate.py" compile-receive normal
+      - name: Compile executable occurrence and instance loss mutant
+        run: |
+          python3 "$RECORD/gate.py" restore
+          python3 "$RECORD/gate.py" compile-prepare mutant
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" compile-engine 2>&1 | tee "$EVIDENCE/compilation/mutant/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/compilation/mutant/exit.txt"
+          python3 "$RECORD/gate.py" compile-receive mutant
+      - name: Restore and rebind after compilation controls
+        if: always()
+        run: |
+          python3 "$RECORD/gate.py" restore
+          python3 "$RECORD/gate.py" bind
+      - name: Early frozen baseline and four recorder compatibility boundaries
+        id: recording
+        run: |
+          python3 "$RECORD/gate.py" prepare recording
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" recording 2>&1 | tee "$EVIDENCE/recording/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/recording/exit.txt"
+          python3 "$RECORD/gate.py" receive recording
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Early39 actor boundary and hidden information safeguards
+        id: actor
+        run: |
+          python3 "$RECORD/gate.py" prepare actor
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" actor 2>&1 | tee "$EVIDENCE/actor/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/actor/exit.txt"
+          python3 "$RECORD/gate.py" receive actor
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Early58 original public and modal compatibility plus current authority cases
+        id: targeted
+        run: |
+          python3 "$RECORD/gate.py" prepare targeted
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" targeted 2>&1 | tee "$EVIDENCE/targeted/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/targeted/exit.txt"
+          python3 "$RECORD/gate.py" receive targeted
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Apply compiled visit loss mutation and execute all29 cases with fourteen pinned witnesses
+        id: mutation
+        run: |
+          python3 "$RECORD/gate.py" prepare mutation
+          python3 "$RECORD/gate.py" mutate
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" mutation 2>&1 | tee "$EVIDENCE/mutation/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/mutation/exit.txt"
+          exit 0
+      - name: Require fourteen precise behavioral assertion failures, not compilation errors
+        if: always() && steps.mutation.outcome != 'skipped'
+        run: python3 "$RECORD/gate.py" receive mutation
+      - name: Restore exact candidate and rebind before any positive testing
+        if: always()
+        run: |
+          python3 "$RECORD/gate.py" restore
+          python3 "$RECORD/gate.py" bind
+      - name: Focused849 cases with strict original report receiving
+        id: focused
+        run: |
+          python3 "$RECORD/gate.py" prepare focused
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" focused 2>&1 | tee "$EVIDENCE/focused/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/focused/exit.txt"
+          python3 "$RECORD/gate.py" receive focused
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Broad engine and nine card-era regressions
+        id: broad
+        run: |
+          python3 "$RECORD/gate.py" prepare broad
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" broad 2>&1 | tee "$EVIDENCE/broad/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/broad/exit.txt"
+          python3 "$RECORD/gate.py" receive broad
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Ordinary whole-project build and exact 43 historical skips
+        id: ordinary
+        run: |
+          python3 "$RECORD/gate.py" prepare ordinary
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" ordinary 2>&1 | tee "$EVIDENCE/ordinary/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/ordinary/exit.txt"
+          python3 "$RECORD/gate.py" receive ordinary
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Build Oracle Assay CLI
+        id: assay_build
+        run: |
+          mkdir -p "$EVIDENCE/assay"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" assay-build 2>&1 | tee "$EVIDENCE/assay/build.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/assay/build-exit.txt"
+          exit "$rc"
+      - name: Assay 2000-card corpus and preserve its exact original bytes
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" assay 2>&1 | tee "$EVIDENCE/assay/gate.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/assay/gate-exit.txt"
+          capture_rc=0
+          corpus="$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz"
+          if test -f "$corpus"; then
+            sha256sum "$corpus" > "$EVIDENCE/assay/oracle-bulk-sha256.txt" || capture_rc=1
+            wc -c "$corpus" > "$EVIDENCE/assay/oracle-bulk-bytes.txt" || capture_rc=1
+            cp "$corpus" "$EVIDENCE/assay/oracle-bulk-corpus.jsonl.gz" || capture_rc=1
+          else
+            capture_rc=1
+          fi
+          printf '%s\n' "$capture_rc" > "$EVIDENCE/assay/corpus-capture-exit.txt"
+          if test "$capture_rc" != 0; then exit "$capture_rc"; fi
+          exit "$rc"
+      - name: Preserve full original differential without reclassification
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" assay-differential 2>&1 | tee "$EVIDENCE/assay/differential.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/assay/differential-exit.txt"
+          exit "$rc"
+      - name: Receive Assay metrics and preserve all 51 original findings
+        if: always() && steps.assay_build.outcome != 'skipped'
+        run: python3 "$RECORD/gate.py" assay
+      - name: Recheck exact candidate and protected source bytes
+        if: always()
+        run: python3 "$RECORD/gate.py" bind
+      - name: Preserve protocols, literal source delta, and unfinished-stage disposition
+        if: always()
+        run: |
+          mkdir -p "$EVIDENCE/protocol"
+          cp "$RECORD/"* "$EVIDENCE/protocol/"
+          cp "$WORKFLOW" "$EVIDENCE/protocol/WORKFLOW.yml"
+          git rev-parse HEAD "$SOURCE^{tree}" > "$EVIDENCE/SOURCE_PINS.txt"
+          git diff --name-status cac0616eb5abb359eb572d6d378dbf9fabae62de "$SOURCE" > "$EVIDENCE/SOURCE_DELTA.txt"
+          git status --porcelain --untracked-files=no > "$EVIDENCE/FINAL_TRACKED_CHANGES.txt"
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('manual-current-target-resolution-r4-evidence')
+          results={stage:(root/stage/'SUMMARY.json').exists() for stage in ['recording','actor','mutation','targeted','focused','broad','ordinary']}
+          (root/'DISPOSITION.json').write_text(json.dumps({'compilation_controls':{stage:(root/'compilation'/stage/'RECEIPT.json').exists() for stage in ['normal','mutant']},'original_reports_present':results,'assay_receipt_present':(root/'assay'/'RECEIVING.json').exists(),'scope':'BOUNDED_PUBLIC_TARGET_GROUP_TRANSPORT_AND_SERVER_CAPTURE_NOT_RESOLVER_OR_SPELLSKITE','component_adopted':False,'official_games':0,'official_seeds':0,'precision_reserved':2},indent=2)+'\n')
+          PY
+          python3 "$RECORD/gate.py" hash
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-current-target-resolution-r4-${{ github.run_id }}
+          path: manual-current-target-resolution-r4-evidence/
+          retention-days: 90
+          if-no-files-found: error
