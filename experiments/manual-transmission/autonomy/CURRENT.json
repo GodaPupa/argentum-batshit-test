@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T04:45:22.802Z",
+  "updated_date": "2026-10-25T04:49:54.338Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "IN_PROGRESS",
@@ -44,9 +44,7 @@
     "validation": "818ff6ef7d597b9323b028497814ca3fe378b1f0",
     "validation_branch": "validation/manual-current-target-resolution-r1-20261025",
     "workflow": ".github/workflows/manual-current-target-resolution-r1-20261025.yml",
-    "pending_runs": [
-      40158813599
-    ],
+    "pending_runs": [],
     "planned_not_observed": {
       "client": 34,
       "recording": 5,
@@ -77,7 +75,7 @@
     },
     "negative_scope": "R1 occurrence/instance-loss mutant must compile and fail exactly CO01..CO08 at76/79/82/85/88/91/94/97. No missing/extra tests, skips, errors, wrong identities/types/frames, compiler contamination or unrelated failures.",
     "source_delta": "Exact15-path R5-to-R1 delta; one authorized resolver replacement and other143 protected originals preserved. Every existing test unchanged. Same-owner static review and immutable source/protocol/workflow readback; no independent review claimed.",
-    "next_executable_action": "Reconcile live owner, newer receipts/successors and all workflow statuses. If40158813599 remains active, do not duplicate or interrupt. When terminal, receive its original artifact once using source-bound auditor896148dc; pin exact archive/manifest/source/tree/workflow/run/job/attempt, audit every declared gate and explicitly resolve inherited protocol prose. Preserve failure diagnostics before any justified bounded successor. R5 remains accepted without requalification/reaudit.",
+    "next_executable_action": "Dispatch one reviewed R2 validation branch after completed prelaunch reconciliation, then receive its original artifact. Do not repeat R1/R5.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -2014,7 +2012,61 @@
       "protected_sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94"
     },
     "resolver_qualification": {
-      "state": "RUNNING_NOT_ACCEPTED",
+      "state": "FROZEN_REVIEWED_NOT_DISPATCHED",
+      "source": "1b508f6b2549a39f5d02a4abae044edfc73611f0",
+      "tree": "ca89ae1c980af06936d3868581d74f77656e677f",
+      "base": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
+      "source_branch": "candidate/manual-current-target-resolution-r2-20261025",
+      "protocol": "experiments/manual-transmission/research/current-target-resolution-r2-20261025/PROTOCOL.json",
+      "protocol_blob": "6f3ba1b2918adebcc1c18798a37315c28966f052",
+      "gate_blob": "d804cddc8eb3552d79ff672c6d91221e028a2728",
+      "delta_paths": 18,
+      "existing_tests_unchanged": true,
+      "source_readback_verified": true,
+      "review": "Same-owner review. Exact3 new record files only versus failed R1; all production/test bytes and mutant/eight assertions unchanged. Kotest6.2.1 source verifies fully-qualified prefix fix. Full mandatory qualification retained; no independent review.",
+      "expected": {
+        "new": 22,
+        "negative": 8,
+        "targeted": 42,
+        "focused": 842,
+        "broad": 14905,
+        "engine": 4130,
+        "ordinary": 18524,
+        "skips": 43
+      },
+      "original_r5_receipt_reused_without_reaudit": true,
+      "validation": "f5090a27fd9e335a236a2b9855b0a326bf724644",
+      "validation_tree": "791705787dc1a1717963a85e7eb6266024157e5b",
+      "validation_branch": "validation/manual-current-target-resolution-r2-20261025",
+      "workflow": ".github/workflows/manual-current-target-resolution-r2-20261025.yml",
+      "workflow_blob": "72745964261baddfb0b16878af60fd786c78c4c0",
+      "workflow_id": null,
+      "run": null,
+      "job": null,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "dispatched_utc": "2026-10-25T03:36:03.808Z",
+      "observed_utc": "2026-10-25T03:42:37.310Z",
+      "status": "not_dispatched",
+      "expected_artifact_name": "manual-current-target-resolution-r1-40158813599",
+      "next_receiving_action": "After terminal, reconcile newer receipts/successors first; receive original artifact once, pin bytes/hash/manifest/source/tree/validation/workflow/run/job/attempt, audit normal and mutant compilation, eight exact executable controls, restoration/rebinding, raw identities/counts/skips, 143 protected originals plus admitted resolver, 23 goldens, 82 fixtures, all required regressions and Assay. Green workflow is not acceptance.",
+      "receiving_audit": null,
+      "job_status": null,
+      "conclusion": null,
+      "steps_observed": {
+        "binding": "completed_success",
+        "client34_and_typecheck": "completed_success",
+        "normal_compilation": "in_progress",
+        "remaining_gates": "not_observed"
+      },
+      "pending_receiving_review": {
+        "state": "RESOLVED_IN_NEW_FROZEN_R2",
+        "reason": "R5 prose moved explicitly under historical_r5_metadata; current contracts unambiguous."
+      }
+    },
+    "resolver_r1_failure": {
+      "state": "FAILED_RECEIVED_NOT_ACCEPTED",
       "source": "41dfad5616b0143df07dae6aa098539085a94a99",
       "tree": "6b05894d4e3fc1857ef2c93e907ea08905514624",
       "base": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
@@ -2050,7 +2102,7 @@
       "event": "push",
       "dispatched_utc": "2026-10-25T03:36:03.808Z",
       "observed_utc": "2026-10-25T03:42:37.310Z",
-      "status": "in_progress",
+      "status": "completed",
       "expected_artifact_name": "manual-current-target-resolution-r1-40158813599",
       "next_receiving_action": "After terminal, reconcile newer receipts/successors first; receive original artifact once, pin bytes/hash/manifest/source/tree/validation/workflow/run/job/attempt, audit normal and mutant compilation, eight exact executable controls, restoration/rebinding, raw identities/counts/skips, 143 protected originals plus admitted resolver, 23 goldens, 82 fixtures, all required regressions and Assay. Green workflow is not acceptance.",
       "receiving_audit": {
@@ -2065,7 +2117,7 @@
         "synthetic_evidence": "Parser checks only; no Kotlin or behavioral evidence."
       },
       "job_status": "in_progress",
-      "conclusion": null,
+      "conclusion": "failure",
       "steps_observed": {
         "binding": "completed_success",
         "client34_and_typecheck": "completed_success",
@@ -2082,7 +2134,12 @@
           "recovery_from_failed_r3"
         ],
         "action": "Preserve original frozen protocol and explicitly reconcile copied R5 prose with R1 source-bound mutation_contract/authorization/workflow before adoption. No silent reinterpretation or assertion weakening. See prepared record896148dc."
-      }
+      },
+      "artifact": 12586165301,
+      "artifact_bytes": 173314,
+      "artifact_sha256": "852accf1c779422ffdf6d9c67070f87d3a252bf9d430561157d115f526d99ed4",
+      "receipt": "dc7e7df53ca9b2dff5c5273fe9b2a948b0e7e718",
+      "diagnosis": "Zero mutation reports due to leading-wildcard method filters. Normal/mutant compilation plus recording5 actor39 targeted42 passed. Other gates skipped. Archived delta inherited wrong base; exact bounded15 verified separately. No behavioral negative evidence."
     }
   },
   "completion_contract": {
