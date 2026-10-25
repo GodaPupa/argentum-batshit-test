@@ -1,17 +1,17 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T18:52:46.118Z",
+  "updated_date": "2026-10-25T18:56:10.421Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "WAITING_EXTERNAL",
-  "owner": "manual-work-bdf37320-5e88-8331-b0f5-0ee523a09a7b",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-bdf37320-5e88-8331-b0f5-0ee523a09a7b",
-    "claimed_utc": "2026-10-25T18:46:21.361Z",
-    "renewed_utc": "2026-10-25T18:46:21.361Z",
-    "expires_utc": "2026-10-25T19:16:21.362Z",
-    "reason": "Resume saved bounded legality successor after released-owner reconciliation."
+    "state": "RELEASED",
+    "owner": null,
+    "previous_owner": "manual-work-bdf37320-5e88-8331-b0f5-0ee523a09a7b",
+    "released_utc": "2026-10-25T18:56:10.421Z",
+    "expires_utc": null,
+    "reason": "Single frozen qualification active. Original receiver and isolated next-dependency source review are checkpointed; no competing qualification or source mutation."
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -35,14 +35,14 @@
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
     "current_subproblem": "Selected-player context was dropped in TargetObject battlefield/stack/card-zone predicates and TargetSpellOrPermanent filters.",
-    "source_candidate": "388f6156ac726c17fd591a87ffbee1bb7224c170",
-    "source_tree": "ac74d8b6580acdda679816b7b6269ea99ca7c1d3",
+    "source_candidate": "d94e745ecccb3012783725fe22c5045185b9ce0d",
+    "source_tree": "25bc7d22a61a6d92c4d337751adc66210efce500",
     "source_branch": "candidate/manual-fixed-recipient-preflight-r1-20261025",
-    "protocol": "experiments/manual-transmission/research/fixed-recipient-preflight-r1-20261025/PROTOCOL.json",
+    "protocol": "experiments/manual-transmission/research/fixed-recipient-player-relation-r1-20261025/PROTOCOL.json",
     "design": "experiments/manual-transmission/research/fixed-recipient-preflight-r1-20261025/DESIGN.md",
-    "validation": "5427b2258530c17df71e08014a8e4593402a236d",
-    "validation_branch": "validation/manual-fixed-recipient-preflight-r1-20261025",
-    "workflow": ".github/workflows/manual-fixed-recipient-preflight-r1-20261025.yml",
+    "validation": "27c5c854e97f7425eeaaacce4cc329aee00f03bd",
+    "validation_branch": "validation/manual-fixed-recipient-player-relation-r1-20261025",
+    "workflow": ".github/workflows/manual-fixed-recipient-player-relation-r1-20261025.yml",
     "pending_runs": [
       40223311961
     ],
@@ -60,7 +60,7 @@
     },
     "negative_scope": "One compiled recapture-and-source-color-loss mutant; exact2 FM assertion failures at35/41, no errors/skips/other failed tasks.",
     "source_delta": "Exact7-path frozen early candidate: TargetValidator shared-check extraction, new internal occurrence operation, two test files and three protocol records. Accepted resolver/all other protected paths and original assertions unchanged.",
-    "next_executable_action": "Receive original run 40223311961 once after checking newer receipts/successors. While running, prepare source-bound receiver and isolated next-dependency review; do not mutate frozen source or launch another qualification.",
+    "next_executable_action": "Reconcile CURRENT ownership, commits and all five active statuses. If run40223311961 still active, do not duplicate or interrupt. Once terminal, check newer receipts/successors then use prepared receiver22acb78c1727e68b21ee29e3268af0d1cefadcb7 to receive the original artifact exactly once with immutable run/job/attempt/source/tree/validation/workflow and all declared gates. On bounded early PASS continue NEXT_SOURCE_FACTS.json and public-choice/ward/trigger contract on a new immutable source; full final-source regressions remain mandatory. Preserve any failure evidence and diagnose before justified successor.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -177,7 +177,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "37446a892188c3df56617010bbfa810071ea6e10",
+    "validation_tree": "400a9ef270f5f5537f4c469af5cfc140daabe168",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -2874,7 +2874,18 @@
       "workflow_id": 396287287,
       "event": "push",
       "observed_status": "in_progress",
-      "artifact": null
+      "artifact": null,
+      "receiver_commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7",
+      "receiver_path": "experiments/manual-transmission/research/fixed-recipient-player-relation-receiving-r1-20261025",
+      "receiver_synthetic_checks": 10,
+      "receiver_immutable_readback_verified": true,
+      "last_observed_utc": "2026-10-25T18:56:10.421Z",
+      "next_source_facts_review": {
+        "commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7",
+        "path": "experiments/manual-transmission/research/fixed-recipient-player-relation-receiving-r1-20261025/NEXT_SOURCE_FACTS.json",
+        "state": "SOURCE_REVIEW_ONLY_NO_IMPLEMENTATION",
+        "rules_effective": "2026-09-25"
+      }
     }
   },
   "completion_contract": {
@@ -2992,7 +3003,16 @@
       "latest_workflow_disposition": "Unrelated main E2E nightly completed cancelled",
       "head": "de1ba1eef070774576bc65d024f3e56703850238"
     },
-    "active_workflows": [],
+    "active_workflows": [
+      {
+        "run": 40223311961,
+        "job": 121259359816,
+        "attempt": 1,
+        "event": "push",
+        "status": "in_progress",
+        "head_sha": "27c5c854e97f7425eeaaacce4cc329aee00f03bd"
+      }
+    ],
     "ownership": "Explicit same-owner release, not expiry-based clearing.",
     "latest_ledger_commit": "45d3ce48122e9db1b6177954661ae1ff0d9bf968",
     "last_run_observed": {
@@ -3083,9 +3103,10 @@
       "ignored_unrelated_run": 34749202144,
       "newer_receipt": false
     },
-    "checked_utc": "2026-10-25T18:52:17.855Z",
+    "checked_utc": "2026-10-25T18:56:10.421Z",
     "owner_liveness": "Same active invocation bdf37320-5e88-8331-b0f5-0ee523a09a7b; preceding owner explicitly released. All five active statuses reconciled; only unrelated ancient Pest queued.",
-    "latest_commit": "1a40b0e1cdd958613bf0de7f491f68fe48d0fbc5"
+    "latest_commit": "1a40b0e1cdd958613bf0de7f491f68fe48d0fbc5",
+    "canonical_receiver_commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7"
   },
   "automation": {
     "execution_task": "Manual Work Continuation",
@@ -3871,7 +3892,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External-only wait: run40223311961 is in_progress. Original-artifact receiver and 10 parser checks are prepared; isolated source-facts/controller/Aura/origin review is complete. Next source edits touch the candidate's legality boundary and await its original receiving result; no useful safely independent authorized work remains in this invocation.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
