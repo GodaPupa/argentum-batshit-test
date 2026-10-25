@@ -1,9 +1,9 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T09:16:52.910Z",
+  "updated_date": "2026-10-25T09:17:29.216Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "ACTIVE",
+  "status": "WAITING_EXTERNAL",
   "owner": "manual-work-fbf21973-receive-r5",
   "lease": {
     "state": "ACTIVE",
@@ -44,7 +44,9 @@
     "validation": "f77e5fa1dd11d8a9239ddb71a2cbe2d82778ff91",
     "validation_branch": "validation/manual-current-target-resolution-r5-20261025",
     "workflow": ".github/workflows/manual-current-target-resolution-r5-20261025.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40179990974
+    ],
     "planned_not_observed": {
       "client": 34,
       "recording": 5,
@@ -66,7 +68,7 @@
     },
     "negative_scope": "Complete29 cases across original22 and new7 classes; exact14 assertions (original12 + TA02@53/TA03@58),15passes,zero skips/errors.",
     "source_delta": "One production-line repair plus3 new records versus R4;29 cumulative paths versus accepted publicR5. Existing tests/assertions/resolver/mutant unchanged.",
-    "next_executable_action": "Launch exactly one frozen diagnostic R2 validation branch after verified no active Manual workflow; then prepare pinned original-artifact receiver.",
+    "next_executable_action": "Receive original diagnostic40179990974 once after terminal; active owner preparing exact R2 receiver and reviewing recipient/source legality contract. Do not duplicate or rerun accepted resolver R5.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -2264,7 +2266,7 @@
       "diagnosis": "Targetless modal triggers rejected before enqueue; original assertion paths79/100. Original artifact1622manifest verified. Normal/mutant compilation,58targeted,29negative rows/14exactfails/15pass/zero skips,849focused passed. Broad6894rows/2fail;ordinary/Assay skipped."
     },
     "source_history_diagnostic": {
-      "state": "FROZEN_REVIEWED_NOT_DISPATCHED",
+      "state": "RUNNING_NOT_RECEIVED",
       "source": "c0b893b452ae166a75b43dea01383c425f215f4f",
       "tree": "6b616b5ea6bae673fdec90b096d51bd16d932725",
       "base": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
@@ -2292,9 +2294,18 @@
       "alternative": "Five passes refutes hypothesis. Any other result invalidates diagnostic receiving; preserve original evidence and diagnose.",
       "review": "Same-owner source/test/protocol/workflow review. Exact Git four-path source and one-path validation delta verified. YAML/Python parsed; all assertions byte-equal and frames unchanged; archive/manifest synthetic check passed. Classifier checks reused unchanged, no behavioral claim.",
       "scope": "Source-history diagnostic only; no implementation acceptance, protected rewrite, registration or gameplay.",
-      "run": null,
+      "run": 40179990974,
       "artifact": null,
-      "next_receiving_action": "After terminal, original artifact once: exact source/tree/validation/workflow/run/job/attempt/digest/manifest including validation-workflow.yml; compile passes, raw exact5cases with3controls+2frames81/85 orall5pass; reject compilation/missing/unrelated evidence."
+      "next_receiving_action": "After terminal, original artifact once: exact source/tree/validation/workflow/run/job/attempt/digest/manifest including validation-workflow.yml; compile passes, raw exact5cases with3controls+2frames81/85 orall5pass; reject compilation/missing/unrelated evidence.",
+      "job": 121128810761,
+      "attempt": 1,
+      "run_number": 1,
+      "workflow_id": 395811282,
+      "event": "push",
+      "status": "in_progress",
+      "conclusion": null,
+      "dispatched_utc": "2026-10-25T09:16:56Z",
+      "expected_artifact_name": "manual-source-history-diagnostic-r2-40179990974"
     },
     "source_history_diagnostic_r1_failure": {
       "state": "VERIFIED_COMPILATION_FAILURE_ZERO_BEHAVIORAL_EVIDENCE",
