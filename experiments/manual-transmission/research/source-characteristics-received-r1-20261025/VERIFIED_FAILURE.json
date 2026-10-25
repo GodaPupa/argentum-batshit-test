@@ -1,0 +1,41 @@
+{
+  "state": "ORIGINAL_ARTIFACT_INTEGRITY_FAILURE_NOT_ACCEPTED",
+  "run": 40191527984,
+  "job": 121163353737,
+  "attempt": 1,
+  "artifact": {
+    "id": 12599508412,
+    "name": "manual-source-characteristics-r1-40191527984",
+    "size_in_bytes": 35198123,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12599508412",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12599508412/zip",
+    "expired": false,
+    "created_at": "2026-10-25T12:54:21Z",
+    "expires_at": "2027-01-23T12:04:26Z",
+    "updated_at": "2026-10-25T12:54:21Z",
+    "digest": "sha256:ed788e27a95e338b687dadab84358102a4f2d4867a89c080d40c724e05026dd7",
+    "workflow_run": {
+      "id": 40191527984,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-source-characteristics-r1-20261025",
+      "head_sha": "2a80329c2dd38ffcc69ede89275aabf8687b4d86"
+    }
+  },
+  "manifest_entries": 9316,
+  "archived_files": 9314,
+  "missing_manifest_members": [
+    "source/.github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml",
+    "source/.github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml",
+    "source/.github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
+  ],
+  "unmanifested_members": [],
+  "mismatched_present_members": [],
+  "zip_crc_valid": true,
+  "archive_digest_and_size_verified": true,
+  "receiver_commit": "619ba5a6d6ddc6c5e2e9e53a04a8c28a96ceac8f",
+  "receiver_failure": "KeyError at complete manifest verification: source/.github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml",
+  "acceptance": false,
+  "engine_behavioral_failure_claimed": false,
+  "local_receiver_transport_note": "apply_patch added one terminal newline to receiver and pins. Executed copy differed only in terminal whitespace; exact immutable bytes restored and verified; acceptance assertion unchanged."
+}

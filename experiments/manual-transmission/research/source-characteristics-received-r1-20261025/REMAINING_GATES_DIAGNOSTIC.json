@@ -1,0 +1,91 @@
+{
+  "state": "DIAGNOSTIC_REMAINING_GATES_PASSED_WITH_EXPLICIT_SOURCE_SUPPLEMENT_NOT_ACCEPTANCE",
+  "original_artifact_accepted": false,
+  "missing_original_members": [
+    "source/.github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml",
+    "source/.github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml",
+    "source/.github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
+  ],
+  "supplemental_blobs": {
+    "source/.github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml": "6ac5a9e7822bec4c2fe9965d815e1bca6dfb8ae4",
+    "source/.github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml": "0b49353de002afba7cd35f2bff34400b2d071dcd",
+    "source/.github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml": "9b8d92cd27af4e39377c2ebe4914d8212b778264"
+  },
+  "original_raw_stages": {
+    "recording": {
+      "suites": 2,
+      "rows": 5,
+      "passed": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "actor": {
+      "suites": 4,
+      "rows": 39,
+      "passed": 39,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mutation-live-only": {
+      "suites": 2,
+      "rows": 35,
+      "passed": 17,
+      "failures": 18,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mutation-wrong-visit": {
+      "suites": 2,
+      "rows": 35,
+      "passed": 27,
+      "failures": 8,
+      "errors": 0,
+      "skipped": 0
+    },
+    "targeted": {
+      "suites": 10,
+      "rows": 126,
+      "passed": 126,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "focused": {
+      "suites": 66,
+      "rows": 914,
+      "passed": 914,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "broad": {
+      "suites": 4262,
+      "rows": 14977,
+      "passed": 14977,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ordinary": {
+      "suites": 4702,
+      "rows": 18639,
+      "passed": 18596,
+      "skipped": 43,
+      "failures": 0,
+      "errors": 0
+    }
+  },
+  "compilation_controls": [
+    "normal",
+    "live-only",
+    "wrong-visit"
+  ],
+  "protected_bindings": 143,
+  "goldens": 23,
+  "legacy_fixtures": 82,
+  "qualification_repeated": false,
+  "receiver_assertions_modified": false,
+  "limitation": "Three protected files absent from original ZIP; original complete-manifest gate failed and remains failed."
+}
