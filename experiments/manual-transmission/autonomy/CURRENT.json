@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T22:49:43.518Z",
+  "updated_date": "2026-10-25T22:51:27.159Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "ACTIVE",
@@ -42,9 +42,7 @@
     "validation": "5e4aaa1a3923533fb88275ab39874a561438681b",
     "validation_branch": "validation/manual-fixed-recipient-source-context-r1-20261025",
     "workflow": ".github/workflows/manual-fixed-recipient-source-context-r1-20261025.yml",
-    "pending_runs": [
-      40238046467
-    ],
+    "pending_runs": [],
     "planned_not_observed": {
       "normal": 133,
       "restored": 133,
@@ -2971,7 +2969,57 @@
       "gate_errors": []
     },
     "fixed_recipient_source_context": {
-      "state": "WAITING_EXTERNAL",
+      "state": "FROZEN_R2_NOT_DISPATCHED",
+      "base": "f51196cc04babbd422274dcf68d94e7aa8a58c67",
+      "source": "1382dc0a1fc399e96f8419117b7354627ec43308",
+      "source_tree": "c859dcf0d0f537879a03271e028058f33573d07f",
+      "validation": "01a925f86b1253be8e48d0322256fe568a0bb62c",
+      "validation_tree": "29d19748b7921892aba6ad2c743954f50056d072",
+      "workflow": ".github/workflows/manual-fixed-recipient-source-context-r2-20261025.yml",
+      "workflow_blob": "196cd37fb854ef9bc969240dfc676719b0a37d39",
+      "validation_branch": "validation/manual-fixed-recipient-source-context-r2-20261025",
+      "protocol": "experiments/manual-transmission/research/fixed-recipient-source-context-r1-20261025/PROTOCOL.json",
+      "review": {
+        "owner": "manual-work-0d4a42ec-6a34-832c-87a2-91381b3a370d",
+        "external_independent_review": false,
+        "source_delta_files": 8,
+        "modified_production": 4,
+        "original_assertions_unchanged": true,
+        "protected_resolver_unchanged": true,
+        "other143bindings_unchanged": true,
+        "immutable_readback_verified": true,
+        "static_receiver_checks": 7
+      },
+      "expected": {
+        "normal": 133,
+        "restored": 133,
+        "mutant": 77,
+        "assertion_failures": 46,
+        "mutant_passes": 31,
+        "errors": 0,
+        "skips": 0,
+        "normal_and_mutant_compilations": 2
+      },
+      "scope": "Internal original source facts/controller/kind/visit validation; no public flow or feature admission.",
+      "accepted_predecessor_receipt": "b98555e388161181321dce1e0ac0cbf124fa794a",
+      "next_action": "Receive original source-context qualification after newer-receipt/successor reconciliation; exact133normal/restored,77mutant with46witnesses/31passes, both compilations, all source/protected/form gates. No feature acceptance.",
+      "run": null,
+      "job": null,
+      "attempt": 1,
+      "workflow_id": 396429864,
+      "event": "push",
+      "observed_status": "in_progress",
+      "artifact": null,
+      "receiver_commit": null,
+      "receiver_path": null,
+      "receiver_immutable_readback_verified": false,
+      "last_observed_utc": "2026-10-25T22:01:45.814Z",
+      "public_flow_review_reused": "ba31cec35ca3cbb2f6c546178abcdce25c5659bb",
+      "failed_original_receipt": "7b0a1b7afa287c38c543f067b55c53e45bd95587",
+      "recovery": "Only new fixture import and protocol/design records changed; production, test bodies/assertions, frames, mutant and gate identical."
+    },
+    "fixed_recipient_source_context_failed_r1": {
+      "state": "ORIGINAL_TEST_COMPILATION_FAILURE_NOT_ACCEPTED",
       "base": "f51196cc04babbd422274dcf68d94e7aa8a58c67",
       "source": "03ad7b751270d1340e7efd945787b239518827fb",
       "source_tree": "5b2c1ce641fb9f7bd5c732cb1cf5d6a95f610780",
@@ -3010,13 +3058,20 @@
       "attempt": 1,
       "workflow_id": 396429864,
       "event": "push",
-      "observed_status": "in_progress",
-      "artifact": null,
+      "observed_status": "completed",
+      "artifact": 12615788612,
       "receiver_commit": "0f16ac1c0cc8d6ef7afa4aff5e227c5afec77898",
       "receiver_path": "experiments/manual-transmission/research/fixed-recipient-source-context-receiving-r1-20261025",
       "receiver_immutable_readback_verified": true,
       "last_observed_utc": "2026-10-25T22:01:45.814Z",
-      "public_flow_review_reused": "ba31cec35ca3cbb2f6c546178abcdce25c5659bb"
+      "public_flow_review_reused": "ba31cec35ca3cbb2f6c546178abcdce25c5659bb",
+      "conclusion": "failure",
+      "artifact_bytes": 636468,
+      "artifact_sha256": "09c0291e31d76fdbf21c514b886fdde5a8af5470dc2b232760c31efbc57e91d5",
+      "manifest_entries": 195,
+      "receipt": "7b0a1b7afa287c38c543f067b55c53e45bd95587",
+      "tests_executed": 0,
+      "diagnosis": "Missing GameObjectFilter fixture import at43:99/123:138; production compiled, test compilation failed; no behavioral negative evidence."
     }
   },
   "completion_contract": {
