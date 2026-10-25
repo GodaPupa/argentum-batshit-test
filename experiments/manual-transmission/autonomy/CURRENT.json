@@ -1,17 +1,16 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T20:50:06.557Z",
+  "updated_date": "2026-10-25T21:50:20.794Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "ACTIVE",
+  "owner": "manual-work-0d4a42ec-6a34-832c-87a2-91381b3a370d",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "previous_owner": "manual-work-ded5ad62-00c4-8321-a6cd-1d92a8001e1f",
-    "released_utc": "2026-10-25T20:50:06.557Z",
-    "expires_utc": null,
-    "reason": "Full same-source compatibility running; original receiver verified and isolated next-source review already complete."
+    "state": "ACTIVE",
+    "owner": "manual-work-0d4a42ec-6a34-832c-87a2-91381b3a370d",
+    "claimed_utc": "2026-10-25T21:50:20.794Z",
+    "expires_utc": "2026-10-25T22:35:20.794Z",
+    "reason": "Receive terminal full relation regression original evidence, then authorized source-facts continuation."
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -3185,7 +3184,17 @@
     "checked_utc": "2026-10-25T20:50:06.557Z",
     "owner_liveness": "Prior invocation explicitly released and completed; this invocation claimed and now releases. No expiry-only takeover.",
     "latest_commit": "1a40b0e1cdd958613bf0de7f491f68fe48d0fbc5",
-    "canonical_receiver_commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7"
+    "canonical_receiver_commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7",
+    "latest_work": {
+      "observed_utc": "2026-10-25T21:50:20.794Z",
+      "prior_head": "c6cdd84f2bb12f428df926fc639a932382f4c2f2",
+      "prior_owner_released": true,
+      "previous_run_completed": "ded5ad62-00c4-8321-a6cd-1d92a8001e1f",
+      "active_run": "0d4a42ec-6a34-832c-87a2-91381b3a370d",
+      "active_workflows": [],
+      "ignored_unrelated_queued": 34749202144,
+      "newer_receipt_or_successor": false
+    }
   },
   "automation": {
     "execution_task": "Manual Work Continuation",
