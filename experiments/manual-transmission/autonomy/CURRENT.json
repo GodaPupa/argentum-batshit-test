@@ -1,16 +1,19 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T07:49:05.927Z",
+  "updated_date": "2026-10-25T07:50:33.227Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "IN_PROGRESS",
-  "owner": "manual-work-ecda7809-r4",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-ecda7809-r4",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-25T07:45:00.220Z",
-    "expires_utc": "2026-10-25T08:15:00.221Z",
-    "reason": "Prior explicit release and completed invocation reconciled; no active relevant workflow or newer receipt; receive original R4."
+    "expires_utc": "2026-10-25T07:50:33.227Z",
+    "reason": "Prior explicit release and completed invocation reconciled; no active relevant workflow or newer receipt; receive original R4.",
+    "last_owner": "manual-work-ecda7809-r4",
+    "released_utc": "2026-10-25T07:50:33.227Z",
+    "release_reason": "Only external R5 qualification remains. Original R4 received/preserved; one-line targetless modal producer repair frozen/reviewed, original regression cases promoted early, one successor launched and exact receiving auditor checkpointed/read back. No useful safely independent authorized work remains."
   },
   "last_qualified": {
     "source": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
@@ -34,16 +37,18 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "R4 separate-trigger authority compatibility qualification running",
-    "source_candidate": "457a644a0f24289e90241f0bf12fa40a933edb43",
-    "source_tree": "d3306e35cc1584e4f587118202ec25b924b51c84",
-    "source_branch": "candidate/manual-current-target-resolution-r4-frozen-20261025",
-    "protocol": "experiments/manual-transmission/research/current-target-resolution-r4-20261025/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/current-target-resolution-r4-20261025/DESIGN.md",
-    "validation": "9296091334ff6aa18e2d9382da896f2547958498",
-    "validation_branch": "validation/manual-current-target-resolution-r4-20261025",
-    "workflow": ".github/workflows/manual-current-target-resolution-r4-20261025.yml",
-    "pending_runs": [],
+    "current_subproblem": "Resolver R5 targetless modal enqueue recovery qualifying",
+    "source_candidate": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+    "source_tree": "96774dfd5794aa41aa1e739c0bedf1e3d408aa86",
+    "source_branch": "candidate/manual-current-target-resolution-r5-20261025",
+    "protocol": "experiments/manual-transmission/research/current-target-resolution-r5-20261025/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/current-target-resolution-r5-20261025/DESIGN.md",
+    "validation": "f77e5fa1dd11d8a9239ddb71a2cbe2d82778ff91",
+    "validation_branch": "validation/manual-current-target-resolution-r5-20261025",
+    "workflow": ".github/workflows/manual-current-target-resolution-r5-20261025.yml",
+    "pending_runs": [
+      40174213601
+    ],
     "planned_not_observed": {
       "client": 34,
       "recording": 5,
@@ -53,7 +58,7 @@
       "negative_failures": 14,
       "negative_passes": 15,
       "negative_skips": 0,
-      "targeted": 58,
+      "targeted": 61,
       "focused": 849,
       "broad": 14912,
       "engine": 4137,
@@ -64,8 +69,8 @@
       "assay_findings": 51
     },
     "negative_scope": "Complete29 cases across original22 and new7 classes; exact14 assertions (original12 + TA02@53/TA03@58),15passes,zero skips/errors.",
-    "source_delta": "Four production repairs,one added7-case test andthree added records vsR3;26cumulative paths vsR5. Originaltests/assertions unchanged.",
-    "next_executable_action": "Reconcile live owner, newer receipts/successors and all relevant workflow statuses. Do not duplicate or interrupt R4 run40171122250. On terminal receive its original artifact once using d5cda99b auditor and resolver_qualification.next_receiving_action. R3 original failure is preserved at ba81bffa; R1/R2/R5 evidence must not be reaudited. Failure requires actual diagnosis before a new immutable successor.",
+    "source_delta": "One production-line repair plus3 new records versus R4;29 cumulative paths versus accepted publicR5. Existing tests/assertions/resolver/mutant unchanged.",
+    "next_executable_action": "Reconcile owner/newer receipts/successors and relevant workflow statuses. Do not duplicate or interrupt active resolver R5 run40174213601. On terminal use prepared receiving df4d66ce; original R4 failure d63f911e already received and preserved. Reuse earlier accepted evidence without repeat.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -182,7 +187,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "dfd084bcbc60f4d61ae82970449d662f71a9435d",
+    "validation_tree": "d8c8bea698c26010ce595165987ff8f672468615",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -2002,7 +2007,7 @@
       "protected_sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94"
     },
     "resolver_qualification": {
-      "state": "FROZEN_REVIEWED_NOT_DISPATCHED",
+      "state": "RUNNING_NOT_ACCEPTED",
       "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
       "tree": "96774dfd5794aa41aa1e739c0bedf1e3d408aa86",
       "base": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
@@ -2034,19 +2039,26 @@
       },
       "original_r5_receipt_reused_without_reaudit": true,
       "draft_superseded_before_dispatch": "6227170fcfc5ef967d76a38236381ce0c0875ebf",
-      "next_receiving_action": "Reconcile newer receipts/successors first, then receive original R4 once. Require14 exact assertion failures/15passes/zero skips across29cases, original MC08 unchanged in targeted58, all original positive report identities and protected143+admittedresolver/23goldens/82fixtures, source/tree/validation/workflow/run/job/attempt/archive manifest/restoration/full regressions/Assay. No acceptance from green status.",
-      "run": null,
-      "job": null,
+      "next_receiving_action": "Reconcile newer receipts/successors, then receive original resolver R5 once using df4d66ce. Require29 mutation rows/14 exact assertion failures/15passes/zero skips;targeted61 including original targetless modal3;all original source/tree/validation/workflow/run/job/attempt/archive/manifest/reportidentity/restoration/protected143+resolver/23golden/82fixture/fullregression/Assay gates. No acceptance from green status.",
+      "run": 40174213601,
+      "job": 121111303266,
       "attempt": 1,
       "run_number": 1,
-      "workflow_id": null,
+      "workflow_id": 395743981,
       "event": "push",
-      "status": "not_dispatched",
+      "status": "in_progress",
       "conclusion": null,
-      "dispatched_utc": "2026-10-25T07:00:03Z",
-      "expected_artifact_name": "manual-current-target-resolution-r4-40171122250",
-      "receiving_audit": null,
-      "observed_utc": "2026-10-25T07:03:39.745Z",
+      "dispatched_utc": "2026-10-25T07:49:09Z",
+      "expected_artifact_name": "manual-current-target-resolution-r5-40174213601",
+      "receiving_audit": {
+        "state": "PREPARED_NOT_EXECUTED",
+        "commit": "df4d66ce32d927fb54047cf450dbca9f00bd5511",
+        "path": "experiments/manual-transmission/research/current-target-resolution-receiver-r5-20261025/RECEIVE_R5.py",
+        "blob": "3df6128f66e633e5e99e9e623a862b6d16b21093",
+        "immutable_readback_verified": true,
+        "synthetic_checks": 7
+      },
+      "observed_utc": "2026-10-25T07:50:33.227Z",
       "job_status": "in_progress",
       "steps_observed": {
         "status": "Build active; outcomes not yet received. No acceptance inferred."
@@ -2359,7 +2371,7 @@
       "expectations_updated_utc": "2026-10-24T13:29:44.515Z",
       "expectations": "Strictly read-only; follow current Work WAITING_EXTERNAL ownership and single public target-group run40098055404. Accepted activation40091111694 remains accepted. No action for healthy waiting; receive original evidence before bounded acceptance. Watch enabled state unchanged."
     },
-    "handoff": "Single Work executor enabled; R4 run40171122250 active; owner explicitly released WAITING_EXTERNAL.",
+    "handoff": "Single Work executor enabled; resolver R5 run40174213601 active; ownership released WAITING_EXTERNAL.",
     "execution_admitted": true,
     "former_discussion_executor": {
       "id": "6adbad91b90881918859ad0cba22b881",
@@ -2436,7 +2448,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
     "last_verified_enabled_utc": "2026-10-25T03:42:37.310Z",
-    "next_authorized_action": "Reconcile live owner, newer receipts/successors and all relevant workflow statuses. Do not duplicate or interrupt R4 run40171122250. On terminal receive its original artifact once using d5cda99b auditor and resolver_qualification.next_receiving_action. R3 original failure is preserved at ba81bffa; R1/R2/R5 evidence must not be reaudited. Failure requires actual diagnosis before a new immutable successor.",
+    "next_authorized_action": "Reconcile owner/newer receipts/successors and relevant workflow statuses. Do not duplicate or interrupt active resolver R5 run40174213601. On terminal use prepared receiving df4d66ce; original R4 failure d63f911e already received and preserved. Reuse earlier accepted evidence without repeat.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2969,5 +2981,5 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "Only external R4 qualification remains. Original R3 artifact received/preserved, bounded source-specific compatibility repair frozen/reviewed, original assertions preserved, one successor dispatched and exact receiving audit checkpointed/read back. No useful safely independent authorized work remains."
+  "actual_stopping_reason": "Only external R5 qualification remains. Original R4 received/preserved; one-line targetless modal producer repair frozen/reviewed, original regression cases promoted early, one successor launched and exact receiving auditor checkpointed/read back. No useful safely independent authorized work remains."
 }
