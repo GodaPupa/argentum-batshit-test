@@ -1025,7 +1025,7 @@ class TriggerProcessor(
             stateWithMemory, component, flatTargets,
             targetRequirements = flatRequirements,
             currentTargetPlan = originalModeTargetSlots?.takeIf {
-                outerTargetRequirements.isEmpty() && outerTargets.isEmpty() && it.size == chosenModeIndices.size
+                flatTargets.isNotEmpty() && outerTargetRequirements.isEmpty() && outerTargets.isEmpty() && it.size == chosenModeIndices.size
             }?.let { plans -> com.wingedsheep.engine.mechanics.targeting.CurrentTargetPlan(
                 TargetSlotPlan(plans.flatMap { it.instances }), plans.map { it.instances.size }) },
             causedByAttack = causedByAttack
