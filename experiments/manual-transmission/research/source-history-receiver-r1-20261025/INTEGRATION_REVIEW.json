@@ -1,0 +1,57 @@
+{
+  "state": "SOURCE_BOUND_INTEGRATION_CONTRACT_NO_IMPLEMENTATION_OR_ADMISSION",
+  "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+  "tree": "96774dfd5794aa41aa1e739c0bedf1e3d408aa86",
+  "accepted_receipt": "7ee1fe7e3848146b6089a73e5fa5951d81e3a630",
+  "reviewed_blobs": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeTargetExecutor.kt": "c3cf7b0e7b722d143f62d43ef8c020dbdd301db9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ContestedRetargetExecutors.kt": "1caddb561ba7e9e3e00c9e423aca736176777279",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt": "259309b51a3f0f3092871013743b58ec0637d436",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "7bfc5a067d23a3b1cca8b6e0b4717272cbc8b90e",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt": "4e9f905bdfc8fea5c1eac58d0d40f2c860036aee",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt": "ad94208bf4984c94343daa421c3a31d08d3ef6cf",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/SourceTypeTargeting.kt": "a6b9a7c6721f991e31fe5c80fa5aaf83f7200c1d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt": "2cb201734ab583a2bc7f390c1a01a4ffe93f70e3",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": "e276259416d2cd82296fa700265879e793d96273"
+  },
+  "contract": "Change exactly one existing authoritative occurrence to a fixed recipient if the final target set permits it; preserve every other occurrence, original group, division, mode/splice binding and provenance.",
+  "composition": {
+    "reuse": [
+      "TargetSlotPlan.replacingRecipient for occurrence-preserving replacement",
+      "CurrentTargetPlan and withCurrentTargetPlan for coherent expected-plan CAS across dependent views",
+      "TargetValidator single-target predicates and explicitly grouped relational constraints",
+      "Existing serializable Suspension and server-authored decision options",
+      "Existing BecomesTargetEvent and first-target-per-controller tracking"
+    ],
+    "reject": [
+      "Infer omitted groups from flattened targets",
+      "Use originalTargetSlots as current history after prior changes",
+      "Use redirecting controller or stack ability entity as original ability source",
+      "Refresh unchanged object visits",
+      "Use existing all-target ContestedRetarget as fixed-recipient one-slot selection",
+      "Revalidate all unchanged targets as if newly selected or recalculate original target counts/divisions"
+    ]
+  },
+  "layers": {
+    "sdk": "Existing ChangeTargetEffect chooses a new recipient only for exactly one target; current catalog entry has stale signature. New vocabulary is needed only after an executable internal fixed-recipient operation is defined; no SDK/card registration performed.",
+    "legality": "Use original stack-object controller and original source identity/characteristics. TargetValidator private single-target checks include protection/hexproof and predicates; public validateTargets also validates minima/maxima and every unchanged target, so cannot be reused wholesale. Preserve final-set relational constraints and distinguish unchanged illegal occurrences from newly invalidated ones. No error-string comparison as legality logic.",
+    "source_history": "Snapshot consumers differ: existing departed-source damage tests cover damage attributes, but StackResolver target validation and SourceTypeTargeting still read live entity/projection for original source characteristics. Five-case source-bound diagnostic40178974689 tests the specific missing-source/protection hypothesis without modifying production. Do not infer diagnosis from source inspection or green workflow.",
+    "state": "CurrentTargetPlan atomic adapter already preserves all target views and original provenance. New operation must verify stack membership, expected plan and fixed recipient's exact live visit before commit. Null/missing authority must fail closed rather than reconstruct layout.",
+    "events": "TriggerMatcher.matchesBecomesTargetTrigger consumes sourceIsSpell/controller/targetIsSpell/targetIsPlayer/firstTimeByThisController and reads sourceEntityId for source filters. StackResolver's existing emitter is private; new operation must emit correct targeting facts and update first-time tracking without broadening protected resolver or firing on no-ops. Event/ward behavior remains to qualify.",
+    "continuations": "ContinuationHandler validates question routing and pops the Suspension before typed resumption. A new slot-choice payload must carry fixed recipient ObjectRef, expected authoritative plan, original stack identity, chooser, and exact occurrence addresses. Recheck semantics after serialization and reject stale choices atomically. No client-inferred slot index.",
+    "server_client": "Use server-supplied occurrence choices with distinct labels for repeated recipients; current recipient-selection UI alone cannot identify two occurrences of one entity. No new event or decision introduced in this review; DTO/masking/frontend trace remains an implementation gate."
+  },
+  "qualification_contract": [
+    "Normal source/test and mutant compilation before expensive regressions",
+    "Targeted witnesses for original controller/source, zero and multiple occurrences, omitted groups, repeat-mode/splice, selected division, duplicate within versus across instances, stale source/recipient/stack visits, protection/hexproof, final-set relations and unchanged illegal targets",
+    "Full serialized pending decision and public server/client path with no hidden information leak",
+    "Newly-targeted event, ward and no-op/nonduplicated-event controls",
+    "Exact executable negative-control class/frames; no compilation or missing-report negative evidence",
+    "All required regressions, original artifacts, identity counts/skips, protected143 plus accepted resolver/23goldens/82fixtures and original evidence preserved"
+  ],
+  "next_dependency": "Receive original source-history diagnostic. If precise hypothesis is reproduced, a source-specific protected resolver extension must be described and authorized before a general source-characteristic repair; current occurrence authorization is retained and not reclassified as missing. If refuted, retain original diagnostic and proceed with the observed correct consumer contract. No automatic repair or unchanged rerun.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "external_independent_review": false
+}
