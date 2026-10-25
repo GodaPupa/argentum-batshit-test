@@ -1,0 +1,23 @@
+{
+  "state": "DRAFT_NOT_COMPILED_NOT_ADMITTED",
+  "base": "388f6156ac726c17fd591a87ffbee1bb7224c170",
+  "base_regression_receipt": "1ebeda7c79c1d12540810d167cf8060e935aad12",
+  "scope": "Carry an explicitly selected player into permanent, spell and non-graveyard card filter contexts; existing graveyard propagation unchanged. No new SDK vocabulary or public flow.",
+  "changes": [
+    "TargetValidator private context parameters and existing zone dispatcher forwarding",
+    "Four new replacement relation cases: controlled/owned by selected player; replacing permanent allowed; replacing player cannot invalidate retained permanent"
+  ],
+  "original_assertions": "All existing test files unchanged; new file only.",
+  "remaining": [
+    "Add spell/card zone and source-history/player-protection boundary coverage before freezing coherent successor",
+    "Compile normal and deliberate drop-targetPlayerId mutant; unchanged positive and new exact negative controls must execute without errors/skips",
+    "Preserve existing early controls and full regressions, identity counters, protected bytes and original-artifact receiving",
+    "Finish public occurrence option/continuation/ward flow before feature acceptance"
+  ],
+  "negative_control_plan": "Drop targetPlayerId at the battlefield dispatcher: both positive replacement cases must fail at their assertions; the invalidating-player cases also distinguish preexisting-invalid from newly-invalid. Pin exact executable frames only after source/test review and normal/mutant compile.",
+  "protected": "Other143 bindings plus admitted resolver,23goldens,82fixtures,v0.7,main,budgets,2Precision unchanged",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "external_independent_review": false
+}
