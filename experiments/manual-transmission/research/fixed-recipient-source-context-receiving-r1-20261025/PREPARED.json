@@ -1,0 +1,34 @@
+{
+  "state": "PREPARED_NOT_RECEIVED",
+  "source": "03ad7b751270d1340e7efd945787b239518827fb",
+  "validation": "5e4aaa1a3923533fb88275ab39874a561438681b",
+  "run": 40238046467,
+  "job": 121303756639,
+  "attempt": 1,
+  "reuse_receipts": [
+    "b98555e388161181321dce1e0ac0cbf124fa794a",
+    "0c8d259cc1650c8e79287f9c67bdce02236f6dbf",
+    "7ee1fe7e3848146b6089a73e5fa5951d81e3a630",
+    "770f9a06614ff5addcd404df0d109bb9203ff825"
+  ],
+  "static_checks": {
+    "state": "STATIC_ONLY_NOT_ENGINE_EVIDENCE",
+    "checks": [
+      "exact77_46_31",
+      "reject_zero",
+      "reject_missing_failure",
+      "reject_wrong_type",
+      "reject_wrong_frame",
+      "reject_compiler",
+      "reject_unrelated"
+    ],
+    "original_assertions_preserved": true,
+    "normal_cases": 133,
+    "mutant_cases": 77,
+    "mutant_failures": 46,
+    "mutant_passes": 31
+  },
+  "next_action": "Reconcile newer receipt/successor first, then receive original artifact with frozen RECEIVE.py/PINS.json. Both compilations,133normal/restored,77mutant with46 exact assertions/31pass/0errors/skips; exact source/forms/restoration/protected/manifests. Preserve original failure if any. No full feature admission.",
+  "public_flow_review": "ba31cec35ca3cbb2f6c546178abcdce25c5659bb:experiments/manual-transmission/research/fixed-recipient-receiving-r1-20261025/NEXT_FLOW_REVIEW.json",
+  "required_after_early_receipt": "Full compatibility on new source plus public occurrence choice/ward/trigger integration and original receiving before feature acceptance."
+}
