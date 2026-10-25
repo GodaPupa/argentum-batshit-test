@@ -1,0 +1,18 @@
+{
+  "state": "PREPARED_NOT_EXECUTED",
+  "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+  "tree": "96774dfd5794aa41aa1e739c0bedf1e3d408aa86",
+  "validation": "f77e5fa1dd11d8a9239ddb71a2cbe2d82778ff91",
+  "validation_tree": "d8c8bea698c26010ce595165987ff8f672468615",
+  "run": 40174213601,
+  "job": 121111303266,
+  "workflow_id": 395743981,
+  "workflow_blob": "88eaf83bb3600ccfac10fce5b61b43d23d6b5113",
+  "attempt": 1,
+  "original_failure_receipt": "d63f911ebdae29e1ee5984670bc35c8a57c639b5",
+  "instructions": "Reconcile newer receipts/successors before receiving once. For success download original artifact and bind exact metadata schema used by R4 receiver; save original-ID.zip, extract resolver-original and resolver-metadata.json. Use verified source overlay (R5 TriggerProcessor, R4 changed source, unchanged R1 source and frozen protected source) with MANUAL_SOURCE_ROOT/MANUAL_SOURCE_OVERLAY/MANUAL_REPO and MANUAL_RECEIPT_ROOT. Execute RECEIVE_R5.py unchanged. On failure preserve original artifact and diagnose without running success-only auditor. Never reaudit accepted public R5 or received resolver R1..R4.",
+  "expected": "Client34 recording5 actor39 targeted61 including unchanged original targetless modal tests. Mutation29 rows/exact14 pinned failures/15passes/zero skips. Focused849 broad14912 engine4137 ordinary18531+43exact skips;Assay568/2000/exact51findings. Exact source/tree/validation/workflow/run/job/attempt/archive/manifest/rawidentities/restoration/protected143+resolver/23goldens/82fixtures required.",
+  "synthetic_checks": 7,
+  "recipe_reconstruction_verified": true,
+  "external_independent_review": false
+}
