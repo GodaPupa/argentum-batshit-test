@@ -1,16 +1,18 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T09:46:43.281Z",
+  "updated_date": "2026-10-25T09:50:04.520Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "ACTIVE",
-  "owner": "manual-work-facfbd80-receive-diagnostic-r2",
+  "status": "BLOCKED",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-facfbd80-receive-diagnostic-r2",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-25T09:46:43.281Z",
-    "expires_utc": "2026-10-25T10:16:43.281Z",
-    "reason": "Receive original terminal diagnostic R2 and continue source-specific next admission."
+    "expires_utc": null,
+    "reason": "Original diagnostic received and precise next admission checkpointed; protected source-characteristic extension requires explicit grant.",
+    "previous_owner": "manual-work-facfbd80-receive-diagnostic-r2",
+    "released_utc": "2026-10-25T09:50:04.520Z"
   },
   "last_qualified": {
     "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
@@ -34,7 +36,7 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Source-history protection diagnostic before fixed-recipient integration",
+    "current_subproblem": "Confirmed source-history protection defect requires bounded protected source-characteristic authorization",
     "source_candidate": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
     "source_tree": "96774dfd5794aa41aa1e739c0bedf1e3d408aa86",
     "source_branch": "candidate/manual-current-target-resolution-r5-20261025",
@@ -43,9 +45,7 @@
     "validation": "f77e5fa1dd11d8a9239ddb71a2cbe2d82778ff91",
     "validation_branch": "validation/manual-current-target-resolution-r5-20261025",
     "workflow": ".github/workflows/manual-current-target-resolution-r5-20261025.yml",
-    "pending_runs": [
-      40179990974
-    ],
+    "pending_runs": [],
     "planned_not_observed": {
       "client": 34,
       "recording": 5,
@@ -67,7 +67,7 @@
     },
     "negative_scope": "Complete29 cases across original22 and new7 classes; exact14 assertions (original12 + TA02@53/TA03@58),15passes,zero skips/errors.",
     "source_delta": "One production-line repair plus3 new records versus R4;29 cumulative paths versus accepted publicR5. Existing tests/assertions/resolver/mutant unchanged.",
-    "next_executable_action": "After diagnostic40179990974 is terminal, reconcile newer receipts/successors and acquire fresh-blob ownership; receive original artifact exactly once with pinned receiverd017ad613/e8ddec5b. Require5exact raw cases, normalcompile,3controls+2protection assertions at81/85 orall5pass, complete manifest including validation-workflow.yml. If precise hypothesis confirmed, prepare concrete source-specific authority proposal for source-characteristic resolution beyond accepted occurrence boundary; no protected rewrite before that grant. If refuted, continue fixed-recipient integration from source-bound review28067e60. Other failures require preserved original diagnosis, not blindrerun.",
+    "next_executable_action": "Await explicit source-specific grant of NEXT_ADMISSION.json at770f9a06614ff5addcd404df0d109bb9203ff825. Once granted, reconcile ownership and newer evidence; implement bounded source-characteristic successor against acceptede067e4b8, preserve original five diagnostic assertions and accepted resolver receipt, freeze targeted live/departed/wrong-visit/serialization/control tests and executable mutants, then full required regressions and original-artifact receiving. Do not repeat accepted R5 qualification/audit or R2 diagnostic.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -2265,7 +2265,7 @@
       "diagnosis": "Targetless modal triggers rejected before enqueue; original assertion paths79/100. Original artifact1622manifest verified. Normal/mutant compilation,58targeted,29negative rows/14exactfails/15pass/zero skips,849focused passed. Broad6894rows/2fail;ordinary/Assay skipped."
     },
     "source_history_diagnostic": {
-      "state": "RUNNING_NOT_RECEIVED",
+      "state": "RECEIVED_CONFIRMED_SOURCE_HISTORY_PROTECTION_DEFECT",
       "source": "c0b893b452ae166a75b43dea01383c425f215f4f",
       "tree": "6b616b5ea6bae673fdec90b096d51bd16d932725",
       "base": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
@@ -2294,19 +2294,19 @@
       "review": "Same-owner source/test/protocol/workflow review. Exact Git four-path source and one-path validation delta verified. YAML/Python parsed; all assertions byte-equal and frames unchanged; archive/manifest synthetic check passed. Classifier checks reused unchanged, no behavioral claim.",
       "scope": "Source-history diagnostic only; no implementation acceptance, protected rewrite, registration or gameplay.",
       "run": 40179990974,
-      "artifact": null,
-      "next_receiving_action": "After terminal, original artifact once: exact source/tree/validation/workflow/run/job/attempt/digest/manifest including validation-workflow.yml; compile passes, raw exact5cases with3controls+2frames81/85 orall5pass; reject compilation/missing/unrelated evidence.",
+      "artifact": 12594341478,
+      "next_receiving_action": "Original diagnostic received once. Reuse receipt; no rerun or re-audit.",
       "job": 121128810761,
       "attempt": 1,
       "run_number": 1,
       "workflow_id": 395811282,
       "event": "push",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "success",
       "dispatched_utc": "2026-10-25T09:16:56Z",
       "expected_artifact_name": "manual-source-history-diagnostic-r2-40179990974",
       "receiving_audit": {
-        "state": "PREPARED_NOT_EXECUTED",
+        "state": "EXECUTED_PASSED",
         "commit": "d017ad613385aa04f3daed655e93642ed2f25195",
         "tree": "50f5186d4a9376fefc720cbe880614ea5cb3f586",
         "branch": "checkpoint/manual-source-history-receiver-r2-20261025",
@@ -2314,9 +2314,24 @@
         "blob": "e8ddec5b8ae09d85408c9bf780fb31bfc2ef054f",
         "immutable_readback_verified": true,
         "classifier": "Byte-identical to prepared R1 classifier;11synthetic checks reused. R2 nonhidden workflow archive/manifest synthetic check passed.",
-        "instructions": "Reconcile newer receipts/successors and ownership first. Fetch original completed run/jobs/artifact metadata, source and validation git commits, main and exact two comparisons; execute pinned receiver once against original ZIP. Do not re-audit accepted resolver R5 or original R1 diagnostic failure."
+        "instructions": "Reconcile newer receipts/successors and ownership first. Fetch original completed run/jobs/artifact metadata, source and validation git commits, main and exact two comparisons; execute pinned receiver once against original ZIP. Do not re-audit accepted resolver R5 or original R1 diagnostic failure.",
+        "execution_note": "Executed frozen receiver logic with one transport-added terminal blank line; assertion bytes and AST verified identical; exact executed/pinned blob hashes preserved in receipt. Audit executed once."
       },
-      "observed_utc": "2026-10-25T09:20:12.833Z"
+      "observed_utc": "2026-10-25T09:20:12.833Z",
+      "artifact_bytes": 30044,
+      "artifact_sha256": "30f358aa06ddf9f854c210d78fac32971180d65ca273e7475c752fe8f4bc970a",
+      "receipt": "770f9a06614ff5addcd404df0d109bb9203ff825",
+      "receipt_path": "experiments/manual-transmission/research/source-history-diagnostic-received-r2-20261025/VERIFIED_DIAGNOSTIC.json",
+      "received_utc": "2026-10-25T09:50:04.520Z",
+      "cases": 5,
+      "passes": 3,
+      "assertion_failures": 2,
+      "errors": 0,
+      "skips": 0,
+      "verified_manifest_entries": 16,
+      "production_unchanged": true,
+      "implementation_acceptance": false,
+      "diagnosis": "Serialized resolver-boundary tests confirm departed red triggered and activated sources bypass protection despite captured red snapshot. Exact SH04/SH05 assertion failures at81/85; live-source protection and two unprotected departure controls pass. This diagnostic proves color defect only, not all adjacent source-type paths."
     },
     "source_history_diagnostic_r1_failure": {
       "state": "VERIFIED_COMPILATION_FAILURE_ZERO_BEHAVIORAL_EVIDENCE",
@@ -2369,6 +2384,16 @@
       "commit": "28067e60c9887fce37a5bf91d9bed8427362c908",
       "path": "experiments/manual-transmission/research/source-history-receiver-r1-20261025/INTEGRATION_REVIEW.json",
       "state": "SOURCE_REVIEW_ONLY_NO_IMPLEMENTATION"
+    },
+    "source_characteristics_admission": {
+      "state": "REQUIRED_NOT_GRANTED",
+      "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
+      "path": "experiments/manual-transmission/research/source-history-diagnostic-received-r2-20261025/NEXT_ADMISSION.json",
+      "blob": "a6345d946b7b108ee0495340fef065a24d84958b",
+      "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+      "protected_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "protected_sha256": "75c71579803628c2d6cb7a5cebcbc595253fcab5c03ba496d91a4c31dda92db3",
+      "scope": "Original ability-source characteristic resolution for protection/type restrictions using live original instance or captured LKI; separate from already granted and accepted target-occurrence successor."
     }
   },
   "completion_contract": {
@@ -2513,6 +2538,12 @@
       "active_relevant_runs": [],
       "ignored_ancient_run": 34749202144,
       "no_newer_receipt_or_successor": true
+    },
+    "latest_release": {
+      "observed_utc": "2026-10-25T09:50:04.520Z",
+      "receipt": "770f9a06614ff5addcd404df0d109bb9203ff825",
+      "workflow_terminal": true,
+      "ownership_released_explicitly": true
     }
   },
   "automation": {
@@ -2604,7 +2635,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
     "last_verified_enabled_utc": "2026-10-25T03:42:37.310Z",
-    "next_authorized_action": "After diagnostic40179990974 is terminal, reconcile newer receipts/successors and acquire fresh-blob ownership; receive original artifact exactly once with pinned receiverd017ad613/e8ddec5b. Require5exact raw cases, normalcompile,3controls+2protection assertions at81/85 orall5pass, complete manifest including validation-workflow.yml. If precise hypothesis confirmed, prepare concrete source-specific authority proposal for source-characteristic resolution beyond accepted occurrence boundary; no protected rewrite before that grant. If refuted, continue fixed-recipient integration from source-bound review28067e60. Other failures require preserved original diagnosis, not blindrerun.",
+    "next_authorized_action": "Await explicit source-specific grant of NEXT_ADMISSION.json at770f9a06614ff5addcd404df0d109bb9203ff825. Once granted, reconcile ownership and newer evidence; implement bounded source-characteristic successor against acceptede067e4b8, preserve original five diagnostic assertions and accepted resolver receipt, freeze targeted live/departed/wrong-visit/serialization/control tests and executable mutants, then full required regressions and original-artifact receiving. Do not repeat accepted R5 qualification/audit or R2 diagnostic.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2641,7 +2672,14 @@
     "activity": "One R3 qualification active; original R2 failure preserved; no worker lease retained.",
     "last_execution_owner": "manual-work-c3f6db49-resolver-r2"
   },
-  "blockers": [],
+  "blockers": [
+    {
+      "kind": "SOURCE_SPECIFIC_AUTHORITY",
+      "reason": "User grant covers per-occurrence current target resolution and original-instance target lookup; confirmed ability-source LKI protection repair changes protected resolver source-characteristic consumption outside that boundary.",
+      "proposal_commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
+      "existing_resolver_authority_retained": true
+    }
+  ],
   "qualified_components": {
     "structural_target_slot": {
       "source": "5bc1b733d3e19fee4da7e33174bf4a480bd92812",
@@ -3201,5 +3239,5 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null
+  "actual_stopping_reason": "Specific unresolved authority boundary: original diagnostic confirms source-LKI protection defect; concrete protected successor and gates published. Original receiving and safe isolated integration review complete. No active workflow; no justified unchanged rerun or further protected implementation within current grant."
 }
