@@ -1,0 +1,25 @@
+# Current target resolution R1
+
+Authorized successor of accepted source cac0616eb5abb359eb572d6d378dbf9fabae62de. Authorization is recorded at 5e181ef846069d4016b0aa6d7930efa2d13685f4 for proposal 474c66557b6dbee5c9f25025ac8f8bec50c05ce0/NEXT_ADMISSION.json. The original protected resolver binding remains immutable in the parent; precisely its successor is changed. All other 143 source bindings, 23 goldens, 82 legacy fixture files, existing tests/assertions, frozen v0.7, budgets and two reserved Precision games remain mandatory.
+
+CurrentTargetPlan is separate from immutable original provenance. Only trusted fresh grouped producers or an explicit already-validated internal transition supply it. Absent plans retain legacy resolution; incoherent present plans fail before popping the stack. Resolution reads per-occurrence ObjectRef and original instance indices, preserving null positions. Current instance widths supply named bindings, modal groups and splice slices. Frozen resolved views survive modal/splice continuations, preventing later revalidation from refreshing a stale object. Division remains on each occurrence; surviving views aggregate equal physical recipients only when constructing an executor's legacy map.
+
+The internal current-plan transition checks expected plan equality, unchanged original widths and divisions, and atomically synchronizes flat/modal/splice current targets. It is not a player action or legality/event/ward implementation. It cannot admit Spellskite. Legacy retarget adapters fail closed on changed authoritative plans. Original provenance is never overwritten. Public layout guards remain unchanged; this does not silently broaden public selection admission. Fresh public nonmodal capture, controller activation capture, modal spell capture without splice, and modal trigger capture without outer groups are connected; other producers retain legacy fallback. No group is inferred from a flat list.
+
+Rules basis: official Wizards Comprehensive Rules 2026-08-07, 115.3/115.7/115.8 and 608.2b. Same physical id with different visits is two occurrences; legality is checked separately. Unchanged illegal targets stay illegal. Mode choices and divisions remain fixed. Qualification proves component behavior, not card or multiplayer admission.
+
+22 new engine tests include all three resolving object kinds, optional and variable widths, modal/splice execution, division conservation, stale-plan rejection, original preservation and serialized resolution. Eight executable mutation witnesses disable visit checking and flatten named-target lookup. Both normal and mutant production/test compilation precede targeted runtime tests and expensive regression suites. Exact failure identities, AssertionFailedError types and first source frames are fixed before dispatch. Compilation failure, missing/zero reports, skips or other failures reject the negative control.
+
+Locked resources and concurrency remain inherited from R5. Required positives: client34, recording5, actor39, targeted42, focused842, broad14905, engine4130, ordinary18524 passes plus exactly43 original skips; Assay568 units/2000 corpus/exact51 findings. Baseline identity counters and duplicate labels remain unchanged after subtracting only declared added tests. Every original report, archive hash/manifest, source/tree/validation/workflow/job/attempt, restoration and all protected bytes require original-artifact receiving once. No main merge, spending increase, official game/seed, Spellskite registration or multiplayer admission.
+
+
+## R2 runner-only recovery
+
+Original R1 failure is preserved at dc7e7df53ca9b2dff5c5273fe9b2a948b0e7e718. Normal and mutant compilation and 42 targeted cases passed, but mutation selected zero tests. Kotest6.2.1 GradleClassMethodRegexTestFilter.isSpecPrefix requires the fully qualified class prefix for method patterns; a leading wildcard leaves a regex prefix that fails discovery. Use the exact class prefix in all eight patterns. The eight expected identities, assertion frames, all production/test bytes and mutation bytes are unchanged. Full qualification is still required.
+
+The archived delta is corrected to accepted R5 base; copied R5 prose is retained under historical_r5_metadata and explicitly superseded by the R1 mutation_contract and source-specific authorization. This is owner review, not independent review. No new resources, games, seeds or card admission.
+
+
+## R3 whole-class mutation execution
+
+R2 original archive93748c5e proves exactly eight intended assertions failed, but fourteen unselected tests were reported skipped. Keep the zero-skip requirement. Execute the full unchanged22-case class, preserving all original8 failure identities/frames and pinning four additional source-derived failures before execution: CO09 named modal-instance mapping100; CO15 missing fizzle142; CO16 variable named mapping150; CO19 illegal damage share182. The other ten must pass. No production, test, assertion, or mutant changes. All positive counts remain unchanged. This repairs only harness discovery; it does not accept R2 or excuse skipped tests.
