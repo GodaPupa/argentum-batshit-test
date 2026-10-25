@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "state": "ISOLATED_SOURCE_REVIEW_NO_PRODUCTION_MUTATION",
+  "source": "388f6156ac726c17fd591a87ffbee1bb7224c170",
+  "bindings": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PlayerProtectionRules.kt": "81391a19b6d51cae66a4d90c7748b9c966dae2ee",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/AbilitySourceCharacteristics.kt": "7abe18fc908f0b1d11c97aa37a01aeda065b62fa",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt": "2cb201734ab583a2bc7f390c1a01a4ffe93f70e3",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt": "b101f9131722ebf594d98500ee2ded7f587b1465"
+  },
+  "observations": [
+    {
+      "location": "TargetValidator.validateSingleTarget / PlayerProtectionRules.isProtectedFromSource",
+      "gap": "Replacement context supplies original source colors/subtypes/card types to permanent checks but player protection still receives only sourceId/casterId. Returned source may be read instead of original visit.",
+      "next": "Use the existing snapshot-aware player protection API with an authoritative original source view; preserve original ability controller separately from source snapshot controller for EachOpponent. Cover player scope colors/subtypes/card types/EachOpponent on live/departed/returned sources."
+    },
+    {
+      "location": "TargetValidator.checkProtectionFromSupertype and checkCantBeEnchanted",
+      "gap": "Supertype and aura checks read present sourceId directly despite known original source history. Aura-source abilities also need a distinct targeting/attachment contract; merely having an Aura source is not proof the effect is attaching.",
+      "next": "Trace original-source supertype and spell-Aura semantics before a new internal contract. Do not extend protected resolver without specific authorization; any supporting helper change must preserve accepted callers and original tests."
+    },
+    {
+      "location": "TargetValidator.validateObjectTarget -> validatePermanentTarget",
+      "gap": "chosenPlayerTarget is computed and passed into validateObjectTarget but dropped on its battlefield branch. Graveyard branch already forwards it.",
+      "next": "Carry targetPlayerId into PredicateContext for battlefield requirements and prove both replacement player and dependent permanent relations. Do not infer optional groups from flattened targets."
+    },
+    {
+      "location": "TargetValidator.validatePermanentTarget filter.excludeSelf",
+      "gap": "Source-relative identity comparisons use entityId only, so a returned source visit can be mistaken for the original source.",
+      "next": "Review source-relative predicate environment across permanent/card/spell requirements using original ObjectRef. Add tests separating source instance from chooser and controller; preserve current-original projection and departed-source snapshot semantics."
+    }
+  ],
+  "required_before_public_flow": [
+    "Player/spell/card recipient and legal-kind boundaries",
+    "Untouched currently illegal occurrences versus newly invalid relational constraints",
+    "Mode/splice/division final views from authoritative groups",
+    "Serialized server-authored option suspension with stale/wrong-player rejection",
+    "BecomesTarget/ward stack identity and original-controller tests",
+    "All required regressions plus original-artifact receiving after source changes"
+  ],
+  "feature_acceptance": false,
+  "external_independent_review": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

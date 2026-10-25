@@ -1,0 +1,33 @@
+{
+  "state": "PREPARED_NOT_EXECUTED",
+  "source": "388f6156ac726c17fd591a87ffbee1bb7224c170",
+  "validation": "69b5d93883a162b3feb05608c36f5eb2311506cb",
+  "run": 40214114418,
+  "job": 121231431609,
+  "attempt": 1,
+  "scope": "Original full-regression receiving only; no feature acceptance",
+  "inputs": [
+    "original.zip: exact artifact manual-fixed-recipient-regression-r1-40214114418",
+    "metadata.json: run, jobs (attempt1), artifact, source and validation git commits, main with sha, source_delta and validation_delta"
+  ],
+  "command": "python RECEIVE.py",
+  "receiver_behavior": "Verify complete original ZIP bytes/digest/CRC and exact manifest, source/tree/validation/workflow/run/job/attempt, literal source/protocol/adapter/recipe, protected archives and immutable historical metadata. Parse all original JUnit report identities/multiplicities, exact passes/skips and executed tasks, 34 client cases, 2000-card Assay corpus and exact51 differential. Failure remains original failure, never negative evidence. Metadata/binding-integrity assertion must be preserved and diagnosed, not weakened.",
+  "expected": {
+    "focused": 956,
+    "broad": 15019,
+    "engine": 4244,
+    "ordinary": 18638,
+    "skips": 43,
+    "recording": 5,
+    "actor": 39,
+    "client": 34,
+    "assay": "568/2000/exact51"
+  },
+  "early_controls": "Reuse receipt6f68a1cac910cc079f5c071f0463774453581f74 on identicalsource388f6156; no repeated compiler/mutant qualification or artifact audit.",
+  "synthetic_checks": 6,
+  "synthetic_checks_not_engine_behavior": true,
+  "independent_review": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
