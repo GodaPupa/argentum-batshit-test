@@ -1,17 +1,17 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T20:48:39.435Z",
+  "updated_date": "2026-10-25T20:50:06.557Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "WAITING_EXTERNAL",
-  "owner": "manual-work-ded5ad62-00c4-8321-a6cd-1d92a8001e1f",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-ded5ad62-00c4-8321-a6cd-1d92a8001e1f",
-    "claimed_utc": "2026-10-25T20:46:17.174Z",
-    "renewed_utc": "2026-10-25T20:46:17.174Z",
-    "expires_utc": "2026-10-25T21:16:17.175Z",
-    "reason": "Receive original terminal R2 after explicit release and no newer successor."
+    "state": "RELEASED",
+    "owner": null,
+    "previous_owner": "manual-work-ded5ad62-00c4-8321-a6cd-1d92a8001e1f",
+    "released_utc": "2026-10-25T20:50:06.557Z",
+    "expires_utc": null,
+    "reason": "Full same-source compatibility running; original receiver verified and isolated next-source review already complete."
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -2959,7 +2959,12 @@
       "attempt": 1,
       "workflow_id": 396383878,
       "observed_status": "in_progress",
-      "event": "push"
+      "event": "push",
+      "receiver_commit": "b4e019c913ddf7301676da34f8f72d3360e5e786",
+      "receiver_path": "experiments/manual-transmission/research/player-relation-regression-r1-20261025",
+      "receiver_immutable_readback_verified": true,
+      "last_observed_utc": "2026-10-25T20:50:06.557Z",
+      "artifact": null
     }
   },
   "completion_contract": {
@@ -3079,12 +3084,12 @@
     },
     "active_workflows": [
       {
-        "run": 40227752525,
-        "job": 121272665534,
-        "attempt": 1,
-        "event": "push",
+        "run": 40232513918,
+        "job": 121287062025,
         "status": "in_progress",
-        "head_sha": "29dd966d835424cf64ce3ee480e54474ec4c40ce"
+        "event": "push",
+        "attempt": 1,
+        "head_sha": "1ee1126464cd39de9e0d3009db57645b57f8d314"
       }
     ],
     "ownership": "Explicit same-owner release, not expiry-based clearing.",
@@ -3177,8 +3182,8 @@
       "ignored_unrelated_run": 34749202144,
       "newer_receipt": false
     },
-    "checked_utc": "2026-10-25T19:49:13.966Z",
-    "owner_liveness": "Previous owner explicitly released and previous automation invocation completed. This invocation claimed, preserved R1 failure, dispatched one justified R2 and now explicitly releases.",
+    "checked_utc": "2026-10-25T20:50:06.557Z",
+    "owner_liveness": "Prior invocation explicitly released and completed; this invocation claimed and now releases. No expiry-only takeover.",
     "latest_commit": "1a40b0e1cdd958613bf0de7f491f68fe48d0fbc5",
     "canonical_receiver_commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7"
   },
@@ -3966,7 +3971,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External-only wait on40232513918. Early R2 original receiving completed exactly once and receiver for mandatory same-source compatibility is prepared. Next source-facts/public-flow edits depend on this candidate's compatibility result; isolated review22acb78c is already complete, with no further safely independent work needed. No feature/Spellskite/multiplayer admission.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
