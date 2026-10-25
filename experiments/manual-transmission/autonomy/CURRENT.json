@@ -1,18 +1,21 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T03:38:14.730Z",
+  "updated_date": "2026-10-25T03:42:37.310Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "WAITING_EXTERNAL",
-  "owner": "manual-work-390bd1587480-resolver-20261025",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-390bd1587480-resolver-20261025",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-25T03:22:10.523Z",
-    "expires_utc": "2026-10-25T04:08:14.730Z",
+    "expires_utc": "2026-10-25T03:42:37.310Z",
     "predecessor_blob": "9fd1c24e36eec981c2b489cdbdf02023a3f6c0f6",
     "reason": "Explicit bounded resolver successor authorization; prior lease released and last scheduled invocation completed; no relevant active workflow.",
-    "renewed_utc": "2026-10-25T03:38:14.730Z"
+    "renewed_utc": "2026-10-25T03:38:14.730Z",
+    "last_owner": "manual-work-390bd1587480-resolver-20261025",
+    "released_utc": "2026-10-25T03:42:37.310Z",
+    "release_reason": "Only external qualification remains: original R1 run40158813599 active. Frozen source preserved; source-bound receiving auditor and ten synthetic parser checks checkpointed and read back. No useful safely independent authorized work remains before original outcome. No continuous worker claimed."
   },
   "last_qualified": {
     "source": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
@@ -41,7 +44,7 @@
     "source_tree": "6b05894d4e3fc1857ef2c93e907ea08905514624",
     "source_branch": "candidate/manual-current-target-resolution-r1-20261025",
     "protocol": "experiments/manual-transmission/research/current-target-resolution-r1-20261025/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/public-target-groups-r5-20261024/DESIGN.md",
+    "design": "experiments/manual-transmission/research/current-target-resolution-r1-20261025/DESIGN.md",
     "validation": "818ff6ef7d597b9323b028497814ca3fe378b1f0",
     "validation_branch": "validation/manual-current-target-resolution-r1-20261025",
     "workflow": ".github/workflows/manual-current-target-resolution-r1-20261025.yml",
@@ -50,32 +53,35 @@
     ],
     "planned_not_observed": {
       "client": 34,
+      "recording": 5,
       "actor": 39,
-      "targeted": 20,
-      "mutation_cases": 20,
-      "mutation_failures": 5,
-      "mutation_passes": 15,
+      "targeted": 42,
+      "new_cases": 22,
+      "mutation_cases": 8,
+      "mutation_failures": 8,
+      "mutation_passes": 0,
       "frames": [
-        61,
-        81,
+        76,
+        79,
+        82,
+        85,
         88,
-        147,
-        165
+        91,
+        94,
+        97
       ],
-      "focused": 820,
-      "broad": 14883,
-      "engine": 4108,
-      "ordinary_passes": 18502,
+      "focused": 842,
+      "broad": 14905,
+      "engine": 4130,
+      "ordinary_passes": 18524,
       "skips": 43,
       "assay_units": 568,
       "assay_corpus": 2000,
-      "assay_findings": 51,
-      "recording": 5,
-      "recording_new": 4
+      "assay_findings": 51
     },
-    "negative_scope": "Unchanged visit-loss mutant must compile and fail exactly PG01/PG04/PG05/PG15/PG17 at61/81/88/147/165 among20; all15 others pass. Compile errors, missing reports, wrong identities/types/frames, skips or unrelated failures reject.",
-    "source_delta": "Same-owner source review, not independent review. Exact five-path R4 recovery delta (recorder-only modification, four-case test, three records); cumulative35 paths; immutable source/protocol/workflow readback verified. FrozenBaselineTest unchanged blobf5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4. Python/YAML syntax and nine synthetic receiver checks passed; synthetic checks are not runtime evidence.",
-    "next_executable_action": "Prepare source-bound original-artifact receiving audit while R1 runs; do not modify frozen source or duplicate qualification. On terminal follow resolver_qualification.next_receiving_action.",
+    "negative_scope": "R1 occurrence/instance-loss mutant must compile and fail exactly CO01..CO08 at76/79/82/85/88/91/94/97. No missing/extra tests, skips, errors, wrong identities/types/frames, compiler contamination or unrelated failures.",
+    "source_delta": "Exact15-path R5-to-R1 delta; one authorized resolver replacement and other143 protected originals preserved. Every existing test unchanged. Same-owner static review and immutable source/protocol/workflow readback; no independent review claimed.",
+    "next_executable_action": "Reconcile live owner, newer receipts/successors and all workflow statuses. If40158813599 remains active, do not duplicate or interrupt. When terminal, receive its original artifact once using source-bound auditor896148dc; pin exact archive/manifest/source/tree/workflow/run/job/attempt, audit every declared gate and explicitly resolve inherited protocol prose. Preserve failure diagnostics before any justified bounded successor. R5 remains accepted without requalification/reaudit.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -2047,10 +2053,40 @@
       "run_number": 1,
       "event": "push",
       "dispatched_utc": "2026-10-25T03:36:03.808Z",
-      "observed_utc": "2026-10-25T03:38:14.730Z",
+      "observed_utc": "2026-10-25T03:42:37.310Z",
       "status": "in_progress",
       "expected_artifact_name": "manual-current-target-resolution-r1-40158813599",
-      "next_receiving_action": "After terminal, reconcile newer receipts/successors first; receive original artifact once, pin bytes/hash/manifest/source/tree/validation/workflow/run/job/attempt, audit normal and mutant compilation, eight exact executable controls, restoration/rebinding, raw identities/counts/skips, 143 protected originals plus admitted resolver, 23 goldens, 82 fixtures, all required regressions and Assay. Green workflow is not acceptance."
+      "next_receiving_action": "After terminal, reconcile newer receipts/successors first; receive original artifact once, pin bytes/hash/manifest/source/tree/validation/workflow/run/job/attempt, audit normal and mutant compilation, eight exact executable controls, restoration/rebinding, raw identities/counts/skips, 143 protected originals plus admitted resolver, 23 goldens, 82 fixtures, all required regressions and Assay. Green workflow is not acceptance.",
+      "receiving_audit": {
+        "state": "PREPARED_NOT_EXECUTED",
+        "commit": "896148dc63ee3cc839628b5047b41f1335bfcadf",
+        "branch": "checkpoint/manual-current-target-resolution-receiver-r1-20261025",
+        "path": "experiments/manual-transmission/research/current-target-resolution-receiver-r1-20261025/RECEIVE_RESOLVER_R1.py",
+        "blob": "16e349e36d1326741c13fe750db303a41d76340b",
+        "prepared_record": "experiments/manual-transmission/research/current-target-resolution-receiver-r1-20261025/PREPARED.json",
+        "immutable_readback_verified": true,
+        "synthetic_checks": 10,
+        "synthetic_evidence": "Parser checks only; no Kotlin or behavioral evidence."
+      },
+      "job_status": "in_progress",
+      "conclusion": null,
+      "steps_observed": {
+        "binding": "completed_success",
+        "client34_and_typecheck": "completed_success",
+        "normal_compilation": "in_progress",
+        "remaining_gates": "not_observed"
+      },
+      "pending_receiving_review": {
+        "kind": "INHERITED_PROTOCOL_PROSE",
+        "fields": [
+          "negative_control",
+          "limitations",
+          "recovery",
+          "recovery_r2",
+          "recovery_from_failed_r3"
+        ],
+        "action": "Preserve original frozen protocol and explicitly reconcile copied R5 prose with R1 source-bound mutation_contract/authorization/workflow before adoption. No silent reinterpretation or assertion weakening. See prepared record896148dc."
+      }
     }
   },
   "completion_contract": {
@@ -2074,40 +2110,42 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-24T23:47:02.667Z",
-    "relevant_active_workflows": [],
+    "last_checked_utc": "2026-10-25T03:42:37.310Z",
+    "relevant_active_workflows": [
+      40158813599
+    ],
     "ignored_unrelated_ancient_run": 34749202144,
     "current_worker": null,
-    "observed_ledger_predecessor_blob": "feaa21d815baf48ec7e5af9a26835075627da7e1",
+    "observed_ledger_predecessor_blob": "cef66beadeb39a6a114aa77784fd2ca60ac694a3",
     "former_discussion_executor_paused": true,
     "intervention_watch_read_only": true,
-    "latest_checkpoint_before_release": "a06df9f1f3a2ab6027993dd90de4997b5adcb40f",
+    "latest_checkpoint_before_release": "896148dc63ee3cc839628b5047b41f1335bfcadf",
     "qualification_repeated": false,
     "latest_receipt": "474c66557b6dbee5c9f25025ac8f8bec50c05ce0",
     "latest_draft": "c0c0b1e60c622b3224e336f6b37a55c0c5312e85",
     "preserved_prior_reconciliation": "2026-10-23T23:41:32.374Z: explicit predecessor release verified; task admission still true, old Discussion executor paused, no relevant workflow active/queued/waiting/requested/pending or newer checkpoint.",
     "current_conversation_scheduled_wakeup": {
       "task": "6adbe33033e481918659ce578f64f31e",
-      "run": "c07abef5-31ac-8331-8a29-d1d480a81d28",
-      "disposition": "Delivered during this same active Work recovery; no second owner, worker or dispatch created."
+      "run": "aae890c1-27f8-832a-99dc-f2801aaa8de8",
+      "disposition": "Delivered during this same active resolver Work invocation; no second worker, owner or dispatch created."
     },
     "scheduled_last_run": {
-      "id": "c07abef5-31ac-8331-8a29-d1d480a81d28",
+      "id": "aae890c1-27f8-832a-99dc-f2801aaa8de8",
       "recorded_status": "in_progress",
-      "scheduled_for": "2026-10-24T22:44:00Z",
-      "started_at": "2026-10-24T22:39:16.083815Z",
+      "scheduled_for": "2026-10-25T03:44:00Z",
+      "started_at": "2026-10-25T03:40:13.422736Z",
       "completed_at": null,
       "chat_ref": null
     },
-    "observed_utc": "2026-10-24T22:43:20.114Z",
-    "active_relevant_workflow": null,
+    "observed_utc": "2026-10-25T03:42:37.310Z",
+    "active_relevant_workflow": 40158813599,
     "queued_relevant_workflows": [],
     "waiting_relevant_workflows": [],
     "owner_reconciliation": {
-      "resumed_original_work_session": true,
+      "original_owner": "manual-work-390bd1587480-resolver-20261025",
+      "resumed_same_work_session": true,
       "expiry_only_takeover": false,
-      "completed_task_before_claim": "b3cecbc9-2838-8326-b0b4-64005da65189",
-      "claim_commit": "187fcf0add40d1639c2b4b0a11541b6048bb74d1",
+      "claim_commit": "5e181ef846069d4016b0aa6d7930efa2d13685f4",
       "released_after_checkpoint": true
     },
     "recent_checkpoint_head": "392d7c7860e628f6fefe144fac9d1951c0348d5e",
@@ -2150,7 +2188,7 @@
       "expectations_updated_utc": "2026-10-24T13:29:44.515Z",
       "expectations": "Strictly read-only; follow current Work WAITING_EXTERNAL ownership and single public target-group run40098055404. Accepted activation40091111694 remains accepted. No action for healthy waiting; receive original evidence before bounded acceptance. Watch enabled state unchanged."
     },
-    "handoff": "R5 accepted; ownership explicitly released BLOCKED at protected resolver authority boundary. Existing single task unchanged; do not disable except experiment completion or user instruction.",
+    "handoff": "Resolver authority granted and recorded; bounded candidate41dfad56 is qualifying in original40158813599. Ownership explicitly released WAITING_EXTERNAL. Existing single Work executor enabled; no R5 reaudit or repeat.",
     "execution_admitted": true,
     "former_discussion_executor": {
       "id": "6adbad91b90881918859ad0cba22b881",
@@ -2226,8 +2264,8 @@
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
-    "last_verified_enabled_utc": "2026-10-24T22:43:20.114Z",
-    "next_authorized_action": "Implement and qualify bounded resolver successor from accepted sourcecac0616e under resolver_successor_authorization, exact NEXT_ADMISSION gates. Reuse R5 receipt without rerun/reaudit.",
+    "last_verified_enabled_utc": "2026-10-25T03:42:37.310Z",
+    "next_authorized_action": "Reconcile live owner, newer receipts/successors and all workflow statuses. If40158813599 remains active, do not duplicate or interrupt. When terminal, receive its original artifact once using source-bound auditor896148dc; pin exact archive/manifest/source/tree/workflow/run/job/attempt, audit every declared gate and explicitly resolve inherited protocol prose. Preserve failure diagnostics before any justified bounded successor. R5 remains accepted without requalification/reaudit.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2258,11 +2296,11 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "390bd1587480",
-    "work_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
+    "work_owner": null,
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "No active owner or relevant workflow. Next public-group engineering checkpoint ready.",
-    "last_execution_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-495f939f-a3c8-8333-9aec-64b0054babfb"
+    "activity": "No active worker lease. One source-bound resolver qualification40158813599 active; next action original-artifact receiving.",
+    "last_execution_owner": "manual-work-390bd1587480-resolver-20261025"
   },
   "blockers": [],
   "qualified_components": {
@@ -2759,5 +2797,6 @@
     "task": "6adbe33033e481918659ce578f64f31e",
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
-  }
+  },
+  "actual_stopping_reason": "External qualification40158813599 pending; receiving audit and independent protocol review checkpointed; no useful safely independent authorized work remains. Ownership explicitly released."
 }
