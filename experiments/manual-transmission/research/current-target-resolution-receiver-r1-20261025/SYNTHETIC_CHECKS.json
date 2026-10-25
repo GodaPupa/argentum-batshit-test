@@ -1,0 +1,55 @@
+{
+  "scope": "synthetic receiver checks, not behavioral evidence",
+  "checks": [
+    {
+      "name": "exact eight witnesses",
+      "expected": "accept",
+      "passed": true
+    },
+    {
+      "name": "missing witness",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "name": "extra witness",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "name": "wrong identity",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "name": "wrong failure type",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "name": "wrong first source frame",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "name": "compiler contamination",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "name": "unrelated failed task",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "name": "zero test exit",
+      "expected": "reject",
+      "passed": true
+    },
+    {
+      "name": "zero reports",
+      "expected": "reject",
+      "passed": true
+    }
+  ]
+}

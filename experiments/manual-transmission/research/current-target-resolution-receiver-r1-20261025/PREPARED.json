@@ -1,0 +1,37 @@
+{
+  "status": "PREPARED_NOT_EXECUTED_NOT_ACCEPTANCE",
+  "source": "41dfad5616b0143df07dae6aa098539085a94a99",
+  "tree": "6b05894d4e3fc1857ef2c93e907ea08905514624",
+  "validation": "818ff6ef7d597b9323b028497814ca3fe378b1f0",
+  "validation_tree": "cfffd8db43c49daafd3f55489f972d59858d01e3",
+  "workflow": ".github/workflows/manual-current-target-resolution-r1-20261025.yml",
+  "workflow_blob": "b0f201414b29a0c708997e4a8f420b4c008b95a4",
+  "run": 40158813599,
+  "job": 121065805389,
+  "attempt": 1,
+  "expected_artifact": "manual-current-target-resolution-r1-40158813599",
+  "accepted_r5_reused": "474c66557b6dbee5c9f25025ac8f8bec50c05ce0",
+  "accepted_r5_reaudited": false,
+  "independent_review": false,
+  "synthetic_checks": 10,
+  "synthetic_evidence_scope": "Parser only, not executable Kotlin behavioral evidence.",
+  "actual_negative_contract": "Disable captured per-occurrence visits and use flattened-index named lookup. Must compile and fail exactly CO01 through CO08 at pinned assertion frames; no compilation errors, skips, missing reports, unrelated failures or zero tests.",
+  "unresolved_review": [
+    {
+      "kind": "INHERITED_PROTOCOL_PROSE",
+      "fields": [
+        "negative_control",
+        "limitations",
+        "recovery",
+        "recovery_r2",
+        "recovery_from_failed_r3"
+      ],
+      "finding": "Copied R5 prose describes PG controls and a protected resolver restriction although R1 executable gate, mutation_contract, authorization, producer_scope, guard_scope, source bindings and workflow pin eight CO controls plus the explicitly authorized resolver change.",
+      "action": "Preserve original protocol. During receiving reconcile this discrepancy explicitly; do not silently accept or rewrite frozen source. If a bounded successor is justified by original failure evidence, remove or label inherited prose while preserving exact assertions and controls."
+    }
+  ],
+  "next_action": "At terminal first reconcile CURRENT, newer receipts and successor workflows. Download the original artifact once. Capture exact metadata and independently verify archive/manifest; on success execute the pinned full auditor, on failure preserve full original evidence and diagnose actual cause before one justified new immutable successor. Compilation/missing reports are not behavioral evidence.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
