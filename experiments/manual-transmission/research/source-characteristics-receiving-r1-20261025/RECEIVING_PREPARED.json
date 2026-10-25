@@ -1,0 +1,34 @@
+{
+  "schema": "manual-source-characteristics-receiving-preparation-v1",
+  "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
+  "tree": "af6fcddb251c61a3ca48910678692aa0a51feecd",
+  "validation": "2a80329c2dd38ffcc69ede89275aabf8687b4d86",
+  "run": 40191527984,
+  "job": 121163353737,
+  "attempt": 1,
+  "state": "PREPARED_NOT_RECEIVED_NOT_ACCEPTED",
+  "original_diagnostic_sha256": "a4bfa9cbbcc287f057ff963a8e9807de14ab2797e0f338c10f06dd4d58c28434",
+  "recorded_source_review": "c3e6e7c2153e8957ce7934554bdfa9789ed95b98",
+  "checks": {
+    "engine_executed": false,
+    "qualification_acceptance": false,
+    "checks": {
+      "valid_targeted": "ACCEPTED_SYNTHETIC_CONTRACT",
+      "valid_mutation-live-only": "ACCEPTED_SYNTHETIC_CONTRACT",
+      "valid_mutation-wrong-visit": "ACCEPTED_SYNTHETIC_CONTRACT",
+      "wrong_first_frame": "REJECTED_AS_REQUIRED",
+      "compile_failure_is_not_behavior": "REJECTED_AS_REQUIRED",
+      "missing_report": "REJECTED_AS_REQUIRED",
+      "missing_test_task": "REJECTED_AS_REQUIRED",
+      "zero_exit_for_negative": "REJECTED_AS_REQUIRED",
+      "forged_green_totals": "REJECTED_AS_REQUIRED",
+      "source_substitution": "REJECTED_AS_REQUIRED"
+    }
+  },
+  "scope": "offline receiving infrastructure only; does not mutate the frozen candidate",
+  "original_accepted_evidence_reused": true,
+  "external_independent_review": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
