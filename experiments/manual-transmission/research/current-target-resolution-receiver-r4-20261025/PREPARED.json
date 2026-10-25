@@ -1,0 +1,20 @@
+{
+  "state": "PREPARED_NOT_EXECUTED",
+  "source": "457a644a0f24289e90241f0bf12fa40a933edb43",
+  "tree": "d3306e35cc1584e4f587118202ec25b924b51c84",
+  "validation": "9296091334ff6aa18e2d9382da896f2547958498",
+  "validation_tree": "dfd084bcbc60f4d61ae82970449d662f71a9435d",
+  "run": 40171122250,
+  "job": 121101976037,
+  "attempt": 1,
+  "workflow_id": 395714200,
+  "workflow_blob": "a784d1547d9e28dedd2ab795c21db041654fde0a",
+  "artifact_name": "manual-current-target-resolution-r4-40171122250",
+  "receipt_schema": "resolver-metadata.json: main,run,jobs,artifact,source_commit,validation_commit,source_delta (acceptedR5 to source),validation_delta,run_id_pin,job_id_pin,artifact_id_pin,artifact_bytes_pin,artifact_sha256_pin",
+  "instructions": "First reconcile CURRENT, newer receipts/successors and all relevant statuses. Only on terminal fetch original archive once; failed run preserve originalfailure without running success-only auditor. For success save original-ID.zip, extract resolver-original, bind metadata and verified source files, set MANUAL_RECEIPT_ROOT/MANUAL_REPO/MANUAL_SOURCE_OVERLAY/MANUAL_SOURCE_ROOT then execute RECEIVE_R4.py. No R5 reaudit.",
+  "acceptance": "Exact29 mutation rows in two suites, original12 plus TA02@53/TA03@58 failures;15passes,zero skips/errors;58targeted including unchangedMC01..09;849focused,14912broad,4137engine,18531ordinary+43exacthistoricalskips,34client/5recording/39actor,Assay568/2000/exact51 findings. Exact archive/manifest/source/tree/workflow/job/attempt,restoration,143protected+admittedresolver/23goldens/82fixtures.",
+  "job_cleanup_note": "Optional Post Run actions/setup-node@v4 may be skipped when cache cleanup is unavailable (observed originalR3 job step51). All qualification gates and other steps must succeed. This does not excuse skipped tests or qualification stages.",
+  "synthetic_checks": 7,
+  "synthetic_scope": "Parser-only checks; no engine/runtime evidence. Frozen receiver exact locked recipes independently reconstructed.",
+  "external_independent_review": false
+}
