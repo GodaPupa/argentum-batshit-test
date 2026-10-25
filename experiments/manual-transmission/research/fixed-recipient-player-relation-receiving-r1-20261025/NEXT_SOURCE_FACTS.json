@@ -1,0 +1,80 @@
+{
+  "schema": 1,
+  "state": "ISOLATED_NEXT_DEPENDENCY_SOURCE_REVIEW_NOT_IMPLEMENTED_OR_ADMITTED",
+  "source": "d94e745ecccb3012783725fe22c5045185b9ce0d",
+  "pending_run": 40223311961,
+  "frozen_candidate_unchanged": true,
+  "bindings": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/AbilitySourceCharacteristics.kt": "7abe18fc908f0b1d11c97aa37a01aeda065b62fa",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PlayerProtectionRules.kt": "81391a19b6d51cae66a4d90c7748b9c966dae2ee",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt": "2cb201734ab583a2bc7f390c1a01a4ffe93f70e3",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/FixedRecipientRetargeting.kt": "22b3897da4c8dba259d4b8b2409c698fb7d242c1"
+  },
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "checked_utc": "2026-10-25T18:55:14.767Z",
+    "sections": [
+      "113.7a",
+      "113.8",
+      "303.4a",
+      "400.7",
+      "702.16k"
+    ],
+    "interpretation": "Ability controller is distinct from source characteristics. Player-protection targeting uses the spell or ability controller; passing a source snapshot must not replace that controller. Aura spell targeting and an Aura source's unrelated activated ability are distinct. A returned source is a new object."
+  },
+  "findings": [
+    {
+      "site": "TargetValidator.validateSingleTarget player protection",
+      "fact": "Caller discards original-source colors/subtypes/card types and asks PlayerProtectionRules to read present sourceId.",
+      "repair": "Use resolved original-visit characteristics for player-protection scopes; retain the stack object's controller for EachOpponent targeting. Do not globally alter damage semantics.",
+      "witnesses": [
+        "live/removed/returned original-source color, subtype and card-type scopes",
+        "ability controller and current/source-snapshot controller differ in both directions",
+        "empty/partial known LKI must not borrow a later source visit"
+      ]
+    },
+    {
+      "site": "PlayerProtectionRules.scopeMatchesSource",
+      "fact": "Its existing sourceSnapshot parameter replaces controller choice for EachOpponent as well as characteristic reads; blindly passing LKI would regress targeting-controller semantics.",
+      "repair": "Provide an explicit targeting context/override separated from damage-source controller. Add paired executable tests before using the helper in retargeting."
+    },
+    {
+      "site": "AbilitySourceCharacteristics.resolve",
+      "fact": "Correct original-visit selection already exists, but returned data contains only colors/subtypes/cardTypes. Snapshot already has supertypes; callers must not re-read a different visit.",
+      "repair": "Reuse this selection rule for the additional facts required by targeting; avoid duplicating visit inference and retain legacy fallback. Keep protected StackResolver bytes unchanged.",
+      "witnesses": [
+        "original legendary source removed and returned nonlegendary",
+        "original nonlegendary source returned legendary",
+        "projected live-original supertype change"
+      ]
+    },
+    {
+      "site": "TargetValidator.checkCantBeEnchanted",
+      "fact": "Present sourceId being an Aura applies an enchantment restriction even to unrelated abilities.",
+      "repair": "At the bounded retargeting path distinguish Aura spell from an ability whose source is an Aura. Do not change non-targeted attachment behavior.",
+      "witnesses": [
+        "Aura spell rejected by CANT_BE_ENCHANTED",
+        "unrelated ability from Aura source allowed absent other restrictions"
+      ]
+    },
+    {
+      "site": "TargetValidator.validatePermanentTarget / validateGraveyardTarget excludeSelf",
+      "fact": "EntityId equality conflates original source with returned visit.",
+      "repair": "Carry authoritative original source reference through retargeting validation and use visit equality; retain explicit legacy behavior when no authoritative origin exists.",
+      "witnesses": [
+        "same original visit excluded",
+        "same EntityId later visit eligible if remaining predicates pass",
+        "unknown original visit never silently rebound"
+      ]
+    }
+  ],
+  "safe_followup": "After the pending relation run is received, batch source characteristics/player protection/controller, Aura-kind and original-visit predicates under one coherent targeting-context contract on a new immutable source. Preserve all earlier assertions and add executable mutants for each distinct bug. Compile normal/mutant and targeted controls before full final-source regressions. Public serialized choice/ward/trigger integration remains required.",
+  "authority": "Existing ordinary engineering authorization permits this review and unprotected supporting changes; it does not extend the protected resolver boundary. Do not request routine Proceed or claim missing already granted resolver/source-characteristic authority.",
+  "not_claimed": [
+    "No Kotlin execution for this review",
+    "No source-history or R5 re-audit",
+    "No feature admission",
+    "No registration, official games, seeds or spending change"
+  ]
+}
