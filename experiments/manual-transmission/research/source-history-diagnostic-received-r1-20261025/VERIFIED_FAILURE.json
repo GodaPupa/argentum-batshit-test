@@ -1,0 +1,54 @@
+{
+  "state": "VERIFIED_COMPILATION_FAILURE_ZERO_BEHAVIORAL_EVIDENCE",
+  "source": "dd50a5ce32331912c7193c3a453d12548424ce2e",
+  "tree": "0fd4dd776d992eab49d85c239471388d0a5aaf7a",
+  "base": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+  "validation": "c4957fad6391fe19c7fef027108061e11a2fef25",
+  "validation_tree": "2452318a2888cfcbd178b6ba7b98279b81248cf8",
+  "workflow": ".github/workflows/manual-source-history-diagnostic-r1-20261025.yml",
+  "workflow_blob": "442902b62f20293afefb788d37f2ada587584070",
+  "workflow_id": 395798725,
+  "run": 40178974689,
+  "job": 121125720316,
+  "attempt": 1,
+  "artifact": {
+    "id": 12593915179,
+    "name": "manual-source-history-diagnostic-r1-40178974689",
+    "size_in_bytes": 20468,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12593915179",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12593915179/zip",
+    "expired": false,
+    "created_at": "2026-10-25T09:06:23Z",
+    "expires_at": "2026-11-24T09:06:22Z",
+    "updated_at": "2026-10-25T09:06:23Z",
+    "digest": "sha256:156202461889ef74778692f42399ac0c0570a00bc14e2b298c5ee10a1ba82c82",
+    "workflow_run": {
+      "id": 40178974689,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-source-history-diagnostic-r1-20261025",
+      "head_sha": "c4957fad6391fe19c7fef027108061e11a2fef25"
+    }
+  },
+  "manifest_entries": 11,
+  "verified_present_manifest_entries": 10,
+  "missing_manifest_entries": [
+    "source/.github/workflows/manual-source-history-diagnostic-r1-20261025.yml"
+  ],
+  "compiler_errors": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CurrentTargetSourceHistoryDiagnosticTest.kt:34:103 No value passed for parameter 'target'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CurrentTargetSourceHistoryDiagnosticTest.kt:37:103 No value passed for parameter 'target'."
+  ],
+  "executed_cases": 0,
+  "behavioral_evidence": false,
+  "accepted": false,
+  "protected_bindings": 143,
+  "accepted_resolver_unchanged": true,
+  "goldens": 23,
+  "fixtures": 82,
+  "diagnosis": "Both novel fixture Effects.Destroy calls omit the mandatory EffectTarget. Source-bound API blob1904846d3b5ad489224784b5d9687c68f8b207ee confirms signature. Also upload-artifact omitted source/.github/workflows despite archive manifest entry. Neither is target-legality behavioral evidence.",
+  "justified_successor": "Supply explicit single requirement ContextTarget(0) to the two fixture calls without moving or weakening any assertion; archive workflow at a non-hidden path with exact blob verification. Preserve original failure and all protected production. Freeze new source/protocol/review/workflow before one successor.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
