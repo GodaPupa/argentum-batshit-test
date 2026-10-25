@@ -1,0 +1,93 @@
+{
+  "status": "VERIFIED_FAILURE_TARGETLESS_MODAL_TRIGGER_NOT_ENQUEUED",
+  "source": "457a644a0f24289e90241f0bf12fa40a933edb43",
+  "validation": "9296091334ff6aa18e2d9382da896f2547958498",
+  "run": 40171122250,
+  "job": 121101976037,
+  "attempt": 1,
+  "artifact": {
+    "id": 12590367691,
+    "node_id": "MDg6QXJ0aWZhY3QxMjU5MDM2NzY5MQ==",
+    "name": "manual-current-target-resolution-r4-40171122250",
+    "size_in_bytes": 1856929,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12590367691",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12590367691/zip",
+    "expired": false,
+    "digest": "sha256:5136bfb13f188da6d2fc139fecfc1d4037b4dc907b14ff06b299d846e14eca93",
+    "created_at": "2026-10-25T07:15:39Z",
+    "updated_at": "2026-10-25T07:15:39Z",
+    "expires_at": "2027-01-23T07:00:03Z",
+    "workflow_run": {
+      "id": 40171122250,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-current-target-resolution-r4-20261025",
+      "head_sha": "9296091334ff6aa18e2d9382da896f2547958498"
+    }
+  },
+  "manifest_entries": 1622,
+  "normal_and_mutant_compilation": "PASS",
+  "positive_cases": {
+    "recording": 5,
+    "actor": 39,
+    "targeted": 58
+  },
+  "mutation_failures": {
+    "com.wingedsheep.engine.scenarios.CurrentTargetAuthorityBoundaryTest::TA02 separate authority preserves stale occurrence instead of refreshing it": 53,
+    "com.wingedsheep.engine.scenarios.CurrentTargetAuthorityBoundaryTest::TA03 separate authority resolves the group after an omitted instance": 58,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO01 spell preserves stale first and live second occurrence of one entity": 76,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO02 trigger preserves stale first and live second occurrence of one entity": 79,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO03 activation preserves stale first and live second occurrence of one entity": 82,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO04 spell maps selected group after omitted optional instance": 85,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO05 trigger maps selected group after omitted optional instance": 88,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO06 activation maps selected group after omitted optional instance": 91,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO07 modal spell keeps illegal occurrence out of its effect context": 94,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO08 splice tail keeps illegal occurrence out of its effect context": 97,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO09 modal trigger preserves original instance mapping": 100,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO15 all stale occurrences fizzle while preserving original target plan": 142,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO16 a wider variable group retains following named target and null positions": 150,
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO19 divided damage discards illegal occurrence share without reallocating it": 182
+  },
+  "mutation_passes": [
+    "com.wingedsheep.engine.scenarios.CurrentTargetAuthorityBoundaryTest::TA01 separate authority preserves legacy target view and emitted events",
+    "com.wingedsheep.engine.scenarios.CurrentTargetAuthorityBoundaryTest::TA04 separate authority survives full state serialization with original provenance",
+    "com.wingedsheep.engine.scenarios.CurrentTargetAuthorityBoundaryTest::TA05 conflicting authority and mismatched targets both reject atomically",
+    "com.wingedsheep.engine.scenarios.CurrentTargetAuthorityBoundaryTest::TA06 legacy retarget view cannot bypass its separate live authority",
+    "com.wingedsheep.engine.scenarios.CurrentTargetAuthorityBoundaryTest::TA07 separate current transition preserves original provenance and rejects stale expected plan",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO10 current plan and resolution survive serialized state",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO11 mismatched flat targets fail atomically without legacy fallback",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO12 serialized stale expected plan cannot overwrite a newer current plan",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO13 legacy targets without authoritative plan retain legacy behavior",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO14 legacy retarget adapter cannot leave an authoritative view stale",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO17 divisions remain per occurrence and aggregate only surviving recipient views",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO18 modal and splice views move atomically and division stays with its slot",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO20 target transition cannot alter original division",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO21 paused modal and splice entries preserve resolved null slots and divisions",
+    "com.wingedsheep.engine.scenarios.CurrentTargetResolutionTest::CO22 stale modal view rejects before the stack item is popped"
+  ],
+  "mutation_skips": [],
+  "stages": {
+    "focused": {
+      "cases": 849,
+      "passes": 849,
+      "failures": {},
+      "skips": 0,
+      "errors": 0
+    },
+    "broad": {
+      "cases": 6894,
+      "passes": 6892,
+      "failures": {
+        "com.wingedsheep.engine.scenarios.ModalTriggeredAbilityOnStackTest::answering it puts the ability on the stack with the mode baked in, unresolved": 79,
+        "com.wingedsheep.engine.scenarios.ModalTriggeredAbilityOnStackTest::the opponent can read the chosen mode off the stack before responding": 100
+      },
+      "skips": 0,
+      "errors": 0
+    }
+  },
+  "diagnosis": "Fresh targetless modal trigger constructs a zero-occurrence plan; putTriggeredAbility has no TargetsComponent for zero targets, so separate authority installation returns error before enqueue. Existing ModalTriggeredAbilityOnStackTest fails at79/100. Focused849 and all14 mutation witnesses passed. Ordinary/Assay not executed.",
+  "next": "Preserve original targetless modal assertions; do not fabricate targeting authority when no target occurrences exist. Qualify bounded producer repair on new immutable source with these original cases in the early targeted gate.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
