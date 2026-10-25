@@ -1,16 +1,17 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T22:51:27.159Z",
+  "updated_date": "2026-10-25T22:52:22.245Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "ACTIVE",
-  "owner": "manual-work-9c2edd97-03f8-8323-9c45-c7aa7cd11e66",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-9c2edd97-03f8-8323-9c45-c7aa7cd11e66",
-    "claimed_utc": "2026-10-25T22:49:43.518Z",
-    "expires_utc": "2026-10-25T23:19:43.518Z",
-    "reason": "Receive original compilation failure and diagnose bounded successor."
+    "state": "RELEASED",
+    "owner": null,
+    "previous_owner": "manual-work-9c2edd97-03f8-8323-9c45-c7aa7cd11e66",
+    "released_utc": "2026-10-25T22:52:22.245Z",
+    "expires_utc": null,
+    "reason": "Import-only R2 active; original R1 failure received and exact R2 receiver saved."
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -34,15 +35,17 @@
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
     "current_subproblem": "Original-source player protection, supertypes, Aura spell/ability distinction and original source-visit exclusion.",
-    "source_candidate": "03ad7b751270d1340e7efd945787b239518827fb",
-    "source_tree": "5b2c1ce641fb9f7bd5c732cb1cf5d6a95f610780",
+    "source_candidate": "1382dc0a1fc399e96f8419117b7354627ec43308",
+    "source_tree": "c859dcf0d0f537879a03271e028058f33573d07f",
     "source_branch": null,
     "protocol": "experiments/manual-transmission/research/fixed-recipient-source-context-r1-20261025/PROTOCOL.json",
     "design": "experiments/manual-transmission/research/fixed-recipient-source-context-r1-20261025/DESIGN.md",
-    "validation": "5e4aaa1a3923533fb88275ab39874a561438681b",
-    "validation_branch": "validation/manual-fixed-recipient-source-context-r1-20261025",
-    "workflow": ".github/workflows/manual-fixed-recipient-source-context-r1-20261025.yml",
-    "pending_runs": [],
+    "validation": "01a925f86b1253be8e48d0322256fe568a0bb62c",
+    "validation_branch": "validation/manual-fixed-recipient-source-context-r2-20261025",
+    "workflow": ".github/workflows/manual-fixed-recipient-source-context-r2-20261025.yml",
+    "pending_runs": [
+      40242125247
+    ],
     "planned_not_observed": {
       "normal": 133,
       "restored": 133,
@@ -55,7 +58,7 @@
     },
     "negative_scope": "One compiled context-loss/wrong-controller mutant:77 cases, exactly46 frozen assertion witnesses and31passes,0errors/skips. No behavioral results claimed before original receiving.",
     "source_delta": "Exactly8 files against received f51196cc:4 unprotected production files,1 new77-case test,3 frozen protocol/design/gate records. Protected resolver/other143bindings/23goldens/82fixtures and all original assertions unchanged.",
-    "next_executable_action": "Reconcile newer receipt/successor then receive original run40238046467/job121303756639/attempt1 using immutable receiver0f16ac1c0cc8d6ef7afa4aff5e227c5afec77898. Audit exact source03ad7b75/tree5b2c1ce6/validation5e4aaa1a/workfloweb2de9c4; original artifact bytes/digest/manifest, both compilations,133normal/restored identities,77mutant with46exact assertion frames/31passes/0errors/skips, all forms/restoration/protected bytes. Preserve/diagnose original failures. On pass continue mandatory same-source full compatibility and saved public option/ward/trigger reviewba31cec3; no feature/Spellskite/multiplayer admission.",
+    "next_executable_action": "Receive original R2 run40242125247/job121315965480/attempt1 with receiver60f03293235b7497d015fcf210902de1de2f7102 after newer receipt/successor reconciliation. Exact source1382dc0a/validation01a925f8, original artifact bytes/manifest, both compilations,133normal/restored,77mutant with46frozen assertion witnesses/31passes/0errors/skips, all source forms/restoration/protected bytes. Preserve any original failure. After pass continue required same-source full compatibility and existing public choice/ward/trigger review; no feature admission.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -172,7 +175,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "c663d7b2a82386263e0da0518d2cc5d41878ff73",
+    "validation_tree": "29d19748b7921892aba6ad2c743954f50056d072",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -2969,7 +2972,7 @@
       "gate_errors": []
     },
     "fixed_recipient_source_context": {
-      "state": "FROZEN_R2_NOT_DISPATCHED",
+      "state": "WAITING_EXTERNAL",
       "base": "f51196cc04babbd422274dcf68d94e7aa8a58c67",
       "source": "1382dc0a1fc399e96f8419117b7354627ec43308",
       "source_tree": "c859dcf0d0f537879a03271e028058f33573d07f",
@@ -3002,18 +3005,18 @@
       },
       "scope": "Internal original source facts/controller/kind/visit validation; no public flow or feature admission.",
       "accepted_predecessor_receipt": "b98555e388161181321dce1e0ac0cbf124fa794a",
-      "next_action": "Receive original source-context qualification after newer-receipt/successor reconciliation; exact133normal/restored,77mutant with46witnesses/31passes, both compilations, all source/protected/form gates. No feature acceptance.",
-      "run": null,
-      "job": null,
+      "next_action": "Receive original R2 run40242125247/job121315965480/attempt1 with receiver60f03293235b7497d015fcf210902de1de2f7102 after newer receipt/successor reconciliation. Exact source1382dc0a/validation01a925f8, original artifact bytes/manifest, both compilations,133normal/restored,77mutant with46frozen assertion witnesses/31passes/0errors/skips, all source forms/restoration/protected bytes. Preserve any original failure. After pass continue required same-source full compatibility and existing public choice/ward/trigger review; no feature admission.",
+      "run": 40242125247,
+      "job": 121315965480,
       "attempt": 1,
-      "workflow_id": 396429864,
+      "workflow_id": 396458910,
       "event": "push",
       "observed_status": "in_progress",
       "artifact": null,
-      "receiver_commit": null,
-      "receiver_path": null,
-      "receiver_immutable_readback_verified": false,
-      "last_observed_utc": "2026-10-25T22:01:45.814Z",
+      "receiver_commit": "60f03293235b7497d015fcf210902de1de2f7102",
+      "receiver_path": "experiments/manual-transmission/research/fixed-recipient-source-context-receiving-r2-20261025",
+      "receiver_immutable_readback_verified": true,
+      "last_observed_utc": "2026-10-25T22:52:22.245Z",
       "public_flow_review_reused": "ba31cec35ca3cbb2f6c546178abcdce25c5659bb",
       "failed_original_receipt": "7b0a1b7afa287c38c543f067b55c53e45bd95587",
       "recovery": "Only new fixture import and protocol/design records changed; production, test bodies/assertions, frames, mutant and gate identical."
@@ -4088,7 +4091,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "External-only wait on40238046467. Original relation full compatibility received once atb98555e3, coherent source-context successor implemented/frozen/dispatched with compiler-first controls, exact original receiver prepared and verified. Saved public-flow review already covers the next dependency; further dependent implementation/qualification waits for this source's evidence. No useful safely independent authorized work remains; no continuous ownership claimed.",
+  "actual_stopping_reason": "External-only wait on40242125247. Original R1 compilation failure received once; missing test import repaired on immutable source without changing production/assertions/mutant/frames. One justified successor launched; exact original receiver verified. Existing public-flow review already complete; no useful safely independent work remains before new source evidence. No continuous ownership or acceptance claimed.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
