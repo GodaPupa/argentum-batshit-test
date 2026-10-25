@@ -389,7 +389,7 @@ class TargetValidator {
             is TargetOpponentOrPlaneswalker -> validateOpponentOrPlaneswalkerTarget(state, target, casterId)
             is TargetPlayerOrPlaneswalker -> validatePlayerOrPlaneswalkerTarget(state, target, casterId)
             is TargetCreatureOrPlaneswalker -> validateCreatureOrPlaneswalkerTarget(state, target)
-            is TargetSpellOrPermanent -> validateSpellOrPermanentTarget(state, target, requirement, casterId, sourceId, xValue)
+            is TargetSpellOrPermanent -> validateSpellOrPermanentTarget(state, target, requirement, casterId, sourceId, xValue, chosenPlayerTarget)
             is TargetObject -> validateObjectTarget(state, target, requirement.filter, casterId, sourceId, xValue, chosenPlayerTarget)
             is TargetOther -> validateSingleTarget(state, target, requirement.baseRequirement, casterId, sourceColors, sourceSubtypes, sourceId, xValue, allTargets, targetingSourceType, sourceCardTypes)
         }
@@ -754,7 +754,8 @@ class TargetValidator {
         filter: TargetFilter,
         casterId: EntityId,
         sourceId: EntityId? = null,
-        xValue: Int? = null
+        xValue: Int? = null,
+        targetPlayerId: EntityId? = null
     ): String? {
         if (target !is ChosenTarget.Permanent) {
             return "Target must be a permanent"
@@ -777,7 +778,7 @@ class TargetValidator {
 
         // Use unified filter with projection (face-down creatures have CMC 0 per Rule 708.2)
         val projected = state.projectedState
-        val predicateContext = PredicateContext(controllerId = casterId, sourceId = sourceId, xValue = xValue)
+        val predicateContext = PredicateContext(targetPlayerId = targetPlayerId, controllerId = casterId, sourceId = sourceId, xValue = xValue)
         val matches = predicateEvaluator.matches(state, projected, target.entityId, filter.baseFilter, predicateContext)
         if (!matches) {
             return "Target does not match filter: ${filter.description}"
@@ -1036,7 +1037,8 @@ class TargetValidator {
         filter: TargetFilter,
         casterId: EntityId,
         xValue: Int? = null,
-        sourceId: EntityId? = null
+        sourceId: EntityId? = null,
+        targetPlayerId: EntityId? = null
     ): String? {
         if (target !is ChosenTarget.Spell) {
             return "Target must be a spell on the stack"
@@ -1048,7 +1050,7 @@ class TargetValidator {
         // Use unified filter with projected state (face-down spells need projection to be seen as
         // creatures); sourceId lets source-relative predicates evaluate (Goblin Artisans'
         // NotTargetedByAbilityFromSameNamedSource).
-        val predicateContext = PredicateContext(controllerId = casterId, sourceId = sourceId, xValue = xValue)
+        val predicateContext = PredicateContext(targetPlayerId = targetPlayerId, controllerId = casterId, sourceId = sourceId, xValue = xValue)
         val matches = predicateEvaluator.matches(state, state.projectedState, target.spellEntityId, filter.baseFilter, predicateContext)
         if (!matches) {
             return "Target does not match filter: ${filter.description}"
@@ -1082,9 +1084,9 @@ class TargetValidator {
         }
         return when (filter.zone) {
             Zone.GRAVEYARD -> validateGraveyardTarget(state, target, filter, casterId, sourceId, xValue, targetPlayerId)
-            Zone.BATTLEFIELD -> validatePermanentTarget(state, target, filter, casterId, sourceId, xValue)
-            Zone.STACK -> validateSpellTarget(state, target, filter, casterId, xValue, sourceId)
-            else -> validateCardInZoneTarget(state, target, filter, casterId, xValue, sourceId)
+            Zone.BATTLEFIELD -> validatePermanentTarget(state, target, filter, casterId, sourceId, xValue, targetPlayerId)
+            Zone.STACK -> validateSpellTarget(state, target, filter, casterId, xValue, sourceId, targetPlayerId)
+            else -> validateCardInZoneTarget(state, target, filter, casterId, xValue, sourceId, targetPlayerId)
         }
     }
 
@@ -1103,7 +1105,8 @@ class TargetValidator {
         requirement: TargetSpellOrPermanent,
         casterId: EntityId,
         sourceId: EntityId?,
-        xValue: Int? = null
+        xValue: Int? = null,
+        targetPlayerId: EntityId? = null
     ): String? {
         return when (target) {
             is ChosenTarget.Permanent -> {
@@ -1115,7 +1118,7 @@ class TargetValidator {
                 val filter = requirement.permanentFilter
                 if (filter != null) {
                     val projected = state.projectedState
-                    val context = PredicateContext(controllerId = casterId, sourceId = sourceId, xValue = xValue)
+                    val context = PredicateContext(controllerId = casterId, sourceId = sourceId, xValue = xValue, targetPlayerId = targetPlayerId)
                     if (!predicateEvaluator.matches(state, projected, target.entityId, filter, context)) {
                         return "Target does not match ${filter.description}"
                     }
@@ -1129,7 +1132,7 @@ class TargetValidator {
                 val spellFilter = requirement.spellFilter
                 if (spellFilter != null) {
                     val projected = state.projectedState
-                    val context = PredicateContext(controllerId = casterId, sourceId = sourceId, xValue = xValue)
+                    val context = PredicateContext(controllerId = casterId, sourceId = sourceId, xValue = xValue, targetPlayerId = targetPlayerId)
                     if (!predicateEvaluator.matches(state, projected, target.spellEntityId, spellFilter, context)) {
                         return "Target does not match ${spellFilter.description}"
                     }
@@ -1149,7 +1152,8 @@ class TargetValidator {
         filter: TargetFilter,
         casterId: EntityId,
         xValue: Int? = null,
-        sourceId: EntityId? = null
+        sourceId: EntityId? = null,
+        targetPlayerId: EntityId? = null
     ): String? {
         if (target !is ChosenTarget.Card) {
             return "Target must be a card"
@@ -1168,7 +1172,7 @@ class TargetValidator {
 
         // sourceId lets source-relative predicates evaluate (e.g. ExiledWithSource — "target card
         // exiled with ~"). Mirrors the graveyard/spell validation paths.
-        val predicateContext = PredicateContext(controllerId = casterId, ownerId = target.ownerId, xValue = xValue, sourceId = sourceId)
+        val predicateContext = PredicateContext(targetPlayerId = targetPlayerId, controllerId = casterId, ownerId = target.ownerId, xValue = xValue, sourceId = sourceId)
         val matches = predicateEvaluator.matches(state, state.projectedState, target.cardId, filter.baseFilter, predicateContext)
         if (!matches) {
             return "Target does not match filter: ${filter.description}"
