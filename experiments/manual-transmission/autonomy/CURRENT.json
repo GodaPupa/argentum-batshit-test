@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T16:54:02.121Z",
+  "updated_date": "2026-10-25T16:56:49.861Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "ACTIVE",
@@ -9,8 +9,8 @@
     "state": "ACTIVE",
     "owner": "manual-work-f0589091-a1ec-832f-85cc-e13d3e56ca26",
     "claimed_utc": "2026-10-25T16:51:33.249Z",
-    "renewed_utc": "2026-10-25T16:51:33.249Z",
-    "expires_utc": "2026-10-25T17:21:33.249Z",
+    "renewed_utc": "2026-10-25T16:56:49.861Z",
+    "expires_utc": "2026-10-25T17:26:49.862Z",
     "reason": "Receive terminal original preflight and continue bounded fixed-recipient integration."
   },
   "last_qualified": {
@@ -2573,6 +2573,53 @@
       "artifact_bytes": 726792,
       "artifact_sha256": "9e4c18394eac41c0a4f9055c6b0d12c65f5a79dee699a817a9da462e142f3839",
       "receipt": "6f68a1cac910cc079f5c071f0463774453581f74"
+    },
+    "fixed_recipient_regression": {
+      "state": "FROZEN_READY_FOR_SINGLE_DISPATCH",
+      "source": "388f6156ac726c17fd591a87ffbee1bb7224c170",
+      "tree": "ac74d8b6580acdda679816b7b6269ea99ca7c1d3",
+      "validation": "69b5d93883a162b3feb05608c36f5eb2311506cb",
+      "validation_tree": "5f67325b570867f6fdb521397bb83007f715dc0e",
+      "workflow": ".github/workflows/manual-fixed-recipient-regression-r1-20261025.yml",
+      "workflow_blob": "80d40cf5761ffb530bb1091693554f08a4dbe8da",
+      "branch": "validation/manual-fixed-recipient-regression-r1-20261025",
+      "source_unchanged": true,
+      "early_receipt": "6f68a1cac910cc079f5c071f0463774453581f74",
+      "early_run": 40209987485,
+      "early_controls_reused": true,
+      "expected": {
+        "focused": 956,
+        "broad": 15019,
+        "engine": 4244,
+        "ordinary": 18638,
+        "skips": 43,
+        "recording": 5,
+        "actor": 39,
+        "client": 34,
+        "assay": "568/2000/exact51"
+      },
+      "static_checks": {
+        "adapter_load": true,
+        "effective_gate_syntax": true,
+        "recipe_exact": true,
+        "counts": {
+          "targeted": 126,
+          "focused": 956,
+          "broad": 15019,
+          "engine": 4244,
+          "ordinary_passes": 18638,
+          "recording": 5
+        },
+        "extra_case_count": 42,
+        "missing_or_duplicate_rejected": 2,
+        "runtime_behavior_claimed": false,
+        "recipe_sha256": "8361adedb40f09ead90d220ca6b4e03c64e1457e627503a23f91c76947433a76"
+      },
+      "review": "Same-owner review; no independent review claimed. Exact one-workflow validation delta. Frozen early binding reused; inherited report identity and multiplicity checks retained plus exact42 successor cases. No production/test/assertion changes. All full regression/client/actor/recording/Assay gates required; original-artifact receiving mandatory.",
+      "feature_acceptance": false,
+      "official_games": 0,
+      "official_seeds": 0,
+      "precision_reserved": 2
     }
   },
   "completion_contract": {
