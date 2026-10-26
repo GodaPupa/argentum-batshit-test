@@ -9,8 +9,8 @@
     "state": "ACTIVE",
     "owner": "manual-work-05d9a746-c9f0-8323-a259-b286b358b4d3",
     "claimed_utc": "2026-10-26T18:48:41.329Z",
-    "expires_utc": "2026-10-26T19:28:41.330Z",
-    "reason": "Continue exact fixed-recipient generator integration and qualification."
+    "expires_utc": "2026-10-26T19:50:48.890Z",
+    "reason": "Actively preserving original R1 failure and implementing exact inherited-skip baseline repair with calibrated follow-up."
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -55,7 +55,7 @@
     },
     "negative_scope": "One compiled context-loss/wrong-controller mutant:77 cases, exactly46 frozen assertion witnesses and31passes,0errors/skips. No behavioral results claimed before original receiving.",
     "source_delta": "Exactly8 files against received f51196cc:4 unprotected production files,1 new77-case test,3 frozen protocol/design/gate records. Protected resolver/other143bindings/23goldens/82fixtures and all original assertions unchanged.",
-    "next_executable_action": "While generator run40382421349 is active, prepare exact original-artifact receiver and isolated same-source POR/ISD calibrated gate. After terminal status, reconcile newer receipt and receive original artifact once before mandatory calibrated follow-up. Never duplicate active run.",
+    "next_executable_action": "Finish bounded R2 protocol-only baseline repair and combined156case full-module + frozen-input POR/ISD calibration. Reuse7passing originalR1 stages only with exact unchanged source/test bindings; never relabelR1 passed. Freeze/review, reconcile allstatuses, dispatchonce, receive original artifacts.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -3817,7 +3817,7 @@
       "card_registration": false
     },
     "fixed_recipient_generator_qualification": {
-      "state": "RUNNING_ORIGINAL_EVIDENCE_PENDING",
+      "state": "R1_RECEIVED_REPAIR_IN_PROGRESS",
       "source": "f54094584f283ace86035492b1566c16effd5be2",
       "tree": "6b4de96afd6f13df8448ad9d49a22d9cdbf123ad",
       "base": "8e9bfd2e906379837aa09d033a97d6eb8e2b801a",
@@ -3849,6 +3849,54 @@
       "planned_gates": "3 compilations;9normal;wrong-recipient2witness7controls;unbound-stack1witness8controls;9restored;156full-module including11golden cases;source/restoration/protected;original receiving.",
       "calibrated_followup_required": true,
       "workflow_id": 397436691
+    },
+    "fixed_recipient_generator_failed_r1": {
+      "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+      "source": "f54094584f283ace86035492b1566c16effd5be2",
+      "tree": "6b4de96afd6f13df8448ad9d49a22d9cdbf123ad",
+      "base": "8e9bfd2e906379837aa09d033a97d6eb8e2b801a",
+      "source_branch": "qualification/manual-fixed-recipient-generator-r1-20261026",
+      "protocol": "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026/PROTOCOL.json",
+      "record": "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026",
+      "validation": "85aa190827be7ae2e5c76ab7b559144a2ed46426",
+      "validation_tree": "83f3887b6c582fa52eec9b4eb50e321844afc0ca",
+      "branch": "validation/manual-fixed-recipient-generator-r1-20261026",
+      "workflow": ".github/workflows/manual-fixed-recipient-generator-r1-20261026.yml",
+      "workflow_blob": "fd9d44dbceed5ceb398b8dd1a08ff621613a34d8",
+      "attempt": 1,
+      "run": 40382421349,
+      "job": 121781867736,
+      "artifact": 12678464471,
+      "source_delta": [
+        "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026/PROTOCOL.json",
+        "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026/RECEIVE.py",
+        "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026/SOURCE_REVIEW.json",
+        "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026/SYNTHETIC_CHECKS.json",
+        "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026/check_reports.py",
+        "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026/reports.py",
+        "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026/run.py",
+        "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r1-20261026/validation.just",
+        "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/FixedRecipientRetargetEmitterTest.kt",
+        "mtgish-tooling/src/test/resources/fixed-recipient/spellskite-ir.json"
+      ],
+      "acceptance": "EARLY_GENERATOR_ONLY; mandatory same-source POR/ISD calibrated follow-up remains. No full card/feature admission.",
+      "planned_gates": "3 compilations;9normal;wrong-recipient2witness7controls;unbound-stack1witness8controls;9restored;156full-module including11golden cases;source/restoration/protected;original receiving.",
+      "calibrated_followup_required": true,
+      "workflow_id": 397436691,
+      "artifact_sha256": "93236190fb3b9442d122c13e61021f652fd20ebd1b333c5fac6c06f9f742dc8b",
+      "artifact_bytes": 1381938,
+      "manifest_entries": 306,
+      "receipt_commit": "5959f695408588a35322495f426c0d087c2035ad",
+      "receipt_path": "experiments/manual-transmission/research/fixed-recipient-generator-received-r1-20261026",
+      "diagnosis": "Full-module baseline-accounting error:156identities,153passed and exactly3pre-existing conditional skips also present in accepted baseline a702...; original contract mistakenly required0. Threecompilations/9normal+restored/3exactnegativewitnesses/restoration/protected passed. Preserve failure; new bounded protocol only, no tests/assertions changed."
+    },
+    "fixed_recipient_generator_calibration_prepared": {
+      "commit": "7ab4cc44bbe6ced330c8f92a1c6d55fc708f9a74",
+      "path": "experiments/manual-transmission/research/fixed-recipient-generator-calibration-prepared-r1-20261026",
+      "receiver_path": "experiments/manual-transmission/research/fixed-recipient-generator-receiving-r1-20261026",
+      "state": "PREPARED_NOT_DISPATCHED",
+      "inputs": "Raw Scryfall responses and derived schema8 cache pinned; POR200/ISD254names; complete emitter identityfloors195/115; exact corpus153451...hashf251...; no test/assertion changes.",
+      "required": true
     }
   },
   "completion_contract": {
@@ -5146,8 +5194,8 @@
       "Full Spellskite behavior and card qualification",
       "Remaining multiplayer admission gates; official games not authorized"
     ],
-    "pending_evidence": "Generator run40382421349/job121781867736 attempt1 active; original artifact/3compilations/9normal+restored/3negativewitnesses/156module cases pending. Required same-source calibrated verification remains.",
-    "next_executable_action": "While generator run40382421349 is active, prepare exact original-artifact receiver and isolated same-source POR/ISD calibrated gate. After terminal status, reconcile newer receipt and receive original artifact once before mandatory calibrated follow-up. Never duplicate active run.",
+    "pending_evidence": "R1 original failure received5959f695408588a35322495f426c0d087c2035ad; no active relevant run. Correct exact historical3skip baseline in immutable successor, reuse unchanged R1 passing controls, then full-module and calibrated POR/ISD gates.",
+    "next_executable_action": "Finish bounded R2 protocol-only baseline repair and combined156case full-module + frozen-input POR/ISD calibration. Reuse7passing originalR1 stages only with exact unchanged source/test bindings; never relabelR1 passed. Freeze/review, reconcile allstatuses, dispatchonce, receive original artifacts.",
     "read_sections": [
       "next.public_occurrence_flow_draft",
       "next.source_context_full_regression",
