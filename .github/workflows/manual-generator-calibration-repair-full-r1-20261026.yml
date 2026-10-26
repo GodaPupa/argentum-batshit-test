@@ -1,0 +1,42 @@
+name: Manual generator calibration repair full compatibility R1
+on:
+  push:
+    branches: [validation/manual-generator-calibration-repair-full-r1-20261026]
+    paths: ['.github/workflows/manual-generator-calibration-repair-full-r1-20261026.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: 7257cbfe88e29da4ce93be630995e19b7a9ee075
+  SOURCE_TREE: febbd74113ac324c01e0cdb6cba3c321f177f654
+  WORKFLOW: .github/workflows/manual-generator-calibration-repair-full-r1-20261026.yml
+  RECORD: experiments/manual-transmission/research/generator-calibration-repair-full-r1-20261026
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install approved locked recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum"
+      - name: Reuse original compiled controls; full module and frozen POR ISD calibration
+        run: flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" python3 "$RECORD/run.py"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-generator-calibration-repair-full-r1-${{ github.run_id }}
+          path: manual-generator-calibration-repair-full-r1-evidence/
+          include-hidden-files: true
+          if-no-files-found: error
