@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.handlers.ObjectReferenceEnvironment
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.engine.handlers.ContinuationHandler
@@ -16,25 +17,31 @@ import com.wingedsheep.sdk.scripting.*
 import com.wingedsheep.sdk.scripting.targets.*
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
-
+import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
 /** Draft continuation boundaries; SDK entry, public actor flow and ward remain separate required gates. */
 class FixedRecipientChoiceTest : ScenarioTestBase() {
     init {
         val json = Json { serializersModule = engineSerializersModule; allowStructuredMapKeys = true }
         data class F(val state: GameState, val stack: EntityId, val old: EntityId, val recipient: EntityId)
-        fun fixture(): F {
+        fun fixture(recipientName: String = "Craw Wurm", kind: String = "activation"): F {
             val game = scenario().withPlayers("One", "Two").withCardOnBattlefield(1, "Grizzly Bears")
-                .withCardOnBattlefield(1, "Hill Giant").withCardOnBattlefield(2, "Craw Wurm").build()
+                .withCardOnBattlefield(1, "Hill Giant").withCardOnBattlefield(2, recipientName).build()
             val source = game.findPermanent("Grizzly Bears")!!
             val old = game.findPermanent("Hill Giant")!!
-            val recipient = game.findPermanent("Craw Wurm")!!
+            val recipient = game.findPermanent(recipientName)!!
             val s = game.state
             val slot = TargetSlot(ChosenTarget.Permanent(old), s.objectRef(old))
             val selection = TargetSlotPlan(listOf(TargetInstanceSelection(listOf(slot)), TargetInstanceSelection(listOf(slot))))
             val plan = CurrentTargetPlan(selection)
             val requirement = TargetObject(filter = TargetFilter(GameObjectFilter.Creature))
             val refs = ObjectReferenceEnvironment(captured = true, origin = s.objectRef(source), source = s.objectRef(source))
-            val placed = StackResolver(cardRegistry).putActivatedAbility(s,
+            val resolver = StackResolver(cardRegistry)
+            val placed = if (kind == "trigger") resolver.putTriggeredAbility(s,
+                TriggeredAbilityOnStackComponent(source, "Source", game.player1Id,
+                    Effects.Destroy(EffectTarget.ContextTarget(0)), "Destroy a target",
+                    objectReferences = refs, originalTargetSlots = selection),
+                plan.targets, listOf(requirement, requirement), currentTargetPlan = plan)
+            else resolver.putActivatedAbility(s,
                 ActivatedAbilityOnStackComponent(source, "Source", game.player1Id,
                     Effects.Destroy(EffectTarget.ContextTarget(0)), objectReferences = refs, originalTargetSlots = selection),
                 plan.targets, listOf(requirement, requirement), currentTargetPlan = plan)
@@ -205,5 +212,47 @@ class FixedRecipientChoiceTest : ScenarioTestBase() {
             result.state.getEntity(f.stack)!!.currentTargetPlan() shouldBe initial.getEntity(f.stack)!!.currentTargetPlan()
             result.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 0
         }
+
+        for (kind in listOf("activation", "trigger")) for (pay in listOf(false, true)) {
+            test("FRC public occurrence choice routes ward payment to $kind pay=$pay") {
+                val name = "Occurrence Ward Bear"
+                cardRegistry.register(com.wingedsheep.sdk.dsl.card(name) {
+                    manaCost = "{1}{G}"
+                    typeLine = "Creature — Bear"
+                    power = 2
+                    toughness = 2
+                    keywordAbility(KeywordAbility.wardLife(2))
+                })
+                val f = fixture(name, kind)
+                val question = f.state.pendingDecision as ChooseOptionDecision
+                val ability = f.state.getEntity(f.stack)!!
+                val abilityController = ability.get<ActivatedAbilityOnStackComponent>()?.controllerId
+                    ?: ability.get<TriggeredAbilityOnStackComponent>()!!.controllerId
+                (abilityController == question.playerId) shouldBe false
+                val processor = ActionProcessor(cardRegistry)
+                val chosen = processor.process(f.state,
+                    SubmitDecision(question.playerId, OptionChosenResponse(question.id, 0))).result
+                chosen.error shouldBe null
+                chosen.events.filterIsInstance<BecomesTargetEvent>().single().sourceEntityId shouldBe f.stack
+                chosen.state.stack.contains(f.stack) shouldBe true
+                val wardId = chosen.state.stack.last()
+                (wardId == f.stack) shouldBe false
+                val ward = chosen.state.getEntity(wardId)!!.get<TriggeredAbilityOnStackComponent>()!!
+                ward.targetingSourceEntityId shouldBe f.stack
+                val resolved = StackResolver(cardRegistry).resolveTop(chosen.state)
+                resolved.error shouldBe null
+                val payment = resolved.state.pendingDecision as YesNoDecision
+                payment.playerId shouldBe abilityController
+                val answered = processor.process(resolved.state,
+                    SubmitDecision(payment.playerId, YesNoResponse(payment.id, pay))).result
+                answered.error shouldBe null
+                answered.state.stack.contains(f.stack) shouldBe pay
+                // Ward counters the stack ability, never its original source permanent.
+                val source = ability.get<ActivatedAbilityOnStackComponent>()?.sourceId
+                    ?: ability.get<TriggeredAbilityOnStackComponent>()!!.sourceId
+                answered.state.getBattlefield().contains(source) shouldBe true
+            }
+        }
     }
 }
+
