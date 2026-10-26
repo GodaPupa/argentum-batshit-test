@@ -1,0 +1,43 @@
+{
+  "state": "STATIC_OWNER_REVIEW_NOT_INDEPENDENT_NOT_COMPILED",
+  "authorization": "d51f9e26214bdbda1df3bafc57c1a45f5821a28a",
+  "base": "49a82d93b9f65d24ac99d80e2df05686c49da36c",
+  "diagnostic_receipt": "8fc7cc42e4b5afd861f29e5db9eac14cb9857485",
+  "findings": [
+    "Four destroy cards have identical current/fixture IR. Existing Effects.DestroyAll calls GroupPatterns.destroyAllPipeline, gathers the projected battlefield filter once then uses MoveCollection Destroy. No SDK/engine edit.",
+    "Temporary Truce fixture wraps both actions in plural EachPlayerActions. Current pinned corpus uses two ordered singular EachPlayerAction envelopes. Strict new shortcut requires exact scopes, draw count, matching remainder ceiling, drawn-this-way reference and no extra clauses. Legacy shortcut unchanged.",
+    "Existing emitter TEXT goldens pin sequential spelling; they are not in protected190 source bindings or23 gameplay goldens. Early source preserves all of them and captures exact proposed output separately; full-module/golden and POR/ISD gates remain pending.",
+    "This early source changes no SDK/runtime/card/client paths; no card registration, official game or multiplayer admission."
+  ],
+  "source_paths": [
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/ZoneHandlers.kt",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/SpellShortcuts.kt",
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/GeneratorCalibrationRepairTest.kt",
+    "mtgish-tooling/src/test/resources/calibration-repair/current-ir.json"
+  ],
+  "normal_cases": 15,
+  "mutants": {
+    "sequential-destroy": {
+      "collected destruction preserves Boiling Seas": 25,
+      "collected destruction preserves Devastation": 28,
+      "collected destruction preserves Nature's Ruin": 31,
+      "collected destruction preserves Virtue's Ruin": 34,
+      "collected destruction preserves no regeneration": 38
+    },
+    "missing-current-truce": {
+      "current singular player envelopes preserve the draw and life contract": 52
+    },
+    "wrong-remainder": {
+      "current player envelope rejects an unrelated remainder ceiling": 61
+    }
+  },
+  "original_fixed_recipient_bindings": {
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/DamageLifeAndCards.kt": "5b6541bf2789bc7d85ac8d594e30347cac7d8374b6f5fe885616d52156ce6a9e",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/DamageDrawLifeHandlers.kt": "2fcafae7ef1badb8d54fc04ab759f1225e3f7333d02359abc1bb61b178f852d6",
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/FixedRecipientRetargetEmitterTest.kt": "e9f1b7a03266b2f02fe8f3854afd13a69000820a389064fc31d49eeb7c606ccd",
+    "mtgish-tooling/src/test/resources/fixed-recipient/spellskite-ir.json": "c0c87bb7af59fe6dde05327c911ecc13a6eb0d832b2f45b2e0971f068280ea6d"
+  },
+  "original_evidence_reaudited": false,
+  "full_module_reuse": "Cannot reuse R2 full-module acceptance for changed emitter source;171identities/168pass+3historicalskips required on coherent successor.",
+  "next": "Receive early original artifact once, inspect all projected output deltas against fixed inputs and immutable gameplay goldens; freeze justified coherent compatibility successor and run fullmodule/POR/ISD unchanged floors. No acceptance at early stage."
+}

@@ -92,6 +92,14 @@ internal val zoneHandlers: Map<String, ActionHandler> = actionHandlers {
         if (oracleText?.contains("target", ignoreCase = true) == true) return@on null
         val noregen = if (node.strField("_Action") == "DestroyEachPermanentNoRegen") "true" else "false"
         val filter = groupFilterExpr(args) ?: return@on null
+        // A battlefield-wide destruction gathers the matching set before moving it. Keep
+        // the existing self-excluding path until its distinct binding is qualified separately.
+        val excludesSelf = jsonContains(args, "_Permanents", "Other") ||
+            oracleText?.lowercase()?.let { "all other" in it || "each other" in it } == true
+        if (!excludesSelf) {
+            val battlefieldFilter = gameObjectFilterExpr(args) ?: return@on null
+            return@on call("Effects.DestroyAll", arg(battlefieldFilter), arg("noRegenerate", noregen))
+        }
         call(
             "Effects.ForEachInGroup", arg(filter),
             arg(call("Effects.Move", arg("EffectTarget.Self"), arg("Zone.GRAVEYARD"), arg("byDestruction", "true"))),

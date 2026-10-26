@@ -13,6 +13,10 @@ import com.wingedsheep.tooling.coverage.compact
 import com.wingedsheep.tooling.coverage.jsonContains
 import com.wingedsheep.tooling.coverage.strField
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.intOrNull
 
 /**
  * Whole-card spell shortcuts — multi-action shapes recognised as one named `Patterns.*` rather
@@ -20,6 +24,7 @@ import kotlinx.serialization.json.JsonObject
  * A `String?` shortcut yields a one-line `effect =`; a `List<String>?` shortcut yields a whole block.
  */
 internal fun EmitCtx.eachplayerMaydraw(card: JsonObject): Dsl? {
+    currentEachPlayerMayDraw(card)?.let { return it }
     val rules = card["Rules"]
     if (!jsonContains(rules, "_Action", "EachPlayerActions") || !jsonContains(rules, "_Action", "DrawUptoNumberCards")) return null
     val blob = compact(rules)
@@ -28,6 +33,44 @@ internal fun EmitCtx.eachplayerMaydraw(card: JsonObject): Dsl? {
     val parts = mutableListOf(arg("maxCards", mx.groupValues[1]))
     if (life != null) parts.add(arg("lifePerCardNotDrawn", life.groupValues[1]))
     return Call("Patterns.Hand.eachPlayerMayDraw", parts)
+}
+
+/** Current corpus spelling: two ordered single-action player envelopes. Match the whole
+ * shape so an extra clause, changed player scope, or unrelated count cannot be dropped. */
+private fun currentEachPlayerMayDraw(card: JsonObject): Dsl? {
+    fun tagged(node: JsonElement?, key: String, value: String, hasArgs: Boolean = true): JsonObject? {
+        val obj = node as? JsonObject ?: return null
+        if (obj.keys != (if (hasArgs) setOf(key, "args") else setOf(key))) return null
+        return obj.takeIf { it.strField(key) == value }
+    }
+    fun integer(node: JsonElement?): Int? {
+        val obj = tagged(node, "_GameNumber", "Integer") ?: return null
+        val value = obj["args"] as? JsonPrimitive ?: return null
+        if (value.isString) return null
+        return value.intOrNull?.takeIf { it >= 0 }
+    }
+    val rules = card["Rules"] as? JsonArray ?: return null
+    val rule = tagged(rules.singleOrNull(), "_Rule", "SpellActions") ?: return null
+    val list = tagged(rule["args"], "_Actions", "ActionList") ?: return null
+    val actions = list["args"] as? JsonArray ?: return null
+    if (actions.size != 2) return null
+    fun playerAction(index: Int): JsonElement? {
+        val action = tagged(actions[index], "_Action", "EachPlayerAction") ?: return null
+        val args = action["args"] as? JsonArray ?: return null
+        if (args.size != 2 || tagged(args[0], "_Players", "AnyPlayer", false) == null) return null
+        return args[1]
+    }
+    val draw = tagged(playerAction(0), "_Action", "DrawUptoNumberCards") ?: return null
+    val maxCards = integer(draw["args"]) ?: return null
+    val gain = tagged(playerAction(1), "_Action", "GainLifeForEach") ?: return null
+    val gainArgs = gain["args"] as? JsonArray ?: return null
+    if (gainArgs.size != 2) return null
+    val life = integer(gainArgs[0])?.takeIf { it > 0 } ?: return null
+    val minus = tagged(gainArgs[1], "_GameNumber", "Minus") ?: return null
+    val difference = minus["args"] as? JsonArray ?: return null
+    if (difference.size != 2 || integer(difference[0]) != maxCards ||
+        tagged(difference[1], "_GameNumber", "NumberOfCardsDrawnThisWay", false) == null) return null
+    return call("Patterns.Hand.eachPlayerMayDraw", arg("maxCards", "$maxCards"), arg("lifePerCardNotDrawn", "$life"))
 }
 
 /** Each player discards any number, then draws that many; you draw 1 (Flux). */
