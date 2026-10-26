@@ -1,0 +1,61 @@
+{
+  "state": "READ_ONLY_INPUT_FREEZE_NOT_QUALIFICATION",
+  "created_utc": "2026-10-26T19:01:18.091256+00:00",
+  "source": "f54094584f283ace86035492b1566c16effd5be2",
+  "transform_source": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Scryfall.kt",
+  "transform_blob": "a3381f8ee220ae62585724351f16416ab9eef12c",
+  "schema": 8,
+  "comparison": "Kotlin source schema8, including canonical grouping/printing order/metadata. Python scripts/card-status is schema9 and is not substituted.",
+  "raw": {
+    "por-set.json": {
+      "url": "https://api.scryfall.com/sets/por",
+      "bytes": 581,
+      "sha256": "fd828217a284ad749fa9cab90b45bec315f8248379e25bf39fa5153ab62df644"
+    },
+    "por-page1.json": {
+      "url": "https://api.scryfall.com/cards/search?q=set%3Apor%20-is%3Arebalanced&unique=prints&order=name",
+      "bytes": 852070,
+      "sha256": "2ab89723f82a1f35c9f5b9ab0cb8899408cc0d59d1a132be28edf509a1ef3602"
+    },
+    "por-page2.json": {
+      "url": "https://api.scryfall.com/cards/search?format=json&include_extras=true&include_multilingual=false&include_variations=false&order=name&page=2&q=set%3Apor+-is%3Arebalanced&unique=prints",
+      "bytes": 337641,
+      "sha256": "dd15bf3080359878197262b0235e0e804a4f94feefc98ae2b319338333fa9059"
+    },
+    "isd-set.json": {
+      "url": "https://api.scryfall.com/sets/isd",
+      "bytes": 646,
+      "sha256": "5261361800ae65ffd22c9586a694ecedb8f32dfdfe93609a416c456a12e6ced2"
+    },
+    "isd-page1.json": {
+      "url": "https://api.scryfall.com/cards/search?q=set%3Aisd%20-is%3Arebalanced&unique=prints&order=name",
+      "bytes": 928821,
+      "sha256": "d73059094ec4ecfbaae432ede75cfdd136cb7d95244b735801fa0b7ba3f36b79"
+    },
+    "isd-page2.json": {
+      "url": "https://api.scryfall.com/cards/search?format=json&include_extras=true&include_multilingual=false&include_variations=false&order=name&page=2&q=set%3Aisd+-is%3Arebalanced&unique=prints",
+      "bytes": 469292,
+      "sha256": "9689b5c4e0378db39aac4e667f9f0abd701340b9c39332dce829d3062977fce4"
+    }
+  },
+  "raw_pack_sha256": "6dd957f983dc8a4c50a1eaa2c621bb080ededdf7d02079d02c28732b579cca28",
+  "raw_pack_bytes": 225642,
+  "sets": {
+    "por": {
+      "raw_printings": 244,
+      "names": 200,
+      "front_names": 200,
+      "sha256": "a70fb4af31f36a7897d2d8822607319459a4abfdab83b278c7fdb67ebf90d5ae",
+      "bytes": 87821,
+      "pages": 2
+    },
+    "isd": {
+      "raw_printings": 264,
+      "names": 254,
+      "front_names": 254,
+      "sha256": "1940e9515b51a4e784c79baa7277fb1ff3f1fc8ebe2ac8d5147283eecd14ec55",
+      "bytes": 137539,
+      "pages": 2
+    }
+  }
+}
