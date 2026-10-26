@@ -1,0 +1,92 @@
+{
+  "source": "9a9c04e8464818ad5e3a7bef910922b08152f729",
+  "tree": "bd12d63b68660783f30c8edde51c5601e8fbc017",
+  "validation": "727f032e49453cc02b84590d15f5c2a181c71013",
+  "validation_tree": "a1a49fb629d57c20230dc383937102534a3ac9fd",
+  "workflow": ".github/workflows/manual-public-occurrence-transport-r3-20261026.yml",
+  "workflow_blob": "a2f49d5d5630cecfc35e6f75ae4d87f95ac58204",
+  "branch": "validation/manual-public-occurrence-transport-r3-20261026",
+  "source_delta": [
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r3-20261026/reports.py",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r3-20261026/PROTOCOL.json",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r3-20261026/run.py",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r3-20261026/check_reports.py",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r3-20261026/RECEIVE.py",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r3-20261026/SYNTHETIC_CHECKS.json"
+  ],
+  "protocol_files": {
+    "PROTOCOL.json": "5959788e99185629d1ab3980931b4280a414ae31d5df28e42c0c01e47a15fd99",
+    "reports.py": "bba18b527c007fcb9a3a3bcff7c335bc144df94d94eb07b4038d9b8221b16a56",
+    "run.py": "bdc5614dfd337cb6d5b660af5a615312346e5cc0313c31b4a58c4b15055c0d1b",
+    "check_reports.py": "7ba42027b15c2fb251fd5441bbdbc37cb489929c526ccc138498092370794dea"
+  },
+  "run": 40318117378,
+  "job": 121555752574,
+  "workflow_id": 396992956,
+  "artifact_name": "manual-public-occurrence-transport-r3-40318117378",
+  "artifact": 12648865449,
+  "artifact_bytes": 1219923,
+  "artifact_sha256": "fdd9c2153925f0826393d4ca804ec206dced2df3939e5a8f9bcbc14b4726f584",
+  "manifest_entries": 243,
+  "gates": {
+    "compile-server-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-client-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-server-server-mutant": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-client-client-index": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-client-client-stale": {
+      "compile": true,
+      "tests": 0
+    }
+  },
+  "gate_errors": [
+    {
+      "stage": "server-normal",
+      "error": "AssertionError: "
+    },
+    {
+      "stage": "client-normal",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmphofnl3ek/client-normal/exit.txt'"
+    },
+    {
+      "stage": "server-mutant",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmphofnl3ek/server-mutant/exit.txt'"
+    },
+    {
+      "stage": "client-index",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmphofnl3ek/client-index/exit.txt'"
+    },
+    {
+      "stage": "client-stale",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmphofnl3ek/client-stale/exit.txt'"
+    },
+    {
+      "stage": "server-restored",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmphofnl3ek/server-restored/exit.txt'"
+    },
+    {
+      "stage": "client-restored",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmphofnl3ek/client-restored/exit.txt'"
+    },
+    {
+      "stage": "collector",
+      "error": "AssertionError: "
+    }
+  ],
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED"
+}
