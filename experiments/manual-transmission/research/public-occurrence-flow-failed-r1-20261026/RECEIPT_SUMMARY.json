@@ -1,0 +1,105 @@
+{
+  "source": "92d47017b4d48052e15c7ba0a3a1be4c1d42fb5a",
+  "tree": "2e8bb7887c9781becf2d2868822d938e0d8e5acb",
+  "validation": "81147e388bda409ef39e79dfebf33fb7094d8d7c",
+  "run": 40266360030,
+  "job": 121389547065,
+  "attempt": 1,
+  "artifact": 12626299277,
+  "artifact_bytes": 1204901,
+  "artifact_sha256": "372cc585b9c22e21c7e9440a2d3e2e33a1e5d9ec1cb30da372b1c52ea2af8cc8",
+  "manifest_entries": 201,
+  "gates": {},
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "gate_errors": [
+    {
+      "gate": "compile-normal",
+      "error": "AssertionError: "
+    },
+    {
+      "gate": "compile-mutant",
+      "error": "KeyError: 'compile-mutant/gradle.log'"
+    },
+    {
+      "gate": "targeted",
+      "error": "AssertionError: "
+    },
+    {
+      "gate": "mutation",
+      "error": "AssertionError: "
+    },
+    {
+      "gate": "restored",
+      "error": "AssertionError: "
+    },
+    {
+      "gate": "forms",
+      "error": "KeyError: 'compile-mutant/source/rules-engine/src/main/kotlin/com/wingedsheep/engine/core/FixedRecipientChoiceContinuation.kt'"
+    }
+  ],
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "raw_available_reports": {
+    "targeted": {
+      "names": {},
+      "cases": {},
+      "modules": {},
+      "totals": {
+        "rows": 0,
+        "suites": 0,
+        "passed": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "mutation": {
+      "names": {},
+      "cases": {},
+      "modules": {},
+      "totals": {
+        "rows": 0,
+        "suites": 0,
+        "passed": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "restored": {
+      "names": {},
+      "cases": {},
+      "modules": {},
+      "totals": {
+        "rows": 0,
+        "suites": 0,
+        "passed": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    }
+  },
+  "original_failure_steps": [
+    {
+      "name": "Compile normal and mutant before executable controls",
+      "status": "completed",
+      "conclusion": "failure",
+      "number": 7,
+      "started_at": "2026-10-26T03:55:24Z",
+      "completed_at": "2026-10-26T03:59:42Z"
+    }
+  ],
+  "diagnosis": "Test fixture line36 unresolved TargetFilter; absent explicit unified-filter import. Zero behavioral cases executed. Normal production compile succeeded; test compilation failed; mutant and execution absent. Import-only successor justified; assertions and controls preserved."
+}
