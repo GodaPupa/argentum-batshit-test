@@ -1,0 +1,195 @@
+{
+  "source": "74fdb3f9130167ea9dd340788b1c4b2d2b65ac8a",
+  "tree": "7fbf8d4ace83125ad5f34f431d05886f105b107b",
+  "validation": "ea434c995426fd3453ce43465dcb09581bc18c9a",
+  "validation_tree": "bb6d1cd7d5a17808b1b1ab4ef888fa6b16604941",
+  "workflow": ".github/workflows/manual-public-occurrence-transport-r5-20261026.yml",
+  "workflow_blob": "0336e25183129f718d6354ba8af3fe07aa177005",
+  "branch": "validation/manual-public-occurrence-transport-r5-20261026",
+  "run": 40345434992,
+  "job": 121650988024,
+  "workflow_id": 397197433,
+  "attempt": 1,
+  "source_delta": [
+    "web-client/src/store/slices/liveInteraction.test.ts",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r5-20261026/PROTOCOL.json",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r5-20261026/RECEIVE.py",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r5-20261026/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r5-20261026/SYNTHETIC_CHECKS.json",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r5-20261026/check_reports.py",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r5-20261026/reports.py",
+    "experiments/manual-transmission/research/public-occurrence-transport-qualification-r5-20261026/run.py"
+  ],
+  "artifact_name": "manual-public-occurrence-transport-r5-40345434992",
+  "protocol_files": {
+    "PROTOCOL.json": "926bec886747334f4b254741593f07f07c3f6cd0f3ad0d9cffd4f4e992165904",
+    "reports.py": "71620fcf45b01b3afd0cf7643bb6a0905f3488f56289fca6a8247d280af4306e",
+    "run.py": "bca6cbc126c3863e8b462ccef83daed83e2e965016d3cfa5bef80e59fe9ca5b3",
+    "check_reports.py": "3a32253c1807ea5b3a52113b196088d01a3524d50b5d7f93ccc84e6fdd42ab09"
+  },
+  "artifact": 12662087667,
+  "artifact_bytes": 1596774,
+  "artifact_sha256": "1e9bc4b38396b01147017d9eeed81332a92be4d9d33e0c8ac3ccc0bd42b2e9e8",
+  "manifest_entries": 352,
+  "gates": {
+    "compile-server-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-client-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-server-server-mutant": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-client-client-index": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-client-client-stale": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-client-client-legacy": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-client-client-group": {
+      "compile": true,
+      "tests": 0
+    },
+    "server-normal": {
+      "cases": [
+        "routing and JSON retain distinct occurrence labels for the same preview card",
+        "nested routing changes only identity and enrichment preserves occurrence payload",
+        "live occurrence transport preserves owner tokens replay and nested index 0",
+        "live occurrence transport preserves owner tokens replay and nested index 1"
+      ],
+      "passed": 4,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "client-normal": {
+      "cases": [
+        "retains an action origin through payment, targeting, and same-timeline delta delivery",
+        "atomically replaces selections and refuses callbacks retaining the old action or origin",
+        "drops a combat selection from the replaced timeline without relabeling it",
+        "rejects a held decision callback after undo and after the next question",
+        "rejects a held distribution confirmation without consuming the replacement selection",
+        "rejects held mana confirmation after a replacement pipeline is already active",
+        "rejects held CrewVehicle confirmation after a replacement selection starts",
+        "rejects held SaddleMount confirmation after a replacement selection starts",
+        "keeps replacement 'modal modes' selections intact when an old callback fires",
+        "keeps replacement 'X' selections intact when an old callback fires",
+        "keeps replacement 'blight X' selections intact when an old callback fires",
+        "keeps replacement 'pay X life' selections intact when an old callback fires",
+        "keeps replacement 'convoke' selections intact when an old callback fires",
+        "keeps replacement 'tap for generic' selections intact when an old callback fires",
+        "keeps replacement 'harmonize' selections intact when an old callback fires",
+        "keeps replacement 'delve' selections intact when an old callback fires",
+        "keeps replacement 'mana color' selections intact when an old callback fires",
+        "keeps replacement 'targets' selections intact when an old callback fires",
+        "keeps replacement 'damage distribution' selections intact when an old callback fires",
+        "keeps replacement 'counter distribution' selections intact when an old callback fires",
+        "preserves repeated-card occurrence labels and index through delta=false",
+        "preserves repeated-card occurrence labels and index through delta=true",
+        "refuses a previous occurrence callback while preserving the nested question",
+        "rejects an abandoned occurrence epoch and submits the replacement owner and index",
+        "preserves one explicitly declared group through live submission",
+        "preserves one explicitly omitted optional group through live submission",
+        "preserves an omitted first group before a later live selection",
+        "preserves two live groups in their original requirement order",
+        "clears stale pending groups when legacy requirements are absent",
+        "keeps an explicitly empty requirement list on the legacy flat path"
+      ],
+      "passed": 30,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "server-mutant": {
+      "cases": [
+        "routing and JSON retain distinct occurrence labels for the same preview card",
+        "nested routing changes only identity and enrichment preserves occurrence payload",
+        "live occurrence transport preserves owner tokens replay and nested index 0",
+        "live occurrence transport preserves owner tokens replay and nested index 1"
+      ],
+      "passed": 1,
+      "failures": 3,
+      "errors": 0,
+      "skips": 0
+    },
+    "client-index": {
+      "cases": [
+        "retains an action origin through payment, targeting, and same-timeline delta delivery",
+        "atomically replaces selections and refuses callbacks retaining the old action or origin",
+        "drops a combat selection from the replaced timeline without relabeling it",
+        "rejects a held decision callback after undo and after the next question",
+        "rejects a held distribution confirmation without consuming the replacement selection",
+        "rejects held mana confirmation after a replacement pipeline is already active",
+        "rejects held CrewVehicle confirmation after a replacement selection starts",
+        "rejects held SaddleMount confirmation after a replacement selection starts",
+        "keeps replacement 'modal modes' selections intact when an old callback fires",
+        "keeps replacement 'X' selections intact when an old callback fires",
+        "keeps replacement 'blight X' selections intact when an old callback fires",
+        "keeps replacement 'pay X life' selections intact when an old callback fires",
+        "keeps replacement 'convoke' selections intact when an old callback fires",
+        "keeps replacement 'tap for generic' selections intact when an old callback fires",
+        "keeps replacement 'harmonize' selections intact when an old callback fires",
+        "keeps replacement 'delve' selections intact when an old callback fires",
+        "keeps replacement 'mana color' selections intact when an old callback fires",
+        "keeps replacement 'targets' selections intact when an old callback fires",
+        "keeps replacement 'damage distribution' selections intact when an old callback fires",
+        "keeps replacement 'counter distribution' selections intact when an old callback fires",
+        "preserves repeated-card occurrence labels and index through delta=false",
+        "preserves repeated-card occurrence labels and index through delta=true",
+        "refuses a previous occurrence callback while preserving the nested question",
+        "rejects an abandoned occurrence epoch and submits the replacement owner and index",
+        "preserves one explicitly declared group through live submission",
+        "preserves one explicitly omitted optional group through live submission",
+        "preserves an omitted first group before a later live selection",
+        "preserves two live groups in their original requirement order",
+        "clears stale pending groups when legacy requirements are absent",
+        "keeps an explicitly empty requirement list on the legacy flat path"
+      ],
+      "passed": 27,
+      "failures": 3,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "gate_errors": [
+    {
+      "stage": "client-stale",
+      "error": "AssertionError: "
+    },
+    {
+      "stage": "client-legacy",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp6n1ncdsd/client-legacy/exit.txt'"
+    },
+    {
+      "stage": "client-group",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp6n1ncdsd/client-group/exit.txt'"
+    },
+    {
+      "stage": "server-restored",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp6n1ncdsd/server-restored/exit.txt'"
+    },
+    {
+      "stage": "client-restored",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp6n1ncdsd/client-restored/exit.txt'"
+    },
+    {
+      "stage": "collector",
+      "error": "AssertionError: "
+    }
+  ],
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED"
+}

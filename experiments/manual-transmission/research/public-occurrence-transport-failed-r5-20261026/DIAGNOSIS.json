@@ -1,0 +1,15 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "run": 40345434992,
+  "artifact": 12662087667,
+  "manifest_entries": 352,
+  "seven_compilations_passed": true,
+  "server_normal": 4,
+  "client_normal": 30,
+  "server_negative_witnesses": 3,
+  "client_index_witnesses": 3,
+  "stale_mutant_result": "30passed,0failed; survived, not behavioral negative evidence",
+  "cause": "The mutated submitOptionDecision guard is redundant with submitAction decision-ID equality guard. Removing only the first guard still rejects a previous same-epoch prompt at the second guard. Original test correctly remains green.",
+  "bounded_repair": "New immutable mutant removes first guard and bypasses second decision-ID guard only for OptionChosenResponse. Retain epoch guard and all other decision paths. Existing line369 must fail; other29 cases must pass. No production or test changes.",
+  "pending": "legacy/group controls and restored stages not executed. No component acceptance."
+}

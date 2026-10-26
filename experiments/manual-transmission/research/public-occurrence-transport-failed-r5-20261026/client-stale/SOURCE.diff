@@ -1,0 +1,13 @@
+diff --git a/web-client/src/store/slices/gameplaySlice.ts b/web-client/src/store/slices/gameplaySlice.ts
+index 848d0067c8..57bd2166b5 100644
+--- a/web-client/src/store/slices/gameplaySlice.ts
++++ b/web-client/src/store/slices/gameplaySlice.ts
+@@ -292,7 +292,7 @@ export const createGameplaySlice: SliceCreator<GameplaySlice> = (set, get) => ({
+ 
+   submitOptionDecision: (decisionId, optionIndex) => {
+     const { pendingDecision, playerId } = get()
+-    if (!pendingDecision || pendingDecision.id !== decisionId || !playerId) return
++    if (!pendingDecision || !playerId) return
+ 
+     const action = {
+       type: 'SubmitDecision' as const,
