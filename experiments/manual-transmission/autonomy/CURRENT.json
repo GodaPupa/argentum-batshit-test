@@ -42,7 +42,9 @@
     "validation": "e7aeae3fbb1d76ec87f500c0731a2578ffbacb6c",
     "validation_branch": "validation/manual-source-context-regression-r1-20261025",
     "workflow": ".github/workflows/manual-source-context-regression-r1-20261025.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40362996445
+    ],
     "planned_not_observed": {
       "normal": 133,
       "restored": 133,
@@ -55,7 +57,7 @@
     },
     "negative_scope": "One compiled context-loss/wrong-controller mutant:77 cases, exactly46 frozen assertion witnesses and31passes,0errors/skips. No behavioral results claimed before original receiving.",
     "source_delta": "Exactly8 files against received f51196cc:4 unprotected production files,1 new77-case test,3 frozen protocol/design/gate records. Protected resolver/other143bindings/23goldens/82fixtures and all original assertions unchanged.",
-    "next_executable_action": "Reconcile activity then dispatch frozen R7 once; production/tests/assertions unchanged. Receive exact original gates before acceptance.",
+    "next_executable_action": "Receive original R7 run 40362996445 once using pinned receiver after checking newer receipts/successors; audit all declared gates. On success continue required public integration and final-source full compatibility; on failure preserve evidence and diagnose bounded cause.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -3430,7 +3432,7 @@
       "existing_assertions_preserved": true
     },
     "public_occurrence_transport_qualification": {
-      "state": "FROZEN_PENDING_DISPATCH",
+      "state": "RUNNING_PENDING_ORIGINAL_RECEIVING",
       "source": "ec4914f8347c0456fc20eb4c78ea1078c1147a75",
       "tree": "1d2d528c7fa5adeeec0bcc3aea7f442968aec372",
       "base": "8c88e24bbe34f8a3e5856e5a6b5e6cbb647b6099",
@@ -3467,9 +3469,13 @@
       "prior_failure_receipt": "ccb6a9c76816e165eef3bbb0e9527e037f20ceae",
       "attempt": 1,
       "event": "push",
-      "observed_status": "not_dispatched",
+      "observed_status": "in_progress",
       "receiver_readback_verified": false,
-      "next_regression_contract": "experiments/manual-transmission/research/public-occurrence-transport-receiving-r5-20261026/NEXT_REGRESSION_CONTRACT.json"
+      "next_regression_contract": "experiments/manual-transmission/research/public-occurrence-transport-receiving-r5-20261026/NEXT_REGRESSION_CONTRACT.json",
+      "run": 40362996445,
+      "job": 121713522504,
+      "workflow_id": 397311779,
+      "artifact_name": "manual-public-occurrence-transport-r7-40362996445"
     },
     "public_occurrence_transport_failed_r1": {
       "source": "40ada88201ad89d3b2c6202a89c3dd13ff5246c4",
@@ -4236,6 +4242,13 @@
       "prior_failure": "4ec05c06fa697d43587afd982fda290de0b3fef0",
       "active_workflow": true,
       "original_receiving_repeated": false
+    },
+    "transport_r7_pre_dispatch": {
+      "utc": "2026-10-26T16:50:41.466Z",
+      "active": [],
+      "ignored": 34749202144,
+      "all_statuses_checked": true,
+      "checkpoint": "018bcb132f438964564f69eeb6724ae66f7fbaaf"
     }
   },
   "automation": {
@@ -5059,8 +5072,8 @@
       "Full Spellskite behavior and card qualification",
       "Remaining multiplayer admission gates; official games not authorized"
     ],
-    "pending_evidence": "R6 mutant compile failure received; bounded type-only R7 control frozen.",
-    "next_executable_action": "Reconcile activity then dispatch frozen R7 once; production/tests/assertions unchanged. Receive exact original gates before acceptance.",
+    "pending_evidence": "R7 original qualification pending: run 40362996445, job 121713522504, attempt1. No acceptance claimed.",
+    "next_executable_action": "Receive original R7 run 40362996445 once using pinned receiver after checking newer receipts/successors; audit all declared gates. On success continue required public integration and final-source full compatibility; on failure preserve evidence and diagnose bounded cause.",
     "read_sections": [
       "next.public_occurrence_flow_draft",
       "next.source_context_full_regression",
