@@ -410,6 +410,75 @@ class FixedRecipientChoiceTest : ScenarioTestBase() {
             }
         }
 
+        for (kind in listOf("activation", "trigger")) for (order in 0..1) for (departed in listOf(false, true)) {
+            test("FRC queued targeting triggers retain order $kind order=$order departed=$departed") {
+                val name = "Occurrence Queue Observer"
+                cardRegistry.register(com.wingedsheep.sdk.dsl.card(name) {
+                    manaCost = "{1}{G}"
+                    typeLine = "Creature — Bear"
+                    power = 2
+                    toughness = 2
+                    triggeredAbility {
+                        trigger = TriggerSpec(event = EventPattern.BecomesTargetEvent(), binding = TriggerBinding.SELF)
+                        target("creature", com.wingedsheep.sdk.dsl.Targets.Creature)
+                        effect = Effects.Tap(EffectTarget.ContextTarget(0))
+                    }
+                    triggeredAbility {
+                        trigger = TriggerSpec(event = EventPattern.BecomesTargetEvent(), binding = TriggerBinding.SELF)
+                        effect = Effects.GainLife(3)
+                    }
+                })
+                val f = fixture(name, kind)
+                val choice = f.state.pendingDecision as ChooseOptionDecision
+                val processor = ActionProcessor(cardRegistry)
+                val chosen = processor.process(f.state,
+                    SubmitDecision(choice.playerId, OptionChosenResponse(choice.id, 0))).result
+                chosen.error shouldBe null
+                chosen.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 1
+                val ordering = chosen.state.pendingDecision as ChooseOptionDecision
+                ordering.playerId shouldBe choice.playerId
+                ordering.options.size shouldBe 2
+                val ordered = processor.process(json.decodeFromString(GameState.serializer(),
+                    json.encodeToString(GameState.serializer(), chosen.state)),
+                    SubmitDecision(ordering.playerId, OptionChosenResponse(ordering.id, order))).result
+                ordered.error shouldBe null
+                val targetChoice = ordered.state.pendingDecision as ChooseTargetsDecision
+                targetChoice.playerId shouldBe choice.playerId
+                ordered.state.continuationStack.filterIsInstance<PendingTriggersContinuation>()
+                    .flatMap { it.remainingTriggers }.size shouldBe if (order == 0) 1 else 0
+                val paused = if (departed) ordered.state.removeEntity(f.recipient) else ordered.state
+                val before = paused.lifeTotal(choice.playerId)
+                val answered = processor.process(json.decodeFromString(GameState.serializer(),
+                    json.encodeToString(GameState.serializer(), paused)),
+                    SubmitDecision(targetChoice.playerId, TargetsResponse(targetChoice.id, mapOf(0 to listOf(f.old))))).result
+                answered.error shouldBe null
+                answered.state.pendingDecision shouldBe null
+                answered.state.continuationStack shouldBe emptyList()
+                answered.state.stack.size shouldBe 3
+                answered.state.stack.first() shouldBe f.stack
+                answered.state.lifeTotal(choice.playerId) shouldBe before
+                val queued = answered.state.stack.drop(1).map {
+                    answered.state.getEntity(it)!!.get<TriggeredAbilityOnStackComponent>()!!
+                }
+                queued.map { it.sourceId } shouldBe listOf(f.recipient, f.recipient)
+                queued.map { it.controllerId } shouldBe listOf(choice.playerId, choice.playerId)
+                val expectedEffects = if (order == 0) listOf(Effects.Tap(EffectTarget.ContextTarget(0)), Effects.GainLife(3))
+                    else listOf(Effects.GainLife(3), Effects.Tap(EffectTarget.ContextTarget(0)))
+                queued.map { it.effect } shouldBe expectedEffects
+                var resolved = answered.state
+                repeat(2) {
+                    val result = StackResolver(cardRegistry).resolveTop(resolved)
+                    result.error shouldBe null
+                    result.state.pendingDecision shouldBe null
+                    resolved = result.state
+                }
+                resolved.stack shouldBe listOf(f.stack)
+                resolved.lifeTotal(choice.playerId) shouldBe before + 3
+                resolved.getEntity(f.old)!!.has<com.wingedsheep.engine.state.components.battlefield.TappedComponent>() shouldBe true
+                resolved.getBattlefield().contains(f.recipient) shouldBe !departed
+            }
+        }
+
     }
 }
 

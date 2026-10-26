@@ -1,4 +1,4 @@
-"""Frozen extended public integration gate; original and nested index witnesses, never full feature acceptance."""
+"""Frozen queued-trigger public integration gate; original and nested index witnesses, never full feature acceptance."""
 from pathlib import Path
 from collections import Counter
 import hashlib,json,os,re,shutil,subprocess,sys

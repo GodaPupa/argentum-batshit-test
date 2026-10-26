@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "state": "FROZEN_EXTENDED_EARLY_INTEGRATION_NOT_FEATURE_ACCEPTANCE",
-  "base": "8d9e5ce4d0341644e2a1981f7248656cbe8487db",
+  "base": "7f0a3280f4c2857a272dc794247ed1e5c4a5245d",
   "accepted_base": "1382dc0a1fc399e96f8419117b7354627ec43308",
   "accepted_receipt": "a702aad71c2a3aeae9c4645a65c88d346451c697",
   "implementation_sha256": {
@@ -12,7 +12,7 @@
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/StackExecutors.kt": "b3ce3b313b47df5a6381d4fe1b4abf77cf480ead7702d99074db5b2a1459a468",
     "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt": "e3f8ade5320750ca4aa32b12c4e1450ecfcda85757587e10fa16e63654ede514",
     "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ChangeTargetToEffect.kt": "cc46322f855f4637bd6a22cee226ae9c752036d630b096e6546e715c275e59d3",
-    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientChoiceTest.kt": "73afab34798908389e2877c5a93352d35c97bf91249e9feb4ce7953bb65ae277"
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientChoiceTest.kt": "cd9e1e94cb218cb127776f2a22754b85fd5dce1e4305333ba97d69ab43a8405c"
   },
   "modified_paths": [
     "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientChoiceTest.kt",
@@ -169,6 +169,14 @@
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC public spell ward pay=false",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC public spell ward pay=true",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC public stale plan cannot overwrite a newer retarget",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order activation order=0 departed=false",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order activation order=0 departed=true",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order activation order=1 departed=false",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order activation order=1 departed=true",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order trigger order=0 departed=false",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order trigger order=0 departed=true",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order trigger order=1 departed=false",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order trigger order=1 departed=true",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC rejects wrong question identity without consuming suspension",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC repeated public recipient does not retrigger ward activation",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC repeated public recipient does not retrigger ward instant",
@@ -206,6 +214,14 @@
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC public spell ward pay=false",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC public spell ward pay=true",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC public stale plan cannot overwrite a newer retarget",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order activation order=0 departed=false",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order activation order=0 departed=true",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order activation order=1 departed=false",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order activation order=1 departed=true",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order trigger order=0 departed=false",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order trigger order=0 departed=true",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order trigger order=1 departed=false",
+    "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC queued targeting triggers retain order trigger order=1 departed=true",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC rejects wrong question identity without consuming suspension",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC repeated public recipient does not retrigger ward activation",
     "com.wingedsheep.engine.scenarios.FixedRecipientChoiceTest::FRC repeated public recipient does not retrigger ward instant",
@@ -256,5 +272,5 @@
   "official_seeds": 0,
   "precision_reserved": 2,
   "external_independent_review": false,
-  "recovery": "R1 import failure remains at45ecd1f0; R2 original early acceptance d6aa0e9eda4d2956f4f576a63ff280cc34f64f1e reused without rerun. This is new integration coverage on unchanged production, not an unchanged retry."
+  "recovery": "New queued-targeting-trigger coverage on received R3 source; no production or existing test-body/assertion/frame/mutant changes. R3 receipt reused without reaudit."
 }
