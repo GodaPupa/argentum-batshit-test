@@ -1,0 +1,69 @@
+{
+  "state": "SELF_SOURCE_REVIEW_NOT_INDEPENDENT",
+  "base": "8e9bfd2e906379837aa09d033a97d6eb8e2b801a",
+  "accepted_runtime_base": "ec4914f8347c0456fc20eb4c78ea1078c1147a75",
+  "accepted_receipt": "69f2dce2835a55ad364ee9b1a9c75f7b4b1e5ac9",
+  "scope": "Exact observed fixed-recipient action and bridge mapping; broader target envelope explicitly remains scaffold.",
+  "implementation": "Reuse unchanged two-file production draft; append4 tests to original5 and one upstream fixture. No engine/resolver/SDK/UI changes.",
+  "upstream": {
+    "repository": "i5jb/mtgish",
+    "commit": "153451e44d88baabfeb9902092032c328f4d5416",
+    "blob": "9795b32bc4b82b50b5166a877ca0f8fc9b040d27",
+    "sha256": "f2513283c1ffd32ab954bdc10a4bd78a495f297f532c68b8c69d6f05f1e95d06",
+    "path": "data/mtgish.lines.json",
+    "action": "ChangeATargetOfSpellOrAbilityToPermanent"
+  },
+  "original_assertions": "First5 draft cases preserved verbatim, original test blob5da851a127e418692d57c9a36d48668ebfaa375e; new4 test bridge presence/absence, exact upstream action binding and conservative target envelope decline.",
+  "trace": [
+    "EmitCtx.renderAction dispatches exact action tag to DamageDrawLifeHandlers",
+    "Exact2 operands, exact operand keys, known Ref_TargetSpellOrAbility and ThisPermanent, non-null bound stack required",
+    "Effects.ChangeTargetTo named stackObject/recipient matches existing qualified SDK facade; generic ChangeTargetsOfSpellOrAbility remains generic",
+    "Bridge resolves only existing ChangeTargetTo capability, absence stays MISSING/blocking",
+    "CardStructure.spellTargetExpr declines unsupported AnySpellOrAbility via TargetRecovery; no invented binding or complete-card claim"
+  ],
+  "mutants": [
+    "Wrong self recipient remains compilable Kotlin string expression; two exact assertion witnesses required",
+    "Unbound stack control removes null guard AND supplies valid fallback expression so nullable Lit cannot be a compilation failure; one exact assertion witness required"
+  ],
+  "execution_order": [
+    "3 normal/mutant compile stages",
+    "9 normal cases",
+    "wrong-recipient2fail7pass",
+    "unbound-stack1fail8pass",
+    "restore9pass",
+    "full module156pass including11 golden cases",
+    "original receiving",
+    "mandatory same-source POR/ISD calibrated follow-up before generator acceptance"
+  ],
+  "unchanged": "190 inherited protected/transport bindings plus declared source-delta whitelist preserve all other base bytes, frozen sources,23goldens,82legacyfixtures,tests/evidence,main,v0.7,budgets,2Precisiongames",
+  "calibration": {
+    "required": true,
+    "same_source": true,
+    "sets": [
+      "POR",
+      "ISD"
+    ],
+    "recipe": "coverage-verify-all",
+    "locked_equivalent": [
+      "scripts/gradle-locked :mtgish-tooling:installDist",
+      "scripts/gradle-locked :mtg-sets:verifyGeneratedCards -Pset=POR --console=plain --rerun-tasks",
+      "mtgish-tooling/build/install/mtgish-tooling/bin/mtgish-tooling fidelity --gate POR",
+      "scripts/gradle-locked :mtg-sets:verifyGeneratedCards -Pset=ISD --console=plain --rerun-tasks",
+      "mtgish-tooling/build/install/mtgish-tooling/bin/mtgish-tooling fidelity --gate ISD"
+    ],
+    "gates": [
+      "Receive early original compilation/witness/full-module/golden evidence first",
+      "Freeze exact input corpus and metadata and preserve bytes/hashes",
+      "Every emitted card compiles and gameplay-tree matches existing golden, zero mismatch",
+      "Original receiving required; no whole generator acceptance from early pass"
+    ]
+  },
+  "runtime_evidence": "NONE YET; synthetic checker checks are not Kotlin behavior evidence",
+  "remaining": [
+    "AnySpellOrAbility envelope remains scaffold; no complete Spellskite generation claim",
+    "Actual running UI with occurrence index1, repeated previews, owner masking, replacement and stale flows",
+    "Remaining public matrix and final-source full compatibility including64client floor",
+    "Full Spellskite behavior/card qualification",
+    "Multiplayer admission and separate official-game authorization"
+  ]
+}
