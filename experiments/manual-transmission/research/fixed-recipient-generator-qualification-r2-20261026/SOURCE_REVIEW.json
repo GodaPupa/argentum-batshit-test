@@ -1,0 +1,38 @@
+{
+  "state": "SELF_REVIEW_BOUNDED_PROTOCOL_REPAIR_NOT_INDEPENDENT",
+  "base": "f54094584f283ace86035492b1566c16effd5be2",
+  "source_delta": "Only new qualification records/input bundle; no executable production source, test, assertion, golden, fixture, resolver, SDK, client or server changes.",
+  "cause": "R1 frozen checker incorrectly required zero skips for every full-module case; existing3 conditional skips were omitted from its baseline contract.",
+  "baseline_evidence": {
+    "commit": "a702aad71c2a3aeae9c4645a65c88d346451c697",
+    "artifact": 12619980110,
+    "cases": 147,
+    "passes": 144,
+    "exact_skips": [
+      [
+        "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+        "Portal renders a high rate of whole, well-formed cards"
+      ],
+      [
+        "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+        "Analyzer classifies a set's cards into a partition that sums to the whole"
+      ],
+      [
+        "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+        "cross-set index carries the blocked cards behind each ranked capability"
+      ]
+    ]
+  },
+  "original_failure": {
+    "receipt": "5959f695408588a35322495f426c0d087c2035ad",
+    "artifact": 12678464471,
+    "run": 40382421349,
+    "manifest_entries": 306,
+    "observed": "156identities,153pass,3same historicalskip,0fail/error. Source/restoration protected exact. R1 remains failed."
+  },
+  "reuse": "Seven received passing R1 compilation/control/normal/restored stages, whose exact4 implementation/test/fixture hashes must match new candidate; no new behavioral claim from missing reports/compiler errors.",
+  "repair": "Exact historical3skip multiset only for fullmodule; all156identities/multiplicities still mandatory,153pass,0fail/error,9new cases cannot skip. Existing tests unchanged and no skip directives added.",
+  "followup": "Fullmodule before network/input installation preserves original clean baseline. Then install frozen schema8 POR/ISD metadata and pinned corpus; existing locked recipes compile/serialize/golden-compare both sets with195/115 complete nonbasic identity floors,zero suspected drift/mismatch,all original artifact bytes.",
+  "safety": "No source authority broadened;190protectedbindings+4candidatebindings and2calibrationgoldens pinned; parent/delta/workflow-only validation exact. Officialgames/seeds0,2Precisiongames reserved;fullSpellskite/multiplayer notadmitted.",
+  "reviewed_prepared_commit": "7ab4cc44bbe6ced330c8f92a1c6d55fc708f9a74"
+}
