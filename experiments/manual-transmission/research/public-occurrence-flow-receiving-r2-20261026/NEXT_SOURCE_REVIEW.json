@@ -1,0 +1,27 @@
+{
+  "state": "ISOLATED_SOURCE_REVIEW_ONLY_NOT_BEHAVIORAL_EVIDENCE",
+  "source": "92d47017b4d48052e15c7ba0a3a1be4c1d42fb5a",
+  "reviewed_bindings": {
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Registry.kt": "526a9a6d8b7cc7bf26d649b7fb3841bb9469c92e",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/Bridge.kt": "f5c0869672c195c1fd8ac01bbf7ef71b469ff964",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/DamageLifeAndCards.kt": "a39eaa6480cb3f555d9ab7f42be120ce760e0c6e",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/ActionHandlers.kt": "62ac41efe3608dc55491334bad29c3dceb5c3f37",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/DamageDrawLifeHandlers.kt": "4b5853867a3526e8aeb4ecb96e3d7d141cd7ec50",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/Emitter.kt": "281957ec625f9e610e0ae8d23f4ec271ab3a8f98",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/TargetRecovery.kt": "9d4c425dcde2cb04691fe76ee1babd1e0fd5fe60"
+  },
+  "findings": [
+    "Registry.loadEffectSerialNames scans SDK leaf files, so ChangeTargetTo becomes visible as a capability tag without a hand-maintained registry addition. That alone does not supply mtgish lowering or rendering.",
+    "Bridge maps ChangeTargetsOfSpellOrAbility to existing ChangeTarget. DamageDrawLifeHandlers renders that tag through simple(... Effects.ChangeTarget()), which ignores node arguments. Do not repoint this generic mapping to ChangeTargetTo or claim fixed-recipient support without exact IR subject/recipient recovery.",
+    "No ChangeTargetTo emission exists in the reviewed action handler modules. Fixed-recipient rendering must either recover the exact stack operand and recipient role or explicitly decline to SCAFFOLD; existing ChangeTarget contract remains unchanged.",
+    "Emitter gap() creates a scaffold (or a located hole in explicit partial mode) for an unrenderable part; reuse this rejection behavior rather than guess omitted target/recipient information.",
+    "Trigger sourceFilter remains a filter on the targeting object. Required integration should prove spell-filter positive/negative and ability nonmatch semantics from emitted public events. A new ability-original-source predicate is a separate design only if a concrete governing requirement needs it; this review does not invent an authority blocker."
+  ],
+  "next_after_early_receiving": [
+    "Inspect concrete mtgish IR fixtures for retarget actions before exact lowering; add regression fixtures proving fixed-recipient variants render exactly or decline. Never edit generated card output.",
+    "Complete sourceFilter public-event matrix and ward spell/repeated-recipient/queued/nested cases; preserve targeted stack ID for ward.",
+    "Complete source/recipient/modal/splice/division/optional-group plus SDK/server/client transport coverage and executable controls before full coherent feature qualification."
+  ],
+  "frozen_source_unchanged": true,
+  "no_feature_acceptance": true
+}
