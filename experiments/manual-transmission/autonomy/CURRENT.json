@@ -4,13 +4,15 @@
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "BLOCKED",
-  "owner": "manual-work-c2d30c54-4d5c-8327-947c-ee9b8f514073",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-c2d30c54-4d5c-8327-947c-ee9b8f514073",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-26T20:45:24.971Z",
-    "expires_utc": "2026-10-26T20:55:24.971Z",
-    "reason": "Reconcile persistent scope blocker and checkpoint required pause; no source implementation."
+    "expires_utc": null,
+    "reason": "Persistent unrelated calibration scope blocker; existing Work task paused, evidence retained, no work active.",
+    "released_utc": "2026-10-26T20:45:47.087Z",
+    "released_by": "manual-work-c2d30c54-4d5c-8327-947c-ee9b8f514073"
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -4461,12 +4463,28 @@
       "official_seeds": 0,
       "precision_reserved": 2,
       "schedule_unchanged": true
+    },
+    "calibration_blocker_recheck": {
+      "utc": "2026-10-26T20:45:47.087Z",
+      "newer_authorization": false,
+      "newer_receipt": false,
+      "active_relevant_workflows": [],
+      "statuses_checked": [
+        "in_progress",
+        "queued",
+        "waiting",
+        "requested",
+        "pending"
+      ],
+      "ignored_only": 34749202144,
+      "original_evidence_reaudited": false,
+      "owner_released": "manual-work-c2d30c54-4d5c-8327-947c-ee9b8f514073"
     }
   },
   "automation": {
     "execution_task": "Manual Work Continuation",
     "execution_task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_schedule": "Exactly one hourly Work executor enabled; ordinary authorized execution admitted. No repeated access preflights.",
+    "execution_schedule": "Existing single hourly Work task paused; schedule definition preserved. Execution admission remains valid; no bootstrap/access probes required on authorized resume.",
     "intervention_watch": {
       "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
       "enabled": false,
@@ -4550,7 +4568,7 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
+    "execution_enabled_state": "PAUSED_PENDING_CALIBRATION_REPAIR_AUTHORIZATION",
     "last_verified_enabled_utc": "2026-10-25T12:41:18.416Z",
     "next_authorized_action": "Read CURRENT.summary and next.next_executable_action; expand exact referenced source/protocol/receipt/next-action sections, history only as needed for inconsistencies or governing requirements.",
     "execution_efficiency_policy": {
@@ -4579,6 +4597,17 @@
       "schedule_unchanged": true,
       "enabled_unchanged": true,
       "updated_utc": "2026-10-25T23:39:51.352Z"
+    },
+    "calibration_blocker_pause": {
+      "utc": "2026-10-26T20:45:47.087Z",
+      "task": "6adbe33033e481918659ce578f64f31e",
+      "is_enabled": false,
+      "schedule_preserved": true,
+      "prompt_preserved": true,
+      "reason": "Fully blocked on explicit scope for unrelated generator calibration repair; required pause while blocked.",
+      "required_scope": "Repair unchanged DestroyEachPermanent Portal calibration failures and investigate Temporary Truce missing emission, preserving frozen goldens/fixtures/assertions, full gates and budgets.",
+      "receipt": "8fc7cc42e4b5afd861f29e5db9eac14cb9857485",
+      "resume": "After explicit repair scope is authorized, resume this same task; never create a replacement executor."
     }
   },
   "previous_qualified": {
@@ -5272,7 +5301,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "Blocked by unrelated Portal calibration failures in unchanged DestroyEachPermanent renderer (four golden gameplay/capability mismatches), plus missing Temporary Truce emission under pinned current corpus. Repository verify skill explicitly forbids repairing unrelated failures without user authorization. Original R2 evidence received and preserved; no qualification active, no rerun or reduced gates. Explicit repair scope required before implementation.",
+  "actual_stopping_reason": "Persistent unrelated calibration scope blocker; existing Work task paused, evidence retained, no work active.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -5329,7 +5358,7 @@
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r4-20261026/NEXT_SOURCE_REVIEW.json"
     },
     "critical_path": "Targeting-context qualification/full compatibility → public occurrence-choice and ward/trigger integration → full Spellskite qualification → remaining multiplayer admission gates → separately authorized official games.",
-    "actual_stopping_reason": "Blocked by unrelated Portal calibration failures in unchanged DestroyEachPermanent renderer (four golden gameplay/capability mismatches), plus missing Temporary Truce emission under pinned current corpus. Repository verify skill explicitly forbids repairing unrelated failures without user authorization. Original R2 evidence received and preserved; no qualification active, no rerun or reduced gates. Explicit repair scope required before implementation.",
+    "actual_stopping_reason": "Persistent unrelated calibration scope blocker; existing Work task paused, evidence retained, no work active.",
     "receiving": {
       "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
       "commit": "8fc7cc42e4b5afd861f29e5db9eac14cb9857485",
@@ -5361,6 +5390,7 @@
       "artifact": 12681671950,
       "manifest_entries": 647,
       "readback_verified": true
-    }
+    },
+    "continuation_state": "Existing Work task paused pending explicit unrelated calibration repair scope; schedule/prompt preserved. No source changes or repeated audits."
   }
 }
