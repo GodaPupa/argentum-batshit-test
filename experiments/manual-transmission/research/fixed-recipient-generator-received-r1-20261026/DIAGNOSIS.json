@@ -1,0 +1,45 @@
+{
+  "state": "DIAGNOSED_HARNESS_BASELINE_ACCOUNTING_NOT_ACCEPTED",
+  "original_failure": "R1 frozen checker incorrectly required zero skips for every full-module case; existing3 conditional skips were omitted from its baseline contract.",
+  "run": 40382421349,
+  "artifact": 12678464471,
+  "source": "f54094584f283ace86035492b1566c16effd5be2",
+  "baseline_receipt": "a702aad71c2a3aeae9c4645a65c88d346451c697",
+  "baseline_artifact": 12619980110,
+  "baseline": {
+    "cases": 147,
+    "passed": 144,
+    "skips": [
+      "com.wingedsheep.tooling.coverage.EmitterSmokeTest::Portal renders a high rate of whole, well-formed cards",
+      "com.wingedsheep.tooling.coverage.dashboard.DashboardTest::Analyzer classifies a set's cards into a partition that sums to the whole",
+      "com.wingedsheep.tooling.coverage.dashboard.DashboardTest::cross-set index carries the blocked cards behind each ranked capability"
+    ]
+  },
+  "observed": {
+    "cases": 156,
+    "passed": 153,
+    "skips": [
+      "com.wingedsheep.tooling.coverage.EmitterSmokeTest::Portal renders a high rate of whole, well-formed cards",
+      "com.wingedsheep.tooling.coverage.dashboard.DashboardTest::Analyzer classifies a set's cards into a partition that sums to the whole",
+      "com.wingedsheep.tooling.coverage.dashboard.DashboardTest::cross-set index carries the blocked cards behind each ranked capability"
+    ],
+    "failures": 0,
+    "errors": 0
+  },
+  "passed_original_stages": [
+    "compile-normal",
+    "compile-wrong-recipient",
+    "compile-unbound-stack",
+    "normal",
+    "wrong-recipient",
+    "unbound-stack",
+    "restored"
+  ],
+  "full_module_source_forms": "Identical to frozen normal source, empty SOURCE.diff",
+  "underlying_guard": "EmitterSmokeTest and two DashboardTest cases enabled only when corpus+POR cache exist; clean CI has neither. Same three skipped in accepted original compatibility artifact.",
+  "bounded_repair": "New immutable protocol only: retain exact156 identity multiset,153passing plus the exact3 inherited skips; forbid any new skip, failure, error or missing identity. Reuse received original7 passing stages only with byte-identical4 source/test/fixture bindings. No production/test/assertion edits. Combine full-module successor and mandatory frozen-input POR/ISD calibration.",
+  "disallowed": "Do not reinterpret original R1 workflow/receipt as passed; do not enable network-wide dashboard sweeps merely to change historical baseline; do not re-audit acceptedR7 or introduce skip directives.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
