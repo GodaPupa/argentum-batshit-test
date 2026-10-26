@@ -3,16 +3,14 @@
   "updated_date": "2026-10-26",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "IMPLEMENTING",
+  "owner": "manual-work-b16fd902-e30c-8320-9a96-bbac0e4e8b7a",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "claimed_utc": "2026-10-26T22:42:15.956Z",
-    "expires_utc": "2026-10-27T00:45:09.655Z",
-    "reason": "Original early receiving passed; preparing reviewed text-snapshot coherence and required full-module/POR/ISD successor.",
-    "released_utc": "2026-10-26T22:53:31.094Z",
-    "released_by": "manual-work-9b1c4209-4ecc-8329-bd8e-73f458c409cb"
+    "state": "ACTIVE",
+    "owner": "manual-work-b16fd902-e30c-8320-9a96-bbac0e4e8b7a",
+    "claimed_utc": "2026-10-26T23:46:12.187Z",
+    "expires_utc": "2026-10-27T00:43:12.310Z",
+    "reason": "Continue same invocation: received early repair and frozen full compatibility source; no competing worker."
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -4001,6 +3999,45 @@
         "manifest_entries": 367,
         "readback_verified": true
       }
+    },
+    "generator_calibration_repair_full_qualification": {
+      "state": "FROZEN_NOT_DISPATCHED",
+      "source": "7257cbfe88e29da4ce93be630995e19b7a9ee075",
+      "tree": "febbd74113ac324c01e0cdb6cba3c321f177f654",
+      "base": "375ba8ac19a71681a5b2459ffb5e59d7beed850d",
+      "source_branch": "qualification/manual-generator-calibration-repair-full-r1-20261026",
+      "validation": "593e14b9437f3ef1f92fa92d0c6fba1a28a3eb4a",
+      "validation_tree": "edc93a8405b7b6b4a6025475e945e50298935efe",
+      "validation_branch": "validation/manual-generator-calibration-repair-full-r1-20261026",
+      "workflow": ".github/workflows/manual-generator-calibration-repair-full-r1-20261026.yml",
+      "workflow_blob": "ecc759386dc34e1db608a7a939cc78c5e3698808",
+      "protocol": "experiments/manual-transmission/research/generator-calibration-repair-full-r1-20261026/PROTOCOL.json",
+      "source_delta": 23,
+      "source_readback_verified": true,
+      "early_receipt": "b61948efc7bb4238b55ef901a8308173f74664dd",
+      "original_r1_reused": "5959f695408588a35322495f426c0d087c2035ad",
+      "expected": {
+        "full_module": 171,
+        "passes": 168,
+        "historical_skips": 3,
+        "POR": {
+          "emitted": 195,
+          "matched": 158,
+          "outside": 37,
+          "not_emitted": 0
+        },
+        "ISD": {
+          "emitted": 115,
+          "matched": 88,
+          "outside": 27,
+          "not_emitted": 39
+        },
+        "mismatches": 0
+      },
+      "protected_goldens_unchanged": true,
+      "legacy_fixtures_unchanged": true,
+      "assertions_unchanged": true,
+      "draft_text_snapshots_reviewed": 6
     }
   },
   "completion_contract": {
@@ -4587,6 +4624,11 @@
         "truce_plural_fixture_vs_two_singular_current": true
       },
       "actual_stopping_reason": "External dependency pending: the single frozen early calibration repair qualification remains in_progress. Its exact original-artifact receiver,9 synthetic rejection checks, output-review action and unchanged full-module/POR/ISD follow-up floors are saved and immutable-readback verified. Existing isolated public-flow review and64client contract are reused. Further coherent-source compatibility preparation depends on compiled controls and actual output inventory; no useful safely independent preparation remains. Ownership explicitly released."
+    },
+    "ownership_field_correction": {
+      "utc": "2026-10-26T23:53:12.310Z",
+      "own_checkpoint": "a2f0ca62377aafdfe7d40b14263bc750371e6b4d",
+      "detail": "Own receiving checkpoint inadvertently carried prior released ownership fields from cached JSON. Live blob equals that own checkpoint; automation run unchanged and no intervening writer. Restoring current invocation ownership by fresh-blob CAS before dispatch."
     }
   },
   "automation": {
@@ -4744,10 +4786,10 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "390bd1587480",
-    "work_owner": null,
+    "work_owner": "manual-work-b16fd902-e30c-8320-9a96-bbac0e4e8b7a",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "No active worker; follow compact summary and next executable action.",
+    "activity": "Continue same invocation: received early repair and frozen full compatibility source; no competing worker.",
     "last_execution_owner": "manual-work-6c7bff94-e55c-8326-8a4a-6863203a9c5e"
   },
   "blockers": [
