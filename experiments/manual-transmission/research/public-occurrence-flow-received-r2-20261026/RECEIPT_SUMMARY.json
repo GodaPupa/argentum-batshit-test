@@ -1,0 +1,56 @@
+{
+  "source": "8d9e5ce4d0341644e2a1981f7248656cbe8487db",
+  "tree": "d13f78c429baaebb286a8b63a40787ac1ef3ffea",
+  "validation": "8b8e46a1c240f79fac361e95a0c22cfa2a996211",
+  "run": 40271140120,
+  "job": 121404003665,
+  "attempt": 1,
+  "artifact": 12628748291,
+  "artifact_bytes": 1534309,
+  "artifact_sha256": "a66ebe18756872cf59584af23b367f23d34728327fc0ad1c7c4ffa27f155ba3a",
+  "manifest_entries": 260,
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "gate_errors": [],
+  "state": "RECEIVED_EARLY_GATES_ONLY_NOT_FEATURE_ACCEPTANCE",
+  "gates": {
+    "compile-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-mutant": {
+      "compile": true,
+      "tests": 0
+    },
+    "targeted": {
+      "suites": 1,
+      "rows": 23,
+      "passed": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mutation": {
+      "suites": 1,
+      "rows": 23,
+      "passed": 20,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    "restored": {
+      "suites": 1,
+      "rows": 23,
+      "passed": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "forms": "All normal, mutant and restored bytes bound"
+  },
+  "receiver_commit": "3297dad007be6376c482b57fc298850e691d28fa",
+  "scope": "Early occurrence-choice, public response validation, SDK dispatch and four activated/triggered ward cases only; remaining integration and full regressions required.",
+  "next": "Complete remaining public integration matrix, generator/server/client coverage, then final-source controls and full regressions."
+}
