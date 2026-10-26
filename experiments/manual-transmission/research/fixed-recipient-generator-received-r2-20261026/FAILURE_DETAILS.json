@@ -1,0 +1,265 @@
+{
+  "current_ir": {
+    "Boiling Seas": {
+      "_OracleCard": "Card",
+      "Name": "Boiling Seas",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 3
+        },
+        {
+          "_ManaSymbol": "ManaCostR"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "DestroyEachPermanent",
+                "args": {
+                  "_Permanents": "IsLandType",
+                  "args": "Island"
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Devastation": {
+      "_OracleCard": "Card",
+      "Name": "Devastation",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 5
+        },
+        {
+          "_ManaSymbol": "ManaCostR"
+        },
+        {
+          "_ManaSymbol": "ManaCostR"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "DestroyEachPermanent",
+                "args": {
+                  "_Permanents": "Or",
+                  "args": [
+                    {
+                      "_Permanents": "IsCardtype",
+                      "args": "Creature"
+                    },
+                    {
+                      "_Permanents": "IsCardtype",
+                      "args": "Land"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Nature's Ruin": {
+      "_OracleCard": "Card",
+      "Name": "Nature's Ruin",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 2
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "DestroyEachPermanent",
+                "args": {
+                  "_Permanents": "And",
+                  "args": [
+                    {
+                      "_Permanents": "IsColor",
+                      "args": {
+                        "_Color": "Green"
+                      }
+                    },
+                    {
+                      "_Permanents": "IsCardtype",
+                      "args": "Creature"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Temporary Truce": {
+      "_OracleCard": "Card",
+      "Name": "Temporary Truce",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 1
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "EachPlayerAction",
+                "args": [
+                  {
+                    "_Players": "AnyPlayer"
+                  },
+                  {
+                    "_Action": "DrawUptoNumberCards",
+                    "args": {
+                      "_GameNumber": "Integer",
+                      "args": 2
+                    }
+                  }
+                ]
+              },
+              {
+                "_Action": "EachPlayerAction",
+                "args": [
+                  {
+                    "_Players": "AnyPlayer"
+                  },
+                  {
+                    "_Action": "GainLifeForEach",
+                    "args": [
+                      {
+                        "_GameNumber": "Integer",
+                        "args": 2
+                      },
+                      {
+                        "_GameNumber": "Minus",
+                        "args": [
+                          {
+                            "_GameNumber": "Integer",
+                            "args": 2
+                          },
+                          {
+                            "_GameNumber": "NumberOfCardsDrawnThisWay"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "Virtue's Ruin": {
+      "_OracleCard": "Card",
+      "Name": "Virtue's Ruin",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 2
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "DestroyEachPermanent",
+                "args": {
+                  "_Permanents": "And",
+                  "args": [
+                    {
+                      "_Permanents": "IsColor",
+                      "args": {
+                        "_Color": "White"
+                      }
+                    },
+                    {
+                      "_Permanents": "IsCardtype",
+                      "args": "Creature"
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "fidelity_log": "mtgish-tooling/build/install/mtgish-tooling/bin/mtgish-tooling fidelity --gate POR\n== POR COMPILED gate \u2014 generated cards diffed vs golden ==\n\n  AUTO-emitted & COMPILED:   157/158  (every emitted card compiled \u2014 Gradle gate)\n  GAMEPLAY TREE MATCH:       153  (after tiny known-equivalent normalisation)\n  GAMEPLAY TREE MISMATCH:    4  (emitted but not golden-equivalent \u2014 must be 0)\n  GOLDEN DRIFT SUSPECTED:    0  (oracle appears to support generated output)\n  capability MISMATCH:       4  (subset missing effect/keyword capabilities)\n  not emitted (left to hand): 1\n  emitted outside golden:     37  (reported, not gated)\n\nGAMEPLAY TREE MISMATCH taxonomy \u2014 first divergent path per emitted card:\n  x4    effect/ability structure\n\nGAMEPLAY TREE MISMATCH examples \u2014 generated != golden:\n  - Boiling Seas                 $.script.spellEffect.body: generated={\"type\":\"MoveToZone\",\"target\":\"Self\",\"destination\":\"Graveyard\",\"byDestruction\":true} golden=<missing> missingCaps=[BattlefieldMatching, MoveCollection] oracle=\"Destroy all Islands.\"\n  - Devastation                  $.script.spellEffect.body: generated={\"type\":\"MoveToZone\",\"target\":\"Self\",\"destination\":\"Graveyard\",\"byDestruction\":true} golden=<missing> missingCaps=[BattlefieldMatching, MoveCollection] oracle=\"Destroy all creatures and lands.\"\n  - Nature's Ruin                $.script.spellEffect.body: generated={\"type\":\"MoveToZone\",\"target\":\"Self\",\"destination\":\"Graveyard\",\"byDestruction\":true} golden=<missing> missingCaps=[BattlefieldMatching, MoveCollection] oracle=\"Destroy all green creatures.\"\n  - Virtue's Ruin                $.script.spellEffect.body: generated={\"type\":\"MoveToZone\",\"target\":\"Self\",\"destination\":\"Graveyard\",\"byDestruction\":true} golden=<missing> missingCaps=[BattlefieldMatching, MoveCollection] oracle=\"Destroy all white creatures.\"\n\nNOT EMITTED (1) \u2014 engine-feature-complex; the emitter declines rather than emit a wrong card:\n  - Temporary Truce\n\nEMITTED OUTSIDE GOLDEN (37) \u2014 generated snapshots with no golden counterpart:\n  - Ancestral Memories\n  - Archangel\n  - Armageddon\n  - Blinding Light\n  - Bog Imp\n  - Bog Wraith\n  - Dry Spell\n  - Earthquake\n  - Elven Cache\n  - Elvish Ranger\n  - Feral Shadow\n  - Flashfires\n  - Giant Spider\n  - Grizzly Bears\n  - Hill Giant\n  - Hulking Cyclops\n  - Hurricane\n  - Man-o'-War\n  - Merfolk of the Pearl Trident\n  - Mountain Goat\n  - Natural Order\n  - Nature's Lore\n  - Panther Warriors\n  - Prosperity\n  - Pyroclasm\n  - Python\n  - Raise Dead\n  - Spitting Earth\n  - Stalking Tiger\n  - Stone Rain\n  - Storm Crow\n  - Summer Bloom\n  - Untamed Wilds\n  - Volcanic Dragon\n  - Wall of Swords\n  - Winds of Change\n  - Wrath of God\n\nGATE FAIL \u2014 an emitted card is not gameplay-equivalent (see GAMEPLAY TREE MISMATCH).  (153/158 of Portal auto-emitted & verified.)\nerror: Recipe `fidelity` failed on line 11 with exit code 2\n",
+  "compile_exit": "0\n",
+  "fidelity_exit": "2\n",
+  "emitted_count": 194,
+  "expected_count": 195
+}

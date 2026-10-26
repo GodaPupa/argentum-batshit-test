@@ -1,0 +1,67 @@
+{
+  "state": "BLOCKED_UNRELATED_CALIBRATION_FAILURE_NOT_ACCEPTED",
+  "run": 40386124218,
+  "job": 121794733961,
+  "attempt": 1,
+  "source": "49a82d93b9f65d24ac99d80e2df05686c49da36c",
+  "validation": "a726f521ff4002cce64f5a03019432728440309a",
+  "artifact": 12681671950,
+  "artifact_bytes": 4701891,
+  "artifact_sha256": "1f350fdd287e9be440cec2bda8cfecc48b2634cd8bcf524a54ab54cd310e06c3",
+  "manifest_entries": 647,
+  "verified": {
+    "full_module": {
+      "tests": 156,
+      "passed": 153,
+      "skips": 3,
+      "failures": 0,
+      "errors": 0,
+      "exact_historical_skips": true
+    },
+    "original_r1_controls_reused": true,
+    "por_compile_exit": 0,
+    "por_generated": 194,
+    "por_expected": 195,
+    "por_golden_matches": 153,
+    "por_mismatches": 4,
+    "por_outside_golden": 37,
+    "isd_executed": false
+  },
+  "failure": {
+    "cards": [
+      "Boiling Seas",
+      "Devastation",
+      "Nature's Ruin",
+      "Virtue's Ruin"
+    ],
+    "cause": "Existing DestroyEachPermanent renderer emits sequential ForEach/MoveToZone; protected golden expects GatherCards/MoveCollection. Fidelity reports four gameplay-tree and capability mismatches. No equivalence is presumed and no normalization/expectation relaxation is authorized.",
+    "missing_emission": "Temporary Truce: current pinned upstream IR uses EachPlayerAction/DrawUptoNumberCards and gain-life based on NumberOfCardsDrawnThisWay. Frozen fixture-derived floor expected195; actual194. Underlying missing-emission diagnosis remains to be completed; no floor reduction.",
+    "secondary": "ISD and FINAL_INPUTS absent because collector stopped at failed Portal gate. These are missing evidence, not behavioral negatives."
+  },
+  "source_trace": {
+    "unchanged_handler": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/ZoneHandlers.kt",
+    "blob": "495e6b3f8d5b75a40e13fcc254dd1d0721f12b3f",
+    "identical_at": [
+      "49a82d93b9f65d24ac99d80e2df05686c49da36c",
+      "ec4914f8347c0456fc20eb4c78ea1078c1147a75"
+    ],
+    "comparison": "Accepted runtime base to candidate changes only fixed-recipient action/bridge plus its tests/fixture and research records; no DestroyEachPermanent changes."
+  },
+  "governing_requirement": {
+    "skill": ".agents/skills/verify/SKILL.md",
+    "ref": "49a82d93b9f65d24ac99d80e2df05686c49da36c",
+    "quote": "Fix only failures your change caused.",
+    "additional_quote": "A pre-existing failure — or one in code you didn't touch — is likely another agent's in-flight work. Report it to the user and stop.",
+    "interpretation": "The four calibration subjects are unchanged and unrelated to the new fixed-recipient action. Existing specific resolver grants and ordinary continuation do not explicitly authorize repair of these unrelated emitter failures under this repository rule."
+  },
+  "next_action": "Obtain explicit scope authorization for unrelated generator calibration repair before changing DestroyEachPermanent or Temporary Truce handling. Then preserve every original assertion,23goldens,82fixtures and existing gates; trace current/fixture IR and scope, add executable regression/negative controls, compile normal/mutants first, freeze one justified successor, reuse received R1 controls and unchanged R2 full-module evidence where exact bindings permit; require complete POR/ISD calibration and original receiving. No unchanged rerun or reduced floors.",
+  "safeguards": {
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "protected_resolver_changed": false,
+    "goldens_changed": false,
+    "fixtures_changed": false,
+    "accepted_features": []
+  }
+}
