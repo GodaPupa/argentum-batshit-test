@@ -1,0 +1,39 @@
+{
+  "state": "UNCOMPILED_UNEXECUTED_DRAFT_NOT_ACCEPTED",
+  "base_source": "144701b4cdd88884770b594a24bf11717f145789",
+  "accepted_early_receipt": "1b74a7551dba424d7b514d5c0b6234f8685755e5",
+  "scope": "Supporting public occurrence-choice transport tests only. No production, existing assertions, protected files or frozen qualification changed.",
+  "added_cases": {
+    "client": 4,
+    "server": 2
+  },
+  "source_bindings": {
+    "web-client/src/store/slices/liveInteraction.test.ts": "ad3c54fa1d6f87ae4a03de5fdb76a3acd5c8b300",
+    "web-client/src/store/slices/gameplaySlice.ts": "848d0067c882a36c07347238c0fece1da7cb360f",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/PendingDecisionRouting.kt": "081c74fd31391bc40e944ea9f0d69a8306627234",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/DecisionEnricher.kt": "e3995899772b15974782bec71cb1644395206131"
+  },
+  "next_executable_action": "Review and complete this coherent transport contract before freeze: add real GameSession actor/masking round-trip and stale/nested token tests using existing LiveActionSubmissionTest and UndoDecisionFreshnessTest harnesses; qualify client and server normal/mutant compilation and exact targeted assertion witnesses before broad regressions. Keep these six added cases and all prior assertions. Do not treat routing/serialization tests as engine legality or actual UX evidence.",
+  "required_controls": [
+    "Client mutation preserving all else but forcing optionIndex=0 must fail both repeated-card index-1 submission cases and the replacement-epoch case.",
+    "Client stale-ID guard removal must fail nested and replaced-epoch cases; distinguish epoch-layer rejection from same-epoch nested rejection.",
+    "Server routing mutation that erases optionCardIds must fail exact routed payload equality; use compiled executable assertion evidence, not static matching."
+  ],
+  "remaining": [
+    "Actor masking and canonical recorded-action round-trip for occurrence decisions",
+    "Actual running-client UX and original option index/preview behavior",
+    "Remaining public source/recipient/modal/splice/division/optional matrix",
+    "Exact upstream generator IR or explicit unsupported/scaffold regression without invented tags",
+    "Final coherent-source full regression and original receiving",
+    "Full Spellskite and multiplayer admission"
+  ],
+  "constraints": {
+    "production_unchanged": true,
+    "existing_assertions_preserved": true,
+    "protected_path_intersection": [],
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
+  },
+  "validation": "Source-level API/type review only; no build/test execution. Not a frozen dispatch protocol."
+}

@@ -338,3 +338,57 @@ describe('browser live action origins', () => {
   })
 
 })
+
+describe('public occurrence-choice transport', () => {
+  const choice = (id: string): PendingDecision => ({
+    type: 'ChooseOptionDecision', id, playerId: entityId('controlled-player'),
+    prompt: 'Choose the target occurrence to change', context: { phase: 'RESOLUTION' },
+    options: ['Group 1, target 1, division 2', 'Group 2, target 1, division 5'],
+    optionCardIds: { 0: [TARGET], 1: [TARGET] },
+  })
+
+  it.each([false, true])('preserves repeated-card occurrence labels and index through delta=%s', (delta) => {
+    const decision = choice('original:occurrence-1')
+    receive('original', delta, decision)
+    expect(useGameStore.getState().pendingDecision).toEqual(decision)
+    useGameStore.getState().submitOptionDecision(decision.id, 1)
+    expect(send).toHaveBeenCalledExactlyOnceWith({
+      type: 'submitAction', interactionEpoch: 'original',
+      action: { type: 'SubmitDecision', playerId: decision.playerId,
+        response: { type: 'OptionChosenResponse', decisionId: decision.id, optionIndex: 1 } },
+    })
+  })
+
+  it('refuses a previous occurrence callback while preserving the nested question', () => {
+    const first = choice('original:occurrence-1')
+    receive('original', false, first)
+    const held = () => useGameStore.getState().submitOptionDecision(first.id, 1)
+    const nested = choice('original:occurrence-2')
+    receive('original', true, nested)
+    held()
+    expect(send).not.toHaveBeenCalled()
+    expect(useGameStore.getState().pendingDecision).toEqual(nested)
+    useGameStore.getState().submitOptionDecision(nested.id, 0)
+    expect(send).toHaveBeenCalledExactlyOnceWith({
+      type: 'submitAction', interactionEpoch: 'original',
+      action: { type: 'SubmitDecision', playerId: nested.playerId,
+        response: { type: 'OptionChosenResponse', decisionId: nested.id, optionIndex: 0 } },
+    })
+  })
+
+  it('rejects an abandoned occurrence epoch and submits the replacement owner and index', () => {
+    const first = choice('original:occurrence-1')
+    receive('original', false, first)
+    const replacement = choice('replacement:occurrence-1')
+    receive('replacement', false, replacement)
+    useGameStore.getState().submitOptionDecision(first.id, 0)
+    expect(send).not.toHaveBeenCalled()
+    expect(useGameStore.getState().pendingDecision).toEqual(replacement)
+    useGameStore.getState().submitOptionDecision(replacement.id, 1)
+    expect(send).toHaveBeenCalledExactlyOnceWith({
+      type: 'submitAction', interactionEpoch: 'replacement',
+      action: { type: 'SubmitDecision', playerId: replacement.playerId,
+        response: { type: 'OptionChosenResponse', decisionId: replacement.id, optionIndex: 1 } },
+    })
+  })
+})
