@@ -253,6 +253,163 @@ class FixedRecipientChoiceTest : ScenarioTestBase() {
                 answered.state.getBattlefield().contains(source) shouldBe true
             }
         }
+        // Public SDK path with three occurrences: the second retarget still requires a choice.
+        fun integrationFixture(kind: String, ward: Boolean = false, filter: GameObjectFilter? = null): F {
+            val recipientName = "Occurrence Integration Recipient"
+            cardRegistry.register(com.wingedsheep.sdk.dsl.card(recipientName) {
+                manaCost = "{1}{G}"
+                typeLine = "Creature — Bear"
+                power = 2
+                toughness = 2
+                if (ward) keywordAbility(KeywordAbility.wardLife(2))
+                if (filter != null) triggeredAbility {
+                    trigger = TriggerSpec(event = EventPattern.BecomesTargetEvent(sourceFilter = filter),
+                        binding = TriggerBinding.SELF)
+                    effect = Effects.GainLife(3)
+                }
+            })
+            val spellName = "Occurrence Integration Spell"
+            cardRegistry.register(com.wingedsheep.sdk.dsl.card(spellName) {
+                manaCost = "{U}"
+                typeLine = if (kind == "sorcery") "Sorcery" else "Instant"
+                spell { effect = Effects.GainLife(0) }
+            })
+            val game = scenario().withPlayers("One", "Two").withCardOnBattlefield(1, "Grizzly Bears")
+                .withCardOnBattlefield(1, "Hill Giant").withCardOnBattlefield(2, recipientName)
+                .withCardInHand(1, spellName).build()
+            val source = game.findPermanent("Grizzly Bears")!!
+            val old = game.findPermanent("Hill Giant")!!
+            val recipient = game.findPermanent(recipientName)!!
+            val s = game.state
+            val selection = TargetSlotPlan(List(3) { TargetInstanceSelection(listOf(
+                TargetSlot(ChosenTarget.Permanent(old), s.objectRef(old)))) })
+            val plan = CurrentTargetPlan(selection)
+            val requirements = List(3) { TargetObject(filter = TargetFilter(GameObjectFilter.Creature)) }
+            val refs = ObjectReferenceEnvironment(captured = true, origin = s.objectRef(source), source = s.objectRef(source))
+            val resolver = StackResolver(cardRegistry)
+            val placed = when (kind) {
+                "activation" -> resolver.putActivatedAbility(s,
+                    ActivatedAbilityOnStackComponent(source, "Source", game.player1Id, Effects.GainLife(0),
+                        objectReferences = refs, originalTargetSlots = selection),
+                    plan.targets, requirements, currentTargetPlan = plan)
+                "trigger" -> resolver.putTriggeredAbility(s,
+                    TriggeredAbilityOnStackComponent(source, "Source", game.player1Id, Effects.GainLife(0), "Source trigger",
+                        objectReferences = refs, originalTargetSlots = selection),
+                    plan.targets, requirements, currentTargetPlan = plan)
+                else -> resolver.castSpell(s, game.findCardsInHand(1, spellName).single(), game.player1Id,
+                    plan.targets, targetRequirements = requirements)
+            }
+            placed.error shouldBe null
+            val stack = placed.state.stack.last()
+            val bound = if (kind in listOf("instant", "sorcery")) placed.state.updateEntity(stack) {
+                it.withCurrentTargetPlan(null, plan)!!
+            } else placed.state
+            return F(bound, stack, old, recipient)
+        }
+        fun chooseThroughSdk(f: F, state: GameState = f.state, index: Int = 0): ExecutionResult {
+            val chooser = state.turnOrder[1]
+            val offered = EngineServices(cardRegistry).effectExecutorRegistry.execute(state,
+                Effects.ChangeTargetTo(recipient = EffectTarget.SpecificEntity(f.recipient)),
+                EffectContext(sourceId = null, controllerId = chooser, targets = listOf(ChosenTarget.Spell(f.stack))))
+            offered.error shouldBe null
+            val serialized = json.decodeFromString(GameState.serializer(), json.encodeToString(GameState.serializer(), offered.state))
+            val question = serialized.pendingDecision as ChooseOptionDecision
+            question.playerId shouldBe chooser
+            return ActionProcessor(cardRegistry).process(serialized,
+                SubmitDecision(chooser, OptionChosenResponse(question.id, index))).result
+        }
+        for (pay in listOf(false, true)) {
+            test("FRC public spell ward pay=$pay") {
+                val f = integrationFixture("instant", ward = true)
+                val chosen = chooseThroughSdk(f)
+                chosen.error shouldBe null
+                chosen.events.filterIsInstance<BecomesTargetEvent>().single().sourceIsSpell shouldBe true
+                val ward = chosen.state.getEntity(chosen.state.stack.last())!!.get<TriggeredAbilityOnStackComponent>()!!
+                ward.targetingSourceEntityId shouldBe f.stack
+                val resolved = StackResolver(cardRegistry).resolveTop(chosen.state)
+                val payment = resolved.state.pendingDecision as YesNoDecision
+                payment.playerId shouldBe f.state.turnOrder[0]
+                val before = resolved.state.lifeTotal(payment.playerId)
+                val answered = ActionProcessor(cardRegistry).process(resolved.state,
+                    SubmitDecision(payment.playerId, YesNoResponse(payment.id, pay))).result
+                answered.error shouldBe null
+                answered.state.stack.contains(f.stack) shouldBe pay
+                answered.state.lifeTotal(payment.playerId) shouldBe before - if (pay) 2 else 0
+                answered.state.getBattlefield().contains(f.recipient) shouldBe true
+            }
+        }
+        for (kind in listOf("instant", "activation", "trigger")) {
+            test("FRC repeated public recipient does not retrigger ward $kind") {
+                val f = integrationFixture(kind, ward = true)
+                val first = chooseThroughSdk(f)
+                first.error shouldBe null
+                first.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 1
+                val resolved = StackResolver(cardRegistry).resolveTop(first.state)
+                val payment = resolved.state.pendingDecision as YesNoDecision
+                val paid = ActionProcessor(cardRegistry).process(resolved.state,
+                    SubmitDecision(payment.playerId, YesNoResponse(payment.id, true))).result
+                paid.error shouldBe null
+                val second = chooseThroughSdk(f, paid.state)
+                second.error shouldBe null
+                second.state.getEntity(f.stack)!!.currentTargetPlan()!!.targets shouldBe listOf(
+                    ChosenTarget.Permanent(f.recipient), ChosenTarget.Permanent(f.recipient), ChosenTarget.Permanent(f.old))
+                second.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+                second.events.filterIsInstance<TargetsChosenEvent>().size shouldBe 1
+                second.state.stack shouldBe listOf(f.stack)
+                second.state.lifeTotal(payment.playerId) shouldBe paid.state.lifeTotal(payment.playerId)
+            }
+        }
+        for (kind in listOf("instant", "sorcery", "activation", "trigger")) {
+            test("FRC public source filter retains targeting-object contract $kind") {
+                val filter = if (kind in listOf("activation", "trigger")) GameObjectFilter.Creature else GameObjectFilter.Instant
+                val f = integrationFixture(kind, filter = filter)
+                val chosen = chooseThroughSdk(f)
+                chosen.error shouldBe null
+                chosen.events.filterIsInstance<BecomesTargetEvent>().single().sourceEntityId shouldBe f.stack
+                val matches = kind == "instant"
+                chosen.state.stack.size shouldBe if (matches) 2 else 1
+                if (matches) {
+                    val observer = chosen.state.getEntity(chosen.state.stack.last())!!.get<TriggeredAbilityOnStackComponent>()!!
+                    observer.sourceId shouldBe f.recipient
+                    val before = chosen.state.lifeTotal(f.state.turnOrder[1])
+                    val resolved = StackResolver(cardRegistry).resolveTop(chosen.state)
+                    resolved.error shouldBe null
+                    resolved.state.lifeTotal(f.state.turnOrder[1]) shouldBe before + 3
+                }
+            }
+        }
+        for (kind in listOf("instant", "activation", "trigger")) {
+            test("FRC nested serialized occurrence choices retain context and tail $kind") {
+                val f = integrationFixture(kind)
+                val chooser = f.state.turnOrder[1]
+                val change = Effects.ChangeTargetTo(recipient = EffectTarget.SpecificEntity(f.recipient))
+                val pipeline = Effects.Composite(change, Effects.Composite(change, Effects.GainLife(4)))
+                val offered = EngineServices(cardRegistry).effectExecutorRegistry.execute(f.state, pipeline,
+                    EffectContext(sourceId = null, controllerId = chooser, targets = listOf(ChosenTarget.Spell(f.stack))))
+                offered.error shouldBe null
+                val first = offered.state.pendingDecision as ChooseOptionDecision
+                first.options.size shouldBe 3
+                val processor = ActionProcessor(cardRegistry)
+                val once = processor.process(json.decodeFromString(GameState.serializer(),
+                    json.encodeToString(GameState.serializer(), offered.state)),
+                    SubmitDecision(chooser, OptionChosenResponse(first.id, 0))).result
+                once.error shouldBe null
+                val second = once.state.pendingDecision as ChooseOptionDecision
+                second.options.size shouldBe 2
+                once.state.lifeTotal(chooser) shouldBe f.state.lifeTotal(chooser)
+                val done = processor.process(json.decodeFromString(GameState.serializer(),
+                    json.encodeToString(GameState.serializer(), once.state)),
+                    SubmitDecision(chooser, OptionChosenResponse(second.id, 1))).result
+                done.error shouldBe null
+                done.state.getEntity(f.stack)!!.currentTargetPlan()!!.targets[2] shouldBe ChosenTarget.Permanent(f.recipient)
+                done.state.getEntity(f.stack)!!.currentTargetPlan()!!.targets[1] shouldBe ChosenTarget.Permanent(f.old)
+                done.state.lifeTotal(chooser) shouldBe f.state.lifeTotal(chooser) + 4
+                done.state.pendingDecision shouldBe null
+                done.state.continuationStack shouldBe emptyList()
+                done.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+            }
+        }
+
     }
 }
 
