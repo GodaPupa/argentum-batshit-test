@@ -1,0 +1,268 @@
+{
+  "state": "ISOLATED_SOURCE_REVIEW_NOT_RUNTIME_ACCEPTANCE",
+  "source": "7f0a3280f4c2857a272dc794247ed1e5c4a5245d",
+  "reviewed_bindings": {
+    "web-client/src/components/decisions/ChooseOptionDecisionUI.tsx": "31aac1ee9c69038c7ed0e3c39dfc7888b29011a8",
+    "web-client/src/components/decisions/DecisionUI.tsx": "2b111bca348235f31e1e8064d6dda56b2e2cea20",
+    "web-client/src/store/slices/gameplaySlice.ts": "848d0067c882a36c07347238c0fece1da7cb360f",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/DecisionEnricher.kt": "e3995899772b15974782bec71cb1644395206131",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/PendingDecisionRouting.kt": "081c74fd31391bc40e944ea9f0d69a8306627234",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/LiveActionSubmission.kt": "2cfb50de50a2f2aec33058ec67fb8385af545b45",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/protocol/ClientMessage.kt": "6fbcb7aa06819c460fa7e42e37aba579966fa133",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Mtgish.kt": "9d15321b78ab6329dfcc3dd23a0540bb9794a348",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/DamageDrawLifeHandlers.kt": "4b5853867a3526e8aeb4ecb96e3d7d141cd7ec50",
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/EffectHandlerTest.kt": "ad5f32d5590effe8f165d321a01f55329ccb9f7f"
+  },
+  "generator_fixture_inventory": [
+    {
+      "set": "10e",
+      "blob": "1acc8f1fa381b7e2ed3a821fc61052956c84fec8",
+      "cards": [
+        {
+          "name": "Shunt",
+          "ir": {
+            "_OracleCard": "Card",
+            "Name": "Shunt",
+            "Typeline": {
+              "Supertypes": [],
+              "Cardtypes": [
+                "Instant"
+              ],
+              "Subtypes": []
+            },
+            "ManaCost": [
+              {
+                "_ManaSymbol": "ManaCostGeneric",
+                "args": 1
+              },
+              {
+                "_ManaSymbol": "ManaCostR"
+              },
+              {
+                "_ManaSymbol": "ManaCostR"
+              }
+            ],
+            "Rules": [
+              {
+                "_Rule": "SpellActions",
+                "args": {
+                  "_Actions": "Targeted",
+                  "args": [
+                    [
+                      {
+                        "_Target": "TargetSpell",
+                        "args": {
+                          "_Spells": "HasASingleTarget"
+                        }
+                      }
+                    ],
+                    {
+                      "_Actions": "ActionList",
+                      "args": [
+                        {
+                          "_Action": "ChangeTargetsOfSpell",
+                          "args": {
+                            "_Spell": "Ref_TargetSpell"
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "set": "ons",
+      "blob": "4e4936c614d22f697dcebc377e8008a099862730",
+      "cards": []
+    },
+    {
+      "set": "chk",
+      "blob": "561896a2e2ab3d0ef5b9f2094a4b48dc4710b1e8",
+      "cards": [
+        {
+          "name": "Sideswipe",
+          "ir": {
+            "_OracleCard": "Card",
+            "Name": "Sideswipe",
+            "Typeline": {
+              "Supertypes": [],
+              "Cardtypes": [
+                "Instant"
+              ],
+              "Subtypes": []
+            },
+            "ManaCost": [
+              {
+                "_ManaSymbol": "ManaCostGeneric",
+                "args": 1
+              },
+              {
+                "_ManaSymbol": "ManaCostR"
+              }
+            ],
+            "Rules": [
+              {
+                "_Rule": "SpellActions",
+                "args": {
+                  "_Actions": "Targeted",
+                  "args": [
+                    [
+                      {
+                        "_Target": "TargetSpell",
+                        "args": {
+                          "_Spells": "IsSpellType",
+                          "args": "Arcane"
+                        }
+                      }
+                    ],
+                    {
+                      "_Actions": "ActionList",
+                      "args": [
+                        {
+                          "_Action": "MayAction",
+                          "args": {
+                            "_Action": "ChangeTargetsOfSpell",
+                            "args": {
+                              "_Spell": "Ref_TargetSpell"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "set": "eoe",
+      "blob": "f6d82aafba7c25f3603b4025d8a2e4e63407c86c",
+      "cards": []
+    },
+    {
+      "set": "hob",
+      "blob": "4c47168c5e1130e71aa8a2c6533e09576e3e8149",
+      "cards": []
+    },
+    {
+      "set": "inr",
+      "blob": "c13a544dc41f50c33a03225e2bf7a0b01697219c",
+      "cards": []
+    },
+    {
+      "set": "isd",
+      "blob": "e1857c6a3b596c74a63d866722c23e3391549417",
+      "cards": []
+    },
+    {
+      "set": "por",
+      "blob": "eff3e10eee090a9369716efc20a36a976f999a0b",
+      "cards": []
+    },
+    {
+      "set": "rav",
+      "blob": "0e40d4fd9f9ed54eb75debfc1b771e1c6fbf943f",
+      "cards": [
+        {
+          "name": "Reroute",
+          "ir": {
+            "_OracleCard": "Card",
+            "Name": "Reroute",
+            "Typeline": {
+              "Supertypes": [],
+              "Cardtypes": [
+                "Instant"
+              ],
+              "Subtypes": []
+            },
+            "ManaCost": [
+              {
+                "_ManaSymbol": "ManaCostGeneric",
+                "args": 1
+              },
+              {
+                "_ManaSymbol": "ManaCostR"
+              }
+            ],
+            "Rules": [
+              {
+                "_Rule": "SpellActions",
+                "args": {
+                  "_Actions": "Targeted",
+                  "args": [
+                    [
+                      {
+                        "_Target": "TargetAbility",
+                        "args": {
+                          "_Abilities": "And",
+                          "args": [
+                            {
+                              "_Abilities": "ActivatedAbility"
+                            },
+                            {
+                              "_Abilities": "HasASingleTarget"
+                            }
+                          ]
+                        }
+                      }
+                    ],
+                    {
+                      "_Actions": "ActionList",
+                      "args": [
+                        {
+                          "_Action": "ChangeTargetsOfAbility",
+                          "args": {
+                            "_Ability": "Ref_TargetAbility"
+                          }
+                        },
+                        {
+                          "_Action": "DrawACard"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "set": "sos",
+      "blob": "593243782e15e634ff3e8a281a36c3e0719626c1",
+      "cards": []
+    },
+    {
+      "set": "tmp",
+      "blob": "9557ed4ac62b4de269d297c8812e96049b09cad9",
+      "cards": []
+    }
+  ],
+  "findings": [
+    "All eleven committed fixture sets inspected: only Shunt/ChangeTargetsOfSpell, Sideswipe/MayAction(ChangeTargetsOfSpell) and Reroute/ChangeTargetsOfAbility reference retargeting. No observed fixed-recipient IR node. These three generic forms must not be repointed to ChangeTargetTo.",
+    "Existing ChangeTargetsOfSpellOrAbility handler is a constant generic ChangeTarget emitter. Registry auto-discovers new SDK effect serial names, but exact fixed-recipient IR mapping still requires an observed upstream node or explicit unsupported/scaffold regression; do not invent a discriminator or claim whole-feature generator coverage.",
+    "ChooseOptionDecisionUI preserves original indices through display/filtering, shows server-provided group/choice labels and optionCardIds previews from the masked client card map; confirm passes decision.id and selectedIndex. DecisionUI keys this component by decision ID, resetting local selection between nested choices.",
+    "gameplaySlice.submitOptionDecision checks current pending decision ID, stamps its owner, and sends OptionChosenResponse through submitAction with the decision interaction epoch. Public engine rejection/recovery/replay cases are already in R2 evidence; exact server transport/client guard tests still required.",
+    "ClientMessage.SubmitAction carries canonical GameAction; LiveActionSubmission adds interaction epoch. PendingDecisionRouting.copy(id) preserves ChooseOption fields. DecisionEnricher handles ChooseOption via unchanged passthrough and opponent Making a choice summary. Need actor/masking round-trip assertions with distinct repeated-occurrence labels and nested ID replacement.",
+    "No frozen R3 source mutated during review; no new feature, card, multiplayer or game authorization inferred."
+  ],
+  "next_executable_after_receiving": [
+    "Receive R3 original artifact with pinned receiver and all gates. Preserve failures without guessing success.",
+    "Add server/client focused transport and stale/nested-choice assertions using existing decision flow; execute their required runtime gates and actual UX validation.",
+    "Retrieve an exact pinned fixed-recipient mtgish IR node from its configured corpus before adding bridge/emitter mapping; retain generic retarget semantics or explicit scaffold. Add exact-operand and unsupported-shape tests.",
+    "Complete queued-trigger ordering/target-selection and full public source/recipient/modal/splice/division/optional matrix before final coherent-source full regressions."
+  ],
+  "frozen_source_unchanged": true,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
