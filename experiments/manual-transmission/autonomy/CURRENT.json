@@ -33,7 +33,7 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Receive original transport R3 after bounded runner repair, then finish public integration",
+    "current_subproblem": "Receive original transport R4 after bounded module-discovery repair",
     "source_candidate": "1382dc0a1fc399e96f8419117b7354627ec43308",
     "source_tree": "c859dcf0d0f537879a03271e028058f33573d07f",
     "source_branch": null,
@@ -42,7 +42,16 @@
     "validation": "e7aeae3fbb1d76ec87f500c0731a2578ffbacb6c",
     "validation_branch": "validation/manual-source-context-regression-r1-20261025",
     "workflow": ".github/workflows/manual-source-context-regression-r1-20261025.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      {
+        "run": 40326454093,
+        "job": 121584278817,
+        "attempt": 1,
+        "source": "4c8d4b81ecc6e6fbf431d743be7ff87702f905a1",
+        "validation": "cfb37683e3f1fbd3b2364ea33dc49c5672e02d06",
+        "status": "in_progress"
+      }
+    ],
     "planned_not_observed": {
       "normal": 133,
       "restored": 133,
@@ -3451,11 +3460,17 @@
         "run.py": "e57b1ef8324a0b212f7e2b2084d0066445dec469cdcbe16b6c131b3b3d4dc0ae",
         "check_reports.py": "7ba42027b15c2fb251fd5441bbdbc37cb489929c526ccc138498092370794dea"
       },
-      "state": "FROZEN_REVIEWED_PENDING_DISPATCH",
+      "state": "WAITING_EXTERNAL_NOT_ACCEPTED",
       "protocol": "experiments/manual-transmission/research/public-occurrence-transport-qualification-r4-20261026/PROTOCOL.json",
       "feature_acceptance": false,
       "synthetic_checks": 14,
-      "production_tests_assertions_mutants_unchanged": true
+      "production_tests_assertions_mutants_unchanged": true,
+      "run": 40326454093,
+      "job": 121584278817,
+      "workflow_id": 397056721,
+      "artifact_name": "manual-public-occurrence-transport-r4-40326454093",
+      "attempt": 1,
+      "observed_status": "in_progress"
     },
     "public_occurrence_transport_failed_r1": {
       "source": "40ada88201ad89d3b2c6202a89c3dd13ff5246c4",
@@ -4813,7 +4828,7 @@
       "Full Spellskite behavior and card qualification",
       "Remaining multiplayer admission gates; official games not authorized"
     ],
-    "pending_evidence": "R3 original failure received; all5compilations passed,zero behavioral tests. R4 explicit module runner repair frozen.",
+    "pending_evidence": "Transport R4 run40326454093/job121584278817 active; no behavioral acceptance.",
     "next_executable_action": "Reconcile ownership/newer evidence; receive original transport R3 run40318117378/job121555752574/attempt1,source9a9c04e8464818ad5e3a7bef910922b08152f729/treebd12d63b68660783f30c8edde51c5601e8fbc017,validation727f032e49453cc02b84590d15f5c2a181c71013 using unchanged pinned receiver02d371c3c8d4e70d76f71e6f8481f5526bdfe966 at experiments/manual-transmission/research/public-occurrence-transport-receiving-r3-20261026. Never duplicate while active. Require original metadata/hash/manifest/source forms/protected bytes/restoration,all5normal/mutant compilation gates,server4/client24 normal+restored,server3exact witnesses/1control,index3/21,stale1/23,zero skips/errors,raw identities and firstframes. R2 original runner failure receipt6c22229937d0c327a463edc1aa07821b106fb80e remains intact:243manifest entries/all5compilations passed,zero behavioral tests; not acceptance. Preserve and diagnose any new failure before bounded repair. Reuse R4/prior accepted receipts. After valid receiving finish actual UX,remaining publicmatrix,exact generator integration/scaffold,final-source fullregressions,fullSpellskite,multiplayergates. No officialgames/seeds.",
     "read_sections": [
       "next.public_occurrence_flow_draft",
