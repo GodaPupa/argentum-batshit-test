@@ -1,0 +1,15 @@
+{
+  "state": "FROZEN_PROTOCOL_ONLY_REPAIR",
+  "source_base": "74fdb3f9130167ea9dd340788b1c4b2d2b65ac8a",
+  "prior_failure": {
+    "failure_receipt": "4ec05c06fa697d43587afd982fda290de0b3fef0",
+    "reason": "First stale-ID guard redundant with submitAction ID guard. Surviving R5 mutant is not negative evidence.",
+    "scope": "Only mutated source bypasses both guards for option responses; all production/test/assertion bytes and expected witness line369 unchanged; epoch and other response checks remain."
+  },
+  "bindings_unchanged": true,
+  "mutant_form_check": "Exact archived first-guard mutant plus one option-response-only secondary guard bypass; epoch guard retained.",
+  "tests": "Original30 and server4 unchanged; exact same witness frames. All seven compiles and original receiving mandatory.",
+  "synthetic_checks": 17,
+  "independent_review": false,
+  "feature_acceptance": false
+}
