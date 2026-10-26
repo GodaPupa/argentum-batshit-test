@@ -175,7 +175,12 @@ export const createTargetingSlice: SliceCreator<TargetingSlice> = (set, get) => 
       }
 
       // Single-target flow
-      set({ targetingState: null, pipelineState: { ...pipelineState, pendingTargetGroups: [[...targetingState.selectedTargets]] } })
+      const nextPipeline = { ...pipelineState }
+      delete nextPipeline.pendingTargetGroups
+      if (pipelineState.actionInfo.targetRequirements?.length === 1) {
+        nextPipeline.pendingTargetGroups = [[...targetingState.selectedTargets]]
+      }
+      set({ targetingState: null, pipelineState: nextPipeline })
       get().advancePipeline({
         type: 'targeting',
         selectedTargets: [...targetingState.selectedTargets],
