@@ -4484,7 +4484,7 @@
   "automation": {
     "execution_task": "Manual Work Continuation",
     "execution_task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_schedule": "Existing single hourly Work task paused; schedule definition preserved. Execution admission remains valid; no bootstrap/access probes required on authorized resume.",
+    "execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
     "intervention_watch": {
       "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
       "enabled": false,
@@ -4568,7 +4568,7 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "PAUSED_PENDING_CALIBRATION_REPAIR_AUTHORIZATION",
+    "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
     "last_verified_enabled_utc": "2026-10-25T12:41:18.416Z",
     "next_authorized_action": "Read CURRENT.summary and next.next_executable_action; expand exact referenced source/protocol/receipt/next-action sections, history only as needed for inconsistencies or governing requirements.",
     "execution_efficiency_policy": {
@@ -4609,6 +4609,12 @@
       "receipt": "8fc7cc42e4b5afd861f29e5db9eac14cb9857485",
       "resume": "After explicit repair scope is authorized, resume this same task; never create a replacement executor.",
       "resolved_by": "generator_calibration_repair_authorization"
+    },
+    "calibration_repair_resume": {
+      "authorization_commit": "d51f9e26214bdbda1df3bafc57c1a45f5821a28a",
+      "enabled_readback_verified": true,
+      "prompt_readback_verified": true,
+      "schedule_unchanged": true
     }
   },
   "previous_qualified": {
@@ -5394,7 +5400,7 @@
       "manifest_entries": 647,
       "readback_verified": true
     },
-    "continuation_state": "Repair authorization granted; restoring existing executor. Engineering repair and qualification remain pending."
+    "continuation_state": "Existing single Work executor restored with explicit bounded repair authorization and unchanged schedule; repairs/qualification pending."
   },
   "generator_calibration_repair_authorization": {
     "state": "AUTHORIZED",
