@@ -1,0 +1,22 @@
+{
+  "state": "FROZEN_FOR_EARLY_QUALIFICATION_NOT_ACCEPTED",
+  "base": "9a0d37bf68031de9f148d52f4af0fdfd3bd09de8",
+  "failure_receipt": "da40d2ae1d27d022282927803e7cff316d026fe4",
+  "production_change": "Exactly saved targetingSlice draft: copy pipeline; remove stale pending groups; attach one captured group only when actionInfo declares exactly one requirement. Multi-group path untouched.",
+  "source_trace": [
+    "pipelinePhases.enterPhase(targeting) preserves actionInfo requirements for multi-group selection. Exactly one or absent requirement enters single UI flow; actionInfo remains available on pipeline.",
+    "targetingSlice.confirmTargeting captures allSelectedTargets by requirement index for multiple requirements, including empty groups. Single flow checks declared actionInfo requirement count; no boundaries inferred from flattened selections.",
+    "pipelineSlice.advancePipeline transfers pending groups to selectedTargetGroups only for targeting; pipelinePhases.mergeResult serializes each captured chosen target independently and preserves other accumulated action fields.",
+    "Unchanged publicTargetGroups.test.ts contains seven accepted contracts: omitted group, repeated recipient occurrences, mode/splice preservation, flat fallback, cost merge retention, collection and backtracking. Read exact source; prior completed receiving reused, not re-audited."
+  ],
+  "tests": "Original 24 liveInteraction cases and byte prefix/assertion frames preserved; append six end-to-end store/handler submission cases. Four server cases unchanged.",
+  "negative_controls": "Retain exact server/index/stale mutants and witness frames; add legacy-invention mutant with original line88 plus new458/471 failures, explicit-group-loss mutant with415/423 failures. All other cases must pass.",
+  "raw_reports": "Correct twelve exact quoted parameter names from archived original R4 raw report. Require literal titles, full names, multiplicities, zero skips/todos, exact assertion frames and compilation success.",
+  "checks": "17 synthetic parser checks passed, not behavior evidence; Python syntax checked. All seven actual source-form compilations mandatory before behavioral execution.",
+  "protected": "182 prior protected manifest bindings unchanged; no resolver change, goldens/fixtures/v0.7/main/budgets/two Precision games preserved. New source differs from draft only appended tests and new qualification records.",
+  "reviewer": "Same Work owner source review; no independent review claimed.",
+  "remaining": "Actual UX, remaining public matrix, generator integration/scaffold, final-source full regressions, full Spellskite and multiplayer admission gates. No official games/seeds.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

@@ -392,3 +392,83 @@ describe('public occurrence-choice transport', () => {
     })
   })
 })
+
+
+describe('live target group compatibility', () => {
+  const requirement = (index: number, minTargets: number) => ({
+    index, description: `Requirement ${index + 1}`, minTargets, maxTargets: 1,
+    validTargets: [TARGET, MANA],
+  })
+  const start = (extra: Partial<LegalActionInfo> = {}) => {
+    useGameStore.getState().startPipeline({
+      ...offered, interactionEpoch: 'original', ...extra,
+    })
+    expect(useGameStore.getState().targetingState).not.toBeNull()
+  }
+  const permanent = (entityId: typeof TARGET) => ({ type: 'Permanent', entityId })
+
+  it('preserves one explicitly declared group through live submission', () => {
+    start({ targetRequirements: [requirement(0, 1)] })
+    useGameStore.getState().addTarget(TARGET)
+    useGameStore.getState().confirmTargeting('original')
+    expect(send).toHaveBeenCalledOnce()
+    expect(send.mock.calls[0]![0].action.targetGroups).toEqual([[permanent(TARGET)]])
+    expect(send.mock.calls[0]![0].action.targets).toEqual([permanent(TARGET)])
+  })
+
+  it('preserves one explicitly omitted optional group through live submission', () => {
+    start({ minTargets: 0, targetRequirements: [requirement(0, 0)] })
+    useGameStore.getState().confirmTargeting('original')
+    expect(send).toHaveBeenCalledOnce()
+    expect(send.mock.calls[0]![0].action.targetGroups).toEqual([[]])
+    expect(send.mock.calls[0]![0].action.targets).toEqual([])
+  })
+
+  it('preserves an omitted first group before a later live selection', () => {
+    start({ targetRequirements: [requirement(0, 0), requirement(1, 1)] })
+    useGameStore.getState().confirmTargeting('original')
+    expect(send).not.toHaveBeenCalled()
+    expect(useGameStore.getState().targetingState?.currentRequirementIndex).toBe(1)
+    useGameStore.getState().addTarget(TARGET)
+    useGameStore.getState().confirmTargeting('original')
+    expect(send).toHaveBeenCalledOnce()
+    expect(send.mock.calls[0]![0].action.targetGroups).toEqual([[], [permanent(TARGET)]])
+    expect(send.mock.calls[0]![0].action.targets).toEqual([permanent(TARGET)])
+  })
+
+  it('preserves two live groups in their original requirement order', () => {
+    start({ targetRequirements: [requirement(0, 1), requirement(1, 1)] })
+    useGameStore.getState().addTarget(TARGET)
+    useGameStore.getState().confirmTargeting('original')
+    expect(send).not.toHaveBeenCalled()
+    useGameStore.getState().addTarget(MANA)
+    useGameStore.getState().confirmTargeting('original')
+    expect(send).toHaveBeenCalledOnce()
+    expect(send.mock.calls[0]![0].action.targetGroups).toEqual([[permanent(TARGET)], [permanent(MANA)]])
+    expect(send.mock.calls[0]![0].action.targets).toEqual([permanent(TARGET), permanent(MANA)])
+  })
+
+  it('clears stale pending groups when legacy requirements are absent', () => {
+    start()
+    const previous = { ...useGameStore.getState().pipelineState!, pendingTargetGroups: [[MANA]] }
+    useGameStore.setState({ pipelineState: previous })
+    useGameStore.getState().addTarget(TARGET)
+    useGameStore.getState().confirmTargeting('original')
+    expect(send).toHaveBeenCalledOnce()
+    expect(send.mock.calls[0]![0].action).not.toHaveProperty('targetGroups')
+    expect(send.mock.calls[0]![0].action.targets).toEqual([permanent(TARGET)])
+    expect(previous.pendingTargetGroups).toEqual([[MANA]])
+  })
+
+  it('keeps an explicitly empty requirement list on the legacy flat path', () => {
+    start({ targetRequirements: [] })
+    useGameStore.setState({ pipelineState: {
+      ...useGameStore.getState().pipelineState!, pendingTargetGroups: [[MANA]],
+    } })
+    useGameStore.getState().addTarget(TARGET)
+    useGameStore.getState().confirmTargeting('original')
+    expect(send).toHaveBeenCalledOnce()
+    expect(send.mock.calls[0]![0].action).not.toHaveProperty('targetGroups')
+    expect(send.mock.calls[0]![0].action.targets).toEqual([permanent(TARGET)])
+  })
+})
