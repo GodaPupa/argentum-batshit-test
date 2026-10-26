@@ -20,6 +20,7 @@ class StackExecutors(
         WardCounterEffectExecutor(cardRegistry),
         ChangeSpellTargetExecutor(),
         ChangeTargetExecutor(),
+        ChangeTargetToExecutor(),
         StormCopyEffectExecutor(cardRegistry),
         CopyTargetSpellExecutor(cardRegistry),
         CopyEachTargetSpellExecutor(cardRegistry),

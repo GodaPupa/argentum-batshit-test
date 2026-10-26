@@ -2448,6 +2448,7 @@ Atomic effect factories. For library/zone manipulation, prefer the pipelines in 
   **from exile** (CR 406.7, "it doesn't change zones") is left where it is, with no move and no
   event. `SuccessCriterion.Auto` cannot infer success from this destination (there is no single zone
   to snapshot), so an `IfYouDo` over it must state its criterion explicitly.
+- `Effects.ChangeTargetTo(stackObject = EffectTarget.ContextTarget(0), recipient = EffectTarget.Self)` — change exactly one legal existing occurrence to a fixed recipient. Multiple legal occurrences use the server-authored option decision; zero legal occurrences do nothing. Requires the authoritative occurrence plan and preserves omitted groups, divisions and mode/splice bindings. Rechecks the suspended plan and object visits before applying. This is distinct from single-target unrestricted `ChangeTarget`. New vocabulary remains experimental until public-flow/ward and compatibility qualification are received; it does not register Spellskite.
 - `ChangeTargetEffect(spell, newTarget)` — change a spell's target.
 - `ChangeSpellTargetEffect(spell, filter)` — same, filtered.
 - `ReselectTargetRandomlyEffect(spell)` — re-choose targets at random.

@@ -3907,9 +3907,13 @@ object Effects {
     fun ChangeSpellTarget(targetMustBeSource: Boolean = false): Effect =
         ChangeSpellTargetEffect(targetMustBeSource)
 
-    /**
-     * Change the target of target spell or ability with a single target.
-     */
+    /** Change one existing occurrence to a fixed recipient, choosing the occurrence when needed. */
+    fun ChangeTargetTo(
+        stackObject: EffectTarget = EffectTarget.ContextTarget(0),
+        recipient: EffectTarget = EffectTarget.Self,
+    ): Effect = com.wingedsheep.sdk.scripting.effects.ChangeTargetToEffect(stackObject, recipient)
+
+    /** Change the target of target spell or ability with a single target. */
     fun ChangeTarget(
         newTargetMustBePlayer: Boolean = false,
         onlyIfCurrentTargetIsController: Boolean = false,

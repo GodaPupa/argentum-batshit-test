@@ -1,6 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.engine.handlers.ContinuationHandler
 import com.wingedsheep.engine.mechanics.stack.StackResolver
 import com.wingedsheep.engine.mechanics.targeting.*
@@ -165,6 +167,43 @@ class FixedRecipientChoiceTest : ScenarioTestBase() {
             result.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 0
             result.events.filterIsInstance<TargetsChosenEvent>().size shouldBe 0
             result.state.pendingDecision shouldBe null
+        }
+
+        for (index in 0..1) {
+            test("FRC SDK serialization and registered dispatch occurrence $index") {
+                val f = fixture()
+                // Remove only this fixture's offer; dispatch must create its own public question.
+                val initial = f.state.copy(continuationStack = f.state.continuationStack.dropLast(1))
+                val chooser = f.state.pendingDecision!!.playerId
+                val original: Effect = Effects.ChangeTargetTo(recipient = EffectTarget.SpecificEntity(f.recipient))
+                val effect = json.decodeFromString(Effect.serializer(), json.encodeToString(Effect.serializer(), original))
+                effect shouldBe original
+                val services = EngineServices(cardRegistry)
+                val offered = services.effectExecutorRegistry.execute(initial, effect,
+                    EffectContext(sourceId = null, controllerId = chooser, targets = listOf(ChosenTarget.Spell(f.stack))))
+                offered.error shouldBe null
+                val question = offered.state.pendingDecision as ChooseOptionDecision
+                question.playerId shouldBe chooser
+                question.options.size shouldBe 2
+                val result = ActionProcessor(services).process(offered.state,
+                    SubmitDecision(chooser, OptionChosenResponse(question.id, index))).result
+                result.error shouldBe null
+                result.state.getEntity(f.stack)!!.currentTargetPlan()!!.targets[index] shouldBe ChosenTarget.Permanent(f.recipient)
+                result.state.getEntity(f.stack)!!.currentTargetPlan()!!.targets[1-index] shouldBe ChosenTarget.Permanent(f.old)
+            }
+        }
+        test("FRC SDK aligned missing stack target does not shift to later target") {
+            val f = fixture()
+            val initial = f.state.copy(continuationStack = f.state.continuationStack.dropLast(1))
+            val context = EffectContext(sourceId = null, controllerId = f.state.pendingDecision!!.playerId,
+                targets = listOf(ChosenTarget.Spell(f.stack)),
+                alignedTargets = listOf(null, ChosenTarget.Spell(f.stack)))
+            val result = EngineServices(cardRegistry).effectExecutorRegistry.execute(initial,
+                Effects.ChangeTargetTo(recipient = EffectTarget.SpecificEntity(f.recipient)), context)
+            result.error shouldBe null
+            result.state.pendingDecision shouldBe null
+            result.state.getEntity(f.stack)!!.currentTargetPlan() shouldBe initial.getEntity(f.stack)!!.currentTargetPlan()
+            result.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 0
         }
     }
 }
