@@ -928,13 +928,10 @@ val CandlesGlow = card("Candles' Glow") {
 
 package com.wingedsheep.mtg.sets.generated.demo.cards
 
-import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.GameObjectFilter
-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
-import com.wingedsheep.sdk.scripting.targets.EffectTarget
 
 
 /**
@@ -949,11 +946,7 @@ val Cleanfall = card("Cleanfall") {
     typeLine = "Sorcery — Arcane"
     oracleText = "Destroy all enchantments."
     spell {
-        effect = Effects.ForEachInGroup(
-            GroupFilter(GameObjectFilter.Enchantment),
-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
-            noRegenerate = false
-        )
+        effect = Effects.DestroyAll(GameObjectFilter.Enchantment, noRegenerate = false)
     }
     metadata {
         rarity = Rarity.UNCOMMON

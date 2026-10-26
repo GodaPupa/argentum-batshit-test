@@ -822,13 +822,10 @@ val BloodPet = card("Blood Pet") {
 package com.wingedsheep.mtg.sets.generated.demo.cards
 
 import com.wingedsheep.sdk.core.Subtype
-import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.GameObjectFilter
-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
-import com.wingedsheep.sdk.scripting.targets.EffectTarget
 
 
 /**
@@ -843,11 +840,7 @@ val Boil = card("Boil") {
     typeLine = "Instant"
     oracleText = "Destroy all Islands."
     spell {
-        effect = Effects.ForEachInGroup(
-            GroupFilter(GameObjectFilter.Land.withSubtype(Subtype.ISLAND)),
-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
-            noRegenerate = false
-        )
+        effect = Effects.DestroyAll(GameObjectFilter.Land.withSubtype(Subtype.ISLAND), noRegenerate = false)
     }
     metadata {
         rarity = Rarity.UNCOMMON
@@ -7740,13 +7733,10 @@ val PegasusRefuge = card("Pegasus Refuge") {
 package com.wingedsheep.mtg.sets.generated.demo.cards
 
 import com.wingedsheep.sdk.core.Color
-import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.GameObjectFilter
-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
-import com.wingedsheep.sdk.scripting.targets.EffectTarget
 
 
 /**
@@ -7761,11 +7751,7 @@ val Perish = card("Perish") {
     typeLine = "Sorcery"
     oracleText = "Destroy all green creatures. They can't be regenerated."
     spell {
-        effect = Effects.ForEachInGroup(
-            GroupFilter(GameObjectFilter.Creature.withColor(Color.GREEN)),
-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
-            noRegenerate = true
-        )
+        effect = Effects.DestroyAll(GameObjectFilter.Creature.withColor(Color.GREEN), noRegenerate = true)
     }
     metadata {
         rarity = Rarity.UNCOMMON
@@ -12044,13 +12030,10 @@ val TrainedArmodon = card("Trained Armodon") {
 
 package com.wingedsheep.mtg.sets.generated.demo.cards
 
-import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.GameObjectFilter
-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
-import com.wingedsheep.sdk.scripting.targets.EffectTarget
 
 
 /**
@@ -12065,11 +12048,7 @@ val Tranquility = card("Tranquility") {
     typeLine = "Sorcery"
     oracleText = "Destroy all enchantments."
     spell {
-        effect = Effects.ForEachInGroup(
-            GroupFilter(GameObjectFilter.Enchantment),
-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
-            noRegenerate = false
-        )
+        effect = Effects.DestroyAll(GameObjectFilter.Enchantment, noRegenerate = false)
     }
     metadata {
         rarity = Rarity.COMMON
@@ -12738,13 +12717,10 @@ val WindDrake = card("Wind Drake") {
 
 package com.wingedsheep.mtg.sets.generated.demo.cards
 
-import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.GameObjectFilter
-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
-import com.wingedsheep.sdk.scripting.targets.EffectTarget
 
 
 /**
@@ -12759,11 +12735,7 @@ val WindsOfRath = card("Winds of Rath") {
     typeLine = "Sorcery"
     oracleText = "Destroy all creatures that aren't enchanted. They can't be regenerated."
     spell {
-        effect = Effects.ForEachInGroup(
-            GroupFilter(GameObjectFilter.Creature),
-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
-            noRegenerate = true
-        )
+        effect = Effects.DestroyAll(GameObjectFilter.Creature, noRegenerate = true)
     }
     metadata {
         rarity = Rarity.RARE
