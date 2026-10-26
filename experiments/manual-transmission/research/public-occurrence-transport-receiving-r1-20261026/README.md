@@ -1,0 +1,9 @@
+# Original transport early R1 receiving
+
+Prepared, not accepted. Read live CURRENT and reconcile newer receipts/successors and ownership before receiving. Do not duplicate active run40302270278/job121502757689/attempt1.
+
+Once terminal, save original ZIP as original.zip and metadata.json containing run, jobs, artifact, source and validation git commit objects, main commit, source_delta comparing c0b6e5aad646a2ec41910ccf8dc7a15fff8354cd...40ada88201ad89d3b2c6202a89c3dd13ff5246c4, and validation_delta comparing 40ada88201ad89d3b2c6202a89c3dd13ff5246c4...b15bcef3568424814f86af5d77187670f82b9e28. Provider artifact metadata must include original id, byte size and digest. Run python3 RECEIVE.py once; publish VERIFIED_RECEIPT.json, raw manifest/binding and a bounded receipt. Missing reports or compiler errors never constitute negative evidence. Preserve all original failures and diagnose before any source-specific repair.
+
+Required: 4 server and 24 client cases normal/restored, server mutation3exact failures/1pass, client index3exact failures/21passes, client stale1exactfailure/23passes; zero skips/errors. All normal/mutant compilation gates precede executable tests. Raw JUnit/Vitest identities, first assertion frames, source forms, restoration and protected bytes must match frozen protocol. Green workflow is not acceptance.
+
+Protocol tooling passed14synthetic checks only. Prior R4 receipt1b74a7551dba424d7b514d5c0b6234f8685755e5 remains accepted and must not be re-audited. No feature, Spellskite or multiplayer admission. Reuse isolated generator/UX review ed0fde8cfb62430bf51e988c61886c3e42253a9b/NEXT_SOURCE_REVIEW.json under public-occurrence-flow-receiving-r4-20261026; production is unchanged. After valid receiving, finish actual UX, remaining public matrix, exact generator IR/scaffold and final-source regressions.
