@@ -1,0 +1,542 @@
+--- 10E-original
++++ 10E-projected
+@@ -8661,13 +8661,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -8682,11 +8679,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all creatures you don't control. They can't be regenerated."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature.opponentControls()),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = true
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Creature.opponentControls(), noRegenerate = true)
+     }
+     metadata {
+         rarity = Rarity.RARE
+@@ -10621,13 +10614,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -10642,11 +10632,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all artifacts. They can't be regenerated."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Artifact),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = true
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Artifact, noRegenerate = true)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+@@ -12505,13 +12491,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -12526,11 +12509,7 @@
+     typeLine = "Instant"
+     oracleText = "Destroy all enchantments."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Enchantment),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Enchantment, noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+@@ -14190,13 +14169,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -14211,11 +14187,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all creatures. They can't be regenerated."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = true
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Creature, noRegenerate = true)
+     }
+     metadata {
+         rarity = Rarity.RARE
+--- CHK-original
++++ CHK-projected
+@@ -928,13 +928,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -949,11 +946,7 @@
+     typeLine = "Sorcery — Arcane"
+     oracleText = "Destroy all enchantments."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Enchantment),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Enchantment, noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+--- ONS-original
++++ ONS-projected
+@@ -4433,14 +4433,11 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Costs
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -4457,11 +4454,7 @@
+     oracleText = "As an additional cost to cast this spell, sacrifice a creature.\nDestroy all creatures that share a creature type with the sacrificed creature. They can't be regenerated."
+     additionalCost(Costs.additional.SacrificePermanent(GameObjectFilter.Creature))
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = true
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Creature, noRegenerate = true)
+     }
+     metadata {
+         rarity = Rarity.RARE
+@@ -5740,7 +5733,6 @@
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+ import com.wingedsheep.sdk.core.Subtype
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.Triggers
+ import com.wingedsheep.sdk.dsl.card
+@@ -5774,11 +5766,7 @@
+     }
+     triggeredAbility {
+         trigger = Triggers.EachEndStep
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature.withSubtype(Subtype.GOBLIN)),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Creature.withSubtype(Subtype.GOBLIN), noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.RARE
+@@ -8494,14 +8482,11 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Costs
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -8520,11 +8505,7 @@
+     toughness = 2
+     activatedAbility {
+         cost = Costs.Composite(Costs.Mana("{2}{W}"), Costs.Tap, Costs.SacrificeSelf)
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Enchantment),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Enchantment, noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+--- POR-original
++++ POR-projected
+@@ -271,13 +271,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -292,11 +289,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all lands."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Land),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Land, noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.RARE
+@@ -788,13 +781,10 @@
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+ import com.wingedsheep.sdk.core.Subtype
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -809,11 +799,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all Islands."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Land.withSubtype(Subtype.ISLAND)),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Land.withSubtype(Subtype.ISLAND), noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+@@ -1784,13 +1770,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -1805,11 +1788,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all creatures and lands."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.CreatureOrLand),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.CreatureOrLand, noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.RARE
+@@ -2643,13 +2622,10 @@
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+ import com.wingedsheep.sdk.core.Subtype
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -2664,11 +2640,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all Plains."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Land.withSubtype(Subtype.PLAINS)),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Land.withSubtype(Subtype.PLAINS), noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+@@ -4496,13 +4468,10 @@
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+ import com.wingedsheep.sdk.core.Color
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -4517,11 +4486,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all green creatures."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature.withColor(Color.GREEN)),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Creature.withColor(Color.GREEN), noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+@@ -7265,13 +7230,10 @@
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+ import com.wingedsheep.sdk.core.Color
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -7286,11 +7248,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all white creatures."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature.withColor(Color.WHITE)),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Creature.withColor(Color.WHITE), noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+@@ -7817,13 +7775,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -7838,11 +7793,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all creatures. They can't be regenerated."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = true
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Creature, noRegenerate = true)
+     }
+     metadata {
+         rarity = Rarity.RARE
+--- SOS-original
++++ SOS-projected
+@@ -12785,7 +12785,6 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Conditions
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+@@ -12811,11 +12810,7 @@
+     spell {
+         effect = ConditionalEffect(
+             condition = Conditions.YouGainedLifeThisTurn,
+-            effect = Effects.ForEachInGroup(
+-                GroupFilter(GameObjectFilter.Creature),
+-                Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-                noRegenerate = false
+-            ),
++            effect = Effects.DestroyAll(GameObjectFilter.Creature, noRegenerate = false),
+             elseEffect = Effects.ForEachInGroup(
+                 GroupFilter(GameObjectFilter.Creature),
+                 Effects.ModifyStats(-2, -2, EffectTarget.Self)
+--- TMP-original
++++ TMP-projected
+@@ -822,13 +822,10 @@
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+ import com.wingedsheep.sdk.core.Subtype
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -843,11 +840,7 @@
+     typeLine = "Instant"
+     oracleText = "Destroy all Islands."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Land.withSubtype(Subtype.ISLAND)),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Land.withSubtype(Subtype.ISLAND), noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+@@ -7740,13 +7733,10 @@
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+ import com.wingedsheep.sdk.core.Color
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -7761,11 +7751,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all green creatures. They can't be regenerated."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature.withColor(Color.GREEN)),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = true
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Creature.withColor(Color.GREEN), noRegenerate = true)
+     }
+     metadata {
+         rarity = Rarity.UNCOMMON
+@@ -12044,13 +12030,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -12065,11 +12048,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all enchantments."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Enchantment),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = false
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Enchantment, noRegenerate = false)
+     }
+     metadata {
+         rarity = Rarity.COMMON
+@@ -12738,13 +12717,10 @@
+ 
+ package com.wingedsheep.mtg.sets.generated.demo.cards
+ 
+-import com.wingedsheep.sdk.core.Zone
+ import com.wingedsheep.sdk.dsl.Effects
+ import com.wingedsheep.sdk.dsl.card
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.GameObjectFilter
+-import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
+-import com.wingedsheep.sdk.scripting.targets.EffectTarget
+ 
+ 
+ /**
+@@ -12759,11 +12735,7 @@
+     typeLine = "Sorcery"
+     oracleText = "Destroy all creatures that aren't enchanted. They can't be regenerated."
+     spell {
+-        effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature),
+-            Effects.Move(EffectTarget.Self, Zone.GRAVEYARD, byDestruction = true),
+-            noRegenerate = true
+-        )
++        effect = Effects.DestroyAll(GameObjectFilter.Creature, noRegenerate = true)
+     }
+     metadata {
+         rarity = Rarity.RARE
