@@ -42,16 +42,7 @@
     "validation": "e7aeae3fbb1d76ec87f500c0731a2578ffbacb6c",
     "validation_branch": "validation/manual-source-context-regression-r1-20261025",
     "workflow": ".github/workflows/manual-source-context-regression-r1-20261025.yml",
-    "pending_runs": [
-      {
-        "run": 40302270278,
-        "job": 121502757689,
-        "attempt": 1,
-        "source": "40ada88201ad89d3b2c6202a89c3dd13ff5246c4",
-        "validation": "b15bcef3568424814f86af5d77187670f82b9e28",
-        "status": "in_progress"
-      }
-    ],
+    "pending_runs": [],
     "planned_not_observed": {
       "normal": 133,
       "restored": 133,
@@ -3439,6 +3430,38 @@
       "existing_assertions_preserved": true
     },
     "public_occurrence_transport_qualification": {
+      "source": "68400faa2a415dd1afd3204a3e3744b328d0107c",
+      "tree": "5dd84e6810e1e28b2a7147fa809987a00deabc58",
+      "validation": "98ce919315c5c95e9b5f5d6b58f5786e44399e58",
+      "validation_tree": "31c2446e43e50547c2931739749f7ccaf90fc8bc",
+      "workflow": ".github/workflows/manual-public-occurrence-transport-r2-20261026.yml",
+      "workflow_blob": "c993be3b399b63cb5cafaa21d371305f02988ccd",
+      "branch": "validation/manual-public-occurrence-transport-r2-20261026",
+      "source_delta": [
+        "experiments/manual-transmission/research/public-occurrence-transport-qualification-r2-20261026/reports.py",
+        "experiments/manual-transmission/research/public-occurrence-transport-qualification-r2-20261026/PROTOCOL.json",
+        "experiments/manual-transmission/research/public-occurrence-transport-qualification-r2-20261026/run.py",
+        "experiments/manual-transmission/research/public-occurrence-transport-qualification-r2-20261026/check_reports.py",
+        "experiments/manual-transmission/research/public-occurrence-transport-qualification-r2-20261026/RECEIVE.py",
+        "experiments/manual-transmission/research/public-occurrence-transport-qualification-r2-20261026/SYNTHETIC_CHECKS.json"
+      ],
+      "protocol_files": {
+        "PROTOCOL.json": "888b21f7e69fd520aeb2714f6ddff04c8ba8fab71249f17d7a919395c605b138",
+        "reports.py": "bba18b527c007fcb9a3a3bcff7c335bc144df94d94eb07b4038d9b8221b16a56",
+        "run.py": "5a36d6d0e916209a26762ba8e12a0196bc39bc3b0b62222c0a7a5b343d9b6707",
+        "check_reports.py": "7ba42027b15c2fb251fd5441bbdbc37cb489929c526ccc138498092370794dea"
+      },
+      "run": null,
+      "job": null,
+      "attempt": 1,
+      "state": "FROZEN_REVIEWED_PENDING_DISPATCH",
+      "protocol": "experiments/manual-transmission/research/public-occurrence-transport-qualification-r2-20261026/PROTOCOL.json",
+      "synthetic_checks": 14,
+      "production_tests_assertions_unchanged": true,
+      "feature_acceptance": false,
+      "repair": "Use optionIndex-optionIndex for zero-index mutation without unused parameter; include hidden archive files. Original controls/assertions unchanged."
+    },
+    "public_occurrence_transport_failed_r1": {
       "source": "40ada88201ad89d3b2c6202a89c3dd13ff5246c4",
       "tree": "1bf97445918f8e5bdc3fbd81f7f7ce4028515899",
       "validation": "b15bcef3568424814f86af5d77187670f82b9e28",
@@ -3465,8 +3488,8 @@
         "check_reports.py": "7ba42027b15c2fb251fd5441bbdbc37cb489929c526ccc138498092370794dea"
       },
       "attempt": 1,
-      "state": "WAITING_EXTERNAL_NOT_ACCEPTED",
-      "observed_status": "in_progress",
+      "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+      "observed_status": "completed",
       "receiver_commit": "e411546c16d2c1e6d99621b2652e7bc875f6e717",
       "receiver_path": "experiments/manual-transmission/research/public-occurrence-transport-receiving-r1-20261026",
       "receiver_readback_verified": true,
@@ -3483,7 +3506,13 @@
       },
       "zero_skips": true,
       "production_unchanged": true,
-      "feature_acceptance": false
+      "feature_acceptance": false,
+      "conclusion": "failure",
+      "artifact": 12641731811,
+      "artifact_sha256": "556ac3e9af4b6206242a18f4aa386d077b2757d45047c8dc318f8468309af3fd",
+      "receipt": "17c6b56304e101273f509892e253110fbdfae75d",
+      "behavioral_tests": 0,
+      "diagnosis": "TS6133 unused optionIndex in constant-index mutant; archive omitted3hidden declaredmembers. No behavioral acceptance."
     }
   },
   "completion_contract": {
@@ -4673,7 +4702,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "External dependency pending: the single frozen transport qualification is active. Exact original-artifact receiver and14 synthetic raw-report checks are saved and immutable-readback verified; unchanged-production generator/UX source review is reused. Further source changes depend on the frozen transport result; no useful safely independent receiving preparation remains. Ownership released.",
+  "actual_stopping_reason": null,
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -4700,7 +4729,7 @@
       "Full Spellskite behavior and card qualification",
       "Remaining multiplayer admission gates; official games not authorized"
     ],
-    "pending_evidence": "Transport early R1 run40302270278/job121502757689 active. No new runtime acceptance.",
+    "pending_evidence": "R1 original failure received, zero behavioral tests. R2 tooling-only repair frozen and readback verified; about to dispatch once.",
     "next_executable_action": "Reconcile ownership/newer evidence; receive original transport early R1 run40302270278/job121502757689/attempt1 from source40ada88201ad89d3b2c6202a89c3dd13ff5246c4/tree1bf97445918f8e5bdc3fbd81f7f7ce4028515899, validationb15bcef3568424814f86af5d77187670f82b9e28, using pinned receivere411546c16d2c1e6d99621b2652e7bc875f6e717 at experiments/manual-transmission/research/public-occurrence-transport-receiving-r1-20261026. Never duplicate while active. Require exact original metadata/hash/manifest/source forms/protected bytes/restoration and all normal+mutant compilation gates; server4/client24 normal+restored,server3exact witnesses/1control,client-index3/21,client-stale1/23,zero skips/errors,raw identities/multiplicities/assertion types+first frames. Persist original failure evidence and diagnose before any repair; compiler/missing/unrelated reports are not negative evidence. Reuse accepted R4 receipt1b74a7551dba424d7b514d5c0b6234f8685755e5 and previous receipts. After valid receiving continue actual UX, remaining public matrix and exact generator integration/scaffold, then final-source full regressions, full Spellskite qualification and multiplayer gates. No official games/seeds.",
     "read_sections": [
       "next.public_occurrence_flow_draft",
@@ -4726,7 +4755,7 @@
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r4-20261026/NEXT_SOURCE_REVIEW.json"
     },
     "critical_path": "Targeting-context qualification/full compatibility → public occurrence-choice and ward/trigger integration → full Spellskite qualification → remaining multiplayer admission gates → separately authorized official games.",
-    "actual_stopping_reason": "External dependency pending: the single frozen transport qualification is active. Exact original-artifact receiver and14 synthetic raw-report checks are saved and immutable-readback verified; unchanged-production generator/UX source review is reused. Further source changes depend on the frozen transport result; no useful safely independent receiving preparation remains. Ownership released.",
+    "actual_stopping_reason": null,
     "receiving": {
       "commit": "e411546c16d2c1e6d99621b2652e7bc875f6e717",
       "path": "experiments/manual-transmission/research/public-occurrence-transport-receiving-r1-20261026"
