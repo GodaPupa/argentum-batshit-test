@@ -1,0 +1,22 @@
+diff --git a/web-client/src/store/slices/gameplaySlice.ts b/web-client/src/store/slices/gameplaySlice.ts
+index 848d0067c8..6e75d96dae 100644
+--- a/web-client/src/store/slices/gameplaySlice.ts
++++ b/web-client/src/store/slices/gameplaySlice.ts
+@@ -152,7 +152,7 @@ export const createGameplaySlice: SliceCreator<GameplaySlice> = (set, get) => ({
+   submitAction: (action, interactionEpoch) => {
+     if (!get().sessionId || !get().gameState) return
+     if (!interactionEpoch || interactionEpoch !== get().interactionEpoch) return
+-    if (action.type === 'SubmitDecision' && action.response.decisionId !== get().pendingDecision?.id) return
++    if (action.type === 'SubmitDecision' && action.response.type !== 'OptionChosenResponse' && action.response.decisionId !== get().pendingDecision?.id) return
+     getWebSocket()?.send(createSubmitActionMessage(action, interactionEpoch))
+     set({ selectedCardId: null, targetingState: null })
+   },
+@@ -292,7 +292,7 @@ export const createGameplaySlice: SliceCreator<GameplaySlice> = (set, get) => ({
+ 
+   submitOptionDecision: (decisionId, optionIndex) => {
+     const { pendingDecision, playerId } = get()
+-    if (!pendingDecision || pendingDecision.id !== decisionId || !playerId) return
++    if (!pendingDecision || !playerId) return
+ 
+     const action = {
+       type: 'SubmitDecision' as const,

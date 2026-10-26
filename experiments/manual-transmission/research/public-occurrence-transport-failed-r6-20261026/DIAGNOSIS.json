@@ -1,0 +1,10 @@
+{
+  "state": "ORIGINAL_COMPILATION_FAILURE_NOT_BEHAVIORAL_EVIDENCE",
+  "run": 40352480099,
+  "artifact": 12665097190,
+  "manifest_entries": 259,
+  "behavioral_tests": 0,
+  "compiler": "TS2339 gameplaySlice.ts155:61 DecisionResponse has no type field",
+  "cause": "Mutant-only secondary guard assumes discriminant absent from base DecisionResponse interface. Normal client compilation passed.",
+  "repair": "Use structural optionIndex presence check in mutant only, matching OptionChosenResponse construction; retain all production/tests/assertions/epoch guard and exact negative witnesses."
+}
