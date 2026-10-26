@@ -3,15 +3,14 @@
   "updated_date": "2026-10-26",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "WORKING",
+  "owner": "manual-work-cb09b78d-3668-8332-8e4a-8bd523510983",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "released_by": "manual-work-fe8abcb5-6a88-8327-8078-5b82678fe501",
-    "released_utc": "2026-10-26T04:51:49Z",
-    "expires_utc": null,
-    "reason": "External dependency pending: import-only R2 qualification is active. Its exact original-artifact receiver is saved and synthetic-checked; prior isolated next-source review is reused. Further candidate work awaits this frozen successor's original result. Ownership released."
+    "state": "ACTIVE",
+    "owner": "manual-work-cb09b78d-3668-8332-8e4a-8bd523510983",
+    "claimed_utc": "2026-10-26T05:56:08Z",
+    "expires_utc": "2026-10-26T06:36:08.000Z",
+    "reason": "Continue same Work invocation after correcting stale release fields in receipt checkpoint; no intervening owner or workflow."
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -3518,7 +3517,12 @@
     "last_utc": "2026-10-26T04:51:49Z",
     "active_relevant_run": 40271140120,
     "active_relevant_job": 121404003665,
-    "owner_release": "External dependency pending: import-only R2 qualification is active. Its exact original-artifact receiver is saved and synthetic-checked; prior isolated next-source review is reused. Further candidate work awaits this frozen successor's original result. Ownership released."
+    "owner_release": "External dependency pending: import-only R2 qualification is active. Its exact original-artifact receiver is saved and synthetic-checked; prior isolated next-source review is reused. Further candidate work awaits this frozen successor's original result. Ownership released.",
+    "ownership_checkpoint_correction": {
+      "prior_commit": "cd0871b1ea98b4a72e9938db435689f07c358a16",
+      "reason": "Receipt checkpoint unintentionally retained predecessor release fields; dispatch guard caught owner mismatch before launch. Reconciled unchanged branch head, same current run, and no active workflows before fresh CAS reclaim.",
+      "utc": "2026-10-26T05:56:08Z"
+    }
   },
   "automation": {
     "execution_task": "Manual Work Continuation",
@@ -4314,7 +4318,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "External dependency pending: import-only R2 qualification is active. Its exact original-artifact receiver is saved and synthetic-checked; prior isolated next-source review is reused. Further candidate work awaits this frozen successor's original result. Ownership released.",
+  "actual_stopping_reason": null,
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -4363,7 +4367,7 @@
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r1-20261026/NEXT_SOURCE_REVIEW.json"
     },
     "critical_path": "Targeting-context qualification/full compatibility → public occurrence-choice and ward/trigger integration → full Spellskite qualification → remaining multiplayer admission gates → separately authorized official games.",
-    "actual_stopping_reason": "External dependency pending: import-only R2 qualification is active. Its exact original-artifact receiver is saved and synthetic-checked; prior isolated next-source review is reused. Further candidate work awaits this frozen successor's original result. Ownership released.",
+    "actual_stopping_reason": null,
     "receiving": {
       "commit": "3297dad007be6376c482b57fc298850e691d28fa",
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r2-20261026"
