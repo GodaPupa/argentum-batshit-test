@@ -42,7 +42,9 @@
     "validation": "e7aeae3fbb1d76ec87f500c0731a2578ffbacb6c",
     "validation_branch": "validation/manual-source-context-regression-r1-20261025",
     "workflow": ".github/workflows/manual-source-context-regression-r1-20261025.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40345434992
+    ],
     "planned_not_observed": {
       "normal": 133,
       "restored": 133,
@@ -55,7 +57,7 @@
     },
     "negative_scope": "One compiled context-loss/wrong-controller mutant:77 cases, exactly46 frozen assertion witnesses and31passes,0errors/skips. No behavioral results claimed before original receiving.",
     "source_delta": "Exactly8 files against received f51196cc:4 unprotected production files,1 new77-case test,3 frozen protocol/design/gate records. Protected resolver/other143bindings/23goldens/82fixtures and all original assertions unchanged.",
-    "next_executable_action": "Frozen reviewed transport R5 source 74fdb3f9130167ea9dd340788b1c4b2d2b65ac8a validation ea434c995426fd3453ce43465dcb09581bc18c9a. Reconcile activity immediately before one dispatch; then pin exact run/job/attempt and prepare original-artifact receiver. All seven compiles,server4/client30 normal/restored, original server/index/stale plus new legacy/group-loss controls required. R4 failure receipt reused, never rerun unchanged. Full feature and later critical-path gates remain pending.",
+    "next_executable_action": "Transport R5 run40345434992 job121650988024 attempt1 is active on frozen source74fdb3f9130167ea9dd340788b1c4b2d2b65ac8a / validationea434c995426fd3453ce43465dcb09581bc18c9a. Do not duplicate. Finish saving exact original-artifact receiver; receive once terminal after checking newer evidence. All seven compilations, server4/client30 normal/restored and exact five mutant contracts required. No new capability accepted.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -3430,7 +3432,7 @@
       "existing_assertions_preserved": true
     },
     "public_occurrence_transport_qualification": {
-      "state": "FROZEN_REVIEWED_PENDING_SINGLE_DISPATCH",
+      "state": "RUNNING_PENDING_ORIGINAL_RECEIVING",
       "source": "74fdb3f9130167ea9dd340788b1c4b2d2b65ac8a",
       "tree": "7fbf8d4ace83125ad5f34f431d05886f105b107b",
       "base": "9a0d37bf68031de9f148d52f4af0fdfd3bd09de8",
@@ -3465,7 +3467,14 @@
       "original24_assertions_and_frames_preserved": true,
       "production_draft_exact": true,
       "feature_acceptance": false,
-      "prior_failure_receipt": "da40d2ae1d27d022282927803e7cff316d026fe4"
+      "prior_failure_receipt": "da40d2ae1d27d022282927803e7cff316d026fe4",
+      "run": 40345434992,
+      "job": 121650988024,
+      "workflow_id": 397197433,
+      "attempt": 1,
+      "event": "push",
+      "observed_status": "in_progress",
+      "artifact_name": "manual-public-occurrence-transport-r5-40345434992"
     },
     "public_occurrence_transport_failed_r1": {
       "source": "40ada88201ad89d3b2c6202a89c3dd13ff5246c4",
@@ -4068,6 +4077,20 @@
       "active_relevant_runs": [],
       "ignored_ancient_unrelated_run": 34749202144,
       "all_active_statuses_checked": true
+    },
+    "transport_r5_pre_dispatch": {
+      "utc": "2026-10-26T15:02:47.186Z",
+      "active": [],
+      "statuses": [
+        "in_progress",
+        "queued",
+        "waiting",
+        "requested",
+        "pending"
+      ],
+      "ignored_only": 34749202144,
+      "head": "b2927655edb4cf604a71043a1823f7f31e2c3852",
+      "owner": "manual-work-ab92e41c-1280-8333-af53-87dd16ab06f8"
     }
   },
   "automation": {
@@ -4891,8 +4914,8 @@
       "Full Spellskite behavior and card qualification",
       "Remaining multiplayer admission gates; official games not authorized"
     ],
-    "pending_evidence": "Frozen R5 pending one dispatch; no runtime claims.",
-    "next_executable_action": "Frozen reviewed transport R5 source 74fdb3f9130167ea9dd340788b1c4b2d2b65ac8a validation ea434c995426fd3453ce43465dcb09581bc18c9a. Reconcile activity immediately before one dispatch; then pin exact run/job/attempt and prepare original-artifact receiver. All seven compiles,server4/client30 normal/restored, original server/index/stale plus new legacy/group-loss controls required. R4 failure receipt reused, never rerun unchanged. Full feature and later critical-path gates remain pending.",
+    "pending_evidence": "R5 is active; original-artifact receiver preparation in progress.",
+    "next_executable_action": "Transport R5 run40345434992 job121650988024 attempt1 is active on frozen source74fdb3f9130167ea9dd340788b1c4b2d2b65ac8a / validationea434c995426fd3453ce43465dcb09581bc18c9a. Do not duplicate. Finish saving exact original-artifact receiver; receive once terminal after checking newer evidence. All seven compilations, server4/client30 normal/restored and exact five mutant contracts required. No new capability accepted.",
     "read_sections": [
       "next.public_occurrence_flow_draft",
       "next.source_context_full_regression",
