@@ -87,6 +87,7 @@ internal fun BridgeBuilder.damageLifeAndCards() {
     // "may choose new targets" variant stays a deliberate decline above — Breeches).
     effect("CopySpell", "CopyTargetSpell")
     effect("ChangeTargetsOfSpellOrAbility", "ChangeTarget")
+    effect("ChangeATargetOfSpellOrAbilityToPermanent", "ChangeTargetTo")
     effect("TakeAnExtraTurn", "TakeExtraTurn")
     // Extra phases (CR 500.8). The combat-only shape is the atom `Effects.AddCombatPhase`; the
     // combat+main shape composes it with `Effects.AddMainPhase` (Aggravated Assault).

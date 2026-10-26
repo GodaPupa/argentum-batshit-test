@@ -1,0 +1,30 @@
+{
+  "state": "UNCOMPILED_UNQUALIFIED_DRAFT",
+  "base": "ec4914f8347c0456fc20eb4c78ea1078c1147a75",
+  "accepted_transport_receipt": "69f2dce2835a55ad364ee9b1a9c75f7b4b1e5ac9",
+  "boundary": "Map only the observed two-operand fixed-recipient IR with a bound stack object and ThisPermanent recipient to existing Effects.ChangeTargetTo. Decline unbound, malformed, reversed, extra or unsupported operands. Existing generic retarget emitter remains byte-identical.",
+  "production_paths": [
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/DamageDrawLifeHandlers.kt",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/DamageLifeAndCards.kt"
+  ],
+  "test_path": "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/FixedRecipientRetargetEmitterTest.kt",
+  "new_tests": 5,
+  "upstream_commit": "153451e44d88baabfeb9902092032c328f4d5416",
+  "upstream_blob": "9795b32bc4b82b50b5166a877ca0f8fc9b040d27",
+  "upstream_sha256": "f2513283c1ffd32ab954bdc10a4bd78a495f297f532c68b8c69d6f05f1e95d06",
+  "upstream_bytes": 30455424,
+  "sdk_facade_blob": "2cf9c51f497797e654ce399a5343c55527006565",
+  "next_actions": [
+    "Review remaining applicable mtgish AGENTS and exact emitter target-binding/whole-card paths; verify this narrow mapping does not claim whole-card generation where target/cost wrappers still scaffold.",
+    "Add bridge registration and upstream-fixture-backed integration assertions; review malformed operand controls and generic retarget preservation. Original5 draft tests retained.",
+    "Freeze normal and mutant compilation plus exact executable negative controls (wrong recipient and missing stack binding), targeted tests, complete mtgish module/golden regression and calibrated coverage-verify gates. Use just/locked commands and existing qualification concurrency.",
+    "Reconcile activity, dispatch once on new immutable source/validation, prepare exact original-artifact receiver, and receive all original evidence.",
+    "Complete actual running UI and remaining public matrix; run final coherent-source compatibility including64client floor; no automatic Spellskite or multiplayer admission."
+  ],
+  "runtime_evidence": "None for this draft. R7 transport evidence remains accepted and must not be rerun for context recovery.",
+  "protected_changes": 0,
+  "card_definitions_added": 0,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

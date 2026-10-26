@@ -178,6 +178,20 @@ internal val damageDrawLifeHandlers: Map<String, ActionHandler> = actionHandlers
     // "Change the target of target spell or ability with a single target." (Return the Favor mode 2 /
     // Willbender). Pairs with `Targets.SpellOrAbilityWithSingleTarget`.
     simple("ChangeTargetsOfSpellOrAbility", dsl = "Effects.ChangeTarget()")
+    // Exact fixed-recipient node observed in pinned mtgish Spellskite / Mizzium Meddler IR.
+    // The bound stack object must exist; unknown operands decline rather than retarget another object.
+    on("ChangeATargetOfSpellOrAbilityToPermanent") { _, args, tvar ->
+        val operands = args.asArr ?: return@on null
+        if (operands.size != 2 || tvar == null) return@on null
+        val subject = operands[0] as? JsonObject ?: return@on null
+        val recipient = operands[1] as? JsonObject ?: return@on null
+        if (subject.keys != setOf("_SpellOrAbility") ||
+            subject.strField("_SpellOrAbility") != "Ref_TargetSpellOrAbility") return@on null
+        if (recipient.keys != setOf("_Permanent") ||
+            recipient.strField("_Permanent") != "ThisPermanent") return@on null
+        call("Effects.ChangeTargetTo", arg("stackObject", Lit(tvar)), arg("recipient", "EffectTarget.Self"))
+    }
+
     simple("Shuffle", dsl = "ShuffleLibraryEffect()")
     // "It becomes day/night" (CR 731.1). Both are argument-free constants — the DayNight designation
     // is baked into the `Effects.BecomeDay` / `Effects.BecomeNight` vals (SetDayNight), which cascade

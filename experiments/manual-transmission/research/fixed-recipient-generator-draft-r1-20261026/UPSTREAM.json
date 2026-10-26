@@ -1,0 +1,397 @@
+{
+  "upstream": "153451e44d88baabfeb9902092032c328f4d5416",
+  "blob": "9795b32bc4b82b50b5166a877ca0f8fc9b040d27",
+  "sha256": "f2513283c1ffd32ab954bdc10a4bd78a495f297f532c68b8c69d6f05f1e95d06",
+  "bytes": 30455424,
+  "nodes": [
+    {
+      "_OracleCard": "Card",
+      "Name": "Deflection",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Instant"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 3
+        },
+        {
+          "_ManaSymbol": "ManaCostU"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "Targeted",
+            "args": [
+              [
+                {
+                  "_Target": "TargetSpell",
+                  "args": {
+                    "_Spells": "HasASingleTarget"
+                  }
+                }
+              ],
+              {
+                "_Actions": "ActionList",
+                "args": [
+                  {
+                    "_Action": "ChangeTargetsOfSpell",
+                    "args": {
+                      "_Spell": "Ref_TargetSpell"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "_OracleCard": "Card",
+      "Name": "Misdirection",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Instant"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 3
+        },
+        {
+          "_ManaSymbol": "ManaCostU"
+        },
+        {
+          "_ManaSymbol": "ManaCostU"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "CastEffect",
+          "args": {
+            "_CastEffect": "AlternateCastingCost",
+            "args": {
+              "_Cost": "Exile",
+              "args": [
+                [
+                  {
+                    "_ExilableCost": "ACardOfTypeFromPlayersHand",
+                    "args": [
+                      {
+                        "_CardsInHand": "IsColor",
+                        "args": {
+                          "_Color": "Blue"
+                        }
+                      },
+                      {
+                        "_Player": "You"
+                      }
+                    ]
+                  }
+                ],
+                []
+              ]
+            }
+          }
+        },
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "Targeted",
+            "args": [
+              [
+                {
+                  "_Target": "TargetSpell",
+                  "args": {
+                    "_Spells": "HasASingleTarget"
+                  }
+                }
+              ],
+              {
+                "_Actions": "ActionList",
+                "args": [
+                  {
+                    "_Action": "ChangeTargetsOfSpell",
+                    "args": {
+                      "_Spell": "Ref_TargetSpell"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "_OracleCard": "Card",
+      "Name": "Redirect",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Instant"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostU"
+        },
+        {
+          "_ManaSymbol": "ManaCostU"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "Targeted",
+            "args": [
+              [
+                {
+                  "_Target": "TargetSpell",
+                  "args": {
+                    "_Spells": "AnySpell"
+                  }
+                }
+              ],
+              {
+                "_Actions": "ActionList",
+                "args": [
+                  {
+                    "_Action": "MayAction",
+                    "args": {
+                      "_Action": "ChangeTargetsOfSpell",
+                      "args": {
+                        "_Spell": "Ref_TargetSpell"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "_OracleCard": "Card",
+      "Name": "Shunt",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Instant"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 1
+        },
+        {
+          "_ManaSymbol": "ManaCostR"
+        },
+        {
+          "_ManaSymbol": "ManaCostR"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "Targeted",
+            "args": [
+              [
+                {
+                  "_Target": "TargetSpell",
+                  "args": {
+                    "_Spells": "HasASingleTarget"
+                  }
+                }
+              ],
+              {
+                "_Actions": "ActionList",
+                "args": [
+                  {
+                    "_Action": "ChangeTargetsOfSpell",
+                    "args": {
+                      "_Spell": "Ref_TargetSpell"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "_OracleCard": "Card",
+      "Name": "Spellskite",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Artifact",
+          "Creature"
+        ],
+        "Subtypes": [
+          "Phyrexian",
+          "Horror"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 2
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "Activated",
+          "args": [
+            {
+              "_Cost": "PayMana",
+              "args": [
+                {
+                  "_ManaSymbol": "ManaCostUP"
+                }
+              ]
+            },
+            {
+              "_Actions": "Targeted",
+              "args": [
+                [
+                  {
+                    "_Target": "TargetSpellOrAbility",
+                    "args": {
+                      "_SpellsAndAbilities": "AnySpellOrAbility"
+                    }
+                  }
+                ],
+                {
+                  "_Actions": "ActionList",
+                  "args": [
+                    {
+                      "_Action": "ChangeATargetOfSpellOrAbilityToPermanent",
+                      "args": [
+                        {
+                          "_SpellOrAbility": "Ref_TargetSpellOrAbility"
+                        },
+                        {
+                          "_Permanent": "ThisPermanent"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 0,
+        "Toughness": 4
+      }
+    },
+    {
+      "_OracleCard": "Card",
+      "Name": "Swerve",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Instant"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostU"
+        },
+        {
+          "_ManaSymbol": "ManaCostR"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "Targeted",
+            "args": [
+              [
+                {
+                  "_Target": "TargetSpell",
+                  "args": {
+                    "_Spells": "HasASingleTarget"
+                  }
+                }
+              ],
+              {
+                "_Actions": "ActionList",
+                "args": [
+                  {
+                    "_Action": "ChangeTargetsOfSpell",
+                    "args": {
+                      "_Spell": "Ref_TargetSpell"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "target_tags": {
+    "CopyAbilityAndMayChooseNewTargets": 31,
+    "CopySpellAndMayChooseNewTargets": 140,
+    "GainControlOfSpellAndMayChooseNewTargets": 3,
+    "CopyAbilityForEachPermanentItCouldTarget": 1,
+    "CopySpellAndMustChooseNewTarget": 3,
+    "CopySpellOrAbilityAndMayChooseNewTargets": 5,
+    "ChangeTargetsOfSpellOrAbility": 6,
+    "ChooseNewTargetsForAnyNumberOfSpellsOrAbilities": 1,
+    "CopySpellNumberTimesAndMayChooseNewTargets": 11,
+    "ChangeTheTargetOfSpellToPermanent": 3,
+    "GainControlOfSpellAndRandomlyChooseNewTargetsExceptFor": 1,
+    "CopySpellAndRandomlyChooseNewTargetsExceptFor": 1,
+    "ChangeTargetsOfSpell": 11,
+    "CopyEachSpellAndMayChooseNewTargets": 3,
+    "CopySpellForEachAndMayChooseNewTargets": 5,
+    "ActionForEachDistributedAnyTarget": 2,
+    "ChooseNewTargetsForSpellOrAbility": 3,
+    "CopySpellForEachPermanentAndMustChooseItAsNewTarget": 6,
+    "CopySpellAndMayChooseNewTargetsWithEffects": 5,
+    "CopySpellForEachSpellPermanentCardAndOrPlayerItCouldTarget": 1,
+    "CopyAbilityNumberTimesAndMayChooseNewTargets": 2,
+    "ReselectTargetOfSpellOrAbilityAtRandom": 1,
+    "ActionForEachTarget": 2,
+    "ChooseNewTargetsForSpell": 5,
+    "ChangeTheTargetOfSpellToAPermanent": 2,
+    "ChangeATargetOfSpellOrAbilityToPermanent": 2,
+    "CopySpellOrAbilityForEachPermanentOrPlayerItCouldTarget": 1,
+    "CopySpellForEachOtherPermanentOrPlayerAndMustChooseThemAsNewTarget": 1,
+    "ChangeTheTargetsOfSpellToAPlayer": 2,
+    "CopySpellOrAbilityNumberTimesAndMayChooseNewTargets": 1,
+    "ChangeTargetsOfAbility": 1,
+    "ChangeTheTargetOfSpell": 2,
+    "ChangeTheTargetOfAbility": 1,
+    "CopyEachAbilityAndMayChooseNewTargets": 1,
+    "CopyActivatedAbilityAndMayChooseNewTargets": 1,
+    "ChangeTheTargetOfSpellOrAbility": 1,
+    "CopySpellForEachPlayerAndMustChooseThemAsNewTarget": 1,
+    "CopySpellForEachPlayerAndMustChooseNewTargetPermanentTheyControl": 1
+  }
+}
