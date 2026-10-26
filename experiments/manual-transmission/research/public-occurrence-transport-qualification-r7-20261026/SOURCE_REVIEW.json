@@ -1,0 +1,13 @@
+{
+  "state": "FROZEN_MUTANT_ONLY_TYPE_REPAIR",
+  "base": "8c88e24bbe34f8a3e5856e5a6b5e6cbb647b6099",
+  "repair": {
+    "failure_run": 40352480099,
+    "original_behavioral_tests": 0,
+    "cause": "DecisionResponse exposes decisionId, not type; direct mutant discriminant read failed TS2339",
+    "repair": "Structural optionIndex presence test is valid on base interface and matches option response construction; epoch guard untouched. Production/test bytes unchanged."
+  },
+  "source_contract": "Read exact actions.ts DecisionResponse and gameplaySlice option response construction; structural in check does not require nonexistent base discriminant. No casts, compiler flags, tests or assertions changed.",
+  "original_gates": "Seven normal/mutant compiles before behavioral stages and original receiving; same exact negative witnesses and all positives/restoration required.",
+  "acceptance": false
+}
