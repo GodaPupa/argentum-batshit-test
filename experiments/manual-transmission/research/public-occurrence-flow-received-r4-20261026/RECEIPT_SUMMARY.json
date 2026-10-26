@@ -1,0 +1,55 @@
+{
+  "source": "144701b4cdd88884770b594a24bf11717f145789",
+  "tree": "946a1d5a89017f35ae92bec9f11406db65d9bdfc",
+  "validation": "24060c0673afeb95d1ec6fafcc10dde298d82a8d",
+  "run": 40282614356,
+  "job": 121439040608,
+  "attempt": 1,
+  "artifact": 12633267479,
+  "artifact_bytes": 1549470,
+  "artifact_sha256": "a170c85978cb3cda874939ccd941c0d294a3a719140b2de7ee157ec95c1bc579",
+  "manifest_entries": 260,
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "gate_errors": [],
+  "state": "RECEIVED_EARLY_GATES_ONLY_NOT_FEATURE_ACCEPTANCE",
+  "gate_totals": {
+    "compile-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-mutant": {
+      "compile": true,
+      "tests": 0
+    },
+    "targeted": {
+      "suites": 1,
+      "rows": 43,
+      "passed": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "mutation": {
+      "suites": 1,
+      "rows": 43,
+      "passed": 37,
+      "failures": 6,
+      "errors": 0,
+      "skipped": 0
+    },
+    "restored": {
+      "suites": 1,
+      "rows": 43,
+      "passed": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "forms": "All normal, mutant and restored bytes bound"
+  },
+  "receiver_commit": "ed0fde8cfb62430bf51e988c61886c3e42253a9b",
+  "next": "Complete public matrix, server/client transport and UX, exact generator handling, then final-source full regressions."
+}
