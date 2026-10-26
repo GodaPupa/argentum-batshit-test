@@ -15,8 +15,27 @@ class CardSpecificContinuationResumer(
     override fun resumers(): List<ContinuationResumer<*>> = listOf(
         resumer(SecretBidContinuation::class, ::resumeSecretBid),
         resumer(OpenLifeBidContinuation::class, ::resumeOpenLifeBid),
-        resumer(ContestedRetargetContinuation::class, ::resumeContestedRetarget)
+        resumer(ContestedRetargetContinuation::class, ::resumeContestedRetarget),
+        resumer(FixedRecipientChoiceContinuation::class, ::resumeFixedRecipientChoice)
     )
+
+
+    private fun resumeFixedRecipientChoice(
+        state: GameState,
+        continuation: FixedRecipientChoiceContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is OptionChosenResponse) {
+            return ExecutionResult.error(state, "Expected target occurrence choice")
+        }
+        val address = continuation.offer.addresses.getOrNull(response.optionIndex)
+            ?: return ExecutionResult.error(state, "Invalid target occurrence choice")
+        val result = com.wingedsheep.engine.mechanics.targeting.FixedRecipientRetargeting.apply(
+            state, continuation.offer, address
+        )
+        return checkForMore(result.state, result.events)
+    }
 
     /**
      * Resume a chosen player's retargeting of a contested spell/ability (Psychic Battle's reveal
