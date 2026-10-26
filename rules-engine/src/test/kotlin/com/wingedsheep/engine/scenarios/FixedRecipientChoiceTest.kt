@@ -7,6 +7,7 @@ import com.wingedsheep.engine.mechanics.targeting.*
 import com.wingedsheep.engine.state.*
 import com.wingedsheep.engine.state.components.stack.*
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.*
@@ -68,6 +69,102 @@ class FixedRecipientChoiceTest : ScenarioTestBase() {
             val result = ContinuationHandler(EngineServices(cardRegistry)).resume(s, OptionChosenResponse(question.id, 0))
             result.state.getEntity(f.stack)!!.currentTargetPlan() shouldBe f.state.getEntity(f.stack)!!.currentTargetPlan()
             result.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+        }
+
+        for (invalid in listOf("wrong-player", "wrong-id", "negative-index", "past-end", "wrong-type", "cancel")) {
+            test("FRC public rejection preserves pending choice $invalid") {
+                val f = fixture()
+                val question = f.state.pendingDecision as ChooseOptionDecision
+                val actor = if (invalid == "wrong-player")
+                    f.state.turnOrder.single { it != question.playerId } else question.playerId
+                val response: DecisionResponse = when (invalid) {
+                    "wrong-id" -> OptionChosenResponse("wrong", 0)
+                    "negative-index" -> OptionChosenResponse(question.id, -1)
+                    "past-end" -> OptionChosenResponse(question.id, question.options.size)
+                    "wrong-type" -> YesNoResponse(question.id, true)
+                    "cancel" -> CancelDecisionResponse(question.id)
+                    else -> OptionChosenResponse(question.id, 0)
+                }
+                val processor = ActionProcessor(cardRegistry)
+                val rejected = processor.process(f.state, SubmitDecision(actor, response)).result
+                (rejected.error != null) shouldBe true
+                rejected.state shouldBe f.state
+                rejected.events.size shouldBe 0
+                rejected.state.pendingDecision shouldBe question
+                // The rejected response must not strand the legitimate chooser.
+                val accepted = processor.process(rejected.state,
+                    SubmitDecision(question.playerId, OptionChosenResponse(question.id, 0))).result
+                accepted.error shouldBe null
+                accepted.state.getEntity(f.stack)!!.currentTargetPlan()!!.targets shouldBe
+                    listOf(ChosenTarget.Permanent(f.recipient), ChosenTarget.Permanent(f.old))
+                accepted.events.filterIsInstance<BecomesTargetEvent>().single().sourceEntityId shouldBe f.stack
+            }
+        }
+        for (index in 0..1) {
+            test("FRC public serialized selection and replay rejection $index") {
+                val f = fixture()
+                val question = f.state.pendingDecision as ChooseOptionDecision
+                val action = SubmitDecision(question.playerId, OptionChosenResponse(question.id, index))
+                val processor = ActionProcessor(cardRegistry)
+                val accepted = processor.process(f.state, action).result
+                accepted.error shouldBe null
+                accepted.state.pendingDecision shouldBe null
+                val targets = accepted.state.getEntity(f.stack)!!.currentTargetPlan()!!.targets
+                targets[index] shouldBe ChosenTarget.Permanent(f.recipient)
+                targets[1-index] shouldBe ChosenTarget.Permanent(f.old)
+                accepted.events.filterIsInstance<DecisionSubmittedEvent>().size shouldBe 1
+                accepted.events.filterIsInstance<BecomesTargetEvent>().single().sourceEntityId shouldBe f.stack
+                val replayed = processor.process(accepted.state, action).result
+                (replayed.error != null) shouldBe true
+                replayed.state shouldBe accepted.state
+                replayed.events.size shouldBe 0
+            }
+        }
+
+        test("FRC public stale plan cannot overwrite a newer retarget") {
+            val f = fixture()
+            val question = f.state.pendingDecision as ChooseOptionDecision
+            val newerOffer = FixedRecipientRetargeting.offer(f.state, f.stack,
+                ChosenTarget.Permanent(f.recipient), question.playerId)!!
+            val newer = FixedRecipientRetargeting.apply(f.state, newerOffer, newerOffer.addresses[1]).state
+            val expected = newer.getEntity(f.stack)!!.currentTargetPlan()
+            val result = ActionProcessor(cardRegistry).process(newer,
+                SubmitDecision(question.playerId, OptionChosenResponse(question.id, 0))).result
+            result.error shouldBe null
+            result.state.getEntity(f.stack)!!.currentTargetPlan() shouldBe expected
+            result.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+            result.events.filterIsInstance<TargetsChosenEvent>().size shouldBe 0
+            result.state.pendingDecision shouldBe null
+        }
+        for (returned in listOf(false, true)) {
+            test("FRC public recipient visit invalidates suspended offer returned=$returned") {
+                val f = fixture()
+                val question = f.state.pendingDecision as ChooseOptionDecision
+                val from = f.state.logicalZone(f.recipient)!!
+                val elsewhere = ZoneKey(question.playerId, Zone.EXILE)
+                var changed = f.state.removeFromZone(from, f.recipient).addToZone(elsewhere, f.recipient)
+                if (returned) changed = changed.removeFromZone(elsewhere, f.recipient).addToZone(from, f.recipient)
+                (changed.objectRef(f.recipient) == f.state.objectRef(f.recipient)) shouldBe false
+                val result = ActionProcessor(cardRegistry).process(changed,
+                    SubmitDecision(question.playerId, OptionChosenResponse(question.id, 0))).result
+                result.error shouldBe null
+                result.state.getEntity(f.stack)!!.currentTargetPlan() shouldBe f.state.getEntity(f.stack)!!.currentTargetPlan()
+                result.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+                result.events.filterIsInstance<TargetsChosenEvent>().size shouldBe 0
+                result.state.pendingDecision shouldBe null
+            }
+        }
+        test("FRC public missing stack consumes obsolete choice without retargeting") {
+            val f = fixture()
+            val question = f.state.pendingDecision as ChooseOptionDecision
+            val changed = f.state.copy(stack = f.state.stack.filterNot { it == f.stack })
+            val result = ActionProcessor(cardRegistry).process(changed,
+                SubmitDecision(question.playerId, OptionChosenResponse(question.id, 0))).result
+            result.error shouldBe null
+            result.state.getEntity(f.stack)!!.currentTargetPlan() shouldBe f.state.getEntity(f.stack)!!.currentTargetPlan()
+            result.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+            result.events.filterIsInstance<TargetsChosenEvent>().size shouldBe 0
+            result.state.pendingDecision shouldBe null
         }
     }
 }

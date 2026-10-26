@@ -8,14 +8,15 @@
     "Registered continuation calls accepted atomic operation and resumes underlying work"
   ],
   "tests": {
-    "draft_cases": 4,
-    "scope": "Serialized duplicate-entity separate occurrence choices0/1, wrong question identity, stale stack removal",
+    "draft_cases": 16,
+    "scope": "Original four continuation cases plus twelve public ActionProcessor cases: six malformed/unauthorized responses each followed by legitimate recovery, two selected occurrences with replay rejection, newer plan, recipient exile/return, missing stack.",
     "compiled": false,
-    "executed": false
+    "executed": false,
+    "original_assertions_preserved": true
   },
   "remaining": [
     "Trace reusable SDK fixed-recipient effect entry; existing ChangeTargetEffect is single-target unrestricted redirection and must not be broadened silently. Update SDK reference/registration and cross-layer tests in same coherent candidate.",
-    "Add public SubmitDecision wrong-player/out-of-range/wrong-type/replay/stale-plan/recipient-visit controls and verify rejection does not consume current question.",
+    "Compile and execute the sixteen draft cases; add SDK-dispatched and client/server round-trip coverage plus required full source/modal/splice/division/optional-group matrix.",
     "Integrate ward and source-filter target triggers while preserving targeted stack ID as ward counter target; original source fact lookup must not replace stack identity.",
     "Finish complete mandatory modal/splice/division/optional-group and source-history public-flow matrix; executable mutants; normal/mutant compilation and targeted gates before full regressions.",
     "Freeze source/protocol/tests/negative controls, review exact protected delta, qualify and receive original artifacts."
@@ -26,8 +27,19 @@
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Continuation.kt": "13941ef0578f712d53e3d6eb1b2a08565720b029",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetSlotPlan.kt": "e804a908af74268631875f94fe7239bd96bf951d",
     "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/FixedRecipientRetargeting.kt": "46c9e045fc2bed25e52f566ef0fabf4626ee3b20",
-    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CardSpecificContinuationResumer.kt": "fc9984a0e811b75192a01ca261ce1f11d114575a"
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CardSpecificContinuationResumer.kt": "fc9984a0e811b75192a01ca261ce1f11d114575a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ActionProcessor.kt": "1f68112b6bf57fa3ab588a859baa8561e2badeb5",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt": "1fbe7670164d4dcd512a62628573722a88426133",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt": "21007b80049341075b430748ea06402c5693cea8"
   },
   "safeguards": "No protected binding/golden/legacy fixture or existing assertion modified; no official games/seeds/spending/main merge/Spellskite registration/multiplayer admission.",
-  "external_independent_review": false
+  "external_independent_review": false,
+  "previous_draft": "d6de5b49c5364dc98fb74294c7e0f54a5aa2c4cf",
+  "public_boundary_review": {
+    "entry": "ActionProcessor.process -> registry.validate -> SubmitDecisionHandler.validate -> DecisionValidators.validateOption -> continuation resume",
+    "rejection": "Wrong player/ID/type/range/cancel are rejected before suspension consumption. Public processor restores entry state and drops events for execution errors.",
+    "staleness": "Accepted FixedRecipientRetargeting.apply returns unchanged targeting for obsolete plan/visit/stack; syntactically valid obsolete choice completes rather than retrying an impossible menu.",
+    "test_status": "Draft assertions only, no behavioral evidence.",
+    "next": "Wire reusable SDK entry, source-filter/ward integration and full cross-layer matrix before freeze/qualification. Public boundary draft is not feature acceptance."
+  }
 }
