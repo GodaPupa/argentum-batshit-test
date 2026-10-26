@@ -1,0 +1,39 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "source": "40ada88201ad89d3b2c6202a89c3dd13ff5246c4",
+  "validation": "b15bcef3568424814f86af5d77187670f82b9e28",
+  "run": 40302270278,
+  "job": 121502757689,
+  "attempt": 1,
+  "artifact": 12641731811,
+  "artifact_bytes": 1182395,
+  "artifact_sha256": "556ac3e9af4b6206242a18f4aa386d077b2757d45047c8dc318f8468309af3fd",
+  "manifest_entries": 227,
+  "verified_present_entries": 224,
+  "missing_manifest_entries": [
+    "source/.github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml",
+    "source/.github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml",
+    "source/.github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
+  ],
+  "passed_compilations": {
+    "compile-server-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-client-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-server-server-mutant": {
+      "compile": true,
+      "tests": 0
+    }
+  },
+  "compiler_diagnostic": "src/store/slices/gameplaySlice.ts(293,38): error TS6133: 'optionIndex' is declared but its value is never read.",
+  "behavioral_tests": 0,
+  "restoration": "Collector finally restore present; no archived final restoration capture, not accepted",
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
