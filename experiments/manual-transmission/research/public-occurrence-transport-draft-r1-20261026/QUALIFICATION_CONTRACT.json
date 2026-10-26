@@ -1,0 +1,86 @@
+{
+  "state": "PREPARED_CONTRACT_NOT_RUNTIME_EVIDENCE",
+  "source_parent": "0dea9741a1265faa5076fe8abe5d1dd78626ffbe",
+  "accepted_engine_source": "144701b4cdd88884770b594a24bf11717f145789",
+  "accepted_receipt": "1b74a7551dba424d7b514d5c0b6234f8685755e5",
+  "case_contract": {
+    "server": [
+      "routing and JSON retain distinct occurrence labels for the same preview card",
+      "nested routing changes only identity and enrichment preserves occurrence payload",
+      "live occurrence transport preserves owner tokens replay and nested index 0",
+      "live occurrence transport preserves owner tokens replay and nested index 1"
+    ],
+    "client_describe": "public occurrence-choice transport",
+    "client_cases": 4,
+    "normal_passes": {
+      "server": 4,
+      "client": 4
+    },
+    "skips": 0,
+    "errors": 0
+  },
+  "mutants": [
+    {
+      "id": "server-preview",
+      "path": "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/PendingDecisionRouting.kt",
+      "anchor": "is ChooseOptionDecision -> copy(id = id)",
+      "replacement": "is ChooseOptionDecision -> copy(id = id, optionCardIds = null)",
+      "expected_failures": 3,
+      "expected_passes": 1,
+      "assertion_type": "io.kotest.assertions.AssertionFailedError (confirm actual Kotest emitted type; no compiler failure accepted)",
+      "first_test_source_frames": [
+        45,
+        106,
+        106
+      ],
+      "review_note": "Require exact equality failure at these statements. Do not silently bless other assertion types/locations; diagnose original evidence if collector assumptions differ."
+    },
+    {
+      "id": "client-index",
+      "path": "web-client/src/store/slices/gameplaySlice.ts",
+      "scope": "submitOptionDecision implementation only",
+      "anchor": "        optionIndex,",
+      "replacement": "        optionIndex: 0,",
+      "expected_failures": 3,
+      "expected_passes": 1
+    },
+    {
+      "id": "client-stale",
+      "path": "web-client/src/store/slices/gameplaySlice.ts",
+      "scope": "submitOptionDecision implementation only",
+      "anchor": "if (!pendingDecision || pendingDecision.id !== decisionId || !playerId) return",
+      "replacement": "if (!pendingDecision || !playerId) return",
+      "expected_failures": 1,
+      "expected_passes": 3,
+      "witness": "refuses a previous occurrence callback while preserving the nested question",
+      "explanation": "Replaced-epoch stale response remains rejected by submitAction; same-epoch old ID reaches transport and must be caught."
+    }
+  ],
+  "commands": {
+    "server_compile": "just with a frozen validation.just recipe invoking scripts/gradle-locked :game-server:compileTestKotlin --console=plain; no tests",
+    "server_test": "just test-class FixedRecipientChoiceTransportTest --rerun-tasks --console=plain",
+    "client_install": "npm ci (locked package-lock)",
+    "client_compile": "npm run typecheck",
+    "client_test": "npm test -- src/store/slices/liveInteraction.test.ts -t 'public occurrence-choice transport' --reporter=json --outputFile=<original-stage-report>"
+  },
+  "stage_order": [
+    "bind source/tree/validation/workflow and all protected bytes",
+    "install locked dependencies",
+    "normal and all mutant compilation, collect exit/log and exact source forms",
+    "restore/rebind",
+    "normal and all mutant targeted execution; raw report identities/counts/multiplicities/skips and exact assertion witnesses",
+    "restore/rebind and restored positives",
+    "hash full original archive manifest"
+  ],
+  "receiver_requirements": [
+    "Freeze exact source/tree/validation/workflow/run/job/attempt/artifact pins",
+    "No accepted behavioral evidence for compilation/missing reports/unrelated failures",
+    "Independently parse original raw XML and Vitest JSON with test identities and assertion frames; summary files insufficient",
+    "Verify prior assertions preserved and frozen R4 bytes unchanged except three explicitly changed draft/test paths plus qualification files",
+    "Preserve other143bindings,authorizedresolver,23goldens,82legacyfixtures,v0.7,originalevidence,budgets/twoPrecisiongames"
+  ],
+  "unfinished_collector": "Implement and synthetic-check collector/receiver; verify exact emitted assertion type from existing Kotest evidence before freeze. This contract is not yet a dispatch-ready protocol.",
+  "full_feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0
+}
