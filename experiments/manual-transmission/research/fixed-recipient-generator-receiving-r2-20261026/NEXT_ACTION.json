@@ -1,0 +1,45 @@
+{
+  "state": "PREPARED_NOT_RECEIVED",
+  "source": "49a82d93b9f65d24ac99d80e2df05686c49da36c",
+  "validation": "a726f521ff4002cce64f5a03019432728440309a",
+  "run": 40386124218,
+  "job": 121794733961,
+  "attempt": 1,
+  "workflow": ".github/workflows/manual-fixed-recipient-generator-r2-20261026.yml",
+  "receiver": {
+    "ref": "49a82d93b9f65d24ac99d80e2df05686c49da36c",
+    "path": "experiments/manual-transmission/research/fixed-recipient-generator-qualification-r2-20261026/RECEIVE.py"
+  },
+  "required_local_files": [
+    "PINS.json",
+    "metadata.json",
+    "original.zip",
+    "PROTOCOL.json",
+    "INPUTS.json",
+    "IDENTITY_FLOORS.json",
+    "SOURCE_REVIEW.json",
+    "INHERITED_R1_RECEIPT.json",
+    "reports.py",
+    "check_reports.py",
+    "receive_calibrated.py",
+    "check_calibrated.py",
+    "run.py",
+    "RECEIVE.py",
+    "validation.just",
+    "SYNTHETIC_REPORT_CHECKS.json",
+    "SYNTHETIC_CALIBRATION_CHECKS.json",
+    "CALIBRATED_BASELINE.json"
+  ],
+  "receiving_steps": [
+    "First reconcile live CURRENT, exact owner, newer receipts/successors and all active workflow statuses. Do not duplicate active run or re-receive an already recorded artifact.",
+    "At terminal attempt1 fetch original run, jobs filter=all, artifacts, git commit objects for source/validation/main, and base...source / source...validation comparisons. Preserve immutable pins and all failures.",
+    "Build metadata.json keys run,jobs,artifact,source,validation,main,source_delta,validation_delta. Source and validation are Git commit objects with top-level tree and parents. Resolve exactly one artifact by pinned artifact_name/run/head_sha and reject expiration, mismatched IDs or ambiguity.",
+    "Download original artifact bytes once; preserve original.zip, API artifact size/digest and metadata. Retrieve exact frozen protocol_files from source into isolated receiving directory and verify each SHA256 against PINS.json before executing. Place this PINS.json unchanged alongside them; do not add an artifact key, which the receiver populates.",
+    "Run python3 RECEIVE.py once. It validates original archive digest/manifest, immutable bindings, full-module raw identities and exact historical skips, inherited R1 controls, frozen corpus/caches, POR/ISD emitted identities, compiled snapshots, same-set golden matches and final restoration. Green Actions alone is not acceptance.",
+    "If receiver fails before writing a receipt, preserve original bytes and precise traceback; diagnose before bounded receiver/source repair. Compilation/missing reports/unrelated failures are not behavioral negative evidence.",
+    "Persist original receiving receipt and diagnostic or bounded acceptance with exact metadata/manifest references. Use fresh-blob CURRENT CAS and verify immutable/live readback. Reuse R1 receipt5959f695408588a35322495f426c0d087c2035ad; do not rerun its7passingstages or audit its archive.",
+    "On bounded success continue public occurrence/ward/trigger and actual-running-UI matrix plus required final-source compatibility (client64floor) before full Spellskite and remaining multiplayer gates. No card registration, official games/seeds or automatic admission."
+  ],
+  "scope": "Only generator action/bridge qualification and bounded POR/ISD calibration; known outside-golden cards remain compiled-only, not gameplay accepted.",
+  "stopping_condition": "External run pending; receiver ready. Frozen source may not be mutated. Existing isolated public-flow review and final-regression contract remain reusable."
+}
