@@ -1,0 +1,43 @@
+{
+  "state": "ISOLATED_PREPARATION_NOT_QUALIFICATION",
+  "source": "f54094584f283ace86035492b1566c16effd5be2",
+  "files": [
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Scryfall.kt",
+      "blob": "a3381f8ee220ae62585724351f16416ab9eef12c"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Fidelity.kt",
+      "blob": "6b76c004dee3482591fcbdc67872cf1bd4b28946"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Autogen.kt",
+      "blob": "3636e563c14d524afdb911c0544816a630f8a5eb"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Mtgish.kt",
+      "blob": "9d15321b78ab6329dfcc3dd23a0540bb9794a348"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Support.kt",
+      "blob": "b16d49ca25c68370d775db68dca26d8d974f2239"
+    },
+    {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Cards.kt",
+      "blob": "b35c4d2825822fc12e1563b83ea7cb3a3be68e37"
+    }
+  ],
+  "findings": [
+    "Mtgish.ensureData reuses an existing corpus; install exact upstream bytes before any emit call.",
+    "Scryfall.loadCanonical accepts old-release schema8 cache; retain exact frozen schema8 metadata and verify unchanged after each command. Python card-status uses schema9 and is not substituted.",
+    "Autogen.modeEmitAll skips basic lands and incomplete renders; preserve complete non-basic identity floors from committed POR/ISD fixtures,195/115.",
+    "Fidelity.modeGate can exclude suspected golden drift from mismatches and ignore generated names outside golden. Receiving requires0both and exact emitted-name/serialized-count/source-file consistency.",
+    "GeneratedCardVerifier distinctBy(name) could conceal duplicated output names; input/code identity checks and emitted count prevent silent shrinkage."
+  ],
+  "gates": [
+    "No dispatch until original early R1 receiving accepted; no competing qualification.",
+    "Reuse exact f54094584f283ace86035492b1566c16effd5be2 source unchanged, install/emit/compile/serialize/fidelity under locked recipes/concurrency.",
+    "Save original input corpus, Scryfall raw pages/cache bytes, generated Kotlin, compiled snapshots,logs,exitcodes,protocol,sourcepins and manifest.",
+    "Full original calibrated receiving before any broader admission; no cards/official games authorized."
+  ]
+}
