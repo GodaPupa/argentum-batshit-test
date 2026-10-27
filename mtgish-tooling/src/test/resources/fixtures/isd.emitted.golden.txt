@@ -4118,7 +4118,7 @@ val HollowhengeScavenger = card("Hollowhenge Scavenger") {
     toughness = 5
     triggeredAbility {
         trigger = Triggers.EntersBattlefield
-        triggerCondition = Conditions.CreatureDiedThisTurn
+        interveningIf = Conditions.CreatureDiedThisTurn
         effect = GainLifeEffect(5)
     }
     metadata {
@@ -5620,7 +5620,7 @@ val MorkrutBanshee = card("Morkrut Banshee") {
     toughness = 4
     triggeredAbility {
         trigger = Triggers.EntersBattlefield
-        triggerCondition = Conditions.CreatureDiedThisTurn
+        interveningIf = Conditions.CreatureDiedThisTurn
         val t = target("target", TargetCreature(filter = TargetFilter.Creature))
         effect = Effects.ModifyStats(-4, -4, t)
     }
@@ -6551,7 +6551,7 @@ val ReaperFromTheAbyss = card("Reaper from the Abyss") {
     keywords(Keyword.FLYING)
     triggeredAbility {
         trigger = Triggers.EachEndStep
-        triggerCondition = Conditions.CreatureDiedThisTurn
+        interveningIf = Conditions.CreatureDiedThisTurn
         val t = target(
             "target",
             TargetCreature(filter = TargetFilter(GameObjectFilter.Creature.notSubtype(Subtype.DEMON)))

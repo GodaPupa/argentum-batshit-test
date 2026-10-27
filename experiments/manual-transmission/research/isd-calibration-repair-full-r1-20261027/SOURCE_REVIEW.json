@@ -1,0 +1,30 @@
+{
+  "state": "STATIC_OWNER_REVIEW_NOT_INDEPENDENT_FULL_CALIBRATION_PENDING",
+  "early_receipt": "51d580b33234a0cf8deddcf9ec665bfed565684d",
+  "production_and_assertions": "Exactly bound to received early source; no production or test edits in this successor.",
+  "changes": [
+    "mtgish-tooling/src/test/resources/fixtures/hob.emitted.golden.txt",
+    "mtgish-tooling/src/test/resources/fixtures/inr.emitted.golden.txt",
+    "mtgish-tooling/src/test/resources/fixtures/isd.emitted.golden.txt"
+  ],
+  "required": {
+    "full_module": 196,
+    "passes": 193,
+    "historical_skips": 3,
+    "POR": [
+      195,
+      158,
+      37,
+      0
+    ],
+    "ISD": [
+      115,
+      88,
+      27,
+      39
+    ]
+  },
+  "protected": "All197 bindings,23gameplay goldens,82legacyfixtures and all input JSON preserved. Original failed evidence remains unchanged.",
+  "negative_controls": "Reused only from exact6bindings in received original early artifact:6compiles40normal40restored24negative176controls.",
+  "scope": "Independent generator tooling qualification, not Spellskite card or multiplayer acceptance; no games or seeds;2Precision reserved."
+}
