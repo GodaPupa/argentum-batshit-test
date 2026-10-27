@@ -3,13 +3,14 @@
   "updated_date": "2026-10-27",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WORKING",
-  "owner": "manual-work-f856131e-2de0-8328-9d3e-996ca32bbe1c",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-f856131e-2de0-8328-9d3e-996ca32bbe1c",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-27T09:50:03.812Z",
-    "expires_utc": "2026-10-27T10:50:03.812Z"
+    "expires_utc": null,
+    "released_utc": "2026-10-27T09:54:38.490Z"
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -32,7 +33,7 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Actual UI R2 import repair frozen; original R1 failed compilation, no behavioral evidence.",
+    "current_subproblem": "Actual UI R2 original qualification pending; missing-import compilation blocker repaired in frozen successor, not yet runtime qualified.",
     "source_candidate": "4a0cd58c09dd59ff9f3b34a311e989d3aeb7902b",
     "source_tree": "935d1cd73b1a54b0b9d8ad00c7cc464b9fc2a478",
     "source_branch": null,
@@ -41,19 +42,22 @@
     "validation": "37a0867d7e85aec634aadd1dc89fe724b8e8a780",
     "validation_branch": "validation/manual-public-occurrence-ui-r2-20261027",
     "workflow": ".github/workflows/manual-public-occurrence-ui-r2-20261027.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40484246211
+    ],
     "planned_not_observed": {
-      "module_cases": 204,
-      "module_passes": 201,
-      "historical_skips": 3,
-      "POR_emitted": 195,
-      "POR_matches": 158,
-      "ISD_emitted": 115,
-      "ISD_matches": 88
+      "compile_stages": 6,
+      "fixture_cases": 2,
+      "browser_normal": 5,
+      "browser_restored": 5,
+      "negative_witnesses": 3,
+      "negative_control_passes": 3,
+      "retries": 0,
+      "skips": 0
     },
     "negative_scope": "Three unchanged executable browser mutants, compilation before behavioral qualification.",
     "source_delta": "One test import plus8protocol files; no production changes or assertion changes.",
-    "next_executable_action": "Dispatch the one frozen actual UI R2 qualification after reconciled inactive workflows. Receive original artifact with exact pins and unchanged gates before actual UI acceptance. R1 original compile failure preserved at b3ca2f3d8f2bb44b5822166fa1261c0a956a53ab. Then implement public matrix from fbb5af56; final64client,22Spellskite and multiplayer remain.",
+    "next_executable_action": "Reconcile live CURRENT owner/task/recent commits/newer receipts and all five active workflow states. Do not duplicate/cancel active actual UI R2 run40484246211. When terminal and unreceived use PINS/NEXT_ACTION at e0964cb6eb6106eba96d46136d9003480aaffb52 and frozen RECEIVE.py/audit.py at 4a0cd58c09dd59ff9f3b34a311e989d3aeb7902b to receive original archive exactly once: source/tree/validation/workflow/run/job122121933151/attempt1/artifactbyteshashmanifest; six compiles,two fixtures,five normal+restored,three exact negative witnesses+controls,zero skips/retries,29bindings197protected,mutant forms/restoration,DOM/wire/observed/screenshots/two-seat traces. Preserve failure and diagnose actual cause; never blindly rerun. R1 original zero-behavior compilation failure received at b3ca2f3d8f2bb44b5822166fa1261c0a956a53ab. If passes accept actualUI only, then implement remaining public matrix from fbb5af56b07168bfe378f7cf6b62cc74e232f3b8. Reuse accepted generator0794e3ff and prior receipts; final64client,22Spellskite,multiplayer remain. No official games/seeds.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -4876,6 +4880,44 @@
       "active": [],
       "ignored_only": 34749202144,
       "source_readbacks_verified": true
+    },
+    "actual_ui_r2_handoff": {
+      "utc": "2026-10-27T09:54:38.490Z",
+      "owner_released": "manual-work-f856131e-2de0-8328-9d3e-996ca32bbe1c",
+      "task_run": "f856131e-2de0-8328-9d3e-996ca32bbe1c",
+      "all_events_all_five_statuses": {
+        "pending": [],
+        "waiting": [],
+        "requested": [],
+        "queued": [
+          {
+            "id": 34749202144,
+            "status": "queued",
+            "event": "pull_request",
+            "head_sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042"
+          }
+        ],
+        "in_progress": [
+          {
+            "id": 40484246211,
+            "status": "in_progress",
+            "event": "push",
+            "head_sha": "37a0867d7e85aec634aadd1dc89fe724b8e8a780"
+          }
+        ]
+      },
+      "ignored_only": 34749202144,
+      "original_receipt": "b3ca2f3d8f2bb44b5822166fa1261c0a956a53ab",
+      "receiver": {
+        "commit": "e0964cb6eb6106eba96d46136d9003480aaffb52",
+        "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r2-20261027",
+        "readback_verified": true
+      },
+      "source": "4a0cd58c09dd59ff9f3b34a311e989d3aeb7902b",
+      "validation": "37a0867d7e85aec634aadd1dc89fe724b8e8a780",
+      "duplicate_dispatch": false,
+      "accepted_evidence_reaudited": false,
+      "reason": "External dependency pending: sole frozen actual UI R2 run40484246211 is in progress. Original R1 compilation failure received once and import-only successor dispatched. Receiver e0964cb6eb6106eba96d46136d9003480aaffb52 and existing isolated public-matrix review fbb5af56 are saved/readback verified. No useful safely independent preparation remains before terminal UI evidence. Ownership released; no continuous execution implied."
     }
   },
   "automation": {
@@ -5064,11 +5106,11 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "390bd1587480",
-    "work_owner": "manual-work-f856131e-2de0-8328-9d3e-996ca32bbe1c",
+    "work_owner": null,
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "Receiving completed; bounded UI import successor prepared for sole qualification.",
-    "last_execution_owner": "manual-work-hourly-fd3e3556-ee40-8326-baca-dfab4ae90de8"
+    "activity": "No active Work owner; actual UI R2 workflow active. Discussion and Intervention strictly read-only.",
+    "last_execution_owner": "manual-work-f856131e-2de0-8328-9d3e-996ca32bbe1c"
   },
   "blockers": [],
   "qualified_components": {
@@ -5747,7 +5789,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External dependency pending: sole frozen actual UI R2 run40484246211 is in progress. Original R1 compilation failure received once and import-only successor dispatched. Receiver e0964cb6eb6106eba96d46136d9003480aaffb52 and existing isolated public-matrix review fbb5af56 are saved/readback verified. No useful safely independent preparation remains before terminal UI evidence. Ownership released; no continuous execution implied.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -5775,13 +5817,14 @@
       "Bounded generator/calibration accepted at0794e3ff34b66f3cf4c4815bbdaf1e1adf0961e6:204 module cases=201passes+3exacthistoricalskips;POR195/158;ISD115/88;three morbid checks;16source/test/resource and197protected bindings;928manifest entries. Champion/Noble Human-filter blockers removed. No full Spellskite/card/multiplayer admission."
     ],
     "unfinished_implementation": [
-      "Complete requirement-indexed public occurrence matrix from fbb5af56; immutable actualUI suite is dispatched, not accepted.",
+      "Complete public occurrence matrix from fbb5af56 after actual UI receiving; import-only R2 frozen/dispatched, not accepted.",
       "Final coherent-source full compatibility including64focused client identities;22Spellskite scenarios;multiplayer admission."
     ],
     "pending_evidence": [
-      "Actual UI R2 six compiles, two fixtures, five normal/restored browser cases, three negative witnesses plus controls; public matrix; final64client;22Spellskite;multiplayer."
+      "Original actual UI R2 artifact for run40484246211;6compiles,2fixtures,5normal+restored,3negative+3controls required, no results presumed.",
+      "Public matrix; final coherent-source compatibility including64client floor;22Spellskite;multiplayer."
     ],
-    "next_executable_action": "Dispatch the one frozen actual UI R2 qualification after reconciled inactive workflows. Receive original artifact with exact pins and unchanged gates before actual UI acceptance. R1 original compile failure preserved at b3ca2f3d8f2bb44b5822166fa1261c0a956a53ab. Then implement public matrix from fbb5af56; final64client,22Spellskite and multiplayer remain.",
+    "next_executable_action": "Reconcile live CURRENT owner/task/recent commits/newer receipts and all five active workflow states. Do not duplicate/cancel active actual UI R2 run40484246211. When terminal and unreceived use PINS/NEXT_ACTION at e0964cb6eb6106eba96d46136d9003480aaffb52 and frozen RECEIVE.py/audit.py at 4a0cd58c09dd59ff9f3b34a311e989d3aeb7902b to receive original archive exactly once: source/tree/validation/workflow/run/job122121933151/attempt1/artifactbyteshashmanifest; six compiles,two fixtures,five normal+restored,three exact negative witnesses+controls,zero skips/retries,29bindings197protected,mutant forms/restoration,DOM/wire/observed/screenshots/two-seat traces. Preserve failure and diagnose actual cause; never blindly rerun. R1 original zero-behavior compilation failure received at b3ca2f3d8f2bb44b5822166fa1261c0a956a53ab. If passes accept actualUI only, then implement remaining public matrix from fbb5af56b07168bfe378f7cf6b62cc74e232f3b8. Reuse accepted generator0794e3ff and prior receipts; final64client,22Spellskite,multiplayer remain. No official games/seeds.",
     "read_sections": [
       {
         "ref": "4a0cd58c09dd59ff9f3b34a311e989d3aeb7902b",
@@ -5813,6 +5856,27 @@
           "bounded_next_matrix",
           "next_executable_after_ui_receiving"
         ]
+      },
+      {
+        "ref": "e0964cb6eb6106eba96d46136d9003480aaffb52",
+        "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r2-20261027/PINS.json",
+        "sections": [
+          "all"
+        ]
+      },
+      {
+        "ref": "e0964cb6eb6106eba96d46136d9003480aaffb52",
+        "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r2-20261027/NEXT_ACTION.json",
+        "sections": [
+          "all"
+        ]
+      },
+      {
+        "ref": "b3ca2f3d8f2bb44b5822166fa1261c0a956a53ab",
+        "path": "experiments/manual-transmission/research/public-occurrence-ui-received-r1-20261027/DIAGNOSIS.json",
+        "sections": [
+          "all"
+        ]
       }
     ],
     "source_protocol": {
@@ -5828,7 +5892,7 @@
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r4-20261026/NEXT_SOURCE_REVIEW.json"
     },
     "critical_path": "Independently qualify unrelated calibration repairs → generator acceptance → actual UI/public matrix → final coherent-source compatibility including64clientfloor → full Spellskite22scenario acceptance → multiplayer admission.",
-    "actual_stopping_reason": null,
+    "actual_stopping_reason": "External dependency pending: sole frozen actual UI R2 run40484246211 is in progress. Original R1 compilation failure received once and import-only successor dispatched. Receiver e0964cb6eb6106eba96d46136d9003480aaffb52 and existing isolated public-matrix review fbb5af56 are saved/readback verified. No useful safely independent preparation remains before terminal UI evidence. Ownership released; no continuous execution implied.",
     "receiving": {
       "commit": "3864e32eb59e7a953d1295ba02ca31f1de5ca53a",
       "path": "experiments/manual-transmission/research/generator-calibration-repair-full-received-r1-20261026",
@@ -5839,8 +5903,8 @@
       "readback_verified": true
     },
     "prepared_receiver": {
-      "commit": "e7b487319d187bd981370490a451d5e32b908923",
-      "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r1-20261027",
+      "commit": "e0964cb6eb6106eba96d46136d9003480aaffb52",
+      "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r2-20261027",
       "readback_verified": true
     },
     "generator_upstream": {
@@ -5859,7 +5923,7 @@
       "manifest_entries": 231,
       "readback_verified": true
     },
-    "continuation_state": "WAITING_EXTERNAL; ownership explicitly released; existing single Work executor enabled with unchanged schedule.",
+    "continuation_state": "WAITING_EXTERNAL; ownership released; same enabled executor and unchanged schedule.",
     "previous_guidance_at_ready_4e14a8c9": {
       "read_sections": [
         {
@@ -6019,7 +6083,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-27T09:53:24.603Z",
+  "updated_utc": "2026-10-27T09:54:38.490Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -6329,7 +6393,7 @@
     }
   },
   "public_occurrence_ui_r2_qualification": {
-    "state": "FROZEN_NOT_DISPATCHED",
+    "state": "DISPATCHED_WAITING_ORIGINAL_ARTIFACT",
     "source": "4a0cd58c09dd59ff9f3b34a311e989d3aeb7902b",
     "tree": "935d1cd73b1a54b0b9d8ad00c7cc464b9fc2a478",
     "base": "61a7d741e32aeeb36bd063a9838d6f15c63f37ee",
@@ -6371,6 +6435,18 @@
       "readback_verified": true
     },
     "production_changes": 0,
-    "assertions_unchanged": true
+    "assertions_unchanged": true,
+    "run": 40484246211,
+    "job": 122121933151,
+    "workflow_id": 398083557,
+    "attempt": 1,
+    "event": "push",
+    "status": "in_progress",
+    "artifact_name": "manual-public-occurrence-ui-r2-40484246211",
+    "receiver": {
+      "commit": "e0964cb6eb6106eba96d46136d9003480aaffb52",
+      "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r2-20261027",
+      "readback_verified": true
+    }
   }
 }
