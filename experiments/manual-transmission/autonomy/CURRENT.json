@@ -33,14 +33,14 @@
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
     "current_subproblem": "Implement additive public occurrence matrix from reviewed fbb5af56; actual UI accepted.",
-    "source_candidate": "41dcec4f23b2a28c8c2ffee89c763669c40c2b69",
-    "source_tree": "3ba7c77a0b0c254c75cbfddf120c501564d00764",
+    "source_candidate": "63026e29f507a32a340475d521ef47a529b6e439",
+    "source_tree": "045d34ff961cba380e5299164867363f808a4a3c",
     "source_branch": null,
-    "protocol": "experiments/manual-transmission/research/public-occurrence-ui-r5-20261027/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/public-occurrence-ui-r5-20261027/SOURCE_REVIEW.json",
-    "validation": "cb1f8812a0e5276b3e90e140c11e31dd7e6b9546",
-    "validation_branch": "validation/manual-public-occurrence-ui-r5-20261027",
-    "workflow": ".github/workflows/manual-public-occurrence-ui-r5-20261027.yml",
+    "protocol": "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/SOURCE_REVIEW.json",
+    "validation": "f271ae9a668f140ed26a95dd16530b3e7ecefd90",
+    "validation_branch": "validation/manual-public-occurrence-matrix-r1-20261027",
+    "workflow": ".github/workflows/manual-public-occurrence-matrix-r1-20261027.yml",
     "pending_runs": [],
     "planned_not_observed": {
       "compile_stages": 6,
@@ -171,7 +171,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "355e6d3f02f50d4d42d174f76b4d9398fa436b3d",
+    "validation_tree": "cc1d9aab2e499557ed622aee626a1f16835536c5",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -6794,5 +6794,42 @@
       "manifest_entries": 519,
       "readback_verified": true
     }
+  },
+  "public_occurrence_matrix_r1_qualification": {
+    "state": "FROZEN_READY_FOR_SINGLE_DISPATCH",
+    "source": "63026e29f507a32a340475d521ef47a529b6e439",
+    "tree": "045d34ff961cba380e5299164867363f808a4a3c",
+    "base": "41dcec4f23b2a28c8c2ffee89c763669c40c2b69",
+    "validation": "f271ae9a668f140ed26a95dd16530b3e7ecefd90",
+    "validation_tree": "cc1d9aab2e499557ed622aee626a1f16835536c5",
+    "workflow": ".github/workflows/manual-public-occurrence-matrix-r1-20261027.yml",
+    "workflow_blob": "1ed4a13eb8d9e7d50940bf08e242df538400fb33",
+    "branch": "validation/manual-public-occurrence-matrix-r1-20261027",
+    "protocol": "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/PROTOCOL.json",
+    "source_delta": [
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceMatrixTest.kt",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/PROTOCOL.json",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/SOURCE_REVIEW.json",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/run.py",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/reports.py",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/RECEIVE.py",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/validation.just",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/check_reports.py",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/SYNTHETIC_CHECKS.json"
+    ],
+    "expected": {
+      "compiles": 5,
+      "normal": 40,
+      "restored": 40,
+      "negative_witnesses": 40,
+      "mutant_controls": 6,
+      "skips": 0
+    },
+    "readback_verified": true,
+    "production_changes": 0,
+    "original43_unchanged": true,
+    "client64_unchanged": true,
+    "synthetic_rejections": 23,
+    "actual_ui_receipt": "7ebe251f45bbcc075ab460aabfda037f7e1cb470"
   }
 }
