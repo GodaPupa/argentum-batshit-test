@@ -1,0 +1,31 @@
+{
+  "state": "FROZEN_BOUNDED_TEST_AND_PROTOCOL_SOURCE_REVIEW_NOT_RUNTIME_ACCEPTANCE",
+  "base": "41dcec4f23b2a28c8c2ffee89c763669c40c2b69",
+  "review": "fbb5af56b07168bfe378f7cf6b62cc74e232f3b8",
+  "production_changes": 0,
+  "original43_unchanged": true,
+  "client64_unchanged": true,
+  "groups": [
+    "optional3",
+    "division3",
+    "modal2",
+    "splice1",
+    "spellqueue4",
+    "sourcecontext18",
+    "recipientcontext8",
+    "control1"
+  ],
+  "case_count": 40,
+  "mutants": 4,
+  "compile_first": true,
+  "normal_and_restored_required": true,
+  "negative_assertions": 40,
+  "notes": [
+    "Fixture input starts from exact requirement-indexed groups with an empty first group, never reconstructs omitted groups from flattened targets.",
+    "Registered SDK ChangeTargetTo dispatch, full GameState serialization and ActionProcessor.SubmitDecision; final StackResolver outcomes and compatibility mirrors checked.",
+    "Source context changes occur while the offer is suspended; original-instance LKI is retained through removed/returned variants; stale offers fail closed and a fresh valid chooser recovers.",
+    "Queued spell observer follows accepted public43 assertion logic but uses spell-origin input; original43 source unchanged.",
+    "No independent external review claimed; original frozen workflow/artifact audit required."
+  ],
+  "external_independent_review": false
+}
