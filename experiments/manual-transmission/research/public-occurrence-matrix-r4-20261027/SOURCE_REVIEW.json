@@ -1,0 +1,18 @@
+{
+  "state": "PROTOCOL_ONLY_EXACT_FRAME_CORRECTION_NOT_ACCEPTED",
+  "base": "587bc4070595bed27a7a5cb4970b423655374a50",
+  "production_changes": 0,
+  "test_changes": 0,
+  "assertions_unchanged": true,
+  "normal": 40,
+  "restored": 40,
+  "mutant_cases": 160,
+  "negative_witnesses": 70,
+  "passing_controls": 90,
+  "compiles": 5,
+  "selection": "Full class only; clear KOTEST_INCLUDE_PATTERN; raw zero-skip reports mandatory",
+  "diagnosis": "Original R3 raw reports: both PM_QUEUED_TAIL witnesses are AssertionFailedError at210, the unchanged withClue start line; old211 incorrectly pinned the assertion continuation line. 5compiles,40normal,39wrong-occurrence and3division negative witnesses passed. Stale-context/restored did not execute after strict gate rejection.",
+  "source_reasoning": "Only two frame values211\u2192210 corrected from original raw stack and bound source. Marker,type,identity,multiplicity,zero skips,70negative witnesses90controls remain exact. No change to production,test or assertion bytes. Existing265 stale-context assertion is single-line withClue; source checked. Full bounded matrix remains required because no accepted complete matrix exists.",
+  "discovery": "All stages now select identical40case class, so the full normal gate verifies inventory before mutant runs. No filtered discovery sets exist.",
+  "independent_review": false
+}
