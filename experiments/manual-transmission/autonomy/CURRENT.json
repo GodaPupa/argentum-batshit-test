@@ -41,7 +41,9 @@
     "validation": "7c6d6d249ff48cb75952989a80055a73d17011a3",
     "validation_branch": "validation/manual-public-occurrence-ui-r1-20261027",
     "workflow": ".github/workflows/manual-public-occurrence-ui-r1-20261027.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40478462138
+    ],
     "planned_not_observed": {
       "module_cases": 204,
       "module_passes": 201,
@@ -53,7 +55,7 @@
     },
     "negative_scope": "Reuse exact-bound original Human early controls at 8df5d0d047fc3559a796542cc3c15900442f2406; no new mutants in dependent full compatibility.",
     "source_delta": "Two reviewed emitter text snapshots plus17protocol files; all16production/test/resource and197protectedbindings unchanged.",
-    "next_executable_action": "Dispatch exactly one frozen actual UI qualification 7c6d6d249ff48cb75952989a80055a73d17011a3 on validation/manual-public-occurrence-ui-r1-20261027 after verified live ownership/all-status reconciliation. Six compile gates precede two engine fixture tests, five real-server/browser normal and restored cases and three executable UI mutants. Never duplicate active qualification; receive original artifacts before actualUI acceptance. Generator/calibration already accepted0794e3ff; public matrix/final64client/22Spellskite/multiplayer remain.",
+    "next_executable_action": "Do not duplicate actual UI run40478462138. While active only isolated next public-matrix source review/preparation without changing frozen source61a7d741e32aeeb36bd063a9838d6f15c63f37ee. Once terminal and unreceived, follow PINS/NEXT_ACTION ate7b487319d187bd981370490a451d5e32b908923 and frozen RECEIVE.py for original artifact receiving. Six compilations,two fixture cases,five normal/restored browser cases,three exact negative witnesses/three controls,zero retries/skips,source/protected/mutant/restoration and all DOM/network/traces required. Bounded generator accepted0794e3ff; remaining public matrix,final64client,22Spellskite,multiplayer remain.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -5745,10 +5747,10 @@
       "Final coherent-source compatibility including64clientfloor;full22Spellskite scenarios;multiplayer admission."
     ],
     "pending_evidence": [
-      "Frozen actualUI qualification not yet dispatched; expected gates are not observations.",
-      "Remaining public matrix; final coherent-source64client;22Spellskite;multiplayer."
+      "Original actualUI qualification run40478462138 active, not accepted.",
+      "Remaining public matrix;final coherent-source64client;22Spellskite;multiplayer."
     ],
-    "next_executable_action": "Dispatch exactly one frozen actual UI qualification 7c6d6d249ff48cb75952989a80055a73d17011a3 on validation/manual-public-occurrence-ui-r1-20261027 after verified live ownership/all-status reconciliation. Six compile gates precede two engine fixture tests, five real-server/browser normal and restored cases and three executable UI mutants. Never duplicate active qualification; receive original artifacts before actualUI acceptance. Generator/calibration already accepted0794e3ff; public matrix/final64client/22Spellskite/multiplayer remain.",
+    "next_executable_action": "Do not duplicate actual UI run40478462138. While active only isolated next public-matrix source review/preparation without changing frozen source61a7d741e32aeeb36bd063a9838d6f15c63f37ee. Once terminal and unreceived, follow PINS/NEXT_ACTION ate7b487319d187bd981370490a451d5e32b908923 and frozen RECEIVE.py for original artifact receiving. Six compilations,two fixture cases,five normal/restored browser cases,three exact negative witnesses/three controls,zero retries/skips,source/protected/mutant/restoration and all DOM/network/traces required. Bounded generator accepted0794e3ff; remaining public matrix,final64client,22Spellskite,multiplayer remain.",
     "read_sections": [
       {
         "ref": "61a7d741e32aeeb36bd063a9838d6f15c63f37ee",
@@ -5770,6 +5772,20 @@
         "sections": [
           "state",
           "gates"
+        ]
+      },
+      {
+        "ref": "e7b487319d187bd981370490a451d5e32b908923",
+        "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r1-20261027/NEXT_ACTION.json",
+        "sections": [
+          "all"
+        ]
+      },
+      {
+        "ref": "e7b487319d187bd981370490a451d5e32b908923",
+        "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r1-20261027/PINS.json",
+        "sections": [
+          "all"
         ]
       }
     ],
@@ -5797,9 +5813,8 @@
       "readback_verified": true
     },
     "prepared_receiver": {
-      "commit": "bf9db84ac52ceb4ec1549c32fb55d4897e07f826",
-      "path": "experiments/manual-transmission/research/human-filter-repair-full-receiving-r1-20261027",
-      "run": 40470112090,
+      "commit": "e7b487319d187bd981370490a451d5e32b908923",
+      "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r1-20261027",
       "readback_verified": true
     },
     "generator_upstream": {
@@ -5976,7 +5991,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-27T09:07:46.352Z",
+  "updated_utc": "2026-10-27T09:09:09.962Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -6225,7 +6240,7 @@
     }
   },
   "public_occurrence_ui_qualification": {
-    "state": "FROZEN_READY_NOT_DISPATCHED",
+    "state": "DISPATCHED_WAITING_ORIGINAL_ARTIFACT",
     "source": "61a7d741e32aeeb36bd063a9838d6f15c63f37ee",
     "tree": "fefde4682ed7644ac96f13286a5f98f4f3b2f5f8",
     "base": "b6e6150edb07cf4ac99f61fdbae6b89e131e59af",
@@ -6261,6 +6276,18 @@
       "retries": 0,
       "skips": 0
     },
-    "synthetic_checks": 17
+    "synthetic_checks": 17,
+    "run": 40478462138,
+    "job": 122102453857,
+    "workflow_id": 398042714,
+    "status": "in_progress",
+    "attempt": 1,
+    "event": "push",
+    "artifact_name": "manual-public-occurrence-ui-r1-40478462138",
+    "receiver": {
+      "commit": "e7b487319d187bd981370490a451d5e32b908923",
+      "path": "experiments/manual-transmission/research/public-occurrence-ui-receiving-r1-20261027",
+      "readback_verified": true
+    }
   }
 }
