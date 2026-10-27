@@ -1,0 +1,1180 @@
+{
+  "source": "6b3c5e4d8441b25525bd45b6237525cb12883a38",
+  "tree": "96291ac6bd3b01929a582c0b815c8ed98afa3d98",
+  "base": "587bc4070595bed27a7a5cb4970b423655374a50",
+  "validation": "7a1d8d579e3e75b6403eeb836ea21b71be49c966",
+  "validation_tree": "c7bf3e96d864023712a028579c0f66a45ce54be2",
+  "workflow": ".github/workflows/manual-public-occurrence-matrix-r4-20261027.yml",
+  "workflow_blob": "ba63e3d3c84d012409e2688ea27e95f6cc372530",
+  "branch": "validation/manual-public-occurrence-matrix-r4-20261027",
+  "protocol": "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/PROTOCOL.json",
+  "source_delta": [
+    "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/PROTOCOL.json",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/run.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/reports.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/RECEIVE.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/validation.just",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/check_reports.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/SYNTHETIC_CHECKS.json",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r4-20261027/ORIGINAL_QUEUE_REPORT.xml"
+  ],
+  "expected": {
+    "compiles": 5,
+    "normal": 40,
+    "restored": 40,
+    "mutant_cases": 160,
+    "negative_witnesses": 70,
+    "mutant_controls": 90,
+    "skips": 0
+  },
+  "production_changes": 0,
+  "test_changes": 0,
+  "assertions_unchanged": true,
+  "original_failure_receipt": "37dde49624437b6bae45288fb5fa9a48c50a9bf2",
+  "readback_verified": true,
+  "run": 40544850679,
+  "job": 122332572814,
+  "attempt": 1,
+  "run_number": 1,
+  "event": "push",
+  "workflow_id": 398496374,
+  "artifact_name": "manual-public-occurrence-matrix-r4-40544850679",
+  "protocol_files": {
+    "PROTOCOL.json": "3672d3f36b55738acbb4f568141a1f87e234c1f492aea19816938e1fc07182f1",
+    "SOURCE_REVIEW.json": "62dfd1b4d2c59599fc7ba0c0fed992b664e590ee675ef100cc2153896f52ff39",
+    "run.py": "bac99fd88643ed7aee0fbb7de0d5ce9c8554b48f97ec5b0ec2e1344611343239",
+    "reports.py": "fcca9879cff6e848af1e32c1c32b94e41b997765ed7e7b5384d6c1fa35581520",
+    "RECEIVE.py": "5943a216cd24c4b12146ea55127ddc5babfd9e4358388c02413151355fc15f56",
+    "validation.just": "0d0e025b807202cbb0448d0943f39cf55762e3ca8eda322d00a610fb63f68d36",
+    "check_reports.py": "b43a49dc272af9913cf596bb268b8386c4e9969fa801b981b88993132a68034f",
+    "SYNTHETIC_CHECKS.json": "042bb26647c8338aa733d05868232986cf2a7a4d9370da985e94dcf934176b71",
+    "ORIGINAL_QUEUE_REPORT.xml": "8bc8d277b0ca225edbe9f6e96d7a4cd737e43a85a3fb582ffc54dffe86b692d4"
+  },
+  "artifact": 12754092969,
+  "artifact_bytes": 4566647,
+  "artifact_sha256": "bea4e6982de9082be7c522c143d3cff798b10c4cea30f5a4365af95fb45417e1",
+  "manifest_entries": 818,
+  "gates": {
+    "compile-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-wrong-occurrence": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-division-mirror": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-dropped-queue": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-stale-context": {
+      "compile": true,
+      "tests": 0
+    },
+    "normal": {
+      "tests": 40,
+      "failures": 0,
+      "passed": 40,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM splice public original boundaries and tail"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM control no authoritative plan offers no choice"
+        ]
+      ],
+      "witnesses": []
+    },
+    "wrong-occurrence": {
+      "tests": 40,
+      "failures": 39,
+      "passed": 1,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM splice public original boundaries and tail"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM control no authoritative plan offers no choice"
+        ]
+      ],
+      "witnesses": [
+        "PM optional public named resolution instant",
+        "PM division public occurrence amounts instant",
+        "PM optional public named resolution activation",
+        "PM division public occurrence amounts activation",
+        "PM optional public named resolution trigger",
+        "PM division public occurrence amounts trigger",
+        "PM modal public original boundaries instant",
+        "PM modal public original boundaries trigger",
+        "PM splice public original boundaries and tail",
+        "PM spell queued targeting triggers order=0 departed=false",
+        "PM spell queued targeting triggers order=0 departed=true",
+        "PM spell queued targeting triggers order=1 departed=false",
+        "PM spell queued targeting triggers order=1 departed=true",
+        "PM source public reevaluation activation live color",
+        "PM source public reevaluation activation live subtype",
+        "PM source public reevaluation activation live cardtype",
+        "PM source public reevaluation activation removed color",
+        "PM source public reevaluation activation removed subtype",
+        "PM source public reevaluation activation removed cardtype",
+        "PM source public reevaluation activation returned color",
+        "PM source public reevaluation activation returned subtype",
+        "PM source public reevaluation activation returned cardtype",
+        "PM recipient public reevaluation activation shroud",
+        "PM recipient public reevaluation activation protection",
+        "PM recipient public reevaluation activation controller",
+        "PM recipient public reevaluation activation type",
+        "PM source public reevaluation trigger live color",
+        "PM source public reevaluation trigger live subtype",
+        "PM source public reevaluation trigger live cardtype",
+        "PM source public reevaluation trigger removed color",
+        "PM source public reevaluation trigger removed subtype",
+        "PM source public reevaluation trigger removed cardtype",
+        "PM source public reevaluation trigger returned color",
+        "PM source public reevaluation trigger returned subtype",
+        "PM source public reevaluation trigger returned cardtype",
+        "PM recipient public reevaluation trigger shroud",
+        "PM recipient public reevaluation trigger protection",
+        "PM recipient public reevaluation trigger controller",
+        "PM recipient public reevaluation trigger type"
+      ]
+    },
+    "division-mirror": {
+      "tests": 40,
+      "failures": 3,
+      "passed": 37,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM splice public original boundaries and tail"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM control no authoritative plan offers no choice"
+        ]
+      ],
+      "witnesses": [
+        "PM division public occurrence amounts instant",
+        "PM division public occurrence amounts activation",
+        "PM division public occurrence amounts trigger"
+      ]
+    },
+    "dropped-queue": {
+      "tests": 40,
+      "failures": 2,
+      "passed": 38,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM splice public original boundaries and tail"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM control no authoritative plan offers no choice"
+        ]
+      ],
+      "witnesses": [
+        "PM spell queued targeting triggers order=0 departed=false",
+        "PM spell queued targeting triggers order=0 departed=true"
+      ]
+    },
+    "stale-context": {
+      "tests": 40,
+      "failures": 26,
+      "passed": 14,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM splice public original boundaries and tail"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM control no authoritative plan offers no choice"
+        ]
+      ],
+      "witnesses": [
+        "PM source public reevaluation activation live color",
+        "PM source public reevaluation activation live subtype",
+        "PM source public reevaluation activation live cardtype",
+        "PM source public reevaluation activation removed color",
+        "PM source public reevaluation activation removed subtype",
+        "PM source public reevaluation activation removed cardtype",
+        "PM source public reevaluation activation returned color",
+        "PM source public reevaluation activation returned subtype",
+        "PM source public reevaluation activation returned cardtype",
+        "PM recipient public reevaluation activation shroud",
+        "PM recipient public reevaluation activation protection",
+        "PM recipient public reevaluation activation controller",
+        "PM recipient public reevaluation activation type",
+        "PM source public reevaluation trigger live color",
+        "PM source public reevaluation trigger live subtype",
+        "PM source public reevaluation trigger live cardtype",
+        "PM source public reevaluation trigger removed color",
+        "PM source public reevaluation trigger removed subtype",
+        "PM source public reevaluation trigger removed cardtype",
+        "PM source public reevaluation trigger returned color",
+        "PM source public reevaluation trigger returned subtype",
+        "PM source public reevaluation trigger returned cardtype",
+        "PM recipient public reevaluation trigger shroud",
+        "PM recipient public reevaluation trigger protection",
+        "PM recipient public reevaluation trigger controller",
+        "PM recipient public reevaluation trigger type"
+      ]
+    },
+    "restored": {
+      "tests": 40,
+      "failures": 0,
+      "passed": 40,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM splice public original boundaries and tail"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM control no authoritative plan offers no choice"
+        ]
+      ],
+      "witnesses": []
+    }
+  },
+  "gate_errors": [],
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "state": "RECEIVED_PUBLIC_MATRIX_ONLY_FINAL_COMPATIBILITY_PENDING"
+}
