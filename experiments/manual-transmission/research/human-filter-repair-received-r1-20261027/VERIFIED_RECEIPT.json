@@ -1,0 +1,953 @@
+{
+  "projections": {
+    "10E": {
+      "original_sha256": "7ef4a9d11da3db4a9f7b8238cd93ab3f68b8abb94353464d2217790c67eae113",
+      "projected_sha256": "7ef4a9d11da3db4a9f7b8238cd93ab3f68b8abb94353464d2217790c67eae113",
+      "changed": false
+    },
+    "CHK": {
+      "original_sha256": "af5ac527131f5344bed0741635d0c1094391a71f6ee1710b829f8cacda6dfa27",
+      "projected_sha256": "af5ac527131f5344bed0741635d0c1094391a71f6ee1710b829f8cacda6dfa27",
+      "changed": false
+    },
+    "EOE": {
+      "original_sha256": "d98750f66558fdf2e4bf6af125b66365ad99660423cdfb25291915c50f72ddce",
+      "projected_sha256": "d98750f66558fdf2e4bf6af125b66365ad99660423cdfb25291915c50f72ddce",
+      "changed": false
+    },
+    "HOB": {
+      "original_sha256": "6cacfdbd767b9d3f55ae828a9cf482cf3b4ff22c77992c55f6836846f6c4a198",
+      "projected_sha256": "6cacfdbd767b9d3f55ae828a9cf482cf3b4ff22c77992c55f6836846f6c4a198",
+      "changed": false
+    },
+    "INR": {
+      "original_sha256": "e41a3f90c0bc6afd9950e90b14629f731bc327251f2b4e5363875c8bebb25aa9",
+      "projected_sha256": "1c90d6f46767452c803001114d0e453c47f186ba39e18c65f99df8973f96ceb7",
+      "changed": true
+    },
+    "ISD": {
+      "original_sha256": "e8f0ea359960fb04aa6f1fe490a99a84e1b4e38887c924a483d4af5025d04db6",
+      "projected_sha256": "ccda4fe86efaf1b9b426d7ecc484422c641ce0ac211d07673384ba04d7f1a168",
+      "changed": true
+    },
+    "ONS": {
+      "original_sha256": "f486b2812cab75ba20c50d1a34daa3400fc0c79b3ea7be6f80d125af6cca70cf",
+      "projected_sha256": "f486b2812cab75ba20c50d1a34daa3400fc0c79b3ea7be6f80d125af6cca70cf",
+      "changed": false
+    },
+    "POR": {
+      "original_sha256": "8b84db27e9bba517a49898de7475b1b64e70c94b3daaa45b13f0e6a8ed24c22e",
+      "projected_sha256": "8b84db27e9bba517a49898de7475b1b64e70c94b3daaa45b13f0e6a8ed24c22e",
+      "changed": false
+    },
+    "RAV": {
+      "original_sha256": "4ff2c46179ccfaa2a73f9438241f90da42e118fb57ea47971d7f3b72ab48753e",
+      "projected_sha256": "4ff2c46179ccfaa2a73f9438241f90da42e118fb57ea47971d7f3b72ab48753e",
+      "changed": false
+    },
+    "SOS": {
+      "original_sha256": "3326080f1d3777a10ae011b1ca1fd625f51a28356fafc13194c2df5fefebb7e7",
+      "projected_sha256": "3326080f1d3777a10ae011b1ca1fd625f51a28356fafc13194c2df5fefebb7e7",
+      "changed": false
+    },
+    "TMP": {
+      "original_sha256": "49972ac03b67bbb5d03d02db1396e3571c699bb5e2d511b304f0e343402fac20",
+      "projected_sha256": "49972ac03b67bbb5d03d02db1396e3571c699bb5e2d511b304f0e343402fac20",
+      "changed": false
+    }
+  },
+  "source": "8e2c68327c4317ec9245c6fb6ec0f141f2152b1b",
+  "tree": "17bba3b9d04e24d9dac1e648b56f6639b39b4877",
+  "base": "99a7a1b9f40dcd5ef3f46a624b81f1f64d1f3a5f",
+  "validation": "3fedaa893372909ed24405e098fffa6018b2bbf6",
+  "validation_tree": "70be1f87977e588ed09c7c6524bf83dd595675bd",
+  "workflow": ".github/workflows/manual-human-filter-repair-early-r1-20261027.yml",
+  "workflow_blob": "f730f0b5c5bc34cb0a2a55640cf499047ad9b917",
+  "run": 40463973601,
+  "job": 122054861205,
+  "workflow_id": 397938069,
+  "attempt": 1,
+  "branch": "validation/manual-human-filter-repair-early-r1-20261027",
+  "artifact_name": "manual-human-filter-repair-early-r1-40463973601",
+  "protocol_files": {
+    "PROTOCOL.json": "79130af83d83eac39c801adb6d4c71c8b4ed34e7c0275976f63d69e00be39375",
+    "validation.just": "3e477157a54f6dafa0320ae3aa69df5885f53e43455356f583bd250d52aaad0c",
+    "run.py": "7416087004a7363ac3db9fd325d656384f5d70c40e41a287c1011c7222fdfe6a",
+    "reports.py": "67b597038c1056f7abac9a6d016af481f1b5b2a1f19c9905dba65e1b0c198bcd",
+    "RECEIVE.py": "b7effaab2b1acae075bd7f4c466f8c830cf728717cca6a86918570d1ad102875",
+    "check_reports.py": "8ccc4e0e6ea8426c136b6e1eabe5181df8213d9b570e91eb090a54d0d12d9d6f",
+    "SYNTHETIC_REPORT_CHECKS.json": "1aa6d6f7cd6128c6ed22070a6d64e8b7c233aced2bb2139a12de8bd747ed2709",
+    "SOURCE_REVIEW.json": "dbd312bd93f068751350f5d4ae3f3169b06017ff2ce0c7b3319304cad6a7b3f4",
+    "INPUT_DIAGNOSTIC.json": "aeebffb44125ddf6ba723f050046bb3e7ed22305f6815e3ca6fca90989ea25d7"
+  },
+  "source_delta": [
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/CardStructure.kt",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/StaticAbilities.kt",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeFilters.kt",
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeCalibrationRepairTest.kt",
+    "mtgish-tooling/src/test/resources/human-filter-repair/current-ir.json",
+    "experiments/manual-transmission/research/human-filter-repair-early-r1-20261027/PROTOCOL.json",
+    "experiments/manual-transmission/research/human-filter-repair-early-r1-20261027/validation.just",
+    "experiments/manual-transmission/research/human-filter-repair-early-r1-20261027/run.py",
+    "experiments/manual-transmission/research/human-filter-repair-early-r1-20261027/reports.py",
+    "experiments/manual-transmission/research/human-filter-repair-early-r1-20261027/RECEIVE.py",
+    "experiments/manual-transmission/research/human-filter-repair-early-r1-20261027/check_reports.py",
+    "experiments/manual-transmission/research/human-filter-repair-early-r1-20261027/SYNTHETIC_REPORT_CHECKS.json",
+    "experiments/manual-transmission/research/human-filter-repair-early-r1-20261027/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/human-filter-repair-early-r1-20261027/INPUT_DIAGNOSTIC.json"
+  ],
+  "artifact": 12715931813,
+  "artifact_bytes": 5805271,
+  "artifact_sha256": "5f06d6f4a4f7fa7f32bf4c0724b4d2c97c8e213f18041a03e2d0092d9480235f",
+  "manifest_entries": 450,
+  "gates": {
+    "compile-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-entry-creature": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-blocker-creature": {
+      "compile": true,
+      "tests": 0
+    },
+    "normal": {
+      "tests": 48,
+      "failures": 0,
+      "passed": 48,
+      "errors": 0,
+      "skips": 0,
+      "skipped_identities": [],
+      "identities": [
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Hollowhenge Scavenger"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Morkrut Banshee"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Reaper from the Abyss"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Army of the Damned"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Doomed Traveler"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Endless Ranks of the Dead"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Geist-Honored Monk"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Mausoleum Guard"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Midnight Haunting"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Moan of the Unhallowed"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Purify the Grave"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Silverchase Fox"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Spider Spawning"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Stitcher's Apprentice"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags preserve tapped state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject unsupported entry state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject non array and annotated operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject missing or extra operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject plural specifications rather than dropping one"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic permanent exile preserves its bound target"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic graveyard exile preserves its bound target and zone"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects missing bindings instead of choosing self"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects flags and multiple operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects wrong kind and reference pairings"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects annotations and arity changes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Boiling Seas"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Devastation"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Nature's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Virtue's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves no regeneration"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "targeted destruction retains its selected target path"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "self excluding destruction retains its existing binding"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "unrenderable destruction restrictions still decline"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current singular player envelopes preserve the draw and life contract"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "legacy player envelope keeps its existing emission"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects changed player scope"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated remainder ceiling"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated count reference"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects extra clauses and annotations"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "capture exact fixture projections for the required compatibility successor"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Champion current and fixture preserve permanent Human entry"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Noble current and fixture preserve permanent Human blockers"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "entry shape preserves permanent subtype and controller"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "blocker shape preserves permanent subtype"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "explicit Creature restrictions are not widened"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "other subtypes retain existing emitter paths"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "controller and self restrictions are not dropped"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "annotations and unsupported shapes do not enter bounded repair"
+        ]
+      ],
+      "witnesses": []
+    },
+    "entry-creature": {
+      "tests": 48,
+      "failures": 2,
+      "passed": 46,
+      "errors": 0,
+      "skips": 0,
+      "skipped_identities": [],
+      "identities": [
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Hollowhenge Scavenger"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Morkrut Banshee"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Reaper from the Abyss"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Army of the Damned"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Doomed Traveler"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Endless Ranks of the Dead"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Geist-Honored Monk"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Mausoleum Guard"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Midnight Haunting"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Moan of the Unhallowed"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Purify the Grave"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Silverchase Fox"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Spider Spawning"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Stitcher's Apprentice"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags preserve tapped state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject unsupported entry state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject non array and annotated operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject missing or extra operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject plural specifications rather than dropping one"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic permanent exile preserves its bound target"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic graveyard exile preserves its bound target and zone"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects missing bindings instead of choosing self"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects flags and multiple operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects wrong kind and reference pairings"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects annotations and arity changes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Boiling Seas"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Devastation"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Nature's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Virtue's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves no regeneration"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "targeted destruction retains its selected target path"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "self excluding destruction retains its existing binding"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "unrenderable destruction restrictions still decline"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current singular player envelopes preserve the draw and life contract"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "legacy player envelope keeps its existing emission"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects changed player scope"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated remainder ceiling"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated count reference"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects extra clauses and annotations"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "capture exact fixture projections for the required compatibility successor"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Champion current and fixture preserve permanent Human entry"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Noble current and fixture preserve permanent Human blockers"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "entry shape preserves permanent subtype and controller"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "blocker shape preserves permanent subtype"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "explicit Creature restrictions are not widened"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "other subtypes retain existing emitter paths"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "controller and self restrictions are not dropped"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "annotations and unsupported shapes do not enter bounded repair"
+        ]
+      ],
+      "witnesses": [
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Champion current and fixture preserve permanent Human entry"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "entry shape preserves permanent subtype and controller"
+        ]
+      ]
+    },
+    "blocker-creature": {
+      "tests": 48,
+      "failures": 2,
+      "passed": 46,
+      "errors": 0,
+      "skips": 0,
+      "skipped_identities": [],
+      "identities": [
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Hollowhenge Scavenger"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Morkrut Banshee"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Reaper from the Abyss"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Army of the Damned"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Doomed Traveler"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Endless Ranks of the Dead"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Geist-Honored Monk"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Mausoleum Guard"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Midnight Haunting"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Moan of the Unhallowed"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Purify the Grave"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Silverchase Fox"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Spider Spawning"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Stitcher's Apprentice"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags preserve tapped state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject unsupported entry state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject non array and annotated operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject missing or extra operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject plural specifications rather than dropping one"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic permanent exile preserves its bound target"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic graveyard exile preserves its bound target and zone"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects missing bindings instead of choosing self"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects flags and multiple operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects wrong kind and reference pairings"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects annotations and arity changes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Boiling Seas"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Devastation"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Nature's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Virtue's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves no regeneration"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "targeted destruction retains its selected target path"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "self excluding destruction retains its existing binding"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "unrenderable destruction restrictions still decline"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current singular player envelopes preserve the draw and life contract"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "legacy player envelope keeps its existing emission"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects changed player scope"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated remainder ceiling"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated count reference"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects extra clauses and annotations"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "capture exact fixture projections for the required compatibility successor"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Champion current and fixture preserve permanent Human entry"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Noble current and fixture preserve permanent Human blockers"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "entry shape preserves permanent subtype and controller"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "blocker shape preserves permanent subtype"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "explicit Creature restrictions are not widened"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "other subtypes retain existing emitter paths"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "controller and self restrictions are not dropped"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "annotations and unsupported shapes do not enter bounded repair"
+        ]
+      ],
+      "witnesses": [
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Noble current and fixture preserve permanent Human blockers"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "blocker shape preserves permanent subtype"
+        ]
+      ]
+    },
+    "restored": {
+      "tests": 48,
+      "failures": 0,
+      "passed": 48,
+      "errors": 0,
+      "skips": 0,
+      "skipped_identities": [],
+      "identities": [
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Hollowhenge Scavenger"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Morkrut Banshee"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Reaper from the Abyss"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Army of the Damned"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Doomed Traveler"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Endless Ranks of the Dead"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Geist-Honored Monk"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Mausoleum Guard"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Midnight Haunting"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Moan of the Unhallowed"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Purify the Grave"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Silverchase Fox"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Spider Spawning"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Stitcher's Apprentice"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags preserve tapped state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject unsupported entry state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject non array and annotated operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject missing or extra operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject plural specifications rather than dropping one"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic permanent exile preserves its bound target"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic graveyard exile preserves its bound target and zone"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects missing bindings instead of choosing self"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects flags and multiple operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects wrong kind and reference pairings"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects annotations and arity changes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Boiling Seas"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Devastation"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Nature's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Virtue's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves no regeneration"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "targeted destruction retains its selected target path"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "self excluding destruction retains its existing binding"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "unrenderable destruction restrictions still decline"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current singular player envelopes preserve the draw and life contract"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "legacy player envelope keeps its existing emission"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects changed player scope"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated remainder ceiling"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated count reference"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects extra clauses and annotations"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "capture exact fixture projections for the required compatibility successor"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Champion current and fixture preserve permanent Human entry"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Noble current and fixture preserve permanent Human blockers"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "entry shape preserves permanent subtype and controller"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "blocker shape preserves permanent subtype"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "explicit Creature restrictions are not widened"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "other subtypes retain existing emitter paths"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "controller and self restrictions are not dropped"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "annotations and unsupported shapes do not enter bounded repair"
+        ]
+      ],
+      "witnesses": []
+    }
+  },
+  "gate_errors": [],
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "state": "RECEIVED_EARLY_HUMAN_FILTER_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING"
+}
