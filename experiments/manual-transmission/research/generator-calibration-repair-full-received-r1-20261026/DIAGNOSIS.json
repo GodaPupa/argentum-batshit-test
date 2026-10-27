@@ -1,0 +1,33 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED_NEW_SCOPE_BLOCKER",
+  "run": 40422812551,
+  "artifact": 12698671591,
+  "passed": {
+    "full_module": "171 identities,168passes,3exacthistoricalskips,0failures/errors",
+    "POR": "195compiled,158gameplaymatches,37outsidegoldencompiledonly,0missing/mismatches/drift/capabilitymismatches",
+    "manifest_entries": 786,
+    "exact_bound_early_controls": "reused,notrerun"
+  },
+  "failure": {
+    "ISD": "104 drafts vs115floor; compile fails before serialization/fidelity",
+    "compiler_errors": [
+      "Hollowhenge Scavenger: triggerCondition",
+      "Morkrut Banshee: triggerCondition",
+      "Reaper from the Abyss: triggerCondition"
+    ],
+    "missing_evidence": [
+      "ISD successful compilation/serialization/fidelity",
+      "FINAL_INPUTS.json"
+    ]
+  },
+  "cause_evidence": {
+    "CardStructure.kt": "54119827b74710121d3ff386d42f4813f99e658b unchanged between generatorR2 and this source; emits unsupported triggerCondition property",
+    "missing_drafts": "11 exact names in ISD_INPUT_DIAGNOSTIC.json. All current IR nodes differ from frozen fixture; token action operands and generic Exile nodes require investigation. This is observed divergence, not a fully proven causal repair."
+  },
+  "scope": "Grant d51f9e26214bdbda1df3bafc57c1a45f5821a28a specifically covers DestroyEachPermanent four-card calibration and Temporary Truce discrepancy. New ISD morbid-trigger emitter and other11card token/exile IR discrepancies are outside that bounded repair grant. Do not infer failure of fixed-recipient Spellskite operation.",
+  "next_required_authority": "Authorize bounded independent investigation/repair of existing ISD morbid trigger DSL emission and the11 current-IR/fixture emission discrepancies, preserving all assertions/protectedgoldens/legacyfixtures/floors and adding exact executable regression/negative controls before original receiving. No SDK/runtime semantic changes presumed.",
+  "reuse": "Preserve this failure as failed. Reuse its fullmodule/POR and prior early controls only where exact bindings and future governing protocol permit; no unchanged blind rerun.",
+  "official_games": 0,
+  "precision_reserved": 2,
+  "source_modified": false
+}

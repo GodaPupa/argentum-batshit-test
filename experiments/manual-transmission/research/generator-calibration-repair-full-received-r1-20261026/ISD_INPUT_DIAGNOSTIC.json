@@ -1,0 +1,2240 @@
+[
+  {
+    "name": "Army of the Damned",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Army of the Damned",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 5
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "CreateTokensWithFlags",
+                "args": [
+                  [
+                    {
+                      "_CreatableToken": "NumberTokens",
+                      "args": [
+                        {
+                          "_GameNumber": "Integer",
+                          "args": 13
+                        },
+                        {
+                          "_CreatableToken": "TokenWithPT",
+                          "args": [
+                            {
+                              "_PT": "PT",
+                              "args": [
+                                2,
+                                2
+                              ]
+                            },
+                            {
+                              "_TokenColorList": "Colors",
+                              "args": [
+                                "Black"
+                              ]
+                            },
+                            [],
+                            [
+                              "Creature"
+                            ],
+                            {
+                              "_TokenSubtypes": "SubtypesList",
+                              "args": [
+                                "Zombie"
+                              ]
+                            },
+                            []
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  [
+                    {
+                      "_TokenFlag": "EntersTapped"
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "_Rule": "Flashback",
+          "args": {
+            "_Cost": "PayMana",
+            "args": [
+              {
+                "_ManaSymbol": "ManaCostGeneric",
+                "args": 7
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Army of the Damned",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 5
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "CreateTokens",
+                "args": [
+                  [
+                    {
+                      "_CreatableToken": "NumberTokens",
+                      "args": [
+                        {
+                          "_GameNumber": "Integer",
+                          "args": 13
+                        },
+                        {
+                          "_CreatableToken": "TokenWithPT",
+                          "args": [
+                            {
+                              "_PT": "PT",
+                              "args": [
+                                2,
+                                2
+                              ]
+                            },
+                            {
+                              "_TokenColorList": "Colors",
+                              "args": [
+                                "Black"
+                              ]
+                            },
+                            [],
+                            [
+                              "Creature"
+                            ],
+                            {
+                              "_TokenSubtypes": "SubtypesList",
+                              "args": [
+                                "Zombie"
+                              ]
+                            },
+                            []
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  [
+                    {
+                      "_TokenFlag": "EntersTapped"
+                    }
+                  ]
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "_Rule": "Flashback",
+          "args": {
+            "_Cost": "PayMana",
+            "args": [
+              {
+                "_ManaSymbol": "ManaCostGeneric",
+                "args": 7
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "identical": false,
+    "added_tags": [
+      "_Action:CreateTokens"
+    ],
+    "removed_tags": [
+      "_Action:CreateTokensWithFlags"
+    ]
+  },
+  {
+    "name": "Doomed Traveler",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Doomed Traveler",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Human",
+          "Soldier"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "TriggerA",
+          "args": [
+            {
+              "_Trigger": "WhenAPermanentDies",
+              "args": {
+                "_Permanents": "SinglePermanent",
+                "args": {
+                  "_Permanent": "ThisPermanent"
+                }
+              }
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    {
+                      "_CreatableToken": "TokenWithPT",
+                      "args": [
+                        {
+                          "_PT": "PT",
+                          "args": [
+                            1,
+                            1
+                          ]
+                        },
+                        {
+                          "_TokenColorList": "Colors",
+                          "args": [
+                            "White"
+                          ]
+                        },
+                        [],
+                        [
+                          "Creature"
+                        ],
+                        {
+                          "_TokenSubtypes": "SubtypesList",
+                          "args": [
+                            "Spirit"
+                          ]
+                        },
+                        [
+                          {
+                            "_Rule": "Flying"
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 1,
+        "Toughness": 1
+      }
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Doomed Traveler",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Human",
+          "Soldier"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "TriggerA",
+          "args": [
+            {
+              "_Trigger": "WhenAPermanentDies",
+              "args": {
+                "_Permanents": "SinglePermanent",
+                "args": {
+                  "_Permanent": "ThisPermanent"
+                }
+              }
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    [
+                      {
+                        "_CreatableToken": "TokenWithPT",
+                        "args": [
+                          {
+                            "_PT": "PT",
+                            "args": [
+                              1,
+                              1
+                            ]
+                          },
+                          {
+                            "_TokenColorList": "Colors",
+                            "args": [
+                              "White"
+                            ]
+                          },
+                          [],
+                          [
+                            "Creature"
+                          ],
+                          {
+                            "_TokenSubtypes": "SubtypesList",
+                            "args": [
+                              "Spirit"
+                            ]
+                          },
+                          [
+                            {
+                              "_Rule": "Flying"
+                            }
+                          ]
+                        ]
+                      }
+                    ],
+                    []
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 1,
+        "Toughness": 1
+      }
+    },
+    "identical": false,
+    "added_tags": [],
+    "removed_tags": []
+  },
+  {
+    "name": "Endless Ranks of the Dead",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Endless Ranks of the Dead",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Enchantment"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 2
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "TriggerA",
+          "args": [
+            {
+              "_Trigger": "AtTheBeginningOfAPlayersUpkeep",
+              "args": {
+                "_Players": "SinglePlayer",
+                "args": {
+                  "_Player": "You"
+                }
+              }
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    {
+                      "_CreatableToken": "NumberTokens",
+                      "args": [
+                        {
+                          "_GameNumber": "HalfRoundedDown",
+                          "args": {
+                            "_GameNumber": "TheNumberOfPermanentsOnTheBattlefield",
+                            "args": {
+                              "_Permanents": "And",
+                              "args": [
+                                {
+                                  "_Permanents": "IsCreatureType",
+                                  "args": "Zombie"
+                                },
+                                {
+                                  "_Permanents": "ControlledByAPlayer",
+                                  "args": {
+                                    "_Players": "SinglePlayer",
+                                    "args": {
+                                      "_Player": "You"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        },
+                        {
+                          "_CreatableToken": "TokenWithPT",
+                          "args": [
+                            {
+                              "_PT": "PT",
+                              "args": [
+                                2,
+                                2
+                              ]
+                            },
+                            {
+                              "_TokenColorList": "Colors",
+                              "args": [
+                                "Black"
+                              ]
+                            },
+                            [],
+                            [
+                              "Creature"
+                            ],
+                            {
+                              "_TokenSubtypes": "SubtypesList",
+                              "args": [
+                                "Zombie"
+                              ]
+                            },
+                            []
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Endless Ranks of the Dead",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Enchantment"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 2
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "TriggerA",
+          "args": [
+            {
+              "_Trigger": "AtTheBeginningOfAPlayersUpkeep",
+              "args": {
+                "_Players": "SinglePlayer",
+                "args": {
+                  "_Player": "You"
+                }
+              }
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    [
+                      {
+                        "_CreatableToken": "NumberTokens",
+                        "args": [
+                          {
+                            "_GameNumber": "HalfRoundedDown",
+                            "args": {
+                              "_GameNumber": "TheNumberOfPermanentsOnTheBattlefield",
+                              "args": {
+                                "_Permanents": "And",
+                                "args": [
+                                  {
+                                    "_Permanents": "IsCreatureType",
+                                    "args": "Zombie"
+                                  },
+                                  {
+                                    "_Permanents": "ControlledByAPlayer",
+                                    "args": {
+                                      "_Players": "SinglePlayer",
+                                      "args": {
+                                        "_Player": "You"
+                                      }
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          },
+                          {
+                            "_CreatableToken": "TokenWithPT",
+                            "args": [
+                              {
+                                "_PT": "PT",
+                                "args": [
+                                  2,
+                                  2
+                                ]
+                              },
+                              {
+                                "_TokenColorList": "Colors",
+                                "args": [
+                                  "Black"
+                                ]
+                              },
+                              [],
+                              [
+                                "Creature"
+                              ],
+                              {
+                                "_TokenSubtypes": "SubtypesList",
+                                "args": [
+                                  "Zombie"
+                                ]
+                              },
+                              []
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    []
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "identical": false,
+    "added_tags": [],
+    "removed_tags": []
+  },
+  {
+    "name": "Geist-Honored Monk",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Geist-Honored Monk",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Human",
+          "Monk"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 3
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "Vigilance"
+        },
+        {
+          "_Rule": "CDA_Power",
+          "args": {
+            "_GameNumber": "TheNumberOfPermanentsOnTheBattlefield",
+            "args": {
+              "_Permanents": "And",
+              "args": [
+                {
+                  "_Permanents": "IsCardtype",
+                  "args": "Creature"
+                },
+                {
+                  "_Permanents": "ControlledByAPlayer",
+                  "args": {
+                    "_Players": "SinglePlayer",
+                    "args": {
+                      "_Player": "You"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "_Rule": "CDA_Toughness",
+          "args": {
+            "_GameNumber": "TheNumberOfPermanentsOnTheBattlefield",
+            "args": {
+              "_Permanents": "And",
+              "args": [
+                {
+                  "_Permanents": "IsCardtype",
+                  "args": "Creature"
+                },
+                {
+                  "_Permanents": "ControlledByAPlayer",
+                  "args": {
+                    "_Players": "SinglePlayer",
+                    "args": {
+                      "_Player": "You"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "_Rule": "TriggerA",
+          "args": [
+            {
+              "_Trigger": "WhenAPermanentEntersTheBattlefield",
+              "args": {
+                "_Permanents": "SinglePermanent",
+                "args": {
+                  "_Permanent": "ThisPermanent"
+                }
+              }
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    {
+                      "_CreatableToken": "NumberTokens",
+                      "args": [
+                        {
+                          "_GameNumber": "Integer",
+                          "args": 2
+                        },
+                        {
+                          "_CreatableToken": "TokenWithPT",
+                          "args": [
+                            {
+                              "_PT": "PT",
+                              "args": [
+                                1,
+                                1
+                              ]
+                            },
+                            {
+                              "_TokenColorList": "Colors",
+                              "args": [
+                                "White"
+                              ]
+                            },
+                            [],
+                            [
+                              "Creature"
+                            ],
+                            {
+                              "_TokenSubtypes": "SubtypesList",
+                              "args": [
+                                "Spirit"
+                              ]
+                            },
+                            [
+                              {
+                                "_Rule": "Flying"
+                              }
+                            ]
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 0,
+        "Toughness": 0
+      }
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Geist-Honored Monk",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Human",
+          "Monk"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 3
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "Vigilance"
+        },
+        {
+          "_Rule": "CDA_Power",
+          "args": {
+            "_GameNumber": "TheNumberOfPermanentsOnTheBattlefield",
+            "args": {
+              "_Permanents": "And",
+              "args": [
+                {
+                  "_Permanents": "IsCardtype",
+                  "args": "Creature"
+                },
+                {
+                  "_Permanents": "ControlledByAPlayer",
+                  "args": {
+                    "_Players": "SinglePlayer",
+                    "args": {
+                      "_Player": "You"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "_Rule": "CDA_Toughness",
+          "args": {
+            "_GameNumber": "TheNumberOfPermanentsOnTheBattlefield",
+            "args": {
+              "_Permanents": "And",
+              "args": [
+                {
+                  "_Permanents": "IsCardtype",
+                  "args": "Creature"
+                },
+                {
+                  "_Permanents": "ControlledByAPlayer",
+                  "args": {
+                    "_Players": "SinglePlayer",
+                    "args": {
+                      "_Player": "You"
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        },
+        {
+          "_Rule": "TriggerA",
+          "args": [
+            {
+              "_Trigger": "WhenAPermanentEntersTheBattlefield",
+              "args": {
+                "_Permanents": "SinglePermanent",
+                "args": {
+                  "_Permanent": "ThisPermanent"
+                }
+              }
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    [
+                      {
+                        "_CreatableToken": "NumberTokens",
+                        "args": [
+                          {
+                            "_GameNumber": "Integer",
+                            "args": 2
+                          },
+                          {
+                            "_CreatableToken": "TokenWithPT",
+                            "args": [
+                              {
+                                "_PT": "PT",
+                                "args": [
+                                  1,
+                                  1
+                                ]
+                              },
+                              {
+                                "_TokenColorList": "Colors",
+                                "args": [
+                                  "White"
+                                ]
+                              },
+                              [],
+                              [
+                                "Creature"
+                              ],
+                              {
+                                "_TokenSubtypes": "SubtypesList",
+                                "args": [
+                                  "Spirit"
+                                ]
+                              },
+                              [
+                                {
+                                  "_Rule": "Flying"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    []
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 0,
+        "Toughness": 0
+      }
+    },
+    "identical": false,
+    "added_tags": [],
+    "removed_tags": []
+  },
+  {
+    "name": "Mausoleum Guard",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Mausoleum Guard",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Human",
+          "Scout"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 3
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "TriggerA",
+          "args": [
+            {
+              "_Trigger": "WhenAPermanentDies",
+              "args": {
+                "_Permanents": "SinglePermanent",
+                "args": {
+                  "_Permanent": "ThisPermanent"
+                }
+              }
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    {
+                      "_CreatableToken": "NumberTokens",
+                      "args": [
+                        {
+                          "_GameNumber": "Integer",
+                          "args": 2
+                        },
+                        {
+                          "_CreatableToken": "TokenWithPT",
+                          "args": [
+                            {
+                              "_PT": "PT",
+                              "args": [
+                                1,
+                                1
+                              ]
+                            },
+                            {
+                              "_TokenColorList": "Colors",
+                              "args": [
+                                "White"
+                              ]
+                            },
+                            [],
+                            [
+                              "Creature"
+                            ],
+                            {
+                              "_TokenSubtypes": "SubtypesList",
+                              "args": [
+                                "Spirit"
+                              ]
+                            },
+                            [
+                              {
+                                "_Rule": "Flying"
+                              }
+                            ]
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 2,
+        "Toughness": 2
+      }
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Mausoleum Guard",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Human",
+          "Scout"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 3
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "TriggerA",
+          "args": [
+            {
+              "_Trigger": "WhenAPermanentDies",
+              "args": {
+                "_Permanents": "SinglePermanent",
+                "args": {
+                  "_Permanent": "ThisPermanent"
+                }
+              }
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    [
+                      {
+                        "_CreatableToken": "NumberTokens",
+                        "args": [
+                          {
+                            "_GameNumber": "Integer",
+                            "args": 2
+                          },
+                          {
+                            "_CreatableToken": "TokenWithPT",
+                            "args": [
+                              {
+                                "_PT": "PT",
+                                "args": [
+                                  1,
+                                  1
+                                ]
+                              },
+                              {
+                                "_TokenColorList": "Colors",
+                                "args": [
+                                  "White"
+                                ]
+                              },
+                              [],
+                              [
+                                "Creature"
+                              ],
+                              {
+                                "_TokenSubtypes": "SubtypesList",
+                                "args": [
+                                  "Spirit"
+                                ]
+                              },
+                              [
+                                {
+                                  "_Rule": "Flying"
+                                }
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    ],
+                    []
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 2,
+        "Toughness": 2
+      }
+    },
+    "identical": false,
+    "added_tags": [],
+    "removed_tags": []
+  },
+  {
+    "name": "Midnight Haunting",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Midnight Haunting",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Instant"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 2
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "CreateTokens",
+                "args": [
+                  {
+                    "_CreatableToken": "NumberTokens",
+                    "args": [
+                      {
+                        "_GameNumber": "Integer",
+                        "args": 2
+                      },
+                      {
+                        "_CreatableToken": "TokenWithPT",
+                        "args": [
+                          {
+                            "_PT": "PT",
+                            "args": [
+                              1,
+                              1
+                            ]
+                          },
+                          {
+                            "_TokenColorList": "Colors",
+                            "args": [
+                              "White"
+                            ]
+                          },
+                          [],
+                          [
+                            "Creature"
+                          ],
+                          {
+                            "_TokenSubtypes": "SubtypesList",
+                            "args": [
+                              "Spirit"
+                            ]
+                          },
+                          [
+                            {
+                              "_Rule": "Flying"
+                            }
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Midnight Haunting",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Instant"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 2
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "CreateTokens",
+                "args": [
+                  [
+                    {
+                      "_CreatableToken": "NumberTokens",
+                      "args": [
+                        {
+                          "_GameNumber": "Integer",
+                          "args": 2
+                        },
+                        {
+                          "_CreatableToken": "TokenWithPT",
+                          "args": [
+                            {
+                              "_PT": "PT",
+                              "args": [
+                                1,
+                                1
+                              ]
+                            },
+                            {
+                              "_TokenColorList": "Colors",
+                              "args": [
+                                "White"
+                              ]
+                            },
+                            [],
+                            [
+                              "Creature"
+                            ],
+                            {
+                              "_TokenSubtypes": "SubtypesList",
+                              "args": [
+                                "Spirit"
+                              ]
+                            },
+                            [
+                              {
+                                "_Rule": "Flying"
+                              }
+                            ]
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  []
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "identical": false,
+    "added_tags": [],
+    "removed_tags": []
+  },
+  {
+    "name": "Moan of the Unhallowed",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Moan of the Unhallowed",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 2
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "CreateTokens",
+                "args": [
+                  {
+                    "_CreatableToken": "NumberTokens",
+                    "args": [
+                      {
+                        "_GameNumber": "Integer",
+                        "args": 2
+                      },
+                      {
+                        "_CreatableToken": "TokenWithPT",
+                        "args": [
+                          {
+                            "_PT": "PT",
+                            "args": [
+                              2,
+                              2
+                            ]
+                          },
+                          {
+                            "_TokenColorList": "Colors",
+                            "args": [
+                              "Black"
+                            ]
+                          },
+                          [],
+                          [
+                            "Creature"
+                          ],
+                          {
+                            "_TokenSubtypes": "SubtypesList",
+                            "args": [
+                              "Zombie"
+                            ]
+                          },
+                          []
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "_Rule": "Flashback",
+          "args": {
+            "_Cost": "PayMana",
+            "args": [
+              {
+                "_ManaSymbol": "ManaCostGeneric",
+                "args": 5
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Moan of the Unhallowed",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 2
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        },
+        {
+          "_ManaSymbol": "ManaCostB"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "CreateTokens",
+                "args": [
+                  [
+                    {
+                      "_CreatableToken": "NumberTokens",
+                      "args": [
+                        {
+                          "_GameNumber": "Integer",
+                          "args": 2
+                        },
+                        {
+                          "_CreatableToken": "TokenWithPT",
+                          "args": [
+                            {
+                              "_PT": "PT",
+                              "args": [
+                                2,
+                                2
+                              ]
+                            },
+                            {
+                              "_TokenColorList": "Colors",
+                              "args": [
+                                "Black"
+                              ]
+                            },
+                            [],
+                            [
+                              "Creature"
+                            ],
+                            {
+                              "_TokenSubtypes": "SubtypesList",
+                              "args": [
+                                "Zombie"
+                              ]
+                            },
+                            []
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  []
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "_Rule": "Flashback",
+          "args": {
+            "_Cost": "PayMana",
+            "args": [
+              {
+                "_ManaSymbol": "ManaCostGeneric",
+                "args": 5
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "identical": false,
+    "added_tags": [],
+    "removed_tags": []
+  },
+  {
+    "name": "Purify the Grave",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Purify the Grave",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Instant"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "Targeted",
+            "args": [
+              [
+                {
+                  "_Target": "TargetGraveyardCard",
+                  "args": {
+                    "_CardsInGraveyards": "AnyCardInAnyGraveyard"
+                  }
+                }
+              ],
+              {
+                "_Actions": "ActionList",
+                "args": [
+                  {
+                    "_Action": "ExileGraveyardCard",
+                    "args": {
+                      "_CardInGraveyards": "Ref_TargetGraveyardCard"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "_Rule": "Flashback",
+          "args": {
+            "_Cost": "PayMana",
+            "args": [
+              {
+                "_ManaSymbol": "ManaCostW"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Purify the Grave",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Instant"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "Targeted",
+            "args": [
+              [
+                {
+                  "_Target": "TargetGraveyardCard",
+                  "args": {
+                    "_CardsInGraveyards": "AnyCardInAnyGraveyard"
+                  }
+                }
+              ],
+              {
+                "_Actions": "ActionList",
+                "args": [
+                  {
+                    "_Action": "Exile",
+                    "args": [
+                      [
+                        {
+                          "_Exilable": "CardInGraveyards",
+                          "args": {
+                            "_CardInGraveyards": "Ref_TargetGraveyardCard"
+                          }
+                        }
+                      ],
+                      []
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "_Rule": "Flashback",
+          "args": {
+            "_Cost": "PayMana",
+            "args": [
+              {
+                "_ManaSymbol": "ManaCostW"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "identical": false,
+    "added_tags": [
+      "_Action:Exile",
+      "_Exilable:CardInGraveyards"
+    ],
+    "removed_tags": [
+      "_Action:ExileGraveyardCard"
+    ]
+  },
+  {
+    "name": "Silverchase Fox",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Silverchase Fox",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Fox"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 1
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "Activated",
+          "args": [
+            {
+              "_Cost": "And",
+              "args": [
+                {
+                  "_Cost": "PayMana",
+                  "args": [
+                    {
+                      "_ManaSymbol": "ManaCostGeneric",
+                      "args": 1
+                    },
+                    {
+                      "_ManaSymbol": "ManaCostW"
+                    }
+                  ]
+                },
+                {
+                  "_Cost": "SacrificePermanent",
+                  "args": {
+                    "_Permanent": "ThisPermanent"
+                  }
+                }
+              ]
+            },
+            {
+              "_Actions": "Targeted",
+              "args": [
+                [
+                  {
+                    "_Target": "TargetPermanent",
+                    "args": {
+                      "_Permanents": "IsCardtype",
+                      "args": "Enchantment"
+                    }
+                  }
+                ],
+                {
+                  "_Actions": "ActionList",
+                  "args": [
+                    {
+                      "_Action": "ExilePermanent",
+                      "args": {
+                        "_Permanent": "Ref_TargetPermanent"
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 2,
+        "Toughness": 2
+      }
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Silverchase Fox",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Fox"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 1
+        },
+        {
+          "_ManaSymbol": "ManaCostW"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "Activated",
+          "args": [
+            {
+              "_Cost": "And",
+              "args": [
+                {
+                  "_Cost": "PayMana",
+                  "args": [
+                    {
+                      "_ManaSymbol": "ManaCostGeneric",
+                      "args": 1
+                    },
+                    {
+                      "_ManaSymbol": "ManaCostW"
+                    }
+                  ]
+                },
+                {
+                  "_Cost": "SacrificePermanent",
+                  "args": {
+                    "_Permanent": "ThisPermanent"
+                  }
+                }
+              ]
+            },
+            {
+              "_Actions": "Targeted",
+              "args": [
+                [
+                  {
+                    "_Target": "TargetPermanent",
+                    "args": {
+                      "_Permanents": "IsCardtype",
+                      "args": "Enchantment"
+                    }
+                  }
+                ],
+                {
+                  "_Actions": "ActionList",
+                  "args": [
+                    {
+                      "_Action": "Exile",
+                      "args": [
+                        [
+                          {
+                            "_Exilable": "Permanent",
+                            "args": {
+                              "_Permanent": "Ref_TargetPermanent"
+                            }
+                          }
+                        ],
+                        []
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 2,
+        "Toughness": 2
+      }
+    },
+    "identical": false,
+    "added_tags": [
+      "_Action:Exile",
+      "_Exilable:Permanent"
+    ],
+    "removed_tags": [
+      "_Action:ExilePermanent"
+    ]
+  },
+  {
+    "name": "Spider Spawning",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Spider Spawning",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 4
+        },
+        {
+          "_ManaSymbol": "ManaCostG"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "CreateTokens",
+                "args": [
+                  {
+                    "_CreatableToken": "NumberTokens",
+                    "args": [
+                      {
+                        "_GameNumber": "TheNumberOfGraveyardCards",
+                        "args": {
+                          "_CardsInGraveyards": "And",
+                          "args": [
+                            {
+                              "_CardsInGraveyards": "IsCardtype",
+                              "args": "Creature"
+                            },
+                            {
+                              "_CardsInGraveyards": "InAPlayersGraveyard",
+                              "args": {
+                                "_Players": "SinglePlayer",
+                                "args": {
+                                  "_Player": "You"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "_CreatableToken": "TokenWithPT",
+                        "args": [
+                          {
+                            "_PT": "PT",
+                            "args": [
+                              1,
+                              2
+                            ]
+                          },
+                          {
+                            "_TokenColorList": "Colors",
+                            "args": [
+                              "Green"
+                            ]
+                          },
+                          [],
+                          [
+                            "Creature"
+                          ],
+                          {
+                            "_TokenSubtypes": "SubtypesList",
+                            "args": [
+                              "Spider"
+                            ]
+                          },
+                          [
+                            {
+                              "_Rule": "Reach"
+                            }
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "_Rule": "Flashback",
+          "args": {
+            "_Cost": "PayMana",
+            "args": [
+              {
+                "_ManaSymbol": "ManaCostGeneric",
+                "args": 6
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Spider Spawning",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Sorcery"
+        ],
+        "Subtypes": []
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 4
+        },
+        {
+          "_ManaSymbol": "ManaCostG"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "SpellActions",
+          "args": {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "CreateTokens",
+                "args": [
+                  [
+                    {
+                      "_CreatableToken": "NumberTokens",
+                      "args": [
+                        {
+                          "_GameNumber": "TheNumberOfGraveyardCards",
+                          "args": {
+                            "_CardsInGraveyards": "And",
+                            "args": [
+                              {
+                                "_CardsInGraveyards": "IsCardtype",
+                                "args": "Creature"
+                              },
+                              {
+                                "_CardsInGraveyards": "InAPlayersGraveyard",
+                                "args": {
+                                  "_Players": "SinglePlayer",
+                                  "args": {
+                                    "_Player": "You"
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        },
+                        {
+                          "_CreatableToken": "TokenWithPT",
+                          "args": [
+                            {
+                              "_PT": "PT",
+                              "args": [
+                                1,
+                                2
+                              ]
+                            },
+                            {
+                              "_TokenColorList": "Colors",
+                              "args": [
+                                "Green"
+                              ]
+                            },
+                            [],
+                            [
+                              "Creature"
+                            ],
+                            {
+                              "_TokenSubtypes": "SubtypesList",
+                              "args": [
+                                "Spider"
+                              ]
+                            },
+                            [
+                              {
+                                "_Rule": "Reach"
+                              }
+                            ]
+                          ]
+                        }
+                      ]
+                    }
+                  ],
+                  []
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "_Rule": "Flashback",
+          "args": {
+            "_Cost": "PayMana",
+            "args": [
+              {
+                "_ManaSymbol": "ManaCostGeneric",
+                "args": 6
+              },
+              {
+                "_ManaSymbol": "ManaCostB"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "identical": false,
+    "added_tags": [],
+    "removed_tags": []
+  },
+  {
+    "name": "Stitcher's Apprentice",
+    "fixture_ir": {
+      "_OracleCard": "Card",
+      "Name": "Stitcher's Apprentice",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Homunculus"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 1
+        },
+        {
+          "_ManaSymbol": "ManaCostU"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "Activated",
+          "args": [
+            {
+              "_Cost": "And",
+              "args": [
+                {
+                  "_Cost": "PayMana",
+                  "args": [
+                    {
+                      "_ManaSymbol": "ManaCostGeneric",
+                      "args": 1
+                    },
+                    {
+                      "_ManaSymbol": "ManaCostU"
+                    }
+                  ]
+                },
+                {
+                  "_Cost": "TapPermanent",
+                  "args": {
+                    "_Permanent": "ThisPermanent"
+                  }
+                }
+              ]
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    {
+                      "_CreatableToken": "TokenWithPT",
+                      "args": [
+                        {
+                          "_PT": "PT",
+                          "args": [
+                            2,
+                            2
+                          ]
+                        },
+                        {
+                          "_TokenColorList": "Colors",
+                          "args": [
+                            "Blue"
+                          ]
+                        },
+                        [],
+                        [
+                          "Creature"
+                        ],
+                        {
+                          "_TokenSubtypes": "SubtypesList",
+                          "args": [
+                            "Homunculus"
+                          ]
+                        },
+                        []
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "_Action": "SacrificeAPermanent",
+                  "args": {
+                    "_Permanents": "IsCardtype",
+                    "args": "Creature"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 1,
+        "Toughness": 2
+      }
+    },
+    "current_ir": {
+      "_OracleCard": "Card",
+      "Name": "Stitcher's Apprentice",
+      "Typeline": {
+        "Supertypes": [],
+        "Cardtypes": [
+          "Creature"
+        ],
+        "Subtypes": [
+          "Homunculus"
+        ]
+      },
+      "ManaCost": [
+        {
+          "_ManaSymbol": "ManaCostGeneric",
+          "args": 1
+        },
+        {
+          "_ManaSymbol": "ManaCostU"
+        }
+      ],
+      "Rules": [
+        {
+          "_Rule": "Activated",
+          "args": [
+            {
+              "_Cost": "And",
+              "args": [
+                {
+                  "_Cost": "PayMana",
+                  "args": [
+                    {
+                      "_ManaSymbol": "ManaCostGeneric",
+                      "args": 1
+                    },
+                    {
+                      "_ManaSymbol": "ManaCostU"
+                    }
+                  ]
+                },
+                {
+                  "_Cost": "TapPermanent",
+                  "args": {
+                    "_Permanent": "ThisPermanent"
+                  }
+                }
+              ]
+            },
+            {
+              "_Actions": "ActionList",
+              "args": [
+                {
+                  "_Action": "CreateTokens",
+                  "args": [
+                    [
+                      {
+                        "_CreatableToken": "TokenWithPT",
+                        "args": [
+                          {
+                            "_PT": "PT",
+                            "args": [
+                              2,
+                              2
+                            ]
+                          },
+                          {
+                            "_TokenColorList": "Colors",
+                            "args": [
+                              "Blue"
+                            ]
+                          },
+                          [],
+                          [
+                            "Creature"
+                          ],
+                          {
+                            "_TokenSubtypes": "SubtypesList",
+                            "args": [
+                              "Homunculus"
+                            ]
+                          },
+                          []
+                        ]
+                      }
+                    ],
+                    []
+                  ]
+                },
+                {
+                  "_Action": "SacrificeAPermanent",
+                  "args": {
+                    "_Permanents": "IsCardtype",
+                    "args": "Creature"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "CardPT": {
+        "Power": 1,
+        "Toughness": 2
+      }
+    },
+    "identical": false,
+    "added_tags": [],
+    "removed_tags": []
+  }
+]

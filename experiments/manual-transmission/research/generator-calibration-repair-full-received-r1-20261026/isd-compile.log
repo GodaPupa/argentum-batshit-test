@@ -1,0 +1,97 @@
+scripts/gradle-locked :mtg-sets:verifyGeneratedCards -Pset=ISD --console=plain --rerun-tasks --no-daemon --max-workers=2 -PkotlinCompileParallelism=1
+gradle-locked: 'shlock' not found; running ./gradlew unlocked
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as configuration cache cannot be reused because the set of Gradle properties has changed: the value of 'set' was changed.
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:classes
+> Task :buildSrc:jar
+> Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sdk:processResources NO-SOURCE
+> Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:processResources
+> Task :mtgish-tooling:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtgish-tooling:processResources NO-SOURCE
+> Task :mtg-sets:processGeneratedCardsResources NO-SOURCE
+> Task :mtg-sets:1993-1999:processResources NO-SOURCE
+> Task :mtg-sets:2000-2002:processResources NO-SOURCE
+> Task :mtg-sets:2003-2007:processResources NO-SOURCE
+> Task :mtg-sets:2008-2016:processResources NO-SOURCE
+> Task :mtg-sets:2017-2022:processResources NO-SOURCE
+> Task :mtg-sets:2023:processResources NO-SOURCE
+> Task :mtg-sets:2024:processResources NO-SOURCE
+> Task :mtg-sets:2025:processResources NO-SOURCE
+> Task :mtg-sets:2026:processResources NO-SOURCE
+> Task :mtg-sets:core:processResources
+> Task :mtg-sdk:compileKotlin
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt:342:9 'when' is exhaustive so 'else' is redundant here.
+
+> Task :mtg-sdk:compileJava NO-SOURCE
+> Task :mtg-sdk:classes UP-TO-DATE
+> Task :mtg-sdk:jar
+> Task :mtgish-tooling:compileKotlin
+> Task :mtgish-tooling:compileJava NO-SOURCE
+> Task :mtgish-tooling:classes UP-TO-DATE
+> Task :mtgish-tooling:jar
+
+> Task :mtg-sets:emitGeneratedCards
+emit-all: wrote 104/254 whole-card drafts to /home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/build/generated-cards/src (package com.wingedsheep.mtg.sets.generated.isd.cards)
+  skipped basic lands: 5 (use curated basicLand definitions)
+
+> Task :mtg-sets:core:compileKotlin
+> Task :mtg-sets:core:compileJava NO-SOURCE
+> Task :mtg-sets:core:classes
+> Task :mtg-sets:core:jar
+
+> Task :mtg-sets:compileGeneratedCardsKotlin FAILED
+e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/build/generated-cards/src/HollowhengeScavenger.kt:30:9 Unresolved reference 'triggerCondition'.
+e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/build/generated-cards/src/MorkrutBanshee.kt:32:9 Unresolved reference 'triggerCondition'.
+e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/build/generated-cards/src/ReaperFromTheAbyss.kt:38:9 Unresolved reference 'triggerCondition'.
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793059126704.json
+Kotlin build report is written to file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/kotlin-build/argentum-engine-build-2026-10-26-23-59-46-0.txt
+
+[Incubating] Problems report is available at: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':mtg-sets:compileGeneratedCardsKotlin' (registered by plugin 'org.jetbrains.kotlin.jvm').
+> A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+   > Compilation error. See log for more details
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 1m 2s
+19 actionable tasks: 19 executed
+Configuration cache entry stored.
+error: Recipe `compile` failed on line 8 with exit code 1
