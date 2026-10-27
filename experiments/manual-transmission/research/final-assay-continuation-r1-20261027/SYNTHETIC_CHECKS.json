@@ -1,0 +1,35 @@
+{
+  "synthetic_only": true,
+  "valid": 1,
+  "rejected": [
+    "floor",
+    "duplicate_metric",
+    "bad_metric",
+    "nonzero",
+    "missing_corpus",
+    "wrong_hash",
+    "wrong_bytes",
+    "missing_differential",
+    "changed_differential"
+  ],
+  "inventory_controls": {
+    "ordinary": {
+      "rows": 18918,
+      "passed": 18875,
+      "skips": 43
+    },
+    "negative_controls": [
+      "missing",
+      "duplicate",
+      "wrong_class",
+      "wrong_name",
+      "unexpected_skip",
+      "original_character_keys",
+      "wrong_receipt",
+      "wrong_case_shape"
+    ],
+    "other_inventory_stages_unchanged": true,
+    "skips_unchanged": true
+  },
+  "normal_and_mutant_python_compile": true
+}
