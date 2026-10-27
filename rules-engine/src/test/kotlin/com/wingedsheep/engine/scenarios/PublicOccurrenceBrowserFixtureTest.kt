@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.ObjectReferenceEnvironment
 import com.wingedsheep.engine.mechanics.stack.StackResolver
+import com.wingedsheep.engine.mechanics.targeting.*
 import com.wingedsheep.engine.state.*
 import com.wingedsheep.engine.state.components.stack.*
 import com.wingedsheep.engine.support.ScenarioTestBase
