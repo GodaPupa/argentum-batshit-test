@@ -1,0 +1,18 @@
+{
+  "state": "PROTOCOL_ONLY_FULL_MATRIX_MUTANTS_NOT_ACCEPTED",
+  "base": "89d5cb953af9a324629047690e9c753e1804094f",
+  "production_changes": 0,
+  "test_changes": 0,
+  "assertions_unchanged": true,
+  "normal": 40,
+  "restored": 40,
+  "mutant_cases": 160,
+  "negative_witnesses": 70,
+  "passing_controls": 90,
+  "compiles": 5,
+  "selection": "Full class only; clear KOTEST_INCLUDE_PATTERN; raw zero-skip reports mandatory",
+  "diagnosis": "R2 exact include pattern executed10 but marked30outside cases skipped; receiver correctly rejected.",
+  "source_reasoning": "Wrong-occurrence affects all39non-control tests:9original shapes +4queue cases call verifyChanged before queue processing +26context recovery cases call verifyChanged after stale rejection. All fail same PM_SELECTED_OCCURRENCE line116. Other mutants retain original witnesses,all other cases are passing controls. No expectations weakened; no original40witnesses or6controls removed.",
+  "discovery": "All stages now select identical40case class, so the full normal gate verifies inventory before mutant runs. No filtered discovery sets exist.",
+  "independent_review": false
+}
