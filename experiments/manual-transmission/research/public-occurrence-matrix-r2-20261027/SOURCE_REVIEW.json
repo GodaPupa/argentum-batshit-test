@@ -1,0 +1,26 @@
+{
+  "state": "FROZEN_PROTOCOL_ONLY_REPAIR_NOT_ACCEPTED",
+  "base": "63026e29f507a32a340475d521ef47a529b6e439",
+  "failure_receipt": "9a1d87d0f6ad277f0ab68890309a70a95e3fb348",
+  "cause": "Gradle method filters found zero Kotest dynamic tests",
+  "repair": "Class-level Gradle selection plus KOTEST_INCLUDE_PATTERN exact fully-qualified semicolon union; four normal selection-discovery stages before mutants.",
+  "version": "Kotest6.2.1",
+  "primary_sources": [
+    "https://github.com/kotest/kotest/blob/v6.2.1/kotest-framework/kotest-framework-engine/src/commonMain/kotlin/io/kotest/engine/extensions/filter/IncludePatternEnvDescriptorFilter.kt",
+    "https://github.com/kotest/kotest/blob/v6.2.1/kotest-framework/kotest-framework-engine/src/jvmTest/kotlin/com/sksamuel/kotest/engine/extensions/IncludePatternEnvDescriptorFilterEnvTest.kt"
+  ],
+  "production_changes": 0,
+  "test_changes": 0,
+  "assertions_unchanged": true,
+  "negative_witnesses": 40,
+  "mutant_controls": 6,
+  "normal_restored": 40,
+  "compiles": 5,
+  "discovery_cases": [
+    10,
+    4,
+    5,
+    27
+  ],
+  "independent_review": false
+}
