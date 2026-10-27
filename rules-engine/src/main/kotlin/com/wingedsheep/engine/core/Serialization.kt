@@ -256,6 +256,7 @@ val engineSerializersModule = SerializersModule {
     }
 
     polymorphic(AnswerContinuation::class) {
+        subclass(FixedRecipientChoiceContinuation::class)
         subclass(TokenCreationReplacementContinuation::class)
         subclass(SacrificeContinuation::class)
         subclass(ChooseOnePerCategoryContinuation::class)

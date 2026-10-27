@@ -1,0 +1,35 @@
+focused:
+    scripts/gradle-locked :rules-engine:test --tests '*PausedTokenInstructionScenarioTest' --tests '*PausedTokenCopyDetailsTest' --tests '*PausedTokenRiotCompositionTest' --tests '*PausedTokenInvalidResponseTest' --tests '*PausedTokenRecipientFilterTest' --tests '*TokenBatchEntryHistoryTest' --tests '*AttackingTokenDefenderChoiceTest' --tests '*PhyrexianMetamorphScenarioTest' --tests '*PhyrexianMetamorphEntryScenarioTest' --tests '*ForEachCopyEntryBatchScenarioTest' --tests '*EntryCounterBoundaryScenarioTest' --tests '*FaceDownEntryCounterScenarioTest' --tests '*CopiableEntryValueScenarioTest' --tests '*CopiableFaceDownWardScenarioTest' --tests '*PendingEntryReferenceScenarioTest' --tests '*BattlefieldEntrySnapshotTest' --tests '*EntryEventTimeScenarioTest' --tests '*PendingCopyEntryScenarioTest' --tests '*CopiedAsEntersChoiceScenarioTest' --tests '*EntersAsCopyExceptionsScenarioTest' --tests '*LegacySuspensionMigrationTest' --tests '*SuspensionTraceTest' --tests '*BattlefieldEntryProjectionTest' --tests '*EntryObserverBoundaryScenarioTest' --tests '*EntryObservationLifetimeScenarioTest' --tests '*PendingEntryObserverScenarioTest' --tests '*StackResolutionPriorityTest' --tests '*PausedSpellTriggerFinalizationTest' --tests '*TriggerOrderingScenarioTest' --tests '*CastPrioritySbaTest' --tests '*EntryCounterModifierSourceScenarioTest' --tests '*DoubleCountersTest' --tests '*EnterCounterObjectIdentityTest' --tests '*GrantCounterPlacementModifierTest' --tests '*EntryChoiceEventProvenanceTest' --tests '*FixedRecipientRetargetingTest' --tests '*FixedRecipientMutationWitnessTest' --tests '*FixedRecipientPlayerRelationTest' --tests '*FixedRecipientSourceContextTest' --tests '*FixedRecipientChoiceTest' --tests '*PublicOccurrenceBrowserFixtureTest' --tests '*PublicOccurrenceMatrixTest' --tests '*TargetSlotPlanTest' --tests '*TargetSlotMutationWitnessTest' --tests '*RetargetHistoryTest' --tests '*RetargetHistoryMutationWitnessTest' --tests '*RetargetHistoryIntegrationTest' --tests '*TargetSlotCaptureTest' --tests '*TargetSlotCaptureMutationWitnessTest' --tests '*TargetSlotCaptureIntegrationTest' --tests '*ModalTargetCaptureTest' --tests '*ModalTargetCaptureMutationWitnessTest' --tests '*ModalSpellCaptureTest' --tests '*ModalSpellCaptureMutationWitnessTest' --tests '*ModalSpellRecoveryBoundaryTest' --tests '*ActivationTargetCaptureTest' --tests '*ActivationTargetCaptureLiveFlowTest' --tests '*ActivationTargetCaptureBoundaryTest' --tests '*PublicTargetGroupsTest' --tests '*CurrentTargetResolutionTest' --tests '*CurrentTargetAuthorityBoundaryTest' --tests '*AbilitySourceCharacteristicsTest' --tests '*AbilitySourceLegacyBoundaryTest' --tests '*AbilitySourceDepartureIntegrationTest' --tests '*AbilitySourceCostDepartureTest' --tests '*CurrentTargetSourceHistoryDiagnosticTest' :mtg-sets:2023:tests:test --tests '*SpelunkingScenarioTest' :mtg-sets:2024:tests:test --tests '*KambalProfiteeringMayorScenarioTest' --tests '*MeathookMassacreIIScenarioTest' :mtg-sets:2025:tests:test --tests '*ZodiarkUmbralGodScenarioTest' :mtg-sdk:test --tests '*EntersAsCopyExceptionsSerializationTest' :mtg-sets:test --tests '*CardDefinitionSnapshotTest' --tests '*CardLintTest' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+
+broad:
+    scripts/gradle-locked :rules-engine:test :mtg-sets:scenarioTest --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+
+ordinary:
+    scripts/gradle-locked build :ai:test --tests '*Test' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+
+assay-build:
+    scripts/gradle-locked :oracle-assay:installDist --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+
+assay:
+    oracle-assay/build/install/oracle-assay/bin/oracle-assay gate --limit 2000 --top 100
+
+assay-differential:
+    oracle-assay/build/install/oracle-assay/bin/oracle-assay differential --top 1000
+
+mutation:
+    scripts/gradle-locked :rules-engine:test --tests '*AbilitySourceCharacteristicsTest' --tests '*CurrentTargetSourceHistoryDiagnosticTest' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+
+compile-engine:
+    scripts/gradle-locked :rules-engine:compileKotlin :rules-engine:compileTestKotlin --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+
+targeted:
+    scripts/gradle-locked :rules-engine:test --tests '*ModalTriggeredAbilityOnStackTest' --tests '*ModalTargetCaptureTest' --tests '*PublicTargetGroupsTest' --tests '*CurrentTargetResolutionTest' --tests '*CurrentTargetAuthorityBoundaryTest' --tests '*AbilitySourceCharacteristicsTest' --tests '*AbilitySourceLegacyBoundaryTest' --tests '*AbilitySourceDepartureIntegrationTest' --tests '*AbilitySourceCostDepartureTest' --tests '*CurrentTargetSourceHistoryDiagnosticTest' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+
+actor:
+    scripts/gradle-locked :gym:test --tests '*ActorObservationBoundaryTest' --tests '*ActorPriorityObservationTest' --tests '*ActorActivationHistoryBoundaryTest' --tests '*ActorPublicTargetGroupsBoundaryTest' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+
+recording:
+    scripts/gradle-locked :ai:test --tests '*FrozenBaselineTest' --tests '*ActionRecordingCompatibilityTest' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+
+registration:
+    scripts/gradle-locked :rules-engine:test --tests '*SerializationPolymorphicRegistrationTest' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
