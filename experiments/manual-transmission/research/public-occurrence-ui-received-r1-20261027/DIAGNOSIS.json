@@ -1,0 +1,18 @@
+{
+  "cause": "New UI fixture omitted mechanics.targeting import; seven compiler diagnostics in new test only. Existing engine/server production compile succeeded.",
+  "compiler_diagnostics": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt:33:33 Unresolved reference 'TargetSlotPlan'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt:33:48 Cannot infer type for type parameter 'T'. Specify it explicitly.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt:33:62 Unresolved reference 'TargetInstanceSelection'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt:33:86 Cannot infer type for type parameter 'T'. Specify it explicitly.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt:34:21 Unresolved reference 'TargetSlot'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt:35:28 Unresolved reference 'CurrentTargetPlan'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt:59:45 Unresolved reference 'currentTargetPlan'."
+  ],
+  "behavioral_evidence": false,
+  "behavioral_tests_executed": 0,
+  "repair": "Add mechanics.targeting import used by existing FixedRecipientChoiceTest. Preserve all original assertions, production source, controls, floors and protected bindings. Freeze successor and execute all original compile-first UI gates.",
+  "source_restoration": {
+    "restored": true
+  }
+}

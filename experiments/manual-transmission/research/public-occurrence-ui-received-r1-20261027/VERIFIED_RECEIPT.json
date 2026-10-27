@@ -1,0 +1,78 @@
+{
+  "source": "61a7d741e32aeeb36bd063a9838d6f15c63f37ee",
+  "tree": "fefde4682ed7644ac96f13286a5f98f4f3b2f5f8",
+  "base": "b6e6150edb07cf4ac99f61fdbae6b89e131e59af",
+  "validation": "7c6d6d249ff48cb75952989a80055a73d17011a3",
+  "validation_tree": "e4fcfb2f022b6947d69482699f50d931a62ec162",
+  "workflow": ".github/workflows/manual-public-occurrence-ui-r1-20261027.yml",
+  "workflow_blob": "f0d3ead560b5dcdcb5c8154c75c9af563aa97915",
+  "branch": "validation/manual-public-occurrence-ui-r1-20261027",
+  "protocol": "experiments/manual-transmission/research/public-occurrence-ui-r1-20261027/PROTOCOL.json",
+  "source_delta": [
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt",
+    "e2e-scenarios/tests/general/public-occurrence.spec.ts",
+    "e2e-scenarios/manual-occurrence.config.ts",
+    "e2e-scenarios/manual-occurrence.tsconfig.json",
+    "experiments/manual-transmission/research/public-occurrence-ui-r1-20261027/PROTOCOL.json",
+    "experiments/manual-transmission/research/public-occurrence-ui-r1-20261027/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/public-occurrence-ui-r1-20261027/run.py",
+    "experiments/manual-transmission/research/public-occurrence-ui-r1-20261027/audit.py",
+    "experiments/manual-transmission/research/public-occurrence-ui-r1-20261027/RECEIVE.py",
+    "experiments/manual-transmission/research/public-occurrence-ui-r1-20261027/validation.just",
+    "experiments/manual-transmission/research/public-occurrence-ui-r1-20261027/SYNTHETIC_CHECKS.json",
+    "experiments/manual-transmission/research/public-occurrence-ui-r1-20261027/check_audit.py"
+  ],
+  "readback_verified": true,
+  "production_changes": 0,
+  "expected": {
+    "compile_stages": 6,
+    "fixture_cases": 2,
+    "browser_normal": 5,
+    "browser_restored": 5,
+    "negative_witnesses": 3,
+    "negative_control_passes": 3,
+    "retries": 0,
+    "skips": 0
+  },
+  "synthetic_checks": 17,
+  "run": 40478462138,
+  "job": 122102453857,
+  "workflow_id": 398042714,
+  "attempt": 1,
+  "event": "push",
+  "artifact_name": "manual-public-occurrence-ui-r1-40478462138",
+  "protocol_files": {
+    "PROTOCOL.json": "0db39287efe581d9f37346aebb4b0a0f4272c872350aa7f145d5d3dfc43bb07f",
+    "SOURCE_REVIEW.json": "ead57a55169d0fa510e026808e67883ee3abe7ffa8aeea2b1f4e7d05e175469d",
+    "run.py": "37287596cf6eb08d5c4fe4540f3cf0c4ba01d68f7599768422d6889bf7e581ee",
+    "audit.py": "39eb3a34fc8cf64260413de3c71c311cf4e3a49f0277bfda81ac9e413833e319",
+    "RECEIVE.py": "b206e5af059792bb62dbe97ccf0eb67bb00a5d078aaa85b430eae185864a0bdb",
+    "validation.just": "8b0d90f883cd30b26475863f50ee24486066ed62ef79e20f74df849cc6df5493",
+    "SYNTHETIC_CHECKS.json": "8ae313d1e64b4256a9f9837d256541bbd0a760d48b0f40cf6869d7b8709a1f75",
+    "check_audit.py": "7e7031143c6c55c0f52ffca038f9d460d8afd46272cd1065e465c9a41c27c4ad"
+  },
+  "artifact": 12721972297,
+  "artifact_bytes": 1336652,
+  "artifact_sha256": "e2b7d9d1e124a6fe274896017e980bf2828438f43d1ba667180a1b73906cbcb9",
+  "manifest_entries": 231,
+  "gates": {},
+  "gate_errors": [
+    {
+      "stage": "actual_ui",
+      "error": "AssertionError: compile-normal"
+    },
+    {
+      "stage": "source_forms_restoration",
+      "error": "KeyError: 'mutants/wrong-index/web-client/src/components/decisions/ChooseOptionDecisionUI.tsx'"
+    },
+    {
+      "stage": "FAILURE.txt",
+      "error": "AssertionError: "
+    }
+  ],
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED"
+}
