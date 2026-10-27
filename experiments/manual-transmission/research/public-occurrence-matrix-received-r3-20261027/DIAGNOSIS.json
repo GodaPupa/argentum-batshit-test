@@ -1,0 +1,82 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "run": 40534726465,
+  "artifact": 12750380332,
+  "artifact_sha256": "ff5ce27c3ee07c288ac93a8316f56bda98c20e0897b4a9b654812d1ec63fa414",
+  "cause": "Protocol stack-frame pin211 is incorrect for multiline withClue assertion beginning at210. Both intended dropped-queue witnesses fail at210 with unchanged PM_QUEUED_TAIL expected1 actual0.",
+  "production_failure": false,
+  "test_assertions_changed": false,
+  "verified_gates": {
+    "compile-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-wrong-occurrence": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-division-mirror": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-dropped-queue": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-stale-context": {
+      "compile": true,
+      "tests": 0
+    },
+    "normal": {
+      "tests": 40,
+      "failures": 0,
+      "passed": 40,
+      "errors": 0,
+      "skips": 0
+    },
+    "wrong-occurrence": {
+      "tests": 40,
+      "failures": 39,
+      "passed": 1,
+      "errors": 0,
+      "skips": 0
+    },
+    "division-mirror": {
+      "tests": 40,
+      "failures": 3,
+      "passed": 37,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "raw_dropped_queue": {
+    "tests": 40,
+    "failures": 2,
+    "passes": 38,
+    "errors": 0,
+    "skips": 0,
+    "witnesses": {
+      "PM spell queued targeting triggers order=0 departed=false": 210,
+      "PM spell queued targeting triggers order=0 departed=true": 210
+    },
+    "marker": "PM_QUEUED_TAIL",
+    "type": "org.opentest4j.AssertionFailedError"
+  },
+  "missing": [
+    "stale-context behavioral suite",
+    "restored behavioral suite"
+  ],
+  "restoration": "All42bindings and197protected bytes restored; no restoration gate error",
+  "smallest_repair": "New immutable protocol-only successor: change only the two dropped-queue frame pins211 to210; keep all test/runtime bytes, identities, failure types, markers, counts and zero-skip gate. Rerun required complete bounded matrix; R3 remains rejected and is never rewritten as accepted.",
+  "source_sha256": "c8aeff070da52a4f40a99d3d17bd19eb29d4247e916b31934bda9ff1c8869a7a",
+  "source_assertion_excerpt": {
+    "208": "                val targetChoice = ordered.state.pendingDecision as ChooseTargetsDecision",
+    "209": "                targetChoice.playerId shouldBe choice.playerId",
+    "210": "                withClue(\"PM_QUEUED_TAIL\") { ordered.state.continuationStack.filterIsInstance<PendingTriggersContinuation>()",
+    "211": "                    .flatMap { it.remainingTriggers }.size shouldBe if (order == 0) 1 else 0 }",
+    "212": "                val paused = if (departed) ordered.state.removeEntity(f.recipient) else ordered.state"
+  },
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

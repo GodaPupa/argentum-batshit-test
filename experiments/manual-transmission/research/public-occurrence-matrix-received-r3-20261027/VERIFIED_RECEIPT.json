@@ -1,0 +1,655 @@
+{
+  "source": "587bc4070595bed27a7a5cb4970b423655374a50",
+  "tree": "1cd3ad2d6736ca6fe4a95ef8d281c8debe1eac7a",
+  "base": "89d5cb953af9a324629047690e9c753e1804094f",
+  "validation": "e6d23c6856a4eafde9de824c8c5c0fe80ab2dc59",
+  "validation_tree": "53ae5c340a6fee1aeccd4490ef7ed623b8c1534f",
+  "workflow": ".github/workflows/manual-public-occurrence-matrix-r3-20261027.yml",
+  "workflow_blob": "1e04a442900968b611ddc21f03d96a7dc73abb08",
+  "branch": "validation/manual-public-occurrence-matrix-r3-20261027",
+  "protocol": "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/PROTOCOL.json",
+  "source_delta": [
+    "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/PROTOCOL.json",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/run.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/reports.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/RECEIVE.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/validation.just",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/check_reports.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/SYNTHETIC_CHECKS.json"
+  ],
+  "expected": {
+    "compiles": 5,
+    "normal": 40,
+    "restored": 40,
+    "mutant_cases": 160,
+    "negative_witnesses": 70,
+    "mutant_controls": 90,
+    "skips": 0
+  },
+  "production_changes": 0,
+  "test_changes": 0,
+  "assertions_unchanged": true,
+  "original_failure_receipt": "45728f65881e6e21a3b54b7eec466b20a627b3dd",
+  "readback_verified": true,
+  "run": 40534726465,
+  "job": 122296769341,
+  "attempt": 1,
+  "run_number": 1,
+  "event": "push",
+  "workflow_id": 398434978,
+  "artifact_name": "manual-public-occurrence-matrix-r3-40534726465",
+  "protocol_files": {
+    "PROTOCOL.json": "17049f721853e0cadf5efe3b160853ace38b23e9277af3025e7e426e7aaf8dbb",
+    "SOURCE_REVIEW.json": "b417c44d47cfed3b63a203785199958387379aecfa132ee2a97893808a1b38c3",
+    "run.py": "c46a84cc23aa730587315bb81f7f6015978684bea3753153a0f0c6fce26cd212",
+    "reports.py": "fcca9879cff6e848af1e32c1c32b94e41b997765ed7e7b5384d6c1fa35581520",
+    "RECEIVE.py": "5943a216cd24c4b12146ea55127ddc5babfd9e4358388c02413151355fc15f56",
+    "validation.just": "0d0e025b807202cbb0448d0943f39cf55762e3ca8eda322d00a610fb63f68d36",
+    "check_reports.py": "856cced738f4a21b14357a49a120271319c1171e818148aa961c5cffd3423e93",
+    "SYNTHETIC_CHECKS.json": "0e8cacf0cc5ec889fd751f19b587f58c02ad851962805fed483a18b479f049bf"
+  },
+  "artifact": 12750380332,
+  "artifact_bytes": 4027037,
+  "artifact_sha256": "ff5ce27c3ee07c288ac93a8316f56bda98c20e0897b4a9b654812d1ec63fa414",
+  "manifest_entries": 717,
+  "gates": {
+    "compile-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-wrong-occurrence": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-division-mirror": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-dropped-queue": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-stale-context": {
+      "compile": true,
+      "tests": 0
+    },
+    "normal": {
+      "tests": 40,
+      "failures": 0,
+      "passed": 40,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM splice public original boundaries and tail"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM control no authoritative plan offers no choice"
+        ]
+      ],
+      "witnesses": []
+    },
+    "wrong-occurrence": {
+      "tests": 40,
+      "failures": 39,
+      "passed": 1,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM splice public original boundaries and tail"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM control no authoritative plan offers no choice"
+        ]
+      ],
+      "witnesses": [
+        "PM optional public named resolution instant",
+        "PM division public occurrence amounts instant",
+        "PM optional public named resolution activation",
+        "PM division public occurrence amounts activation",
+        "PM optional public named resolution trigger",
+        "PM division public occurrence amounts trigger",
+        "PM modal public original boundaries instant",
+        "PM modal public original boundaries trigger",
+        "PM splice public original boundaries and tail",
+        "PM spell queued targeting triggers order=0 departed=false",
+        "PM spell queued targeting triggers order=0 departed=true",
+        "PM spell queued targeting triggers order=1 departed=false",
+        "PM spell queued targeting triggers order=1 departed=true",
+        "PM source public reevaluation activation live color",
+        "PM source public reevaluation activation live subtype",
+        "PM source public reevaluation activation live cardtype",
+        "PM source public reevaluation activation removed color",
+        "PM source public reevaluation activation removed subtype",
+        "PM source public reevaluation activation removed cardtype",
+        "PM source public reevaluation activation returned color",
+        "PM source public reevaluation activation returned subtype",
+        "PM source public reevaluation activation returned cardtype",
+        "PM recipient public reevaluation activation shroud",
+        "PM recipient public reevaluation activation protection",
+        "PM recipient public reevaluation activation controller",
+        "PM recipient public reevaluation activation type",
+        "PM source public reevaluation trigger live color",
+        "PM source public reevaluation trigger live subtype",
+        "PM source public reevaluation trigger live cardtype",
+        "PM source public reevaluation trigger removed color",
+        "PM source public reevaluation trigger removed subtype",
+        "PM source public reevaluation trigger removed cardtype",
+        "PM source public reevaluation trigger returned color",
+        "PM source public reevaluation trigger returned subtype",
+        "PM source public reevaluation trigger returned cardtype",
+        "PM recipient public reevaluation trigger shroud",
+        "PM recipient public reevaluation trigger protection",
+        "PM recipient public reevaluation trigger controller",
+        "PM recipient public reevaluation trigger type"
+      ]
+    },
+    "division-mirror": {
+      "tests": 40,
+      "failures": 3,
+      "passed": 37,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts activation"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM optional public named resolution trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM division public occurrence amounts trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries instant"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM modal public original boundaries trigger"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM splice public original boundaries and tail"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=0 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM spell queued targeting triggers order=1 departed=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation activation returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation activation type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger live cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger removed cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned color"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned subtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM source public reevaluation trigger returned cardtype"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger shroud"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger protection"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger controller"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM recipient public reevaluation trigger type"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest",
+          "PM control no authoritative plan offers no choice"
+        ]
+      ],
+      "witnesses": [
+        "PM division public occurrence amounts instant",
+        "PM division public occurrence amounts activation",
+        "PM division public occurrence amounts trigger"
+      ]
+    }
+  },
+  "gate_errors": [
+    {
+      "stage": "dropped-queue",
+      "error": "AssertionError: (('com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest', 'PM spell queued targeting triggers order=0 departed=false'), 'org.opentest4j.AssertionFailedError: PM_QUEUED_TAIL\\nexpected:<1> but was:<0>\\n\\tat com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest$5.invokeSuspend(PublicOccurrenceMatrixTest.kt:210)\\n\\tat com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest$5.invoke(PublicOccurrenceMatrixTest.kt)\\n\\tat com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest$5.invoke(PublicOccurrenceMatrixTest.kt)\\n\\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invokeSuspend(FunSpecRootScope.kt:88)\\n\\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\\n\\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$base$1.invoke(TestCaseExecutor.kt:118)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$executeWithBeforeAfter$1.invoke(TestInvocationInterceptor.kt:93)\\n\\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invokeSuspend(InvocationTimeoutInterceptor.kt:49)\\n\\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\\n\\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\\n\\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull(Timeout.kt:159)\\n\\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull-KLykuaI(Timeout.kt:221)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeoutOrNull-KLykuaI(TimeoutInterceptor.kt:103)\\n\\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor.intercept(InvocationTimeoutInterceptor.kt:48)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$wrappedTest$1$1.invoke(TestInvocationInterceptor.kt:102)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor.runBeforeTestAfter(TestInvocationInterceptor.kt:105)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor.access$runBeforeTestAfter(TestInvocationInterceptor.kt:18)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invokeSuspend(TestInvocationInterceptor.kt:53)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.CoroutineScopeKt.coroutineScope(CoroutineScope.kt:848)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor.invokeWithRetry(TestInvocationInterceptor.kt:51)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor.intercept(TestInvocationInterceptor.kt:33)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.intercept(MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.kt:22)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.HandleSkippedExceptionsTestInterceptor.intercept(HandleSkippedExceptionsTestInterceptor.kt:15)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invokeSuspend(TimeoutInterceptor.kt:61)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\\n\\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\\n\\tat kotlinx.coroutines.TimeoutKt.withTimeout(Timeout.kt:29)\\n\\tat kotlinx.coroutines.TimeoutKt.withTimeout-KLykuaI(Timeout.kt:141)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeout-KLykuaI(TimeoutInterceptor.kt:90)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptor.intercept(TimeoutInterceptor.kt:60)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.CoroutineDebugProbeInterceptor.intercept(CoroutineDebugProbeInterceptor.kt:33)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.BlockedThreadTimeoutInterceptor.intercept(BlockedThreadTimeoutInterceptor.kt:87)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.CoroutineLoggingInterceptor.intercept(CoroutineLoggingInterceptor.kt:38)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.SoftAssertInterceptor.intercept(SoftAssertInterceptor.kt:26)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.AssertionModeInterceptor.intercept(AssertionModeInterceptor.kt:29)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.LifecycleInterceptor.intercept(LifecycleInterceptor.kt:48)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor$intercept$2.invoke(TestCaseExtensionInterceptor.kt:21)\\n\\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invokeSuspend(TestExtensions.kt:146)\\n\\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\\n\\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\\n\\tat com.wingedsheep.engine.support.HardTimeoutWatchdog.intercept(TestHangGuard.kt:69)\\n\\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1.invoke(TestExtensions.kt:143)\\n\\tat io.kotest.engine.test.TestExtensions.intercept(TestExtensions.kt:151)\\n\\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor.intercept(TestCaseExtensionInterceptor.kt:21)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TestEnabledCheckInterceptor.intercept(TestEnabledCheckInterceptor.kt:41)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invokeSuspend(CoroutineErrorCollectorInterceptor.kt:39)\\n\\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\\n\\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\\n\\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor.intercept(CoroutineErrorCollectorInterceptor.kt:38)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.CoroutineDispatcherFactoryTestInterceptor.intercept(CoroutineDispatcherFactoryTestInterceptor.kt:41)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invokeSuspend(SupervisorScopeInterceptor.kt:23)\\n\\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.SupervisorKt.supervisorScope(Supervisor.kt:105)\\n\\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor.intercept(SupervisorScopeInterceptor.kt:22)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.InvocationCountCheckInterceptor.intercept(InvocationCountCheckInterceptor.kt:33)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TestFinishedInterceptor.intercept(TestFinishedInterceptor.kt:23)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.FailFastInterceptor.intercept(FailFastInterceptor.kt:24)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invokeSuspend(TestNameContextInterceptor.kt:21)\\n\\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\\n\\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\\n\\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor.intercept(TestNameContextInterceptor.kt:20)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invokeSuspend(DescriptorPathContextInterceptor.kt:21)\\n\\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\\n\\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\\n\\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor.intercept(DescriptorPathContextInterceptor.kt:20)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.TestCaseExecutor.execute(TestCaseExecutor.kt:124)\\n\\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.executeTest(SingleInstanceSpecExecutor.kt:76)\\n\\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.access$executeTest(SingleInstanceSpecExecutor.kt:26)\\n\\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor$launchRootTests$2$1$1.invokeSuspend(SingleInstanceSpecExecutor.kt:57)\\n\\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\\n\\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\\n\\tat kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)\\n\\tat kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)\\n\\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)\\n\\tat kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)\\n\\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)\\n\\tat kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)\\n\\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:22)\\n\\tat kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)\\n\\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:20)\\n\\tat kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)\\n\\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:86)\\n\\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:56)\\n')"
+    },
+    {
+      "stage": "stale-context",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp9ukwm4qu/stale-context/exit.txt'"
+    },
+    {
+      "stage": "restored",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp9ukwm4qu/restored/exit.txt'"
+    },
+    {
+      "stage": "collector",
+      "error": "AssertionError: (('com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest', 'PM spell queued targeting triggers order=0 departed=false'), 'org.opentest4j.AssertionFailedError: PM_QUEUED_TAIL\\nexpected:<1> but was:<0>\\n\\tat com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest$5.invokeSuspend(PublicOccurrenceMatrixTest.kt:210)\\n\\tat com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest$5.invoke(PublicOccurrenceMatrixTest.kt)\\n\\tat com.wingedsheep.engine.scenarios.PublicOccurrenceMatrixTest$5.invoke(PublicOccurrenceMatrixTest.kt)\\n\\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invokeSuspend(FunSpecRootScope.kt:88)\\n\\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\\n\\tat io.kotest.core.spec.style.scopes.FunSpecRootScope$test$1.invoke(FunSpecRootScope.kt)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$base$1.invoke(TestCaseExecutor.kt:118)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$executeWithBeforeAfter$1.invoke(TestInvocationInterceptor.kt:93)\\n\\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invokeSuspend(InvocationTimeoutInterceptor.kt:49)\\n\\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor$intercept$3.invoke(InvocationTimeoutInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\\n\\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\\n\\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull(Timeout.kt:159)\\n\\tat kotlinx.coroutines.TimeoutKt.withTimeoutOrNull-KLykuaI(Timeout.kt:221)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeoutOrNull-KLykuaI(TimeoutInterceptor.kt:103)\\n\\tat io.kotest.engine.test.interceptors.InvocationTimeoutInterceptor.intercept(InvocationTimeoutInterceptor.kt:48)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$runBeforeTestAfter$wrappedTest$1$1.invoke(TestInvocationInterceptor.kt:102)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor.runBeforeTestAfter(TestInvocationInterceptor.kt:105)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor.access$runBeforeTestAfter(TestInvocationInterceptor.kt:18)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invokeSuspend(TestInvocationInterceptor.kt:53)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor$invokeWithRetry$2.invoke(TestInvocationInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.CoroutineScopeKt.coroutineScope(CoroutineScope.kt:848)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor.invokeWithRetry(TestInvocationInterceptor.kt:51)\\n\\tat io.kotest.engine.test.TestInvocationInterceptor.intercept(TestInvocationInterceptor.kt:33)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.intercept(MarkOpenTest4jAbortedExceptionsAsSkippedTestInterceptor.kt:22)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.HandleSkippedExceptionsTestInterceptor.intercept(HandleSkippedExceptionsTestInterceptor.kt:15)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invokeSuspend(TimeoutInterceptor.kt:61)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptor$intercept$3.invoke(TimeoutInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturnIgnoreTimeout(Undispatched.kt:50)\\n\\tat kotlinx.coroutines.TimeoutKt.setupTimeout(Timeout.kt:233)\\n\\tat kotlinx.coroutines.TimeoutKt.withTimeout(Timeout.kt:29)\\n\\tat kotlinx.coroutines.TimeoutKt.withTimeout-KLykuaI(Timeout.kt:141)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptorKt.withAppropriateTimeout-KLykuaI(TimeoutInterceptor.kt:90)\\n\\tat io.kotest.engine.test.interceptors.TimeoutInterceptor.intercept(TimeoutInterceptor.kt:60)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.CoroutineDebugProbeInterceptor.intercept(CoroutineDebugProbeInterceptor.kt:33)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.BlockedThreadTimeoutInterceptor.intercept(BlockedThreadTimeoutInterceptor.kt:87)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.CoroutineLoggingInterceptor.intercept(CoroutineLoggingInterceptor.kt:38)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.SoftAssertInterceptor.intercept(SoftAssertInterceptor.kt:26)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.AssertionModeInterceptor.intercept(AssertionModeInterceptor.kt:29)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.LifecycleInterceptor.intercept(LifecycleInterceptor.kt:48)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor$intercept$2.invoke(TestCaseExtensionInterceptor.kt:21)\\n\\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invokeSuspend(TestExtensions.kt:146)\\n\\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\\n\\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1$1.invoke(TestExtensions.kt)\\n\\tat com.wingedsheep.engine.support.HardTimeoutWatchdog.intercept(TestHangGuard.kt:69)\\n\\tat io.kotest.engine.test.TestExtensions$intercept$execute$1$1.invoke(TestExtensions.kt:143)\\n\\tat io.kotest.engine.test.TestExtensions.intercept(TestExtensions.kt:151)\\n\\tat io.kotest.engine.test.interceptors.TestCaseExtensionInterceptor.intercept(TestCaseExtensionInterceptor.kt:21)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TestEnabledCheckInterceptor.intercept(TestEnabledCheckInterceptor.kt:41)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invokeSuspend(CoroutineErrorCollectorInterceptor.kt:39)\\n\\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor$intercept$3.invoke(CoroutineErrorCollectorInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\\n\\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\\n\\tat io.kotest.engine.test.interceptors.CoroutineErrorCollectorInterceptor.intercept(CoroutineErrorCollectorInterceptor.kt:38)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.CoroutineDispatcherFactoryTestInterceptor.intercept(CoroutineDispatcherFactoryTestInterceptor.kt:41)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invokeSuspend(SupervisorScopeInterceptor.kt:23)\\n\\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor$intercept$2.invoke(SupervisorScopeInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.SupervisorKt.supervisorScope(Supervisor.kt:105)\\n\\tat io.kotest.engine.test.interceptors.SupervisorScopeInterceptor.intercept(SupervisorScopeInterceptor.kt:22)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.InvocationCountCheckInterceptor.intercept(InvocationCountCheckInterceptor.kt:33)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TestFinishedInterceptor.intercept(TestFinishedInterceptor.kt:23)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.FailFastInterceptor.intercept(FailFastInterceptor.kt:24)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invokeSuspend(TestNameContextInterceptor.kt:21)\\n\\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor$intercept$2.invoke(TestNameContextInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\\n\\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\\n\\tat io.kotest.engine.test.interceptors.TestNameContextInterceptor.intercept(TestNameContextInterceptor.kt:20)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invokeSuspend(DescriptorPathContextInterceptor.kt:21)\\n\\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\\n\\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor$intercept$2.invoke(DescriptorPathContextInterceptor.kt)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatched(Undispatched.kt:66)\\n\\tat kotlinx.coroutines.intrinsics.UndispatchedKt.startUndispatchedOrReturn(Undispatched.kt:43)\\n\\tat kotlinx.coroutines.BuildersKt__Builders_commonKt.withContext(Builders.common.kt:497)\\n\\tat kotlinx.coroutines.BuildersKt.withContext(Unknown Source)\\n\\tat io.kotest.engine.test.interceptors.DescriptorPathContextInterceptor.intercept(DescriptorPathContextInterceptor.kt:20)\\n\\tat io.kotest.engine.test.TestCaseExecutor$execute$3$1.invoke(TestCaseExecutor.kt:123)\\n\\tat io.kotest.engine.test.TestCaseExecutor.execute(TestCaseExecutor.kt:124)\\n\\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.executeTest(SingleInstanceSpecExecutor.kt:76)\\n\\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor.access$executeTest(SingleInstanceSpecExecutor.kt:26)\\n\\tat io.kotest.engine.spec.execution.SingleInstanceSpecExecutor$launchRootTests$2$1$1.invokeSuspend(SingleInstanceSpecExecutor.kt:57)\\n\\tat kotlin.coroutines.jvm.internal.BaseContinuationImpl.resumeWith(ContinuationImpl.kt:34)\\n\\tat kotlinx.coroutines.DispatchedTask.run(DispatchedTask.kt:100)\\n\\tat kotlinx.coroutines.EventLoopImplBase.processNextEvent(EventLoop.common.kt:256)\\n\\tat kotlinx.coroutines.BlockingCoroutine.joinBlocking(Builders.kt:54)\\n\\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlockingImpl(Builders.kt:30)\\n\\tat kotlinx.coroutines.BuildersKt.runBlockingImpl(Unknown Source)\\n\\tat kotlinx.coroutines.BuildersKt__Builders_concurrentKt.runBlockingK(Builders.concurrent.kt:172)\\n\\tat kotlinx.coroutines.BuildersKt.runBlockingK(Unknown Source)\\n\\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking(Builders.kt:22)\\n\\tat kotlinx.coroutines.BuildersKt.runBlocking(Unknown Source)\\n\\tat kotlinx.coroutines.BuildersKt__BuildersKt.runBlocking$default(Builders.kt:20)\\n\\tat kotlinx.coroutines.BuildersKt.runBlocking$default(Unknown Source)\\n\\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:86)\\n\\tat io.kotest.runner.junit.platform.KotestJunitPlatformTestEngine.execute(KotestJunitPlatformTestEngine.kt:56)\\n')"
+    }
+  ],
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED"
+}
