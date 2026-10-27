@@ -1,0 +1,5 @@
+{
+  "cause": "Normal5passed; first mutant Playwright grep anchored to title start selects zero tests because match includes file prefix. Original wrong-index/report.json has top-level No tests found. No behavioral negative evidence.",
+  "repair": "Remove only leading anchors in each alternative, retain exact title suffixes and unchanged exact identity report gates. Add prebehavior --list discovery for each mutant and verify exact witness/control identities.",
+  "preserved": "All original assertions,5normal/restored,3mutants,compilation,trace/evidence and protected gates unchanged."
+}
