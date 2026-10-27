@@ -1,0 +1,104 @@
+{
+  "state": "DIAGNOSTIC_GAP_REPRODUCED_NOT_REPAIRED",
+  "gates": {
+    "compile-normal": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-mutant": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "baseline": {
+      "cases": [
+        "APD blue mana pays once and the fixture resolves",
+        "APD explicit life payment works without blue mana",
+        "APD chosen life payment preserves available blue mana",
+        "APD absent payment is rejected without changing state"
+      ],
+      "passed": 2,
+      "failures": 2,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APD explicit life payment works without blue mana": {
+          "line": 56,
+          "contains": [
+            "Selected mana sources cannot pay this ability",
+            "null"
+          ]
+        },
+        "APD chosen life payment preserves available blue mana": {
+          "line": 71,
+          "contains": [
+            "18",
+            "20"
+          ]
+        }
+      }
+    },
+    "mutant": {
+      "cases": [
+        "APD blue mana pays once and the fixture resolves",
+        "APD explicit life payment works without blue mana",
+        "APD chosen life payment preserves available blue mana",
+        "APD absent payment is rejected without changing state"
+      ],
+      "passed": 1,
+      "failures": 3,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APD explicit life payment works without blue mana": {
+          "line": 56,
+          "contains": [
+            "Selected mana sources cannot pay this ability",
+            "null"
+          ]
+        },
+        "APD chosen life payment preserves available blue mana": {
+          "line": 71,
+          "contains": [
+            "18",
+            "20"
+          ]
+        },
+        "APD blue mana pays once and the fixture resolves": {
+          "line": 47,
+          "contains": [
+            "21",
+            "22"
+          ]
+        }
+      }
+    },
+    "restored": {
+      "cases": [
+        "APD blue mana pays once and the fixture resolves",
+        "APD explicit life payment works without blue mana",
+        "APD chosen life payment preserves available blue mana",
+        "APD absent payment is rejected without changing state"
+      ],
+      "passed": 2,
+      "failures": 2,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APD explicit life payment works without blue mana": {
+          "line": 56,
+          "contains": [
+            "Selected mana sources cannot pay this ability",
+            "null"
+          ]
+        },
+        "APD chosen life payment preserves available blue mana": {
+          "line": 71,
+          "contains": [
+            "18",
+            "20"
+          ]
+        }
+      }
+    }
+  }
+}
