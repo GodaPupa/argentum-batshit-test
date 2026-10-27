@@ -1,0 +1,464 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/manual-occurrence.config.ts",
+    "rootDir": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general",
+    "forbidOnly": true,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/GodaPupa/argentum-batshit-test/commit/37a0867d7e85aec634aadd1dc89fe724b8e8a780",
+        "commitHash": "37a0867d7e85aec634aadd1dc89fe724b8e8a780",
+        "buildHref": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/40484246211"
+      },
+      "gitCommit": {
+        "shortHash": "37a0867d7e",
+        "hash": "37a0867d7e85aec634aadd1dc89fe724b8e8a780",
+        "subject": "Pin compile-first actual UI R2 qualification after original import failure",
+        "body": "Pin compile-first actual UI R2 qualification after original import failure",
+        "author": {
+          "name": "GodaPupa",
+          "email": "ericparanada@yahoo.com",
+          "time": 1793094762000
+        },
+        "committer": {
+          "name": "GodaPupa",
+          "email": "ericparanada@yahoo.com",
+          "time": 1793094762000
+        },
+        "branch": "validation/manual-public-occurrence-ui-r2-20261027"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/GodaPupa/argentum-batshit-test/commit/37a0867d7e85aec634aadd1dc89fe724b8e8a780",
+            "commitHash": "37a0867d7e85aec634aadd1dc89fe724b8e8a780",
+            "buildHref": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/40484246211"
+          },
+          "gitCommit": {
+            "shortHash": "37a0867d7e",
+            "hash": "37a0867d7e85aec634aadd1dc89fe724b8e8a780",
+            "subject": "Pin compile-first actual UI R2 qualification after original import failure",
+            "body": "Pin compile-first actual UI R2 qualification after original import failure",
+            "author": {
+              "name": "GodaPupa",
+              "email": "ericparanada@yahoo.com",
+              "time": 1793094762000
+            },
+            "committer": {
+              "name": "GodaPupa",
+              "email": "ericparanada@yahoo.com",
+              "time": 1793094762000
+            },
+            "branch": "validation/manual-public-occurrence-ui-r2-20261027"
+          },
+          "actualWorkers": 1
+        },
+        "id": "",
+        "name": "",
+        "testDir": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general",
+        "testIgnore": [],
+        "testMatch": [
+          "public-occurrence.spec.ts"
+        ],
+        "timeout": 60000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json",
+        {
+          "outputFile": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/report.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "public-occurrence.spec.ts",
+      "file": "public-occurrence.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "UI occurrence original index filtered=false",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 593,
+                  "error": {
+                    "message": "Error: tracing.start: Tracing has been already started",
+                    "stack": "Error: tracing.start: Tracing has been already started\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:86:15",
+                    "location": {
+                      "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                      "column": 61,
+                      "line": 31
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 29 |\u001b[39m   \u001b[36mconst\u001b[39m seats \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson() \u001b[36mas\u001b[39m { player1\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string }\u001b[33m;\u001b[39m player2\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string } }\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m contexts \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall([browser\u001b[33m.\u001b[39mnewContext()\u001b[33m,\u001b[39m browser\u001b[33m.\u001b[39mnewContext()])\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 31 |\u001b[39m   \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall(contexts\u001b[33m.\u001b[39mmap(context \u001b[33m=>\u001b[39m context\u001b[33m.\u001b[39mtracing\u001b[33m.\u001b[39mstart({ screenshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m snapshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m sources\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })))\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 32 |\u001b[39m   \u001b[36mconst\u001b[39m pages\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m[] \u001b[33m=\u001b[39m []\n \u001b[90m 33 |\u001b[39m   \u001b[36mconst\u001b[39m wire\u001b[33m:\u001b[39m \u001b[33mWire\u001b[39m[][] \u001b[33m=\u001b[39m [[]\u001b[33m,\u001b[39m []]\n \u001b[90m 34 |\u001b[39m   \u001b[36mfor\u001b[39m (\u001b[36mconst\u001b[39m [i\u001b[33m,\u001b[39m seat] \u001b[36mof\u001b[39m [seats\u001b[33m.\u001b[39mplayer1\u001b[33m,\u001b[39m seats\u001b[33m.\u001b[39mplayer2]\u001b[33m.\u001b[39mentries()) {\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                        "column": 61,
+                        "line": 31
+                      },
+                      "message": "Error: tracing.start: Tracing has been already started\n\n  29 |   const seats = await response.json() as { player1: { token: string; name: string }; player2: { token: string; name: string } }\n  30 |   const contexts = await Promise.all([browser.newContext(), browser.newContext()])\n> 31 |   await Promise.all(contexts.map(context => context.tracing.start({ screenshots: true, snapshots: true, sources: true })))\n     |                                                             ^\n  32 |   const pages: Page[] = []\n  33 |   const wire: Wire[][] = [[], []]\n  34 |   for (const [i, seat] of [seats.player1, seats.player2].entries()) {\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:86:15"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T10:10:44.144Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-occur-4745a-iginal-index-filtered-false/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-occur-4745a-iginal-index-filtered-false/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                    "column": 61,
+                    "line": 31
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "39b15eec5144719d5526-c51a1d28e3575bed3fd1",
+          "file": "public-occurrence.spec.ts",
+          "line": 85,
+          "column": 7
+        },
+        {
+          "title": "UI occurrence original index filtered=true",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 82,
+                  "error": {
+                    "message": "Error: tracing.start: Tracing has been already started",
+                    "stack": "Error: tracing.start: Tracing has been already started\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:86:15",
+                    "location": {
+                      "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                      "column": 61,
+                      "line": 31
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 29 |\u001b[39m   \u001b[36mconst\u001b[39m seats \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson() \u001b[36mas\u001b[39m { player1\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string }\u001b[33m;\u001b[39m player2\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string } }\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m contexts \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall([browser\u001b[33m.\u001b[39mnewContext()\u001b[33m,\u001b[39m browser\u001b[33m.\u001b[39mnewContext()])\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 31 |\u001b[39m   \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall(contexts\u001b[33m.\u001b[39mmap(context \u001b[33m=>\u001b[39m context\u001b[33m.\u001b[39mtracing\u001b[33m.\u001b[39mstart({ screenshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m snapshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m sources\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })))\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 32 |\u001b[39m   \u001b[36mconst\u001b[39m pages\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m[] \u001b[33m=\u001b[39m []\n \u001b[90m 33 |\u001b[39m   \u001b[36mconst\u001b[39m wire\u001b[33m:\u001b[39m \u001b[33mWire\u001b[39m[][] \u001b[33m=\u001b[39m [[]\u001b[33m,\u001b[39m []]\n \u001b[90m 34 |\u001b[39m   \u001b[36mfor\u001b[39m (\u001b[36mconst\u001b[39m [i\u001b[33m,\u001b[39m seat] \u001b[36mof\u001b[39m [seats\u001b[33m.\u001b[39mplayer1\u001b[33m,\u001b[39m seats\u001b[33m.\u001b[39mplayer2]\u001b[33m.\u001b[39mentries()) {\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                        "column": 61,
+                        "line": 31
+                      },
+                      "message": "Error: tracing.start: Tracing has been already started\n\n  29 |   const seats = await response.json() as { player1: { token: string; name: string }; player2: { token: string; name: string } }\n  30 |   const contexts = await Promise.all([browser.newContext(), browser.newContext()])\n> 31 |   await Promise.all(contexts.map(context => context.tracing.start({ screenshots: true, snapshots: true, sources: true })))\n     |                                                             ^\n  32 |   const pages: Page[] = []\n  33 |   const wire: Wire[][] = [[], []]\n  34 |   for (const [i, seat] of [seats.player1, seats.player2].entries()) {\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:86:15"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T10:10:46.408Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-occurrence-original-index-filtered-true/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-occurrence-original-index-filtered-true/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                    "column": 61,
+                    "line": 31
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "39b15eec5144719d5526-62ad65c739986498ac3f",
+          "file": "public-occurrence.spec.ts",
+          "line": 85,
+          "column": 7
+        },
+        {
+          "title": "UI replacement resets filter and selection",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 2,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 90,
+                  "error": {
+                    "message": "Error: tracing.start: Tracing has been already started",
+                    "stack": "Error: tracing.start: Tracing has been already started\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:109:13",
+                    "location": {
+                      "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                      "column": 61,
+                      "line": 31
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 29 |\u001b[39m   \u001b[36mconst\u001b[39m seats \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson() \u001b[36mas\u001b[39m { player1\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string }\u001b[33m;\u001b[39m player2\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string } }\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m contexts \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall([browser\u001b[33m.\u001b[39mnewContext()\u001b[33m,\u001b[39m browser\u001b[33m.\u001b[39mnewContext()])\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 31 |\u001b[39m   \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall(contexts\u001b[33m.\u001b[39mmap(context \u001b[33m=>\u001b[39m context\u001b[33m.\u001b[39mtracing\u001b[33m.\u001b[39mstart({ screenshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m snapshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m sources\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })))\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 32 |\u001b[39m   \u001b[36mconst\u001b[39m pages\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m[] \u001b[33m=\u001b[39m []\n \u001b[90m 33 |\u001b[39m   \u001b[36mconst\u001b[39m wire\u001b[33m:\u001b[39m \u001b[33mWire\u001b[39m[][] \u001b[33m=\u001b[39m [[]\u001b[33m,\u001b[39m []]\n \u001b[90m 34 |\u001b[39m   \u001b[36mfor\u001b[39m (\u001b[36mconst\u001b[39m [i\u001b[33m,\u001b[39m seat] \u001b[36mof\u001b[39m [seats\u001b[33m.\u001b[39mplayer1\u001b[33m,\u001b[39m seats\u001b[33m.\u001b[39mplayer2]\u001b[33m.\u001b[39mentries()) {\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                        "column": 61,
+                        "line": 31
+                      },
+                      "message": "Error: tracing.start: Tracing has been already started\n\n  29 |   const seats = await response.json() as { player1: { token: string; name: string }; player2: { token: string; name: string } }\n  30 |   const contexts = await Promise.all([browser.newContext(), browser.newContext()])\n> 31 |   await Promise.all(contexts.map(context => context.tracing.start({ screenshots: true, snapshots: true, sources: true })))\n     |                                                             ^\n  32 |   const pages: Page[] = []\n  33 |   const wire: Wire[][] = [[], []]\n  34 |   for (const [i, seat] of [seats.player1, seats.player2].entries()) {\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:109:13"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T10:10:47.206Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-replacement-resets-filter-and-selection/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-replacement-resets-filter-and-selection/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                    "column": 61,
+                    "line": 31
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "39b15eec5144719d5526-f52666b761613e7b693b",
+          "file": "public-occurrence.spec.ts",
+          "line": 108,
+          "column": 5
+        },
+        {
+          "title": "UI held callback cannot answer replacement",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 3,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 68,
+                  "error": {
+                    "message": "Error: tracing.start: Tracing has been already started",
+                    "stack": "Error: tracing.start: Tracing has been already started\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:128:13",
+                    "location": {
+                      "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                      "column": 61,
+                      "line": 31
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 29 |\u001b[39m   \u001b[36mconst\u001b[39m seats \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson() \u001b[36mas\u001b[39m { player1\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string }\u001b[33m;\u001b[39m player2\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string } }\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m contexts \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall([browser\u001b[33m.\u001b[39mnewContext()\u001b[33m,\u001b[39m browser\u001b[33m.\u001b[39mnewContext()])\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 31 |\u001b[39m   \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall(contexts\u001b[33m.\u001b[39mmap(context \u001b[33m=>\u001b[39m context\u001b[33m.\u001b[39mtracing\u001b[33m.\u001b[39mstart({ screenshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m snapshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m sources\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })))\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 32 |\u001b[39m   \u001b[36mconst\u001b[39m pages\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m[] \u001b[33m=\u001b[39m []\n \u001b[90m 33 |\u001b[39m   \u001b[36mconst\u001b[39m wire\u001b[33m:\u001b[39m \u001b[33mWire\u001b[39m[][] \u001b[33m=\u001b[39m [[]\u001b[33m,\u001b[39m []]\n \u001b[90m 34 |\u001b[39m   \u001b[36mfor\u001b[39m (\u001b[36mconst\u001b[39m [i\u001b[33m,\u001b[39m seat] \u001b[36mof\u001b[39m [seats\u001b[33m.\u001b[39mplayer1\u001b[33m,\u001b[39m seats\u001b[33m.\u001b[39mplayer2]\u001b[33m.\u001b[39mentries()) {\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                        "column": 61,
+                        "line": 31
+                      },
+                      "message": "Error: tracing.start: Tracing has been already started\n\n  29 |   const seats = await response.json() as { player1: { token: string; name: string }; player2: { token: string; name: string } }\n  30 |   const contexts = await Promise.all([browser.newContext(), browser.newContext()])\n> 31 |   await Promise.all(contexts.map(context => context.tracing.start({ screenshots: true, snapshots: true, sources: true })))\n     |                                                             ^\n  32 |   const pages: Page[] = []\n  33 |   const wire: Wire[][] = [[], []]\n  34 |   for (const [i, seat] of [seats.player1, seats.player2].entries()) {\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:128:13"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T10:10:48.012Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-held-callback-cannot-answer-replacement/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-held-callback-cannot-answer-replacement/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                    "column": 61,
+                    "line": 31
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "39b15eec5144719d5526-11252c933bd0eca45bae",
+          "file": "public-occurrence.spec.ts",
+          "line": 127,
+          "column": 5
+        },
+        {
+          "title": "UI wrong owner has no choice controls",
+          "ok": false,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 60000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "",
+              "projectName": "",
+              "results": [
+                {
+                  "workerIndex": 4,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 71,
+                  "error": {
+                    "message": "Error: tracing.start: Tracing has been already started",
+                    "stack": "Error: tracing.start: Tracing has been already started\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:155:13",
+                    "location": {
+                      "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                      "column": 61,
+                      "line": 31
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 29 |\u001b[39m   \u001b[36mconst\u001b[39m seats \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m response\u001b[33m.\u001b[39mjson() \u001b[36mas\u001b[39m { player1\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string }\u001b[33m;\u001b[39m player2\u001b[33m:\u001b[39m { token\u001b[33m:\u001b[39m string\u001b[33m;\u001b[39m name\u001b[33m:\u001b[39m string } }\n \u001b[90m 30 |\u001b[39m   \u001b[36mconst\u001b[39m contexts \u001b[33m=\u001b[39m \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall([browser\u001b[33m.\u001b[39mnewContext()\u001b[33m,\u001b[39m browser\u001b[33m.\u001b[39mnewContext()])\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 31 |\u001b[39m   \u001b[36mawait\u001b[39m \u001b[33mPromise\u001b[39m\u001b[33m.\u001b[39mall(contexts\u001b[33m.\u001b[39mmap(context \u001b[33m=>\u001b[39m context\u001b[33m.\u001b[39mtracing\u001b[33m.\u001b[39mstart({ screenshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m snapshots\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m\u001b[33m,\u001b[39m sources\u001b[33m:\u001b[39m \u001b[36mtrue\u001b[39m })))\n \u001b[90m    |\u001b[39m                                                             \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 32 |\u001b[39m   \u001b[36mconst\u001b[39m pages\u001b[33m:\u001b[39m \u001b[33mPage\u001b[39m[] \u001b[33m=\u001b[39m []\n \u001b[90m 33 |\u001b[39m   \u001b[36mconst\u001b[39m wire\u001b[33m:\u001b[39m \u001b[33mWire\u001b[39m[][] \u001b[33m=\u001b[39m [[]\u001b[33m,\u001b[39m []]\n \u001b[90m 34 |\u001b[39m   \u001b[36mfor\u001b[39m (\u001b[36mconst\u001b[39m [i\u001b[33m,\u001b[39m seat] \u001b[36mof\u001b[39m [seats\u001b[33m.\u001b[39mplayer1\u001b[33m,\u001b[39m seats\u001b[33m.\u001b[39mplayer2]\u001b[33m.\u001b[39mentries()) {\u001b[0m"
+                  },
+                  "errors": [
+                    {
+                      "location": {
+                        "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                        "column": 61,
+                        "line": 31
+                      },
+                      "message": "Error: tracing.start: Tracing has been already started\n\n  29 |   const seats = await response.json() as { player1: { token: string; name: string }; player2: { token: string; name: string } }\n  30 |   const contexts = await Promise.all([browser.newContext(), browser.newContext()])\n> 31 |   await Promise.all(contexts.map(context => context.tracing.start({ screenshots: true, snapshots: true, sources: true })))\n     |                                                             ^\n  32 |   const pages: Page[] = []\n  33 |   const wire: Wire[][] = [[], []]\n  34 |   for (const [i, seat] of [seats.player1, seats.player2].entries()) {\n    at map (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:61)\n    at openFixture (/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:31:30)\n    at /home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts:155:13"
+                    }
+                  ],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-10-27T10:10:48.797Z",
+                  "annotations": [],
+                  "attachments": [
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-wrong-owner-has-no-choice-controls/error-context.md"
+                    },
+                    {
+                      "name": "trace",
+                      "contentType": "application/zip",
+                      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-public-occurrence-ui-r2-evidence/normal/results/public-occurrence-UI-wrong-owner-has-no-choice-controls/trace.zip"
+                    }
+                  ],
+                  "errorLocation": {
+                    "file": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/e2e-scenarios/tests/general/public-occurrence.spec.ts",
+                    "column": 61,
+                    "line": 31
+                  }
+                }
+              ],
+              "status": "unexpected"
+            }
+          ],
+          "id": "39b15eec5144719d5526-a62fb6139e40b6b403c4",
+          "file": "public-occurrence.spec.ts",
+          "line": 154,
+          "column": 5
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-10-27T10:10:43.481Z",
+    "duration": 5601.077,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 5,
+    "flaky": 0
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "cause": "All five browser cases failed at openFixture tracing.start: Tracing has been already started. Config trace:on and explicit context tracing.start collide. No behavioral assertion reached.",
+  "compile_stages": 6,
+  "compile_exit_codes": [
+    "0",
+    "0",
+    "0",
+    "0",
+    "0",
+    "0"
+  ],
+  "fixture_exit": "0",
+  "repair": "Set Playwright automatic trace off; keep explicit context tracing.start/stop and mandatory seat-0/seat-1 trace attachments and archive checks. All test bodies and assertion expectations unchanged.",
+  "behavioral_negative_evidence": false
+}
