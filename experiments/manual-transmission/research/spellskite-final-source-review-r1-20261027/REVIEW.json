@@ -1,0 +1,264 @@
+{
+  "state": "ISOLATED_SOURCE_REVIEW_NOT_IMPLEMENTATION_OR_RUNTIME_EVIDENCE",
+  "reviewed_source": "a7b8ea73373700d842f9dd42c324db7971ef08e0",
+  "source_tree": "899bdcb0606fc845a023f2ffd173ac2fe397184d",
+  "pending_qualification": 40564542856,
+  "presumes_pending_success": false,
+  "original_spec": {
+    "ref": "88cd69c88628e0dfd78c2e45c067c91d727aecb8",
+    "path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
+    "blob": "ae0300daa129ce5d3398e5c16eba774f722fee10"
+  },
+  "reviewed_blobs": {
+    ".agents/skills/add-card/SKILL.md": "ee2c25e41f4454ea8ad80ff63def6e019ccf5b8c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": "b009f3c140e8819b8617e6b9f69405763e371676",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt": "3664ceb0ad9ad3d6178054cfba770d7a9a2809eb",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/CostHandler.kt": "d20e9f05da47b6d67147a83930472f8757ddb8dc",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/cost/CostPaymentService.kt": "f6617aeb0fd1376aea740f1e068bc34abc5d8363",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastPaymentProcessor.kt": "24afa8dc691755cc010a6d03e15160f6ccffea51",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/FixedRecipientChoice.kt": "03355d435e56eb68617a767577a4f4f8071042bf",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientChoiceTest.kt": "4a29fc58467822dbc731b77774a10f6f3281dfa7",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientRetargetingTest.kt": "5498852715c67acfd61ca4593876c6f622b4acdc",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceMatrixTest.kt": "284c6003b16678e1f912cba0817ff949bd7da71a",
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/FixedRecipientRetargetEmitterTest.kt": "8c1f768af0b3ac595857f728aaf2d82e0c076aa0",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/NewPhyrexiaSet.kt": "cbc06b9d762a5217c5a4b6196b4ce4e2b657859c",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/CommanderLegendsBattleForBaldursGateSet.kt": "a902bd9e990b5ee7b80095443486838e100d6475"
+  },
+  "findings": [
+    "Bounded generator emits Effects.ChangeTargetTo(stackObject=selectedStack,recipient=EffectTarget.Self); existing generic/public matrices provide supporting evidence but do not instantiate actual Spellskite.",
+    "NPH scaffold exists under mtg-sets/2008-2016; CLB under mtg-sets/2017-2022. Exact NPH cards treec3704bad8c5160f13aea1030c0d062831e8ed220 contains ten cards and no Spellskite.kt. Fresh global canonical/printing and Scryfall metadata checks remain required at card implementation.",
+    "Source-level payment gap candidate: PaymentStrategy.Explicit carries phyrexianLifePayments, but ActivateAbilityHandler contains no use of that field or withPhyrexianPaidByLife. Its Explicit branch uses unreduced manaCost with payPartial/solve; CostHandler mana atom only pays ManaPool. ManaSolver.canPay admits life-pip affordability, while execution solve handles color requirements. Spell casting separately validates and pays life in CastPaymentProcessor. Actual activated-ability life-payment execution must be demonstrated with a minimal unregistered test card before deciding repair; no runtime failure claimed.",
+    "Activation/payment paths inspected here are not among final protocol197protected paths. Any repair must remain bounded, preserve existing actions/payment defaults and unrelated cost behavior, and be independently compiled with executable negative controls before card acceptance.",
+    "Card discovery is automatic: placing canonical val in NPH/cards would register it. Do not add discoverable Spellskite or rebless protected snapshots while final qualification is pending. Prepare an unregistered card fixture after final original acceptance and satisfy all card source/admission gates."
+  ],
+  "cases": [
+    {
+      "id": "single_spell",
+      "required_behavior": "Redirect one legal creature target to the same battlefield visit of Spellskite; resolve damage on it.",
+      "supporting_generic_test_labels": [
+        "PM optional public named resolution instant",
+        "FRC SDK serialization and registered dispatch occurrence"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "activation",
+      "required_behavior": "Redirect a legal activated-ability target, checking the original ability controller and source characteristics.",
+      "supporting_generic_test_labels": [
+        "FR01",
+        "PM optional public named resolution activation"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "trigger",
+      "required_behavior": "Redirect a legal triggered-ability target with its captured source/controller; no spell-only restriction leakage.",
+      "supporting_generic_test_labels": [
+        "PM optional public named resolution trigger",
+        "FRC queued targeting triggers retain order"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "zero_targets",
+      "required_behavior": "Ability may target a stack object with zero targets; resolving it changes nothing.",
+      "supporting_generic_test_labels": [
+        "FR05",
+        "FRC SDK aligned missing stack target does not shift to later target"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "illegal_recipient",
+      "required_behavior": "Ability may target a spell whose target cannot legally become Spellskite; leave every target unchanged.",
+      "supporting_generic_test_labels": [
+        "FR11",
+        "PM recipient public reevaluation"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "source_departure",
+      "required_behavior": "Spellskite leaves before resolution; no target changes.",
+      "supporting_generic_test_labels": [
+        "FRC public recipient visit invalidates suspended offer returned=false"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "source_blink",
+      "required_behavior": "Spellskite leaves and returns with the same physical entity id; the old ability must not retarget to the new visit.",
+      "supporting_generic_test_labels": [
+        "FR08",
+        "FRC public recipient visit invalidates suspended offer returned=true"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "two_independent_instances",
+      "required_behavior": "Two legal slots from separate target requirements: controller chooses exactly one slot; other slot and count are unchanged.",
+      "supporting_generic_test_labels": [
+        "FR02",
+        "FRC public serialized selection and replay rejection"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "same_instance_count_two",
+      "required_behavior": "One requirement selecting two targets: replace only one; forbid a duplicate Spellskite within that same target instance.",
+      "supporting_generic_test_labels": [
+        "FR03"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "cross_instance_duplicate",
+      "required_behavior": "Distinct target instances may both name Spellskite when each is legal; do not apply a blanket global duplicate prohibition.",
+      "supporting_generic_test_labels": [
+        "FR04",
+        "FRC repeated public recipient does not retrigger ward"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "another_target_relation",
+      "required_behavior": "Replacing either slot cannot violate a later another-target restriction or otherwise make an unchanged target newly illegal.",
+      "supporting_generic_test_labels": [],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "controller_relations",
+      "required_behavior": "Preserve same-controller/different-controller and other whole-group restrictions.",
+      "supporting_generic_test_labels": [
+        "FR12"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "protection_hexproof_shroud",
+      "required_behavior": "Use original stack object controller and source qualities for targeting restrictions; not the redirecting ability controller.",
+      "supporting_generic_test_labels": [
+        "FR11",
+        "FR source",
+        "PM source public reevaluation"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "variable_count",
+      "required_behavior": "Keep the originally chosen target count, with correct requirement/slot mapping after optional or variable target counts.",
+      "supporting_generic_test_labels": [
+        "FR13",
+        "PM optional public named resolution"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "unchanged_illegal_target",
+      "required_behavior": "An unchanged target already illegal before retargeting remains unchanged; do not silently refresh its captured object identity.",
+      "supporting_generic_test_labels": [
+        "FR10"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "same_id_different_visits",
+      "required_behavior": "When one slot is retargeted to a new visit of an entity another slot targeted earlier, retain separate per-slot identities.",
+      "supporting_generic_test_labels": [
+        "FR08",
+        "FR10"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "divided_damage",
+      "required_behavior": "Move the chosen slot and its fixed original damage allocation together; retain all other shares and totals.",
+      "supporting_generic_test_labels": [
+        "FR14",
+        "PM division public occurrence amounts"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "modal_and_splice",
+      "required_behavior": "Preserve chosen modes, mode-local and splice-local target views; exactly the selected slot changes in every relevant view.",
+      "supporting_generic_test_labels": [
+        "PM modal public original boundaries",
+        "PM splice public original boundaries and tail"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "payment",
+      "required_behavior": "Actual Spellskite activation pays either one blue mana or two life; no free or double payment.",
+      "supporting_generic_test_labels": [],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": "At minimum blue-only, explicit two-life/no-blue, blue available but life chosen, insufficient life, invalid colors/extra pips, failed target rollback, repeated activation; assert exact life/mana/events/no double payment."
+    },
+    {
+      "id": "serialized_choice",
+      "required_behavior": "Round-trip state at a multi-slot choice; reject stale/illegal slot answers and reproduce accepted state/events exactly.",
+      "supporting_generic_test_labels": [
+        "FR07",
+        "FRC public rejection preserves pending choice",
+        "FRC public serialized selection and replay rejection"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "targeting_event",
+      "required_behavior": "Emit the newly targeted occurrence required for targeting/ward triggers without retriggering unchanged targets.",
+      "supporting_generic_test_labels": [
+        "FR01",
+        "FR04",
+        "FRC public occurrence choice routes ward payment",
+        "PM spell queued targeting triggers"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    },
+    {
+      "id": "no_reselection",
+      "required_behavior": "No legal replacement leaves the stack object byte-identical, including target stamps and allocations.",
+      "supporting_generic_test_labels": [
+        "FR05",
+        "PM control no authoritative plan offers no choice"
+      ],
+      "status": "ACTUAL_CARD_SCENARIO_REQUIRED;supporting labels are not replacement acceptance",
+      "extra": null
+    }
+  ],
+  "remaining": [
+    "Receive final compatibility original artifact exactly once before dependent implementation.",
+    "Rebind source and demonstrate payment candidate with normal/mutant compilation before behavioral evidence.",
+    "Refresh real metadata/rulings/printings; preserve canonical NPH and CLB reprint placement requirements.",
+    "Freeze22scenario card-specific suite and deliberate behavioral mutants; compile forms first; preserve existing source/assertions/goldens/fixtures.",
+    "Only after source-specific card gates consider registration/coverage; full multiplayer and official-game authority remain separate."
+  ],
+  "runtime_tests_executed": 0,
+  "card_registration": false,
+  "multiplayer_admission": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
