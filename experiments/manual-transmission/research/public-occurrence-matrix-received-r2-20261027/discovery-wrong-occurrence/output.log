@@ -1,0 +1,236 @@
+scripts/gradle-locked :rules-engine:test --tests "*PublicOccurrenceMatrixTest" --rerun-tasks --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+gradle-locked: 'shlock' not found; running ./gradlew unlocked
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :rules-engine:test --tests *PublicOccurrenceMatrixTest
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :buildSrc:generateExternalPluginSpecBuilders
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins
+> Task :buildSrc:generateScriptPluginAdapters
+> Task :buildSrc:pluginDescriptors
+> Task :buildSrc:processResources
+> Task :buildSrc:compilePluginsBlocks
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors
+> Task :buildSrc:compileKotlin
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:classes
+> Task :buildSrc:jar
+> Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :rules-engine:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :rules-engine:processResources
+> Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :rules-engine:processTestFixturesResources NO-SOURCE
+> Task :mtg-sdk:processResources NO-SOURCE
+> Task :mtg-sets:processResources
+> Task :rules-engine:koverFindJar
+> Task :rules-engine:processTestResources
+> Task :mtg-sets:1993-1999:processResources NO-SOURCE
+> Task :mtg-sets:2000-2002:processResources NO-SOURCE
+> Task :mtg-sets:2003-2007:processResources NO-SOURCE
+> Task :mtg-sets:2008-2016:processResources NO-SOURCE
+> Task :mtg-sets:2017-2022:processResources NO-SOURCE
+> Task :mtg-sets:2023:processResources NO-SOURCE
+> Task :mtg-sets:2024:processResources NO-SOURCE
+> Task :mtg-sets:2025:processResources NO-SOURCE
+> Task :mtg-sets:2026:processResources NO-SOURCE
+> Task :mtg-sets:core:processResources
+> Task :mtg-sdk:compileKotlin
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt:342:9 'when' is exhaustive so 'else' is redundant here.
+
+> Task :mtg-sdk:compileJava NO-SOURCE
+> Task :mtg-sdk:classes UP-TO-DATE
+> Task :mtg-sdk:jar
+> Task :mtg-sets:core:compileKotlin
+> Task :mtg-sets:core:compileJava NO-SOURCE
+> Task :mtg-sets:core:classes
+> Task :mtg-sets:core:jar
+> Task :rules-engine:compileKotlin
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt:370:62 No cast needed.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt:178:37 Unnecessary safe call on a non-null receiver of type 'EntityId'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt:536:40 Unnecessary safe call on a non-null receiver of type 'EntityId'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt:541:21 Condition is always 'true'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ExileTopCardMayPlayFreeExecutor.kt:79:60 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EntityId'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/PendingTokenEntries.kt:46:13 'when' is exhaustive so 'else' is redundant here.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt:820:49 Unnecessary safe call on a non-null receiver of type 'CardDefinition'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt:626:27 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ObjectIdentity'.
+
+> Task :rules-engine:compileJava NO-SOURCE
+> Task :rules-engine:classes
+> Task :rules-engine:jar
+> Task :mtg-sets:1993-1999:compileKotlin
+> Task :mtg-sets:1993-1999:compileJava NO-SOURCE
+> Task :mtg-sets:1993-1999:classes UP-TO-DATE
+> Task :mtg-sets:1993-1999:jar
+> Task :mtg-sets:2000-2002:compileKotlin
+> Task :mtg-sets:2000-2002:compileJava NO-SOURCE
+> Task :mtg-sets:2000-2002:classes UP-TO-DATE
+> Task :mtg-sets:2000-2002:jar
+> Task :mtg-sets:2003-2007:compileKotlin
+> Task :mtg-sets:2003-2007:compileJava NO-SOURCE
+> Task :mtg-sets:2003-2007:classes UP-TO-DATE
+> Task :mtg-sets:2003-2007:jar
+> Task :mtg-sets:2008-2016:compileKotlin
+> Task :mtg-sets:2008-2016:compileJava NO-SOURCE
+> Task :mtg-sets:2008-2016:classes UP-TO-DATE
+> Task :mtg-sets:2008-2016:jar
+> Task :mtg-sets:2017-2022:compileKotlin
+> Task :mtg-sets:2017-2022:compileJava NO-SOURCE
+> Task :mtg-sets:2017-2022:classes UP-TO-DATE
+> Task :mtg-sets:2017-2022:jar
+> Task :mtg-sets:2023:compileKotlin
+> Task :mtg-sets:2023:compileJava NO-SOURCE
+> Task :mtg-sets:2023:classes UP-TO-DATE
+> Task :mtg-sets:2023:jar
+> Task :mtg-sets:2024:compileKotlin
+> Task :mtg-sets:2024:compileJava NO-SOURCE
+> Task :mtg-sets:2024:classes UP-TO-DATE
+> Task :mtg-sets:2024:jar
+> Task :mtg-sets:2025:compileKotlin
+> Task :mtg-sets:2025:compileJava NO-SOURCE
+> Task :mtg-sets:2025:classes UP-TO-DATE
+> Task :mtg-sets:2025:jar
+> Task :mtg-sets:2026:compileKotlin
+> Task :mtg-sets:2026:compileJava NO-SOURCE
+> Task :mtg-sets:2026:classes UP-TO-DATE
+> Task :mtg-sets:2026:jar
+> Task :mtg-sets:compileKotlin
+> Task :mtg-sets:compileJava NO-SOURCE
+> Task :mtg-sets:classes
+> Task :mtg-sets:jar
+> Task :rules-engine:compileTestFixturesKotlin
+> Task :rules-engine:compileTestFixturesJava NO-SOURCE
+> Task :rules-engine:testFixturesClasses UP-TO-DATE
+> Task :rules-engine:testFixturesJar
+> Task :rules-engine:compileTestKotlin
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:66:28 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:92:32 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:93:32 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:94:32 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:95:32 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:96:32 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:108:28 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:207:28 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:208:28 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:209:88 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt:210:90 Unnecessary non-null assertion (!!) on a non-null receiver of type 'BattlefieldEntrySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/TwoHeadedGiantTeamPriorityTest.kt:150:66 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EntityId'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/AbilitySourceCostDepartureTest.kt:34:40 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EntitySnapshot'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/AnyPlayerDiscardActivationScenarioTest.kt:47:42 Unnecessary non-null assertion (!!) on a non-null receiver of type 'AdditionalCostData'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ModalTargetCaptureTest.kt:91:34 Unnecessary non-null assertion (!!) on a non-null receiver of type 'TargetSlotPlan'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RevealFromHandAdditionalCostTest.kt:143:49 Unnecessary non-null assertion (!!) on a non-null receiver of type 'AdditionalCostInfo'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RevealFromHandAdditionalCostTest.kt:226:33 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RevealFromHandAdditionalCostTest.kt:260:33 Unnecessary non-null assertion (!!) on a non-null receiver of type 'String'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceZoneIdentityTest.kt:160:40 Unnecessary safe call on a non-null receiver of type 'Map<String, List<EntityId>>'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/state/ObjectIdentityTest.kt:417:17 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EffectContext'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/state/ObjectIdentityTest.kt:418:17 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EffectContext'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/state/ObjectIdentityTest.kt:419:17 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EffectContext'.
+w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/state/ObjectIdentityTest.kt:421:17 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EffectContext'.
+
+> Task :rules-engine:compileTestJava NO-SOURCE
+> Task :rules-engine:testClasses
+> Task :rules-engine:test
+
+PublicOccurrenceMatrixTest > PM optional public named resolution instant PASSED
+
+PublicOccurrenceMatrixTest > PM division public occurrence amounts instant PASSED
+
+PublicOccurrenceMatrixTest > PM optional public named resolution activation PASSED
+
+PublicOccurrenceMatrixTest > PM division public occurrence amounts activation PASSED
+
+PublicOccurrenceMatrixTest > PM optional public named resolution trigger PASSED
+
+PublicOccurrenceMatrixTest > PM division public occurrence amounts trigger PASSED
+
+PublicOccurrenceMatrixTest > PM modal public original boundaries instant PASSED
+
+PublicOccurrenceMatrixTest > PM modal public original boundaries trigger PASSED
+
+PublicOccurrenceMatrixTest > PM splice public original boundaries and tail PASSED
+
+PublicOccurrenceMatrixTest > PM spell queued targeting triggers order=0 departed=false SKIPPED
+
+PublicOccurrenceMatrixTest > PM spell queued targeting triggers order=0 departed=true SKIPPED
+
+PublicOccurrenceMatrixTest > PM spell queued targeting triggers order=1 departed=false SKIPPED
+
+PublicOccurrenceMatrixTest > PM spell queued targeting triggers order=1 departed=true SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation activation live color SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation activation live subtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation activation live cardtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation activation removed color SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation activation removed subtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation activation removed cardtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation activation returned color SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation activation returned subtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation activation returned cardtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM recipient public reevaluation activation shroud SKIPPED
+
+PublicOccurrenceMatrixTest > PM recipient public reevaluation activation protection SKIPPED
+
+PublicOccurrenceMatrixTest > PM recipient public reevaluation activation controller SKIPPED
+
+PublicOccurrenceMatrixTest > PM recipient public reevaluation activation type SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation trigger live color SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation trigger live subtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation trigger live cardtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation trigger removed color SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation trigger removed subtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation trigger removed cardtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation trigger returned color SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation trigger returned subtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM source public reevaluation trigger returned cardtype SKIPPED
+
+PublicOccurrenceMatrixTest > PM recipient public reevaluation trigger shroud SKIPPED
+
+PublicOccurrenceMatrixTest > PM recipient public reevaluation trigger protection SKIPPED
+
+PublicOccurrenceMatrixTest > PM recipient public reevaluation trigger controller SKIPPED
+
+PublicOccurrenceMatrixTest > PM recipient public reevaluation trigger type SKIPPED
+
+PublicOccurrenceMatrixTest > PM control no authoritative plan offers no choice PASSED
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run_2-1793112946249.json
+Kotlin build report is written to file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/kotlin-build/argentum-engine-build-2026-10-27-15-01-12-0.txt
+
+[Incubating] Problems report is available at: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 5m 30s
+44 actionable tasks: 44 executed
+Configuration cache entry stored.
