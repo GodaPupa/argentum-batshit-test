@@ -1,0 +1,132 @@
+{
+  "state": "ISOLATED_NEXT_PUBLIC_MATRIX_REVIEW_NOT_IMPLEMENTED_OR_EXECUTED",
+  "source": "61a7d741e32aeeb36bd063a9838d6f15c63f37ee",
+  "tree": "fefde4682ed7644ac96f13286a5f98f4f3b2f5f8",
+  "active_frozen_run": 40478462138,
+  "source_unchanged": true,
+  "bindings": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientRetargetingTest.kt": "5498852715c67acfd61ca4593876c6f622b4acdc",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientSourceContextTest.kt": "ae4f51dbee2bf421fbec59ff103fa44153111479",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientPlayerRelationTest.kt": "3d1e1c8cdef626fa4955aaffecc9a79dba39baec",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CurrentTargetResolutionTest.kt": "a30fdd042acf76efaf8442b69d6f8bea8fbdc68c",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientChoiceTest.kt": "4a29fc58467822dbc731b77774a10f6f3281dfa7"
+  },
+  "inherited": {
+    "public43": "1b74a7551dba424d7b514d5c0b6234f8685755e5",
+    "generator": "0794e3ff34b66f3cf4c4815bbdaf1e1adf0961e6",
+    "targeting_full": "a702aad71c2a3aeae9c4645a65c88d346451c697",
+    "transport_R7": "69f2dce2835a55ad364ee9b1a9c75f7b4b1e5ac9",
+    "client64": "7b1b26092410a54860db499adc56496ef35e0765"
+  },
+  "findings": [
+    "FR02 proves omitted group/address retention through internal FixedRecipientRetargeting.offer/apply, not a serialized public choice. Do not substitute its flat targets as the original group source.",
+    "FR14 preserves selected division through internal apply; CO17/19/20 pin aggregate/discard and immutability at resolver boundaries. Public Choice→SubmitDecision→resolution division chain remains unasserted.",
+    "CO18 moves modal/splice views atomically through withCurrentTargetPlan, while CO04-09/21/22 cover resolver mapping/paused nulls/incoherent views. They do not show fixed-recipient public choice preserving those views.",
+    "Public43 queued targeting triggers iterate only activation/trigger; instant/sorcery public target-filter and ward/nested choice coverage already exists, but spell-origin queued trigger ordering/target pause/source departure is missing.",
+    "FSC tests explicitly label internal occurrence-operation boundaries and call offer/apply directly. Their live/removed/returned/partial source characterization and recipient protection inputs can be reused for public suspension tests without new runtime semantics.",
+    "Public43 already proves wrong actor/decision/index/type/cancel rejection, replay rejection, recipient departed/returned, missing stack, newer current-plan conflict, SDK serialization, ability/spell ward and repeated-recipient no-retrigger. Preserve these43 assertions; do not duplicate their historical qualification.",
+    "ActualUI run40478462138 is independent pending evidence, not presumed accepted. Its5cases are not the64focused client compatibility floor. Exact64contract copied unchanged for final-source use."
+  ],
+  "bounded_next_matrix": [
+    {
+      "id": "PM-OPTIONAL",
+      "prior": [
+        "FR02",
+        "CO04-06"
+      ],
+      "kinds": [
+        "instant",
+        "activation",
+        "trigger"
+      ],
+      "required": "Create requirement-indexed empty first group followed by two repeated occurrences; serialized public SDK offer displays group2/group3; choose second displayed index; assert original empty group remains, only address(2,0) changes, original provenance and first live occurrence stay byte-equal. Resolve effects against original named requirement, not flattened reconstruction."
+    },
+    {
+      "id": "PM-MODAL",
+      "prior": [
+        "CO07",
+        "CO09",
+        "CO18",
+        "CO22"
+      ],
+      "kinds": [
+        "modal spell",
+        "modal trigger"
+      ],
+      "required": "Preserve chosenModes, modeInstanceCounts, modeTargetRequirements and ordered per-mode occurrences through serialized public choice; assert projected compatibility views coherent, original slots unchanged, and subsequent resolution hits only intended live occurrence. Include omitted optional group inside a mode."
+    },
+    {
+      "id": "PM-SPLICE",
+      "prior": [
+        "CO08",
+        "CO18",
+        "CO21"
+      ],
+      "kinds": [
+        "spliced spell"
+      ],
+      "required": "Public fixed-recipient choice preserves original splice boundaries/counts/names, ordered target groups, named bindings and remaining tail; resolve base effect plus splice against new occurrence only. No inferred boundaries from flat target list."
+    },
+    {
+      "id": "PM-DIVISION",
+      "prior": [
+        "FR14",
+        "CO17",
+        "CO19",
+        "CO20"
+      ],
+      "kinds": [
+        "instant",
+        "activation",
+        "trigger"
+      ],
+      "required": "Two equal-entity occurrences carry different original assigned amounts; choose second publicly, assert its amount follows the occurrence, unchanged amount stays, aggregate mirror updates atomically, original total/provenance unchanged; resolve per-recipient damage. Retain omitted groups if present."
+    },
+    {
+      "id": "PM-SPELL-QUEUE",
+      "prior": [
+        "FRC queued targeting triggers retain order activation/trigger"
+      ],
+      "kinds": [
+        "instant"
+      ],
+      "axes": {
+        "order": [
+          0,
+          1
+        ],
+        "observer_departed": [
+          false,
+          true
+        ]
+      },
+      "required": "Extend public queued-target trigger proof to spell source. Observe exact target event, ordered trigger choice, pause for trigger target, queued-continuation count, serialization, source departure, original spell below exactlytwo triggers; both trigger effects execute once in declared order and the original spell retains changed target."
+    },
+    {
+      "id": "PM-CURRENT-CONTEXT",
+      "prior": [
+        "FSC player",
+        "FSC partial",
+        "FSC controller",
+        "FSC other",
+        "FR16"
+      ],
+      "kinds": [
+        "activation",
+        "trigger"
+      ],
+      "required": "Adapt existing authoritative source-history/projected-characteristic fixtures to multi-occurrence public choices. Before selection alter original source colors/subtypes/card types with live/removed/returned cases and recipient current shroud/protection/controller/type constraints. Assert reevaluation, fail-closed obsolete offer without unauthorized writes, and valid chooser recovery. Preserve original origin/LKI semantics and accepted grant boundary; no new protected refactoring."
+    }
+  ],
+  "next_executable_after_ui_receiving": [
+    "Receive run40478462138 once with e7b487319d187bd981370490a451d5e32b908923 PINS and frozen61a7d741 RECEIVE; diagnose failures from raw artifacts without unchanged reruns.",
+    "Implement additive requirement-indexed public matrix on a successor of61a7d741 only after frozen UI qualification terminal/received. Keep original43 test file and existing64client test identities unchanged; new matrix class can share only test-fixture setup.",
+    "Read exact target-plan/helper/resolver APIs and relevant approved protocols before implementation. Use existing public SDK dispatch and ActionProcessor.SubmitDecision, serialization between pauses and final StackResolver resolution. Assertions must check plans, events, compatible views and visible outcome, not solely menu counts.",
+    "Add focused executable mutants for omitted-group compaction, wrong occurrence/view update, division loss, dropped queued trigger tail and stale context as applicable; compile normal/mutants first. Freeze test/protocol/source bindings and exact expected failure identities before one locked dispatch.",
+    "Once actualUI/publicmatrix pass original receiving, run mandatory final coherent-source full compatibility including exact34+30=64focused client identities and all existing broader gates, then full22Spellskite and multiplayer admission. These engineering grants authorize no official games/seeds."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "external_independent_review": false
+}
