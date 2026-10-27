@@ -1,0 +1,53 @@
+{
+  "source": "63026e29f507a32a340475d521ef47a529b6e439",
+  "tree": "045d34ff961cba380e5299164867363f808a4a3c",
+  "base": "41dcec4f23b2a28c8c2ffee89c763669c40c2b69",
+  "validation": "f271ae9a668f140ed26a95dd16530b3e7ecefd90",
+  "validation_tree": "cc1d9aab2e499557ed622aee626a1f16835536c5",
+  "workflow": ".github/workflows/manual-public-occurrence-matrix-r1-20261027.yml",
+  "workflow_blob": "1ed4a13eb8d9e7d50940bf08e242df538400fb33",
+  "branch": "validation/manual-public-occurrence-matrix-r1-20261027",
+  "protocol": "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/PROTOCOL.json",
+  "source_delta": [
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceMatrixTest.kt",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/PROTOCOL.json",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/run.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/reports.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/RECEIVE.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/validation.just",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/check_reports.py",
+    "experiments/manual-transmission/research/public-occurrence-matrix-r1-20261027/SYNTHETIC_CHECKS.json"
+  ],
+  "expected": {
+    "compiles": 5,
+    "normal": 40,
+    "restored": 40,
+    "negative_witnesses": 40,
+    "mutant_controls": 6,
+    "skips": 0
+  },
+  "readback_verified": true,
+  "production_changes": 0,
+  "original43_unchanged": true,
+  "client64_unchanged": true,
+  "synthetic_rejections": 23,
+  "actual_ui_receipt": "7ebe251f45bbcc075ab460aabfda037f7e1cb470",
+  "run": 40517702538,
+  "job": 122235505659,
+  "attempt": 1,
+  "run_number": 1,
+  "event": "push",
+  "workflow_id": 398321834,
+  "artifact_name": "manual-public-occurrence-matrix-r1-40517702538",
+  "protocol_files": {
+    "PROTOCOL.json": "bb808b9387e2fe20d6e972d3ec71a2a13eb53851aa1c7b8d6ad43922ba981570",
+    "SOURCE_REVIEW.json": "3c41c02bbc736c5fe8972e57795e7a44fbb823f52f39849a23694bc0314d0e8a",
+    "run.py": "c407370de7ebe53c708c3d3a71fd276ad8ce483218a989f92d29540b294bc791",
+    "reports.py": "9d12dedfcccb0148a6cb294ce55289c5c2b4235dfbb55a23bbb2e48ff0c0d058",
+    "RECEIVE.py": "677aea9a5e6e3c0774e49d3490b2d6e54fe38a9520a5681c1574935665260fa8",
+    "validation.just": "f26d370f566b747bb9aef6ab6adc34ea9c9cf6db230b2a4b4db78b11d019d36b",
+    "check_reports.py": "cd5e97f929c3c2fe9c9a4fc23c548e97a8afdeecf6dd20903aa80110e899addb",
+    "SYNTHETIC_CHECKS.json": "0e8cacf0cc5ec889fd751f19b587f58c02ad851962805fed483a18b479f049bf"
+  }
+}
