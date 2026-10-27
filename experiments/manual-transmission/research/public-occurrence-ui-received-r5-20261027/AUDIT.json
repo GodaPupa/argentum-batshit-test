@@ -1,0 +1,56 @@
+{
+  "compile_stages": 6,
+  "fixture_cases": [
+    [
+      "com.wingedsheep.engine.scenarios.PublicOccurrenceBrowserFixtureTest",
+      "UI fixture exports serialized public occurrence count=2"
+    ],
+    [
+      "com.wingedsheep.engine.scenarios.PublicOccurrenceBrowserFixtureTest",
+      "UI fixture exports serialized public occurrence count=3"
+    ]
+  ],
+  "browser": {
+    "normal": {
+      "cases": 5,
+      "passes": 5,
+      "failures": [],
+      "skips": 0,
+      "retries": 0
+    },
+    "wrong-index": {
+      "cases": 2,
+      "passes": 1,
+      "failures": [
+        "UI occurrence original index filtered=true"
+      ],
+      "skips": 0,
+      "retries": 0
+    },
+    "retained-selection": {
+      "cases": 2,
+      "passes": 1,
+      "failures": [
+        "UI replacement resets filter and selection"
+      ],
+      "skips": 0,
+      "retries": 0
+    },
+    "rebound-stale": {
+      "cases": 2,
+      "passes": 1,
+      "failures": [
+        "UI held callback cannot answer replacement"
+      ],
+      "skips": 0,
+      "retries": 0
+    },
+    "restored": {
+      "cases": 5,
+      "passes": 5,
+      "failures": [],
+      "skips": 0,
+      "retries": 0
+    }
+  }
+}
