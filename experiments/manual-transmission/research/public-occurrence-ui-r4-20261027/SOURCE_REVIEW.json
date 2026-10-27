@@ -1,0 +1,63 @@
+{
+  "scope": "Actual rendered occurrence UI through real snapshot/session/WebSocket/engine only. No production changes. Remaining public matrix, final coherent-source64client and22Spellskite/multiplayer gates required.",
+  "base": "8ac57739f5d689127f6d5d81e2eb6281434b6174",
+  "new_files": [],
+  "production_changes": [],
+  "protected_changes": [],
+  "fixture_boundary": "Two/three same-entity occurrences are placed by StackResolver with authoritative TargetSlotPlan; registered SDK effect creates serialized suspension; existing POST /api/scenarios/from-state creates two-player session. Vanilla corpus cards only; no card registration. Snapshot construction is setup, subsequent browser interaction and engine continuation are real.",
+  "browser_assertions": [
+    "UI occurrence original index filtered=false",
+    "UI occurrence original index filtered=true",
+    "UI replacement resets filter and selection",
+    "UI held callback cannot answer replacement",
+    "UI wrong owner has no choice controls"
+  ],
+  "negative_controls": [
+    {
+      "name": "wrong-index",
+      "path": "web-client/src/components/decisions/ChooseOptionDecisionUI.tsx",
+      "old": "onClick={() => setSelectedIndex(opt.index)}",
+      "new": "onClick={() => setSelectedIndex(0)}",
+      "witness": "UI occurrence original index filtered=true",
+      "marker": "UI_ORIGINAL_INDEX_TARGET",
+      "grep": "^UI occurrence original index filtered=true$|^UI wrong owner has no choice controls$"
+    },
+    {
+      "name": "retained-selection",
+      "path": "web-client/src/components/decisions/DecisionUI.tsx",
+      "old": "<ChooseOptionDecisionUI key={pendingDecision.id} decision={pendingDecision} />",
+      "new": "<ChooseOptionDecisionUI decision={pendingDecision} />",
+      "witness": "UI replacement resets filter and selection",
+      "marker": "UI_REPLACEMENT_FILTER_RESET",
+      "grep": "^UI replacement resets filter and selection$|^UI wrong owner has no choice controls$"
+    },
+    {
+      "name": "rebound-stale",
+      "path": "web-client/src/store/slices/gameplaySlice.ts",
+      "old": "submitOptionDecision: (decisionId, optionIndex) => {\n    const { pendingDecision, playerId } = get()\n    if (!pendingDecision || pendingDecision.id !== decisionId || !playerId) return",
+      "new": "submitOptionDecision: (decisionId, optionIndex) => {\n    const { pendingDecision, playerId } = get()\n    if (!pendingDecision || !playerId) return\n    decisionId = pendingDecision.id",
+      "witness": "UI held callback cannot answer replacement",
+      "marker": "UI_STALE_CALLBACK_SENT_NOTHING",
+      "grep": "^UI held callback cannot answer replacement$|^UI wrong owner has no choice controls$"
+    }
+  ],
+  "source_findings": [
+    "Actual server endpoint accepts serialized GameState; session restores routing identity and masks owner choice. No fixture endpoint added.",
+    "Client state read via existing production store is observation only; no state injection or mocked transport. Real rendered React callback held to test stale invocation.",
+    "Snapshot starts with active player holding playable Forest to prevent automatic priority drift after choice.",
+    "Five browser tests,zero retries,one worker; each retains DOM/screenshot/wire/observed state and two manually started context traces.",
+    "Six compile gates precede all behavioral tests; original public43 and64client assertions unchanged and not rerun here."
+  ],
+  "remaining": [
+    "Complete missing public matrix",
+    "Final coherent-source compatibility with preserved64client floor",
+    "22Spellskite scenarios",
+    "multiplayer admission"
+  ],
+  "independent_external_review": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "modified_test": "e2e-scenarios/tests/general/public-occurrence.spec.ts",
+  "bounded_repair": "Materialize four original attachment payloads using writeFile then attach path. Payload expressions/content types unchanged; every test assertion, trace, mutant and audit gate unchanged. Original5normal passes preserved in3ad7dd47; mutants/restored not executed."
+}

@@ -1,5 +1,5 @@
 import { test, expect, type Page, type Browser } from '@playwright/test'
-import { readFile } from 'node:fs/promises'
+import { readFile, writeFile } from 'node:fs/promises'
 import path from 'node:path'
 
 const fixtureDir = process.env.MANUAL_UI_FIXTURE_DIR
@@ -54,11 +54,16 @@ async function openFixture(browser: Browser, count: number) {
   expect(initial.decision.playerId, 'UI_DECISION_OWNER').toBe(meta.chooser)
   expect(initial.decision.options, 'UI_DISTINCT_SERVER_LABELS').toEqual(meta.options)
   expect(Object.values(initial.decision.optionCardIds), 'UI_SHARED_PREVIEW_ENTITY').toEqual(Array(count).fill([meta.old]))
+  const attachBytes = async (name: string, body: string | Buffer, contentType: string) => {
+    const file = test.info().outputPath(name)
+    await writeFile(file, body)
+    await test.info().attach(name, { path: file, contentType })
+  }
   const close = async () => {
-    await test.info().attach('decision-wire.json', { body: JSON.stringify(wire, null, 2), contentType: 'application/json' })
-    await test.info().attach('owner-observed.json', { body: JSON.stringify(await observe(owner), null, 2), contentType: 'application/json' })
-    await test.info().attach('owner-dom.html', { body: await owner.content(), contentType: 'text/html' })
-    await test.info().attach('owner-screen.png', { body: await owner.screenshot(), contentType: 'image/png' })
+    await attachBytes('decision-wire.json', JSON.stringify(wire, null, 2), 'application/json')
+    await attachBytes('owner-observed.json', JSON.stringify(await observe(owner), null, 2), 'application/json')
+    await attachBytes('owner-dom.html', await owner.content(), 'text/html')
+    await attachBytes('owner-screen.png', await owner.screenshot(), 'image/png')
     for (const [index, context] of contexts.entries()) {
       const trace = test.info().outputPath(`seat-${index}-trace.zip`)
       await context.tracing.stop({ path: trace })
