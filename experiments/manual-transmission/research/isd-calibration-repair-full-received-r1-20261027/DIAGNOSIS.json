@@ -1,0 +1,225 @@
+{
+  "state": "DIAGNOSIS_NOT_ACCEPTANCE",
+  "artifact": 12711011832,
+  "manifest_entries": 922,
+  "full_module": {
+    "tests": 196,
+    "passes": 193,
+    "historical_skips": 3
+  },
+  "POR": {
+    "emitted": 195,
+    "matches": 158
+  },
+  "ISD": {
+    "emitted_and_compiled": 115,
+    "expected_matches": 88,
+    "actual_matches": 86,
+    "mismatches": 2,
+    "outside_golden": 27,
+    "morbid": {
+      "Hollowhenge Scavenger": "exact serialized interveningIf gate passed",
+      "Morkrut Banshee": "exact serialized interveningIf gate passed",
+      "Reaper from the Abyss": "exact serialized interveningIf gate passed"
+    },
+    "exact_emitted_identity_set": true
+  },
+  "cases": {
+    "Champion of the Parish": {
+      "baseline_emission_unchanged_except_package": true,
+      "generated": {
+        "name": "Champion of the Parish",
+        "manaCost": "{W}",
+        "typeLine": "Creature \u2014 Human Soldier",
+        "oracleText": "Whenever another Human you control enters, put a +1/+1 counter on this creature.",
+        "creatureStats": {
+          "power": 1,
+          "toughness": 1
+        },
+        "script": {
+          "triggeredAbilities": [
+            {
+              "id": "ability_8",
+              "trigger": {
+                "type": "ZoneChangeEvent",
+                "filter": "creature Human ctrl:you",
+                "to": "Battlefield"
+              },
+              "binding": "OTHER",
+              "effect": {
+                "type": "AddCounters",
+                "counterType": "+1/+1",
+                "count": 1,
+                "target": "Self"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "collectorNumber": "6",
+          "rarity": "RARE",
+          "artist": "Svetlin Velinov",
+          "flavorText": "\"I stand for every cobbler, tanner, and fool in this town\u2014and they stand for me.\"",
+          "imageUri": "https://cards.scryfall.io/normal/front/f/7/f7314414-c2d2-48ed-af2c-764cf0207c62.jpg"
+        },
+        "colorIdentityOverride": [
+          "WHITE"
+        ]
+      },
+      "protected_golden": {
+        "name": "Champion of the Parish",
+        "manaCost": "{W}",
+        "typeLine": "Creature \u2014 Human Soldier",
+        "oracleText": "Whenever another Human you control enters, put a +1/+1 counter on this creature.",
+        "creatureStats": {
+          "power": 1,
+          "toughness": 1
+        },
+        "script": {
+          "triggeredAbilities": [
+            {
+              "id": "ability_1",
+              "trigger": {
+                "type": "ZoneChangeEvent",
+                "filter": "permanent Human ctrl:you",
+                "to": "Battlefield"
+              },
+              "binding": "OTHER",
+              "effect": {
+                "type": "AddCounters",
+                "counterType": "+1/+1",
+                "count": 1,
+                "target": "Self"
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "collectorNumber": "6",
+          "rarity": "RARE",
+          "artist": "Svetlin Velinov",
+          "flavorText": "\"I stand for every cobbler, tanner, and fool in this town\u2014and they stand for me.\"",
+          "imageUri": "https://cards.scryfall.io/normal/front/f/7/f7314414-c2d2-48ed-af2c-764cf0207c62.jpg"
+        },
+        "colorIdentityOverride": [
+          "WHITE"
+        ]
+      }
+    },
+    "Stromkirk Noble": {
+      "baseline_emission_unchanged_except_package": true,
+      "generated": {
+        "name": "Stromkirk Noble",
+        "manaCost": "{R}",
+        "typeLine": "Creature \u2014 Vampire Noble",
+        "oracleText": "This creature can't be blocked by Humans.\nWhenever this creature deals combat damage to a player, put a +1/+1 counter on it.",
+        "creatureStats": {
+          "power": 1,
+          "toughness": 1
+        },
+        "script": {
+          "triggeredAbilities": [
+            {
+              "id": "ability_47",
+              "trigger": {
+                "type": "DealsDamageEvent",
+                "damageType": "DamageCombat",
+                "recipient": "AnyPlayer"
+              },
+              "effect": {
+                "type": "AddCounters",
+                "counterType": "+1/+1",
+                "count": 1,
+                "target": "Self"
+              }
+            }
+          ],
+          "staticAbilities": [
+            {
+              "type": "CantBeBlockedBy",
+              "blockerFilter": {
+                "cardPredicates": [
+                  "IsCreature",
+                  {
+                    "type": "HasSubtype",
+                    "subtype": "Human"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "collectorNumber": "164",
+          "rarity": "RARE",
+          "artist": "James Ryman",
+          "flavorText": "\"A responsible king walks among his subjects.\"",
+          "imageUri": "https://cards.scryfall.io/normal/front/9/c/9c16cf74-f9e0-4d80-9a29-b91dec0b6b38.jpg"
+        },
+        "colorIdentityOverride": [
+          "RED"
+        ]
+      },
+      "protected_golden": {
+        "name": "Stromkirk Noble",
+        "manaCost": "{R}",
+        "typeLine": "Creature \u2014 Vampire Noble",
+        "oracleText": "This creature can't be blocked by Humans.\nWhenever this creature deals combat damage to a player, put a +1/+1 counter on it.",
+        "creatureStats": {
+          "power": 1,
+          "toughness": 1
+        },
+        "script": {
+          "triggeredAbilities": [
+            {
+              "id": "ability_1",
+              "trigger": {
+                "type": "DealsDamageEvent",
+                "damageType": "DamageCombat",
+                "recipient": "AnyPlayer"
+              },
+              "effect": {
+                "type": "AddCounters",
+                "counterType": "+1/+1",
+                "count": 1,
+                "target": "Self"
+              }
+            }
+          ],
+          "staticAbilities": [
+            {
+              "type": "CantBeBlockedBy",
+              "blockerFilter": {
+                "cardPredicates": [
+                  "IsPermanent",
+                  {
+                    "type": "HasSubtype",
+                    "subtype": "Human"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "metadata": {
+          "collectorNumber": "164",
+          "rarity": "RARE",
+          "artist": "James Ryman",
+          "flavorText": "\"A responsible king walks among his subjects.\"",
+          "imageUri": "https://cards.scryfall.io/normal/front/9/c/9c16cf74-f9e0-4d80-9a29-b91dec0b6b38.jpg"
+        },
+        "colorIdentityOverride": [
+          "RED"
+        ]
+      }
+    }
+  },
+  "baseline": {
+    "ref": "7257cbfe88e29da4ce93be630995e19b7a9ee075",
+    "path": "mtgish-tooling/src/test/resources/fixtures/isd.emitted.golden.txt"
+  },
+  "final_source_binding_verified": true,
+  "missing_final_inputs": "Collector stopped after ISD fidelity failure before FINAL_INPUTS.json; original missing evidence remains a failure, not waived.",
+  "scope": "Both unchanged Human filter shapes predate this repair and are not the authorized morbid or11missing token/exile cases. Need explicit bounded scope before repair; no golden/normalization/floor changes.",
+  "next": "Authorize independent Human subtype filter calibration investigation/repair for Champion of the Parish and Stromkirk Noble, preserving assertions, protected goldens, fixture inputs and115floor; regression/mutant controls, normal/mutant compilation, immutable successor and original receiving. Reuse exact-bound evidence."
+}

@@ -1,0 +1,90 @@
+mtgish-tooling/build/install/mtgish-tooling/bin/mtgish-tooling fidelity --gate ISD
+== ISD COMPILED gate — generated cards diffed vs golden ==
+
+  AUTO-emitted & COMPILED:   88/127  (every emitted card compiled — Gradle gate)
+  GAMEPLAY TREE MATCH:       86  (after tiny known-equivalent normalisation)
+  GAMEPLAY TREE MISMATCH:    2  (emitted but not golden-equivalent — must be 0)
+  GOLDEN DRIFT SUSPECTED:    0  (oracle appears to support generated output)
+  capability MISMATCH:       0  (subset missing effect/keyword capabilities)
+  not emitted (left to hand): 39
+  emitted outside golden:     27  (reported, not gated)
+
+GAMEPLAY TREE MISMATCH taxonomy — first divergent path per emitted card:
+  x2    effect/ability structure
+
+GAMEPLAY TREE MISMATCH examples — generated != golden:
+  - Champion of the Parish       $.script.triggeredAbilities[0].trigger.filter: generated="creature Human ctrl:you" golden="permanent Human ctrl:you" oracle="Whenever another Human you control enters, put a +1/+1 counter on this creature."
+  - Stromkirk Noble              $.script.staticAbilities[0].blockerFilter.cardPredicates[0]: generated="IsCreature" golden="IsPermanent" oracle="This creature can't be blocked by Humans. Whenever this creature deals combat damage to a player, put a +1/+1 counter on..."
+
+NOT EMITTED (39) — engine-feature-complex; the emitter declines rather than emit a wrong card:
+  - Abattoir Ghoul
+  - Balefire Dragon
+  - Bloodline Keeper
+  - Bonds of Faith
+  - Bramblecrush
+  - Burning Vengeance
+  - Butcher's Cleaver
+  - Cackling Counterpart
+  - Dearly Departed
+  - Delver of Secrets
+  - Demonmail Hauberk
+  - Deranged Assistant
+  - Elder Cathar
+  - Falkenrath Noble
+  - Fiend Hunter
+  - Galvanic Juggernaut
+  - Garruk Relentless
+  - Geist of Saint Traft
+  - Ghoulraiser
+  - Grimgrin, Corpse-Born
+  - Hanweir Watchkeep
+  - Kruin Outlaw
+  - Laboratory Maniac
+  - Liliana of the Veil
+  - Lumberknot
+  - Makeshift Mauler
+  - Mayor of Avabruck
+  - Mentor of the Meek
+  - Olivia Voldaren
+  - Rooftop Storm
+  - Sever the Bloodline
+  - Sharpened Pitchfork
+  - Skaab Goliath
+  - Skirsdag High Priest
+  - Snapcaster Mage
+  - Stitched Drake
+  - Tribute to Hunger
+  - Unbreathing Horde
+  - Villagers of Estwald
+
+EMITTED OUTSIDE GOLDEN (27) — generated snapshots with no golden counterpart:
+  - Ancient Grudge
+  - Army of the Damned
+  - Bloodcrazed Neonate
+  - Bloodgift Demon
+  - Boneyard Wurm
+  - Brain Weevil
+  - Brimstone Volley
+  - Crossway Vampire
+  - Darkthicket Wolf
+  - Dream Twist
+  - Falkenrath Marauders
+  - Frightful Delusion
+  - Gavony Township
+  - Geist-Honored Monk
+  - Hollowhenge Scavenger
+  - Kessig Wolf Run
+  - Naturalize
+  - Nephalia Drownyard
+  - Nightbird's Clutches
+  - Prey Upon
+  - Rakish Heir
+  - Reaper from the Abyss
+  - Shimmering Grotto
+  - Somberwald Spider
+  - Spectral Rider
+  - Stromkirk Patrol
+  - Think Twice
+
+GATE FAIL — an emitted card is not gameplay-equivalent (see GAMEPLAY TREE MISMATCH).  (86/127 of Portal auto-emitted & verified.)
+error: Recipe `fidelity` failed on line 11 with exit code 2
