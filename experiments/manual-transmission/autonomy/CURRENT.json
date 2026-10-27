@@ -3,13 +3,15 @@
   "updated_date": "2026-10-27",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "RUNNING",
-  "owner": "manual-work-cbd14db1-c214-8330-8af2-54a2d7080491",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-cbd14db1-c214-8330-8af2-54a2d7080491",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-27T15:45:38Z",
-    "expires_utc": "2026-10-27T16:40:38.000Z"
+    "expires_utc": null,
+    "released_by": "manual-work-cbd14db1-c214-8330-8af2-54a2d7080491",
+    "released_utc": "2026-10-27T15:50:05Z"
   },
   "last_qualified": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
@@ -32,31 +34,30 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Receive protocol-only matrix R2 exact-selection qualification; R1 failed at zero-test mutant selection.",
-    "source_candidate": "89d5cb953af9a324629047690e9c753e1804094f",
-    "source_tree": "2e0c32550762b5d7305ba4b0b856522b0445ebac",
+    "current_subproblem": "Receive full-matrix R3 qualification; R2 filtered skips rejected.",
+    "source_candidate": "587bc4070595bed27a7a5cb4970b423655374a50",
+    "source_tree": "1cd3ad2d6736ca6fe4a95ef8d281c8debe1eac7a",
     "source_branch": null,
-    "protocol": "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/SOURCE_REVIEW.json",
-    "validation": "bf8fa2dd469dd1b9e4ab8999c4c3e51d6e4d9037",
-    "validation_branch": "validation/manual-public-occurrence-matrix-r2-20261027",
-    "workflow": ".github/workflows/manual-public-occurrence-matrix-r2-20261027.yml",
+    "protocol": "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/SOURCE_REVIEW.json",
+    "validation": "e6d23c6856a4eafde9de824c8c5c0fe80ab2dc59",
+    "validation_branch": "validation/manual-public-occurrence-matrix-r3-20261027",
+    "workflow": ".github/workflows/manual-public-occurrence-matrix-r3-20261027.yml",
     "pending_runs": [
-      40524238482
+      40534726465
     ],
     "planned_not_observed": {
       "compiles": 5,
-      "discovery_sets": 4,
-      "discovery_cases": 46,
       "normal": 40,
       "restored": 40,
-      "negative_witnesses": 40,
-      "mutant_controls": 6,
+      "mutant_cases": 160,
+      "negative_witnesses": 70,
+      "mutant_controls": 90,
       "skips": 0
     },
-    "negative_scope": "Four unchanged executable mutants;5compiles then4exact normal selection inventories before negative witnesses.",
-    "source_delta": "Eight new protocol files only; production,test and assertions unchanged.",
-    "next_executable_action": "Dispatch full-matrix R3 once after live activity reconciliation; original R2 failure received. No source/test/assertion changes; full40 under each mutant.",
+    "negative_scope": "Full40cases under each of4mutants;70exactwitnesses90controls,including all original40witnesses6controls. No filtering or skipped cases.",
+    "source_delta": "Eight new protocol files only;production/tests/assertions unchanged.",
+    "next_executable_action": "Reconcile CURRENT ownership, automation run state, newer receipts/checkpoints and all active workflow states. Do not duplicate active matrix R3 run40534726465. When terminal, receive original artifact exactly once using 2ed942ada8f0b254364aa2f2a7eff80ca0e44853:experiments/manual-transmission/research/public-occurrence-matrix-receiving-r3-20261027/PINS.json and NEXT_ACTION.json with frozen 587bc4070595bed27a7a5cb4970b423655374a50 RECEIVE.py. Require5compiles,40normal/restored,160mutant cases=70exactnegativewitnesses90controls,zero skips,42bindings197protected/restoration. R1/R2 failures received,do not re-audit. If accepted follow final compatibility review8f5a6f50 and preserved64client identities,then22Spellskite and multiplayer. No officialgames/seeds.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -173,7 +174,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "207f98f504453ed57842fbb481f5c28dce8be69e",
+    "validation_tree": "53ae5c340a6fee1aeccd4490ef7ed623b8c1534f",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -4107,9 +4108,9 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-27T14:47:19Z",
+    "last_checked_utc": "2026-10-27T15:50:05Z",
     "relevant_active_workflows": [
-      40524238482
+      40534726465
     ],
     "ignored_unrelated_ancient_run": 34749202144,
     "current_worker": null,
@@ -4119,14 +4120,14 @@
     "latest_checkpoint_before_release": "af416870965d49f72e6a27c6a13328fa82345277",
     "qualification_repeated": false,
     "latest_receipt": {
-      "commit": "9a1d87d0f6ad277f0ab68890309a70a95e3fb348",
-      "path": "experiments/manual-transmission/research/public-occurrence-matrix-received-r1-20261027",
+      "commit": "45728f65881e6e21a3b54b7eec466b20a627b3dd",
+      "path": "experiments/manual-transmission/research/public-occurrence-matrix-received-r2-20261027",
       "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
-      "run": 40517702538,
-      "artifact": 12740941289,
-      "artifact_bytes": 3473498,
-      "artifact_sha256": "0d4d89d3f85ae24a090d3995b96b4e79bcca25967f9dfe51cbdafbc7f584ba20",
-      "manifest_entries": 609,
+      "run": 40524238482,
+      "artifact": 12742719377,
+      "artifact_bytes": 3215473,
+      "artifact_sha256": "f3b3f02706a5f0a60a24efa4af339a7b3d37bdb1c0bb8a4a10811ea0b00c8937",
+      "manifest_entries": 567,
       "readback_verified": true
     },
     "latest_draft": "c0c0b1e60c622b3224e336f6b37a55c0c5312e85",
@@ -4215,12 +4216,12 @@
     },
     "active_workflows": [
       {
-        "run": 40524238482,
-        "job": 122259274310,
+        "run": 40534726465,
+        "job": 122296769341,
         "status": "in_progress",
         "event": "push",
         "attempt": 1,
-        "head_sha": "bf8fa2dd469dd1b9e4ab8999c4c3e51d6e4d9037"
+        "head_sha": "e6d23c6856a4eafde9de824c8c5c0fe80ab2dc59"
       }
     ],
     "ownership": "Explicit same-owner release, not expiry-based clearing.",
@@ -4241,13 +4242,13 @@
       "newer_receipt": false
     },
     "latest_release": {
-      "owner": "manual-work-b7666b72-50dc-8325-a290-41bd9f693401",
+      "owner": "manual-work-cbd14db1-c214-8330-8af2-54a2d7080491",
       "status": "WAITING_EXTERNAL",
-      "reason": "External dependency pending: sole frozen matrix R2 run40524238482 is in progress. Original R1 received once:5compiles and40normal passed; Gradle method selection found zero tests, not behavioral negative evidence. Protocol-only successor uses version-matched Kotest include patterns and4exact discovery gates; production/tests/assertions unchanged. Original receiver3c3c7870f18ae66ee748d42828c464cb4e63eb52 verified; existing isolated final compatibility review and64client contract reused. Further coherent qualification depends on original matrix results; no useful safely independent preparation remains. Ownership released.",
+      "reason": "External dependency pending: sole full-matrix R3 run40534726465 is in_progress. Original R2 received once and rejected30filtered skips; all5compiles passed. Protocol-only successor executes full40case suite under every mutant,retains every original assertion/witness/control and expands to70negativewitnesses90controls. No production/test changes. Receiver2ed942ada8f0b254364aa2f2a7eff80ca0e44853 and reused isolated final compatibility review/exact64client contract are saved/readback verified; no useful safely independent preparation remains before original matrix result. Ownership released.",
       "receiver": {
-        "commit": "3c3c7870f18ae66ee748d42828c464cb4e63eb52",
-        "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r2-20261027",
-        "run": 40524238482,
+        "commit": "2ed942ada8f0b254364aa2f2a7eff80ca0e44853",
+        "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r3-20261027",
+        "run": 40534726465,
         "readback_verified": true
       }
     },
@@ -4352,8 +4353,8 @@
       "original_assertions_preserved": true
     },
     "last_utc": "2026-10-26T04:51:49Z",
-    "active_relevant_run": 40524238482,
-    "active_relevant_job": 122259274310,
+    "active_relevant_run": 40534726465,
+    "active_relevant_job": 122296769341,
     "owner_release": "External dependency pending: import-only R2 qualification is active. Its exact original-artifact receiver is saved and synthetic-checked; prior isolated next-source review is reused. Further candidate work awaits this frozen successor's original result. Ownership released.",
     "ownership_checkpoint_correction": {
       "prior_commit": "cd0871b1ea98b4a72e9938db435689f07c358a16",
@@ -5075,6 +5076,25 @@
         "readback_verified": true
       },
       "reason": "External dependency pending: sole frozen matrix R2 run40524238482 is in progress. Original R1 received once:5compiles and40normal passed; Gradle method selection found zero tests, not behavioral negative evidence. Protocol-only successor uses version-matched Kotest include patterns and4exact discovery gates; production/tests/assertions unchanged. Original receiver3c3c7870f18ae66ee748d42828c464cb4e63eb52 verified; existing isolated final compatibility review and64client contract reused. Further coherent qualification depends on original matrix results; no useful safely independent preparation remains. Ownership released."
+    },
+    "public_matrix_r3_handoff": {
+      "utc": "2026-10-27T15:50:05Z",
+      "owner_released": "manual-work-cbd14db1-c214-8330-8af2-54a2d7080491",
+      "task_run": "cbd14db1-c214-8330-8af2-54a2d7080491",
+      "all_events_all_five_states_checked": true,
+      "active": [
+        40534726465
+      ],
+      "ignored_only": 34749202144,
+      "duplicate_dispatch": false,
+      "accepted_evidence_reaudited": false,
+      "receiver": {
+        "commit": "2ed942ada8f0b254364aa2f2a7eff80ca0e44853",
+        "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r3-20261027",
+        "run": 40534726465,
+        "readback_verified": true
+      },
+      "reason": "External dependency pending: sole full-matrix R3 run40534726465 is in_progress. Original R2 received once and rejected30filtered skips; all5compiles passed. Protocol-only successor executes full40case suite under every mutant,retains every original assertion/witness/control and expands to70negativewitnesses90controls. No production/test changes. Receiver2ed942ada8f0b254364aa2f2a7eff80ca0e44853 and reused isolated final compatibility review/exact64client contract are saved/readback verified; no useful safely independent preparation remains before original matrix result. Ownership released."
     }
   },
   "automation": {
@@ -5266,8 +5286,8 @@
     "work_owner": null,
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "No active Work owner; external matrix R2 qualification pending.",
-    "last_execution_owner": "manual-work-b7666b72-50dc-8325-a290-41bd9f693401"
+    "activity": "No active Work owner;external full-matrix R3 qualification pending.",
+    "last_execution_owner": "manual-work-cbd14db1-c214-8330-8af2-54a2d7080491"
   },
   "blockers": [],
   "qualified_components": {
@@ -5946,7 +5966,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External dependency pending: sole full-matrix R3 run40534726465 is in_progress. Original R2 received once and rejected30filtered skips; all5compiles passed. Protocol-only successor executes full40case suite under every mutant,retains every original assertion/witness/control and expands to70negativewitnesses90controls. No production/test changes. Receiver2ed942ada8f0b254364aa2f2a7eff80ca0e44853 and reused isolated final compatibility review/exact64client contract are saved/readback verified; no useful safely independent preparation remains before original matrix result. Ownership released.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -5975,46 +5995,46 @@
       "Actual UI R5 accepted at 7ebe251f45bbcc075ab460aabfda037f7e1cb470:6compiles,3exact discovery inventories,2fixtures,5normal+5restored,3negativewitnesses+3controls,zero skips/retries,519manifest,29bindings197protected and exact source restoration; two-seat traces/DOM/wire/screens verified. Publicmatrix/finalcompatibility/card gates remain."
     ],
     "unfinished_implementation": [
-      "Public matrix40cases implemented; R1 normal40 and5compiles verified, negative selection failed. R2 protocol-only selection repair running, not accepted.",
-      "Final coherent-source compatibility including64client floor; full22Spellskite;multiplayer."
+      "Public matrix implemented; R3 full-suite mutant qualification pending. R2 selection emitted30skips and was rejected.",
+      "Final coherent-source compatibility including64client floor;full22Spellskite;multiplayer."
     ],
     "pending_evidence": [
-      "Original matrix R2 evidence run40524238482",
-      "Final coherent-source64client compatibility;22Spellskite;multiplayer"
+      "Original matrix R3 evidence run40534726465",
+      "Final coherent-source64client compatibility;22Spellskite;multiplayer."
     ],
-    "next_executable_action": "Reconcile live CURRENT ownership, automation run state, recent checkpoints/newer receipts and all active workflow states. Do not duplicate matrix R2 run40524238482. Once terminal, receive its original artifact exactly once using 3c3c7870f18ae66ee748d42828c464cb4e63eb52:experiments/manual-transmission/research/public-occurrence-matrix-receiving-r2-20261027/PINS.json and NEXT_ACTION.json with frozen 89d5cb953af9a324629047690e9c753e1804094f RECEIVE.py. Require5compiles,4exact discovery inventories(46cases),40normal/restored,40exact negative witnesses6controls,zero skips,42bindings197protected/restoration. R1 failure9a1d87d0 already received; reuse, never re-audit. Diagnose actual failed evidence before bounded repair. After matrix acceptance follow saved final compatibility review8f5a6f50 and exact64client contract, then22Spellskite and multiplayer. No official games/seeds.",
+    "next_executable_action": "Reconcile CURRENT ownership, automation run state, newer receipts/checkpoints and all active workflow states. Do not duplicate active matrix R3 run40534726465. When terminal, receive original artifact exactly once using 2ed942ada8f0b254364aa2f2a7eff80ca0e44853:experiments/manual-transmission/research/public-occurrence-matrix-receiving-r3-20261027/PINS.json and NEXT_ACTION.json with frozen 587bc4070595bed27a7a5cb4970b423655374a50 RECEIVE.py. Require5compiles,40normal/restored,160mutant cases=70exactnegativewitnesses90controls,zero skips,42bindings197protected/restoration. R1/R2 failures received,do not re-audit. If accepted follow final compatibility review8f5a6f50 and preserved64client identities,then22Spellskite and multiplayer. No officialgames/seeds.",
     "read_sections": [
       {
-        "ref": "89d5cb953af9a324629047690e9c753e1804094f",
-        "path": "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/PROTOCOL.json",
+        "ref": "587bc4070595bed27a7a5cb4970b423655374a50",
+        "path": "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/PROTOCOL.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "89d5cb953af9a324629047690e9c753e1804094f",
-        "path": "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/SOURCE_REVIEW.json",
+        "ref": "587bc4070595bed27a7a5cb4970b423655374a50",
+        "path": "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/SOURCE_REVIEW.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "3c3c7870f18ae66ee748d42828c464cb4e63eb52",
-        "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r2-20261027/PINS.json",
+        "ref": "2ed942ada8f0b254364aa2f2a7eff80ca0e44853",
+        "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r3-20261027/PINS.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "3c3c7870f18ae66ee748d42828c464cb4e63eb52",
-        "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r2-20261027/NEXT_ACTION.json",
+        "ref": "2ed942ada8f0b254364aa2f2a7eff80ca0e44853",
+        "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r3-20261027/NEXT_ACTION.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "9a1d87d0f6ad277f0ab68890309a70a95e3fb348",
-        "path": "experiments/manual-transmission/research/public-occurrence-matrix-received-r1-20261027/DIAGNOSIS.json",
+        "ref": "45728f65881e6e21a3b54b7eec466b20a627b3dd",
+        "path": "experiments/manual-transmission/research/public-occurrence-matrix-received-r2-20261027/DIAGNOSIS.json",
         "sections": [
           "all"
         ]
@@ -6028,8 +6048,8 @@
       }
     ],
     "source_protocol": {
-      "source": "89d5cb953af9a324629047690e9c753e1804094f",
-      "path": "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/PROTOCOL.json"
+      "source": "587bc4070595bed27a7a5cb4970b423655374a50",
+      "path": "experiments/manual-transmission/research/public-occurrence-matrix-r3-20261027/PROTOCOL.json"
     },
     "accepted_receipt": {
       "commit": "7ebe251f45bbcc075ab460aabfda037f7e1cb470",
@@ -6047,17 +6067,17 @@
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r4-20261026/NEXT_SOURCE_REVIEW.json"
     },
     "critical_path": "Accepted generator and actual UI → public matrix original receiving → final coherent-source64client compatibility → full22-scenario Spellskite acceptance → multiplayer admission.",
-    "actual_stopping_reason": "External dependency pending: sole frozen matrix R2 run40524238482 is in progress. Original R1 received once:5compiles and40normal passed; Gradle method selection found zero tests, not behavioral negative evidence. Protocol-only successor uses version-matched Kotest include patterns and4exact discovery gates; production/tests/assertions unchanged. Original receiver3c3c7870f18ae66ee748d42828c464cb4e63eb52 verified; existing isolated final compatibility review and64client contract reused. Further coherent qualification depends on original matrix results; no useful safely independent preparation remains. Ownership released.",
+    "actual_stopping_reason": "External dependency pending: sole full-matrix R3 run40534726465 is in_progress. Original R2 received once and rejected30filtered skips; all5compiles passed. Protocol-only successor executes full40case suite under every mutant,retains every original assertion/witness/control and expands to70negativewitnesses90controls. No production/test changes. Receiver2ed942ada8f0b254364aa2f2a7eff80ca0e44853 and reused isolated final compatibility review/exact64client contract are saved/readback verified; no useful safely independent preparation remains before original matrix result. Ownership released.",
     "receiving": {
-      "commit": "3c3c7870f18ae66ee748d42828c464cb4e63eb52",
-      "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r2-20261027",
-      "run": 40524238482,
+      "commit": "2ed942ada8f0b254364aa2f2a7eff80ca0e44853",
+      "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r3-20261027",
+      "run": 40534726465,
       "readback_verified": true
     },
     "prepared_receiver": {
-      "commit": "3c3c7870f18ae66ee748d42828c464cb4e63eb52",
-      "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r2-20261027",
-      "run": 40524238482,
+      "commit": "2ed942ada8f0b254364aa2f2a7eff80ca0e44853",
+      "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r3-20261027",
+      "run": 40534726465,
       "readback_verified": true
     },
     "generator_upstream": {
@@ -6068,17 +6088,17 @@
       "finding": "Exact observed node for Spellskite and Mizzium Meddler; generic retarget tags remain distinct."
     },
     "latest_receiving": {
-      "commit": "9a1d87d0f6ad277f0ab68890309a70a95e3fb348",
-      "path": "experiments/manual-transmission/research/public-occurrence-matrix-received-r1-20261027",
+      "commit": "45728f65881e6e21a3b54b7eec466b20a627b3dd",
+      "path": "experiments/manual-transmission/research/public-occurrence-matrix-received-r2-20261027",
       "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
-      "run": 40517702538,
-      "artifact": 12740941289,
-      "artifact_bytes": 3473498,
-      "artifact_sha256": "0d4d89d3f85ae24a090d3995b96b4e79bcca25967f9dfe51cbdafbc7f584ba20",
-      "manifest_entries": 609,
+      "run": 40524238482,
+      "artifact": 12742719377,
+      "artifact_bytes": 3215473,
+      "artifact_sha256": "f3b3f02706a5f0a60a24efa4af339a7b3d37bdb1c0bb8a4a10811ea0b00c8937",
+      "manifest_entries": 567,
       "readback_verified": true
     },
-    "continuation_state": "WAITING_EXTERNAL; no Work owner; same enabled single executor and schedule.",
+    "continuation_state": "WAITING_EXTERNAL;owner released;existing single executor and schedule unchanged.",
     "previous_guidance_at_ready_4e14a8c9": {
       "read_sections": [
         {
@@ -6238,7 +6258,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-27T14:47:19Z",
+  "updated_utc": "2026-10-27T15:50:05Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -6986,6 +7006,33 @@
     "assertions_unchanged": true,
     "original_failure_receipt": "45728f65881e6e21a3b54b7eec466b20a627b3dd",
     "readback_verified": true,
-    "state": "FROZEN_READY_SINGLE_DISPATCH"
+    "state": "DISPATCHED_ORIGINAL_EVIDENCE_PENDING",
+    "run": 40534726465,
+    "job": 122296769341,
+    "attempt": 1,
+    "run_number": 1,
+    "event": "push",
+    "workflow_id": 398434978,
+    "artifact_name": "manual-public-occurrence-matrix-r3-40534726465",
+    "protocol_files": {
+      "PROTOCOL.json": "17049f721853e0cadf5efe3b160853ace38b23e9277af3025e7e426e7aaf8dbb",
+      "SOURCE_REVIEW.json": "b417c44d47cfed3b63a203785199958387379aecfa132ee2a97893808a1b38c3",
+      "run.py": "c46a84cc23aa730587315bb81f7f6015978684bea3753153a0f0c6fce26cd212",
+      "reports.py": "fcca9879cff6e848af1e32c1c32b94e41b997765ed7e7b5384d6c1fa35581520",
+      "RECEIVE.py": "5943a216cd24c4b12146ea55127ddc5babfd9e4358388c02413151355fc15f56",
+      "validation.just": "0d0e025b807202cbb0448d0943f39cf55762e3ca8eda322d00a610fb63f68d36",
+      "check_reports.py": "856cced738f4a21b14357a49a120271319c1171e818148aa961c5cffd3423e93",
+      "SYNTHETIC_CHECKS.json": "0e8cacf0cc5ec889fd751f19b587f58c02ad851962805fed483a18b479f049bf"
+    },
+    "status": "in_progress",
+    "conclusion": null,
+    "receiver": {
+      "commit": "2ed942ada8f0b254364aa2f2a7eff80ca0e44853",
+      "path": "experiments/manual-transmission/research/public-occurrence-matrix-receiving-r3-20261027",
+      "run": 40534726465,
+      "readback_verified": true
+    },
+    "observed_utc": "2026-10-27T15:50:05Z",
+    "dispatched_utc": "2026-10-27T15:49:01Z"
   }
 }
