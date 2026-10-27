@@ -1,0 +1,61 @@
+{
+  "state": "EXACT_ORIGINAL_NORMAL_RESTORED_OUTPUT_REVIEW",
+  "receipt": "8df5d0d047fc3559a796542cc3c15900442f2406",
+  "artifact": 12715931813,
+  "artifact_sha256": "5f06d6f4a4f7fa7f32bf4c0724b4d2c97c8e213f18041a03e2d0092d9480235f",
+  "projection_sets": [
+    "10E",
+    "CHK",
+    "EOE",
+    "HOB",
+    "INR",
+    "ISD",
+    "ONS",
+    "POR",
+    "RAV",
+    "SOS",
+    "TMP"
+  ],
+  "changed": {
+    "INR": {
+      "before_sha256": "e41a3f90c0bc6afd9950e90b14629f731bc327251f2b4e5363875c8bebb25aa9",
+      "after_sha256": "1c90d6f46767452c803001114d0e453c47f186ba39e18c65f99df8973f96ceb7",
+      "diff": "--- mtgish-tooling/src/test/resources/fixtures/inr.emitted.golden.txt before\n+++ mtgish-tooling/src/test/resources/fixtures/inr.emitted.golden.txt after\n@@ -2314,7 +2314,7 @@\n     toughness = 2\n     triggeredAbility {\n         trigger = Triggers.entersBattlefield(\n-            filter = GameObjectFilter.Creature.withSubtype(Subtype.HUMAN).youControl(),\n+            filter = GameObjectFilter.Permanent.withSubtype(Subtype.HUMAN).youControl(),\n             binding = TriggerBinding.OTHER\n         )\n         effect = Effects.ModifyStats(1, 1, EffectTarget.Self)\n"
+    },
+    "ISD": {
+      "before_sha256": "e8f0ea359960fb04aa6f1fe490a99a84e1b4e38887c924a483d4af5025d04db6",
+      "after_sha256": "ccda4fe86efaf1b9b426d7ecc484422c641ce0ac211d07673384ba04d7f1a168",
+      "diff": "--- mtgish-tooling/src/test/resources/fixtures/isd.emitted.golden.txt before\n+++ mtgish-tooling/src/test/resources/fixtures/isd.emitted.golden.txt after\n@@ -1265,7 +1265,7 @@\n     toughness = 1\n     triggeredAbility {\n         trigger = Triggers.entersBattlefield(\n-            filter = GameObjectFilter.Creature.withSubtype(Subtype.HUMAN).youControl(),\n+            filter = GameObjectFilter.Permanent.withSubtype(Subtype.HUMAN).youControl(),\n             binding = TriggerBinding.OTHER\n         )\n         effect = AddCountersEffect(counterType = Counters.PLUS_ONE_PLUS_ONE, count = 1, target = EffectTarget.Self)\n@@ -8036,7 +8036,7 @@\n     power = 1\n     toughness = 1\n     staticAbility {\n-        ability = CantBeBlockedBy(blockerFilter = GameObjectFilter.Creature.withSubtype(Subtype.HUMAN))\n+        ability = CantBeBlockedBy(blockerFilter = GameObjectFilter.Permanent.withSubtype(Subtype.HUMAN))\n     }\n     triggeredAbility {\n         trigger = Triggers.DealsCombatDamageToPlayer\n"
+    }
+  },
+  "unchanged_sets": [
+    "10E",
+    "CHK",
+    "EOE",
+    "HOB",
+    "ONS",
+    "POR",
+    "RAV",
+    "SOS",
+    "TMP"
+  ],
+  "cards": {
+    "ISD": [
+      "Champion of the Parish",
+      "Stromkirk Noble"
+    ],
+    "INR": [
+      "Dawnhart Disciple"
+    ]
+  },
+  "incidental_same_shape": {
+    "card": "Dawnhart Disciple",
+    "fixture_blob": "c13a544dc41f50c33a03225e2bf7a0b01697219c",
+    "trigger": "Exact same Human entry JSON predicate as Champion; no new emitter branch or runtime edit. OTHER and You preserved.",
+    "canonical_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vow/cards/DawnhartDisciple.kt",
+    "canonical_blob": "5753098fc2df832df9e5fd12ec912bf645bb2a9f",
+    "canonical_filter": "GameObjectFilter.Permanent.withSubtype(Subtype.HUMAN).youControl()",
+    "finding": "One-line generated text correction agrees with existing canonical filter; complete remaining card text unchanged."
+  },
+  "preserved": "All input fixture JSON, assertions, protected197 bindings including23gameplaygoldens/82legacyfixtures remain unchanged. These2 emitter-text snapshots pin generated source; not gameplay golden normalization."
+}
