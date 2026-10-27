@@ -1,0 +1,84 @@
+{
+  "source": "8ac57739f5d689127f6d5d81e2eb6281434b6174",
+  "tree": "4c869b83675ad9afb7dae3d76e1976eeecc4005f",
+  "base": "4a0cd58c09dd59ff9f3b34a311e989d3aeb7902b",
+  "validation": "1b5d7b4e7db578261869db4431823f8cd9403750",
+  "validation_tree": "3d2dcf8b4fec0da49a9c9f2191983c3c2172df09",
+  "workflow": ".github/workflows/manual-public-occurrence-ui-r3-20261027.yml",
+  "workflow_blob": "0d0f0b752993fa14fdc7c95d3a9548507ce7e5a5",
+  "branch": "validation/manual-public-occurrence-ui-r3-20261027",
+  "protocol": "experiments/manual-transmission/research/public-occurrence-ui-r3-20261027/PROTOCOL.json",
+  "source_delta": [
+    "e2e-scenarios/manual-occurrence.config.ts",
+    "experiments/manual-transmission/research/public-occurrence-ui-r3-20261027/PROTOCOL.json",
+    "experiments/manual-transmission/research/public-occurrence-ui-r3-20261027/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/public-occurrence-ui-r3-20261027/run.py",
+    "experiments/manual-transmission/research/public-occurrence-ui-r3-20261027/audit.py",
+    "experiments/manual-transmission/research/public-occurrence-ui-r3-20261027/RECEIVE.py",
+    "experiments/manual-transmission/research/public-occurrence-ui-r3-20261027/validation.just",
+    "experiments/manual-transmission/research/public-occurrence-ui-r3-20261027/SYNTHETIC_CHECKS.json",
+    "experiments/manual-transmission/research/public-occurrence-ui-r3-20261027/check_audit.py"
+  ],
+  "readback_verified": true,
+  "expected": {
+    "compile_stages": 6,
+    "fixture_cases": 2,
+    "browser_normal": 5,
+    "browser_restored": 5,
+    "negative_witnesses": 3,
+    "negative_control_passes": 3,
+    "retries": 0,
+    "skips": 0
+  },
+  "original_failure": {
+    "commit": "4c1f3f18aa72f6592bfb66d6cce9a9b2ed9a5b56",
+    "path": "experiments/manual-transmission/research/public-occurrence-ui-received-r2-20261027",
+    "run": 40484246211,
+    "artifact": 12725381694,
+    "manifest_entries": 275,
+    "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+    "readback_verified": true
+  },
+  "production_changes": 0,
+  "assertions_unchanged": true,
+  "attempt": 1,
+  "event": "push",
+  "run": 40491239733,
+  "job": 122145417280,
+  "workflow_id": 398131358,
+  "artifact_name": "manual-public-occurrence-ui-r3-40491239733",
+  "protocol_files": {
+    "PROTOCOL.json": "47215d8454581e077b3cee2b4950f2dce8b945f74f0605ed81f1ccc8496623d2",
+    "SOURCE_REVIEW.json": "fcbd93f8ba87d1d20ae7c9dc50988fc897ab446545e38c044b900b26f4532c29",
+    "run.py": "b390cd96b20e5aadc0f334be315c440d2599878d910045645b561f6a58ba94f6",
+    "audit.py": "4f26ad5cf5b124a56f40de60a3536fac66abc926d46fdb50bf3a9384d3c62c5e",
+    "RECEIVE.py": "b206e5af059792bb62dbe97ccf0eb67bb00a5d078aaa85b430eae185864a0bdb",
+    "validation.just": "8b0d90f883cd30b26475863f50ee24486066ed62ef79e20f74df849cc6df5493",
+    "SYNTHETIC_CHECKS.json": "8ae313d1e64b4256a9f9837d256541bbd0a760d48b0f40cf6869d7b8709a1f75",
+    "check_audit.py": "d12cfa36fefaea48d9bb2ff4178680dadb0b59b1d18d45a506993e58385571be"
+  },
+  "artifact": 12729295515,
+  "artifact_bytes": 89802432,
+  "artifact_sha256": "882a361e580b6bab27b352e83de2c384391743f4a3fe1c711f17d1e112be9f37",
+  "manifest_entries": 295,
+  "gates": {},
+  "gate_errors": [
+    {
+      "stage": "actual_ui",
+      "error": "KeyError: 'path'"
+    },
+    {
+      "stage": "source_forms_restoration",
+      "error": "KeyError: 'FINAL_SOURCE_BINDING.json'"
+    },
+    {
+      "stage": "FAILURE.txt",
+      "error": "KeyError: 'path'"
+    }
+  ],
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED"
+}
