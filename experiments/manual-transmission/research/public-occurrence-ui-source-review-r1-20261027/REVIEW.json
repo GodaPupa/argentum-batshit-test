@@ -1,0 +1,65 @@
+{
+  "state": "ISOLATED_NEXT_DEPENDENCY_SOURCE_REVIEW_NOT_EXECUTED",
+  "source": "b6e6150edb07cf4ac99f61fdbae6b89e131e59af",
+  "tree": "adead58eca3856a8d4fb0954dcbee7994666604b",
+  "frozen_qualification": {
+    "run": 40470112090,
+    "source_unchanged": true,
+    "acceptance_not_presumed": true
+  },
+  "source_blobs": {
+    "web-client/AGENTS.md": "90136aff511a0e67b6ff41620c7ddf4d27c275ed",
+    "web-client/package.json": "c3ab685f5f199af70f728d4c1e634543be554dd4",
+    "web-client/playwright.config.ts": "153ad2d85d965e24211be4db3a1573365aa1a447",
+    "web-client/src/components/decisions/ChooseOptionDecisionUI.tsx": "31aac1ee9c69038c7ed0e3c39dfc7888b29011a8",
+    "web-client/src/components/decisions/DecisionUI.tsx": "2b111bca348235f31e1e8064d6dda56b2e2cea20",
+    "e2e-scenarios/AGENTS.md": "87e7559cee4cbc61cefbc5c59e1640df81648035",
+    "e2e-scenarios/playwright.config.ts": "27ca10a20370f36b46cabbea8ff768b91c62ec2b",
+    "e2e-scenarios/fixtures/scenarioFixture.ts": "d350737994294958b93416f3e4bacbc1ab61af20",
+    "e2e-scenarios/helpers/scenarioApi.ts": "fdb6d5e0c2ca2374ae00995f128b8641659fad76",
+    "e2e-scenarios/helpers/gamePage.ts": "61217e7fb96f87cf0c71b65c95f51cdaee5409ed",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/scenario/ScenarioDtos.kt": "f2364b5e10d91fba2920c09d2e4b1ada67420380",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/controller/DevScenarioController.kt": "e75ba76d6d1bf57aaf48350906e3bddda6e1b908",
+    "game-server/src/test/kotlin/com/wingedsheep/gameserver/scenario/CustomCardPlayableTest.kt": "174502ec54328e22e98e2f4cccdf9956ffc37ecc"
+  },
+  "inherited": {
+    "R7": "69f2dce2835a55ad364ee9b1a9c75f7b4b1e5ac9",
+    "public43": "1b74a7551dba424d7b514d5c0b6234f8685755e5",
+    "public_source_review": "ed0fde8cfb62430bf51e988c61886c3e42253a9b",
+    "client64": "7b1b26092410a54860db499adc56496ef35e0765"
+  },
+  "verified_reuse": {
+    "components_unchanged": [
+      "ChooseOptionDecisionUI.tsx blob31aac1ee9c69038c7ed0e3c39dfc7888b29011a8",
+      "DecisionUI.tsx blob2b111bca348235f31e1e8064d6dda56b2e2cea20"
+    ],
+    "client34_test_blobs_unchanged": {
+      "web-client/src/store/slices/ui/targetingSlice.test.ts": "d571f0edc6cf7e4f19f59d918bdddfa6b83b9aae",
+      "web-client/src/store/slices/ui/pipelinePhases.test.ts": "5627d3ee5a4cb2bc8b1660eeaa0a43043f3bc1b6",
+      "web-client/src/store/slices/ui/publicTargetGroups.test.ts": "93008826626168a558dedd49ac0db1e142aa1b33"
+    },
+    "client30_binding": "8b0aafac27c88f7d5aee7e7e959fedf474a1ddbfa4c521d03a061b3892b9cbad",
+    "client_total_floor": 64,
+    "no_accepted_archive_reaudit": true
+  },
+  "findings": [
+    "Actual full-stack Playwright suite is e2e-scenarios/tests, with dev-gated POST /api/dev/scenarios and two isolated authenticated browser contexts. web-client/playwright.config.ts still points to ./e2e, which does not exist in this source tree; do not select it as actual UI harness.",
+    "Existing e2e-scenarios inventory contains no fixed-recipient/occurrence test. Store/server assertions from R7 do not prove rendered choice interaction.",
+    "ChooseOption component retains original option.index through filtering and renders preview cards from masked gameState.cards. DecisionUI keyed by decision ID remains unchanged. These are source findings; actual browser choices, replacement, owner masking still unexecuted.",
+    "ScenarioRequest server supports dev-gated customCards only as Scryfall-style JSON compiled whole by Assay into session-scoped overlay. Existing TypeScript helper does not expose customCards. Do not assume this accepts arbitrary SDK CardDefinition JSON or that fixed-recipient grammar exists. Investigate test-only fixture initialization before writing an actual UI case, without global Spellskite registration.",
+    "Default Playwright webServer runs raw gradlew and permits retry. Qualification must use approved locked just server startup and SKIP_WEB_SERVER=true with exact URLs; zero retries and one worker preserve first failures, explicit cleanup, original DOM/network reports/traces and screenshots. No bypass of existing locks.",
+    "Public43 cases already cover ability queued triggers with both orderings/present-departed source, public spell ward, nested choice activation/instant/trigger, rejection, stale recipient/stack visits and targeting-object source filters. Remaining public spell queued-trigger path and modal/splice/division/omitted optional/current-source-recipient matrix must be indexed against existing assertions before adding bounded cases; no repeated accepted runs for context."
+  ],
+  "next_executable_after_generator_receiving": [
+    "Receive active full generator artifact first; if failure preserve original and diagnose within existing grants. Do not mutate its frozen source or launch competing qualification.",
+    "Read the pinned e2e harness, applicable module AGENTS and add-feature/verify instructions; inspect session-scoped fixture initialization and existing engine public test setup. Establish a test-only fixed-recipient source and repeated-occurrence targeting object without Spellskite registration or official games.",
+    "Drive actual running component from server-authoritative choice: two distinct labels sharing one preview entity; select second occurrence, including filtering; assert outbound selected index1 and owner/decision identity plus correct server target occurrence. Capture original traces/DOM/network assertions; screenshots supplementary only.",
+    "Verify nested/replaced decision clears previous selection, held stale callback cannot consume replacement, wrong owner sees no private choice controls, and owner can complete new choice. Use executable deliberate controls that compile first; preserve original failure evidence and no retries.",
+    "Complete requirement-indexed public matrix additively, preserve original43 and64client assertions, then freeze coherent successor and run required final-source gates. Full22Spellskite and multiplayer admission remain separate."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "feature_acceptance": false,
+  "external_independent_review": false
+}
