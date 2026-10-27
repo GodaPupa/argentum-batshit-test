@@ -1,0 +1,52 @@
+{
+  "state": "ISOLATED_CONDITIONAL_SOURCE_REVIEW_NOT_IMPLEMENTATION",
+  "source": "66d94282f5e418f53fee8dcd8e52d77a11657262",
+  "runtime_base": "0646f08d959fe1945eaa7346297ea4d319eeda8b",
+  "diagnostic_run": 40598370603,
+  "presumes_diagnostic_success": false,
+  "source_blobs": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": "b009f3c140e8819b8617e6b9f69405763e371676",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastPaymentProcessor.kt": "24afa8dc691755cc010a6d03e15160f6ccffea51",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/cost/CostPaymentService.kt": "f6617aeb0fd1376aea740f1e068bc34abc5d8363",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/CostHandler.kt": "d20e9f05da47b6d67147a83930472f8757ddb8dc",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/life/LifePaymentService.kt": "69b6d7253ef048cc90256cac9b94b4863d45b167",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/ActivatedAbilityEnumerator.kt": "f3a22f8b81235fe3aae2b9f3c8f0b65f06fee264",
+    "web-client/src/store/slices/ui/pipelinePhases.ts": "3a37f666afb94e20592853cb40001040c1538ac2"
+  },
+  "findings": [
+    "ActivateAbilityHandler Explicit branch reads selected mana sources but not life-paid pips, then pays unreduced effectiveManaCost. Only original diagnostic receiving can establish runtime consequences.",
+    "CastPaymentProcessor already validates the exact Phyrexian color multiset with ManaCost.withPhyrexianPaidByLife, checks state.lifeTotal, then calls LifePaymentService.pay after mana success. Reuse those existing primitives rather than a new SDK cost type.",
+    "LifePaymentService is the existing event/replacement path, not an affordability validator. It can return events for life payment or library exile replacement. Keep aggregate affordability and transaction rollback explicit at the activation seam; do not modify the shared service or protected resolver merely to make tests pass.",
+    "ActivatedAbilityEnumerator uses ManaSolver.canPay, which already considers life-paid pips. Automatic source selection remains mana-only. Preserve existing defaults: explicit pip choices govern life payment; do not silently convert AutoPay to life payment.",
+    "web-client pipelinePhases manaSource maps both ActivateAbility and CastSpell to PaymentStrategy.Explicit and forwards phyrexianLifePayments. This is source evidence only, not an actual UI/payment trace.",
+    "Activation execution can be resumed directly after target selection. Any payment validation must also protect execute, not rely solely on validate. Preserve originalTargetSlots and all targeting-group contracts."
+  ],
+  "conditional_smallest_repair": [
+    "Only after diagnostic original is received: reduce activation effective mana cost using the chosen valid Phyrexian pip multiset before existing mana selection/spending. Reject colors or multiplicities absent from the effective cost, including no mana cost.",
+    "Use shared state.lifeTotal and LifePaymentService for the chosen life charge, preserving current default behavior for empty life selections. Charge once, include all returned events, handle existing nonmana life costs and replacements, and return original state/events on every subsequent failure.",
+    "Do not edit solver, SDK primitives, target provenance, protected source or production card catalog unless an exact new requirement and source review justifies it."
+  ],
+  "required_cases": [
+    "Preserve all four diagnostic tests and assertions unchanged; repaired normal/restored forms must pass all four.",
+    "Insufficient life, exact-two-life boundary, wrong color, extra/repeated pips, life selection against a non-Phyrexian or free cost.",
+    "Mixed generic/colored/Phyrexian requirements, insufficient remaining mana, multiple valid Phyrexian pips and cumulative life cost.",
+    "Available blue plus selected life preserves blue; blue selected without life uses only blue; FromPool/AutoPay defaults unchanged.",
+    "Composite nonmana life payment cannot overdraw total life; existing replacement service events are respected.",
+    "Invalid target/cost and unsuccessful activation leave life, mana, events, routing identity, stack and pending state unchanged.",
+    "Repeated activation charges exactly once per activation; exact payment events and resolution effects.",
+    "Action serialization, server handling, legal-action offering and real UI life-choice forwarding require source-specific evidence before full card acceptance."
+  ],
+  "mutants": [
+    "Ignore submitted life choices: original two diagnostic witnesses fail.",
+    "Reduce mana without charging life: life-total and payment-event assertions fail.",
+    "Charge life while retaining blue pip: no-blue activation witness fails and blue-preference control detects spending.",
+    "Bypass invalid multiset or affordability validation: wrong-color/extra-pip/insufficient-life assertions fail.",
+    "Duplicate life charge or drop life-payment events: repeated-activation/event witnesses fail."
+  ],
+  "qualification": "Compile unchanged normal and every deliberate mutant before behavior. Freeze exact source/tests/protocol, run targeted controls before required full dependent compatibility. Receive original artifacts before acceptance. Prior source0646 compatibility remains historical accepted evidence; a changed runtime successor must satisfy its own applicable gates. Generator/POR/ISD/transport receipts may be reused only under exact unchanged source/test bindings.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "card_registration": false
+}
