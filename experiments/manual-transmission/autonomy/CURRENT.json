@@ -54,7 +54,7 @@
     },
     "negative_scope": "Four executable mutants; all5normal/mutant compilations precede behavioral qualification.",
     "source_delta": "One additive40-case test and8 protocol/audit files; production and existing43/64tests unchanged.",
-    "next_executable_action": "Reconcile CURRENT ownership, task run state, recent checkpoints/newer receipts and all active workflow states. Do not duplicate active matrix run 40517702538. When terminal, receive its original artifact exactly once using 8f5a6f50ea49f51736acdd744c31a5e0b4d3df79:experiments/manual-transmission/research/public-occurrence-matrix-receiving-r1-20261027/PINS.json and NEXT_ACTION.json with frozen source 63026e29f507a32a340475d521ef47a529b6e439 RECEIVE.py. Check all immutable metadata, original bytes/hash/manifest,5 compile stages,40 normal/restored cases,40 exact negative witnesses and6 controls, zero skips,42 source bindings and197 protected bindings/restoration. Diagnose original failures before any bounded successor. If accepted, follow FINAL_COMPATIBILITY_NEXT.json and preserved CLIENT64_CONTRACT.json for final coherent-source gates; then22 Spellskite scenarios and multiplayer admission. No official games/seeds.",
+    "next_executable_action": "Dispatch frozen matrix R2 once after ownership/activity reconciliation; receive original artifact using source-bound receiver. All original assertions preserved.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -6806,7 +6806,7 @@
     }
   },
   "public_occurrence_matrix_r1_qualification": {
-    "state": "DISPATCHED_ORIGINAL_ARTIFACT_PENDING",
+    "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
     "source": "63026e29f507a32a340475d521ef47a529b6e439",
     "tree": "045d34ff961cba380e5299164867363f808a4a3c",
     "base": "41dcec4f23b2a28c8c2ffee89c763669c40c2b69",
@@ -6858,9 +6858,9 @@
       "check_reports.py": "cd5e97f929c3c2fe9c9a4fc23c548e97a8afdeecf6dd20903aa80110e899addb",
       "SYNTHETIC_CHECKS.json": "0e8cacf0cc5ec889fd751f19b587f58c02ad851962805fed483a18b479f049bf"
     },
-    "status": "in_progress",
+    "status": "completed",
     "job_status": "in_progress",
-    "conclusion": null,
+    "conclusion": "failure",
     "dispatched_utc": "2026-10-27T14:04:43Z",
     "observed_utc": "2026-10-27T14:12:07Z",
     "receiver": {
@@ -6870,6 +6870,45 @@
       "readback_verified": true
     },
     "phase": "Compile normal and all mutants before public matrix behavior",
-    "runtime_results": "Pending original artifact; no compilation or behavior acceptance claimed."
+    "runtime_results": "5compiled,40normal passed; first mutant zero tests, no behavioral negative evidence;609manifest verified,source restored.",
+    "receipt": "9a1d87d0f6ad277f0ab68890309a70a95e3fb348",
+    "artifact": 12740941289
+  },
+  "public_occurrence_matrix_r2_qualification": {
+    "source": "89d5cb953af9a324629047690e9c753e1804094f",
+    "tree": "2e0c32550762b5d7305ba4b0b856522b0445ebac",
+    "base": "63026e29f507a32a340475d521ef47a529b6e439",
+    "validation": "bf8fa2dd469dd1b9e4ab8999c4c3e51d6e4d9037",
+    "validation_tree": "207f98f504453ed57842fbb481f5c28dce8be69e",
+    "workflow": ".github/workflows/manual-public-occurrence-matrix-r2-20261027.yml",
+    "workflow_blob": "3eac5e433b3d5bf6ddbb9896991cea9d75bbe3b6",
+    "branch": "validation/manual-public-occurrence-matrix-r2-20261027",
+    "protocol": "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/PROTOCOL.json",
+    "source_delta": [
+      "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/PROTOCOL.json",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/SOURCE_REVIEW.json",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/run.py",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/reports.py",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/RECEIVE.py",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/validation.just",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/check_reports.py",
+      "experiments/manual-transmission/research/public-occurrence-matrix-r2-20261027/SYNTHETIC_CHECKS.json"
+    ],
+    "expected": {
+      "compiles": 5,
+      "discovery_sets": 4,
+      "discovery_cases": 46,
+      "normal": 40,
+      "restored": 40,
+      "negative_witnesses": 40,
+      "mutant_controls": 6,
+      "skips": 0
+    },
+    "production_changes": 0,
+    "test_changes": 0,
+    "assertions_unchanged": true,
+    "original_failure_receipt": "9a1d87d0f6ad277f0ab68890309a70a95e3fb348",
+    "readback_verified": true,
+    "state": "FROZEN_READY_SINGLE_DISPATCH"
   }
 }
