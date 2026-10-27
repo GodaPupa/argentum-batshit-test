@@ -1,0 +1,38 @@
+{
+  "state": "OWNER_SOURCE_REVIEW_NOT_INDEPENDENT_REVIEW",
+  "boundary": "Demonstrate explicit activated Phyrexian payment on an unregistered test fixture before repairing runtime.",
+  "source_base": "25a9b86953e84125b0119d91d1dd80787eaf0b73",
+  "production_changes": 0,
+  "existing_assertions_changed": 0,
+  "protected_paths_unchanged": 197,
+  "normal_mutant_compile_before_behavior": true,
+  "cases": [
+    "APD blue mana pays once and the fixture resolves",
+    "APD explicit life payment works without blue mana",
+    "APD chosen life payment preserves available blue mana",
+    "APD absent payment is rejected without changing state"
+  ],
+  "baseline_candidate": "No mana plus life choice likely rejects; blue plus life choice likely consumes blue without paying life. These are hypotheses until original executable receiving.",
+  "negative": "Change only fixture GainLife(1) to GainLife(2); unchanged positive blue-payment case must fail exactly at its resolution assertion. Original baseline failures must remain exact.",
+  "restoration": "Both forms archived at compilation and behavior; normal restored and every binding checked before behavioral stages and at finalization.",
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+    "effective": "2026-09-25",
+    "verified": "2026-10-27",
+    "sections": [
+      "107.4f",
+      "601.2b",
+      "602.2b",
+      "119.4"
+    ],
+    "paraphrase": "Each Phyrexian pip permits its color or two life. The player declares that choice during announcement, including activated abilities. Life payments subtract the amount and require enough life."
+  },
+  "remaining": [
+    "Receive exact original diagnostic",
+    "If reproduced implement smallest authorized unprotected payment repair with broader invalid-choice, affordability, rollback, event and repeated-activation cases and compiled mutants",
+    "Full22 actual Spellskite acceptance then multiplayer admission"
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
