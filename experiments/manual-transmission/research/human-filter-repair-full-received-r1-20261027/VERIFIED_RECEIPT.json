@@ -1,0 +1,1624 @@
+{
+  "source": "b6e6150edb07cf4ac99f61fdbae6b89e131e59af",
+  "tree": "adead58eca3856a8d4fb0954dcbee7994666604b",
+  "base": "8e2c68327c4317ec9245c6fb6ec0f141f2152b1b",
+  "validation": "91ab8a4b7453f03830b2c7f297956ccc922faae9",
+  "validation_tree": "8a64ea694b2b7c4874fcdb22cfb03ea461fd18b7",
+  "workflow": ".github/workflows/manual-human-filter-repair-full-r1-20261027.yml",
+  "workflow_blob": "b0031f5018c9d9e3aa28b61d3e32808286703600",
+  "run": 40470112090,
+  "job": 122074923883,
+  "workflow_id": 397983565,
+  "attempt": 1,
+  "branch": "validation/manual-human-filter-repair-full-r1-20261027",
+  "artifact_name": "manual-human-filter-repair-full-r1-40470112090",
+  "protocol_files": {
+    "PROTOCOL.json": "87e7afe5a46cdf2b893cea0eac1af58273c30198f8234ef12b54b3ace4190b1e",
+    "INPUTS.json": "518dd2580e501a65749027253d586bd9a2fe45a06704e2f914836553bf1430d1",
+    "CALIBRATED_BASELINE.json": "6e60831cb95198abce12fca100a75385c27de46470ed17dad9ff5aa99e681327",
+    "IDENTITY_FLOORS.json": "521bc087b9029b4b085a936b4f3e57f4758b00d78485ec80b2a5de5b8ea66570",
+    "INHERITED_R1_RECEIPT.json": "e5f2c80f30b756609e39dde77ef85f980148b34c7713f351e5e27adffa00c40c",
+    "INHERITED_REPAIR_RECEIPT.json": "419a4f983ceb38e1c81bab7edf4d295d76cbe5a67127a2bd376b70e9bce56614",
+    "receive_calibrated.py": "f14fa11ed28de0cbd16b9f98def9939f47ceba62c11a8ef7e69d1c45f1079a87",
+    "check_calibrated.py": "f8a4a0cce01c0e09e6c1daa861616f3b27b4edbf66114499ba13f48cfd371c60",
+    "SYNTHETIC_CALIBRATION_CHECKS.json": "74af759e7a3372d95f3efd821b084a3e141e2529bf9fa05bb2d868b25acf44eb",
+    "validation.just": "b24a717c0b0033d2c95d5c172fd5caf67530d8fef60f44c3a8fa0949cb642c66",
+    "reports.py": "67b597038c1056f7abac9a6d016af481f1b5b2a1f19c9905dba65e1b0c198bcd",
+    "run.py": "e5ffe001032e802b09f5b76f0a95d22b817a69cb19617c9796b5c220bc625481",
+    "RECEIVE.py": "3c763bf43894dd06d3b433a8fe30aed70031ec4ce79f4a4bab59396cad6023b3",
+    "check_full_reports.py": "d8bdd60f9fc5326601f0cf6a3eab2556cef8157e544cb3faf49b601d9d9525ef",
+    "SYNTHETIC_FULL_REPORT_CHECKS.json": "c8a6cfc123855c687551ce5e5b31641ee43ac2ac66f96bbcbc8242818c59cdbf",
+    "SOURCE_REVIEW.json": "cb488dc67471cd06c60d786cae585b7224dbe01526f405519356d2121ab70a89",
+    "OUTPUT_REVIEW.json": "fd908758e4d417eaaea0af1a05c276b6f5af72e2ab9a511a3f0552f77562e564"
+  },
+  "source_delta": [
+    "mtgish-tooling/src/test/resources/fixtures/inr.emitted.golden.txt",
+    "mtgish-tooling/src/test/resources/fixtures/isd.emitted.golden.txt",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/PROTOCOL.json",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/INPUTS.json",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/CALIBRATED_BASELINE.json",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/IDENTITY_FLOORS.json",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/INHERITED_R1_RECEIPT.json",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/INHERITED_REPAIR_RECEIPT.json",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/receive_calibrated.py",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/check_calibrated.py",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/SYNTHETIC_CALIBRATION_CHECKS.json",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/validation.just",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/reports.py",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/run.py",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/RECEIVE.py",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/check_full_reports.py",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/SYNTHETIC_FULL_REPORT_CHECKS.json",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/human-filter-repair-full-r1-20261027/OUTPUT_REVIEW.json"
+  ],
+  "artifact": 12717679804,
+  "artifact_bytes": 6488112,
+  "artifact_sha256": "7643e1489fbd2d80e880b1670f1cdb519d1347a560ccd2bf7bb0b2948c40734b",
+  "manifest_entries": 928,
+  "gates": {
+    "full-module": {
+      "tests": 204,
+      "failures": 0,
+      "passed": 201,
+      "errors": 0,
+      "skips": 3,
+      "skipped_identities": [
+        [
+          "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+          "Portal renders a high rate of whole, well-formed cards"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+          "Analyzer classifies a set's cards into a partition that sums to the whole"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+          "cross-set index carries the blocked cards behind each ranked capability"
+        ]
+      ],
+      "identities": [
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Hollowhenge Scavenger"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Morkrut Banshee"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "morbid gate preserves Reaper from the Abyss"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Army of the Damned"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Doomed Traveler"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Endless Ranks of the Dead"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Geist-Honored Monk"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Mausoleum Guard"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Midnight Haunting"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Moan of the Unhallowed"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Purify the Grave"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Silverchase Fox"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Spider Spawning"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current and frozen forms preserve Stitcher's Apprentice"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags preserve tapped state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject unsupported entry state"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current token flags reject non array and annotated operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject missing or extra operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "current tokens reject plural specifications rather than dropping one"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic permanent exile preserves its bound target"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic graveyard exile preserves its bound target and zone"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects missing bindings instead of choosing self"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects flags and multiple operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects wrong kind and reference pairings"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+          "generic exile rejects annotations and arity changes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "10E: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "CHK: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "EOE: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "HOB: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "INR: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "ISD: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "ONS: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "POR: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "RAV: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "SOS: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterGoldenTest",
+          "TMP: emitter output matches the committed golden, card-for-card"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+          "short lines are left untouched"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+          "a long call wraps its top-level args one per line, with trailing-comma-free last arg"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+          "commas inside string literals never trigger a split"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+          "comment / KDoc lines are never wrapped"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+          "nested over-long args wrap recursively and every emitted line fits the width"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+          "subtypeArg uses the typed constant when the SDK names it, else falls back to a string"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+          "subtypeCtorArg keeps the argument a Subtype even when the SDK doesn't name it"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EmitterFormatTest",
+          "no emitter source hand-rolls a subtype literal instead of subtypeArg / subtypeCtorArg"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.SwitchPowerToughnessEmitterTest",
+          "switch preserves target and end-of-turn duration"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.SwitchPowerToughnessEmitterTest",
+          "unknown duration declines"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Boiling Seas"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Devastation"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Nature's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves Virtue's Ruin"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "collected destruction preserves no regeneration"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "targeted destruction retains its selected target path"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "self excluding destruction retains its existing binding"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "unrenderable destruction restrictions still decline"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current singular player envelopes preserve the draw and life contract"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "legacy player envelope keeps its existing emission"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects changed player scope"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated remainder ceiling"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects an unrelated count reference"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "current player envelope rejects extra clauses and annotations"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+          "capture exact fixture projections for the required compatibility successor"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+          "a Keyword entry present in the registry resolves ok and contributes the keyword"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+          "a Keyword entry absent from the registry is MISSING and blocking, contributing nothing"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+          "an unmapped tag whose PascalCase is a Keyword enum member auto-resolves ok"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+          "a fully unmapped tag is UNMAPPED and blocking"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+          "a composed entry reports its kind, never blocks, and contributes its registry-present primitives"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+          "a composed primitive absent from the registry is dropped from the contributed capabilities"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+          "an envelope entry reports the ignore kind and never blocks"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.bridge.BridgeResolveTest",
+          "the disc:value composite key wins over the bare value key"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.IrQueryTest",
+          "argWordsTagged collects each tagged node's word arg in document order"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.IrQueryTest",
+          "argWordsTagged skips non-word args, mirroring the (\\w+) capture"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.IrQueryTest",
+          "hasTag matches a discriminator value, not a substring of a longer tag"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.IrQueryTest",
+          "wordsAtKey / firstColorOf read values at a key, scoping the colour to its clause"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.IrQueryTest",
+          "hasStringValue matches a string VALUE anywhere, the typed form of a quoted-token blob check"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.IrQueryTest",
+          "firstArgStringTagged returns the full arg string (a [^\"]+ capture, not just a word)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DredgeEmitterTest",
+          "dredge renders its numeric ability rather than a bare keyword"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DredgeEmitterTest",
+          "missing or negative dredge amounts decline to scaffolds"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest",
+          "power bounds recover from the scoped PowerIs node"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest",
+          "a power range keeps its two bounds distinct (scoped per PowerIs node)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest",
+          "tap / attack state predicates map to their fluent suffixes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest",
+          "nontoken recovers from the IsNonToken marker"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest",
+          "power-or-toughness recovers from the Or of equal >= bounds, declining a mismatch or a lone bound"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FilterPredicatesTest",
+          "flying recovers as with/without keyword, distinguished by the DoesntHaveAbility marker"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.AsPermanentEntersCounterTest",
+          "a self-scoped +1/+1 EntersWithACounter renders EntersWithCounters(count = 1, selfOnly = true)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.AsPermanentEntersCounterTest",
+          "a non-+1/+1 counter kind declines to a scaffold"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.AsPermanentEntersCounterTest",
+          "a group scope (not this permanent) declines to a scaffold"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.UpkeepTriggerScopeTest",
+          "the SinglePlayer/You scope maps to Triggers.YourUpkeep"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.UpkeepTriggerScopeTest",
+          "the AnyPlayer scope maps to Triggers.EachUpkeep"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.UpkeepTriggerScopeTest",
+          "the Opponent scope maps to Triggers.EachOpponentUpkeep"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.UpkeepTriggerScopeTest",
+          "the host-relative HostController scope declines to a scaffold, not a named scope"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+          "Portal renders a high rate of whole, well-formed cards"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.ProwessEmitterTest",
+          "a printed Prowess keyword renders via prowess(), not a bare keywords(Keyword.PROWESS)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.ProwessEmitterTest",
+          "\"other creatures you control have prowess\" declines to a scaffold, not a no-op GrantKeyword"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.CastTimeCaptureEmitterTest",
+          "Steer Clear renders the cast-time capture form whole (AUTO)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.InterveningIfConditionTest",
+          "Packsong Pup: 'another Wolf or Werewolf' lifts the Other(ThisPermanent) clause to excludeSelf"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.InterveningIfConditionTest",
+          "Resistance Squad: 'another Human' lifts the Other(ThatEnteringPermanent) clause to excludeSelf"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.InterveningIfConditionTest",
+          "without an Other(self) clause, 'you control a Spirit' renders WITHOUT excludeSelf (single line)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Champion current and fixture preserve permanent Human entry"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "Noble current and fixture preserve permanent Human blockers"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "entry shape preserves permanent subtype and controller"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "blocker shape preserves permanent subtype"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "explicit Creature restrictions are not widened"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "other subtypes retain existing emitter paths"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "controller and self restrictions are not dropped"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "annotations and unsupported shapes do not enter bounded repair"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "a literal renders verbatim"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "a no-arg call renders as callee()"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "positional args join with ', '"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "a named arg renders as 'name = value'"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "nested calls render inline (downstream wrapLine handles width)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "a chain renders base.method(args).method(args)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "an infix joins with the operator, parenthesized when asked"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "a Composite lays each element at 12 spaces with an 8-space close (matches the old composite())"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "Raw passes its text through untouched"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "a block renders `header { body }` with the body one indent level deeper"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "statements: Eval is bare, Sub nests, RawLine is verbatim (ignoring the block indent)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "a HoleLine renders as a greppable TODO comment at the block indent"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "an irShape annotates the hole when present"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.DslTest",
+          "holesIn collects every hole reason in document order, recursing into nested blocks"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.PrintingRowTest",
+          "reprint row carries set metadata and points at the canonical set"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.PrintingRowTest",
+          "missing artist / image fields are simply omitted, rarity defaults to COMMON"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.PrintingRowTest",
+          "val name is the PascalCase identifier of multi-word names"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.PrintingRowTest",
+          "rarity mapping covers the Scryfall vocabulary"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.YouTapTriggerEmitterTest",
+          "the You scope maps to Triggers.YouTap with the recovered permanent filter"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.YouTapTriggerEmitterTest",
+          "the IR's IsUntapped clause is dropped \u2014 it would invert the filter at detection time"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.YouTapTriggerEmitterTest",
+          "the filter still renders when the IR omits IsUntapped"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.YouTapTriggerEmitterTest",
+          "a non-You tapper scope declines to a scaffold rather than widening the trigger"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FixedRecipientRetargetEmitterTest",
+          "observed fixed recipient preserves the explicit stack binding and self recipient"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FixedRecipientRetargetEmitterTest",
+          "fixed recipient without a bound stack object declines"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FixedRecipientRetargetEmitterTest",
+          "fixed recipient rejects missing extra and reversed operands"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FixedRecipientRetargetEmitterTest",
+          "fixed recipient rejects unknown subjects recipients and nested qualifiers"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FixedRecipientRetargetEmitterTest",
+          "generic retarget remains the existing generic effect"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FixedRecipientRetargetEmitterTest",
+          "pinned upstream action retains fixed recipient and chosen stack binding"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FixedRecipientRetargetEmitterTest",
+          "bridge resolves fixed recipient only to its existing SDK capability"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FixedRecipientRetargetEmitterTest",
+          "bridge remains blocking when fixed recipient SDK capability is absent"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.FixedRecipientRetargetEmitterTest",
+          "unhandled any-spell-or-ability target envelope remains an explicit scaffold"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+          "Analyzer classifies a set's cards into a partition that sums to the whole"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+          "cross-set index carries the blocked cards behind each ranked capability"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+          "Ansi.fit pads or ellipsis-truncates to an exact visible width"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "constant 1:1 effects render as their fixed token (a Lit)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "mana production maps the produce tag to the Add*Mana facade"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "a mixed mana pool composites inline (single line, not the multi-line Composite)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "an unrecognised action declines (-> SCAFFOLD)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "CopySpell(Trigger_ThatSpell) renders 'copy that spell' on a cast trigger (Double Down)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "CopySpell with a non-triggering-spell subject declines (-> SCAFFOLD)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "SetPT sets base P/T, and the end-of-turn case emits an EXPLICIT Duration.EndOfTurn"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "SetPT carries a non-default expiration verbatim (for as long as it remains tapped)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "the each-permanent SetPT form wraps the set over a group"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "a SetPT riding an unsupported AddCardtype still scaffolds (no silently-dropped 'becomes an artifact')"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "'becomes a white Rabbit with base P/T 0/1' renders the atomic BecomeCreature (Metamorphic Blast)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "'becomes a Fractal with base P/T each equal to X plus 1' renders dynamic BecomeCreature"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "the bare under-owner's-control return renders a plain Move to the battlefield"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "a return with a +1/+1 counter renders the Move then a chained AddCountersEffect (Daydream)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "a return with a non-\u00b11/\u00b11 counter kind declines (-> SCAFFOLD) rather than guess the counter"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "a return entering tapped still declines (the tapped flag would be silently dropped)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "ShuffleEachPermanentIntoLibrary renders self + target as two ShuffleIntoLibrary moves"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "ShuffleEachPermanentIntoLibrary declines a group that isn't self + one bound target"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "End the Festivities: player-FIRST then permanent, opponent-scoped -> PlayerRef(EachOpponent)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "Dry Spell: permanent-FIRST then any-player -> creature group then ForEachPlayerEffect(Player.Each)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "a lone EachPlayer(Opponent) recipient renders the single each-opponent deal (no Composite)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "a lone EachPlayer(AnyPlayer) recipient renders the single each-player ForEachPlayerEffect"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.EffectHandlerTest",
+          "an unmodeled EachPlayer scope declines the whole card (-> SCAFFOLD), never a widened recipient set"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterPartialTest",
+          "a WHOLE card renders identically in partial mode, with no holes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.EmitterPartialTest",
+          "an injected un-renderable rule holes ONLY that part; the rest still renders"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl composes the plain-creature base with recovered suffixes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl distributes an Or of per-subtype creature filters"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl renders power-or-toughness and suppresses the standalone power bound"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl renders an Or of creature subtypes as withAnyOfSubtypes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl appends nontoken from the IsNonToken marker"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "targetExpr renders a nonland permanent target"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl reads the base cardtype and appends the tapped suffix"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl declines a filter with no recoverable base type"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "targetExpr maps the player / spell / graveyard target shapes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl recovers a multi-colour Or as withAnyColor (Escape Routes, Hunting Drake)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl declines a source-relative blocking relation (Cromat)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "targetExpr restricts a counter to a colour-bound spell (Gainsay)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "targetExpr restricts a counter to a noncreature spell (Spell Pierce)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "targetExpr declines a spell whose filter is about what it targets, not its type (Confound)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl recovers a bare 'another' creature target as TargetFilter.OtherCreature (Rimekin Recluse)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl declines an 'another' creature target with an extra predicate (excludeSelf + state not composed)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl declines a '+1/+1 counters on them' group (Badgermole's trample lord)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl declines an enchantment subtype (Shrine triggers, The Spirit Oasis)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl declines a creature-subtype + non-creature-type union (Great Divide Guide)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "targetExpr declines a bare permanent target carrying a dropped controller restriction (North Pole Patrol)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "targetExpr renders an artifact-subtype target via withSubtype (Turn to Dust, Rustspore Ram)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "targetExpr declines a lowest-mana-value permanent target (Culling Scales)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "targetExpr declines a noncreature-artifact target (Blinkmoth Well)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "landSearchFilterDsl recovers an artifact-card search filter (Fabricate)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl renders a negated creature subtype via notSubtype (Sterling Keykeeper)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl renders a 'with a stun counter on it' restriction (Floodpits Drowner)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl declines a counter restriction whose kind it can't name exactly"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl renders a 'was dealt damage this turn' restriction (Rooftop Assassin)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl renders an active 'dealt damage this turn' restriction (Red Guardian)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl declines 'dealt damage this turn' combined with an unrenderable shape"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl renders a non-outlaw creature via notAnyOfSubtypes (Shoot the Sheriff)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl renders 'defending player controls' as opponentControls (Spring Splasher)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl renders an outlaw filter via withAnyOfSubtypes (Vial Smasher)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl binds a group controlled by a target player to ContextTarget(0) (Neutralize the Guards)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl renders 'a player other than you' as opponentControls (Artistic Process)"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "gameObjectFilterDsl renders the creature+planeswalker union (Splatter Technique's 'each creature and planeswalker')"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl renders 'target creature you don't control' as opponentControls"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl still renders the plain 'you control' and 'an opponent controls' scopes"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "creatureFilterDsl declines a controller scope it cannot render exactly"
+        ],
+        [
+          "com.wingedsheep.tooling.coverage.emitter.TargetRecoveryTest",
+          "a non-creature target still declines a trigger's implied-opponent player ref (Dawning Purist)"
+        ]
+      ],
+      "witnesses": []
+    },
+    "por": {
+      "code": "por",
+      "emitted": [
+        "Alabaster Dragon",
+        "Alluring Scent",
+        "Anaconda",
+        "Ancestral Memories",
+        "Angelic Blessing",
+        "Archangel",
+        "Ardent Militia",
+        "Armageddon",
+        "Armored Pegasus",
+        "Arrogant Vampire",
+        "Assassin's Blade",
+        "Balance of Power",
+        "Baleful Stare",
+        "Bee Sting",
+        "Blaze",
+        "Blessed Reversal",
+        "Blinding Light",
+        "Bog Imp",
+        "Bog Raiders",
+        "Bog Wraith",
+        "Boiling Seas",
+        "Border Guard",
+        "Breath of Life",
+        "Bull Hippo",
+        "Burning Cloak",
+        "Capricious Sorcerer",
+        "Charging Bandits",
+        "Charging Paladin",
+        "Charging Rhino",
+        "Cloak of Feathers",
+        "Cloud Dragon",
+        "Cloud Pirates",
+        "Cloud Spirit",
+        "Command of Unsummoning",
+        "Coral Eel",
+        "Craven Giant",
+        "Craven Knight",
+        "Cruel Bargain",
+        "Cruel Fate",
+        "Cruel Tutor",
+        "Deep Wood",
+        "Deep-Sea Serpent",
+        "Defiant Stand",
+        "Desert Drake",
+        "Devastation",
+        "Devoted Hero",
+        "Djinn of the Lamp",
+        "Dread Charge",
+        "Dread Reaper",
+        "Dry Spell",
+        "D\u00e9j\u00e0 Vu",
+        "Earthquake",
+        "Ebon Dragon",
+        "Elite Cat Warrior",
+        "Elven Cache",
+        "Elvish Ranger",
+        "Endless Cockroaches",
+        "Exhaustion",
+        "False Peace",
+        "Feral Shadow",
+        "Final Strike",
+        "Fire Dragon",
+        "Fire Imp",
+        "Fire Snake",
+        "Fire Tempest",
+        "Flashfires",
+        "Fleet-Footed Monk",
+        "Flux",
+        "Foot Soldiers",
+        "Forked Lightning",
+        "Fruition",
+        "Giant Octopus",
+        "Giant Spider",
+        "Gift of Estates",
+        "Goblin Bully",
+        "Gorilla Warrior",
+        "Gravedigger",
+        "Grizzly Bears",
+        "Hand of Death",
+        "Harsh Justice",
+        "Highland Giant",
+        "Hill Giant",
+        "Horned Turtle",
+        "Howling Fury",
+        "Hulking Cyclops",
+        "Hulking Goblin",
+        "Hurricane",
+        "Ingenious Thief",
+        "Jungle Lion",
+        "Keen-Eyed Archers",
+        "King's Assassin",
+        "Knight Errant",
+        "Last Chance",
+        "Lava Axe",
+        "Lava Flow",
+        "Lizard Warrior",
+        "Man-o'-War",
+        "Mercenary Knight",
+        "Merfolk of the Pearl Trident",
+        "Mind Knives",
+        "Mind Rot",
+        "Minotaur Warrior",
+        "Mobilize",
+        "Monstrous Growth",
+        "Moon Sprite",
+        "Mountain Goat",
+        "Muck Rats",
+        "Mystic Denial",
+        "Natural Order",
+        "Natural Spring",
+        "Nature's Cloak",
+        "Nature's Lore",
+        "Nature's Ruin",
+        "Needle Storm",
+        "Noxious Toad",
+        "Omen",
+        "Owl Familiar",
+        "Panther Warriors",
+        "Path of Peace",
+        "Personal Tutor",
+        "Phantom Warrior",
+        "Pillaging Horde",
+        "Plant Elemental",
+        "Primeval Force",
+        "Prosperity",
+        "Pyroclasm",
+        "Python",
+        "Raging Cougar",
+        "Raging Goblin",
+        "Raging Minotaur",
+        "Rain of Salt",
+        "Rain of Tears",
+        "Raise Dead",
+        "Redwood Treefolk",
+        "Regal Unicorn",
+        "Renewing Dawn",
+        "Rowan Treefolk",
+        "Sacred Knight",
+        "Sacred Nectar",
+        "Scorching Spear",
+        "Scorching Winds",
+        "Seasoned Marshal",
+        "Serpent Assassin",
+        "Serpent Warrior",
+        "Skeletal Crocodile",
+        "Skeletal Snake",
+        "Snapping Drake",
+        "Sorcerous Sight",
+        "Soul Shred",
+        "Spined Wurm",
+        "Spiritual Guardian",
+        "Spitting Earth",
+        "Spotted Griffin",
+        "Stalking Tiger",
+        "Starlight",
+        "Starlit Angel",
+        "Steadfastness",
+        "Stern Marshal",
+        "Stone Rain",
+        "Storm Crow",
+        "Summer Bloom",
+        "Sylvan Tutor",
+        "Symbol of Unsummoning",
+        "Taunt",
+        "Temporary Truce",
+        "Theft of Dreams",
+        "Thing from the Deep",
+        "Thundering Wurm",
+        "Thundermare",
+        "Tidal Surge",
+        "Time Ebb",
+        "Touch of Brilliance",
+        "Treetop Defense",
+        "Undying Beast",
+        "Untamed Wilds",
+        "Valorous Charge",
+        "Vampiric Feast",
+        "Vampiric Touch",
+        "Venerable Monk",
+        "Vengeance",
+        "Virtue's Ruin",
+        "Volcanic Dragon",
+        "Volcanic Hammer",
+        "Wall of Granite",
+        "Wall of Swords",
+        "Warrior's Charge",
+        "Whiptail Wurm",
+        "Wicked Pact",
+        "Willow Dryad",
+        "Wind Drake",
+        "Winds of Change",
+        "Winter's Grasp",
+        "Withering Gaze",
+        "Wood Elves",
+        "Wrath of God"
+      ],
+      "matched_in_golden": [
+        "Alabaster Dragon",
+        "Alluring Scent",
+        "Anaconda",
+        "Angelic Blessing",
+        "Ardent Militia",
+        "Armored Pegasus",
+        "Arrogant Vampire",
+        "Assassin's Blade",
+        "Balance of Power",
+        "Baleful Stare",
+        "Bee Sting",
+        "Blaze",
+        "Blessed Reversal",
+        "Bog Raiders",
+        "Boiling Seas",
+        "Border Guard",
+        "Breath of Life",
+        "Bull Hippo",
+        "Burning Cloak",
+        "Capricious Sorcerer",
+        "Charging Bandits",
+        "Charging Paladin",
+        "Charging Rhino",
+        "Cloak of Feathers",
+        "Cloud Dragon",
+        "Cloud Pirates",
+        "Cloud Spirit",
+        "Command of Unsummoning",
+        "Coral Eel",
+        "Craven Giant",
+        "Craven Knight",
+        "Cruel Bargain",
+        "Cruel Fate",
+        "Cruel Tutor",
+        "Deep Wood",
+        "Deep-Sea Serpent",
+        "Defiant Stand",
+        "Desert Drake",
+        "Devastation",
+        "Devoted Hero",
+        "Djinn of the Lamp",
+        "Dread Charge",
+        "Dread Reaper",
+        "D\u00e9j\u00e0 Vu",
+        "Ebon Dragon",
+        "Elite Cat Warrior",
+        "Endless Cockroaches",
+        "Exhaustion",
+        "False Peace",
+        "Final Strike",
+        "Fire Dragon",
+        "Fire Imp",
+        "Fire Snake",
+        "Fire Tempest",
+        "Fleet-Footed Monk",
+        "Flux",
+        "Foot Soldiers",
+        "Forked Lightning",
+        "Fruition",
+        "Giant Octopus",
+        "Gift of Estates",
+        "Goblin Bully",
+        "Gorilla Warrior",
+        "Gravedigger",
+        "Hand of Death",
+        "Harsh Justice",
+        "Highland Giant",
+        "Horned Turtle",
+        "Howling Fury",
+        "Hulking Goblin",
+        "Ingenious Thief",
+        "Jungle Lion",
+        "Keen-Eyed Archers",
+        "King's Assassin",
+        "Knight Errant",
+        "Last Chance",
+        "Lava Axe",
+        "Lava Flow",
+        "Lizard Warrior",
+        "Mercenary Knight",
+        "Mind Knives",
+        "Mind Rot",
+        "Minotaur Warrior",
+        "Mobilize",
+        "Monstrous Growth",
+        "Moon Sprite",
+        "Muck Rats",
+        "Mystic Denial",
+        "Natural Spring",
+        "Nature's Cloak",
+        "Nature's Ruin",
+        "Needle Storm",
+        "Noxious Toad",
+        "Omen",
+        "Owl Familiar",
+        "Path of Peace",
+        "Personal Tutor",
+        "Phantom Warrior",
+        "Pillaging Horde",
+        "Plant Elemental",
+        "Primeval Force",
+        "Raging Cougar",
+        "Raging Goblin",
+        "Raging Minotaur",
+        "Rain of Salt",
+        "Rain of Tears",
+        "Redwood Treefolk",
+        "Regal Unicorn",
+        "Renewing Dawn",
+        "Rowan Treefolk",
+        "Sacred Knight",
+        "Sacred Nectar",
+        "Scorching Spear",
+        "Scorching Winds",
+        "Seasoned Marshal",
+        "Serpent Assassin",
+        "Serpent Warrior",
+        "Skeletal Crocodile",
+        "Skeletal Snake",
+        "Snapping Drake",
+        "Sorcerous Sight",
+        "Soul Shred",
+        "Spined Wurm",
+        "Spiritual Guardian",
+        "Spotted Griffin",
+        "Starlight",
+        "Starlit Angel",
+        "Steadfastness",
+        "Stern Marshal",
+        "Sylvan Tutor",
+        "Symbol of Unsummoning",
+        "Taunt",
+        "Temporary Truce",
+        "Theft of Dreams",
+        "Thing from the Deep",
+        "Thundering Wurm",
+        "Thundermare",
+        "Tidal Surge",
+        "Time Ebb",
+        "Touch of Brilliance",
+        "Treetop Defense",
+        "Undying Beast",
+        "Valorous Charge",
+        "Vampiric Feast",
+        "Vampiric Touch",
+        "Venerable Monk",
+        "Vengeance",
+        "Virtue's Ruin",
+        "Volcanic Hammer",
+        "Wall of Granite",
+        "Warrior's Charge",
+        "Whiptail Wurm",
+        "Wicked Pact",
+        "Willow Dryad",
+        "Wind Drake",
+        "Winter's Grasp",
+        "Withering Gaze",
+        "Wood Elves"
+      ],
+      "compiled_outside_golden_no_gameplay_claim": [
+        "Ancestral Memories",
+        "Archangel",
+        "Armageddon",
+        "Blinding Light",
+        "Bog Imp",
+        "Bog Wraith",
+        "Dry Spell",
+        "Earthquake",
+        "Elven Cache",
+        "Elvish Ranger",
+        "Feral Shadow",
+        "Flashfires",
+        "Giant Spider",
+        "Grizzly Bears",
+        "Hill Giant",
+        "Hulking Cyclops",
+        "Hurricane",
+        "Man-o'-War",
+        "Merfolk of the Pearl Trident",
+        "Mountain Goat",
+        "Natural Order",
+        "Nature's Lore",
+        "Panther Warriors",
+        "Prosperity",
+        "Pyroclasm",
+        "Python",
+        "Raise Dead",
+        "Spitting Earth",
+        "Stalking Tiger",
+        "Stone Rain",
+        "Storm Crow",
+        "Summer Bloom",
+        "Untamed Wilds",
+        "Volcanic Dragon",
+        "Wall of Swords",
+        "Winds of Change",
+        "Wrath of God"
+      ],
+      "not_emitted": [],
+      "golden_count": 158,
+      "floor": 195,
+      "mismatches": 0,
+      "suspected_drift": 0,
+      "capability_mismatches": 0
+    },
+    "isd": {
+      "code": "isd",
+      "emitted": [
+        "Abbey Griffin",
+        "Altar's Reap",
+        "Ambush Viper",
+        "Ancient Grudge",
+        "Angel of Flight Alabaster",
+        "Armored Skaab",
+        "Army of the Damned",
+        "Avacyn's Pilgrim",
+        "Avacynian Priest",
+        "Battleground Geist",
+        "Bloodcrazed Neonate",
+        "Bloodgift Demon",
+        "Boneyard Wurm",
+        "Brain Weevil",
+        "Brimstone Volley",
+        "Bump in the Night",
+        "Champion of the Parish",
+        "Chapel Geist",
+        "Cobbled Wings",
+        "Crossway Vampire",
+        "Darkthicket Wolf",
+        "Dead Weight",
+        "Desperate Ravings",
+        "Diregraf Ghoul",
+        "Doomed Traveler",
+        "Dream Twist",
+        "Elder of Laurels",
+        "Elite Inquisitor",
+        "Endless Ranks of the Dead",
+        "Falkenrath Marauders",
+        "Feeling of Dread",
+        "Feral Ridgewolf",
+        "Festerhide Boar",
+        "Forbidden Alchemy",
+        "Fortress Crab",
+        "Frightful Delusion",
+        "Furor of the Bitten",
+        "Gallows Warden",
+        "Gavony Township",
+        "Geist-Honored Monk",
+        "Geistcatcher's Rig",
+        "Geistflame",
+        "Gnaw to the Bone",
+        "Grasp of Phantoms",
+        "Grave Bramble",
+        "Hamlet Captain",
+        "Heartless Summoning",
+        "Hollowhenge Scavenger",
+        "Hysterical Blindness",
+        "Infernal Plunge",
+        "Intangible Virtue",
+        "Into the Maw of Hell",
+        "Invisible Stalker",
+        "Kessig Wolf",
+        "Kessig Wolf Run",
+        "Kindercatch",
+        "Lantern Spirit",
+        "Lost in the Mist",
+        "Manor Skeleton",
+        "Markov Patrician",
+        "Mask of Avacyn",
+        "Mausoleum Guard",
+        "Maw of the Mire",
+        "Midnight Haunting",
+        "Moan of the Unhallowed",
+        "Moment of Heroism",
+        "Moon Heron",
+        "Morkrut Banshee",
+        "Naturalize",
+        "Nephalia Drownyard",
+        "Nightbird's Clutches",
+        "One-Eyed Scarecrow",
+        "Pitchburn Devils",
+        "Prey Upon",
+        "Purify the Grave",
+        "Rakish Heir",
+        "Rally the Peasants",
+        "Ranger's Guile",
+        "Reaper from the Abyss",
+        "Rebuke",
+        "Riot Devils",
+        "Rolling Temblor",
+        "Rotting Fensnake",
+        "Selfless Cathar",
+        "Sensory Deprivation",
+        "Shimmering Grotto",
+        "Silent Departure",
+        "Silverchase Fox",
+        "Skirsdag Cultist",
+        "Slayer of the Wicked",
+        "Smite the Monstrous",
+        "Somberwald Spider",
+        "Spectral Flight",
+        "Spectral Rider",
+        "Spider Spawning",
+        "Spidery Grasp",
+        "Splinterfright",
+        "Stensia Bloodhall",
+        "Stitcher's Apprentice",
+        "Stromkirk Noble",
+        "Stromkirk Patrol",
+        "Think Twice",
+        "Thraben Purebloods",
+        "Traitorous Blood",
+        "Travel Preparations",
+        "Traveler's Amulet",
+        "Typhoid Rats",
+        "Unburial Rites",
+        "Urgent Exorcism",
+        "Vampire Interloper",
+        "Vampiric Fury",
+        "Victim of Night",
+        "Village Bell-Ringer",
+        "Voiceless Spirit",
+        "Walking Corpse"
+      ],
+      "matched_in_golden": [
+        "Abbey Griffin",
+        "Altar's Reap",
+        "Ambush Viper",
+        "Angel of Flight Alabaster",
+        "Armored Skaab",
+        "Avacyn's Pilgrim",
+        "Avacynian Priest",
+        "Battleground Geist",
+        "Bump in the Night",
+        "Champion of the Parish",
+        "Chapel Geist",
+        "Cobbled Wings",
+        "Dead Weight",
+        "Desperate Ravings",
+        "Diregraf Ghoul",
+        "Doomed Traveler",
+        "Elder of Laurels",
+        "Elite Inquisitor",
+        "Endless Ranks of the Dead",
+        "Feeling of Dread",
+        "Feral Ridgewolf",
+        "Festerhide Boar",
+        "Forbidden Alchemy",
+        "Fortress Crab",
+        "Furor of the Bitten",
+        "Gallows Warden",
+        "Geistcatcher's Rig",
+        "Geistflame",
+        "Gnaw to the Bone",
+        "Grasp of Phantoms",
+        "Grave Bramble",
+        "Hamlet Captain",
+        "Heartless Summoning",
+        "Hysterical Blindness",
+        "Infernal Plunge",
+        "Intangible Virtue",
+        "Into the Maw of Hell",
+        "Invisible Stalker",
+        "Kessig Wolf",
+        "Kindercatch",
+        "Lantern Spirit",
+        "Lost in the Mist",
+        "Manor Skeleton",
+        "Markov Patrician",
+        "Mask of Avacyn",
+        "Mausoleum Guard",
+        "Maw of the Mire",
+        "Midnight Haunting",
+        "Moan of the Unhallowed",
+        "Moment of Heroism",
+        "Moon Heron",
+        "Morkrut Banshee",
+        "One-Eyed Scarecrow",
+        "Pitchburn Devils",
+        "Purify the Grave",
+        "Rally the Peasants",
+        "Ranger's Guile",
+        "Rebuke",
+        "Riot Devils",
+        "Rolling Temblor",
+        "Rotting Fensnake",
+        "Selfless Cathar",
+        "Sensory Deprivation",
+        "Silent Departure",
+        "Silverchase Fox",
+        "Skirsdag Cultist",
+        "Slayer of the Wicked",
+        "Smite the Monstrous",
+        "Spectral Flight",
+        "Spider Spawning",
+        "Spidery Grasp",
+        "Splinterfright",
+        "Stensia Bloodhall",
+        "Stitcher's Apprentice",
+        "Stromkirk Noble",
+        "Thraben Purebloods",
+        "Traitorous Blood",
+        "Travel Preparations",
+        "Traveler's Amulet",
+        "Typhoid Rats",
+        "Unburial Rites",
+        "Urgent Exorcism",
+        "Vampire Interloper",
+        "Vampiric Fury",
+        "Victim of Night",
+        "Village Bell-Ringer",
+        "Voiceless Spirit",
+        "Walking Corpse"
+      ],
+      "compiled_outside_golden_no_gameplay_claim": [
+        "Ancient Grudge",
+        "Army of the Damned",
+        "Bloodcrazed Neonate",
+        "Bloodgift Demon",
+        "Boneyard Wurm",
+        "Brain Weevil",
+        "Brimstone Volley",
+        "Crossway Vampire",
+        "Darkthicket Wolf",
+        "Dream Twist",
+        "Falkenrath Marauders",
+        "Frightful Delusion",
+        "Gavony Township",
+        "Geist-Honored Monk",
+        "Hollowhenge Scavenger",
+        "Kessig Wolf Run",
+        "Naturalize",
+        "Nephalia Drownyard",
+        "Nightbird's Clutches",
+        "Prey Upon",
+        "Rakish Heir",
+        "Reaper from the Abyss",
+        "Shimmering Grotto",
+        "Somberwald Spider",
+        "Spectral Rider",
+        "Stromkirk Patrol",
+        "Think Twice"
+      ],
+      "not_emitted": [
+        "Abattoir Ghoul",
+        "Balefire Dragon",
+        "Bloodline Keeper",
+        "Bonds of Faith",
+        "Bramblecrush",
+        "Burning Vengeance",
+        "Butcher's Cleaver",
+        "Cackling Counterpart",
+        "Dearly Departed",
+        "Delver of Secrets",
+        "Demonmail Hauberk",
+        "Deranged Assistant",
+        "Elder Cathar",
+        "Falkenrath Noble",
+        "Fiend Hunter",
+        "Galvanic Juggernaut",
+        "Garruk Relentless",
+        "Geist of Saint Traft",
+        "Ghoulraiser",
+        "Grimgrin, Corpse-Born",
+        "Hanweir Watchkeep",
+        "Kruin Outlaw",
+        "Laboratory Maniac",
+        "Liliana of the Veil",
+        "Lumberknot",
+        "Makeshift Mauler",
+        "Mayor of Avabruck",
+        "Mentor of the Meek",
+        "Olivia Voldaren",
+        "Rooftop Storm",
+        "Sever the Bloodline",
+        "Sharpened Pitchfork",
+        "Skaab Goliath",
+        "Skirsdag High Priest",
+        "Snapcaster Mage",
+        "Stitched Drake",
+        "Tribute to Hunger",
+        "Unbreathing Horde",
+        "Villagers of Estwald"
+      ],
+      "golden_count": 127,
+      "floor": 115,
+      "mismatches": 0,
+      "suspected_drift": 0,
+      "capability_mismatches": 0
+    },
+    "inherited_early": {
+      "receipt": "5959f695408588a35322495f426c0d087c2035ad",
+      "stages": [
+        "compile-normal",
+        "compile-wrong-recipient",
+        "compile-unbound-stack",
+        "normal",
+        "wrong-recipient",
+        "unbound-stack",
+        "restored"
+      ],
+      "bindings_unchanged": true,
+      "original_failure_preserved": true
+    },
+    "inherited_repair": {
+      "receipt": "8df5d0d047fc3559a796542cc3c15900442f2406",
+      "stages": [
+        "compile-normal",
+        "compile-entry-creature",
+        "compile-blocker-creature",
+        "normal",
+        "entry-creature",
+        "blocker-creature",
+        "restored"
+      ],
+      "bindings_unchanged": true
+    }
+  },
+  "gate_errors": [],
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "state": "RECEIVED_BOUNDED_GENERATOR_AND_CALIBRATION_NOT_CARD_ADMISSION"
+}
