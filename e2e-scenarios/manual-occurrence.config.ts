@@ -6,6 +6,6 @@ export default defineConfig({
   expect: { timeout: 10_000 },
   reporter: [['json', { outputFile: process.env.MANUAL_UI_REPORT! }]],
   outputDir: process.env.MANUAL_UI_RESULTS!,
-  use: { baseURL: process.env.E2E_BASE_URL!, trace: 'on', screenshot: 'on', video: 'off' },
+  use: { baseURL: process.env.E2E_BASE_URL!, trace: 'off', screenshot: 'on', video: 'off' },
   // Servers are started and stopped by the frozen locked qualification runner.
 })
