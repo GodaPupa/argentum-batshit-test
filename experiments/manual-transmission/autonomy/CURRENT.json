@@ -30,7 +30,7 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Unregistered activated Phyrexian mana/life diagnostic before bounded repair",
+    "current_subproblem": "Bounded activated Phyrexian payment repair after original diagnostic receiving",
     "source_candidate": "66d94282f5e418f53fee8dcd8e52d77a11657262",
     "source_tree": "1aa375eb78efa967c38ee1382897dec541b63a2c",
     "source_branch": "source/manual-activation-payment-diagnostic-r1-20261027",
@@ -39,9 +39,7 @@
     "validation": "9742486974f91d7dbd48d7bd3084ec394260eb8f",
     "validation_branch": "validation/manual-activation-payment-diagnostic-r1-20261027",
     "workflow": ".github/workflows/manual-activation-payment-diagnostic-r1-20261027.yml",
-    "pending_runs": [
-      40598370603
-    ],
+    "pending_runs": [],
     "planned_not_observed": {
       "compilations": 2,
       "baseline_assertion_failures": 2,
@@ -55,7 +53,7 @@
     },
     "negative_scope": "One deliberate GainLife2 test-fixture mutation must break the unchanged blue-resolution assertion; baseline candidate two failures remain. Compilation errors are not evidence.",
     "source_delta": "One new unregistered test and eight research protocol files; no production/existing assertions/protected edits.",
-    "next_executable_action": "Reconcile CURRENT owner, automation run, newer receipts/successors and all workflow statuses. Do not duplicate40598370603. On terminal receive its original ZIP exactly once using frozen66d94282f5e418f53fee8dcd8e52d77a11657262:experiments/manual-transmission/research/activation-payment-diagnostic-r1-20261027/RECEIVE.py and exact PINS/NEXT_ACTION at e928f281f32bd7c9a3d700f8442e501fa96a482b:experiments/manual-transmission/research/activation-payment-receiving-r1-20261027. Verify metadata/bytes/hash/manifest,2compilations before behavior,exact4raw identities/type/frames/multiplicities,normal/mutant/restored forms,197protected+51bindings+3blobbindings. Green is diagnostic-only; all baseline failures remain failures. If original evidence reproduces gap, follow isolated CONDITIONAL_REPAIR_REVIEW.json for bounded unprotected activation repair with unchanged diagnostic assertions,expanded negative/payment/rollback/event cases and required successor compatibility. Reuse accepted final compatibility25a9b869 on unchanged source; no card registration or games.",
+    "next_executable_action": "Implement bounded unprotected ActivateAbilityHandler repair using exact conditional review e928f281 and original diagnostic receipt80c21e02. Preserve four diagnostic assertions; expand invalid pip, aggregate life, rollback, replacement/event and repeat tests. Compile normal and every mutant before targeted behavioral controls; freeze source/protocol, then applicable dependent compatibility and original artifact receiving. Full22Spellskite, actual payment UI and multiplayer remain unaccepted.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -6067,15 +6065,13 @@
       "Original Assay continuation40590624597 received at25a9b869:540manifest,2000touchstone,exact51unchanged differential findings,197protected+50sourcebindings,rawcorpus hash verified. No completed suites rerun."
     ],
     "unfinished_implementation": [
-      "Activated Phyrexian life-payment candidate gap: unregistered diagnostic40598370603 active; no repair or runtime defect confirmation yet.",
-      "Full22Spellskite card-specific implementation/acceptance and multiplayer admission remain; no production Spellskite registration."
+      "Activated Phyrexian life-payment defects confirmed by original diagnostic80c21e02; bounded repair in progress, no repair accepted.",
+      "Full22Spellskite, actual payment UI and multiplayer admission remain."
     ],
     "pending_evidence": [
-      "Original diagnostic40598370603 receiving; normal/mutant compilation and exact behavioral witnesses not yet observed.",
-      "Any justified payment repair needs source-specific successor qualification and original receiving.",
-      "Full22Spellskite and multiplayer admission."
+      "Repair normal/mutant compilation, targeted executable controls, dependent source-specific compatibility and original receiving."
     ],
-    "next_executable_action": "Reconcile CURRENT owner, automation run, newer receipts/successors and all workflow statuses. Do not duplicate40598370603. On terminal receive its original ZIP exactly once using frozen66d94282f5e418f53fee8dcd8e52d77a11657262:experiments/manual-transmission/research/activation-payment-diagnostic-r1-20261027/RECEIVE.py and exact PINS/NEXT_ACTION at e928f281f32bd7c9a3d700f8442e501fa96a482b:experiments/manual-transmission/research/activation-payment-receiving-r1-20261027. Verify metadata/bytes/hash/manifest,2compilations before behavior,exact4raw identities/type/frames/multiplicities,normal/mutant/restored forms,197protected+51bindings+3blobbindings. Green is diagnostic-only; all baseline failures remain failures. If original evidence reproduces gap, follow isolated CONDITIONAL_REPAIR_REVIEW.json for bounded unprotected activation repair with unchanged diagnostic assertions,expanded negative/payment/rollback/event cases and required successor compatibility. Reuse accepted final compatibility25a9b869 on unchanged source; no card registration or games.",
+    "next_executable_action": "Implement bounded unprotected ActivateAbilityHandler repair using exact conditional review e928f281 and original diagnostic receipt80c21e02. Preserve four diagnostic assertions; expand invalid pip, aggregate life, rollback, replacement/event and repeat tests. Compile normal and every mutant before targeted behavioral controls; freeze source/protocol, then applicable dependent compatibility and original artifact receiving. Full22Spellskite, actual payment UI and multiplayer remain unaccepted.",
     "read_sections": [
       {
         "ref": "66d94282f5e418f53fee8dcd8e52d77a11657262",
@@ -6399,7 +6395,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-27T23:48:20Z",
+  "updated_utc": "2026-10-27T23:54:00Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -7506,7 +7502,7 @@
     }
   },
   "activation_payment_diagnostic_r1_qualification": {
-    "state": "RUNNING_DIAGNOSTIC_NOT_ACCEPTED",
+    "state": "RECEIVED_DIAGNOSTIC_GAP_REPRODUCED_NOT_REPAIRED",
     "source": "66d94282f5e418f53fee8dcd8e52d77a11657262",
     "tree": "1aa375eb78efa967c38ee1382897dec541b63a2c",
     "base": "25a9b86953e84125b0119d91d1dd80787eaf0b73",
@@ -7550,7 +7546,130 @@
       "readback_verified": true
     },
     "observed_status": "in_progress",
-    "observed_utc": "2026-10-27T23:00:29Z"
+    "observed_utc": "2026-10-27T23:00:29Z",
+    "artifact_name": "manual-activation-payment-diagnostic-r1-40598370603",
+    "protocol_files": {
+      "PROTOCOL.json": "54ffa18e6e17c27f0f415bab13e3ac1d6615615515ed56c8714a2e1f37be9318",
+      "RECEIVE.py": "e4259a570ae5eff3f9e185a2c8c223882919e5348b45059d45113e550ac18ed4",
+      "SOURCE_REVIEW.json": "5d7dab8343327d28bfa29db0673b04d70f55c3a7342e90e988c9bfc866492ff3",
+      "SYNTHETIC_CHECKS.json": "5e900a10a6712635e0198b69206c75cef53cb5e1b9b184a633bbcf3de3791152",
+      "check_controls.py": "af128096689c8efb13791459fbf95eb9531bd51e5c7e8bb2426bea18f3f8f000",
+      "reports.py": "d9ad96f15fcddcd464853f655d851c65dff233e46c35155e33f2802d2dd21186",
+      "run.py": "9714689655dee887eb204bfb23c9be6894a126bd3349b69387547eeb62119302",
+      "validation.just": "665227df87c68aa5f48d82e1ad9d10b0ca94e99bbfeeae01f35359834e25206d"
+    },
+    "artifact": 12777836976,
+    "artifact_bytes": 4415165,
+    "artifact_sha256": "c662b6813c8ba3f7feead6b0fad54ba9210f5cf13e176f387090d26587bce324",
+    "manifest_entries": 737,
+    "gates": {
+      "compile-normal": {
+        "compiled": true,
+        "behavioral_tests": 0
+      },
+      "compile-mutant": {
+        "compiled": true,
+        "behavioral_tests": 0
+      },
+      "baseline": {
+        "cases": [
+          "APD blue mana pays once and the fixture resolves",
+          "APD explicit life payment works without blue mana",
+          "APD chosen life payment preserves available blue mana",
+          "APD absent payment is rejected without changing state"
+        ],
+        "passed": 2,
+        "failures": 2,
+        "errors": 0,
+        "skips": 0,
+        "witnesses": {
+          "APD explicit life payment works without blue mana": {
+            "line": 56,
+            "contains": [
+              "Selected mana sources cannot pay this ability",
+              "null"
+            ]
+          },
+          "APD chosen life payment preserves available blue mana": {
+            "line": 71,
+            "contains": [
+              "18",
+              "20"
+            ]
+          }
+        }
+      },
+      "mutant": {
+        "cases": [
+          "APD blue mana pays once and the fixture resolves",
+          "APD explicit life payment works without blue mana",
+          "APD chosen life payment preserves available blue mana",
+          "APD absent payment is rejected without changing state"
+        ],
+        "passed": 1,
+        "failures": 3,
+        "errors": 0,
+        "skips": 0,
+        "witnesses": {
+          "APD explicit life payment works without blue mana": {
+            "line": 56,
+            "contains": [
+              "Selected mana sources cannot pay this ability",
+              "null"
+            ]
+          },
+          "APD chosen life payment preserves available blue mana": {
+            "line": 71,
+            "contains": [
+              "18",
+              "20"
+            ]
+          },
+          "APD blue mana pays once and the fixture resolves": {
+            "line": 47,
+            "contains": [
+              "21",
+              "22"
+            ]
+          }
+        }
+      },
+      "restored": {
+        "cases": [
+          "APD blue mana pays once and the fixture resolves",
+          "APD explicit life payment works without blue mana",
+          "APD chosen life payment preserves available blue mana",
+          "APD absent payment is rejected without changing state"
+        ],
+        "passed": 2,
+        "failures": 2,
+        "errors": 0,
+        "skips": 0,
+        "witnesses": {
+          "APD explicit life payment works without blue mana": {
+            "line": 56,
+            "contains": [
+              "Selected mana sources cannot pay this ability",
+              "null"
+            ]
+          },
+          "APD chosen life payment preserves available blue mana": {
+            "line": 71,
+            "contains": [
+              "18",
+              "20"
+            ]
+          }
+        }
+      }
+    },
+    "gate_errors": [],
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "receipt": "80c21e02113e0b110d6f09fe5254d3320b5e4997",
+    "receipt_path": "experiments/manual-transmission/research/activation-payment-diagnostic-received-r1-20261027",
+    "readback_verified": true
   },
   "last_qualified_before_final_compatibility": {
     "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
