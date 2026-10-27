@@ -1,0 +1,68 @@
+{
+  "state": "STATIC_OWNER_REVIEW_NOT_INDEPENDENT_UNCOMPILED",
+  "delta": [
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/CardStructure.kt",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/StaticAbilities.kt",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeFilters.kt",
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeCalibrationRepairTest.kt",
+    "mtgish-tooling/src/test/resources/human-filter-repair/current-ir.json"
+  ],
+  "boundary": "Two exact JSON filter shapes in entry/blocker contexts only. Structural equality rejects extra predicates/cardtypes/annotations; existing fallback unchanged. No name-based card matching.",
+  "preserved": "Original assertions,197protectedbindings,23gameplaygoldens,82legacyfixtures,inputJSON,v0.7,2Precision. Emitter text output changes must be reviewed after early receiving before dependent full qualification.",
+  "negative_controls": {
+    "entry-creature": {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeFilters.kt",
+      "replacements": [
+        {
+          "anchor": "\"GameObjectFilter.Permanent.withSubtype(Subtype.HUMAN).youControl()\"",
+          "replacement": "\"GameObjectFilter.Creature.withSubtype(Subtype.HUMAN).youControl()\""
+        }
+      ],
+      "witnesses": [
+        {
+          "test_class": "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "name": "Champion current and fixture preserve permanent Human entry",
+          "frame": 24
+        },
+        {
+          "test_class": "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "name": "entry shape preserves permanent subtype and controller",
+          "frame": 38
+        }
+      ]
+    },
+    "blocker-creature": {
+      "path": "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeFilters.kt",
+      "replacements": [
+        {
+          "anchor": "\"GameObjectFilter.Permanent.withSubtype(Subtype.HUMAN)\"",
+          "replacement": "\"GameObjectFilter.Creature.withSubtype(Subtype.HUMAN)\""
+        }
+      ],
+      "witnesses": [
+        {
+          "test_class": "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "name": "Noble current and fixture preserve permanent Human blockers",
+          "frame": 33
+        },
+        {
+          "test_class": "com.wingedsheep.tooling.coverage.emitter.HumanSubtypeCalibrationRepairTest",
+          "name": "blocker shape preserves permanent subtype",
+          "frame": 41
+        }
+      ]
+    }
+  },
+  "followup": {
+    "full_module": 204,
+    "passes": 201,
+    "historical_skips": 3,
+    "POR_emitted": 195,
+    "POR_matches": 158,
+    "ISD_emitted": 115,
+    "ISD_matches": 88,
+    "original_receiving": true,
+    "reuse": "Prior full failure4cdbad7c,early51d580,R7 and generator receipts only under exact bindings; no accepted-work reruns for context."
+  },
+  "no_admission": true
+}

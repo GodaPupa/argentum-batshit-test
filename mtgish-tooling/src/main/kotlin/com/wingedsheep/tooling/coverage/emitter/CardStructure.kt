@@ -3047,7 +3047,7 @@ private fun EmitCtx.triggerSpecFor(rule: JsonObject): String? {
     // Elf", Wretched Anurid's "another creature"); otherwise "a …" -> ANY (Wirewood Savage's "a Beast").
     if (jsonContains(trig, "_Trigger", "WhenAPermanentEntersTheBattlefield")) {
         val binding = if (jsonContains(trig, "_Permanents", "Other")) "TriggerBinding.OTHER" else "TriggerBinding.ANY"
-        val filter = gameObjectFilterDsl(trig) ?: return null
+        val filter = humanEntryFilter(trig["args"]) ?: gameObjectFilterDsl(trig) ?: return null
         return "Triggers.entersBattlefield(filter = $filter, binding = $binding)"
     }
 

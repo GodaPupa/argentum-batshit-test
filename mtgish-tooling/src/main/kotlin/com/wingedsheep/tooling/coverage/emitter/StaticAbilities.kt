@@ -648,7 +648,7 @@ internal fun EmitCtx.staticAbilityExpr(ruleName: String, ruleNode: JsonObject): 
             // gameObjectFilterDsl silently ignores predicates it can't render, so scaffold on any shape it
             // doesn't cover (e.g. ToughnessIs) rather than emit a blocker filter missing a restriction.
             if (Regex("\"(ToughnessIs|HasKeyword|ManaValueIs|HasSubtypeFrom)\"").containsMatchIn(compact(ruleNode))) return null
-            val filter = gameObjectFilterExpr(ruleNode["args"]) ?: return null
+            val filter = humanBlockerFilter(ruleNode["args"])?.let(::Lit) ?: gameObjectFilterExpr(ruleNode["args"]) ?: return null
             return call("CantBeBlockedBy", arg("blockerFilter", filter))
         }
         "CantBeBlockedExceptByDefenders" -> {

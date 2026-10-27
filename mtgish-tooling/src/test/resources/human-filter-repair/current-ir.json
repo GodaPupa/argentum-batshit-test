@@ -1,0 +1,175 @@
+{
+  "Champion of the Parish": {
+    "_OracleCard": "Card",
+    "Name": "Champion of the Parish",
+    "Typeline": {
+      "Supertypes": [],
+      "Cardtypes": [
+        "Creature"
+      ],
+      "Subtypes": [
+        "Human",
+        "Soldier"
+      ]
+    },
+    "ManaCost": [
+      {
+        "_ManaSymbol": "ManaCostW"
+      }
+    ],
+    "Rules": [
+      {
+        "_Rule": "TriggerA",
+        "args": [
+          {
+            "_Trigger": "WhenAPermanentEntersTheBattlefield",
+            "args": {
+              "_Permanents": "And",
+              "args": [
+                {
+                  "_Permanents": "Other",
+                  "args": {
+                    "_Permanent": "ThisPermanent"
+                  }
+                },
+                {
+                  "_Permanents": "And",
+                  "args": [
+                    {
+                      "_Permanents": "IsCreatureType",
+                      "args": "Human"
+                    },
+                    {
+                      "_Permanents": "ControlledByAPlayer",
+                      "args": {
+                        "_Players": "SinglePlayer",
+                        "args": {
+                          "_Player": "You"
+                        }
+                      }
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "PutCounters",
+                "args": [
+                  {
+                    "_PutCountersAction": "ACounterOfTypeOnPermanent",
+                    "args": [
+                      {
+                        "_CounterType": "PTCounter",
+                        "args": [
+                          1,
+                          1
+                        ]
+                      },
+                      {
+                        "_Permanent": "ThisPermanent"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "CardPT": {
+      "Power": 1,
+      "Toughness": 1
+    }
+  },
+  "Stromkirk Noble": {
+    "_OracleCard": "Card",
+    "Name": "Stromkirk Noble",
+    "Typeline": {
+      "Supertypes": [],
+      "Cardtypes": [
+        "Creature"
+      ],
+      "Subtypes": [
+        "Vampire",
+        "Noble"
+      ]
+    },
+    "ManaCost": [
+      {
+        "_ManaSymbol": "ManaCostR"
+      }
+    ],
+    "Rules": [
+      {
+        "_Rule": "PermanentRuleEffect",
+        "args": [
+          {
+            "_Permanent": "ThisPermanent"
+          },
+          [
+            {
+              "_PermanentRule": "CantBeBlockedByDefenders",
+              "args": {
+                "_Permanents": "IsCreatureType",
+                "args": "Human"
+              }
+            }
+          ]
+        ]
+      },
+      {
+        "_Rule": "TriggerA",
+        "args": [
+          {
+            "_Trigger": "WhenACreatureDealsCombatDamageToAPlayer",
+            "args": [
+              {
+                "_Permanents": "SinglePermanent",
+                "args": {
+                  "_Permanent": "ThisPermanent"
+                }
+              },
+              {
+                "_Players": "AnyPlayer"
+              }
+            ]
+          },
+          {
+            "_Actions": "ActionList",
+            "args": [
+              {
+                "_Action": "PutCounters",
+                "args": [
+                  {
+                    "_PutCountersAction": "ACounterOfTypeOnPermanent",
+                    "args": [
+                      {
+                        "_CounterType": "PTCounter",
+                        "args": [
+                          1,
+                          1
+                        ]
+                      },
+                      {
+                        "_Permanent": "Trigger_ThatCreature"
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "CardPT": {
+      "Power": 1,
+      "Toughness": 1
+    }
+  }
+}
