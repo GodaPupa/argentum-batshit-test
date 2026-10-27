@@ -1,0 +1,163 @@
+{
+  "state": "STATIC_OWNER_REVIEW_NOT_INDEPENDENT_NOT_YET_COMPILED",
+  "authorization": "fe421344c51c9a577b6fa7b52948ed41a2623d8b",
+  "base": "7257cbfe88e29da4ce93be630995e19b7a9ee075",
+  "diagnostic": "INPUT_DIAGNOSTIC.json",
+  "findings": [
+    "All14 current nodes are pinned exactly from received corpus; the11 changed nodes are compared to immutable fixture nodes; morbid3 current/fixture use exact bare creature death condition. The original compilation failure and missing11 are independent generator failures.",
+    "Current CreateTokens recognizes exactly two operands, singleton specification and empty or one EntersTapped flag. Legacy CreateTokens/CreateTokensWithFlags unchanged. Counts, colors, subtypes, keywords and dynamic counts still flow through the existing token composition. Unknown flags/multiple specifications decline.",
+    "Generic Exile recognizes exactly singleton bound permanent or graveyard-card references and empty flags; calls existing Exile or Move(EXILE). Missing target bindings decline; no self fallback and no broad zone/ref coercion.",
+    "Bare-creature morbid TriggerI alone selects SDK interveningIf (trigger and resolution checks); no SDK/engine changes. Other trigger conditions and while/unless paths remain unchanged. Authoritative ISD Morkrut Banshee gameplay golden already uses interveningIf.",
+    "New common shapes also occur in HOB/SOS fixtures. Collect exact projections before any intentional emitter TEXT snapshot successor. All existing test assertions, fixture JSON,23 protected gameplay goldens and82 legacy fixtures remain unchanged.",
+    "No new runtime vocabulary, player-facing UI, card registration, official games/seeds or multiplayer admission. No claim of independent review."
+  ],
+  "normal_cases": 40,
+  "mutants": {
+    "morbid-once": [
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "morbid gate preserves Hollowhenge Scavenger",
+        "frame": 39
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "morbid gate preserves Morkrut Banshee",
+        "frame": 47
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "morbid gate preserves Reaper from the Abyss",
+        "frame": 55
+      }
+    ],
+    "token-current-missing": [
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Army of the Damned",
+        "frame": 62
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Doomed Traveler",
+        "frame": 67
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Endless Ranks of the Dead",
+        "frame": 72
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Geist-Honored Monk",
+        "frame": 77
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Mausoleum Guard",
+        "frame": 82
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Midnight Haunting",
+        "frame": 87
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Moan of the Unhallowed",
+        "frame": 92
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Spider Spawning",
+        "frame": 107
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Stitcher's Apprentice",
+        "frame": 112
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current token flags preserve tapped state",
+        "frame": 116
+      }
+    ],
+    "token-tapped-lost": [
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Army of the Damned",
+        "frame": 63
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current token flags preserve tapped state",
+        "frame": 116
+      }
+    ],
+    "exile-recipient-self": [
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Purify the Grave",
+        "frame": 98
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "current and frozen forms preserve Silverchase Fox",
+        "frame": 103
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "generic permanent exile preserves its bound target",
+        "frame": 134
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.IsdGeneratorCalibrationRepairTest",
+        "name": "generic graveyard exile preserves its bound target and zone",
+        "frame": 137
+      }
+    ],
+    "sequential-destroy": [
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+        "name": "collected destruction preserves Boiling Seas",
+        "frame": 25
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+        "name": "collected destruction preserves Devastation",
+        "frame": 28
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+        "name": "collected destruction preserves Nature's Ruin",
+        "frame": 31
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+        "name": "collected destruction preserves Virtue's Ruin",
+        "frame": 34
+      },
+      {
+        "test_class": "com.wingedsheep.tooling.coverage.emitter.GeneratorCalibrationRepairTest",
+        "name": "collected destruction preserves no regeneration",
+        "frame": 38
+      }
+    ]
+  },
+  "compilations": 6,
+  "production_paths": [
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/CardStructure.kt",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/TokenHandlers.kt",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/ZoneHandlers.kt"
+  ],
+  "required_followup": {
+    "full_module": 196,
+    "historical_skips": 3,
+    "POR_emissions": 195,
+    "POR_matches": 158,
+    "ISD_emissions": 115,
+    "ISD_matches": 88,
+    "source": "Review exact output projections without altering protected gameplay goldens, inputs or original assertions; freeze final source with only justified emitter TEXT snapshot updates; qualify fullmodule/POR/ISD unchanged floors. Reuse this early evidence only when all production/test bindings are exact."
+  },
+  "negative_failure_types": "Only pinned assertion failures count. Compilation errors, missing reports, unrelated failures and surviving mutants fail qualification."
+}

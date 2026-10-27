@@ -1901,6 +1901,8 @@ internal fun EmitCtx.triggerBlock(
      * `ConditionalEffect`, which is what the hand-authored eminence idiom does.
      */
     gateEffectOn: String? = null,
+    /** Exact bare-creature morbid TriggerI uses the SDK's two-check condition field. */
+    morbidInterveningIf: Boolean = false,
 ): List<Stmt>? {
     // A "choose one —" modal triggered ability hosts its modal as a plain effect:
     // `triggeredAbility { trigger = …; effect = ModalEffect.chooseOne(Mode.…, Mode.…) }`. Render the
@@ -1995,7 +1997,10 @@ internal fun EmitCtx.triggerBlock(
     val stmts = mutableListOf<Stmt>(Assign("trigger", Lit(spec)))
     if (triggerZones != null) stmts.add(Assign("triggerZones", Lit(triggerZones)))
     val triggerCond = effTriggerCondition ?: condFromIf
-    if (triggerCond != null) stmts.add(Assign("triggerCondition", Lit(triggerCond)))
+    if (triggerCond != null) {
+        val field = if (morbidInterveningIf) "interveningIf" else "triggerCondition"
+        stmts.add(Assign(field, Lit(triggerCond)))
+    }
     if (oncePerTurn) stmts.add(Assign("oncePerTurn", Lit("true")))
     if (triggersOnce) stmts.add(Assign("triggersOnce", Lit("true")))
     if (mayWrapped && !selfOptional) stmts.add(Assign("optional", Lit("true")))
@@ -2206,7 +2211,13 @@ internal fun EmitCtx.triggerIBlock(rule: JsonObject): List<Stmt>? {
         put("_Rule", JsonPrimitive("TriggerA"))
         put("args", JsonArray(listOfNotNull(args.getOrNull(0)) + listOfNotNull(args.getOrNull(2))))
     }
-    return triggerBlock(triggerA, triggerCondition = condDsl)
+    val bareMorbid = cond != null && cond.keys == setOf("_Condition", "args") &&
+        cond.strField("_Condition") == "ACreatureOrPlaneswalkerDiedThisTurn" &&
+        (cond["args"] as? JsonObject)?.let {
+            it.keys == setOf("_Permanents", "args") &&
+                it.strField("_Permanents") == "IsCardtype" && it["args"].asStr() == "Creature"
+        } == true
+    return triggerBlock(triggerA, triggerCondition = condDsl, morbidInterveningIf = bareMorbid)
 }
 
 /**

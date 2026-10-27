@@ -107,6 +107,30 @@ internal val zoneHandlers: Map<String, ActionHandler> = actionHandlers {
         )
     }
 
+    // Current generic exile form: one explicitly bound permanent or graveyard card, no riders.
+    // Keep zone-specific legacy facade spellings and reject unsupported operands/flags wholesale.
+    on("Exile") { node, args, tvar ->
+        if (node.keys != setOf("_Action", "args")) return@on null
+        val a = args.asArr ?: return@on null
+        if (a.size != 2) return@on null
+        val operands = a[0] as? JsonArray ?: return@on null
+        val flags = a[1] as? JsonArray ?: return@on null
+        if (flags.isNotEmpty()) return@on null
+        val operand = operands.singleOrNull() as? JsonObject ?: return@on null
+        if (operand.keys != setOf("_Exilable", "args")) return@on null
+        val ref = operand["args"] as? JsonObject ?: return@on null
+        val kind = operand.strField("_Exilable")
+        val (key, value) = when (kind) {
+            "Permanent" -> "_Permanent" to "Ref_TargetPermanent"
+            "CardInGraveyards" -> "_CardInGraveyards" to "Ref_TargetGraveyardCard"
+            else -> return@on null
+        }
+        if (ref.keys != setOf(key) || ref.strField(key) != value) return@on null
+        val target = refTarget(ref, tvar) ?: return@on null
+        if (kind == "Permanent") call("Effects.Exile", arg(Lit(target)))
+        else call("Effects.Move", arg(Lit(target)), arg("Zone.EXILE"))
+    }
+
     on("ExilePermanent") { _, args, tvar ->  // "Exile target permanent" -> the atomic Exile facade
         val tgt = refTarget(args, tvar) ?: return@on null
         call("Effects.Exile", arg(Lit(tgt)))

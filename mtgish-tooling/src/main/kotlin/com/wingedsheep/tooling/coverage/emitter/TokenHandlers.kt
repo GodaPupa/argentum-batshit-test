@@ -17,6 +17,7 @@ import com.wingedsheep.tooling.coverage.jsonContains
 import com.wingedsheep.tooling.coverage.pascalToUpperSnake
 import com.wingedsheep.tooling.coverage.strField
 import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.JsonObject
 
 /** Token creation: a `CreateTokens` action -> `Effects.CreateToken(...)` / a predefined-token facade.
@@ -25,7 +26,20 @@ import kotlinx.serialization.json.JsonObject
  *  tokens, tokens with full abilities) scaffolds. */
 internal val tokenHandlers: Map<String, ActionHandler> = actionHandlers {
     on("CreateTokens") { _, args, _ ->
-        val spec = args.asArr?.firstOrNull() as? JsonObject ?: return@on null
+        val a = args.asArr ?: return@on null
+        if (a.firstOrNull() is JsonArray) {
+            // Current IR carries [token specifications, entry flags]. Preserve both operands;
+            // a plural specification or an unknown flag needs a separate faithful composition.
+            if (a.size != 2) return@on null
+            val specs = a[0] as? JsonArray ?: return@on null
+            val flags = a[1] as? JsonArray ?: return@on null
+            val spec = specs.singleOrNull() as? JsonObject ?: return@on null
+            val tappedFlag = JsonObject(mapOf("_TokenFlag" to JsonPrimitive("EntersTapped")))
+            if (flags.isNotEmpty() && flags != JsonArray(listOf(tappedFlag))) return@on null
+            return@on createTokenDsl(spec, tapped = flags.isNotEmpty())
+        }
+        // Frozen legacy spelling: the specification is the first direct operand.
+        val spec = a.firstOrNull() as? JsonObject ?: return@on null
         createTokenDsl(spec)
     }
     // `CreateTokensWithFlags` is a `CreateTokens` carrying enter-state flags (args[1]). The only flag we
