@@ -30,30 +30,26 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Bounded activated Phyrexian payment repair after original diagnostic receiving",
-    "source_candidate": "66d94282f5e418f53fee8dcd8e52d77a11657262",
-    "source_tree": "1aa375eb78efa967c38ee1382897dec541b63a2c",
-    "source_branch": "source/manual-activation-payment-diagnostic-r1-20261027",
-    "protocol": "experiments/manual-transmission/research/activation-payment-diagnostic-r1-20261027/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/activation-payment-diagnostic-r1-20261027/SOURCE_REVIEW.json",
-    "validation": "9742486974f91d7dbd48d7bd3084ec394260eb8f",
-    "validation_branch": "validation/manual-activation-payment-diagnostic-r1-20261027",
-    "workflow": ".github/workflows/manual-activation-payment-diagnostic-r1-20261027.yml",
+    "current_subproblem": "Frozen bounded activated Phyrexian payment repair early qualification",
+    "source_candidate": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+    "source_tree": "2692862a1ce1e1ede94d81e51933042959c4b81d",
+    "source_branch": "source/manual-activation-payment-repair-early-r1-20261027",
+    "protocol": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/SOURCE_REVIEW.json",
+    "validation": "48161eebc81be13374f4da4c1fba7b72078df47c",
+    "validation_branch": "validation/manual-activation-payment-repair-early-r1-20261027",
+    "workflow": ".github/workflows/manual-activation-payment-repair-early-r1-20261027.yml",
     "pending_runs": [],
     "planned_not_observed": {
-      "compilations": 2,
-      "baseline_assertion_failures": 2,
-      "baseline_passes": 2,
-      "mutant_failures": 3,
-      "mutant_passes": 1,
-      "restored_failures": 2,
-      "restored_passes": 2,
-      "errors": 0,
-      "skips": 0
+      "compilations": 10,
+      "normal": 43,
+      "restored": 43,
+      "negative_witnesses": 23,
+      "passing_mutant_controls": 40
     },
     "negative_scope": "One deliberate GainLife2 test-fixture mutation must break the unchanged blue-resolution assertion; baseline candidate two failures remain. Compilation errors are not evidence.",
     "source_delta": "One new unregistered test and eight research protocol files; no production/existing assertions/protected edits.",
-    "next_executable_action": "Implement bounded unprotected ActivateAbilityHandler repair using exact conditional review e928f281 and original diagnostic receipt80c21e02. Preserve four diagnostic assertions; expand invalid pip, aggregate life, rollback, replacement/event and repeat tests. Compile normal and every mutant before targeted behavioral controls; freeze source/protocol, then applicable dependent compatibility and original artifact receiving. Full22Spellskite, actual payment UI and multiplayer remain unaccepted.",
+    "next_executable_action": "Dispatch exactly one reviewed validation branch48161eeb after existing ownership/workflow reconciliation. Compile normal and nine mutants before targeted43normal/restored and23negativewitnesses40controls. Receive original artifact with frozen11ff343b RECEIVER. Only after early original acceptance run required dependent successor compatibility, preserve64client floor, and complete actual payment UI/22Spellskite/multiplayer. Do not infer acceptance from green.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -170,7 +166,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "697b2ecc03094acbbcee7e41be7ea3b4f89f06df",
+    "validation_tree": "0bc627661a53dc73d482c9e1f88fc0a402ab96fd",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -6065,53 +6061,40 @@
       "Original Assay continuation40590624597 received at25a9b869:540manifest,2000touchstone,exact51unchanged differential findings,197protected+50sourcebindings,rawcorpus hash verified. No completed suites rerun."
     ],
     "unfinished_implementation": [
-      "Activated Phyrexian life-payment defects confirmed by original diagnostic80c21e02; bounded repair in progress, no repair accepted.",
-      "Full22Spellskite, actual payment UI and multiplayer admission remain."
+      "Bounded activated Phyrexian payment repair implemented at11ff343b, frozen and statically reviewed; compilation/behavior not yet qualified.",
+      "Actual payment UI, full22Spellskite and multiplayer admission remain."
     ],
     "pending_evidence": [
-      "Repair normal/mutant compilation, targeted executable controls, dependent source-specific compatibility and original receiving."
+      "Single early qualification normal/mutant compilation and targeted controls; original receiving.",
+      "Required dependent compatibility on successor runtime, including64client; actual payment UI/full22Spellskite/multiplayer."
     ],
-    "next_executable_action": "Implement bounded unprotected ActivateAbilityHandler repair using exact conditional review e928f281 and original diagnostic receipt80c21e02. Preserve four diagnostic assertions; expand invalid pip, aggregate life, rollback, replacement/event and repeat tests. Compile normal and every mutant before targeted behavioral controls; freeze source/protocol, then applicable dependent compatibility and original artifact receiving. Full22Spellskite, actual payment UI and multiplayer remain unaccepted.",
+    "next_executable_action": "Dispatch exactly one reviewed validation branch48161eeb after existing ownership/workflow reconciliation. Compile normal and nine mutants before targeted43normal/restored and23negativewitnesses40controls. Receive original artifact with frozen11ff343b RECEIVER. Only after early original acceptance run required dependent successor compatibility, preserve64client floor, and complete actual payment UI/22Spellskite/multiplayer. Do not infer acceptance from green.",
     "read_sections": [
       {
-        "ref": "66d94282f5e418f53fee8dcd8e52d77a11657262",
-        "path": "experiments/manual-transmission/research/activation-payment-diagnostic-r1-20261027/PROTOCOL.json",
+        "ref": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+        "path": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/PROTOCOL.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "e928f281f32bd7c9a3d700f8442e501fa96a482b",
-        "path": "experiments/manual-transmission/research/activation-payment-receiving-r1-20261027/PINS.json",
+        "ref": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+        "path": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/SOURCE_REVIEW.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "e928f281f32bd7c9a3d700f8442e501fa96a482b",
-        "path": "experiments/manual-transmission/research/activation-payment-receiving-r1-20261027/NEXT_ACTION.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "e928f281f32bd7c9a3d700f8442e501fa96a482b",
-        "path": "experiments/manual-transmission/research/activation-payment-receiving-r1-20261027/CONDITIONAL_REPAIR_REVIEW.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "25a9b86953e84125b0119d91d1dd80787eaf0b73",
-        "path": "experiments/manual-transmission/research/final-assay-received-r1-20261027/VERIFIED_RECEIPT.json",
+        "ref": "80c21e02113e0b110d6f09fe5254d3320b5e4997",
+        "path": "experiments/manual-transmission/research/activation-payment-diagnostic-received-r1-20261027/VERIFIED_RECEIPT.json",
         "sections": [
           "all"
         ]
       }
     ],
     "source_protocol": {
-      "source": "66d94282f5e418f53fee8dcd8e52d77a11657262",
-      "path": "experiments/manual-transmission/research/activation-payment-diagnostic-r1-20261027/PROTOCOL.json"
+      "source": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+      "path": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/PROTOCOL.json"
     },
     "accepted_receipt": {
       "commit": "25a9b86953e84125b0119d91d1dd80787eaf0b73",
@@ -6395,7 +6378,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-27T23:54:00Z",
+  "updated_utc": "2026-10-28T00:02:00Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -7685,5 +7668,29 @@
     "receipt_head": "4546c48dc4a06ba1c9f1bacef131dd80a9a5abcf",
     "acceptance": "experiments/manual-transmission/research/source-characteristics-received-r2-20261025/RECEIPT_SUMMARY.json",
     "remaining_component_gates": []
+  },
+  "activation_payment_repair_r1_qualification": {
+    "state": "FROZEN_REVIEWED_NOT_DISPATCHED",
+    "source": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+    "tree": "2692862a1ce1e1ede94d81e51933042959c4b81d",
+    "base": "80c21e02113e0b110d6f09fe5254d3320b5e4997",
+    "validation": "48161eebc81be13374f4da4c1fba7b72078df47c",
+    "validation_tree": "0bc627661a53dc73d482c9e1f88fc0a402ab96fd",
+    "workflow": ".github/workflows/manual-activation-payment-repair-early-r1-20261027.yml",
+    "workflow_blob": "3aff9c059258477004c7e642be4540a703739311",
+    "source_branch": "source/manual-activation-payment-repair-early-r1-20261027",
+    "validation_branch": "validation/manual-activation-payment-repair-early-r1-20261027",
+    "protocol": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/PROTOCOL.json",
+    "source_review": "Owner static11path/readback,197protected,unchanged4diagnostic assertions;14syntheticreceiver rejects. No independent/runtime acceptance.",
+    "expected_not_observed": {
+      "compilations": 10,
+      "normal": 43,
+      "restored": 43,
+      "negative_witnesses": 23,
+      "passing_mutant_controls": 40
+    },
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
   }
 }
