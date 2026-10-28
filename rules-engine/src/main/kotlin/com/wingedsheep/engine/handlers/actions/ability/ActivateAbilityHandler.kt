@@ -23,6 +23,7 @@ import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.core.EngineServices
 import com.wingedsheep.engine.handlers.actions.ActionHandler
 import com.wingedsheep.engine.handlers.effects.EffectExecutorRegistry
+import com.wingedsheep.engine.handlers.effects.life.LifePaymentService
 import com.wingedsheep.engine.handlers.effects.TargetResolutionUtils.toEntityId
 import com.wingedsheep.engine.handlers.effects.bend.BendEvents
 import com.wingedsheep.engine.mechanics.SummoningSicknessRules
@@ -203,6 +204,27 @@ class ActivateAbilityHandler(
         is AbilityCost.Atom -> atom is CostAtom.ExileFrom || atom is CostAtom.ExileFromGraveyardForTotal
         is AbilityCost.Composite -> costs.any { it.hasExileAtom() }
         else -> false
+    }
+
+    /** Explicit life choices pay only matching Phyrexian pips, alongside all other life costs. */
+    private fun phyrexianPaymentError(
+        state: GameState, action: ActivateAbility, cost: AbilityCost, xValue: Int
+    ): String? {
+        val choices = (action.paymentStrategy as? PaymentStrategy.Explicit)?.phyrexianLifePayments.orEmpty()
+        if (choices.isEmpty()) return null
+        if (extractManaCost(cost)?.withPhyrexianPaidByLife(choices) == null) {
+            return "Invalid Phyrexian mana payment"
+        }
+        fun otherLifeCost(c: AbilityCost): Long = when (c) {
+            is AbilityCost.Atom -> (c.atom as? CostAtom.PayLife)?.amount?.toLong() ?: 0L
+            is AbilityCost.PayXLife -> xValue.toLong()
+            is AbilityCost.Composite -> c.costs.sumOf { otherLifeCost(it) }
+            else -> 0L
+        }
+        if (choices.size.toLong() * 2 + otherLifeCost(cost) > state.lifeTotal(action.playerId)) {
+            return "Insufficient life for Phyrexian mana and ability costs"
+        }
+        return null
     }
 
     override fun validate(state: GameState, action: ActivateAbility): String? {
@@ -474,6 +496,9 @@ class ActivateAbilityHandler(
         }
 
         // Validate explicit payment sources
+        phyrexianPaymentError(state, action, effectiveCost,
+            castPermissionUtils.definedXValue(state, ability, action.sourceId, action.playerId) ?: action.xValue ?: 0
+        )?.let { return it }
         if (action.paymentStrategy is PaymentStrategy.Explicit) {
             for (sourceId in action.paymentStrategy.manaAbilitiesToActivate) {
                 val sourceContainer = state.getEntity(sourceId)
@@ -795,6 +820,11 @@ class ActivateAbilityHandler(
             ?: if (variablePermanentsCost != null && chosenForCost.isNotEmpty())
                 variableCostX(state, variablePermanentsCost, chosenForCost)
             else action.xValue
+
+        // Resumed activations enter execute directly, so the payment guard belongs here too.
+        phyrexianPaymentError(state, action, effectiveCost, effectiveXValue ?: 0)?.let {
+            return ExecutionResult.error(state, it)
+        }
 
         // -------------------------------------------------------------------
         // "… of an opponent's choice" target selection (Cuombajj Witches).
@@ -1251,6 +1281,12 @@ class ActivateAbilityHandler(
 
         // Pay mana costs before paying other costs
         var effectiveManaCost = extractManaCost(effectiveCost)
+        val phyrexianLifePayments = (action.paymentStrategy as? PaymentStrategy.Explicit)?.phyrexianLifePayments.orEmpty()
+        val phyrexianLifeToPay = phyrexianLifePayments.size * 2
+        if (phyrexianLifePayments.isNotEmpty()) {
+            effectiveManaCost = effectiveManaCost?.withPhyrexianPaidByLife(phyrexianLifePayments)
+                ?: return ExecutionResult.error(state, "Invalid Phyrexian mana payment")
+        }
         // For an VariablePermanents cost, X is the exiled permanents' total mana value (computed above);
         // otherwise it's the action's chosen X. Identical to `action.xValue ?: 0` for every other card.
         val xValue = effectiveXValue ?: 0
@@ -1526,6 +1562,19 @@ class ActivateAbilityHandler(
             effectiveCost
         }
 
+        // Mana-source activation can itself spend life. Check the whole remaining life cost
+        // against the resulting state, then route payment through the existing replacement service.
+        phyrexianPaymentError(currentState, action, effectiveCost, xValue)?.let {
+            return ExecutionResult.error(state, it)
+        }
+        val phyrexianPaymentEvents = if (phyrexianLifePayments.isNotEmpty()) {
+            val paid = LifePaymentService.pay(currentState, action.playerId, phyrexianLifeToPay)
+                ?: return ExecutionResult.error(state, "Unable to pay life for Phyrexian mana")
+            currentState = paid.first
+            events.addAll(paid.second)
+            paid.second
+        } else emptyList()
+
         // Pay the cost (using effective cost with text replacements applied)
         val costResult = costHandler.payAbilityCost(
             currentState,
@@ -1553,7 +1602,7 @@ class ActivateAbilityHandler(
         // the stack and returns early, so capture these now to detect triggers before returning.
         // Scoped to cost-payment events so mana-production events keep their existing inline
         // handling ([ManaAbilityResolutionPipeline] etc.).
-        val costPaymentEvents = costResult.events
+        val costPaymentEvents = phyrexianPaymentEvents + costResult.events
 
         // Deduct X mana from the pool. ManaPool.pay() skips X symbols ("handled by caller"),
         // so we must explicitly spend the X portion here (same pattern as CastSpellHandler.autoPay).
@@ -2033,6 +2082,8 @@ class ActivateAbilityHandler(
         // Handle repeated activations (repeatCount > 1)
         if (action.repeatCount > 1) {
             for (i in 2..action.repeatCount) {
+                val repeatStartState = currentState
+                val repeatStartEventCount = events.size
                 // Re-read mana pool from current state
                 val repeatPoolComponent = currentState.getEntity(action.playerId)?.get<ManaPoolComponent>()
                     ?: ManaPoolComponent()
@@ -2064,11 +2115,39 @@ class ActivateAbilityHandler(
                 val repeatTapSlice = if (isTapBatch) listOf(action.costPayment!!.tappedPermanents[i - 1]) else emptyList()
                 val repeatTapSnapshots = captureEntitySnapshots(repeatTapSlice, currentState.projectedState)
 
+                // Each repeated activation pays its own selected life pips. Keep an unsuccessful
+                // repeat transactional: earlier completed activations remain, this attempt does not.
+                if (phyrexianLifePayments.isNotEmpty()) {
+                    if (phyrexianPaymentError(currentState, action, effectiveCost, xValue) != null) {
+                        currentState = repeatStartState
+                        while (events.size > repeatStartEventCount) events.removeAt(events.lastIndex)
+                        break
+                    }
+                    val paid = LifePaymentService.pay(currentState, action.playerId, phyrexianLifeToPay)
+                    if (paid == null) {
+                        currentState = repeatStartState
+                        while (events.size > repeatStartEventCount) events.removeAt(events.lastIndex)
+                        break
+                    }
+                    currentState = paid.first
+                    events.addAll(paid.second)
+                }
+                val repeatCost = if (phyrexianLifePayments.isNotEmpty() && manaCost != null) {
+                    AbilityCost.Composite(listOf(AbilityCost.Atom(CostAtom.Mana(manaCost)), stripManaCost(effectiveCost)))
+                } else effectiveCost
+
                 // Pay the cost
                 val repeatCostResult = costHandler.payAbilityCost(
-                    currentState, effectiveCost, action.sourceId, action.playerId, repeatPool, CostPaymentChoices(tapChoices = repeatTapSlice), executeAbilityContext
+                    currentState, repeatCost, action.sourceId, action.playerId, repeatPool,
+                    CostPaymentChoices(tapChoices = repeatTapSlice, xValue = if (phyrexianLifePayments.isNotEmpty()) xValue else 0), executeAbilityContext
                 )
-                if (!repeatCostResult.success) break // Can't pay — stop early
+                if (!repeatCostResult.success) {
+                    if (phyrexianLifePayments.isNotEmpty()) {
+                        currentState = repeatStartState
+                        while (events.size > repeatStartEventCount) events.removeAt(events.lastIndex)
+                    }
+                    break // Can't pay — stop early
+                }
 
                 currentState = repeatCostResult.newState!!
                 repeatPool = repeatCostResult.newManaPool!!

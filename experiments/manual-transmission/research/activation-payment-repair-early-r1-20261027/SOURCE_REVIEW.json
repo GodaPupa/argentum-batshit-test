@@ -1,0 +1,43 @@
+{
+  "state": "OWNER_STATIC_REVIEW_NOT_INDEPENDENT_RUNTIME_EVIDENCE",
+  "base": "80c21e02113e0b110d6f09fe5254d3320b5e4997",
+  "prior_review": "e928f281f32bd7c9a3d700f8442e501fa96a482b",
+  "diagnostic_receipt": "80c21e02113e0b110d6f09fe5254d3320b5e4997",
+  "production_paths": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt"
+  ],
+  "new_test_files": [
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianPaymentControlTest.kt",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianPaymentBoundaryTest.kt"
+  ],
+  "original_assertions_preserved": true,
+  "boundary": "Explicit Phyrexian life choices in activated-ability payment, using existing ManaCost and LifePaymentService primitives.",
+  "findings": [
+    "No SDK primitive, solver, shared life service, protected resolver, generator, client, server or card-catalog changes.",
+    "Both validate and direct resumed execute reject invalid pips and unaffordable aggregate life costs. Life reduction precedes existing mana selection. Guard again after mana-source activation.",
+    "Life events enter activation events and mana-ability cost-event trigger path. Failed subsequent costs return original state/events.",
+    "Batch repeats pay reduced mana plus life on every completed activation; unaffordable repeat restores its tentative state and events. Empty life choices preserve original paths.",
+    "43 normal/restored cases include unchanged diagnostic4,7 dedicated mutation witnesses,32 boundaries including direct resume, multiset,aggregate,X,rollback,replacement and serialization.",
+    "Nine executable production mutants compile before behavior; exact raw identities/type/frames/multiplicities and passing controls mandatory.",
+    "Source static review is not compilation/behavioral acceptance. No independent reviewer claimed."
+  ],
+  "layers": {
+    "sdk": "Existing serializable PaymentStrategy.Explicit and withPhyrexianPaidByLife unchanged; action roundtrip tested.",
+    "engine": "Only activation seam changed; existing LifePaymentService with payment/replacement events.",
+    "triggers": "Primary and repeated events feed existing detector; mana-ability path receives life payment events.",
+    "projection": "No projection semantic changes.",
+    "continuation": "Direct execute rechecks all selected payment pips and aggregate affordability.",
+    "server_client": "Existing explicit payload forwarding unchanged; actual UI payment trace remains required before full card acceptance.",
+    "generator": "No new IR/SDK shape; exact-bound accepted generator/POR/ISD reused."
+  },
+  "performance": "Small chosen-pip multiset and cost-tree checks only; existing projection reused.",
+  "remaining": [
+    "original early receiving",
+    "required successor compatibility including64client floor",
+    "actual payment UI/public card matrix",
+    "22Spellskite",
+    "multiplayer admission"
+  ],
+  "official_games": 0,
+  "precision_reserved": 2
+}
