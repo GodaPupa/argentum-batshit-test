@@ -1,0 +1,38 @@
+{
+  "state": "ORIGINAL_FAILURE_PRESERVED_TEST_FIXTURE_CAUSES_IDENTIFIED",
+  "source": "f58a64db3a133d86090dddf9776e622c981298cc",
+  "run": 40659750850,
+  "compilations": 4,
+  "normal": {
+    "tests": 49,
+    "passed": 20,
+    "failures": 29,
+    "errors": 0,
+    "skips": 0
+  },
+  "mutant_behavior": "NOT_RUN",
+  "restored_behavior": "NOT_RUN",
+  "behavioral_negative_witnesses": 0,
+  "causes": [
+    {
+      "cases": 4,
+      "cause": "Zero-target producer omits TargetsComponent; supplying non-null empty current plan fails coherence before Spellskite activation.",
+      "source": "StackResolver.kt lines732-737 and917-922; CurrentTargetPlan.kt lines35 and123"
+    },
+    {
+      "cases": 22,
+      "cause": "shaped fixture calls fresh-plan CAS expected=null against already installed authority and mismatched old flat target view.",
+      "source": "SpellskiteScenarioTest.kt lines267-271; CurrentTargetPlan.kt lines124-126"
+    },
+    {
+      "cases": 3,
+      "cause": "shaped activation fixture dereferences TriggeredAbilityOnStackComponent instead of ActivatedAbilityOnStackComponent.",
+      "source": "SpellskiteScenarioTest.kt line270"
+    }
+  ],
+  "repair": "Supply explicit requirement-indexed original groups to fixture before initial placement; zero-target fixture explicitly installs an empty TargetsComponent/current plan after legacy zero-target placement. Do not change runtime. Preserve49case identities and every assertion.",
+  "limitations": "These are setup failures, not qualified Spellskite behavioral witnesses. Any successor must compile all forms then pass full normal/mutant/restored original receiving; remaining engine behavior unknown.",
+  "protected": 197,
+  "production_changes": 0,
+  "card_acceptance": false
+}

@@ -1,0 +1,75 @@
+{
+  "source": "f58a64db3a133d86090dddf9776e622c981298cc",
+  "tree": "e6c0a5028fc55b8f61a2d57723df1a2f358ec6fb",
+  "validation": "157ea7c85e16e0678d6b874685f27c5631195bed",
+  "validation_tree": "636f3a1e9ab71329cf65d360953ba4a330b59788",
+  "workflow": ".github/workflows/manual-spellskite-behavior-r1-20261028.yml",
+  "workflow_blob": "6c2255c0e223216621d47d47a42e2b0fae992598",
+  "branch": "validation/manual-spellskite-behavior-r1-20261028",
+  "run": 40659750850,
+  "job": 122719515522,
+  "workflow_id": 399188993,
+  "artifact_name": "manual-spellskite-behavior-r1-40659750850",
+  "protocol_files": {
+    "PROTOCOL.json": "63367e7df3925140f7d2fe394b70c0c6f14ee812e835b92a07775ea4d79dd0dc",
+    "run.py": "43aff9f3f62a464f5dd84386a3aa32b5328cdcc48c16831f7270cb48d62461d2",
+    "audit.py": "538940918fac8ce3d3e4647ee796022daf5a50b805dcfa174300fe3c0a1231a3",
+    "validation.just": "d638e35562ff1573dc31b19707b0022b2c462d749b922bf3819cb98cd365e746",
+    "SOURCE_REVIEW.json": "f57aa9d46253d9b922b60e41ffd3735243321195cc6f0e46aa6823487c9abe68",
+    "SYNTHETIC_CHECKS.json": "bc31f3286764867fad27b21456199a5687b1b123d2ca263bd7160abf8d5f87c0"
+  },
+  "state": "ORIGINAL_BEHAVIORAL_FAILURE_RECEIVED",
+  "artifact": 12803840776,
+  "artifact_bytes": 1550021,
+  "artifact_sha256": "9ff116dab2e9522f35b6cfffde3241e4eced3761fca672cd6f41c31c536a10de",
+  "manifest_entries": 266,
+  "stages": {
+    "compile-normal": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-single-target-only": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-wrong-recipient": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-blue-only-cost": {
+      "compiled": true,
+      "behavioral_tests": 0
+    }
+  },
+  "gate_errors": [
+    {
+      "stage": "normal",
+      "error": "original gate rejected: AssertionError()",
+      "exit": 1
+    },
+    {
+      "stage": "single-target-only",
+      "error": "missing stage result; not evidence"
+    },
+    {
+      "stage": "wrong-recipient",
+      "error": "missing stage result; not evidence"
+    },
+    {
+      "stage": "blue-only-cost",
+      "error": "missing stage result; not evidence"
+    },
+    {
+      "stage": "restored",
+      "error": "missing stage result; not evidence"
+    },
+    {
+      "stage": "runner",
+      "error": "AssertionError: "
+    }
+  ],
+  "card_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
