@@ -1,0 +1,64 @@
+{
+  "state": "OWNER_STATIC_REVIEW_NOT_RUNTIME_ACCEPTANCE",
+  "base": "db96986972247c562c997bf55ed6156e6b171043",
+  "runtime_changes": [],
+  "browser_cases": [
+    "UI payment life without blue",
+    "UI payment life preserves blue",
+    "UI payment blue mana",
+    "UI payment cancel control",
+    "UI payment insufficient life toggle disabled",
+    "UI payment unaffordable activation disabled",
+    "UI payment wrong seat cannot activate",
+    "UI payment stale confirmation ignored"
+  ],
+  "negative_controls": [
+    {
+      "name": "lost-life",
+      "path": "web-client/src/store/slices/ui/pipelinePhases.ts",
+      "old": "phyrexianLifePayments: result.phyrexianLifePayments ?? [],",
+      "new": "phyrexianLifePayments: [],",
+      "witness": "UI payment life preserves blue",
+      "marker": "PAYMENT_LIFE_CHOICE",
+      "grep": "(UI\\ payment\\ life\\ preserves\\ blue|UI\\ payment\\ cancel\\ control)"
+    },
+    {
+      "name": "wrong-color",
+      "path": "web-client/src/store/slices/ui/selectionSlice.ts",
+      "old": "return pip === 'B' ? 'BLACK' : pip === 'W' ? 'WHITE' : pip === 'U' ? 'BLUE' : pip === 'R' ? 'RED' : 'GREEN'",
+      "new": "return pip === 'B' ? 'BLACK' : pip === 'W' ? 'WHITE' : pip === 'U' ? 'RED' : pip === 'R' ? 'RED' : 'GREEN'",
+      "witness": "UI payment life without blue",
+      "marker": "PAYMENT_BLUE_COLOR",
+      "grep": "(UI\\ payment\\ life\\ without\\ blue|UI\\ payment\\ cancel\\ control)"
+    },
+    {
+      "name": "stale-confirm",
+      "path": "web-client/src/store/slices/ui/selectionSlice.ts",
+      "old": "    if (get().manaSelectionState !== manaSelectionState) return",
+      "new": "    // Deliberate mutation: omit selection identity guard.",
+      "witness": "UI payment stale confirmation ignored",
+      "marker": "PAYMENT_STALE_SENT_NOTHING",
+      "grep": "(UI\\ payment\\ stale\\ confirmation\\ ignored|UI\\ payment\\ cancel\\ control)"
+    }
+  ],
+  "compile_first": [
+    "compile-normal",
+    "compile-client-normal",
+    "compile-browser-tests",
+    "compile-lost-life",
+    "compile-wrong-color",
+    "compile-stale-confirm"
+  ],
+  "fixture": "Known Grizzly Bears with serialized test-only runtime grant, four affordability states; no temporary card definition registered.",
+  "rules": "Reuse already qualified Phyrexian life payment engine specification and exact original early/full artifacts.",
+  "reuse": {
+    "full": "db96986972247c562c997bf55ed6156e6b171043",
+    "early": "ae6b21ecdc09b81f33d1cf4b0925c33a84f5b765",
+    "ui_infrastructure": "7ebe251f45bbcc075ab460aabfda037f7e1cb470"
+  },
+  "remaining": [
+    "original actual UI acceptance",
+    "full22Spellskite",
+    "multiplayer"
+  ]
+}
