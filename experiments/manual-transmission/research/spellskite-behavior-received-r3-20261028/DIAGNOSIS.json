@@ -1,0 +1,20 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED",
+  "run": 40674941976,
+  "compilations": 4,
+  "normal": {
+    "tests": 49,
+    "passed": 48,
+    "failures": 1,
+    "errors": 0,
+    "skips": 0
+  },
+  "negative_witnesses": 0,
+  "mutant_and_restored": "NOT_RUN",
+  "failure": "SK same physical id different visits stay occurrence-specific",
+  "frame": 364,
+  "cause": "Test calls resolveSkite then inspects slots without answering occurrence choice. Both old-other occurrence and stale-recipient occurrence can change to current recipient visit. FixedRecipientChoice.start suspends when more than one address; no target update before SubmitDecision.",
+  "repair": "Assert exact two occurrence labels and submit index0 through ActionProcessor before original objectRef/unchanged-old-visit assertions. Preserve every original assertion and49identities; no runtime changes.",
+  "evidence": "FixedRecipientChoice.kt start and FixedRecipientRetargeting.kt offer/replacement exact artifact source; original raw failure at364 preserved.",
+  "next_executable_action": "Qualify bounded R4 all4compiles before49normal/restored12negative135controls; original receiving then dependent gates only on success."
+}
