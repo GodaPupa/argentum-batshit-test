@@ -1,0 +1,215 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED",
+  "run": 40668110941,
+  "compilations": 4,
+  "normal": {
+    "tests": 49,
+    "passed": 24,
+    "failures": 25,
+    "errors": 0,
+    "skips": 0
+  },
+  "negative_witnesses": 0,
+  "mutant_and_restored": "NOT_RUN",
+  "cause": "Fixture always builds unused Public Matrix Splice with reqs[0],reqs[1],reqs[2]. Shaped scenarios now correctly supply0/1/2requirements, so indexing fails before gameplay.23traces point to132;2JVM fast-throw traces omit frames; raw original XML preserved.",
+  "repair": "Iterate declared requirements and use their original id labels instead of hard-coded three indices. Preserve original optional/splice labels and every49case/assertion. No runtime change.",
+  "case_results": [
+    {
+      "name": "Spellskite actual activation targetCount=0 payLife=false",
+      "failed": false
+    },
+    {
+      "name": "Spellskite actual activation targetCount=0 payLife=true",
+      "failed": false
+    },
+    {
+      "name": "Spellskite actual activation targetCount=1 payLife=false",
+      "failed": false
+    },
+    {
+      "name": "Spellskite actual activation targetCount=1 payLife=true",
+      "failed": false
+    },
+    {
+      "name": "Spellskite actual trigger targetCount=0 payLife=false",
+      "failed": false
+    },
+    {
+      "name": "Spellskite actual trigger targetCount=0 payLife=true",
+      "failed": false
+    },
+    {
+      "name": "Spellskite actual trigger targetCount=1 payLife=false",
+      "failed": false
+    },
+    {
+      "name": "Spellskite actual trigger targetCount=1 payLife=true",
+      "failed": false
+    },
+    {
+      "name": "SK matrix optional public named resolution instant",
+      "failed": false
+    },
+    {
+      "name": "SK matrix division public occurrence amounts instant",
+      "failed": false
+    },
+    {
+      "name": "SK matrix optional public named resolution activation",
+      "failed": false
+    },
+    {
+      "name": "SK matrix division public occurrence amounts activation",
+      "failed": false
+    },
+    {
+      "name": "SK matrix optional public named resolution trigger",
+      "failed": false
+    },
+    {
+      "name": "SK matrix division public occurrence amounts trigger",
+      "failed": false
+    },
+    {
+      "name": "SK matrix modal public original boundaries instant",
+      "failed": false
+    },
+    {
+      "name": "SK matrix modal public original boundaries trigger",
+      "failed": false
+    },
+    {
+      "name": "SK matrix splice public original boundaries and tail",
+      "failed": false
+    },
+    {
+      "name": "SK source departure returned=false",
+      "failed": true
+    },
+    {
+      "name": "SK source departure returned=true",
+      "failed": true
+    },
+    {
+      "name": "SK same instance replace exactly one and reject duplicate",
+      "failed": true
+    },
+    {
+      "name": "SK cross instance duplicate retains old occurrence without retrigger",
+      "failed": true
+    },
+    {
+      "name": "SK another-target relation cannot invalidate unchanged later slot",
+      "failed": true
+    },
+    {
+      "name": "SK same controller whole group restriction",
+      "failed": true
+    },
+    {
+      "name": "SK different controllers whole group restriction",
+      "failed": true
+    },
+    {
+      "name": "SK original source legality HEXPROOF",
+      "failed": true
+    },
+    {
+      "name": "SK original source legality SHROUD",
+      "failed": true
+    },
+    {
+      "name": "SK original source legality PROTECTION_FROM_GREEN",
+      "failed": true
+    },
+    {
+      "name": "SK dynamic count retains original declared count",
+      "failed": true
+    },
+    {
+      "name": "SK unchanged illegal target keeps its occurrence stamp",
+      "failed": true
+    },
+    {
+      "name": "SK same physical id different visits stay occurrence-specific",
+      "failed": true
+    },
+    {
+      "name": "SK serialized choice rejects wrong identity and replays exactly",
+      "failed": false
+    },
+    {
+      "name": "SK invalid payment multiset [RED]",
+      "failed": true
+    },
+    {
+      "name": "SK invalid payment multiset [BLUE, BLUE]",
+      "failed": true
+    },
+    {
+      "name": "SK repeated activations debit each time",
+      "failed": true
+    },
+    {
+      "name": "SK invalid stack target rolls payment back",
+      "failed": false
+    },
+    {
+      "name": "SK single spell redirects and deals damage to same visit",
+      "failed": true
+    },
+    {
+      "name": "SK insufficient life leaves activation and payment unchanged",
+      "failed": false
+    },
+    {
+      "name": "SK no reselection preserves complete stack object",
+      "failed": true
+    },
+    {
+      "name": "SK actual targeting triggers ward pay=false",
+      "failed": false
+    },
+    {
+      "name": "SK actual targeting triggers ward pay=true",
+      "failed": false
+    },
+    {
+      "name": "SK explicit life with no blue mana",
+      "failed": true
+    },
+    {
+      "name": "SK zero target spell still permits activation",
+      "failed": true
+    },
+    {
+      "name": "SK illegal occurrence index preserves choice -1",
+      "failed": false
+    },
+    {
+      "name": "SK illegal occurrence index preserves choice 2",
+      "failed": false
+    },
+    {
+      "name": "SK explicit original source legality instant HEXPROOF",
+      "failed": true
+    },
+    {
+      "name": "SK explicit original source legality instant SHROUD",
+      "failed": true
+    },
+    {
+      "name": "SK explicit original source legality activation HEXPROOF",
+      "failed": true
+    },
+    {
+      "name": "SK explicit original source legality activation SHROUD",
+      "failed": true
+    },
+    {
+      "name": "SK explicit original source legality activation PROTECTION_FROM_GREEN",
+      "failed": true
+    }
+  ],
+  "next_executable_action": "Compile all normal/mutant forms of bounded R3 before49case normal,mutant,restored qualification; original receiving required; no acceptance yet."
+}
