@@ -1,0 +1,114 @@
+{
+  "source": "57d3c8a8492a5714d4cca78e627e1979106630d5",
+  "tree": "9fd1d9aaf30baf8a5745d328d1d59a372eacd386",
+  "validation": "ecf28930e62598ab2566eafa02b3d25ade91a6a7",
+  "validation_tree": "f81ab5cb1abad807b45194b9d487a8359dc5da13",
+  "workflow": ".github/workflows/manual-payment-ui-r1-20261028.yml",
+  "workflow_blob": "5ffd214ecca09c74521f0a9d5131437a0f8e8e52",
+  "branch": "validation/manual-payment-ui-r1-20261028",
+  "run": 40623802280,
+  "job": 122603818332,
+  "workflow_id": 398953542,
+  "artifact_name": "manual-payment-ui-r1-40623802280",
+  "source_delta": [
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianBrowserFixtureTest.kt",
+    "e2e-scenarios/tests/general/payment.spec.ts",
+    "e2e-scenarios/manual-payment.config.ts",
+    "e2e-scenarios/manual-payment.tsconfig.json",
+    "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/PROTOCOL.json",
+    "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/run.py",
+    "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/audit.py",
+    "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/check_audit.py",
+    "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/RECEIVE.py",
+    "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/validation.just",
+    "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/SYNTHETIC_CHECKS.json"
+  ],
+  "protocol_files": {
+    "PROTOCOL.json": "d6a8de9e0dc44c0a0065bc99622ed86b368ba96e08ebfd296e5b5116cab2306e",
+    "run.py": "966759a1da654fb790dd908859b252ca34fc9bf100b1f741129fd34809948f0e",
+    "audit.py": "adff11850c4eca3eb336044f1db0104c0f48c455e42f155c00b8daa4710ec9ce",
+    "check_audit.py": "0c6aece2fa80a1154b4a51ecc1b0adb44ee541bfc48c05554cd7de4b28626e41",
+    "RECEIVE.py": "8f2582f44fe2ed9845e5b9e49ae45c4908dafaa77f137dc1dcd000f80eac1138",
+    "validation.just": "9df732abc76f5a4939ddf4caf7b942549c7b09a2735910ca75d2e86154610032",
+    "SOURCE_REVIEW.json": "87d990c860482aecc8377b1895a8f44360419b4eff80b9c025070a52c2269fdf",
+    "SYNTHETIC_CHECKS.json": "85dfee043874b71f1e58b6bf812eafb4961ec960c67a5b2579f8497a88ebfb20"
+  },
+  "artifact": 12789610432,
+  "artifact_bytes": 329472161,
+  "artifact_sha256": "f12b01579b597684e4a2fe5a7f9ee9486a97739d7d7d8a26eff9439d26715a16",
+  "manifest_entries": 629,
+  "gates": {
+    "actual_ui": {
+      "compile_stages": 6,
+      "fixture_cases": [
+        [
+          "com.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest",
+          "Payment UI fixture serializes and enumerates life-only"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest",
+          "Payment UI fixture serializes and enumerates blue-or-life"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest",
+          "Payment UI fixture serializes and enumerates insufficient-life"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest",
+          "Payment UI fixture serializes and enumerates unaffordable"
+        ]
+      ],
+      "browser": {
+        "normal": {
+          "cases": 8,
+          "passes": 8,
+          "failures": [],
+          "skips": 0,
+          "retries": 0
+        },
+        "lost-life": {
+          "cases": 2,
+          "passes": 1,
+          "failures": [
+            "UI payment life preserves blue"
+          ],
+          "skips": 0,
+          "retries": 0
+        },
+        "wrong-color": {
+          "cases": 2,
+          "passes": 1,
+          "failures": [
+            "UI payment life without blue"
+          ],
+          "skips": 0,
+          "retries": 0
+        },
+        "stale-confirm": {
+          "cases": 2,
+          "passes": 1,
+          "failures": [
+            "UI payment stale confirmation ignored"
+          ],
+          "skips": 0,
+          "retries": 0
+        },
+        "restored": {
+          "cases": 8,
+          "passes": 8,
+          "failures": [],
+          "skips": 0,
+          "retries": 0
+        }
+      }
+    },
+    "source_forms_restoration": true
+  },
+  "gate_errors": [],
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "state": "RECEIVED_ACTUAL_PAYMENT_UI_FULL_CARD_MULTIPLAYER_PENDING"
+}
