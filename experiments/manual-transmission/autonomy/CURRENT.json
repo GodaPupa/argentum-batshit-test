@@ -51,7 +51,7 @@
     },
     "negative_scope": "Three compiled UI mutants with exact life-choice,color and stale-confirm assertion witnesses plus cancel controls.",
     "source_delta": "12 test/config/protocol files only; no production change;197protected bytes remain bound.",
-    "next_executable_action": "Reconcile CURRENT/ownership/newer receipts and run40652636776. While active do not duplicate/cancel. Once terminal receive original artifact using62aaa0bd receiver. If compilation succeeds, follow isolated reviewa4566bd9 to complete explicit illegal-recipient spell case and activation source-characteristic binding, exact full22 behavioral inventory/witness contract and dependent gates. No card acceptance from compilation; preserve all44candidate cases and reuse accepted exact-bound evidence.",
+    "next_executable_action": "Dispatch exactly one frozen Spellskite behavioral R1 after ownership/all-status reconciliation. Compile normal and all3mutants before behavioral49case normal/mutant/restored gates. Receive original artifacts; any unexpected failure blocks acceptance. No production registration.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -6122,25 +6122,25 @@
       "Full22 actual card behavior and required dependent gates",
       "Multiplayer admission"
     ],
-    "next_executable_action": "Reconcile CURRENT/ownership/newer receipts and run40652636776. While active do not duplicate/cancel. Once terminal receive original artifact using62aaa0bd receiver. If compilation succeeds, follow isolated reviewa4566bd9 to complete explicit illegal-recipient spell case and activation source-characteristic binding, exact full22 behavioral inventory/witness contract and dependent gates. No card acceptance from compilation; preserve all44candidate cases and reuse accepted exact-bound evidence.",
+    "next_executable_action": "Dispatch exactly one frozen Spellskite behavioral R1 after ownership/all-status reconciliation. Compile normal and all3mutants before behavioral49case normal/mutant/restored gates. Receive original artifacts; any unexpected failure blocks acceptance. No production registration.",
     "read_sections": [
       {
-        "ref": "6c833312549c63643788e671239711997f43f433",
-        "path": "experiments/manual-transmission/research/spellskite-card-compile-r2-20261028/PROTOCOL.json",
+        "ref": "f58a64db3a133d86090dddf9776e622c981298cc",
+        "path": "experiments/manual-transmission/research/spellskite-behavior-r1-20261028/PROTOCOL.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "2c3b83872c740d89ce1d8c4ea7c911f1e6fa7484",
-        "path": "experiments/manual-transmission/research/spellskite-compile-received-r1-20261028/DIAGNOSIS.json",
+        "ref": "f58a64db3a133d86090dddf9776e622c981298cc",
+        "path": "experiments/manual-transmission/research/spellskite-behavior-r1-20261028/SOURCE_REVIEW.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "a4566bd9d7dee3a45fd8a49119c23d3e4155f6ad",
-        "path": "experiments/manual-transmission/research/spellskite-behavior-source-review-r2-20261028/REVIEW.json",
+        "ref": "3d70a34509bcddd7a10bf1b781a44dc845bd343a",
+        "path": "experiments/manual-transmission/research/spellskite-compile-received-r2-20261028/VERIFIED_RECEIPT.json",
         "sections": [
           "all"
         ]
@@ -7908,7 +7908,7 @@
     "evidence": "Prior execution in this same Work conversation ended; intervening ff571c71 completed at2026-10-28T06:53:26.179614Z without mutations. Current scheduled invocation6ce837c1 is this continuation, not a competing worker. Fresh workflow all-status reconciliation empty except excludedPest; unchanged ledger head7f37a053; no newer Spellskite receipt/successor. Recovery uses session termination and recorded completed result, not lease expiry alone."
   },
   "spellskite_card_compile_r2": {
-    "state": "QUALIFICATION_RUNNING_ORIGINAL_RECEIVING_PENDING",
+    "state": "ORIGINAL_FOUR_COMPILE_FORMS_RECEIVED_BEHAVIOR_PENDING",
     "source": "6c833312549c63643788e671239711997f43f433",
     "tree": "7dee0fbc435be71626be15f3415e453ff963266f",
     "base": "2c3b83872c740d89ce1d8c4ea7c911f1e6fa7484",
@@ -7925,7 +7925,7 @@
     "run": 40652636776,
     "job": 122696087490,
     "workflow_id": 399137464,
-    "status": "in_progress",
+    "status": "completed",
     "attempt": 1,
     "run_number": 1,
     "event": "push",
@@ -7939,7 +7939,32 @@
       "commit": "a4566bd9d7dee3a45fd8a49119c23d3e4155f6ad",
       "path": "experiments/manual-transmission/research/spellskite-behavior-source-review-r2-20261028/REVIEW.json",
       "readback_verified": true
-    }
+    },
+    "conclusion": "success",
+    "receipt": "3d70a34509bcddd7a10bf1b781a44dc845bd343a",
+    "artifact": 12800134511,
+    "artifact_sha256": "sha256:879f74749b54f7d636f848c6981bf45470a392a8d40023008af219d1ab79908b",
+    "manifest_entries": 259
   },
-  "last_execution_owner": "manual-work-6ce837c1-0a9c-832c-9e60-690afdb6ef9e"
+  "last_execution_owner": "manual-work-6ce837c1-0a9c-832c-9e60-690afdb6ef9e",
+  "spellskite_behavior_r1": {
+    "state": "FROZEN_NOT_DISPATCHED",
+    "source": "f58a64db3a133d86090dddf9776e622c981298cc",
+    "tree": "e6c0a5028fc55b8f61a2d57723df1a2f358ec6fb",
+    "base": "3d70a34509bcddd7a10bf1b781a44dc845bd343a",
+    "validation": "157ea7c85e16e0678d6b874685f27c5631195bed",
+    "validation_tree": "636f3a1e9ab71329cf65d360953ba4a330b59788",
+    "workflow": ".github/workflows/manual-spellskite-behavior-r1-20261028.yml",
+    "workflow_blob": "6c2255c0e223216621d47d47a42e2b0fae992598",
+    "branch": "validation/manual-spellskite-behavior-r1-20261028",
+    "protocol": "experiments/manual-transmission/research/spellskite-behavior-r1-20261028/PROTOCOL.json",
+    "expected": {
+      "compilations": 4,
+      "normal": 49,
+      "restored": 49,
+      "negative_witnesses": 12,
+      "passing_mutant_controls": 135
+    },
+    "source_readback_verified": true
+  }
 }
