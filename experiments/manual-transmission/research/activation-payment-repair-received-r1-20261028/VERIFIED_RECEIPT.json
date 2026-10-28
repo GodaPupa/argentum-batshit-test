@@ -1,0 +1,338 @@
+{
+  "source": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+  "tree": "2692862a1ce1e1ede94d81e51933042959c4b81d",
+  "validation": "48161eebc81be13374f4da4c1fba7b72078df47c",
+  "validation_tree": "0bc627661a53dc73d482c9e1f88fc0a402ab96fd",
+  "workflow": ".github/workflows/manual-activation-payment-repair-early-r1-20261027.yml",
+  "workflow_blob": "3aff9c059258477004c7e642be4540a703739311",
+  "branch": "validation/manual-activation-payment-repair-early-r1-20261027",
+  "run": 40606160113,
+  "job": 122546056568,
+  "workflow_id": 398852238,
+  "attempt": 1,
+  "run_number": 1,
+  "event": "push",
+  "artifact_name": "manual-activation-payment-repair-r1-40606160113",
+  "protocol_files": {
+    "PROTOCOL.json": "3f814fcec6c7916acf1aa1ecb502cbf0333594032061e121bb2fd2a010e7ccf3",
+    "RECEIVE.py": "9f32d81be43478096271248c42e2390377fac4ffa72f1263a63874a4b7df6b3a",
+    "SOURCE_REVIEW.json": "2927026f618ec15b066dd4454529a2bf38a8668a9d660d44d658622773acc5ba",
+    "SYNTHETIC_CHECKS.json": "0e5f6efeee1afbd85ec849dd30dd29335ac71470d488f7686ea4711cb3f128f0",
+    "check_controls.py": "5c001749d207a3d9ef9ff5a0e329e0eebed182606281d50f7ce70513adcfa157",
+    "reports.py": "be99a9d2ef56449766d6c7d88a883761cff2f56943ed07505f4cb8b3b8ee8620",
+    "run.py": "2434463b289c34fb324539e95a2e1e59670ddbf42d5e663a2992df5a8b192309",
+    "validation.just": "a6067f850ea5d20d683548d9b1c6ba2ad78da88af7f6916916b2065d570375f6"
+  },
+  "state": "RECEIVED_EARLY_PAYMENT_REPAIR_FULL_COMPATIBILITY_PENDING",
+  "artifact": 12781637478,
+  "artifact_bytes": 5813906,
+  "artifact_sha256": "7565de09fcf373c41f6db47d86d072375c574f5a17e3854228e923145a3769d1",
+  "manifest_entries": 867,
+  "gates": {
+    "compile-normal": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-ignore-choice": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-omit-life-charge": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-retain-blue-pip": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-invalid-multiset": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-bypass-affordability": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-double-life-charge": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-drop-payment-events": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-ignore-composite-life": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "compile-free-repeats": {
+      "compiled": true,
+      "behavioral_tests": 0
+    },
+    "normal": {
+      "cases": 43,
+      "passed": 43,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {}
+    },
+    "ignore-choice": {
+      "cases": 7,
+      "passed": 2,
+      "failures": 5,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APC life payment without blue": {
+          "line": 55,
+          "contains": [
+            "Selected mana sources",
+            "null"
+          ]
+        },
+        "APC choice preserves blue": {
+          "line": 62,
+          "contains": [
+            "18",
+            "20"
+          ]
+        },
+        "APC invalid color rejected": {
+          "line": 69,
+          "contains": [
+            "false",
+            "true"
+          ]
+        },
+        "APC payment emits one exact event": {
+          "line": 82,
+          "contains": [
+            "Selected mana sources",
+            "null"
+          ]
+        },
+        "APC repeated payment charges each activation": {
+          "line": 92,
+          "contains": [
+            "Selected mana sources",
+            "null"
+          ]
+        }
+      }
+    },
+    "omit-life-charge": {
+      "cases": 7,
+      "passed": 3,
+      "failures": 4,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APC life payment without blue": {
+          "line": 56,
+          "contains": [
+            "18",
+            "20"
+          ]
+        },
+        "APC choice preserves blue": {
+          "line": 62,
+          "contains": [
+            "18",
+            "20"
+          ]
+        },
+        "APC payment emits one exact event": {
+          "line": 84,
+          "contains": [
+            "1",
+            "0"
+          ]
+        },
+        "APC repeated payment charges each activation": {
+          "line": 93,
+          "contains": [
+            "14",
+            "20"
+          ]
+        }
+      }
+    },
+    "retain-blue-pip": {
+      "cases": 7,
+      "passed": 3,
+      "failures": 4,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APC life payment without blue": {
+          "line": 55,
+          "contains": [
+            "Selected mana sources",
+            "null"
+          ]
+        },
+        "APC choice preserves blue": {
+          "line": 63,
+          "contains": [
+            "1",
+            "0"
+          ]
+        },
+        "APC payment emits one exact event": {
+          "line": 82,
+          "contains": [
+            "Selected mana sources",
+            "null"
+          ]
+        },
+        "APC repeated payment charges each activation": {
+          "line": 92,
+          "contains": [
+            "Selected mana sources",
+            "null"
+          ]
+        }
+      }
+    },
+    "invalid-multiset": {
+      "cases": 7,
+      "passed": 6,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APC invalid color rejected": {
+          "line": 69,
+          "contains": [
+            "false",
+            "true"
+          ]
+        }
+      }
+    },
+    "bypass-affordability": {
+      "cases": 7,
+      "passed": 5,
+      "failures": 2,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APC insufficient life rejected": {
+          "line": 76,
+          "contains": [
+            "false",
+            "true"
+          ]
+        },
+        "APC aggregate life cost rejected": {
+          "line": 101,
+          "contains": [
+            "false",
+            "true"
+          ]
+        }
+      }
+    },
+    "double-life-charge": {
+      "cases": 7,
+      "passed": 3,
+      "failures": 4,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APC life payment without blue": {
+          "line": 56,
+          "contains": [
+            "18",
+            "16"
+          ]
+        },
+        "APC choice preserves blue": {
+          "line": 62,
+          "contains": [
+            "18",
+            "16"
+          ]
+        },
+        "APC payment emits one exact event": {
+          "line": 87,
+          "contains": [
+            "18",
+            "16"
+          ]
+        },
+        "APC repeated payment charges each activation": {
+          "line": 93,
+          "contains": [
+            "14",
+            "8"
+          ]
+        }
+      }
+    },
+    "drop-payment-events": {
+      "cases": 7,
+      "passed": 6,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APC payment emits one exact event": {
+          "line": 84,
+          "contains": [
+            "1",
+            "0"
+          ]
+        }
+      }
+    },
+    "ignore-composite-life": {
+      "cases": 7,
+      "passed": 6,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APC aggregate life cost rejected": {
+          "line": 101,
+          "contains": [
+            "false",
+            "true"
+          ]
+        }
+      }
+    },
+    "free-repeats": {
+      "cases": 7,
+      "passed": 6,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {
+        "APC repeated payment charges each activation": {
+          "line": 93,
+          "contains": [
+            "14",
+            "18"
+          ]
+        }
+      }
+    },
+    "restored": {
+      "cases": 43,
+      "passed": 43,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "witnesses": {}
+    }
+  },
+  "gate_errors": [],
+  "feature_acceptance": false,
+  "full_compatibility": false,
+  "card_registration": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
