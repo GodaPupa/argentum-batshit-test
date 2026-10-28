@@ -26,7 +26,7 @@ import com.wingedsheep.sdk.dsl.*
 import com.wingedsheep.sdk.scripting.targets.*
 import io.kotest.matchers.shouldBe
 
-/** Uncompiled partial draft. Test-local registry only; no discoverable production definition. */
+/** Test-local Spellskite qualification; no discoverable production definition. */
 class SpellskiteScenarioTest : ScenarioTestBase() {
     init {
         val skiteDefinition = card("Spellskite") {
@@ -68,12 +68,18 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
                     val refs = ObjectReferenceEnvironment(captured = true, origin = initial.objectRef(source), source = initial.objectRef(source))
                     val resolver = StackResolver(cardRegistry)
                     val effect = if (targetCount == 0) Effects.GainLife(0) else Effects.DealDamage(1, EffectTarget.ContextTarget(0))
-                    val queued = if (kind == "activation") resolver.putActivatedAbility(initial,
+                    val queuedRaw = if (kind == "activation") resolver.putActivatedAbility(initial,
                         ActivatedAbilityOnStackComponent(source, "Grizzly Bears", game.player1Id, effect,
-                            objectReferences = refs, originalTargetSlots = selection), plan.targets, requirements, currentTargetPlan = plan)
+                            objectReferences = refs, originalTargetSlots = selection), plan.targets, requirements, currentTargetPlan = plan.takeIf { targetCount != 0 })
                     else resolver.putTriggeredAbility(initial,
                         TriggeredAbilityOnStackComponent(source, "Grizzly Bears", game.player1Id, effect, "Card acceptance fixture",
-                            objectReferences = refs, originalTargetSlots = selection), plan.targets, requirements, currentTargetPlan = plan)
+                            objectReferences = refs, originalTargetSlots = selection), plan.targets, requirements, currentTargetPlan = plan.takeIf { targetCount != 0 })
+                    // The producer intentionally omits TargetsComponent for no targets. Declare the
+                    // empty authoritative fixture explicitly before exercising Spellskite.
+                    val queued = if (targetCount == 0 && queuedRaw.error == null) queuedRaw.copy(
+                        state = queuedRaw.state.updateEntity(queuedRaw.state.stack.last()) { c ->
+                            c.with(TargetsComponent(emptyList())).withCurrentTargetPlan(null, plan)!!
+                        }) else queuedRaw
                     queued.error shouldBe null
                     val originalStack = queued.state.stack.last()
                     val choices = if (payLife) listOf(Color.BLUE) else emptyList()
@@ -105,8 +111,9 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
         fun round(s: GameState): GameState = json.decodeFromString(GameState.serializer(), json.encodeToString(GameState.serializer(), s))
         data class F(val state: GameState, val stack: EntityId, val source: EntityId, val old: EntityId,
             val recipient: EntityId, val one: EntityId, val two: EntityId, val kind: String, val plan: CurrentTargetPlan)
-        fun fixture(kind: String, shape: String = "optional", recipientName: String = "Spellskite", players: Boolean = false, ward: Boolean = false, life: Int = 20): F {
-            val reqs: List<TargetRequirement> = listOf(
+        fun fixture(kind: String, shape: String = "optional", recipientName: String = "Spellskite", players: Boolean = false, ward: Boolean = false, life: Int = 20,
+            declaredGroups: List<List<Int>>? = null, declaredRequirements: List<TargetRequirement>? = null): F {
+            val reqs: List<TargetRequirement> = declaredRequirements ?: listOf(
                 AnyTarget(id = "omitted", optional = true, minCount = 0),
                 if (players) TargetPlayer(id = "first") else TargetObject(id = "first", filter = TargetFilter(GameObjectFilter.Creature)),
                 if (players) TargetPlayer(id = "last") else TargetObject(id = "last", filter = TargetFilter(GameObjectFilter.Creature)))
@@ -140,7 +147,12 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
             val recipient = if (players) game.player2Id else game.findPermanent(recipientName)!!
             val target = if (players) ChosenTarget.Player(game.player1Id) else ChosenTarget.Permanent(old)
             val slot = TargetSlot(target, if (players) null else game.state.objectRef(old))
-            val selections = TargetSlotPlan(listOf(TargetInstanceSelection(emptyList()),
+            val ids = listOf(old, recipient, source)
+            val selections = if (declaredGroups != null) TargetSlotPlan(declaredGroups.map { group ->
+                TargetInstanceSelection(group.map { index ->
+                    TargetSlot(ChosenTarget.Permanent(ids[index]), game.state.objectRef(ids[index]))
+                })
+            }) else TargetSlotPlan(listOf(TargetInstanceSelection(emptyList()),
                 TargetInstanceSelection(listOf(slot.copy(dividedAmount = if (shape == "division") 2 else null))),
                 TargetInstanceSelection(listOf(slot.copy(dividedAmount = if (shape == "division") 3 else null)))))
             val plan = CurrentTargetPlan(selections, if (shape == "modal") listOf(3) else emptyList(),
@@ -150,14 +162,14 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
             val placed = when (kind) {
                 "activation" -> resolver.putActivatedAbility(game.state,
                     ActivatedAbilityOnStackComponent(source, "Matrix Source", game.player1Id, body,
-                        objectReferences = refs, originalTargetSlots = selections), plan.targets, reqs, currentTargetPlan = plan)
+                        objectReferences = refs, originalTargetSlots = selections), plan.targets, reqs, currentTargetPlan = plan.takeIf { it.targets.isNotEmpty() })
                 "trigger" -> resolver.putTriggeredAbility(game.state,
                     TriggeredAbilityOnStackComponent(source, "Matrix Source", game.player1Id, body, "Matrix trigger",
                         objectReferences = refs, originalTargetSlots = selections,
                         chosenModes = if (shape == "modal") listOf(0) else emptyList(),
                         modeTargetsOrdered = if (shape == "modal") listOf(plan.targets) else emptyList(),
                         modeTargetRequirements = if (shape == "modal") mapOf(0 to reqs) else emptyMap()),
-                    plan.targets, reqs, currentTargetPlan = plan)
+                    plan.targets, reqs, currentTargetPlan = plan.takeIf { it.targets.isNotEmpty() })
                 else -> resolver.castSpell(game.state, game.findCardsInHand(1, spell.name).single(), game.player1Id,
                     targets = plan.targets, targetRequirements = reqs,
                     chosenModes = if (shape == "modal") listOf(0) else emptyList(),
@@ -168,7 +180,12 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
             placed.error shouldBe null
             val stack = placed.state.stack.last()
             // Test input is the original requirement-indexed declaration, never rebuilt from flat targets.
-            val state = if (kind == "instant") placed.state.updateEntity(stack) { container ->
+            val state = if (plan.targets.isEmpty()) placed.state.updateEntity(stack) { container ->
+                val declared = container.with(TargetsComponent(plan.targets, reqs))
+                val spell = declared.get<SpellOnStackComponent>()
+                (if (spell != null) declared.with(spell.copy(originalTargetSlots = selections)) else declared)
+                    .withCurrentTargetPlan(null, plan)!!
+            } else if (kind == "instant") placed.state.updateEntity(stack) { container ->
                 val original = container.get<SpellOnStackComponent>()!!
                 container.with(original.copy(originalTargetSlots = selections)).withCurrentTargetPlan(null, plan)!!
             } else placed.state
@@ -258,20 +275,8 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
             resolved.state.pendingDecision shouldBe null; resolved.state.continuationStack shouldBe emptyList()
         }
         // Every fixture declares its original requirement-indexed groups explicitly.
-        fun shaped(groups: List<List<Int>>, reqs: List<TargetRequirement>, kind: String = "trigger", shape: String = "context"): F {
-            val f = fixture(kind, shape)
-            val ids = listOf(f.old, f.recipient, f.source)
-            val plan = CurrentTargetPlan(TargetSlotPlan(groups.map { group -> TargetInstanceSelection(group.map {
-                TargetSlot(ChosenTarget.Permanent(ids[it]), f.state.objectRef(ids[it]))
-            }) }))
-            val s = f.state.updateEntity(f.stack) { c ->
-                val replaced = c.with(c.get<TargetsComponent>()!!.copy(targetRequirements = reqs))
-                val original = if (kind == "instant") replaced.with(replaced.get<SpellOnStackComponent>()!!.copy(originalTargetSlots = plan.selections))
-                    else replaced.with(replaced.get<TriggeredAbilityOnStackComponent>()!!.copy(originalTargetSlots = plan.selections))
-                original.withCurrentTargetPlan(null, plan)!!
-            }
-            return f.copy(state = s, plan = plan)
-        }
+        fun shaped(groups: List<List<Int>>, reqs: List<TargetRequirement>, kind: String = "trigger", shape: String = "context"): F =
+            fixture(kind, shape, declaredGroups = groups, declaredRequirements = reqs)
         fun activate(f: F, s: GameState = f.state, colors: List<Color> = listOf(Color.BLUE), repeats: Int = 1): ExecutionResult =
             ActionProcessor(cardRegistry).process(s, ActivateAbility(f.two, f.recipient,
                 skiteDefinition.activatedAbilities.single().id, targets = listOf(ChosenTarget.Spell(f.stack)),
