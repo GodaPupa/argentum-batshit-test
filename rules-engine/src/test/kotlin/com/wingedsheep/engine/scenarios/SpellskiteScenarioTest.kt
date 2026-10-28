@@ -440,5 +440,13 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
             val r = ActionProcessor(cardRegistry).process(offered, SubmitDecision(f.two, OptionChosenResponse(q.id, index))).result
             (r.error != null) shouldBe true; r.state shouldBe offered; r.events shouldBe emptyList()
         }
+        for (kind in listOf("instant", "activation")) {
+            val keywords = if (kind == "instant") listOf("HEXPROOF", "SHROUD") else listOf("HEXPROOF", "SHROUD", "PROTECTION_FROM_GREEN")
+            for (keyword in keywords) test("SK explicit original source legality $kind $keyword") {
+                val base = shaped(listOf(listOf(0)), listOf(Targets.Creature), kind)
+                val f = base.copy(state = word(base, base.recipient, keyword))
+                unchangedStack(f, resolveSkite(f))
+            }
+        }
     }
 }
