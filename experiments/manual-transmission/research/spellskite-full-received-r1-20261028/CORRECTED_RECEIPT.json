@@ -1,0 +1,63 @@
+{
+  "state": "CORRECTED_ORIGINAL_PARTIAL_COMPATIBILITY_RECEIVED_ORDINARY_NOT_EXECUTED",
+  "run": 40699575771,
+  "source": "5a956c8713ee1b49d7d15266bdc3bda13119b130",
+  "artifact": 12822651101,
+  "artifact_sha256": "06edec036b811e57d2e47a1fb26a0bd12ec1c2ee684c99c0ca581b47a97b3e4a",
+  "manifest_entries": 4894,
+  "original_failure_preserved": true,
+  "independent_identity_authority": "4f648c2b UI receipt and57d3c8a protocol; exact unchanged fixture SHA256 1de88b7706ddbd7b6170b34dddce215a93ebbbbfb8ad606f138ce579aad92cfd",
+  "correction": "Include four already accepted payment UI fixture identities in broad/ordinary; no assertions/skips/count floors relaxed. Broad15291 all passed in original artifact. Ordinary not executed.",
+  "added_cases": {
+    "rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates life-only": 1,
+    "rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates blue-or-life": 1,
+    "rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates insufficient-life": 1,
+    "rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates unaffordable": 1
+  },
+  "gates": {
+    "recording": {
+      "rows": 5,
+      "passed": 5,
+      "skips": 0
+    },
+    "actor": {
+      "rows": 39,
+      "passed": 39,
+      "skips": 0
+    },
+    "focused": {
+      "rows": 1224,
+      "passed": 1224,
+      "skips": 0
+    },
+    "client": {
+      "passed": 64,
+      "skips": 0
+    },
+    "broad": {
+      "rows": 15291,
+      "passed": 15291,
+      "skips": 0
+    }
+  },
+  "controls": [
+    "reject missing rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates life-only",
+    "reject multiplicity rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates life-only",
+    "reject missing rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates blue-or-life",
+    "reject multiplicity rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates blue-or-life",
+    "reject missing rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates insufficient-life",
+    "reject multiplicity rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates insufficient-life",
+    "reject missing rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates unaffordable",
+    "reject multiplicity rules-engine\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\tPayment UI fixture serializes and enumerates unaffordable",
+    "reject extra",
+    "reject skip"
+  ],
+  "remaining": [
+    "ordinary19014rows=18971passes+43exacthistoricalskips",
+    "card admission",
+    "multiplayer"
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "complete_receipt_archive": "CORRECTED_RECEIPT.json.gz.b64"
+}

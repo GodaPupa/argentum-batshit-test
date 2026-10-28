@@ -1,0 +1,84 @@
+{
+  "source": "5a956c8713ee1b49d7d15266bdc3bda13119b130",
+  "tree": "6563e2bbda2f2c3fd0c695e92f626e1be934744d",
+  "validation": "1e102d80202dd9fb66bd4f5091e0a9196c644944",
+  "validation_tree": "4d65061e086c05cb29e685e50c76290605d6a7d8",
+  "workflow": ".github/workflows/manual-spellskite-full-r1-20261028.yml",
+  "workflow_blob": "9ff8a548be61fe20314a7dc732ff8a889686ec98",
+  "branch": "validation/manual-spellskite-full-r1-20261028",
+  "run": 40699575771,
+  "job": 122855401330,
+  "workflow_id": 399460820,
+  "artifact_name": "manual-spellskite-full-r1-40699575771",
+  "protocol_files": {
+    "PROTOCOL.json": "ed92f65980b112ceea15aa45823cf22c35a5a844b7d202139f8140c37b33b49f",
+    "RECEIVE.py": "dd2dfbbe6ac86efe788203a3ce98c49babe5c537262feec06c0411d9206d1574",
+    "SOURCE_REVIEW.json": "553e7d2a64ae69516e8d374c3c514df894e1ce0f41d9bc6e57ed9174d9dbc785",
+    "SYNTHETIC_CHECKS.json": "54ef7d8254a2329c906a9d758a821f53983985cb0fd9af0b0cb1dd4b2ae21c99",
+    "audit.py": "78880a1e2e51274527a3e5f70268e9c465cbed3f2a014efbf9387bb370100bbe",
+    "check_audit.py": "02cffd86c2543d9265ee83a5c76a0f2f8a0814c3086a7aacf413b1c1909c2078",
+    "run.py": "3b3d97a92c905808b6b6f5dae6eb2317589a157b30901cc113ac439d07a79232",
+    "validation.just": "69cfdf3f95e62a95bc7520822a5fa17785ae78408812ac5642d73493c9d4093f",
+    "derive_successor_inventory.py": "d13a2b38ec8d149841284a081082bb6eed7a2b988443cc8bf180de1fb9070a6c",
+    "ADDED_CASES.json": "61e9a191b497249356eef6d0cf04a6eed43736b650aff136dbc9477b96360b6f",
+    "FULL_COMPATIBILITY_CONTRACT.json": "d678450fa835f7bb8a44b9f0b0765c2afbc3fc4a38b15a0bee19e6adac42a08b",
+    "ASSAY_REUSE.json": "922e026007f96fcb503270925371a54b4db2b39a870ac6cbd2ff76bed8e554b4"
+  },
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "artifact": 12822651101,
+  "artifact_bytes": 7885315,
+  "artifact_sha256": "06edec036b811e57d2e47a1fb26a0bd12ec1c2ee684c99c0ca581b47a97b3e4a",
+  "manifest_entries": 4894,
+  "gates": {
+    "recording": {
+      "rows": 5,
+      "passed": 5,
+      "skips": 0
+    },
+    "actor": {
+      "rows": 39,
+      "passed": 39,
+      "skips": 0
+    },
+    "focused": {
+      "rows": 1224,
+      "passed": 1224,
+      "skips": 0
+    },
+    "client": {
+      "passed": 64,
+      "skips": 0
+    }
+  },
+  "gate_errors": [
+    {
+      "stage": "broad",
+      "error": "AssertionError: {'missing': Counter(), 'extra': Counter({'rules-engine\\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\\tPayment UI fixture serializes and enumerates life-only': 1, 'rules-engine\\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\\tPayment UI fixture serializes and enumerates blue-or-life': 1, 'rules-engine\\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\\tPayment UI fixture serializes and enumerates insufficient-life': 1, 'rules-engine\\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\\tPayment UI fixture serializes and enumerates unaffordable': 1})}"
+    },
+    {
+      "stage": "ordinary",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpwhp0dy1f/ordinary/exit.txt'"
+    },
+    {
+      "stage": "collector",
+      "error": "AssertionError: {'missing': Counter(), 'extra': Counter({'rules-engine\\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\\tPayment UI fixture serializes and enumerates life-only': 1, 'rules-engine\\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\\tPayment UI fixture serializes and enumerates blue-or-life': 1, 'rules-engine\\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\\tPayment UI fixture serializes and enumerates insufficient-life': 1, 'rules-engine\\tcom.wingedsheep.engine.scenarios.ActivatedPhyrexianBrowserFixtureTest\\tPayment UI fixture serializes and enumerates unaffordable': 1})}"
+    }
+  ],
+  "feature_acceptance": false,
+  "early_and_assay_reuse": {
+    "matrix": "f79bde6768add265df83efcb5e635d4bd79256a9",
+    "ui": "7ebe251f45bbcc075ab460aabfda037f7e1cb470",
+    "transport": "69f2dce2835a55ad364ee9b1a9c75f7b4b1e5ac9",
+    "generator": "0794e3ff34b66f3cf4c4815bbdaf1e1adf0961e6",
+    "early": "346763001426d3650b70bf099291c0a777fed955",
+    "registration": "423d5849f1ef95ed1eec3d2adc73b00ff4239947",
+    "assay": "25a9b86953e84125b0119d91d1dd80787eaf0b73",
+    "payment_full": "db96986972247c562c997bf55ed6156e6b171043",
+    "payment_ui": "4f648c2b4f159f039a0aff27cdcee8d5e13eeae3"
+  },
+  "card_registration": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "complete_receipt_archive": "VERIFIED_RECEIPT.json.gz.b64"
+}
