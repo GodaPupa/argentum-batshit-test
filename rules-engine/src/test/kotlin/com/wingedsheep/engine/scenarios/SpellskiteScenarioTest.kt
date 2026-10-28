@@ -129,7 +129,7 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
             val spell = card("Public Matrix Spell") { manaCost = "{0}"; typeLine = "Instant"; spell { effect = body } }
             val splice = card("Public Matrix Splice") {
                 manaCost = "{0}"; typeLine = "Instant — Arcane"
-                spell { target("omitted", reqs[0]); target("first", reqs[1]); target("last", reqs[2]); effect = destroy }
+                spell { reqs.forEachIndexed { index, requirement -> target(requirement.id ?: "fixture-$index", requirement) }; effect = destroy }
             }
             cardRegistry.register(spell); cardRegistry.register(splice)
             cardRegistry.register(skiteDefinition)
