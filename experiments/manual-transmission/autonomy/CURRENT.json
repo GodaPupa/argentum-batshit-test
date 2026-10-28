@@ -9,7 +9,8 @@
     "state": "ACTIVE",
     "owner": "manual-work-bd5cf60c-5f50-832f-9d78-ebd931144c8e",
     "claimed_utc": "2026-10-28T00:44:00Z",
-    "expires_utc": "2026-10-28T01:24:00Z"
+    "expires_utc": "2026-10-28T01:28:45.000Z",
+    "renewed_utc": "2026-10-28T00:48:45Z"
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -5134,7 +5135,8 @@
       "ignored_ancient": 34749202144,
       "terminal_run": 40606160113,
       "newer_receipts": [],
-      "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc"
+      "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+      "dispatch_utc": "2026-10-28T00:48:45Z"
     },
     "final_compatibility_release": {
       "observed_utc": "2026-10-27T19:00:26Z",
@@ -6132,7 +6134,7 @@
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r4-20261026/NEXT_SOURCE_REVIEW.json"
     },
     "critical_path": "Accepted generator/UI/publicmatrix/final compatibility25a9b869 → bounded payment repair early40606160113 → required successor compatibility → actual payment UI/full22Spellskite → multiplayer.",
-    "actual_stopping_reason": "External dependency pending: single immutable activated-payment early qualification40606160113 is in progress. Original receiving pins, exact dependent full-compatibility inventory, Assay reuse proof and isolated actual payment UI source review6c83ea67 are complete and verified. No useful safely independent immediate work remains without assuming early results, changing frozen source or launching competing qualification. Repair not accepted. Ownership released; no continuous execution between invocations.",
+    "actual_stopping_reason": null,
     "receiving": {
       "state": "RECEIVED_PUBLIC_MATRIX_ONLY_FINAL_COMPATIBILITY_PENDING",
       "source": "6b3c5e4d8441b25525bd45b6237525cb12883a38",
@@ -6175,7 +6177,7 @@
       "state": "RECEIVED_EARLY_PAYMENT_REPAIR_FULL_COMPATIBILITY_PENDING",
       "readback_verified": true
     },
-    "continuation_state": "WAITING_EXTERNAL;single early payment qualification40606160113 active;ownership released.",
+    "continuation_state": "ACTIVE_OWNER; early repair received; frozen required full compatibility ready for one dispatch.",
     "previous_guidance_at_ready_4e14a8c9": {
       "read_sections": [
         {
@@ -6398,7 +6400,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-28T00:52:00Z",
+  "updated_utc": "2026-10-28T00:48:45Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -7727,5 +7729,32 @@
     "artifact_sha256": "7565de09fcf373c41f6db47d86d072375c574f5a17e3854228e923145a3769d1",
     "manifest_entries": 867,
     "readback_verified": true
+  },
+  "activation_payment_full_r1_qualification": {
+    "state": "FROZEN_READY_FOR_SINGLE_DISPATCH",
+    "source": "2171847defc3cc1b02506fb0fcbcd463da28159a",
+    "tree": "1b68903504b50785a1e7efedaac1bb7046abf60e",
+    "base": "ae6b21ecdc09b81f33d1cf4b0925c33a84f5b765",
+    "validation": "25bda9dc4af3e862fb0eb8acbe8e780ea2943e1c",
+    "validation_tree": "4b645d957fdc98cf3e093c815434896be0e252c1",
+    "workflow": ".github/workflows/manual-activation-payment-full-r1-20261028.yml",
+    "workflow_blob": "92cded46d14aee83284d110a5963212a7cdbc296",
+    "source_branch": "source/manual-activation-payment-full-r1-20261028",
+    "validation_branch": "validation/manual-activation-payment-full-r1-20261028",
+    "protocol": "experiments/manual-transmission/research/activation-payment-full-r1-20261028/PROTOCOL.json",
+    "runtime_source": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+    "early_receipt": "ae6b21ecdc09b81f33d1cf4b0925c33a84f5b765",
+    "expected_not_observed": {
+      "client": 64,
+      "recording": 5,
+      "actor": 39,
+      "focused": 1175,
+      "broad": 15238,
+      "ordinary_passes": 18918,
+      "ordinary_skips": 43
+    },
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
   }
 }
