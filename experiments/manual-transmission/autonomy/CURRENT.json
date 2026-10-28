@@ -29,28 +29,27 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Frozen bounded activated Phyrexian payment repair early qualification",
-    "source_candidate": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
-    "source_tree": "2692862a1ce1e1ede94d81e51933042959c4b81d",
-    "source_branch": "source/manual-activation-payment-repair-early-r1-20261027",
-    "protocol": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/SOURCE_REVIEW.json",
-    "validation": "48161eebc81be13374f4da4c1fba7b72078df47c",
-    "validation_branch": "validation/manual-activation-payment-repair-early-r1-20261027",
-    "workflow": ".github/workflows/manual-activation-payment-repair-early-r1-20261027.yml",
-    "pending_runs": [
-      40606160113
-    ],
+    "current_subproblem": "Actual activated Phyrexian payment UI qualification",
+    "source_candidate": "57d3c8a8492a5714d4cca78e627e1979106630d5",
+    "source_tree": "9fd1d9aaf30baf8a5745d328d1d59a372eacd386",
+    "source_branch": "source/manual-payment-ui-r1-20261028",
+    "protocol": "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/SOURCE_REVIEW.json",
+    "validation": "ecf28930e62598ab2566eafa02b3d25ade91a6a7",
+    "validation_branch": "validation/manual-payment-ui-r1-20261028",
+    "workflow": ".github/workflows/manual-payment-ui-r1-20261028.yml",
+    "pending_runs": [],
     "planned_not_observed": {
-      "compilations": 10,
-      "normal": 43,
-      "restored": 43,
-      "negative_witnesses": 23,
-      "passing_mutant_controls": 40
+      "compilations": 6,
+      "fixtures": 4,
+      "normal_browser": 8,
+      "restored_browser": 8,
+      "negative_witnesses": 3,
+      "passing_mutant_controls": 3
     },
-    "negative_scope": "Nine compiled production mutants: ignored life choice,omitted charge,retainedbluepip,invalidmultiset,bypassedaffordability,doublecharge,droppedpaymentevents,ignoredaggregatelife,freerepeats; exact23assertionwitnesses and40passingcontrols. Compilation failures are not behavioral evidence.",
-    "source_delta": "One bounded unprotected ActivateAbilityHandler edit,two new unregistered test classes,eight protocol files; unchanged original diagnostic4 and197protected paths.",
-    "next_executable_action": "Reconcile live owner/automation/newer receipts/successors/workflows. Resume uncompiled UI fixture draft ate10cb43648f7d1d67bc122ca88a6c0bc24e79bcc:experiments/manual-transmission/research/activation-payment-ui-draft-r1-20261028/NEXT_ACTION.json on accepted base db96986972247c562c997bf55ed6156e6b171043. Verify draft APIs against current source, implement actual two-seat DOM/transport/payment/resolution tests and deliberate UI/transport mutants using saved6c83ea67 review/UIR5 infrastructure. Compile normal/mutants first, freeze one coherent UI qualification, dispatch once and receive original artifact. Do not dispatch draft alone. Do not rerun accepted full40611166666 or early40606160113. Full22Spellskite/multiplayer remain; no production registration or official games.",
+    "negative_scope": "Three compiled UI mutants with exact life-choice,color and stale-confirm assertion witnesses plus cancel controls.",
+    "source_delta": "12 test/config/protocol files only; no production change;197protected bytes remain bound.",
+    "next_executable_action": "After fresh reconciled owner/automation/no active qualification, create validation/manual-payment-ui-r1-20261028 at ecf28930e62598ab2566eafa02b3d25ade91a6a7 once. Compile6normal/mutant forms before4fixtures/8normal+8restored/3negative+3control UI qualification. Receive original artifact with frozen RECEIVE.py; green is not acceptance. While active prepare exact original receiving and isolated full22Spellskite review. Reuse accepted full40611166666 and early40606160113; no official games or registration.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -167,7 +166,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "0bc627661a53dc73d482c9e1f88fc0a402ab96fd",
+    "validation_tree": "f81ab5cb1abad807b45194b9d487a8359dc5da13",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -4115,6 +4114,27 @@
       "path": "experiments/manual-transmission/research/activation-payment-repair-receiving-r1-20261027",
       "run": 40606160113,
       "readback_verified": true
+    },
+    "previous_guidance_before_payment_ui_r1": {
+      "current_subproblem": "Frozen bounded activated Phyrexian payment repair early qualification",
+      "source_candidate": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+      "source_tree": "2692862a1ce1e1ede94d81e51933042959c4b81d",
+      "source_branch": "source/manual-activation-payment-repair-early-r1-20261027",
+      "protocol": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/PROTOCOL.json",
+      "design": "experiments/manual-transmission/research/activation-payment-repair-early-r1-20261027/SOURCE_REVIEW.json",
+      "validation": "48161eebc81be13374f4da4c1fba7b72078df47c",
+      "validation_branch": "validation/manual-activation-payment-repair-early-r1-20261027",
+      "workflow": ".github/workflows/manual-activation-payment-repair-early-r1-20261027.yml",
+      "pending_runs": [
+        40606160113
+      ],
+      "planned_not_observed": {
+        "compilations": 10,
+        "normal": 43,
+        "restored": 43,
+        "negative_witnesses": 23,
+        "passing_mutant_controls": 40
+      }
     }
   },
   "completion_contract": {
@@ -5160,6 +5180,20 @@
       ],
       "current_blob": "8c1c8f13dfea80447b9507c92650ac13dbce9f29",
       "no_newer_receipt_or_successor_in_live_current": true
+    },
+    "last_payment_ui_pre_dispatch": {
+      "utc": "2026-10-28T02:55:34Z",
+      "current_blob": "2637e56c87751328d4f7ce6c494dea15acdb1f68",
+      "owner": "manual-work-edfe1268-dad4-8331-babf-f0450c2cde16",
+      "automation_run": "edfe1268-dad4-8331-babf-f0450c2cde16",
+      "automation_status": "in_progress",
+      "enabled": true,
+      "active_workflows": [],
+      "ignored_unrelated": [
+        34749202144
+      ],
+      "validation_branch_absent": true,
+      "newer_ledger_successors": false
     }
   },
   "automation": {
@@ -5351,7 +5385,7 @@
     "work_owner": "manual-work-edfe1268-dad4-8331-babf-f0450c2cde16",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "READY_FOR_NEXT_ITERATION; full payment compatibility accepted; uncompiled actual UI draft checkpointed",
+    "activity": "WORKING; frozen actual payment UI qualification prepared",
     "last_execution_owner": "manual-work-f586ca06-ebf8-8326-9234-8f705755cfe3"
   },
   "blockers": [],
@@ -6066,16 +6100,23 @@
       "Payment successor full compatibility accepted db969869:64client5recording39actor1175focused15238broad18918ordinarypasses+43exactskips,9589manifest and197protected; early negative and exact-bound Assay/generator/R7/registration reused."
     ],
     "unfinished_implementation": [
-      "Actual payment UI fixture/test/protocol implementation; full22Spellskite and multiplayer admission. No production Spellskite registration."
+      "Actual payment UI test/config/protocol frozen, execution pending; full22Spellskite and multiplayer admission remain. No production Spellskite registration."
     ],
     "pending_evidence": [
-      "Actual payment UI qualification,full22Spellskite,multiplayer."
+      "Actual payment UI6compilations/4fixtures/8normal+8restored/3negative+3control and original receiving; full22Spellskite; multiplayer."
     ],
-    "next_executable_action": "Reconcile live owner/automation/newer receipts/successors/workflows. Resume uncompiled UI fixture draft ate10cb43648f7d1d67bc122ca88a6c0bc24e79bcc:experiments/manual-transmission/research/activation-payment-ui-draft-r1-20261028/NEXT_ACTION.json on accepted base db96986972247c562c997bf55ed6156e6b171043. Verify draft APIs against current source, implement actual two-seat DOM/transport/payment/resolution tests and deliberate UI/transport mutants using saved6c83ea67 review/UIR5 infrastructure. Compile normal/mutants first, freeze one coherent UI qualification, dispatch once and receive original artifact. Do not dispatch draft alone. Do not rerun accepted full40611166666 or early40606160113. Full22Spellskite/multiplayer remain; no production registration or official games.",
+    "next_executable_action": "After fresh reconciled owner/automation/no active qualification, create validation/manual-payment-ui-r1-20261028 at ecf28930e62598ab2566eafa02b3d25ade91a6a7 once. Compile6normal/mutant forms before4fixtures/8normal+8restored/3negative+3control UI qualification. Receive original artifact with frozen RECEIVE.py; green is not acceptance. While active prepare exact original receiving and isolated full22Spellskite review. Reuse accepted full40611166666 and early40606160113; no official games or registration.",
     "read_sections": [
       {
-        "ref": "e10cb43648f7d1d67bc122ca88a6c0bc24e79bcc",
-        "path": "experiments/manual-transmission/research/activation-payment-ui-draft-r1-20261028/NEXT_ACTION.json",
+        "ref": "57d3c8a8492a5714d4cca78e627e1979106630d5",
+        "path": "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/PROTOCOL.json",
+        "sections": [
+          "all"
+        ]
+      },
+      {
+        "ref": "57d3c8a8492a5714d4cca78e627e1979106630d5",
+        "path": "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/SOURCE_REVIEW.json",
         "sections": [
           "all"
         ]
@@ -6086,18 +6127,11 @@
         "sections": [
           "all"
         ]
-      },
-      {
-        "ref": "6c83ea675282fc61cf5a0c3572bfd9ea9aad651f",
-        "path": "experiments/manual-transmission/research/activation-payment-repair-receiving-r1-20261027/PAYMENT_UI_NEXT_REVIEW.json",
-        "sections": [
-          "all"
-        ]
       }
     ],
     "source_protocol": {
-      "source": "2171847defc3cc1b02506fb0fcbcd463da28159a",
-      "path": "experiments/manual-transmission/research/activation-payment-full-r1-20261028/PROTOCOL.json"
+      "source": "57d3c8a8492a5714d4cca78e627e1979106630d5",
+      "path": "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/PROTOCOL.json"
     },
     "accepted_receipt": {
       "commit": "25a9b86953e84125b0119d91d1dd80787eaf0b73",
@@ -6116,7 +6150,7 @@
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r4-20261026/NEXT_SOURCE_REVIEW.json"
     },
     "critical_path": "Payment successor full compatibility accepted db969869 → actual payment UI → full22Spellskite → multiplayer",
-    "actual_stopping_reason": "Invocation working-context limit reached after original full compatibility receiving/publication and uncompiled actual payment UI fixture draft. No active qualification or worker. Runnable UI implementation remains; draft is not runtime evidence, not accepted, and not dispatched. Ownership released honestly.",
+    "actual_stopping_reason": null,
     "receiving": {
       "state": "RECEIVED_PUBLIC_MATRIX_ONLY_FINAL_COMPATIBILITY_PENDING",
       "source": "6b3c5e4d8441b25525bd45b6237525cb12883a38",
@@ -6154,7 +6188,7 @@
       "run": 40611166666,
       "readback_verified": true
     },
-    "continuation_state": "READY_FOR_NEXT_ITERATION; checkpointed runnable actual UI work; ownership released",
+    "continuation_state": "WORKING; owner preparing single frozen UI qualification dispatch",
     "previous_guidance_at_ready_4e14a8c9": {
       "read_sections": [
         {
@@ -6383,7 +6417,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-28T02:48:07Z",
+  "updated_utc": "2026-10-28T02:55:34Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -7760,5 +7794,31 @@
     "artifact_sha256": "cc915206f8ad75630d28aee75ff95eb7fa1a3017504956593d8b0f33a041755f",
     "manifest_entries": 9589,
     "readback_verified": true
+  },
+  "activation_payment_ui_r1_qualification": {
+    "state": "FROZEN_NOT_DISPATCHED",
+    "source": "57d3c8a8492a5714d4cca78e627e1979106630d5",
+    "source_tree": "9fd1d9aaf30baf8a5745d328d1d59a372eacd386",
+    "source_branch": "source/manual-payment-ui-r1-20261028",
+    "base": "db96986972247c562c997bf55ed6156e6b171043",
+    "validation": "ecf28930e62598ab2566eafa02b3d25ade91a6a7",
+    "validation_tree": "f81ab5cb1abad807b45194b9d487a8359dc5da13",
+    "validation_branch": "validation/manual-payment-ui-r1-20261028",
+    "workflow": ".github/workflows/manual-payment-ui-r1-20261028.yml",
+    "workflow_blob": "5ffd214ecca09c74521f0a9d5131437a0f8e8e52",
+    "protocol": "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/PROTOCOL.json",
+    "planned_not_observed": {
+      "compilations": 6,
+      "fixtures": 4,
+      "normal_browser": 8,
+      "restored_browser": 8,
+      "negative_witnesses": 3,
+      "passing_mutant_controls": 3
+    },
+    "source_review": "Owner static review and exact immutable12-file/workflow readback passed;22 synthetic auditor controls passed. No external independent review or actual runtime/UI result claimed.",
+    "source_delta": "12 test/config/protocol files only; no production change;197protected bytes remain bound.",
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
   }
 }
