@@ -1,0 +1,49 @@
+{
+  "state": "PARTIAL_UNCOMPILED_DRAFT_NOT_QUALIFICATION",
+  "accepted_ui_receipt": "4f648c2b4f159f039a0aff27cdcee8d5e13eeae3",
+  "base": "57d3c8a8492a5714d4cca78e627e1979106630d5",
+  "inputs": {
+    "nph-spellskite.json": {
+      "bytes": 5125,
+      "sha256": "91e799757c9f8073d0650000f6bd832496369c92ff268f0fd560901175e2a680"
+    },
+    "rulings.json": {
+      "bytes": 1806,
+      "sha256": "7bae795cdd10d03e80ee57f4f7786d39bc030c2c84af2b287b497d3dbeb1c00a"
+    },
+    "printings.json": {
+      "bytes": 50374,
+      "sha256": "26a6ec2b78eda767b318c73d0a30519b9515a2eff54759a97b176338f2d9e5ca"
+    },
+    "SpellskiteScenarioTest.kt": {
+      "bytes": 5809,
+      "sha256": "6ac965b316334b79de7c95519d7b6b782ee3cc104f84b6b1bba0bc988e137f46"
+    }
+  },
+  "primary_intake": {
+    "card_url": "https://api.scryfall.com/cards/named?exact=Spellskite&set=nph",
+    "rulings_url": "https://api.scryfall.com/cards/1a84bada-ed6a-4e97-8a0c-05b7cb32d66f/rulings",
+    "printings_url": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3Ae0aa6ce0-ca31-433b-ac6c-32b8675cdb71&unique=prints",
+    "retrieved_utc": "2026-10-28T03:51:00Z/2026-10-28T03:52:00Z",
+    "card_rows": 1,
+    "rulings": 6,
+    "printings": 10,
+    "pagination_complete": true,
+    "canonical": "NPH159",
+    "scaffolded_reprint": "CLB873",
+    "web_search_failed_but_local_https_succeeded": true
+  },
+  "draft": {
+    "file": "SpellskiteScenarioTest.kt",
+    "generated_test_cases": 8,
+    "compiled": false,
+    "executed": false,
+    "coverage": "activation/trigger x zero/one targets x blue/life payment. Partial actual card fixture only; original22requirements remain mandatory.",
+    "registration": "Test-local cardRegistry only; no production discovery or coverage change."
+  },
+  "next_executable_action": "Reconcile CURRENT/owner/automation/receipts/workflows. Reuse accepted UI4f648c2b. Read91ba7c43:experiments/manual-transmission/research/activation-payment-ui-receiving-r1-20261028/SPELLSKITE_NEXT_REVIEW.json and original88cd69c8 spec. Verify all draft APIs and finish exact22 scenario families, including actual spell damage resolution, departure/blink, distinct/same-instance duplicates, another-target/controller/source protection restrictions, optional counts, unchanged illegal/old visits, division/modal/splice, full payment failures/rollback/repeat, serialized public choice and ward/events. Do not dispatch partial8 draft. Add executable shape mutants and passing controls; compile all forms first, freeze coherent source/protocol/tests, dispatch once, receive original artifact. Preserve existing source/assertions/goldens/fixtures/floors. No production Spellskite registration, multiplayer or official games. Reverify current card metadata before eventual production placement.",
+  "remaining_contract_scenario_families": 22,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
