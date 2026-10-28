@@ -359,7 +359,12 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
             val s = base.state.removeFromZone(from, base.recipient).addToZone(away, base.recipient)
                 .removeFromZone(away, base.recipient).addToZone(from, base.recipient)
             val f = base.copy(state = s)
-            val r = resolveSkite(f)
+            val offered = resolveSkite(f)
+            val choice = offered.state.pendingDecision as ChooseOptionDecision
+            choice.options shouldBe listOf("Target group 1, choice 1", "Target group 2, choice 1")
+            val r = ActionProcessor(cardRegistry).process(round(offered.state),
+                SubmitDecision(f.two, OptionChosenResponse(choice.id, 0))).result
+            r.error shouldBe null
             val slots = r.state.getEntity(f.stack)!!.currentTargetPlan()!!.slots
             slots[0].objectRef shouldBe s.objectRef(f.recipient)
             slots[1] shouldBe f.plan.slots[1]
