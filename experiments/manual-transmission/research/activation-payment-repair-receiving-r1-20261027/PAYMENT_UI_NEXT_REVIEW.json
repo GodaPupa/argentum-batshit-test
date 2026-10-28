@@ -1,0 +1,32 @@
+{
+  "state": "ISOLATED_CONDITIONAL_SOURCE_REVIEW_NOT_UI_EXECUTION",
+  "source": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+  "depends_on": "Early payment40606160113 original receiving and required coherent successor compatibility; no assumption of success.",
+  "source_blobs": {
+    "web-client/src/components/game/GameBoard.tsx": "6f0d987372c91c672fb0a44c5dab9b60f6caeaa2",
+    "web-client/src/store/slices/ui/selectionSlice.ts": "7d5a1b014d41d65cc86ccbe48b0b58372b7ede20",
+    "web-client/src/components/decisions/ManaSourceSelectionUI.tsx": "d85e572ec9735fc9df37dcef4789c540ab5152a3",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/ActivatedAbilityEnumerator.kt": "f3a22f8b81235fe3aae2b9f3c8f0b65f06fee264"
+  },
+  "additional_bound_sources": {
+    "web-client/src/store/slices/ui/pipelinePhases.ts": "3a37f666afb94e20592853cb40001040c1538ac2",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": "319016aa06c252e00eb46df08a6270d0c091c9c2"
+  },
+  "findings": [
+    "Activation mana payment UI is in GameBoard, not SelectManaSourcesDecision/ManaSourceSelectionUI. GameBoard shows a per-Phyrexian-pip life toggle; affordability uses selected-pip count times2 versus displayed life.",
+    "selectionSlice confirms the rendered interaction epoch and exact mana selection state identity; maps chosen pip indices to a color multiset, sends it through the pipeline or direct Explicit payload.",
+    "pipelinePhases forces manaSource phase for /P} costs even under auto-tap and forwards phyrexianLifePayments on ActivateAbility.",
+    "ActivatedAbilityEnumerator advertises manaCostString and handles state.grantedActivatedAbilities; handler likewise resolves RuntimeGranted abilities. A known production card can carry a serialized test-only granted ability without adding Spellskite or any new production card.",
+    "Existing UIR5 two-seat state endpoint, original Playwright trace/DOM/wire/screenshot collector and compiled fixture infrastructure are reusable after exact source binding. No browser state/store/transport replacement."
+  ],
+  "bounded_next_design": [
+    "Compile an engine-produced fixture on a known permanent with a runtime-granted {U/P} GainLife1 ability, keeping production catalog untouched. Prove fixture survives serialization and server legal-action enumeration before UI runs.",
+    "Actual rendered activation menu -> mana panel -> choose blue or2life -> confirm -> server stack -> both seats resolution. Verify wire exactlyoneActivateAbility with correct color multiset, correct owner, life20\u219218\u219219 and blue preserved for life choice; blue mode20\u219221 and blue spent.",
+    "Cover no-blue life choice, blue available but life chosen, mana choice, insufficientlife disabled/unaffordable, cancel/nochanges, wrongseat noaction, staleheldconfirmation no submission. Include prior occurrence-choice/ward path only as separately admitted same-source coverage; do not substitute generic payment for22card scenarios.",
+    "Compile normal and deliberate UI/transport mutants first: lost life choice, wrong pip color, stale guard removal as justified. Freeze exact contract, inventory, source and fixtures; receive original traces/screens/DOM/wire and exact executable assertion witnesses. No test-only endpoints beyond existing authorized devfixture infrastructure without source review."
+  ],
+  "acceptance": false,
+  "card_registration": false,
+  "official_games": 0,
+  "precision_reserved": 2
+}
