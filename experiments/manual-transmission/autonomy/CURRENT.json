@@ -3,13 +3,14 @@
   "updated_date": "2026-10-28",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WORKING",
-  "owner": "manual-work-b71dcc71-3ce0-832b-913d-ae7f2b652afc",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-b71dcc71-3ce0-832b-913d-ae7f2b652afc",
-    "claimed_utc": "2026-10-28T14:48:26Z",
-    "expires_utc": "2026-10-28T15:35:00Z"
+    "state": "RELEASED",
+    "owner": null,
+    "last_owner": "manual-work-b71dcc71-3ce0-832b-913d-ae7f2b652afc",
+    "released_utc": "2026-10-28T14:57:48Z",
+    "expires_utc": null
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -28,7 +29,7 @@
     "review_commit": "88cd69c88628e0dfd78c2e45c067c91d727aecb8",
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
-    "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
+    "registration": "Spellskite test-local behavioral qualification received; production card registration/admission remains pending.",
     "current_subproblem": "Outstanding ordinary compatibility only",
     "source_candidate": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
     "source_tree": "a5de6677871f98c8d9975e7a3ec3976d179b4c8e",
@@ -38,19 +39,16 @@
     "validation": "56259cd8e9009cc2e439dd09d0b3d0efc28914f9",
     "validation_branch": "validation/manual-spellskite-ordinary-r1-20261028",
     "workflow": ".github/workflows/manual-spellskite-ordinary-r1-20261028.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40710387291
+    ],
     "planned_not_observed": {
-      "client": 64,
-      "recording": 5,
-      "actor": 39,
-      "focused": 1224,
-      "broad": 15287,
-      "ordinary_passes": 18967,
+      "ordinary_passes": 18971,
       "ordinary_skips": 43
     },
     "negative_scope": "Reuse exact original R5 12negative/135controls receipt34676300; this dependent run exercises normal full compatibility.",
-    "source_delta": "12 protocol files only; unchanged production and49behavioral test bytes",
-    "next_executable_action": "Dispatch reviewed ordinary-only validation56259cd8e9009cc2e439dd09d0b3d0efc28914f9 once after fresh owner/all-status reconciliation. Reuse original partial compatibility d9a46316 and R5 behavioral34676300; require18971ordinarypasses+43exactskips and original artifact receiving. No repeated completed stages, automatic registration,multiplayer or official games.",
+    "source_delta": "13 protocol files only; production and behavioral test bytes unchanged; completed fullR1 stages reused.",
+    "next_executable_action": "Reconcile live CURRENT ownership, automation run, recent checkpoints/newer receipts and all workflow events/statuses. If original ordinary-only run40710387291 is terminal, receive its original artifact exactly once using adf454d5a39a0ae79b5f2c0a503a0a69906198b3/experiments/manual-transmission/research/spellskite-ordinary-receiving-r1-20261028/NEXT_ACTION.json and RECEIVE.py. Require18971passes+43exacthistoricalskips, source/protected/early/partial receipt bindings and every declared gate. Combine only after receiving with partial receipt d9a46316552e4e02ee7c8f1d7a59caae109c18da and behavioral346763001426d3650b70bf099291c0a777fed955. Reuse completed stages; no automatic card registration, multiplayer admission or official games.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -4111,9 +4109,9 @@
       }
     },
     "prepared_receiver": {
-      "commit": "6c83ea675282fc61cf5a0c3572bfd9ea9aad651f",
-      "path": "experiments/manual-transmission/research/activation-payment-repair-receiving-r1-20261027",
-      "run": 40606160113,
+      "commit": "adf454d5a39a0ae79b5f2c0a503a0a69906198b3",
+      "path": "experiments/manual-transmission/research/spellskite-ordinary-receiving-r1-20261028",
+      "run": 40710387291,
       "readback_verified": true
     },
     "previous_guidance_before_payment_ui_r1": {
@@ -4136,6 +4134,27 @@
         "negative_witnesses": 23,
         "passing_mutant_controls": 40
       }
+    },
+    "previous_guidance_before_ordinary_dispatch": {
+      "checkpoint": "056c5be02e034923b8a006f73d6d3264b0a14b89",
+      "planned_not_observed": {
+        "client": 64,
+        "recording": 5,
+        "actor": 39,
+        "focused": 1224,
+        "broad": 15287,
+        "ordinary_passes": 18967,
+        "ordinary_skips": 43
+      },
+      "source_delta": "12 protocol files only; unchanged production and49behavioral test bytes",
+      "prepared_receiver": {
+        "commit": "6c83ea675282fc61cf5a0c3572bfd9ea9aad651f",
+        "path": "experiments/manual-transmission/research/activation-payment-repair-receiving-r1-20261027",
+        "run": 40606160113,
+        "readback_verified": true
+      },
+      "next_executable_action": "Dispatch reviewed ordinary-only validation56259cd8e9009cc2e439dd09d0b3d0efc28914f9 once after fresh owner/all-status reconciliation. Reuse original partial compatibility d9a46316 and R5 behavioral34676300; require18971ordinarypasses+43exactskips and original artifact receiving. No repeated completed stages, automatic registration,multiplayer or official games.",
+      "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed."
     }
   },
   "completion_contract": {
@@ -4159,64 +4178,11 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-27T15:50:05Z",
-    "relevant_active_workflows": [
-      40699575771
-    ],
     "ignored_unrelated_ancient_run": 34749202144,
-    "current_worker": null,
-    "observed_ledger_predecessor_blob": "a81602a1aa9659fe4a803a5046a5f690d722079a",
     "former_discussion_executor_paused": true,
     "intervention_watch_read_only": true,
-    "latest_checkpoint_before_release": "af416870965d49f72e6a27c6a13328fa82345277",
     "qualification_repeated": false,
-    "latest_receipt": {
-      "commit": "45728f65881e6e21a3b54b7eec466b20a627b3dd",
-      "path": "experiments/manual-transmission/research/public-occurrence-matrix-received-r2-20261027",
-      "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
-      "run": 40524238482,
-      "artifact": 12742719377,
-      "artifact_bytes": 3215473,
-      "artifact_sha256": "f3b3f02706a5f0a60a24efa4af339a7b3d37bdb1c0bb8a4a10811ea0b00c8937",
-      "manifest_entries": 567,
-      "readback_verified": true
-    },
-    "latest_draft": "c0c0b1e60c622b3224e336f6b37a55c0c5312e85",
     "preserved_prior_reconciliation": "2026-10-23T23:41:32.374Z: explicit predecessor release verified; task admission still true, old Discussion executor paused, no relevant workflow active/queued/waiting/requested/pending or newer checkpoint.",
-    "current_conversation_scheduled_wakeup": {
-      "task": "6adbe33033e481918659ce578f64f31e",
-      "run": "aae890c1-27f8-832a-99dc-f2801aaa8de8",
-      "disposition": "Delivered during this same active resolver Work invocation; no second worker, owner or dispatch created."
-    },
-    "scheduled_last_run": {
-      "id": "aae890c1-27f8-832a-99dc-f2801aaa8de8",
-      "recorded_status": "in_progress",
-      "scheduled_for": "2026-10-25T03:44:00Z",
-      "started_at": "2026-10-25T03:40:13.422736Z",
-      "completed_at": null,
-      "chat_ref": null
-    },
-    "observed_utc": "2026-10-28T11:45:49Z",
-    "active_relevant_workflow": null,
-    "queued_relevant_workflows": [],
-    "waiting_relevant_workflows": [],
-    "owner_reconciliation": {
-      "prior_release": "75f1aa517b0dd555d007ca33c675629bff5575a0",
-      "claim": "caf753f63ef01685d96ffe7a5ebab112df57db50",
-      "prior_completed_invocation": "7a60fd24-4e1c-8321-b8cf-d69fe00ae657",
-      "current_invocation": "c3f6db49-1f84-832c-87a4-1b315e9dfb7d",
-      "expiry_only_takeover": false,
-      "released_after_checkpoint": true
-    },
-    "recent_checkpoint_head": "49ca02d1be68f962b775d2576a73fccb7dbf07ef",
-    "work_task_run": {
-      "id": "83156a69-22ac-8328-bb30-28f07715d76b",
-      "recorded_status": "in_progress",
-      "scheduled_for": "2026-10-24T23:44:00Z",
-      "started_at": "2026-10-24T23:40:56.868183Z",
-      "completed_at": null,
-      "chat_ref": null
-    },
     "discussion_executor": "PAUSED",
     "recovery_r5_prelaunch": {
       "observed_utc": "2026-10-24T22:38:02.546Z",
@@ -4234,17 +4200,6 @@
       "latest_task_status": "completed",
       "latest_task_completed_utc": "2026-10-24T21:44:11.326956Z",
       "newer_successor_found": false
-    },
-    "latest_resolver_recovery": {
-      "observed_utc": "2026-10-25T07:03:39.745Z",
-      "prior_owner_explicitly_released": true,
-      "prior_invocation": "c3f6db49-1f84-832c-87a4-1b315e9dfb7d",
-      "current_invocation": "765d0bd4-3f90-8323-9493-f995c143dfac",
-      "relevant_active_before_dispatch": [],
-      "ignored_unrelated_ancient_run": 34749202144,
-      "original_r3_receipt": "ba81bffa43a8ed588e48d6f64c78432336961266",
-      "successor_run": 40171122250,
-      "execution_admitted": true
     },
     "source_history_pre_dispatch": {
       "observed_utc": "2026-10-25T09:01:41.961Z",
@@ -4264,43 +4219,6 @@
       "latest_workflow": 40174309409,
       "latest_workflow_disposition": "Unrelated main E2E nightly completed cancelled",
       "head": "de1ba1eef070774576bc65d024f3e56703850238"
-    },
-    "active_workflows": [
-      {
-        "run": 40534726465,
-        "job": 122296769341,
-        "status": "in_progress",
-        "event": "push",
-        "attempt": 1,
-        "head_sha": "e6d23c6856a4eafde9de824c8c5c0fe80ab2dc59"
-      }
-    ],
-    "ownership": "Explicit same-owner release; no expiry-based takeover.",
-    "latest_ledger_commit": "45d3ce48122e9db1b6177954661ae1ff0d9bf968",
-    "last_run_observed": {
-      "run": 40179990974,
-      "status": "in_progress",
-      "conclusion": null,
-      "observed_utc": "2026-10-25T09:20:12.833Z"
-    },
-    "release": "Same owner finished bounded work and explicitly released; no stale-lease takeover. No new worker, schedule, official games/seeds or spending increase.",
-    "latest_claim": {
-      "owner": "manual-work-2c45283f-df20-8329-b53e-dbd7d9c7b37c",
-      "claimed_utc": "2026-10-28T12:47:06Z",
-      "claim_commit": "340257a0d628166ba941cdbb4970d1b5cc3dc22d",
-      "state": "RELEASED",
-      "released_utc": "2026-10-28T12:59:41Z"
-    },
-    "latest_release": {
-      "utc": "2026-10-28T13:48:10Z",
-      "owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8",
-      "status": "WAITING_EXTERNAL",
-      "reason": "External same-source compatibility40699575771 is active. Original R5 behavioral gates received and archived; coherent12file protocol successor frozen/dispatched once; original receiver and exact inventory prepared/readback verified. Existing card metadata draft/next reviews reused; no useful safely independent authorized work remains without full compatibility result. Ownership explicitly released.",
-      "receiver": {
-        "commit": "6542a94959b2cb14e77b6eeedc5942950ae329d6",
-        "path": "experiments/manual-transmission/research/spellskite-full-receiving-r1-20261028",
-        "readback_verified": true
-      }
     },
     "source_characteristics_pre_dispatch": {
       "at_utc": "2026-10-25T12:04:04.724Z",
@@ -4358,26 +4276,6 @@
       ],
       "ignored_only": 34749202144
     },
-    "current_work_invocation": {
-      "owner": null,
-      "last_execution_owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8",
-      "automation_run": "86e9e713-d65c-8320-b38f-7ab71ba374f8",
-      "released_utc": "2026-10-28T13:48:10Z"
-    },
-    "checked_utc": "2026-10-25T20:50:06.557Z",
-    "owner_liveness": "This invocation finished bounded work and released; no persistent worker claimed.",
-    "latest_commit": "1a40b0e1cdd958613bf0de7f491f68fe48d0fbc5",
-    "canonical_receiver_commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7",
-    "latest_work": {
-      "observed_utc": "2026-10-25T21:50:20.794Z",
-      "prior_head": "c6cdd84f2bb12f428df926fc639a932382f4c2f2",
-      "prior_owner_released": true,
-      "previous_run_completed": "ded5ad62-00c4-8321-a6cd-1d92a8001e1f",
-      "active_run": "0d4a42ec-6a34-832c-87a2-91381b3a370d",
-      "active_workflows": [],
-      "ignored_unrelated_queued": 34749202144,
-      "newer_receipt_or_successor": false
-    },
     "public_choice_iteration": {
       "run": "0b4b1188-1d20-832e-9195-2599bd84c6b5",
       "predecessor_release": "0d2169739ff3d7d34125ae019cffafce6bbe9780",
@@ -4399,10 +4297,6 @@
       "qualified": false,
       "original_assertions_preserved": true
     },
-    "last_utc": "2026-10-26T04:51:49Z",
-    "active_relevant_run": 40699575771,
-    "active_relevant_job": 122855401330,
-    "owner_release": "External same-source compatibility40699575771 is active. Original R5 behavioral gates received and archived; coherent12file protocol successor frozen/dispatched once; original receiver and exact inventory prepared/readback verified. Existing card metadata draft/next reviews reused; no useful safely independent authorized work remains without full compatibility result. Ownership explicitly released.",
     "ownership_checkpoint_correction": {
       "prior_commit": "cd0871b1ea98b4a72e9938db435689f07c358a16",
       "reason": "Receipt checkpoint unintentionally retained predecessor release fields; dispatch guard caught owner mismatch before launch. Reconciled unchanged branch head, same current run, and no active workflows before fresh CAS reclaim.",
@@ -4540,16 +4434,6 @@
       "receiver": "e411546c16d2c1e6d99621b2652e7bc875f6e717",
       "accepted_evidence_reaudited": false,
       "actual_stopping_reason": "External dependency pending: the single frozen transport qualification is active. Exact original-artifact receiver and14 synthetic raw-report checks are saved and immutable-readback verified; unchanged-production generator/UX source review is reused. Further source changes depend on the frozen transport result; no useful safely independent receiving preparation remains. Ownership released."
-    },
-    "latest_invocation": {
-      "owner": "manual-work-7e075a58-6cc4-832c-bff4-0f040051e278",
-      "run": 40362996445,
-      "status": "completed",
-      "conclusion": "success",
-      "active": [],
-      "ignored": 34749202144,
-      "all_five_statuses_checked": true,
-      "predecessor": "9af6323961b33e346c746a65674a7bdbb62ed146"
     },
     "transport_r5_pre_dispatch": {
       "utc": "2026-10-26T15:02:47.186Z",
@@ -4739,20 +4623,6 @@
       "utc": "2026-10-26T23:53:12.310Z",
       "own_checkpoint": "a2f0ca62377aafdfe7d40b14263bc750371e6b4d",
       "detail": "Own receiving checkpoint inadvertently carried prior released ownership fields from cached JSON. Live blob equals that own checkpoint; automation run unchanged and no intervening writer. Restoring current invocation ownership by fresh-blob CAS before dispatch."
-    },
-    "latest_calibration_receiving": {
-      "utc": "2026-10-26T23:55:07.733Z",
-      "early_receipt": "b61948efc7bb4238b55ef901a8308173f74664dd",
-      "artifact": 12695467683,
-      "manifest_entries": 367,
-      "original_received_once": true,
-      "local_receiver_serialization_note": "Initial scratch materialization added one final blank line to receiver/protocol; byte comparison proved no other difference and exact frozen bytes were restored. reports.py matched exact hash. No repeated audit or altered gate.",
-      "full_source": "7257cbfe88e29da4ce93be630995e19b7a9ee075",
-      "full_validation": "593e14b9437f3ef1f92fa92d0c6fba1a28a3eb4a",
-      "run": 40422812551,
-      "job": 121921132147,
-      "no_competing_qualification": true,
-      "source_and_receiver_readbacks_verified": true
     },
     "isd_repair_handoff": {
       "observed_utc": "2026-10-27T04:12:36.141Z",
@@ -5143,20 +5013,6 @@
       },
       "reason": "External dependency pending: sole full-matrix R3 run40534726465 is in_progress. Original R2 received once and rejected30filtered skips; all5compiles passed. Protocol-only successor executes full40case suite under every mutant,retains every original assertion/witness/control and expands to70negativewitnesses90controls. No production/test changes. Receiver2ed942ada8f0b254364aa2f2a7eff80ca0e44853 and reused isolated final compatibility review/exact64client contract are saved/readback verified; no useful safely independent preparation remains before original matrix result. Ownership released."
     },
-    "latest": {
-      "utc": "2026-10-28T13:48:10Z",
-      "owner": null,
-      "last_execution_owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8",
-      "workflow": 40699575771,
-      "job": 122855401330,
-      "receiver": {
-        "commit": "6542a94959b2cb14e77b6eeedc5942950ae329d6",
-        "path": "experiments/manual-transmission/research/spellskite-full-receiving-r1-20261028",
-        "readback_verified": true
-      },
-      "latest_receipt": "346763001426d3650b70bf099291c0a777fed955",
-      "guidance": "summary and next.next_executable_action"
-    },
     "final_compatibility_release": {
       "observed_utc": "2026-10-27T19:00:26Z",
       "automation_run": "12e8e6e3-33e0-8329-aada-9a6d266490f3",
@@ -5177,28 +5033,6 @@
       "current_blob": "8c1c8f13dfea80447b9507c92650ac13dbce9f29",
       "no_newer_receipt_or_successor_in_live_current": true
     },
-    "last_payment_ui_pre_dispatch": {
-      "utc": "2026-10-28T02:55:34Z",
-      "current_blob": "2637e56c87751328d4f7ce6c494dea15acdb1f68",
-      "owner": "manual-work-edfe1268-dad4-8331-babf-f0450c2cde16",
-      "automation_run": "edfe1268-dad4-8331-babf-f0450c2cde16",
-      "automation_status": "in_progress",
-      "enabled": true,
-      "active_workflows": [],
-      "ignored_unrelated": [
-        34749202144
-      ],
-      "validation_branch_absent": true,
-      "newer_ledger_successors": false
-    },
-    "last_release": {
-      "utc": "2026-10-28T13:48:10Z",
-      "owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8",
-      "status": "WAITING_EXTERNAL",
-      "workflow": 40699575771,
-      "workflow_status": "in_progress"
-    },
-    "owner_run": null,
     "all_statuses_checked": [
       "in_progress",
       "queued",
@@ -5206,13 +5040,8 @@
       "requested",
       "pending"
     ],
-    "active_relevant_runs": [
-      40699575771
-    ],
     "ignored_only": 34749202144,
-    "newer_receipts": "Ownba293799 R3 original failure receipt; own9fc60272 R4 successor only",
     "automation": "Same enabled hourly executor; current run self; no task mutation",
-    "predecessor_blob": "274ac1f20b7557d05ac877e46cd19e3a60fe3d77",
     "spellskite_r5": {
       "utc": "2026-10-28T12:57:14Z",
       "owner": "manual-work-2c45283f-df20-8329-b53e-dbd7d9c7b37c",
@@ -5326,6 +5155,249 @@
       "active_relevant_runs": [
         40692137150
       ]
+    },
+    "historical_current_guidance_before_ordinary_release": {
+      "checkpoint": "056c5be02e034923b8a006f73d6d3264b0a14b89",
+      "fields": {
+        "last_checked_utc": "2026-10-27T15:50:05Z",
+        "relevant_active_workflows": [
+          40699575771
+        ],
+        "current_worker": null,
+        "observed_ledger_predecessor_blob": "a81602a1aa9659fe4a803a5046a5f690d722079a",
+        "latest_checkpoint_before_release": "af416870965d49f72e6a27c6a13328fa82345277",
+        "latest_receipt": {
+          "commit": "45728f65881e6e21a3b54b7eec466b20a627b3dd",
+          "path": "experiments/manual-transmission/research/public-occurrence-matrix-received-r2-20261027",
+          "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+          "run": 40524238482,
+          "artifact": 12742719377,
+          "artifact_bytes": 3215473,
+          "artifact_sha256": "f3b3f02706a5f0a60a24efa4af339a7b3d37bdb1c0bb8a4a10811ea0b00c8937",
+          "manifest_entries": 567,
+          "readback_verified": true
+        },
+        "latest_draft": "c0c0b1e60c622b3224e336f6b37a55c0c5312e85",
+        "current_conversation_scheduled_wakeup": {
+          "task": "6adbe33033e481918659ce578f64f31e",
+          "run": "aae890c1-27f8-832a-99dc-f2801aaa8de8",
+          "disposition": "Delivered during this same active resolver Work invocation; no second worker, owner or dispatch created."
+        },
+        "scheduled_last_run": {
+          "id": "aae890c1-27f8-832a-99dc-f2801aaa8de8",
+          "recorded_status": "in_progress",
+          "scheduled_for": "2026-10-25T03:44:00Z",
+          "started_at": "2026-10-25T03:40:13.422736Z",
+          "completed_at": null,
+          "chat_ref": null
+        },
+        "observed_utc": "2026-10-28T11:45:49Z",
+        "active_relevant_workflow": null,
+        "queued_relevant_workflows": [],
+        "waiting_relevant_workflows": [],
+        "owner_reconciliation": {
+          "prior_release": "75f1aa517b0dd555d007ca33c675629bff5575a0",
+          "claim": "caf753f63ef01685d96ffe7a5ebab112df57db50",
+          "prior_completed_invocation": "7a60fd24-4e1c-8321-b8cf-d69fe00ae657",
+          "current_invocation": "c3f6db49-1f84-832c-87a4-1b315e9dfb7d",
+          "expiry_only_takeover": false,
+          "released_after_checkpoint": true
+        },
+        "recent_checkpoint_head": "49ca02d1be68f962b775d2576a73fccb7dbf07ef",
+        "work_task_run": {
+          "id": "83156a69-22ac-8328-bb30-28f07715d76b",
+          "recorded_status": "in_progress",
+          "scheduled_for": "2026-10-24T23:44:00Z",
+          "started_at": "2026-10-24T23:40:56.868183Z",
+          "completed_at": null,
+          "chat_ref": null
+        },
+        "latest_resolver_recovery": {
+          "observed_utc": "2026-10-25T07:03:39.745Z",
+          "prior_owner_explicitly_released": true,
+          "prior_invocation": "c3f6db49-1f84-832c-87a4-1b315e9dfb7d",
+          "current_invocation": "765d0bd4-3f90-8323-9493-f995c143dfac",
+          "relevant_active_before_dispatch": [],
+          "ignored_unrelated_ancient_run": 34749202144,
+          "original_r3_receipt": "ba81bffa43a8ed588e48d6f64c78432336961266",
+          "successor_run": 40171122250,
+          "execution_admitted": true
+        },
+        "active_workflows": [
+          {
+            "run": 40534726465,
+            "job": 122296769341,
+            "status": "in_progress",
+            "event": "push",
+            "attempt": 1,
+            "head_sha": "e6d23c6856a4eafde9de824c8c5c0fe80ab2dc59"
+          }
+        ],
+        "ownership": "Explicit same-owner release; no expiry-based takeover.",
+        "latest_ledger_commit": "45d3ce48122e9db1b6177954661ae1ff0d9bf968",
+        "last_run_observed": {
+          "run": 40179990974,
+          "status": "in_progress",
+          "conclusion": null,
+          "observed_utc": "2026-10-25T09:20:12.833Z"
+        },
+        "release": "Same owner finished bounded work and explicitly released; no stale-lease takeover. No new worker, schedule, official games/seeds or spending increase.",
+        "latest_claim": {
+          "owner": "manual-work-2c45283f-df20-8329-b53e-dbd7d9c7b37c",
+          "claimed_utc": "2026-10-28T12:47:06Z",
+          "claim_commit": "340257a0d628166ba941cdbb4970d1b5cc3dc22d",
+          "state": "RELEASED",
+          "released_utc": "2026-10-28T12:59:41Z"
+        },
+        "latest_release": {
+          "utc": "2026-10-28T13:48:10Z",
+          "owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8",
+          "status": "WAITING_EXTERNAL",
+          "reason": "External same-source compatibility40699575771 is active. Original R5 behavioral gates received and archived; coherent12file protocol successor frozen/dispatched once; original receiver and exact inventory prepared/readback verified. Existing card metadata draft/next reviews reused; no useful safely independent authorized work remains without full compatibility result. Ownership explicitly released.",
+          "receiver": {
+            "commit": "6542a94959b2cb14e77b6eeedc5942950ae329d6",
+            "path": "experiments/manual-transmission/research/spellskite-full-receiving-r1-20261028",
+            "readback_verified": true
+          }
+        },
+        "current_work_invocation": {
+          "owner": null,
+          "last_execution_owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8",
+          "automation_run": "86e9e713-d65c-8320-b38f-7ab71ba374f8",
+          "released_utc": "2026-10-28T13:48:10Z"
+        },
+        "checked_utc": "2026-10-25T20:50:06.557Z",
+        "owner_liveness": "This invocation finished bounded work and released; no persistent worker claimed.",
+        "latest_commit": "1a40b0e1cdd958613bf0de7f491f68fe48d0fbc5",
+        "canonical_receiver_commit": "22acb78c1727e68b21ee29e3268af0d1cefadcb7",
+        "latest_work": {
+          "observed_utc": "2026-10-25T21:50:20.794Z",
+          "prior_head": "c6cdd84f2bb12f428df926fc639a932382f4c2f2",
+          "prior_owner_released": true,
+          "previous_run_completed": "ded5ad62-00c4-8321-a6cd-1d92a8001e1f",
+          "active_run": "0d4a42ec-6a34-832c-87a2-91381b3a370d",
+          "active_workflows": [],
+          "ignored_unrelated_queued": 34749202144,
+          "newer_receipt_or_successor": false
+        },
+        "last_utc": "2026-10-26T04:51:49Z",
+        "active_relevant_run": 40699575771,
+        "active_relevant_job": 122855401330,
+        "owner_release": "External same-source compatibility40699575771 is active. Original R5 behavioral gates received and archived; coherent12file protocol successor frozen/dispatched once; original receiver and exact inventory prepared/readback verified. Existing card metadata draft/next reviews reused; no useful safely independent authorized work remains without full compatibility result. Ownership explicitly released.",
+        "latest_invocation": {
+          "owner": "manual-work-7e075a58-6cc4-832c-bff4-0f040051e278",
+          "run": 40362996445,
+          "status": "completed",
+          "conclusion": "success",
+          "active": [],
+          "ignored": 34749202144,
+          "all_five_statuses_checked": true,
+          "predecessor": "9af6323961b33e346c746a65674a7bdbb62ed146"
+        },
+        "latest_calibration_receiving": {
+          "utc": "2026-10-26T23:55:07.733Z",
+          "early_receipt": "b61948efc7bb4238b55ef901a8308173f74664dd",
+          "artifact": 12695467683,
+          "manifest_entries": 367,
+          "original_received_once": true,
+          "local_receiver_serialization_note": "Initial scratch materialization added one final blank line to receiver/protocol; byte comparison proved no other difference and exact frozen bytes were restored. reports.py matched exact hash. No repeated audit or altered gate.",
+          "full_source": "7257cbfe88e29da4ce93be630995e19b7a9ee075",
+          "full_validation": "593e14b9437f3ef1f92fa92d0c6fba1a28a3eb4a",
+          "run": 40422812551,
+          "job": 121921132147,
+          "no_competing_qualification": true,
+          "source_and_receiver_readbacks_verified": true
+        },
+        "latest": {
+          "utc": "2026-10-28T13:48:10Z",
+          "owner": null,
+          "last_execution_owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8",
+          "workflow": 40699575771,
+          "job": 122855401330,
+          "receiver": {
+            "commit": "6542a94959b2cb14e77b6eeedc5942950ae329d6",
+            "path": "experiments/manual-transmission/research/spellskite-full-receiving-r1-20261028",
+            "readback_verified": true
+          },
+          "latest_receipt": "346763001426d3650b70bf099291c0a777fed955",
+          "guidance": "summary and next.next_executable_action"
+        },
+        "last_payment_ui_pre_dispatch": {
+          "utc": "2026-10-28T02:55:34Z",
+          "current_blob": "2637e56c87751328d4f7ce6c494dea15acdb1f68",
+          "owner": "manual-work-edfe1268-dad4-8331-babf-f0450c2cde16",
+          "automation_run": "edfe1268-dad4-8331-babf-f0450c2cde16",
+          "automation_status": "in_progress",
+          "enabled": true,
+          "active_workflows": [],
+          "ignored_unrelated": [
+            34749202144
+          ],
+          "validation_branch_absent": true,
+          "newer_ledger_successors": false
+        },
+        "last_release": {
+          "utc": "2026-10-28T13:48:10Z",
+          "owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8",
+          "status": "WAITING_EXTERNAL",
+          "workflow": 40699575771,
+          "workflow_status": "in_progress"
+        },
+        "owner_run": null,
+        "active_relevant_runs": [
+          40699575771
+        ],
+        "newer_receipts": "Ownba293799 R3 original failure receipt; own9fc60272 R4 successor only",
+        "predecessor_blob": "274ac1f20b7557d05ac877e46cd19e3a60fe3d77"
+      }
+    },
+    "latest": {
+      "utc": "2026-10-28T14:57:48Z",
+      "status": "WAITING_EXTERNAL",
+      "owner": null,
+      "last_execution_owner": "manual-work-b71dcc71-3ce0-832b-913d-ae7f2b652afc",
+      "workflow": 40710387291,
+      "job": 122893758775,
+      "receiver": {
+        "commit": "adf454d5a39a0ae79b5f2c0a503a0a69906198b3",
+        "path": "experiments/manual-transmission/research/spellskite-ordinary-receiving-r1-20261028",
+        "run": 40710387291,
+        "readback_verified": true
+      },
+      "latest_receipt": "d9a46316552e4e02ee7c8f1d7a59caae109c18da",
+      "guidance": "summary and next.next_executable_action"
+    },
+    "last_release": {
+      "utc": "2026-10-28T14:57:48Z",
+      "owner": "manual-work-b71dcc71-3ce0-832b-913d-ae7f2b652afc",
+      "status": "WAITING_EXTERNAL",
+      "workflow": 40710387291,
+      "workflow_status": "in_progress"
+    },
+    "active_relevant_runs": [
+      40710387291
+    ],
+    "owner_run": null,
+    "spellskite_ordinary_handoff": {
+      "utc": "2026-10-28T14:57:48Z",
+      "automation_run": "b71dcc71-3ce0-832b-913d-ae7f2b652afc",
+      "automation_status": "in_progress",
+      "all_events_all_five_statuses_checked": true,
+      "active": [
+        40710387291
+      ],
+      "ignored_only": 34749202144,
+      "receiver": {
+        "commit": "adf454d5a39a0ae79b5f2c0a503a0a69906198b3",
+        "path": "experiments/manual-transmission/research/spellskite-ordinary-receiving-r1-20261028",
+        "run": 40710387291,
+        "readback_verified": true
+      },
+      "newer_ledger_successors": false,
+      "source": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
+      "validation": "56259cd8e9009cc2e439dd09d0b3d0efc28914f9",
+      "duplicate_dispatch": false,
+      "completed_stages_repeated": false
     }
   },
   "automation": {
@@ -5514,11 +5586,11 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "390bd1587480",
-    "work_owner": "manual-work-b71dcc71-3ce0-832b-913d-ae7f2b652afc",
+    "work_owner": null,
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "WAITING_EXTERNAL; Spellskite same-source compatibility",
-    "last_execution_owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8"
+    "activity": "WAITING_EXTERNAL; ordinary-only compatibility original receiving pending",
+    "last_execution_owner": "manual-work-b71dcc71-3ce0-832b-913d-ae7f2b652afc"
   },
   "blockers": [
     "Required same-source compatibility/card admission and multiplayer admission remain pending."
@@ -6211,7 +6283,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External ordinary-only workflow40710387291 remains in_progress. Original fullR1 failure preserved and independently justified four-UI-fixture inventory correction received; completed stages reused. Original receiver adf454d5 is prepared/readback verified. Existing metadata/card draft and22scenario reviews reused; no useful safely independent authorized preparation remains before original ordinary evidence. Ownership explicitly released; no continuous execution implied.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -6234,7 +6306,8 @@
       "Payment successor full compatibility accepted db969869:64client5recording39actor1175focused15238broad18918ordinarypasses+43exactskips,9589manifest and197protected; early negative and exact-bound Assay/generator/R7/registration reused.",
       "Actual payment UI accepted4f648c2b:6compilations,4fixtures,8normal/restored,3negativewitnesses3controls,629manifest,zero skips/retries,197protected/restoration. Removes actual activated payment UI gate only.",
       "Original compile-only R2 received3d70a345: four normal/mutant forms,259manifest,197protected/restoration. Compilation only, zero behavioral/card acceptance.",
-      "Spellskite test-local full22families behavioral qualification received34676300:4compiles49normal/restored12exactnegative135controls286manifest197protected/restoration. Removes behavioral gate only; dependent/card/multiplayer pending."
+      "Spellskite test-local full22families behavioral qualification received34676300:4compiles49normal/restored12exactnegative135controls286manifest197protected/restoration. Removes behavioral gate only; dependent/card/multiplayer pending.",
+      "Original fullR1 partial compatibility received d9a46316:64client5recording39actor1224focused15291broad. Original inventory rejection preserved; four omitted prior-accepted UI fixture identities independently rebound and10negativeauditor controls passed. Ordinary not executed in original run; full acceptance pending."
     ],
     "unfinished_implementation": [
       "Required same-source compatibility, metadata/printing/card admission and multiplayer gates remain."
@@ -6244,7 +6317,7 @@
       "Card admission",
       "Multiplayer admission"
     ],
-    "next_executable_action": "Dispatch reviewed ordinary-only validation56259cd8e9009cc2e439dd09d0b3d0efc28914f9 once after fresh owner/all-status reconciliation. Reuse original partial compatibility d9a46316 and R5 behavioral34676300; require18971ordinarypasses+43exactskips and original artifact receiving. No repeated completed stages, automatic registration,multiplayer or official games.",
+    "next_executable_action": "Reconcile live CURRENT ownership, automation run, recent checkpoints/newer receipts and all workflow events/statuses. If original ordinary-only run40710387291 is terminal, receive its original artifact exactly once using adf454d5a39a0ae79b5f2c0a503a0a69906198b3/experiments/manual-transmission/research/spellskite-ordinary-receiving-r1-20261028/NEXT_ACTION.json and RECEIVE.py. Require18971passes+43exacthistoricalskips, source/protected/early/partial receipt bindings and every declared gate. Combine only after receiving with partial receipt d9a46316552e4e02ee7c8f1d7a59caae109c18da and behavioral346763001426d3650b70bf099291c0a777fed955. Reuse completed stages; no automatic card registration, multiplayer admission or official games.",
     "read_sections": [
       {
         "ref": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
@@ -6273,6 +6346,13 @@
         "sections": [
           "all"
         ]
+      },
+      {
+        "ref": "adf454d5a39a0ae79b5f2c0a503a0a69906198b3",
+        "path": "experiments/manual-transmission/research/spellskite-ordinary-receiving-r1-20261028/NEXT_ACTION.json",
+        "sections": [
+          "all"
+        ]
       }
     ],
     "source_protocol": {
@@ -6296,7 +6376,7 @@
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r4-20261026/NEXT_SOURCE_REVIEW.json"
     },
     "critical_path": "Spellskite behavioral gate accepted34676300 → required same-source compatibility → card admission → multiplayer admission",
-    "actual_stopping_reason": null,
+    "actual_stopping_reason": "External ordinary-only workflow40710387291 remains in_progress. Original fullR1 failure preserved and independently justified four-UI-fixture inventory correction received; completed stages reused. Original receiver adf454d5 is prepared/readback verified. Existing metadata/card draft and22scenario reviews reused; no useful safely independent authorized preparation remains before original ordinary evidence. Ownership explicitly released; no continuous execution implied.",
     "receiving": {
       "state": "RECEIVED_PUBLIC_MATRIX_ONLY_FINAL_COMPATIBILITY_PENDING",
       "source": "6b3c5e4d8441b25525bd45b6237525cb12883a38",
@@ -6320,8 +6400,9 @@
       "readback_verified": true
     },
     "prepared_receiver": {
-      "commit": "6542a94959b2cb14e77b6eeedc5942950ae329d6",
-      "path": "experiments/manual-transmission/research/spellskite-full-receiving-r1-20261028",
+      "commit": "adf454d5a39a0ae79b5f2c0a503a0a69906198b3",
+      "path": "experiments/manual-transmission/research/spellskite-ordinary-receiving-r1-20261028",
+      "run": 40710387291,
       "readback_verified": true
     },
     "generator_upstream": {
@@ -6337,7 +6418,7 @@
       "run": 40699575771,
       "readback_verified": true
     },
-    "continuation_state": "WORKING; ordinary-only dispatch next",
+    "continuation_state": "WAITING_EXTERNAL; original ordinary-only qualification40710387291 in_progress",
     "previous_guidance_at_ready_4e14a8c9": {
       "read_sections": [
         {
@@ -6511,6 +6592,15 @@
       "path": "experiments/manual-transmission/research/spellskite-card-draft-r1-20261028",
       "state": "PARTIAL_UNCOMPILED_NOT_DISPATCHED",
       "readback_verified": true
+    },
+    "previous_guidance_before_ordinary_release": {
+      "prepared_receiver": {
+        "commit": "6542a94959b2cb14e77b6eeedc5942950ae329d6",
+        "path": "experiments/manual-transmission/research/spellskite-full-receiving-r1-20261028",
+        "readback_verified": true
+      },
+      "continuation_state": "WORKING; ordinary-only dispatch next",
+      "next_executable_action": "Dispatch reviewed ordinary-only validation56259cd8e9009cc2e439dd09d0b3d0efc28914f9 once after fresh owner/all-status reconciliation. Reuse original partial compatibility d9a46316 and R5 behavioral34676300; require18971ordinarypasses+43exactskips and original artifact receiving. No repeated completed stages, automatic registration,multiplayer or official games."
     }
   },
   "generator_calibration_repair_authorization": {
@@ -6572,7 +6662,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-28T13:48:10Z",
+  "updated_utc": "2026-10-28T14:57:48Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -8074,7 +8164,7 @@
     "artifact_sha256": "sha256:879f74749b54f7d636f848c6981bf45470a392a8d40023008af219d1ab79908b",
     "manifest_entries": 259
   },
-  "last_execution_owner": "manual-work-86e9e713-d65c-8320-b38f-7ab71ba374f8",
+  "last_execution_owner": "manual-work-b71dcc71-3ce0-832b-913d-ae7f2b652afc",
   "spellskite_behavior_r1": {
     "state": "ORIGINAL_BEHAVIORAL_FAILURE_RECEIVED",
     "source": "f58a64db3a133d86090dddf9776e622c981298cc",
@@ -8409,7 +8499,7 @@
     "correction": "4independently accepted UI fixture identities omitted from inventory; exact source hash and original UI receipt verified;10 executable auditor controls. No assertions/skips relaxed."
   },
   "spellskite_ordinary_r1": {
-    "state": "FROZEN_REVIEWED_NOT_DISPATCHED",
+    "state": "DISPATCHED_ORIGINAL_RECEIVING_PENDING",
     "source": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
     "tree": "a5de6677871f98c8d9975e7a3ec3976d179b4c8e",
     "base": "d9a46316552e4e02ee7c8f1d7a59caae109c18da",
@@ -8432,6 +8522,22 @@
     },
     "source_delta_paths": 13,
     "production_changes": 0,
-    "readback_verified": true
+    "readback_verified": true,
+    "run": 40710387291,
+    "job": 122893758775,
+    "workflow_id": 399532875,
+    "artifact_name": "manual-spellskite-ordinary-r1-40710387291",
+    "status": "in_progress",
+    "attempt": 1,
+    "run_number": 1,
+    "event": "push",
+    "dispatched_utc": "2026-10-28T14:53:20Z",
+    "observed_utc": "2026-10-28T14:57:48Z",
+    "receiving": {
+      "commit": "adf454d5a39a0ae79b5f2c0a503a0a69906198b3",
+      "path": "experiments/manual-transmission/research/spellskite-ordinary-receiving-r1-20261028",
+      "run": 40710387291,
+      "readback_verified": true
+    }
   }
 }
