@@ -1,0 +1,45 @@
+{
+  "state": "CARD_ADMISSION_SOURCE_REVIEW_COMPLETE_FRESH_METADATA_ACCESS_PENDING_NO_REGISTRATION",
+  "source": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
+  "combined_receipt": "a50d97c6555386f2f6d8c5ae0acd4b1f33c7f5e9",
+  "accepted_behavior": "346763001426d3650b70bf099291c0a777fed955",
+  "prior_metadata": {
+    "commit": "b39751b9c3ab79c1433c5bc412d31bf0de1df030",
+    "retrieved_utc": "2026-10-28T03:51:00Z/2026-10-28T03:52:00Z",
+    "canonical": "NPH159",
+    "reprint": "CLB873",
+    "rulings": 6,
+    "printings": 10
+  },
+  "fresh_access": {
+    "observed_utc": "2026-10-28T15:54:03Z",
+    "local_https": "HTTP400 for NPH,CLB,printings,rulings",
+    "web_fallback": "NPH and CLB API URLs inaccessible",
+    "classification": "Transient external metadata access; prior metadata retained, not misrepresented as fresh"
+  },
+  "canonical_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Spellskite.kt",
+  "reprint_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/cards/Spellskite.kt",
+  "protected_boundary": {
+    "path": "mtg-sets/src/test/resources/snapshots/cards/NPH.json",
+    "git_blob": "e93ce6063162ba089377d4eeb9904c01bd6e9093",
+    "sha256": "88b21c3c6de85f734294bf1e9c56e06895eaebbccfccef8c2b8d78868650a21a",
+    "contains_spellskite": false,
+    "action": "Preserve original bytes; eventual bounded additive snapshot proposal requires explicit admission authorization. Resolver/generator/Human-filter grants do not authorize unrelated protected golden changes."
+  },
+  "source_observations": [
+    "Both NPH and CLB are already scaffolded; no new set needed.",
+    "CardDiscovery auto-discovers production top-level definitions, so placing the canonical definition would constitute registration. Do not place it before admission.",
+    "22-family behavior is test-local and qualified; do not repeat accepted R5 or prior compatibility."
+  ],
+  "required_gates": [
+    "Fresh NPH and CLB field/ruling/printing verification, exact image URL and earliest-real-printing check.",
+    "Concrete bounded additive NPH snapshot/card-registration proposal; preserve all existing golden entries and other protected bytes.",
+    "Normal and executable mutant compile first; actual discovered-card semantics and original49assertions retained; no weakened test counts/skips.",
+    "NPH/CLB snapshots, lint, printing check, applicable Assay read/decline classification, required dependent compatibility and original artifacts.",
+    "Multiplayer source-specific admission remains separate; no official games/seeds."
+  ],
+  "next_executable_action": "After ownership/newer-receipt reconciliation, retry fresh metadata access through permitted connected/public routes without duplicate build or intake workflow. Reuse saved03:51 metadata for preparatory comparison only. Once fresh metadata is available, complete a concrete bounded card-registration/additive NPH snapshot admission proposal for explicit approval; do not register automatically. Preserve original197protected bindings and accepted evidence.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
