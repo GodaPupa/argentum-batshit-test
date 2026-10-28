@@ -1,0 +1,51 @@
+{
+  "state": "PROPOSED_NOT_AUTHORIZED_NOT_REGISTERED",
+  "accepted_source": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
+  "accepted_compatibility": "a50d97c6555386f2f6d8c5ae0acd4b1f33c7f5e9",
+  "accepted_behavior": "346763001426d3650b70bf099291c0a777fed955",
+  "purpose": "Admit the qualified Spellskite behavior into the discoverable card corpus with exact canonical metadata and CLB reprint; no gameplay admission.",
+  "requested_authority": [
+    "Add canonical NPH159 Spellskite definition and CLB873 Printing row on an isolated successor, plus necessary card-specific tests/backlog entries.",
+    "Permit additive Spellskite entry only in protected mtg-sets/src/test/resources/snapshots/cards/NPH.json; preserve every preexisting entry and archive exact original bytes. No other protected golden change.",
+    "Execute frozen source-specific compilation, card-discovery/metadata/printing/snapshot/lint/behavior/Assay and dependent regression qualification, receive original evidence, then decide bounded card admission."
+  ],
+  "paths": {
+    "canonical": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Spellskite.kt",
+    "reprint": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/cards/SpellskiteReprint.kt",
+    "protected_snapshot": "mtg-sets/src/test/resources/snapshots/cards/NPH.json"
+  },
+  "protected_original": {
+    "git_blob": "e93ce6063162ba089377d4eeb9904c01bd6e9093",
+    "sha256": "88b21c3c6de85f734294bf1e9c56e06895eaebbccfccef8c2b8d78868650a21a"
+  },
+  "mechanical_definition": {
+    "name": "Spellskite",
+    "manaCost": "{2}",
+    "typeLine": "Artifact Creature — Phyrexian Horror",
+    "power": 0,
+    "toughness": 4,
+    "activated_cost": "Costs.Mana(\"{U/P}\")",
+    "target": "target(\"spell or ability\", Targets.SpellOrAbility)",
+    "effect": "Effects.ChangeTargetTo(stackObject = selectedStack, recipient = EffectTarget.Self)"
+  },
+  "metadata": "Use exact archived nph.json and clb.json, six rulings and complete10printings; fresh retrieval and image200 evidenced in METADATA_VERIFICATION.json.",
+  "acceptance_conditions": [
+    "Compile normal and executable negative forms before expensive tests; compiler errors never count as negative witnesses.",
+    "Production-discovered definition mechanical bytes must equal the qualified test-local definition; exercise actual discovered card and retain all49 original cases/assertions and22families. Do not rerun old accepted source merely for context.",
+    "Executable negatives must detect wrong payment, wrong target/recipient, absent registration, wrong canonical/reprint and unrelated existing NPH snapshot modifications, with passing controls.",
+    "Require NPH/CLB snapshots, lint and check-card-printing, applicable Assay parse/explain/differential; a decline is not a pass and must be classified.",
+    "Freeze exact source/protocol/tests before one dispatch, all existing concurrency and ownership controls; receive original manifests, report identity multiplicities/skips, restoration and protected bindings.",
+    "Reuse exact-bound R5 negatives12/135 and compatibility64client/5recording/39actor/1224focused/15291broad/18971ordinary+43skips only where unchanged; qualify changed dependencies, no blanket old-source acceptance."
+  ],
+  "exclusions": [
+    "No main merge or force push.",
+    "No unrelated resolver/SDK refactoring, emitter repair, normalization or expectation weakening.",
+    "No change to other protected goldens,82legacyfixtures, original assertions, frozen Manualv0.7, budgets or2Precision.",
+    "No multiplayer admission, official games/seeds or competitive claims.",
+    "No production registration before explicit approval of this proposal."
+  ],
+  "next_executable_action": "Await explicit bounded card-registration and additive NPH snapshot authorization. Existing engineering grants do not include this protected golden boundary. After grant, reconcile fresh CURRENT and activity, implement only this bounded successor and all declared gates.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
