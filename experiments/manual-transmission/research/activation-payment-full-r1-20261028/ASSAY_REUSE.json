@@ -1,0 +1,76 @@
+{
+  "state": "EXACT_DEPENDENCY_SUBTREE_REUSE_REVIEW",
+  "source": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+  "accepted_assay_source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
+  "accepted_receipt": "25a9b86953e84125b0119d91d1dd80787eaf0b73",
+  "proof": [
+    {
+      "path": "mtg-sdk",
+      "accepted": "2fa2d311adff6c3a7e76faef3c91083e68bcb0fc",
+      "candidate": "2fa2d311adff6c3a7e76faef3c91083e68bcb0fc"
+    },
+    {
+      "path": "mtg-sets",
+      "accepted": "1fd1cbe89fea2cb024069058ee0742d99cdd0b7f",
+      "candidate": "1fd1cbe89fea2cb024069058ee0742d99cdd0b7f"
+    },
+    {
+      "path": "oracle-assay",
+      "accepted": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+      "candidate": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe"
+    },
+    {
+      "path": "gradle",
+      "accepted": "ea27256e1cd4430376fe16014a61c3b625fddada",
+      "candidate": "ea27256e1cd4430376fe16014a61c3b625fddada"
+    },
+    {
+      "path": "scripts",
+      "accepted": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+      "candidate": "c7f233c36a522c778c1a3239b7e686fdb43b6638"
+    },
+    {
+      "path": "build.gradle.kts",
+      "accepted": "8c5298acbab5eae78f5ee612046317889666c83e",
+      "candidate": "8c5298acbab5eae78f5ee612046317889666c83e"
+    },
+    {
+      "path": "settings.gradle.kts",
+      "accepted": "b3cf7d0b70c58c6c4d5b214588f48ca5660d902e",
+      "candidate": "b3cf7d0b70c58c6c4d5b214588f48ca5660d902e"
+    },
+    {
+      "path": "gradle.properties",
+      "accepted": "130112f13f0f90b7f8ca587ecdbb960adb8b5aca",
+      "candidate": "130112f13f0f90b7f8ca587ecdbb960adb8b5aca"
+    },
+    {
+      "path": "justfile",
+      "accepted": "8e3c25afce213f719e7b9d9ac723e33b288b06a9",
+      "candidate": "8e3c25afce213f719e7b9d9ac723e33b288b06a9"
+    },
+    {
+      "path": "buildSrc",
+      "accepted": "434df9545a30593d8aeaf85d43f7ef9e3149f6e2",
+      "candidate": "434df9545a30593d8aeaf85d43f7ef9e3149f6e2"
+    },
+    {
+      "path": "gradlew",
+      "accepted": "249efbb032ce46a80c687c0723eb172e85f6a136",
+      "candidate": "249efbb032ce46a80c687c0723eb172e85f6a136"
+    },
+    {
+      "path": "gradlew.bat",
+      "accepted": "8508ef684d4e1f8473dcbbfdacf52a131beaee0e",
+      "candidate": "8508ef684d4e1f8473dcbbfdacf52a131beaee0e"
+    },
+    {
+      "path": "mtgish-tooling",
+      "accepted": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+      "candidate": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3"
+    }
+  ],
+  "build_blob": "3b019d597cd016069e0f10804e30825ecee45be9",
+  "build_declaration": "plugins {\n    id(\"buildsrc.convention.kotlin-jvm\")\n    application\n    alias(libs.plugins.kotlinPluginSerialization)\n}\n\ndependencies {\n    // The grammar parses straight into `mtg-sdk` types \u2014 there is no Assay IR \u2014 so the SDK is the\n    // ONLY production dependency. Deliberately NOT :rules-engine, NOT :mtg-sets, NOT :mtgish-tooling:\n    // Assay must never become a runtime card loader, and it must never inherit the incumbent\n    // pipeline's vocabulary. kotlinx-serialization is here to read the Scryfall bulk, not to\n    // (de)serialize SDK models.\n    implementation(project(\":mtg-sdk\"))\n    implementation(libs.kotlinxSerialization)\n\n    testImplementation(libs.kotestRunner)\n    testImplementation(libs.kotestAssertions)\n}\n\napplication {\n    // Single dispatch entrypoint: `parse` / `explain` / `gate` / `report` / `corpus` subcommands.\n    // The justfile assay* recipes call these.\n    mainClass.set(\"com.wingedsheep.assay.cli.MainKt\")\n}\n\n// The corpus cache lives under the user's home, but `assay parse --file` and friends take repo-\n// relative paths, so anchor the `run` task at the repo root like :mtgish-tooling does.\ntasks.named<JavaExec>(\"run\") {\n    workingDir = rootProject.projectDir\n}\n",
+  "conclusion": "Assay production dependency only mtg-sdk; entire SDK/parser/cards/build closure identical. Reuse original2000touchstone/exact51differential original artifact receipt. Rules-engine activation-only runtime changes require successor engine/dependent regressions, not rerunning unchanged Assay."
+}

@@ -1,0 +1,64 @@
+{
+  "state": "CONDITIONAL_DEPENDENT_CONTRACT_NOT_DISPATCHED_OR_ACCEPTED",
+  "required_precondition": "Original early40606160113 received without gate errors; no successor source changes beyond reviewed early source11ff343b.",
+  "early_source": "11ff343ba44e00a48af369a3ed231afe8ee63c5f",
+  "early_run": 40606160113,
+  "base_inventory": {
+    "source": "423d5849f1ef95ed1eec3d2adc73b00ff4239947",
+    "raw_sha256": "65ed2e9903c0019b353990402eafb48d7e064539690759cc603c5ae077ed98da",
+    "correction": "Exactly four already accepted server transport identity keys from423d5849; no assertion, count or skip changes."
+  },
+  "successor_inventory_sha256": "6a920f1fc4c4b9d5d6ad175a8718ee6e4b4507bc2093fa32a07063df89f70844",
+  "inventory_artifact": "derive_successor_inventory.py + ADDED_CASES.json; reuse original immutable inventory from repository",
+  "added_cases": 43,
+  "expected": {
+    "focused": {
+      "rows": 1175,
+      "skips": 0,
+      "passed": 1175
+    },
+    "broad": {
+      "rows": 15238,
+      "skips": 0,
+      "passed": 15238
+    },
+    "ordinary": {
+      "rows": 18961,
+      "skips": 43,
+      "passed": 18918
+    },
+    "actor": {
+      "rows": 39,
+      "skips": 0,
+      "passed": 39
+    },
+    "recording": {
+      "rows": 5,
+      "skips": 0,
+      "passed": 5
+    }
+  },
+  "client_floor": 64,
+  "commands": "Reuse locked final-compatibility-r2 validation.just recording/actor/broad/ordinary; add the three exact ActivatedPhyrexianPayment classes to focused. Keep all original filters. npm ci,typecheck,exact64client contract. Full successor runs are justified by changed shared ActivateAbilityHandler.",
+  "reuse": {
+    "registration": "Same Serialization.kt and registration tests: reuse original2compile8normal1negative7controls8restored evidence423d5849; ordinary reruns current normal tests as part of successor.",
+    "generator": "No changes in mtgish-tooling relative to accepted generator sourceb6e6150e: preserve0794e3ff204cases201pass3exactskips,POR195/158,ISD115/88.",
+    "transport": "Serialization/schema/UI transport sources unchanged; original R7 negative controls69f2dce2 reused, current normal server tests covered by ordinary.",
+    "assay": "Exact SDK/parser/cards/build subtree comparison verified in ASSAY_REUSE.json; reuse original25a9b8692000touchstone/exact51differential. No runtime-engine production dependency."
+  },
+  "receiving": "Pin successor source/tree/validation/workflow/run/job/attempt/artifact,originalbytes/hash/manifest; compare every raw identity/multiplicity and exact43skips. Source/protected restoration and early receipt bindings. Do not silently adapt inventory to observed failures.",
+  "remaining": [
+    "actual payment UI/public card matrix",
+    "full22Spellskite card acceptance",
+    "multiplayer admission"
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "approved_key_mapping": {
+    "game-server\tr\to\tu\tt\ti\tn\tg\t \ta\tn\td\t \tJ\tS\tO\tN\t \tr\te\tt\ta\ti\tn\t \td\ti\ts\tt\ti\tn\tc\tt\t \to\tc\tc\tu\tr\tr\te\tn\tc\te\t \tl\ta\tb\te\tl\ts\t \tf\to\tr\t \tt\th\te\t \ts\ta\tm\te\t \tp\tr\te\tv\ti\te\tw\t \tc\ta\tr\td": "game-server\tcom.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest\trouting and JSON retain distinct occurrence labels for the same preview card",
+    "game-server\tn\te\ts\tt\te\td\t \tr\to\tu\tt\ti\tn\tg\t \tc\th\ta\tn\tg\te\ts\t \to\tn\tl\ty\t \ti\td\te\tn\tt\ti\tt\ty\t \ta\tn\td\t \te\tn\tr\ti\tc\th\tm\te\tn\tt\t \tp\tr\te\ts\te\tr\tv\te\ts\t \to\tc\tc\tu\tr\tr\te\tn\tc\te\t \tp\ta\ty\tl\to\ta\td": "game-server\tcom.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest\tnested routing changes only identity and enrichment preserves occurrence payload",
+    "game-server\tl\ti\tv\te\t \to\tc\tc\tu\tr\tr\te\tn\tc\te\t \tt\tr\ta\tn\ts\tp\to\tr\tt\t \tp\tr\te\ts\te\tr\tv\te\ts\t \to\tw\tn\te\tr\t \tt\to\tk\te\tn\ts\t \tr\te\tp\tl\ta\ty\t \ta\tn\td\t \tn\te\ts\tt\te\td\t \ti\tn\td\te\tx\t \t0": "game-server\tcom.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest\tlive occurrence transport preserves owner tokens replay and nested index 0",
+    "game-server\tl\ti\tv\te\t \to\tc\tc\tu\tr\tr\te\tn\tc\te\t \tt\tr\ta\tn\ts\tp\to\tr\tt\t \tp\tr\te\ts\te\tr\tv\te\ts\t \to\tw\tn\te\tr\t \tt\to\tk\te\tn\ts\t \tr\te\tp\tl\ta\ty\t \ta\tn\td\t \tn\te\ts\tt\te\td\t \ti\tn\td\te\tx\t \t1": "game-server\tcom.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest\tlive occurrence transport preserves owner tokens replay and nested index 1"
+  }
+}
