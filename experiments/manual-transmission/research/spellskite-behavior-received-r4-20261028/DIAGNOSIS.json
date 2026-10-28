@@ -1,0 +1,29 @@
+{
+  "state": "ORIGINAL_INEFFECTIVE_MUTANT_FAILURE_RECEIVED",
+  "run": 40682361330,
+  "compilations": 4,
+  "normal": {
+    "tests": 49,
+    "passed": 49,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "ineffective_mutant": {
+    "stage": "single-target-only",
+    "tests": 49,
+    "passed": 49,
+    "exit": 0
+  },
+  "negative_witnesses": 0,
+  "other_mutants_and_restored": "NOT_RUN",
+  "cause": "Targets.SpellOrAbility and Targets.SpellOrAbilityWithSingleTarget construct identical TargetObject filters. The latter comment delegates single-target enforcement to its associated executor; FixedRecipientRetarget does not enforce it. The facade rename is equivalent and not an executable zero-target rejection fault.",
+  "evidence": {
+    "source": "9fc60272b4cb0a61cdef5b28a06659acc216ebe3",
+    "targets_blob": "8dc2f2db24ad65fdb2a3d86cae1b8c522a6aa388",
+    "evaluator_blob": "97fe6f40bad0a21b5e4cee49e0182c300c6bc995",
+    "object_filter_blob": "3c3793b2f27022f4c0a3c2693c44baa7a176f6a0"
+  },
+  "repair": "Replace only ineffective injector with requires-existing-target-object: TargetFilter(GameObjectFilter.Any.targetsMatching(GameObjectFilter.Any), zone=Zone.STACK). Evaluator returns false on empty targets before CardComponent lookup, and true for original Hill Giant target. Preserve exact same four zero-target failure identities/frame90 and45passingcontrols. Name reflects actual restriction, not single-target cardinality. Normal test bytes, all49identities/assertions, other2mutants and all12witness/135control expectations unchanged.",
+  "next_executable_action": "Freeze bounded R5 protocol-only successor; four compile forms before any behavior,49normal/restored12exactnegative135controls,original receiving and dependent gates. No card acceptance."
+}
