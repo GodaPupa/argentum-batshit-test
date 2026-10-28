@@ -49,7 +49,7 @@
     },
     "negative_scope": "Three compiled UI mutants with exact life-choice,color and stale-confirm assertion witnesses plus cancel controls.",
     "source_delta": "12 test/config/protocol files only; no production change;197protected bytes remain bound.",
-    "next_executable_action": "Receive original failed compile-only run40634503576 artifact12793700047; preserve original failure, diagnose exact compiler cause, repair bounded test-only successor. Never redispatch unchanged source; full22behavioral acceptance pending.",
+    "next_executable_action": "Dispatch single frozen compile-only R2 validation5236c6bf after reconciled ownership; receive original normal+3mutant artifact before behavioral qualification. R1 failure received2c3b8387; no unchanged rerun. Full22 behavioral witness contract and dependent gates remain.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -6118,33 +6118,26 @@
     "pending_evidence": [
       "4normal/mutant compilations and original receiving; full22behavioral/card acceptance; multiplayer."
     ],
-    "next_executable_action": "Receive original failed compile-only run40634503576 artifact12793700047; preserve original failure, diagnose exact compiler cause, repair bounded test-only successor. Never redispatch unchanged source; full22behavioral acceptance pending.",
+    "next_executable_action": "Dispatch single frozen compile-only R2 validation5236c6bf after reconciled ownership; receive original normal+3mutant artifact before behavioral qualification. R1 failure received2c3b8387; no unchanged rerun. Full22 behavioral witness contract and dependent gates remain.",
     "read_sections": [
       {
-        "ref": "a5c143355b97c5652699f00636c977a624e98585",
-        "path": "experiments/manual-transmission/research/spellskite-card-compile-r1-20261028/PROTOCOL.json",
+        "ref": "6c833312549c63643788e671239711997f43f433",
+        "path": "experiments/manual-transmission/research/spellskite-card-compile-r2-20261028/PROTOCOL.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "a5c143355b97c5652699f00636c977a624e98585",
-        "path": "experiments/manual-transmission/research/spellskite-card-compile-r1-20261028/NEXT_ACTION.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "4f648c2b4f159f039a0aff27cdcee8d5e13eeae3",
-        "path": "experiments/manual-transmission/research/activation-payment-ui-received-r1-20261028/VERIFIED_RECEIPT.json",
+        "ref": "2c3b83872c740d89ce1d8c4ea7c911f1e6fa7484",
+        "path": "experiments/manual-transmission/research/spellskite-compile-received-r1-20261028/DIAGNOSIS.json",
         "sections": [
           "all"
         ]
       }
     ],
     "source_protocol": {
-      "source": "57d3c8a8492a5714d4cca78e627e1979106630d5",
-      "path": "experiments/manual-transmission/research/activation-payment-ui-r1-20261028/PROTOCOL.json"
+      "source": "6c833312549c63643788e671239711997f43f433",
+      "path": "experiments/manual-transmission/research/spellskite-card-compile-r2-20261028/PROTOCOL.json"
     },
     "accepted_receipt": {
       "commit": "25a9b86953e84125b0119d91d1dd80787eaf0b73",
@@ -7866,7 +7859,7 @@
     "received_utc": "2026-10-28T03:49:58Z"
   },
   "spellskite_card_compile_r1": {
-    "state": "TERMINAL_FAILURE_ORIGINAL_RECEIVING_PENDING",
+    "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED",
     "source": "a5c143355b97c5652699f00636c977a624e98585",
     "tree": "1bfc97943540cca68791e4b3e3a3b082947b97e2",
     "base": "4f648c2b4f159f039a0aff27cdcee8d5e13eeae3",
@@ -7885,7 +7878,9 @@
     "precision_reserved": 2,
     "run": 40634503576,
     "job": 122638237503,
-    "artifact": 12793700047
+    "artifact": 12793700047,
+    "receipt": "2c3b83872c740d89ce1d8c4ea7c911f1e6fa7484",
+    "diagnosis": "One missing GroupFilter import in test fixture;normal compile failed,3mutants not run,zero behavioral evidence;250manifest verified."
   },
   "ownership_recovery_20261028": {
     "previous_owner": "manual-work-98fe1fa6-cbd0-8333-8461-8fa43a116b40",
@@ -7896,5 +7891,21 @@
       "expires_utc": "2026-10-28T05:31:01Z"
     },
     "evidence": "Prior execution in this same Work conversation ended; intervening ff571c71 completed at2026-10-28T06:53:26.179614Z without mutations. Current scheduled invocation6ce837c1 is this continuation, not a competing worker. Fresh workflow all-status reconciliation empty except excludedPest; unchanged ledger head7f37a053; no newer Spellskite receipt/successor. Recovery uses session termination and recorded completed result, not lease expiry alone."
+  },
+  "spellskite_card_compile_r2": {
+    "state": "FROZEN_NOT_DISPATCHED",
+    "source": "6c833312549c63643788e671239711997f43f433",
+    "tree": "7dee0fbc435be71626be15f3415e453ff963266f",
+    "base": "2c3b83872c740d89ce1d8c4ea7c911f1e6fa7484",
+    "validation": "5236c6bf7068c4e8f1cd764ca5ebd86c16735484",
+    "validation_tree": "a4fcd9029b2e2c14ae4f979046be6ae6fbb20397",
+    "workflow": ".github/workflows/manual-spellskite-compile-r2-20261028.yml",
+    "workflow_blob": "a6884e19a5c1615abca8965849b9aeaa6088fedf",
+    "branch": "validation/manual-spellskite-compile-r2-20261028",
+    "protocol": "experiments/manual-transmission/research/spellskite-card-compile-r2-20261028/PROTOCOL.json",
+    "behavioral_tests": 0,
+    "planned_compilations": 4,
+    "repair": "Exactly one import; all test bodies/assertions unchanged",
+    "readback_verified": true
   }
 }
