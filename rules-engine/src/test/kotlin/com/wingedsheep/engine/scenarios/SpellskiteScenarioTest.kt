@@ -8,6 +8,7 @@ import com.wingedsheep.sdk.core.*
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.*
 import com.wingedsheep.sdk.scripting.effects.*
+import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
 import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
 import io.kotest.assertions.withClue
