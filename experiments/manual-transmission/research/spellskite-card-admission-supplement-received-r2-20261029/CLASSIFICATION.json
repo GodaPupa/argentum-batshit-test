@@ -1,0 +1,103 @@
+{
+  "state": "INDEPENDENT_ORIGINAL_CLASSIFICATION",
+  "metadata": {
+    "nph": {
+      "fields": [
+        "name",
+        "mana_cost",
+        "type_line",
+        "oracle_text",
+        "power",
+        "toughness",
+        "colors",
+        "color_identity",
+        "oracle_id",
+        "id",
+        "rarity",
+        "collector_number",
+        "artist",
+        "flavor_text",
+        "released_at"
+      ],
+      "archived_blob": "0db531a6aa82e602179b2587208f9a7fbf29d4fa",
+      "image_http": 200
+    },
+    "clb": {
+      "fields": [
+        "name",
+        "mana_cost",
+        "type_line",
+        "oracle_text",
+        "power",
+        "toughness",
+        "colors",
+        "color_identity",
+        "oracle_id",
+        "id",
+        "rarity",
+        "collector_number",
+        "artist",
+        "flavor_text",
+        "released_at"
+      ],
+      "archived_blob": "f660471fba75a93a1c1838e41b5f2493e22c4ad5",
+      "image_http": 200
+    }
+  },
+  "compiled_nph_fields_match": true,
+  "rulings_match": 6,
+  "printings_exact_cache_rows": 10,
+  "pagination_complete": true,
+  "earliest_canonical": "NPH159",
+  "reprint": "CLB873",
+  "spellskite_assay": {
+    "population": "NOT_COVERED",
+    "parse": "DECLINED",
+    "compile_exit": 1,
+    "unsupported": "Change a target of target spell or ability to ~; parser stops at a after Change",
+    "classification": "Unimplemented Assay grammar shape; accepted SDK ChangeTargetTo behavior remains exact-bound. No parser pass or model agreement claimed.",
+    "oracle_text_and_id_exact_join": true
+  },
+  "dismember": {
+    "population": "ORACLE_TEXT_DIFFERS",
+    "golden": "Target creature gets -5/-5 until end of turn.",
+    "corpus": "({B/P} can be paid with either {B} or 2 life.)\nTarget creature gets -5/-5 until end of turn.",
+    "cause": "Existing Normalizer preserves a standalone reminder line as an empty ability line; Differential.sameText compares line lists. Preexisting golden bytes unchanged. No normalization or waiver."
+  },
+  "differential": {
+    "NPH": {
+      "total": 11,
+      "compared_confirmed": 7,
+      "not_covered": 3,
+      "oracle_text_differs": 1,
+      "divergent": 0,
+      "undecodable": 0
+    },
+    "CLB": {
+      "total": 16,
+      "compared_confirmed": 14,
+      "not_covered": 2,
+      "oracle_text_differs": 0,
+      "divergent": 0,
+      "undecodable": 0
+    }
+  },
+  "differential_limit": "No divergence examples because both totals zero; complete population totals11/16; no truncation. Existing uncovered cards remain uncovered, not promoted.",
+  "dependent_original_preserved": {
+    "receipt": "d547b90de1e442a4464111a8c831390d8182ebee",
+    "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+    "gate_errors": [
+      {
+        "stage": "snapshot candidate",
+        "error": "KeyError: 'final/source/mtg-sets/src/test/resources/snapshots/cards/CLB.json'"
+      }
+    ],
+    "cards": 388,
+    "ordinary_passes": 18980,
+    "skips": 43
+  },
+  "clb_gap_resolved": true,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

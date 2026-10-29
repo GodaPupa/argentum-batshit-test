@@ -1,0 +1,1797 @@
+{
+  "state": "EXACT_DEPENDENCY_REUSE",
+  "source": "e584268b3ec556dd57fd791766a9fba01d77ac2a",
+  "accepted_code_source": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
+  "accepted_assay_source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
+  "root_bindings": [
+    {
+      "path": "mtg-sdk",
+      "shas": [
+        "2fa2d311adff6c3a7e76faef3c91083e68bcb0fc",
+        "2fa2d311adff6c3a7e76faef3c91083e68bcb0fc",
+        "2fa2d311adff6c3a7e76faef3c91083e68bcb0fc"
+      ]
+    },
+    {
+      "path": "oracle-assay",
+      "shas": [
+        "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe"
+      ]
+    },
+    {
+      "path": "mtgish-tooling",
+      "shas": [
+        "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3"
+      ]
+    },
+    {
+      "path": "web-client",
+      "shas": [
+        "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "0ce36368d74a34f392e85b261771863a2a9d004c"
+      ]
+    },
+    {
+      "path": "gradle",
+      "shas": [
+        "ea27256e1cd4430376fe16014a61c3b625fddada",
+        "ea27256e1cd4430376fe16014a61c3b625fddada",
+        "ea27256e1cd4430376fe16014a61c3b625fddada"
+      ]
+    },
+    {
+      "path": "scripts",
+      "shas": [
+        "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "c7f233c36a522c778c1a3239b7e686fdb43b6638"
+      ]
+    },
+    {
+      "path": "buildSrc",
+      "shas": [
+        "434df9545a30593d8aeaf85d43f7ef9e3149f6e2",
+        "434df9545a30593d8aeaf85d43f7ef9e3149f6e2",
+        "434df9545a30593d8aeaf85d43f7ef9e3149f6e2"
+      ]
+    },
+    {
+      "path": "build.gradle.kts",
+      "shas": [
+        "8c5298acbab5eae78f5ee612046317889666c83e",
+        "8c5298acbab5eae78f5ee612046317889666c83e",
+        "8c5298acbab5eae78f5ee612046317889666c83e"
+      ]
+    },
+    {
+      "path": "settings.gradle.kts",
+      "shas": [
+        "b3cf7d0b70c58c6c4d5b214588f48ca5660d902e",
+        "b3cf7d0b70c58c6c4d5b214588f48ca5660d902e",
+        "b3cf7d0b70c58c6c4d5b214588f48ca5660d902e"
+      ]
+    },
+    {
+      "path": "gradle.properties",
+      "shas": [
+        "130112f13f0f90b7f8ca587ecdbb960adb8b5aca",
+        "130112f13f0f90b7f8ca587ecdbb960adb8b5aca",
+        "130112f13f0f90b7f8ca587ecdbb960adb8b5aca"
+      ]
+    },
+    {
+      "path": "justfile",
+      "shas": [
+        "8e3c25afce213f719e7b9d9ac723e33b288b06a9",
+        "8e3c25afce213f719e7b9d9ac723e33b288b06a9",
+        "8e3c25afce213f719e7b9d9ac723e33b288b06a9"
+      ]
+    },
+    {
+      "path": "gradlew",
+      "shas": [
+        "249efbb032ce46a80c687c0723eb172e85f6a136",
+        "249efbb032ce46a80c687c0723eb172e85f6a136",
+        "249efbb032ce46a80c687c0723eb172e85f6a136"
+      ]
+    },
+    {
+      "path": "gradlew.bat",
+      "shas": [
+        "8508ef684d4e1f8473dcbbfdacf52a131beaee0e",
+        "8508ef684d4e1f8473dcbbfdacf52a131beaee0e",
+        "8508ef684d4e1f8473dcbbfdacf52a131beaee0e"
+      ]
+    }
+  ],
+  "nested_bindings": [
+    {
+      "ref": "e584268b3ec556dd57fd791766a9fba01d77ac2a",
+      "path": "rules-engine/src",
+      "entries": [
+        {
+          "name": "main",
+          "sha": "e4c74481cbfc3819797f7ae409b94e3ed4cd3289"
+        }
+      ]
+    },
+    {
+      "ref": "e584268b3ec556dd57fd791766a9fba01d77ac2a",
+      "path": "game-server/src",
+      "entries": [
+        {
+          "name": "main",
+          "sha": "538dfd70f57e6d6869266ef3e69b63de14f5492f"
+        }
+      ]
+    },
+    {
+      "ref": "e584268b3ec556dd57fd791766a9fba01d77ac2a",
+      "path": "ai/src",
+      "entries": [
+        {
+          "name": "main",
+          "sha": "20aa26dec991bec7fbaa3db7d4531e8b2bdecaa6"
+        }
+      ]
+    },
+    {
+      "ref": "e584268b3ec556dd57fd791766a9fba01d77ac2a",
+      "path": "gym/src",
+      "entries": [
+        {
+          "name": "main",
+          "sha": "13e4b2e255f59b533f3f0d243dfa82b98f6b1e28"
+        }
+      ]
+    },
+    {
+      "ref": "e584268b3ec556dd57fd791766a9fba01d77ac2a",
+      "path": "mtg-sets/src/test/resources/snapshots/cards",
+      "entries": [
+        {
+          "name": "10E.json",
+          "sha": "8b137891791fe96927ad78e64b0aad7bded08bdc"
+        },
+        {
+          "name": "5DN.json",
+          "sha": "c1e5073d7fbfe7659ba56e89437e1ab5d1fb2cec"
+        },
+        {
+          "name": "8ED.json",
+          "sha": "8b137891791fe96927ad78e64b0aad7bded08bdc"
+        },
+        {
+          "name": "AER.json",
+          "sha": "95035018d6e32709c240d60ca81ea4bf9d5668cd"
+        },
+        {
+          "name": "AFR.json",
+          "sha": "13bf5a0dfcc83fe09e75b3181ea47977edcdc0fe"
+        },
+        {
+          "name": "AKH.json",
+          "sha": "e016e92cd9f30113bec530e07bca05af14768b61"
+        },
+        {
+          "name": "ALA.json",
+          "sha": "caccf1f98b26f8a489822485fc1cdcb3efba647b"
+        },
+        {
+          "name": "ALL.json",
+          "sha": "22995091d0d3b38394665babfb808201f92a9de0"
+        },
+        {
+          "name": "ANB.json",
+          "sha": "36a6f4630fe7c1680a00215ee5949c92fc3e6ed5"
+        },
+        {
+          "name": "APC.json",
+          "sha": "c860d54b625092b77f51eb609466e27ce97d8174"
+        },
+        {
+          "name": "ARB.json",
+          "sha": "92768cd4a5db4f10a56a0c530cc35642d8c1d0ff"
+        },
+        {
+          "name": "ARC.json",
+          "sha": "0854978719b1956c6ae9993b591afd5b0b38508e"
+        },
+        {
+          "name": "ARN.json",
+          "sha": "0545053397c0bbb1280e9b5ccd8ecb90ae442929"
+        },
+        {
+          "name": "ATQ.json",
+          "sha": "e93dcb557b045f67269856bb23c92b5c04d9c994"
+        },
+        {
+          "name": "AVR.json",
+          "sha": "5c3748a4fee3bb2c554a58b4a4e7ee256f8621cd"
+        },
+        {
+          "name": "BBD.json",
+          "sha": "7f7167a89260db3528158d2b6970bbebc917d955"
+        },
+        {
+          "name": "BFZ.json",
+          "sha": "07c2fc1fcc899877becb90e7f9e2516db2514ae4"
+        },
+        {
+          "name": "BIG.json",
+          "sha": "3b451231895823eee74838240962e71b36280a6a"
+        },
+        {
+          "name": "BLB.json",
+          "sha": "9bb64efe58ca4e3974f3e6392f5b14790f008592"
+        },
+        {
+          "name": "BLC.json",
+          "sha": "48acd8837ab334000e4c2d7087ac3961bddf529a"
+        },
+        {
+          "name": "BNG.json",
+          "sha": "ef8db4eb6e1ed922c7cea7a3160d587e1e9c22b0"
+        },
+        {
+          "name": "BOK.json",
+          "sha": "26a2306a72894db29a6438a956560f1877310fe6"
+        },
+        {
+          "name": "BRO.json",
+          "sha": "8193b21715cd933cd3fcf7bed9ee3ce5976e055b"
+        },
+        {
+          "name": "C13.json",
+          "sha": "c8b8a1f02f13a93768e69c4c693cca5556b53a81"
+        },
+        {
+          "name": "C14.json",
+          "sha": "ff73fbd45bd63e3fa26454c783c3676576929447"
+        },
+        {
+          "name": "C15.json",
+          "sha": "b538194011ef005452856131be888a5b3950b03f"
+        },
+        {
+          "name": "C16.json",
+          "sha": "70e28df5ecc4a3c2b9ebc542c51b5777c4917b4b"
+        },
+        {
+          "name": "C17.json",
+          "sha": "4f1abc46abe26d60236a332cd50f5dac2107dcaf"
+        },
+        {
+          "name": "C20.json",
+          "sha": "3fd983b25ee3da71c369519a2177c6bd018702d4"
+        },
+        {
+          "name": "CHK.json",
+          "sha": "6a273f6eca61b70f23ddd0bc108bb133ac536905"
+        },
+        {
+          "name": "CLB.json",
+          "sha": "ca1d77af8c1807e9da4737b63b59a46336b4e791"
+        },
+        {
+          "name": "CMD.json",
+          "sha": "6fa9b99da840933ff25c2e7f1fb8454a048207a6"
+        },
+        {
+          "name": "CMR.json",
+          "sha": "59d5c3f889c5ab543577733f9eb33d1892d4563b"
+        },
+        {
+          "name": "CON_.json",
+          "sha": "8e7ab56ce88a574e0efd09b2185973d623fe4ef3"
+        },
+        {
+          "name": "CSP.json",
+          "sha": "a1f8f732760e11625a4bcf4e6809b0daabe0c75b"
+        },
+        {
+          "name": "DDF.json",
+          "sha": "760296d362c804ec51178a5bfab4d97eec364918"
+        },
+        {
+          "name": "DDL.json",
+          "sha": "e3c3004fd8c6db18ddd108d899691a0236179434"
+        },
+        {
+          "name": "DDP.json",
+          "sha": "ce42c2437a606337fe6fef4d3a1a6f1c36cd7340"
+        },
+        {
+          "name": "DDQ.json",
+          "sha": "69670f476d2d64684c02d7c1946623fb7bf3dc3a"
+        },
+        {
+          "name": "DFT.json",
+          "sha": "d2f56949589615fdfed49d753565b51681bc86ba"
+        },
+        {
+          "name": "DGM.json",
+          "sha": "c5a84a08171873ca2b1667b1433eabb4c2bbf557"
+        },
+        {
+          "name": "DIS.json",
+          "sha": "7ac76b296b1c36cf0e038bb2811288fccc761d10"
+        },
+        {
+          "name": "DKA.json",
+          "sha": "d31cfc432b5c8fb3701df1ba23be99e46dd1610a"
+        },
+        {
+          "name": "DMU.json",
+          "sha": "c0095a9f14d565a9a833db2ab31b772a94d507b9"
+        },
+        {
+          "name": "DOM.json",
+          "sha": "0a932c8144c185377874ef55ee7f181118e7817f"
+        },
+        {
+          "name": "DRB.json",
+          "sha": "56a7b625f26cf2d3a4f16a07856ba20b04e235f3"
+        },
+        {
+          "name": "DRK.json",
+          "sha": "b01f6fa9ff80a85b71ef53975e7a6ef7d6fbde9c"
+        },
+        {
+          "name": "DSK.json",
+          "sha": "92a4c08225bf5d55a3ae31c52fe0e3fc215e77a6"
+        },
+        {
+          "name": "DST.json",
+          "sha": "af9610d3d9430ae7d0c9a37107401ca7ff99269d"
+        },
+        {
+          "name": "DTK.json",
+          "sha": "9dacef913cf687916614353abb8c0c2adf36e542"
+        },
+        {
+          "name": "ECL.json",
+          "sha": "722e756d7ffa516f7726c121afca378a696eb5cb"
+        },
+        {
+          "name": "ELD.json",
+          "sha": "e14d18abe3e9f47f191a8fa4d44a9145dbaf7f53"
+        },
+        {
+          "name": "EMN.json",
+          "sha": "d5675cee20a9da2b84646b97bce41027b0a9f35e"
+        },
+        {
+          "name": "EOE.json",
+          "sha": "f88d0aa0a6e89d8863ee3dcfad49b6b4fd132759"
+        },
+        {
+          "name": "EVE.json",
+          "sha": "ccef3a9262261f089272971db20345e22a84ebff"
+        },
+        {
+          "name": "EXO.json",
+          "sha": "5356a9fe6ba1c084d5677f0818ad9310a4b81767"
+        },
+        {
+          "name": "FDN.json",
+          "sha": "6867795890d07e9ac19773d66f2cad125bfd4bd4"
+        },
+        {
+          "name": "FEM.json",
+          "sha": "13e0401336f17ff4883145ebe5796acb54e205ce"
+        },
+        {
+          "name": "FIN.json",
+          "sha": "864e55c0b7d8d169c79b90907b30e848fc94c00c"
+        },
+        {
+          "name": "FRF.json",
+          "sha": "eef769cd76e32d9254650fa3d2986ce508f1a518"
+        },
+        {
+          "name": "FUT.json",
+          "sha": "242070eb3bc10ba3bd0ade94d000441e260d7b8e"
+        },
+        {
+          "name": "GPT.json",
+          "sha": "fbd73fbf7728569a9aa3f72c7d16a77821427a3c"
+        },
+        {
+          "name": "GRN.json",
+          "sha": "5aac8fdfc4788b5719a4b6f977b979812ca769ca"
+        },
+        {
+          "name": "GS1.json",
+          "sha": "267ae107906c5eb8ec404bfefd8e34db9e314855"
+        },
+        {
+          "name": "GTC.json",
+          "sha": "36414459455281b6f5b56ee1de70f949d9ff9196"
+        },
+        {
+          "name": "HML.json",
+          "sha": "8b5c7709a7ed61a6ceded8c996381e48d99182f6"
+        },
+        {
+          "name": "HOB.json",
+          "sha": "9a93735add459de7f3921885b9dbbb599e6f936d"
+        },
+        {
+          "name": "HOP.json",
+          "sha": "72bea78621ea1f1cd562a0398a83d0c28a10c608"
+        },
+        {
+          "name": "HOU.json",
+          "sha": "22cad56dc166c80f249e88ce07c611495c460893"
+        },
+        {
+          "name": "ICE.json",
+          "sha": "d21cb4a8bc27f2011d21414908be3d6ced97f4f4"
+        },
+        {
+          "name": "IKO.json",
+          "sha": "8664c27a11ee194094fa1c1594e8613b51d81405"
+        },
+        {
+          "name": "INR.json",
+          "sha": "8b137891791fe96927ad78e64b0aad7bded08bdc"
+        },
+        {
+          "name": "INV.json",
+          "sha": "1d19c706d9851154957d45890fa4932f22631b15"
+        },
+        {
+          "name": "ISD.json",
+          "sha": "b6bbd233a5ed6330aa931f164d62b6815f270b18"
+        },
+        {
+          "name": "J22.json",
+          "sha": "29fc5d5287cc5fe9ea843383d5a2bb9638e7b98a"
+        },
+        {
+          "name": "JMP.json",
+          "sha": "53269b7f6817665cb23e89ff30bef09f48c65321"
+        },
+        {
+          "name": "JOU.json",
+          "sha": "659b2327bed57f80a15c51df167d150a480459e7"
+        },
+        {
+          "name": "JUD.json",
+          "sha": "1afc93c6304a11781cafbe15c9da19ce7fd61981"
+        },
+        {
+          "name": "KHC.json",
+          "sha": "37e587556b5d2b67da4ad64e232177d83c22c6d1"
+        },
+        {
+          "name": "KHM.json",
+          "sha": "31b4bb4a2213ce5d4edd2dead098c8a408ad8223"
+        },
+        {
+          "name": "KLD.json",
+          "sha": "a223702b1260b6d8740c858fc1041bce12688bbf"
+        },
+        {
+          "name": "KTK.json",
+          "sha": "09fa8f10d6e391f9299b4bc47ce6fc13783a021b"
+        },
+        {
+          "name": "LCI.json",
+          "sha": "c4b736f0dc0900e207c0d26260204db0ab653852"
+        },
+        {
+          "name": "LEA.json",
+          "sha": "d7ed7a7f03f3548d258dfa645cf399954a922c2e"
+        },
+        {
+          "name": "LEB.json",
+          "sha": "7160c845f096557d7d4a3ec852f3e5ddb4aeb90d"
+        },
+        {
+          "name": "LEG.json",
+          "sha": "e20d00a30eb19f53d58f880e80d3d209f02dd304"
+        },
+        {
+          "name": "LGN.json",
+          "sha": "e30ae468430bd570e67ee679307f4b672d504ec2"
+        },
+        {
+          "name": "LRW.json",
+          "sha": "c3bcabfa147914bae8870c5f0c16ad312473d37f"
+        },
+        {
+          "name": "LTR.json",
+          "sha": "982a3433df351d62e4a2146c0dd7434bb5543691"
+        },
+        {
+          "name": "M10.json",
+          "sha": "de2fdc9167810a24edfc2a485d4c32fc740efaca"
+        },
+        {
+          "name": "M11.json",
+          "sha": "050a0e521c48df8c3e316bb11761623851519ed4"
+        },
+        {
+          "name": "M12.json",
+          "sha": "2e85abdcdb46f883878b7ac6f1a6c1e238b6dbd0"
+        },
+        {
+          "name": "M13.json",
+          "sha": "a5b38542699ea6ce9df09bd8734d9a9266033bd8"
+        },
+        {
+          "name": "M14.json",
+          "sha": "fd9f92218466e1da466a8059006fb80b44d98353"
+        },
+        {
+          "name": "M15.json",
+          "sha": "d28588a78f816dcc57ab5a7d2bb27df73b684f19"
+        },
+        {
+          "name": "M19.json",
+          "sha": "d80f2d94c8568506f23c7ec37777da2d213a82da"
+        },
+        {
+          "name": "M20.json",
+          "sha": "93d841b8dc4be1bd48f642509c3c0053ac834dae"
+        },
+        {
+          "name": "M21.json",
+          "sha": "0f864c1593cd5eb3678559abc12299c0fae8a88d"
+        },
+        {
+          "name": "MBS.json",
+          "sha": "1a96bf2ab9bd06096a5ce7e64da03c6ec1bebe79"
+        },
+        {
+          "name": "MH1.json",
+          "sha": "0cef89652897615306762003ede9e2ed96213927"
+        },
+        {
+          "name": "MH2.json",
+          "sha": "087f7ec00b9e7012df151037daf41f4c2b107d66"
+        },
+        {
+          "name": "MH3.json",
+          "sha": "25b01370752b8d2fe97389c453a300dce833531a"
+        },
+        {
+          "name": "MID.json",
+          "sha": "103564dfe351a22ec9e0fade685793f949f92510"
+        },
+        {
+          "name": "MIR.json",
+          "sha": "f48ccc60306606420cd4bbbf8e7aaefa19466b05"
+        },
+        {
+          "name": "MKM.json",
+          "sha": "658a4ce8c1789c6f13a4462608e1fb88b7e51099"
+        },
+        {
+          "name": "MMQ.json",
+          "sha": "af2d54d46942508b084fcea8f6cc01b42c1f613e"
+        },
+        {
+          "name": "MOM.json",
+          "sha": "434545b531ede0613b234561ea1aa2db436cf3f7"
+        },
+        {
+          "name": "MOR.json",
+          "sha": "21400831cdc0b7747d249fbea45da430ba086fed"
+        },
+        {
+          "name": "MRD.json",
+          "sha": "342a34857e5f91237bbb6149a0f86e371380a6e5"
+        },
+        {
+          "name": "MSC.json",
+          "sha": "632afc08c4827d946d87f3327ff4976ae54966f2"
+        },
+        {
+          "name": "MSH.json",
+          "sha": "14da2bfc8526f85cb97b91fa142e4a216877b869"
+        },
+        {
+          "name": "NCC.json",
+          "sha": "5b99ce8e622c5d0ba883df50ba1beeb54f412343"
+        },
+        {
+          "name": "NEM.json",
+          "sha": "a0f81fce8f506da88bd3cd6be00dfe850e49c241"
+        },
+        {
+          "name": "NEO.json",
+          "sha": "9e8a57b1f1a912d802a7476bfc71ead3f42a126a"
+        },
+        {
+          "name": "NPH.json",
+          "sha": "8848ad3f335ae5222a0c98c9d5bcd8500a10c63e"
+        },
+        {
+          "name": "OANA.json",
+          "sha": "c0fbe132f532ffcfac6697ee1f91f892aa2849d4"
+        },
+        {
+          "name": "ODY.json",
+          "sha": "672a70d8e15174976f86de065324faa0a72fcefe"
+        },
+        {
+          "name": "OGW.json",
+          "sha": "115d8a0ae2dc53a0cb5fec46e29e59d7d685b9ca"
+        },
+        {
+          "name": "ONE.json",
+          "sha": "e6ccf46d1bf49b9f6f4076a445d3fbafa16e3e0a"
+        },
+        {
+          "name": "ONS.json",
+          "sha": "ea3499a0886f9d100c5b239c02f5917289a7380f"
+        },
+        {
+          "name": "ORI.json",
+          "sha": "1858671745993fcee95cbae3b1d50ec8f96f394a"
+        },
+        {
+          "name": "OTJ.json",
+          "sha": "98235d4e275a37b288e993c6414f488a071fb996"
+        },
+        {
+          "name": "P02.json",
+          "sha": "2a2bcd495199f7053aa6efad0c5a08e591715a16"
+        },
+        {
+          "name": "PC2.json",
+          "sha": "70cd2a5e1ef6bd943bfccddbe9b5e76709344290"
+        },
+        {
+          "name": "PCY.json",
+          "sha": "47af50fddc30a871b2634334b4cd21d4a4207841"
+        },
+        {
+          "name": "PLC.json",
+          "sha": "faec29fe3d1311f4ab61d6303de381af7a8fdedd"
+        },
+        {
+          "name": "PLS.json",
+          "sha": "3b65d882ab4a63a8441fe15f7de6c9ec62afec72"
+        },
+        {
+          "name": "POR.json",
+          "sha": "606305d8f027742d7380d7219b0e29feec0b9879"
+        },
+        {
+          "name": "PTK.json",
+          "sha": "f4a5e0bfd1e4e0df89d7a1f2defd785ed34acb98"
+        },
+        {
+          "name": "PZ2.json",
+          "sha": "64eed5b3e0b42ca2892a93e27aa9dec5957fb5b6"
+        },
+        {
+          "name": "RAV.json",
+          "sha": "19b1557b894a35bd4718bb701a989344a2670409"
+        },
+        {
+          "name": "RIX.json",
+          "sha": "c34f1a9197ad79c65a9dc089425c7690e8273531"
+        },
+        {
+          "name": "RNA.json",
+          "sha": "c9a9b916eb8e87622153a9f449efc5fdf4c53d1f"
+        },
+        {
+          "name": "ROE.json",
+          "sha": "9894040338c81fec22b851831a748238d5392c86"
+        },
+        {
+          "name": "RTR.json",
+          "sha": "9352d119fa9c6bdcd1a7ded6cf1d21182718039a"
+        },
+        {
+          "name": "S99.json",
+          "sha": "1d032268d113ee07cc255311c630e1148ec91a31"
+        },
+        {
+          "name": "SCG.json",
+          "sha": "4e567affc0997ea2e1174dbe2e70adfee89c187d"
+        },
+        {
+          "name": "SHM.json",
+          "sha": "8868f6b52a30dfed557b15934462c2e9e84b9889"
+        },
+        {
+          "name": "SNC.json",
+          "sha": "6627be83faa7e6db1c6e4c69e98a3be70dfcc044"
+        },
+        {
+          "name": "SOI.json",
+          "sha": "90db48ffed5c4b8378279f660f8788a577769e5e"
+        },
+        {
+          "name": "SOK.json",
+          "sha": "bf70c04a406ee2f0c79a4d306ad187b2f7b04ed9"
+        },
+        {
+          "name": "SOM.json",
+          "sha": "58c3b678ced10c4fd55a0e7a1bb1fbeffcc66e3c"
+        },
+        {
+          "name": "SOS.json",
+          "sha": "eecb07b9ae9896903643b754f2876002abc69c7a"
+        },
+        {
+          "name": "SPM.json",
+          "sha": "a0ba1e4fc7ef1327d16b44f57b8ab923fc6835c6"
+        },
+        {
+          "name": "STH.json",
+          "sha": "754faec74ffdb7727500a9f6c0fd531a58ef903f"
+        },
+        {
+          "name": "STX.json",
+          "sha": "11fb7fa2c78922ecaa8f3d29ae69170fe8299a82"
+        },
+        {
+          "name": "TDM.json",
+          "sha": "b532a407a03de86946cc6618f6e31df05f670867"
+        },
+        {
+          "name": "THB.json",
+          "sha": "b317fd34ee95b8f39de148a09508f5a585b3cc01"
+        },
+        {
+          "name": "THS.json",
+          "sha": "b744d4aec95369e0a78d9482a5bd06d009dedf29"
+        },
+        {
+          "name": "TLA.json",
+          "sha": "616174ff339829ff7e9a108bf94fe98300f766fb"
+        },
+        {
+          "name": "TLE.json",
+          "sha": "d8ac16b6f7d7f553a568822b9d89659a2270b735"
+        },
+        {
+          "name": "TMC.json",
+          "sha": "45ac0524a6c96bdc5c41dc11e74184880bfd9089"
+        },
+        {
+          "name": "TMP.json",
+          "sha": "210bc7886dc2fd584b3cabea2a783fc596966695"
+        },
+        {
+          "name": "TMT.json",
+          "sha": "0a1e5400ac5a24832f8d18ce8dda20376c15cd69"
+        },
+        {
+          "name": "TOR.json",
+          "sha": "d217e69f9c970c47733945eaf04222ac25ff46dd"
+        },
+        {
+          "name": "TRC.json",
+          "sha": "e5ee3af981ac2126d13fecc5bd33959b7b2a4d05"
+        },
+        {
+          "name": "TSP.json",
+          "sha": "ddab2a813b1158a55b267e42e744663b5aac443d"
+        },
+        {
+          "name": "UDS.json",
+          "sha": "46ac41176acee98a4c75afe7dab72cfa18bac0a7"
+        },
+        {
+          "name": "ULG.json",
+          "sha": "1a82f68a88acc62a6bb1fff80a55a92e18a246ce"
+        },
+        {
+          "name": "USG.json",
+          "sha": "a07021c4831e5b8c2275c137692cc79b2a5df8bf"
+        },
+        {
+          "name": "VIS.json",
+          "sha": "2dcfb5420ed2292b451bd0e8b2bdda16ba44a9e2"
+        },
+        {
+          "name": "VOC.json",
+          "sha": "319adde898689edd51c90b8c1916564cab6874db"
+        },
+        {
+          "name": "VOW.json",
+          "sha": "2ceac2735b918fbd427540485d64992b54ad1c42"
+        },
+        {
+          "name": "WAR.json",
+          "sha": "3872a9612d70781d8382652a17119039aa2651bf"
+        },
+        {
+          "name": "WOE.json",
+          "sha": "d0636e26cbd9d613bb6d63674f7abcf68e647588"
+        },
+        {
+          "name": "WTH.json",
+          "sha": "0e24348c9af8ed23d6b1e5a2567970dd09e312a3"
+        },
+        {
+          "name": "WWK.json",
+          "sha": "8da3107b532a9ef22c1ec47d53db8fa5abbe9d4a"
+        },
+        {
+          "name": "XLN.json",
+          "sha": "950251e93cae9b6e55ed4e2c818842e14fbd35ce"
+        },
+        {
+          "name": "ZEN.json",
+          "sha": "95ccbc0caa5e441673c6668c15ccc8f0040ef731"
+        },
+        {
+          "name": "ZNR.json",
+          "sha": "b26cd80bbb26c12a8470b9e74df2ef47663b1ad9"
+        }
+      ]
+    },
+    {
+      "ref": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
+      "path": "rules-engine/src",
+      "entries": [
+        {
+          "name": "main",
+          "sha": "e4c74481cbfc3819797f7ae409b94e3ed4cd3289"
+        }
+      ]
+    },
+    {
+      "ref": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
+      "path": "game-server/src",
+      "entries": [
+        {
+          "name": "main",
+          "sha": "538dfd70f57e6d6869266ef3e69b63de14f5492f"
+        }
+      ]
+    },
+    {
+      "ref": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
+      "path": "ai/src",
+      "entries": [
+        {
+          "name": "main",
+          "sha": "20aa26dec991bec7fbaa3db7d4531e8b2bdecaa6"
+        }
+      ]
+    },
+    {
+      "ref": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
+      "path": "gym/src",
+      "entries": [
+        {
+          "name": "main",
+          "sha": "13e4b2e255f59b533f3f0d243dfa82b98f6b1e28"
+        }
+      ]
+    },
+    {
+      "ref": "d0bfdbe4cf9f991559ceb8aacb756ce23de8702b",
+      "path": "mtg-sets/src/test/resources/snapshots/cards",
+      "entries": [
+        {
+          "name": "10E.json",
+          "sha": "8b137891791fe96927ad78e64b0aad7bded08bdc"
+        },
+        {
+          "name": "5DN.json",
+          "sha": "c1e5073d7fbfe7659ba56e89437e1ab5d1fb2cec"
+        },
+        {
+          "name": "8ED.json",
+          "sha": "8b137891791fe96927ad78e64b0aad7bded08bdc"
+        },
+        {
+          "name": "AER.json",
+          "sha": "95035018d6e32709c240d60ca81ea4bf9d5668cd"
+        },
+        {
+          "name": "AFR.json",
+          "sha": "13bf5a0dfcc83fe09e75b3181ea47977edcdc0fe"
+        },
+        {
+          "name": "AKH.json",
+          "sha": "e016e92cd9f30113bec530e07bca05af14768b61"
+        },
+        {
+          "name": "ALA.json",
+          "sha": "caccf1f98b26f8a489822485fc1cdcb3efba647b"
+        },
+        {
+          "name": "ALL.json",
+          "sha": "22995091d0d3b38394665babfb808201f92a9de0"
+        },
+        {
+          "name": "ANB.json",
+          "sha": "36a6f4630fe7c1680a00215ee5949c92fc3e6ed5"
+        },
+        {
+          "name": "APC.json",
+          "sha": "c860d54b625092b77f51eb609466e27ce97d8174"
+        },
+        {
+          "name": "ARB.json",
+          "sha": "92768cd4a5db4f10a56a0c530cc35642d8c1d0ff"
+        },
+        {
+          "name": "ARC.json",
+          "sha": "0854978719b1956c6ae9993b591afd5b0b38508e"
+        },
+        {
+          "name": "ARN.json",
+          "sha": "0545053397c0bbb1280e9b5ccd8ecb90ae442929"
+        },
+        {
+          "name": "ATQ.json",
+          "sha": "e93dcb557b045f67269856bb23c92b5c04d9c994"
+        },
+        {
+          "name": "AVR.json",
+          "sha": "5c3748a4fee3bb2c554a58b4a4e7ee256f8621cd"
+        },
+        {
+          "name": "BBD.json",
+          "sha": "7f7167a89260db3528158d2b6970bbebc917d955"
+        },
+        {
+          "name": "BFZ.json",
+          "sha": "07c2fc1fcc899877becb90e7f9e2516db2514ae4"
+        },
+        {
+          "name": "BIG.json",
+          "sha": "3b451231895823eee74838240962e71b36280a6a"
+        },
+        {
+          "name": "BLB.json",
+          "sha": "9bb64efe58ca4e3974f3e6392f5b14790f008592"
+        },
+        {
+          "name": "BLC.json",
+          "sha": "48acd8837ab334000e4c2d7087ac3961bddf529a"
+        },
+        {
+          "name": "BNG.json",
+          "sha": "ef8db4eb6e1ed922c7cea7a3160d587e1e9c22b0"
+        },
+        {
+          "name": "BOK.json",
+          "sha": "26a2306a72894db29a6438a956560f1877310fe6"
+        },
+        {
+          "name": "BRO.json",
+          "sha": "8193b21715cd933cd3fcf7bed9ee3ce5976e055b"
+        },
+        {
+          "name": "C13.json",
+          "sha": "c8b8a1f02f13a93768e69c4c693cca5556b53a81"
+        },
+        {
+          "name": "C14.json",
+          "sha": "ff73fbd45bd63e3fa26454c783c3676576929447"
+        },
+        {
+          "name": "C15.json",
+          "sha": "b538194011ef005452856131be888a5b3950b03f"
+        },
+        {
+          "name": "C16.json",
+          "sha": "70e28df5ecc4a3c2b9ebc542c51b5777c4917b4b"
+        },
+        {
+          "name": "C17.json",
+          "sha": "4f1abc46abe26d60236a332cd50f5dac2107dcaf"
+        },
+        {
+          "name": "C20.json",
+          "sha": "3fd983b25ee3da71c369519a2177c6bd018702d4"
+        },
+        {
+          "name": "CHK.json",
+          "sha": "6a273f6eca61b70f23ddd0bc108bb133ac536905"
+        },
+        {
+          "name": "CLB.json",
+          "sha": "ca1d77af8c1807e9da4737b63b59a46336b4e791"
+        },
+        {
+          "name": "CMD.json",
+          "sha": "6fa9b99da840933ff25c2e7f1fb8454a048207a6"
+        },
+        {
+          "name": "CMR.json",
+          "sha": "59d5c3f889c5ab543577733f9eb33d1892d4563b"
+        },
+        {
+          "name": "CON_.json",
+          "sha": "8e7ab56ce88a574e0efd09b2185973d623fe4ef3"
+        },
+        {
+          "name": "CSP.json",
+          "sha": "a1f8f732760e11625a4bcf4e6809b0daabe0c75b"
+        },
+        {
+          "name": "DDF.json",
+          "sha": "760296d362c804ec51178a5bfab4d97eec364918"
+        },
+        {
+          "name": "DDL.json",
+          "sha": "e3c3004fd8c6db18ddd108d899691a0236179434"
+        },
+        {
+          "name": "DDP.json",
+          "sha": "ce42c2437a606337fe6fef4d3a1a6f1c36cd7340"
+        },
+        {
+          "name": "DDQ.json",
+          "sha": "69670f476d2d64684c02d7c1946623fb7bf3dc3a"
+        },
+        {
+          "name": "DFT.json",
+          "sha": "d2f56949589615fdfed49d753565b51681bc86ba"
+        },
+        {
+          "name": "DGM.json",
+          "sha": "c5a84a08171873ca2b1667b1433eabb4c2bbf557"
+        },
+        {
+          "name": "DIS.json",
+          "sha": "7ac76b296b1c36cf0e038bb2811288fccc761d10"
+        },
+        {
+          "name": "DKA.json",
+          "sha": "d31cfc432b5c8fb3701df1ba23be99e46dd1610a"
+        },
+        {
+          "name": "DMU.json",
+          "sha": "c0095a9f14d565a9a833db2ab31b772a94d507b9"
+        },
+        {
+          "name": "DOM.json",
+          "sha": "0a932c8144c185377874ef55ee7f181118e7817f"
+        },
+        {
+          "name": "DRB.json",
+          "sha": "56a7b625f26cf2d3a4f16a07856ba20b04e235f3"
+        },
+        {
+          "name": "DRK.json",
+          "sha": "b01f6fa9ff80a85b71ef53975e7a6ef7d6fbde9c"
+        },
+        {
+          "name": "DSK.json",
+          "sha": "92a4c08225bf5d55a3ae31c52fe0e3fc215e77a6"
+        },
+        {
+          "name": "DST.json",
+          "sha": "af9610d3d9430ae7d0c9a37107401ca7ff99269d"
+        },
+        {
+          "name": "DTK.json",
+          "sha": "9dacef913cf687916614353abb8c0c2adf36e542"
+        },
+        {
+          "name": "ECL.json",
+          "sha": "722e756d7ffa516f7726c121afca378a696eb5cb"
+        },
+        {
+          "name": "ELD.json",
+          "sha": "e14d18abe3e9f47f191a8fa4d44a9145dbaf7f53"
+        },
+        {
+          "name": "EMN.json",
+          "sha": "d5675cee20a9da2b84646b97bce41027b0a9f35e"
+        },
+        {
+          "name": "EOE.json",
+          "sha": "f88d0aa0a6e89d8863ee3dcfad49b6b4fd132759"
+        },
+        {
+          "name": "EVE.json",
+          "sha": "ccef3a9262261f089272971db20345e22a84ebff"
+        },
+        {
+          "name": "EXO.json",
+          "sha": "5356a9fe6ba1c084d5677f0818ad9310a4b81767"
+        },
+        {
+          "name": "FDN.json",
+          "sha": "6867795890d07e9ac19773d66f2cad125bfd4bd4"
+        },
+        {
+          "name": "FEM.json",
+          "sha": "13e0401336f17ff4883145ebe5796acb54e205ce"
+        },
+        {
+          "name": "FIN.json",
+          "sha": "864e55c0b7d8d169c79b90907b30e848fc94c00c"
+        },
+        {
+          "name": "FRF.json",
+          "sha": "eef769cd76e32d9254650fa3d2986ce508f1a518"
+        },
+        {
+          "name": "FUT.json",
+          "sha": "242070eb3bc10ba3bd0ade94d000441e260d7b8e"
+        },
+        {
+          "name": "GPT.json",
+          "sha": "fbd73fbf7728569a9aa3f72c7d16a77821427a3c"
+        },
+        {
+          "name": "GRN.json",
+          "sha": "5aac8fdfc4788b5719a4b6f977b979812ca769ca"
+        },
+        {
+          "name": "GS1.json",
+          "sha": "267ae107906c5eb8ec404bfefd8e34db9e314855"
+        },
+        {
+          "name": "GTC.json",
+          "sha": "36414459455281b6f5b56ee1de70f949d9ff9196"
+        },
+        {
+          "name": "HML.json",
+          "sha": "8b5c7709a7ed61a6ceded8c996381e48d99182f6"
+        },
+        {
+          "name": "HOB.json",
+          "sha": "9a93735add459de7f3921885b9dbbb599e6f936d"
+        },
+        {
+          "name": "HOP.json",
+          "sha": "72bea78621ea1f1cd562a0398a83d0c28a10c608"
+        },
+        {
+          "name": "HOU.json",
+          "sha": "22cad56dc166c80f249e88ce07c611495c460893"
+        },
+        {
+          "name": "ICE.json",
+          "sha": "d21cb4a8bc27f2011d21414908be3d6ced97f4f4"
+        },
+        {
+          "name": "IKO.json",
+          "sha": "8664c27a11ee194094fa1c1594e8613b51d81405"
+        },
+        {
+          "name": "INR.json",
+          "sha": "8b137891791fe96927ad78e64b0aad7bded08bdc"
+        },
+        {
+          "name": "INV.json",
+          "sha": "1d19c706d9851154957d45890fa4932f22631b15"
+        },
+        {
+          "name": "ISD.json",
+          "sha": "b6bbd233a5ed6330aa931f164d62b6815f270b18"
+        },
+        {
+          "name": "J22.json",
+          "sha": "29fc5d5287cc5fe9ea843383d5a2bb9638e7b98a"
+        },
+        {
+          "name": "JMP.json",
+          "sha": "53269b7f6817665cb23e89ff30bef09f48c65321"
+        },
+        {
+          "name": "JOU.json",
+          "sha": "659b2327bed57f80a15c51df167d150a480459e7"
+        },
+        {
+          "name": "JUD.json",
+          "sha": "1afc93c6304a11781cafbe15c9da19ce7fd61981"
+        },
+        {
+          "name": "KHC.json",
+          "sha": "37e587556b5d2b67da4ad64e232177d83c22c6d1"
+        },
+        {
+          "name": "KHM.json",
+          "sha": "31b4bb4a2213ce5d4edd2dead098c8a408ad8223"
+        },
+        {
+          "name": "KLD.json",
+          "sha": "a223702b1260b6d8740c858fc1041bce12688bbf"
+        },
+        {
+          "name": "KTK.json",
+          "sha": "09fa8f10d6e391f9299b4bc47ce6fc13783a021b"
+        },
+        {
+          "name": "LCI.json",
+          "sha": "c4b736f0dc0900e207c0d26260204db0ab653852"
+        },
+        {
+          "name": "LEA.json",
+          "sha": "d7ed7a7f03f3548d258dfa645cf399954a922c2e"
+        },
+        {
+          "name": "LEB.json",
+          "sha": "7160c845f096557d7d4a3ec852f3e5ddb4aeb90d"
+        },
+        {
+          "name": "LEG.json",
+          "sha": "e20d00a30eb19f53d58f880e80d3d209f02dd304"
+        },
+        {
+          "name": "LGN.json",
+          "sha": "e30ae468430bd570e67ee679307f4b672d504ec2"
+        },
+        {
+          "name": "LRW.json",
+          "sha": "c3bcabfa147914bae8870c5f0c16ad312473d37f"
+        },
+        {
+          "name": "LTR.json",
+          "sha": "982a3433df351d62e4a2146c0dd7434bb5543691"
+        },
+        {
+          "name": "M10.json",
+          "sha": "de2fdc9167810a24edfc2a485d4c32fc740efaca"
+        },
+        {
+          "name": "M11.json",
+          "sha": "050a0e521c48df8c3e316bb11761623851519ed4"
+        },
+        {
+          "name": "M12.json",
+          "sha": "2e85abdcdb46f883878b7ac6f1a6c1e238b6dbd0"
+        },
+        {
+          "name": "M13.json",
+          "sha": "a5b38542699ea6ce9df09bd8734d9a9266033bd8"
+        },
+        {
+          "name": "M14.json",
+          "sha": "fd9f92218466e1da466a8059006fb80b44d98353"
+        },
+        {
+          "name": "M15.json",
+          "sha": "d28588a78f816dcc57ab5a7d2bb27df73b684f19"
+        },
+        {
+          "name": "M19.json",
+          "sha": "d80f2d94c8568506f23c7ec37777da2d213a82da"
+        },
+        {
+          "name": "M20.json",
+          "sha": "93d841b8dc4be1bd48f642509c3c0053ac834dae"
+        },
+        {
+          "name": "M21.json",
+          "sha": "0f864c1593cd5eb3678559abc12299c0fae8a88d"
+        },
+        {
+          "name": "MBS.json",
+          "sha": "1a96bf2ab9bd06096a5ce7e64da03c6ec1bebe79"
+        },
+        {
+          "name": "MH1.json",
+          "sha": "0cef89652897615306762003ede9e2ed96213927"
+        },
+        {
+          "name": "MH2.json",
+          "sha": "087f7ec00b9e7012df151037daf41f4c2b107d66"
+        },
+        {
+          "name": "MH3.json",
+          "sha": "25b01370752b8d2fe97389c453a300dce833531a"
+        },
+        {
+          "name": "MID.json",
+          "sha": "103564dfe351a22ec9e0fade685793f949f92510"
+        },
+        {
+          "name": "MIR.json",
+          "sha": "f48ccc60306606420cd4bbbf8e7aaefa19466b05"
+        },
+        {
+          "name": "MKM.json",
+          "sha": "658a4ce8c1789c6f13a4462608e1fb88b7e51099"
+        },
+        {
+          "name": "MMQ.json",
+          "sha": "af2d54d46942508b084fcea8f6cc01b42c1f613e"
+        },
+        {
+          "name": "MOM.json",
+          "sha": "434545b531ede0613b234561ea1aa2db436cf3f7"
+        },
+        {
+          "name": "MOR.json",
+          "sha": "21400831cdc0b7747d249fbea45da430ba086fed"
+        },
+        {
+          "name": "MRD.json",
+          "sha": "342a34857e5f91237bbb6149a0f86e371380a6e5"
+        },
+        {
+          "name": "MSC.json",
+          "sha": "632afc08c4827d946d87f3327ff4976ae54966f2"
+        },
+        {
+          "name": "MSH.json",
+          "sha": "14da2bfc8526f85cb97b91fa142e4a216877b869"
+        },
+        {
+          "name": "NCC.json",
+          "sha": "5b99ce8e622c5d0ba883df50ba1beeb54f412343"
+        },
+        {
+          "name": "NEM.json",
+          "sha": "a0f81fce8f506da88bd3cd6be00dfe850e49c241"
+        },
+        {
+          "name": "NEO.json",
+          "sha": "9e8a57b1f1a912d802a7476bfc71ead3f42a126a"
+        },
+        {
+          "name": "NPH.json",
+          "sha": "e93ce6063162ba089377d4eeb9904c01bd6e9093"
+        },
+        {
+          "name": "OANA.json",
+          "sha": "c0fbe132f532ffcfac6697ee1f91f892aa2849d4"
+        },
+        {
+          "name": "ODY.json",
+          "sha": "672a70d8e15174976f86de065324faa0a72fcefe"
+        },
+        {
+          "name": "OGW.json",
+          "sha": "115d8a0ae2dc53a0cb5fec46e29e59d7d685b9ca"
+        },
+        {
+          "name": "ONE.json",
+          "sha": "e6ccf46d1bf49b9f6f4076a445d3fbafa16e3e0a"
+        },
+        {
+          "name": "ONS.json",
+          "sha": "ea3499a0886f9d100c5b239c02f5917289a7380f"
+        },
+        {
+          "name": "ORI.json",
+          "sha": "1858671745993fcee95cbae3b1d50ec8f96f394a"
+        },
+        {
+          "name": "OTJ.json",
+          "sha": "98235d4e275a37b288e993c6414f488a071fb996"
+        },
+        {
+          "name": "P02.json",
+          "sha": "2a2bcd495199f7053aa6efad0c5a08e591715a16"
+        },
+        {
+          "name": "PC2.json",
+          "sha": "70cd2a5e1ef6bd943bfccddbe9b5e76709344290"
+        },
+        {
+          "name": "PCY.json",
+          "sha": "47af50fddc30a871b2634334b4cd21d4a4207841"
+        },
+        {
+          "name": "PLC.json",
+          "sha": "faec29fe3d1311f4ab61d6303de381af7a8fdedd"
+        },
+        {
+          "name": "PLS.json",
+          "sha": "3b65d882ab4a63a8441fe15f7de6c9ec62afec72"
+        },
+        {
+          "name": "POR.json",
+          "sha": "606305d8f027742d7380d7219b0e29feec0b9879"
+        },
+        {
+          "name": "PTK.json",
+          "sha": "f4a5e0bfd1e4e0df89d7a1f2defd785ed34acb98"
+        },
+        {
+          "name": "PZ2.json",
+          "sha": "64eed5b3e0b42ca2892a93e27aa9dec5957fb5b6"
+        },
+        {
+          "name": "RAV.json",
+          "sha": "19b1557b894a35bd4718bb701a989344a2670409"
+        },
+        {
+          "name": "RIX.json",
+          "sha": "c34f1a9197ad79c65a9dc089425c7690e8273531"
+        },
+        {
+          "name": "RNA.json",
+          "sha": "c9a9b916eb8e87622153a9f449efc5fdf4c53d1f"
+        },
+        {
+          "name": "ROE.json",
+          "sha": "9894040338c81fec22b851831a748238d5392c86"
+        },
+        {
+          "name": "RTR.json",
+          "sha": "9352d119fa9c6bdcd1a7ded6cf1d21182718039a"
+        },
+        {
+          "name": "S99.json",
+          "sha": "1d032268d113ee07cc255311c630e1148ec91a31"
+        },
+        {
+          "name": "SCG.json",
+          "sha": "4e567affc0997ea2e1174dbe2e70adfee89c187d"
+        },
+        {
+          "name": "SHM.json",
+          "sha": "8868f6b52a30dfed557b15934462c2e9e84b9889"
+        },
+        {
+          "name": "SNC.json",
+          "sha": "6627be83faa7e6db1c6e4c69e98a3be70dfcc044"
+        },
+        {
+          "name": "SOI.json",
+          "sha": "90db48ffed5c4b8378279f660f8788a577769e5e"
+        },
+        {
+          "name": "SOK.json",
+          "sha": "bf70c04a406ee2f0c79a4d306ad187b2f7b04ed9"
+        },
+        {
+          "name": "SOM.json",
+          "sha": "58c3b678ced10c4fd55a0e7a1bb1fbeffcc66e3c"
+        },
+        {
+          "name": "SOS.json",
+          "sha": "eecb07b9ae9896903643b754f2876002abc69c7a"
+        },
+        {
+          "name": "SPM.json",
+          "sha": "a0ba1e4fc7ef1327d16b44f57b8ab923fc6835c6"
+        },
+        {
+          "name": "STH.json",
+          "sha": "754faec74ffdb7727500a9f6c0fd531a58ef903f"
+        },
+        {
+          "name": "STX.json",
+          "sha": "11fb7fa2c78922ecaa8f3d29ae69170fe8299a82"
+        },
+        {
+          "name": "TDM.json",
+          "sha": "b532a407a03de86946cc6618f6e31df05f670867"
+        },
+        {
+          "name": "THB.json",
+          "sha": "b317fd34ee95b8f39de148a09508f5a585b3cc01"
+        },
+        {
+          "name": "THS.json",
+          "sha": "b744d4aec95369e0a78d9482a5bd06d009dedf29"
+        },
+        {
+          "name": "TLA.json",
+          "sha": "616174ff339829ff7e9a108bf94fe98300f766fb"
+        },
+        {
+          "name": "TLE.json",
+          "sha": "d8ac16b6f7d7f553a568822b9d89659a2270b735"
+        },
+        {
+          "name": "TMC.json",
+          "sha": "45ac0524a6c96bdc5c41dc11e74184880bfd9089"
+        },
+        {
+          "name": "TMP.json",
+          "sha": "210bc7886dc2fd584b3cabea2a783fc596966695"
+        },
+        {
+          "name": "TMT.json",
+          "sha": "0a1e5400ac5a24832f8d18ce8dda20376c15cd69"
+        },
+        {
+          "name": "TOR.json",
+          "sha": "d217e69f9c970c47733945eaf04222ac25ff46dd"
+        },
+        {
+          "name": "TRC.json",
+          "sha": "e5ee3af981ac2126d13fecc5bd33959b7b2a4d05"
+        },
+        {
+          "name": "TSP.json",
+          "sha": "ddab2a813b1158a55b267e42e744663b5aac443d"
+        },
+        {
+          "name": "UDS.json",
+          "sha": "46ac41176acee98a4c75afe7dab72cfa18bac0a7"
+        },
+        {
+          "name": "ULG.json",
+          "sha": "1a82f68a88acc62a6bb1fff80a55a92e18a246ce"
+        },
+        {
+          "name": "USG.json",
+          "sha": "a07021c4831e5b8c2275c137692cc79b2a5df8bf"
+        },
+        {
+          "name": "VIS.json",
+          "sha": "2dcfb5420ed2292b451bd0e8b2bdda16ba44a9e2"
+        },
+        {
+          "name": "VOC.json",
+          "sha": "319adde898689edd51c90b8c1916564cab6874db"
+        },
+        {
+          "name": "VOW.json",
+          "sha": "2ceac2735b918fbd427540485d64992b54ad1c42"
+        },
+        {
+          "name": "WAR.json",
+          "sha": "3872a9612d70781d8382652a17119039aa2651bf"
+        },
+        {
+          "name": "WOE.json",
+          "sha": "d0636e26cbd9d613bb6d63674f7abcf68e647588"
+        },
+        {
+          "name": "WTH.json",
+          "sha": "0e24348c9af8ed23d6b1e5a2567970dd09e312a3"
+        },
+        {
+          "name": "WWK.json",
+          "sha": "8da3107b532a9ef22c1ec47d53db8fa5abbe9d4a"
+        },
+        {
+          "name": "XLN.json",
+          "sha": "950251e93cae9b6e55ed4e2c818842e14fbd35ce"
+        },
+        {
+          "name": "ZEN.json",
+          "sha": "95ccbc0caa5e441673c6668c15ccc8f0040ef731"
+        },
+        {
+          "name": "ZNR.json",
+          "sha": "b26cd80bbb26c12a8470b9e74df2ef47663b1ad9"
+        }
+      ]
+    }
+  ],
+  "early_to_current": [
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r1-20261029/PROTOCOL.json",
+      "status": "added",
+      "sha": "5de7b3a29b79e405b9320dab1ee5eebfb0e90a15"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r1-20261029/RECEIVE.py",
+      "status": "added",
+      "sha": "e0d9fe47835c2ea5418fc71fc086ca2a8c9fe8b2"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r1-20261029/SOURCE_REVIEW.json",
+      "status": "added",
+      "sha": "4646ff28e2579f4c1b8d28d92b86d8e4f6edf9d7"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r1-20261029/SYNTHETIC_CHECKS.json",
+      "status": "added",
+      "sha": "e1e0fee9c5dab6d17f53d20ed28cdb4aca8c2f9f"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r1-20261029/check_receiver.py",
+      "status": "added",
+      "sha": "d5fd0e2c871d8e4447e2ba6749577d06ad273011"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r1-20261029/run.py",
+      "status": "added",
+      "sha": "399c91806b4f9c1837e61c13f9dff47862db3f72"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r1-20261029/validation.just",
+      "status": "added",
+      "sha": "b977995eb8e1621bd2e7b11633534d49cec6e9da"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r2-20261029/EARLY_CLB.json",
+      "status": "added",
+      "sha": "ca1d77af8c1807e9da4737b63b59a46336b4e791"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r2-20261029/PROTOCOL.json",
+      "status": "added",
+      "sha": "61a4cfea9e482150cccbccada8287d09bd0dfeaa"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r2-20261029/RECEIVE.py",
+      "status": "added",
+      "sha": "e0d9fe47835c2ea5418fc71fc086ca2a8c9fe8b2"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r2-20261029/SOURCE_REVIEW.json",
+      "status": "added",
+      "sha": "3be2644a9a1cc1a651a4bbad3bc9a577e26b6ac6"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r2-20261029/SYNTHETIC_CHECKS.json",
+      "status": "added",
+      "sha": "e1e0fee9c5dab6d17f53d20ed28cdb4aca8c2f9f"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r2-20261029/check_receiver.py",
+      "status": "added",
+      "sha": "d5fd0e2c871d8e4447e2ba6749577d06ad273011"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r2-20261029/run.py",
+      "status": "added",
+      "sha": "12d94687e8e2dd3f068bf113f3b0627115967702"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-r2-20261029/validation.just",
+      "status": "added",
+      "sha": "b977995eb8e1621bd2e7b11633534d49cec6e9da"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-received-r1-20261029/FAILURE_RECEIPT.json",
+      "status": "added",
+      "sha": "b2662f7164dccd63e7c9098f3ba840a7ed599937"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-received-r1-20261029/PINS.json",
+      "status": "added",
+      "sha": "ea9a52c5af73a840d79b4e0292fa217e45572e44"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-received-r1-20261029/metadata.json",
+      "status": "added",
+      "sha": "4f20d104fc5478b2f319f3d1ad901f19b1e1d691"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-admission-supplement-received-r1-20261029/original.zip.xz",
+      "status": "added",
+      "sha": "2a201372b680996aa02b4bf5a13c6a63c6498439"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/ADDED_CARD_CASES.json",
+      "status": "added",
+      "sha": "0a477c0f375875bcedd918449be2086412b46b97"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/CARD_GATE_IDENTITIES.json",
+      "status": "added",
+      "sha": "52a1d0a32d10502cc486fd4829407421777f5072"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/NPH.original.json",
+      "status": "added",
+      "sha": "e93ce6063162ba089377d4eeb9904c01bd6e9093"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/PROTOCOL.json",
+      "status": "added",
+      "sha": "3055e424aeddd3de54fe393b2538f3f404eeea20"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/RECEIVE.py",
+      "status": "added",
+      "sha": "ec9f90b34da17746f2cfda3fa4e54669e6bbf92b"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/SYNTHETIC_CHECKS.json",
+      "status": "added",
+      "sha": "02d466a8326bedcf7934f19152373d70488a54d9"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/audit.py",
+      "status": "added",
+      "sha": "8cf5d00b12d143ded919fd86c41727b20405c300"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/check_audit.py",
+      "status": "added",
+      "sha": "0f8a6103888e5df047a76795ab3c56f31b386336"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/derive_inventory.py",
+      "status": "added",
+      "sha": "5a3fdea63c04215d5919ee9f645c06b93f7065fe"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/run.py",
+      "status": "added",
+      "sha": "620219ebd3288fee96fbac9ec5d442ed8b3e57c2"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/snapshot_check.py",
+      "status": "added",
+      "sha": "b35ab0f8c910ece10ed6c3a8017643c9a85cb339"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/validation.just",
+      "status": "added",
+      "sha": "d1dfab61afa27347abc4aa16a030118b13b6bf4e"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-received-r1-20261029/DIAGNOSIS.json",
+      "status": "added",
+      "sha": "b2be6cd9d9e7fb385b105e1a2353ad68f343d336"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-received-r1-20261029/PINS.json",
+      "status": "added",
+      "sha": "b33538dd2cac38ba7aea1024d59a25108732165d"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-received-r1-20261029/RECEIVE.py",
+      "status": "added",
+      "sha": "ec9f90b34da17746f2cfda3fa4e54669e6bbf92b"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-received-r1-20261029/VERIFIED_RECEIPT.json",
+      "status": "added",
+      "sha": "df19977bdf6410d0d392a241315f3c73b7166022"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-received-r1-20261029/metadata.json",
+      "status": "added",
+      "sha": "2e59df8dd2e168deeab078ddc139ab760b3f97bd"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-dependent-received-r1-20261029/original.zip.xz",
+      "status": "added",
+      "sha": "963c09371c5411b364f142db661cd8a061a9ea9a"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-early-received-r3-20261029/PINS.json",
+      "status": "added",
+      "sha": "92d951e9d476c14570ee70abefbad5c0bbfdf18d"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-early-received-r3-20261029/VERIFIED_RECEIPT.json",
+      "status": "added",
+      "sha": "ce6db112a445857c0e238f8e7911495d8e6270c5"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-early-received-r3-20261029/metadata.json",
+      "status": "added",
+      "sha": "93a00030c52e9d5c0ffaa1995f31e03aa8ec8972"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-early-received-r3-20261029/original.zip.xz",
+      "status": "added",
+      "sha": "94f0ae3587b31762079f15ac2c44153238281040"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-early-receiving-r3-20261029/NEXT_ACTION.json",
+      "status": "added",
+      "sha": "78cd9185fa632d044f84710b510a182c076ce28d"
+    },
+    {
+      "path": "experiments/manual-transmission/research/spellskite-card-early-receiving-r3-20261029/PINS.json",
+      "status": "added",
+      "sha": "92d951e9d476c14570ee70abefbad5c0bbfdf18d"
+    },
+    {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/NPH.json",
+      "status": "modified",
+      "sha": "8848ad3f335ae5222a0c98c9d5bcd8500a10c63e"
+    }
+  ],
+  "reuse": {
+    "behavior": "346763001426d3650b70bf099291c0a777fed955",
+    "compatibility": "a50d97c6555386f2f6d8c5ae0acd4b1f33c7f5e9",
+    "assay": "25a9b86953e84125b0119d91d1dd80787eaf0b73",
+    "early": "0079ed1999182880c36903d00c263d6a4650bc03",
+    "dependent": "d547b90de1e442a4464111a8c831390d8182ebee"
+  },
+  "scope": "Assay production SDK/parser/build closure exact. Historical2000touchstone/exact51findings reused only on original corpus; fresh NPH/CLB evidence classifies changed NPH input. No claim that every unchanged card was re-assayed on refreshed corpus. All169other snapshot blobs identical to accepted compatibility. Runtime engine/server/AI/gym/client trees exact; changed card catalog dependencies are covered by original current388card/18980ordinary gates. Early production49scenarios/testbytes unchanged; only NPHsnapshot plus research evidence changed since accepted early source. No repeated suites.",
+  "external_peer_review": false
+}

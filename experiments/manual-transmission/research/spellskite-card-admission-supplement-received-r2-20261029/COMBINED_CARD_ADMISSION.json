@@ -1,0 +1,105 @@
+{
+  "state": "BOUNDED_SPELLSKITE_PRODUCTION_CARD_ADMISSION_ACCEPTED",
+  "source": "e584268b3ec556dd57fd791766a9fba01d77ac2a",
+  "tree": "b263c97305bbd8a37215572a93d5c01921a87005",
+  "proposal": "858dac7a631d9b357c2bf7f1694a3de4fd1c94ba",
+  "authorization_current": "9f96b3d429ad1cb5303c40712ea50f37b73272bc",
+  "scope": [
+    "canonical NPH159 discoverable Spellskite",
+    "CLB873 Printing reprint",
+    "exactly one additive NPH snapshot entry with original bytes and10entries retained"
+  ],
+  "source_changed_since_early": "Only NPH snapshot plus research records; source/test bodies identical. Independent GitHub compare44files recorded in DEPENDENCY_REUSE.json.",
+  "early": {
+    "receipt": "0079ed1999182880c36903d00c263d6a4650bc03",
+    "source": "f585282ef21e2611454b39e4354f25416c7c6602",
+    "run": 40808822961,
+    "artifact": 12869898161,
+    "manifest": 1076,
+    "compiles": 7,
+    "normal": 57,
+    "restored": 57,
+    "negative_assertion_witnesses": 14,
+    "passing_mutant_controls": 34,
+    "export": 1,
+    "protected_bindings": 197,
+    "production_scenarios": 49,
+    "behavior_families": 22
+  },
+  "dependent": {
+    "receipt": "d547b90de1e442a4464111a8c831390d8182ebee",
+    "source": "48beeca1fb5730b1a4ace43b3de6c2f22da3e82a",
+    "run": 40814222861,
+    "artifact": 12872214018,
+    "manifest": 5287,
+    "compiles": 1,
+    "card_passes": 388,
+    "ordinary_passes": 18980,
+    "exact_historical_skips": 43,
+    "original_failure_state_retained": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+    "collection_gap": "Only CLB final source bytes absent from original collection. Supplemental original includes initial/final same-source CLB equal accepted early export; no test rerun, no old receipt rewrite."
+  },
+  "supplement": {
+    "source": "e584268b3ec556dd57fd791766a9fba01d77ac2a",
+    "run": 40820716667,
+    "artifact": 12874910437,
+    "sha256": "7267dc85015f0dea0324ef7dc936569580bc791ad6d5e45a15edcbf5a2f90f99",
+    "manifest": 545,
+    "bindings": 249,
+    "compiles": 1,
+    "printing_exit": 0,
+    "metadata_fields_per_printing": 15,
+    "printings": 10,
+    "rulings": 6,
+    "image_http": [
+      200,
+      200
+    ]
+  },
+  "snapshot": {
+    "original_sha256": "88b21c3c6de85f734294bf1e9c56e06895eaebbccfccef8c2b8d78868650a21a",
+    "candidate_sha256": "9763d5f078c46ec32b7184aa7ccf0b5c68580934d2d80f11f30f0f14611db3d1",
+    "entry_sha256": "6bcb7c6358a587357d74c815fac39171fe54e4859e8f69b850e4eeda602a7003",
+    "original_entries": 10,
+    "added_entries": 1
+  },
+  "assay": "Classified per CLASSIFICATION.json. Spellskite DECLINED/NOT_COVERED; compile exit1 is not passing compilation. NPH7confirmed/3uncovered/1preexistingtextdiff;CLB14confirmed/2uncovered;0divergent/0undecodable. Proposal requires explicit classification, not grammar expansion. No parser result is promoted.",
+  "reuse": "DEPENDENCY_REUSE.json binds exact SDK/engine/server/client/AI/gym/generator/Assay/build code and169unchangedothergoldens. Earlier behavior34676300,compatibilitya50d97c6,Assay25a9b869 and actualUI/publicmatrix evidence retained; current changedcatalog dependencies qualified by dependent original.",
+  "ruling_case_mapping": {
+    "0": [
+      "SK zero target spell still permits activation",
+      "Spellskite actual activation targetCount=0",
+      "Spellskite actual trigger targetCount=0",
+      "SK original source legality"
+    ],
+    "1": [
+      "SK source departure returned=false",
+      "SK source departure returned=true",
+      "SK explicit original source legality"
+    ],
+    "2": [
+      "SK another-target relation cannot invalidate unchanged later slot",
+      "SK same controller whole group restriction",
+      "SK different controllers whole group restriction"
+    ],
+    "3": [
+      "SK cross instance duplicate retains old occurrence without retrigger",
+      "SK serialized choice rejects wrong identity and replays exactly"
+    ],
+    "4": [
+      "SK same instance replace exactly one and reject duplicate"
+    ],
+    "5": [
+      "SK dynamic count retains original declared count",
+      "SK matrix optional public named resolution"
+    ]
+  },
+  "blocker_removed": "Production-discovered Spellskite card admission and missingCLBcollection gate, with metadata/printing/snapshot/lint/Assay classification and dependent regressions received.",
+  "review": "Same-assistant independent raw receiving analysis; no external peer-review claim.",
+  "card_admission": true,
+  "multiplayer_admission": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "remaining": "Read governing Phase2 multiplayer admission contract, inventory remaining frozen cards/opponents/runtime/pilots/hidden-information/telemetry/replay, freeze bounded next gate. No official game authorization."
+}

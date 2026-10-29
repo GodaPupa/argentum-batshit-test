@@ -1,0 +1,39 @@
+{
+  "format": "Concatenate ordered part bytes then xz decompress to reproduce exact original ZIP",
+  "parts": [
+    {
+      "path": "original.zip.xz.part00",
+      "bytes": 6000000,
+      "sha256": "5378cae9c09f406a10b2558b4465bc1eedd46db79467ad823d64f672bc8e9ef0",
+      "git_blob": "06de8f9e7c7c5575e0a035a0e03ef83ac80c9069"
+    },
+    {
+      "path": "original.zip.xz.part01",
+      "bytes": 6000000,
+      "sha256": "555b16dd3ffade71fde13f6a0932345b7132412b87ef1ec3f2491443c0d3c450",
+      "git_blob": "9d6cfb08e0cdf9674bead4e682585946124174b7"
+    },
+    {
+      "path": "original.zip.xz.part02",
+      "bytes": 6000000,
+      "sha256": "f2f4add8ba0caf2ebd34a5c56484e98b89b7504d74f4408b80ad35d1042434fa",
+      "git_blob": "ab4a0376c9c87893608074f3c7f7672e1195b554"
+    },
+    {
+      "path": "original.zip.xz.part03",
+      "bytes": 6000000,
+      "sha256": "06d1eba3044c6491ab39cfa3ecd2044bf4c4866163f70e6a444ad9337599601f",
+      "git_blob": "971eaf1644f8b7f80979abfd8aea92418a5fdc24"
+    },
+    {
+      "path": "original.zip.xz.part04",
+      "bytes": 3227020,
+      "sha256": "c539b515182db3c8694a76f5d8428142c05207082d682b5e4568cc750d78f64f",
+      "git_blob": "f6ae029fc1cb000cb1cd9d8ad4b278e7e079b93a"
+    }
+  ],
+  "xz_bytes": 27227020,
+  "xz_sha256": "b5d6b73744b8a181ecb7fade9bddbdf50490c01dfba71511255148ef1f024958",
+  "original_zip_bytes": 28836543,
+  "original_zip_sha256": "7267dc85015f0dea0324ef7dc936569580bc791ad6d5e45a15edcbf5a2f90f99"
+}
