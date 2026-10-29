@@ -1709,7 +1709,7 @@ internal fun processChosenModeQueue(
     sourceName: String?,
     xValue: Int?,
     triggeringEntityId: EntityId?,
-    triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin?,
+    triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     allowCancelBackToModesList: List<Mode>?,
     outerTargets: List<com.wingedsheep.engine.state.components.stack.ChosenTarget>,
     outerNamedTargets: Map<String, com.wingedsheep.engine.state.components.stack.ChosenTarget>,
