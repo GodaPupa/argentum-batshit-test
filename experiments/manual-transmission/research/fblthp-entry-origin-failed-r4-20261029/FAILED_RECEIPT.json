@@ -1,0 +1,86 @@
+{
+  "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
+  "source": "027a20e5287be636170980b8b7237fccaa69fabb",
+  "tree": "a8486fea21e3ea7af7cf7bf2273feabb42c537fd",
+  "validation": "35effcea935216802be3550ef6d71af16420d7c3",
+  "workflow_blob": "82b78818e2d5782498b33b48ee29a536fa46f65c",
+  "run": 40915565531,
+  "job": 123594729427,
+  "attempt": 1,
+  "artifact": 12916242931,
+  "bytes": 5537704,
+  "sha256": "a27d92857f41d16dc4e59756050fd49571e21379cacd00bef33ccdf417f0842a",
+  "manifest_entries": 869,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "stages": {
+    "compile-normal": {
+      "compiled": true
+    },
+    "compile-missing-cast": {
+      "compiled": true
+    },
+    "compile-wrong-owner": {
+      "compiled": true
+    },
+    "compile-live-recapture": {
+      "compiled": true
+    },
+    "compile-copy-false-cast": {
+      "compiled": true
+    },
+    "compile-drop-queued": {
+      "compiled": true
+    },
+    "compile-drop-serialized": {
+      "compiled": true
+    },
+    "compile-ability-as-spell": {
+      "compiled": true
+    },
+    "compile-drop-modal": {
+      "compiled": true
+    }
+  },
+  "observed_reports": {
+    "legacy-modal": {
+      "reports": 1,
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "normal": {
+      "reports": 2,
+      "tests": 24,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "source_binding_phases_verified": [
+    "initial",
+    "final",
+    "compiled-restored"
+  ],
+  "failure": "Traceback (most recent call last):\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r4-20261029/run.py\", line 86, in <module>\n    try:main()\n        ~~~~^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r4-20261029/run.py\", line 73, in main\n    bind('compiled-restored');stage('legacy-modal','legacy','test',P['legacy_cases']);stage('normal','normal','test',P['normal_cases'])\n                                                                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r4-20261029/run.py\", line 63, in stage\n    result=compile_gate(folder) if kind=='compile' else reports(folder,expected,failures)\n                                                        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r4-20261029/audit.py\", line 16, in reports\n    assert (rc!=0)==bool(failures)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "exact_mutant_source_forms_verified": 8,
+  "legacy_modal_verified": {
+    "rows": 4,
+    "passes": 4,
+    "failures": {},
+    "skips": 0,
+    "identities": {
+      "rules-engine\tcom.wingedsheep.engine.handlers.continuations.ModalTargetForcednessTest\tresolution-time modal target is surfaced when the lone opponent may be declined": 1,
+      "rules-engine\tcom.wingedsheep.engine.handlers.continuations.ModalTargetForcednessTest\tresolution-time modal target still auto-selects the lone mandatory opponent": 1,
+      "rules-engine\tcom.wingedsheep.engine.handlers.continuations.ModalTargetForcednessTest\tstack-time modal target is surfaced when the lone opponent may be declined": 1,
+      "rules-engine\tcom.wingedsheep.engine.handlers.continuations.ModalTargetForcednessTest\tstack-time modal target still auto-selects the lone mandatory opponent": 1
+    }
+  },
+  "normal_observation": "23 passes,1 assertion failure,0 errors,0 skips; no behavioral negative controls executed.",
+  "cause": "Unchanged generic resumeChangeSpellTarget replaces TargetsComponent and calls checkForMore with empty events. No BecomesTargetEvent is emitted, so Fblthp spell-target trigger cannot fire. Exact baseline/current Git blob30966ffbfa84801761c6f98a33a2adecee627da9.",
+  "scope_blocker": "Existing generic ChangeTarget retarget event path is outside bounded entry-origin transport and card-registration changes. Repository verify requires stopping on pre-existing failures; concrete bounded repair proposal required. Accepted fixed-recipient Spellskite machinery remains unchanged.",
+  "accepted_feature_or_card_gates": []
+}
