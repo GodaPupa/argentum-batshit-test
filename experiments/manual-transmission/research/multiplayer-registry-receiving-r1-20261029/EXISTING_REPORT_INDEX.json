@@ -1,0 +1,594 @@
+{
+  "original_receipt": "d547b90de1e442a4464111a8c831390d8182ebee",
+  "original_run": 40814222861,
+  "original_artifact": 12872214018,
+  "scope": "Index of already received current ordinary reports; no repeated audit or new qualification. These reports alone do not satisfy exact Phase2 four-player/pilot/telemetry admission.",
+  "reports": [
+    {
+      "member": "ordinary/junit/ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.hidden.DeterminizerInvariantsTest.xml",
+      "sha256": "68ae4a6674be3e26f2c5450b6d71335f368e7282b73f30e74f7548405d01e3a4",
+      "class_name": "com.wingedsheep.ai.engine.hidden.DeterminizerInvariantsTest",
+      "tests": 13,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "sampling retains the pre-batching assignment and library sequence",
+        "library membership lookup retains duplicate occurrences and repeated player traversal",
+        "sampling preserves structure and everything visible to the viewer",
+        "the same seed samples the same world and a different seed can change it",
+        "an individually revealed hand card is pinned",
+        "known decklists subtract visible cards before sampling the hidden remainder",
+        "a publicly revealed top card stays pinned in the top library slot",
+        "a Mind Rot pause pins referenced hidden hand slots while unrelated library slots remain sampleable",
+        "a live Monstrous Emergence keeps its chosen hidden hand card fixed while other slots sample",
+        "an incomplete shared pin analysis leaves every hidden candidate identity unchanged",
+        "in-flight references are analyzed once for all players in a sample",
+        "a position without players does not analyze in-flight references",
+        "the viewer does not retain knowledge of their own library order"
+      ]
+    },
+    {
+      "member": "ordinary/junit/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.lobby.CommanderPodLobbyTest.xml",
+      "sha256": "27e884e8a49db79d16e95ad6e98e7d2b949b08f9d04189f640f11af550e6db6d",
+      "class_name": "com.wingedsheep.gameserver.lobby.CommanderPodLobbyTest",
+      "tests": 5,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a bracket honours the host's 1v1 preset",
+        "every single-pod table overrides it with the 40-life pod preset",
+        "the pod preset is paper multiplayer Commander: 40 life, 21 commander damage",
+        "switching a Commander Draft lobby from bracket to pod changes the life total it will start at",
+        "Commander rules are per-player at every table size \u2014 Format.Commander has no seat count"
+      ]
+    },
+    {
+      "member": "ordinary/junit/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark.xml",
+      "sha256": "6095c8e9300a7039c0a921c21d07e4b4c3e25a883c6ee1a4549d9dffac7a63fa",
+      "class_name": "com.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark",
+      "tests": 1,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "compact replay size over 10 random games (POR)"
+      ]
+    },
+    {
+      "member": "ordinary/junit/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest.xml",
+      "sha256": "168673d4e1e95d40ca6f3c75beddc691494e382e1f1c4500364b3ebcf21b61ee",
+      "class_name": "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest",
+      "tests": 2,
+      "skipped": 2,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "recorded games reconstruct to the full frame stream (no truncation)",
+        "a persistent yield set mid-game is captured and reproduced on reconstruction"
+      ]
+    },
+    {
+      "member": "ordinary/junit/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.CompactReplayReconstructionTest.xml",
+      "sha256": "e52281fbd21253ba2d5a59d94ecbb0e2cce9c3452b9f58b0b0e848d9cf0bcaa0",
+      "class_name": "com.wingedsheep.gameserver.replay.CompactReplayReconstructionTest",
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a recorded game reconstructs to a byte-identical final state and full frame stream",
+        "a game whose state was injected (no recorded setup) is not replayable"
+      ]
+    },
+    {
+      "member": "ordinary/junit/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "sha256": "f05a1fd4ab317a46e8ed5fc683296998d3e985f241c4b0c5b6c491871906e7d9",
+      "class_name": "com.wingedsheep.gameserver.replay.ReplayDurabilityTest",
+      "tests": 13,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a pinned definition shadows a card whose implementation changed since the recording",
+        "pinning preserves ability ids, which recorded yields are matched by",
+        "a recorded game re-simulates byte-identically after its cards are changed underneath it",
+        "a faithful reconstruction with checkpoints reports EXACT and the full frame stream",
+        "a checkpoint that no longer matches stops the replay instead of rendering a wrong game",
+        "a replay that no longer re-simulates is served from the archive, not truncated",
+        "a diverged replay with no archive degrades to the truncated stream, flagged",
+        "a faithful replay is served from the re-simulation, with scenario sharing intact",
+        "the viewer body splices into a well-formed response, and a malformed archive fails loudly",
+        "a v1 record (no checkpoints) still reconstructs, reported as unverified",
+        "pins round-trip through their own write-once column encoding",
+        "the durable codec round-trips every v2 field",
+        "a record written before v2 decodes with the new fields defaulted"
+      ]
+    },
+    {
+      "member": "ordinary/junit/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayStorageTest.xml",
+      "sha256": "7bda0284562d5e59d3fa312f87a7655d0443817654fd68b20c132afd33f2ee88",
+      "class_name": "com.wingedsheep.gameserver.replay.ReplayStorageTest",
+      "tests": 8,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "the in-memory store lists a player's finished games, newest first",
+        "an in-progress recording is listed for resume but never in a player's history",
+        "an abandoned recording is promoted to a finished, watchable replay",
+        "a flush that lands after game over cannot downgrade the finished record",
+        "an in-progress record stranded by a crash is finalized on the first sweep",
+        "a flush snapshot's fingerprint is the position its own action log produces",
+        "a recording whose flush captured the live position resumes",
+        "a recording that trails the recovered state stops rather than splicing onto a stale prefix"
+      ]
+    },
+    {
+      "member": "ordinary/junit/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayTruncationTest.xml",
+      "sha256": "c1f65e1120d8be7c1276bee54f4a86398c95fdf6ac39abd78f33df15352bc51b",
+      "class_name": "com.wingedsheep.gameserver.replay.ReplayTruncationTest",
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "the flag survives the store's gzip+base64 round trip",
+        "a record written before the flag existed reads as the complete game it was",
+        "the viewer is told the recording stops before the game did",
+        "an untruncated replay is served without a caveat"
+      ]
+    },
+    {
+      "member": "ordinary/junit/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayLegacyKickerDecodeTest.xml",
+      "sha256": "131c620125759aec8d68e461a2c6a8704dce11ec1ae00a6d5a3eab75fabe39b7",
+      "class_name": "com.wingedsheep.gameserver.replay.ReplayLegacyKickerDecodeTest",
+      "tests": 3,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a legacy wasKicked=true cast decodes as a KICKED declaration",
+        "a legacy wasKicked=false cast decodes as no declaration",
+        "a current record round-trips untouched"
+      ]
+    },
+    {
+      "member": "ordinary/junit/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.MultiplayerSessionTest.xml",
+      "sha256": "ec12d60ba9494f13ebd0136ca890a36cb279728e6c04d1d9201cd9bf7005a2b4",
+      "class_name": "com.wingedsheep.gameserver.session.MultiplayerSessionTest",
+      "tests": 5,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a four-player session seats all four players and reports three opponents each",
+        "seat roster is the turn order with the viewer's own seat flagged",
+        "each recipient sees only their own hand; every opponent hand is masked",
+        "spectator state carries the full seat roster and masks all hands",
+        "two-player is the degenerate case: one opponent, two seats"
+      ]
+    },
+    {
+      "member": "ordinary/junit/gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml",
+      "sha256": "340fe4fb381e917c959d013ce30c752615264f692ab0b0092b5e99336314f78f",
+      "class_name": "com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest",
+      "tests": 1,
+      "skipped": 1,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "inventory exact Phase 2 candidate decks without treating registry presence as rules qualification"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.core.CommanderSetupTest.xml",
+      "sha256": "53c63e5c43fff482debc4c7dbc55110b93cf423948998672aa43c315e0760b61",
+      "class_name": "com.wingedsheep.engine.core.CommanderSetupTest",
+      "tests": 5,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "default format is Standard with 20 life and library-only zone setup",
+        "Commander format starts both players at 40 life with their commander in the command zone",
+        "Team vs Team can enable Commander rules for every player",
+        "Commander format rejects players without a designated commander",
+        "Commander format rejects a commander name unknown to the card registry"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.hidden.HiddenSlotRewriteTest.xml",
+      "sha256": "7099b44977c5318969454a22d3b3b834bc7134b165185af477ebebc52d4fbdb2",
+      "class_name": "com.wingedsheep.engine.hidden.HiddenSlotRewriteTest",
+      "tests": 5,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "runtime blockers retain identity exclusions, decoration values, and sorted names",
+        "a Mind Rot paused graph pins its discard options but not an unrelated library slot",
+        "a Preordain scry pins the library slot it offers but not one buried below it",
+        "an incomplete paused projection is the shared in-flight answer",
+        "a missing or untraversable stack object makes the shared pin answer incomplete"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.hidden.HiddenWorldMaterializerTest.xml",
+      "sha256": "f52ad1b03bc684bb586ef30737bf8b2d7847d8f644d78da456d528456c5284bb",
+      "class_name": "com.wingedsheep.engine.hidden.HiddenWorldMaterializerTest",
+      "tests": 17,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "zone membership retains multiplicity and sorted refusal order",
+        "a Monstrous Emergence hand choice is pinned by the live stack object",
+        "explicit assignments preserve slots and unrelated state while installing future RNG",
+        "a refusal after a valid slot leaves the entire input world unchanged",
+        "repeated source definitions retain owner-specific validation and per-slot blockers",
+        "source validation observes registry changes between materialization requests",
+        "caller-generated assignments are reproducible and do not consume source randomness",
+        "a hidden card carrying battlefield last-known information is refused",
+        "a slot someone has already been shown is refused rather than keeping the reveal",
+        "a live stack pins the slots it targets and leaves the rest materializable",
+        "a Mind Rot pause pins the targeted opponent's referenced hand slots but not library slots",
+        "an empty assignment traverses a Mind Rot pause and installs the caller RNG",
+        "a paused continuation consumes the caller RNG only when its later shuffle executes",
+        "an incomplete paused-state projection refuses the whole request before assignments or RNG",
+        "a DFC back face cannot be materialized directly into a hidden zone",
+        "an unregistered replacement is a typed unsupported request",
+        "a materialized world can continue through ordinary engine simulation"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.AgateBladeAssassinMultiplayerTest.xml",
+      "sha256": "9d00b41d3b929596b7d7903e45191a644566acb29e51f959d9930543c947f8f6",
+      "class_name": "com.wingedsheep.engine.multiplayer.AgateBladeAssassinMultiplayerTest",
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "attack trigger drains only the defending player, not every opponent"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.AttackModeTest.xml",
+      "sha256": "c7bc2f8dac67d40cd71c6bb2663e9ba434537fc495c05ae467e50c63578efc6c",
+      "class_name": "com.wingedsheep.engine.multiplayer.AttackModeTest",
+      "tests": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "MULTIPLE lets the active player attack every opponent (CR 802)",
+        "LEFT restricts to the next seat, RIGHT to the previous seat (CR 803)",
+        "the seat helpers skip a player who has left the game (CR 800.4a)",
+        "in a two-player game every mode permits the sole opponent",
+        "MULTIPLE allows attacking any opponent",
+        "LEFT allows only the left neighbour and rejects the others",
+        "RIGHT allows only the right neighbour and rejects the others"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.CommanderPodTest.xml",
+      "sha256": "6e654b230a4dfe1008f2279b5a9bcd1bcc75e354609e576efbea0c7d81cf772a",
+      "class_name": "com.wingedsheep.engine.multiplayer.CommanderPodTest",
+      "tests": 9,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a four-seat pod gives every player 40 life and their own commander in their own command zone",
+        "a commander's combat damage is tallied against the player it actually attacked, not the pod",
+        "one commander's damage does not pool across the defenders it hit",
+        "21 damage from one commander eliminates exactly that defender, and the pod plays on",
+        "damage from three different commanders never aggregates on one defender (CR 903.10a)",
+        "the threshold is read from the format, so a pod preset's value applies at four seats",
+        "the zone choice asks one owner at a time, in turn order, with three commanders in graveyards",
+        "no seat is asked about a commander that is still in its command zone",
+        "a pod keeps four independent life totals \u2014 Commander shares nothing (CR 808.5 / 810.4 do not apply)"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.LeaveTheGameTest.xml",
+      "sha256": "b6b680c1ce0a0b2b4c902dec9b1489da98d5d3203aff60bb4a9c4d221da55d55",
+      "class_name": "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "tests": 16,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "conceding in a four-player pod marks the player left and continues the game",
+        "conceding in a two-player game still ends the game with the other player winning",
+        "the leaver's owned objects leave the game (CR 800.4a)",
+        "a creature the leaver stole reverts to its owner (control effect ends, CR 800.4a)",
+        "a creature the leaver owns but another player controls leaves the game (CR 800.4a)",
+        "the leaver's spells and abilities on the stack cease to exist (CR 800.4a)",
+        "combat continues when the leaver's attacker is removed (its blocker stops blocking it)",
+        "attackers aimed at the leaver are removed from combat; the rest of the attack stands (CR 800.4e)",
+        "a player who has left the game is not a legal attack target (CR 800.4a)",
+        "a resolved spell's effect outlives its caster's departure (CR 611.2c) \u2014 only source-bound durations end (CR 800.4a)",
+        "a departed player's 'until your next turn' effect lasts until that turn would have begun (CR 800.4m)",
+        "priority held by the leaver passes to the next player still in the game (CR 800.4a)",
+        "the active player conceding hands the turn forward without stalling",
+        "conceding while owning the pending decision abandons it instead of deadlocking the table (CR 800.4f\u2013h)",
+        "a pending decision addressed to another player survives the leaver's departure",
+        "the abandoned decision's priority skips an active player who has also left"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.DefendingPlayerAttackRestrictionTest.xml",
+      "sha256": "d455a45ab09122ac6c46c77bdc587a946d30985f704693465eb8df9912d8c68b",
+      "class_name": "com.wingedsheep.engine.multiplayer.DefendingPlayerAttackRestrictionTest",
+      "tests": 2,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "cannot attack the defender who controls no Island, even though another opponent does",
+        "can attack the defender who controls an Island"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest.xml",
+      "sha256": "44afb94edcadf6277e7caadd0b1ddc8d2317739115f21e40e2936040a11c0fe2",
+      "class_name": "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "CombatDefenders reports the right defending players in APNAP order",
+        "a defender can only block an attacker that is attacking them (CR 509.1b)",
+        "no seat gets a priority window between two defenders' block declarations (CR 802.4)",
+        "both defenders declare blockers (APNAP) and damage lands on the right players"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.MultiplayerMulliganTest.xml",
+      "sha256": "09fd03462292611b145c0c1a6df29ccbae819d27e41fc5395ab82bc910c534d3",
+      "class_name": "com.wingedsheep.engine.multiplayer.MultiplayerMulliganTest",
+      "tests": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "free first mulligan discounts one card from the bottom count",
+        "two-player mulligan is the plain London Mulligan (no discount)",
+        "the free mulligan grants one extra mulligan before the bottom-7 cap",
+        "a multiplayer game (>2 players) sets freeMulligan on every player",
+        "a two-player game does not set freeMulligan",
+        "first multiplayer mulligan bottoms 0 cards, second bottoms 1",
+        "first two-player mulligan bottoms 1 card"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.MultiplayerSmokeTest.xml",
+      "sha256": "e94853c7afd8290988ca63238a2709704204c39422707acc2070530f87ae81f0",
+      "class_name": "com.wingedsheep.engine.multiplayer.MultiplayerSmokeTest",
+      "tests": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a four-player game initializes with four seats in turn order",
+        "getOpponents returns the three other players in turn order",
+        "getOpponents and activePlayers exclude a player who has lost",
+        "priority round-trips through all four players and a full turn cycle advances to the next seat",
+        "turnNumber counts player turns and keeps advancing after a seat is eliminated",
+        "an EachOpponent life-loss effect hits all three opponents and not the controller",
+        "Player.DefendingPlayer resolves to the player the source is attacking (CR 802.2a)"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.OpponentDeciderChoiceTest.xml",
+      "sha256": "dd7053051657cd46726bc36a2b12a74c9ea50959b2367ed7071a7d7be1112095",
+      "class_name": "com.wingedsheep.engine.multiplayer.OpponentDeciderChoiceTest",
+      "tests": 4,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "multiplayer ChoosePile: the controller picks which opponent chooses a pile",
+        "two-player ChoosePile: the sole opponent is forced, with no extra prompt",
+        "the pick is shared vocabulary: SelectFromCollection routes to the chosen opponent too",
+        "each opponent-chooses step gets its own pick \u2014 the first is not reused"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.ReplacementTeamAwarenessTest.xml",
+      "sha256": "443782760985cc56b985608fee5dc70b2c715c1008698b8411540b998b150a71",
+      "class_name": "com.wingedsheep.engine.multiplayer.ReplacementTeamAwarenessTest",
+      "tests": 6,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "DrawEvent(EachOpponent) matches only opposing-team draws, not a teammate's",
+        "DrawCardsEvent(EachOpponent) matches only opposing-team draws, not a teammate's",
+        "PreventLifeGain(EachOpponent) locks the opposing team, never the controller's teammate (CR 810.9g)",
+        "ModifyLifeGain(EachOpponent) scales the opposing team's gains, not the teammate's",
+        "'whenever an opponent gains life' does not trigger off a teammate's gain",
+        "EachOpponent still matches every other seat in a non-team game"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TeamVsTeamTest.xml",
+      "sha256": "3a73ece043f214fa24a8625d420662f98774b529a394104e4b1f1ecebac12ef4",
+      "class_name": "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "tests": 14,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a randomly chosen first team starts with the seat left of its midpoint, and turn order wraps the table (CR 808.4)",
+        "each player has their own life total; damaging one teammate doesn't touch the other (CR 808.5)",
+        "teammates have distinct life owners (no canonical pooling)",
+        "a player at 0 life loses ALONE; the teammate plays on and the game continues (CR 104.3b)",
+        "a team loses only once ALL its members are out; the other team wins together (CR 104.2c)",
+        "conceding eliminates only the conceding player; the teammate fights on (no 810.8a propagation)",
+        "a can't-lose grant protects only its controller, not the whole team (CR 808 / normal 104)",
+        "poison is per-player at threshold 10; one poisoned player loses alone",
+        "poison does NOT pool across the team \u2014 8 + 7 = 15 kills no one (each is below 10)",
+        "opponents exclude teammates; teammates are recognised",
+        "turn ownership is individual: only the active player owns the turn; a teammate does not",
+        "each player draws on their own turn; no first-turn draw skip in a 4-player game (CR 103.8c)",
+        "the turn passes to the next individual player, not skipping the whole team",
+        "only the directly-attacked player defends; a teammate is not pulled in as a defender"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.ThoughtStalkerWarlockConditionTest.xml",
+      "sha256": "d019c31757f19dc9760a2b5bbba49289fdcbe5d3776a2fc9a759ad7913a830a1",
+      "class_name": "com.wingedsheep.engine.multiplayer.ThoughtStalkerWarlockConditionTest",
+      "tests": 1,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "condition binds to the chosen target opponent, not any opponent"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest.xml",
+      "sha256": "c5f5b09cef225d2cb27e4dc4fd15fbd8104f511dd20b862fb7278753220f0d51",
+      "class_name": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "tests": 9,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a creature attacks the opposing team, never a teammate (CR 805.10b)",
+        "the combined attack may include creatures controlled by BOTH active-team members (CR 805.10b)",
+        "one declaration is the whole team's \u2014 the teammate may pass and can't add a second wave (CR 805.10b)",
+        "the whole nonactive team defends \u2014 even an un-attacked teammate is a defending player (CR 805.10a)",
+        "a defending creature may block an attacker aimed at its TEAMMATE (CR 805.10d)",
+        "a member of the attacking team cannot declare blockers (CR 805.10a)",
+        "the teammate's attackers survive a state-based-action pass (CR 805.10a / CR 506.4)",
+        "both defenders' blockers survive a state-based-action pass (CR 805.10d / CR 506.4)",
+        "an attacker stolen by the DEFENDING team is still removed from combat (CR 506.4)"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantSecondHeadTurnTest.xml",
+      "sha256": "7cee2f0ca5fa7f13ce8913bab493eb8770dcef8dc33a12f1ae7e981082f243b2",
+      "class_name": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantSecondHeadTurnTest",
+      "tests": 7,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "the second head's 'lose at the next end step' fires on the team's end step (Final Fortune, CR 805.8)",
+        "'lose at the next end step' is stopped by a can't-lose grant, including a teammate's (CR 104.3 / 810.8a)",
+        "hijacking one head controls the whole team on its next turn (CR 805.8)",
+        "a step-keyed delayed trigger owned by the second head fires at the team's end step",
+        "the second head's 'until your next turn' effect expires when the team's next turn begins",
+        "the second head's Saga gets a lore counter at the team's precombat main phase (CR 714.3c)",
+        "'skip your combat phase' aimed at the second head skips the team's combat (CR 805.8)"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantSharedLifeTest.xml",
+      "sha256": "d2c6cdb204203d8e16c93cdb2fbfa6b7821b260bc5188c009c241b542ed58df6",
+      "class_name": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantSharedLifeTest",
+      "tests": 11,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "both teammates report the same shared life total, starting at 30",
+        "life loss by one teammate moves the single shared pool both teammates read",
+        "life gain by one teammate raises the shared total",
+        "a 'can't gain life' lock on one head closes the shared pool for the teammate too (CR 810.9g)",
+        "damage to a teammate reduces the shared team total",
+        "an EachOpponent loss drains BOTH players of the opposing team from one shared pool",
+        "an EachOpponent gain via GainLife also resolves per-opposing-player onto their shared pool",
+        "SetLifeTotal sets the team's shared total (CR 810.9c)",
+        "adjustLife / withLifeTotal resolver helpers target the team pool",
+        "when a team's shared total hits 0, both teammates are marked lost in one SBA pass",
+        "a non-team game is a pure pass-through: lifeTotal equals the player's own life"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantSetupTest.xml",
+      "sha256": "7f71695c15f1cc6603b1f5403228312317e86accdc375e29d08a34a5c0b86700",
+      "class_name": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantSetupTest",
+      "tests": 6,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a 2HG game boots into two teams of two at the shared 30-life starting value",
+        "teams / teamOf / teammatesOf group players by their team in turn order",
+        "teams grouping preserves turn order even when teammates are not adjacent seats",
+        "teamActivePlayers excludes a teammate who has lost the game",
+        "no-team games degrade to one singleton team per player",
+        "a teams config that does not partition every player exactly once is rejected"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantSharedTurnTest.xml",
+      "sha256": "c3f36848807dd6bb530135bc5a742a5abe38b9a34e30a2952f9753af407f029c",
+      "class_name": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantSharedTurnTest",
+      "tests": 6,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "isActiveTurnFor / getNextTeam know the team, not the individual",
+        "the starting team skips its first draw, but BOTH teammates draw on the next team's turn (CR 810.6 / 805.4b)",
+        "the turn passes to the next TEAM, and both teammates' turn counters advance",
+        "day stays day when the previous active player's teammate cast a spell (CR 502.2a)",
+        "night becomes day when the previous active player's teammate cast two spells (CR 502.2a)",
+        "the non-active teammate may play a land on the team's turn (CR 805.4c / 805.5a)"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest.xml",
+      "sha256": "77ba835ea194162d7d1fc98c94562c643ab2008db150a8543c85e054c8b739ce",
+      "class_name": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "tests": 10,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "a team at 0 shared life loses; the opposing team wins together (CR 810.8a/c)",
+        "conceding makes the whole team lose (CR 810.8b)",
+        "one teammate decking out loses the team, and the game-end reason is the real cause",
+        "poison is pooled by the team and the team loses at 15, not 10 (CR 810.8d / 810.10)",
+        "a team with 10 combined poison does NOT lose under the 15 threshold",
+        "a can't-lose grant on either teammate protects the whole team (CR 810.8a)",
+        "'you don't lose for having 0 or less life' on either head protects the whole team (CR 810.8a example)",
+        "'you win the game' wins for your whole team and defeats only opposing teams (CR 810.8a)",
+        "the game does not end while both teams still have a player standing",
+        "non-team game is unchanged: a player at 0 loses alone and poison threshold stays 10"
+      ]
+    },
+    {
+      "member": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest.xml",
+      "sha256": "3842e8802f52d01cc3e39445f2813e3a0d76bf8dbee06b3f0578d5c9e3396ec4",
+      "class_name": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "tests": 12,
+      "skipped": 0,
+      "failures": 0,
+      "errors": 0,
+      "identities": [
+        "hasPriority admits the baton holder's whole team, and nobody else (CR 805.5)",
+        "a free-for-all pod is untouched: priority is still one seat",
+        "Team vs. Team takes individual turns (CR 808.4), so priority stays individual too",
+        "a teammate may respond to their partner's spell while it is still on the stack",
+        "an opposing player still cannot act on the active team's priority",
+        "the chain: partner acts at sorcery speed without the baton making a lap (CR 805.5a)",
+        "an out-of-order action re-arms the whole team: every seat still gets its own window",
+        "the baton skips seats that already passed this round",
+        "a teammate who already passed this round can't pass again until someone acts",
+        "nextUnpassedPriorityAfter is plain getNextPlayer while nobody has passed",
+        "a teammate's cast is a real spell of theirs, not of the baton holder",
+        "priorityTeam is empty when nobody holds priority"
+      ]
+    }
+  ]
+}
