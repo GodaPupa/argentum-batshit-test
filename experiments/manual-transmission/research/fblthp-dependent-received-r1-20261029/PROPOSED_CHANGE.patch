@@ -1,0 +1,54 @@
+--- a/rules-engine/src/test/kotlin/com/wingedsheep/engine/triggers/BecomesTargetPlayerAndAbilityAxesTest.kt
++++ b/rules-engine/src/test/kotlin/com/wingedsheep/engine/triggers/BecomesTargetPlayerAndAbilityAxesTest.kt
+@@ -285,25 +285,11 @@
+         }
+ 
+         /**
+-         * **Characterization of a known bug, not endorsement.** The three retarget/reselect sites
+-         * (`ManaPaymentContinuationResumer.resumeChangeSpellTarget`, `ContestedRetargetLogic.advance`,
+-         * `ReselectTargetRandomlyExecutor`) rewrite a stack object's `TargetsComponent` without
+-         * emitting any [BecomesTargetEvent] — for players *and* for permanents alike.
+-         *
+-         * That is **wrong** under the rules, not an open question: CR 115.9c counts the objects and
+-         * players chosen as targets when the spell or ability was put on the stack "(as modified by
+-         * effects that changed those targets)", so a redirected object *is* one of its targets, and
+-         * by CR 603.2e a "becomes" trigger fires at the moment the named event happens — which for a
+-         * redirect is the moment the new object becomes a target. So ward (CR 702.21a) and every
+-         * other becomes-target trigger *should* fire on a Spellskite/Misdirection redirect and do
+-         * not.
+-         *
+-         * The bug predates this change and is orthogonal to it (the player half rides on the four
+-         * target-*declaration* sites), so it is pinned here rather than fixed — a fix newly wakes
+-         * ward across the whole pool and needs its own unit. This test therefore locks in
+-         * current-and-wrong behaviour: when that unit lands, **invert** this test, don't delete it.
++         * Generic retargeting must emit the newly targeted player's event with the original
++         * spell as its source. The prior zero-event characterization is archived with the
++         * original dependent failure; all other cases in this file remain unchanged.
+          */
+-        test("changing a spell's target to a player emits no BecomesTargetEvent (known bug, CR 115.9c)") {
++        test("changing a spell's target to a player emits exactly one correctly attributed BecomesTargetEvent") {
+             val driver = createDriver()
+             // Both spells are cast by the same player, back to back, so priority never has to
+             // change hands; an empty battlefield leaves the opposing player as the only legal
+@@ -327,9 +313,18 @@
+             decision.shouldNotBeNull()
+ 
+             val result = driver.submitCardSelection(driver.player1, listOf(driver.player1))
+-            withClue("the retarget path is silent for every target kind today") {
+-                becomesTargetEvents(result) shouldHaveSize 0
+-            }
++            result.error shouldBe null
++            val events = becomesTargetEvents(result)
++            events shouldHaveSize 1
++            val event = events.single()
++            event.targetEntityId shouldBe driver.player1
++            event.sourceEntityId shouldBe boltOnStack
++            event.controllerId shouldBe driver.player1
++            event.sourceIsSpell shouldBe true
++            event.targetIsPlayer shouldBe true
++            event.targetIsSpell shouldBe false
++            event.firstTimeByThisController shouldBe true
++            event.targetName shouldNotBe "Unknown"
+         }
+     }
+ 

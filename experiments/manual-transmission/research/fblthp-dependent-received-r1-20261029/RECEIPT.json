@@ -1,0 +1,16 @@
+{
+  "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
+  "source": "c81721a6312edef529218820a8dbf04f861443b0",
+  "validation": "6039c60756c11ba4a4e4bc4c8ffdb269def67a74",
+  "run": 40968021606,
+  "job": 123777376486,
+  "attempt": 1,
+  "artifact": 12941025496,
+  "bytes": 7231217,
+  "sha256": "fb013d7499f567d40a48838d5e09ad976d96d9f8ec564c838ede5756abdfd2b6",
+  "manifest_entries": 1736,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "stages": {},
+  "failure": "Traceback (most recent call last):\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-dependent-r1-20261029/run.py\", line 51, in <module>\n    try:main()\n        ~~~~^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-dependent-r1-20261029/run.py\", line 48, in main\n    for name in ['cards','ordinary']:stage(name,I[name])\n                                     ~~~~~^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-dependent-r1-20261029/run.py\", line 40, in stage\n    else:result=junit(folder,expected)\n                ~~~~~^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-dependent-r1-20261029/audit.py\", line 12, in junit\n    folder=Path(folder);assert int((folder/'exit.txt').read_text())==0\n                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}

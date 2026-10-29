@@ -1,0 +1,47 @@
+{
+  "state": "PROPOSED_NOT_AUTHORIZED_NOT_APPLIED",
+  "source": "c81721a6312edef529218820a8dbf04f861443b0",
+  "failure_run": 40968021606,
+  "artifact": 12941025496,
+  "required_scope": "Replace exactly one pre-existing known-bug zero-event characterization with a strict positive event regression for the already authorized generic retarget repair. Preserve its complete original source and failure as immutable archived evidence. No production change requested.",
+  "boundary": {
+    "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/triggers/BecomesTargetPlayerAndAbilityAxesTest.kt",
+    "original_git_blob": "9de28c3d3ce9d3e670b04cdbf1e5f2e372d5b80c",
+    "original_sha256": "d9368447497967d91ef501efbead4185a17d8d520eb02ed0917935000b5236c3",
+    "proposed_sha256": "c8f6cac1fb574e10818d9e8de33af042bb12d9c6d6a6d7e8f07f395d359b97c0",
+    "changed_test_cases": 1,
+    "unchanged_other_test_cases": 14,
+    "original_assertion": "becomesTargetEvents(result) shouldHaveSize 0",
+    "proposed_assertion": "exactly one event with correct target, original spell source, controller, spell/player axes and first-time attribution",
+    "patch": "PROPOSED_CHANGE.patch",
+    "candidate": "PROPOSED_BECOMES_TARGET_TEST.kt"
+  },
+  "why_additional_authority": "The explicit preserve-all-original-assertions constraint conflicts with the correct newly emitted event. The unchanged test has the same blob on preserved main and candidate, and its own comment says it characterizes a known bug. Existing generic-retarget authorization remains valid; this requests only an exception to assertion preservation for this one contradictory characterization. No runtime event suppression or suite filtering is permitted.",
+  "inventory_change": {
+    "old_identity": "rules-engine\tcom.wingedsheep.engine.triggers.BecomesTargetPlayerAndAbilityAxesTest\tchanging a spell's target to a player emits no BecomesTargetEvent (known bug, CR 115.9c)",
+    "new_identity": "rules-engine\tcom.wingedsheep.engine.triggers.BecomesTargetPlayerAndAbilityAxesTest\tchanging a spell's target to a player emits exactly one correctly attributed BecomesTargetEvent",
+    "multiplicity": 1,
+    "ordinary_rows": 19074,
+    "ordinary_passes_required": 19031,
+    "unchanged_skips": 43,
+    "cards": 389,
+    "requirement": "Only this exact bijective identity rename; no counts/floors/skips or other expectations change."
+  },
+  "conditions": [
+    "Archive the original full test bytes, original ZIP, failed assertion and all accepted/failed evidence before any implementation.",
+    "No production source changes; preserve all other14cases in this class and all Fblthp/generic/Spellskite assertions and target/source semantics.",
+    "Compile normal and each executable mutant form before running the15case class and generic26/Fblthp24 focused regressions.",
+    "Executable negative controls: suppress generic BecomesTarget emission and misattribute the original spell source kind. The revised case must fail exact assertions, not compilation; restore/rebind all source forms. Preserve existing positive/negative witnesses.",
+    "Rebind the one inventory identity only under explicit grant; all19074ordinaryrows19031passes43exactskips required, plus389cards, unchanged lint/snapshot/discovery gates. Reuse completed same-source card evidence only when full source/test bindings justify it.",
+    "Execute remaining coherent-client64/freshmetadata/rulings/printing/images/Assay/WAR/currentIR gates; classify declines explicitly.",
+    "Receive original qualification artifacts with exact pins, bytes/hash/manifest, raw identities/multiplicities/skips, protected bytes/restoration before feature/card admission.",
+    "Preserve82legacyfixtures,all protected entries,frozenManualv0.7,budgets,2Precision."
+  ],
+  "exclusions": [
+    "No unrelated test expectation changes, assertion deletion, skip/filter, threshold relaxation, or fixture normalization.",
+    "No unrelated protected paths, runtime refactoring, other missing cards, main merge, additional spending, multiplayer admission, official seeds or games."
+  ],
+  "existing_grants_preserved": true,
+  "sole_executor": "6adbe33033e481918659ce578f64f31e",
+  "schedule_unchanged": true
+}
