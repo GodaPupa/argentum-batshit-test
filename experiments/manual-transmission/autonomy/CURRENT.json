@@ -9,8 +9,8 @@
     "state": "ACTIVE",
     "owner": "manual-work-foreground-fblthp-2026-10-29T14:53:28.528Z",
     "claimed_utc": "2026-10-29T14:53:28.528Z",
-    "renewed_utc": "2026-10-29T15:43:17.765Z",
-    "expires_utc": "2026-10-29T16:28:17.765Z"
+    "renewed_utc": "2026-10-29T15:51:51.292Z",
+    "expires_utc": "2026-10-29T16:36:51.292Z"
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -43,7 +43,7 @@
     "planned_not_observed": {},
     "negative_scope": "Proposed only: see NEXT_ADMISSION acceptance_conditions; no Fblthp mutant compilation or witnesses claimed.",
     "source_delta": "Seven added research files only at proposal commit; no production/test/protected source or golden changed.",
-    "next_executable_action": "Qualification40904461170 is active on immutable sourcec838c4ea/validation93c77fd1. Do not duplicate, cancel or change frozen source. Prepare original-artifact receiver and isolated next-dependent-gate review. On terminal, check newer receipts/successors then receive original artifacts exactly once, verify all compile/test/negative/source/snapshot gates; no green-workflow acceptance. Pending additiveWAR/full card+Assay+same-source compatibility gates remain.",
+    "next_executable_action": "Dispatch exactly validation901e0120 on validation/manual-fblthp-entry-origin-early-r2-20261029 once. R1 original failure received166a54c7: collector doc-binding mismatch before compilation; unchanged runtime/assertions on R2sourcebfa09702. Compile normal/all8mutants then targeted/executable controls; prepare original receiver and isolated dependent review. No feature/card admission without every downstream gate.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -4227,23 +4227,22 @@
       null
     ],
     "source_protocol": {
-      "state": "RUNNING_COMPILE_FIRST",
-      "source": "c838c4eabbc1c2209228f1bb16fe861b2139d0eb",
-      "tree": "6d00e204519d2552abf2bfe9593e15e85a7fe339",
-      "validation": "93c77fd1e85126b68f89fe06babcda9b9e467455",
-      "protocol": "experiments/manual-transmission/research/fblthp-entry-origin-early-r1-20261029/PROTOCOL.json",
-      "protocol_blob": "2dbc98e1d829c4f6c31482ed98f923094dc73b7a",
-      "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r1-20261029.yml",
-      "workflow_blob": "1ae5de941ee365f32d8067ec59cd97d04e49f68d",
-      "branch": "validation/manual-fblthp-entry-origin-early-r1-20261029",
-      "normal_cases": 24,
-      "compile_forms": 9,
-      "mutants": 8,
-      "expected_negative_assertions": 25,
+      "source": "bfa09702758ded631bd8e81d3f2aa4206d38e84c",
+      "tree": "409c0678e481a3d052e2a358814535bc98692687",
+      "record": "experiments/manual-transmission/research/fblthp-entry-origin-early-r2-20261029",
+      "validation": "901e01202bc52a5d8c7d485187209a73f22dee44",
+      "validation_tree": "de272de4abd0d3550f438a13c22206080170a472",
+      "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r2-20261029.yml",
+      "workflow_blob": "19d951354a2b27d3c2acdc6a5c512ac357879d62",
+      "branch": "validation/manual-fblthp-entry-origin-early-r2-20261029",
+      "state": "FROZEN_READY_FOR_ONE_DISPATCH",
+      "implementation_source": "c838c4eabbc1c2209228f1bb16fe861b2139d0eb",
+      "source_delta": 6,
+      "runtime_changes": 0,
+      "assertion_changes": 0,
+      "original_failure_receipt": "166a54c7c8b25b7272a3f5fcc491f547f6fe8995",
       "feature_admitted": false,
-      "card_admitted": false,
-      "run": 40904461170,
-      "validation_tree": "ba57b532698425e3e782476fd2b98adb38339932"
+      "card_admitted": false
     },
     "prepared_receiver_history": [
       {
@@ -5884,7 +5883,9 @@
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
     "activity": "WORKING",
     "last_execution_owner": "manual-work-38ba11bc-c8ec-8327-883f-3e8d92a777c0",
-    "intervention_watch": "READ_ONLY"
+    "intervention_watch": "READ_ONLY",
+    "automation_run": "075b1bac-c324-8328-8079-a4939fd7e2c0",
+    "automation_reconciliation": "Current scheduled continuation context arrived in this same active session; existing owner retained, no competing worker created."
   },
   "blockers": [],
   "qualified_components": {
@@ -6604,23 +6605,22 @@
       "Additive-only protected WAR successor, full card/metadata/printing/snapshot/lint/Assay and dependent same-source compatibility still required."
     ],
     "source_protocol": {
-      "state": "RUNNING_COMPILE_FIRST",
-      "source": "c838c4eabbc1c2209228f1bb16fe861b2139d0eb",
-      "tree": "6d00e204519d2552abf2bfe9593e15e85a7fe339",
-      "validation": "93c77fd1e85126b68f89fe06babcda9b9e467455",
-      "protocol": "experiments/manual-transmission/research/fblthp-entry-origin-early-r1-20261029/PROTOCOL.json",
-      "protocol_blob": "2dbc98e1d829c4f6c31482ed98f923094dc73b7a",
-      "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r1-20261029.yml",
-      "workflow_blob": "1ae5de941ee365f32d8067ec59cd97d04e49f68d",
-      "branch": "validation/manual-fblthp-entry-origin-early-r1-20261029",
-      "normal_cases": 24,
-      "compile_forms": 9,
-      "mutants": 8,
-      "expected_negative_assertions": 25,
+      "source": "bfa09702758ded631bd8e81d3f2aa4206d38e84c",
+      "tree": "409c0678e481a3d052e2a358814535bc98692687",
+      "record": "experiments/manual-transmission/research/fblthp-entry-origin-early-r2-20261029",
+      "validation": "901e01202bc52a5d8c7d485187209a73f22dee44",
+      "validation_tree": "de272de4abd0d3550f438a13c22206080170a472",
+      "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r2-20261029.yml",
+      "workflow_blob": "19d951354a2b27d3c2acdc6a5c512ac357879d62",
+      "branch": "validation/manual-fblthp-entry-origin-early-r2-20261029",
+      "state": "FROZEN_READY_FOR_ONE_DISPATCH",
+      "implementation_source": "c838c4eabbc1c2209228f1bb16fe861b2139d0eb",
+      "source_delta": 6,
+      "runtime_changes": 0,
+      "assertion_changes": 0,
+      "original_failure_receipt": "166a54c7c8b25b7272a3f5fcc491f547f6fe8995",
       "feature_admitted": false,
-      "card_admitted": false,
-      "run": 40904461170,
-      "validation_tree": "ba57b532698425e3e782476fd2b98adb38339932"
+      "card_admitted": false
     },
     "accepted_receipt": {
       "commit": "e5c5b2a387b8e2cc528d17db7c20267e3938d516",
@@ -6632,10 +6632,13 @@
       "readback_verified": true
     },
     "latest_receiving": {
-      "commit": "0aac4ec80805ab48aff63826e264fe174ad26d1c",
-      "path": "experiments/manual-transmission/research/fblthp-metadata-received-r1-20261029",
-      "artifact": 12906973695,
-      "state": "ORIGINAL_METADATA_RECEIVED_NOT_FEATURE_ADMISSION"
+      "commit": "166a54c7c8b25b7272a3f5fcc491f547f6fe8995",
+      "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r1-20261029",
+      "state": "FAILED_ORIGINAL_RECEIVED_PRECOMPILE",
+      "artifact": 12910612626,
+      "manifest_entries": 363,
+      "feature_admitted": false,
+      "card_admitted": false
     },
     "receiving": {
       "commit": "e5c5b2a387b8e2cc528d17db7c20267e3938d516",
@@ -6660,7 +6663,7 @@
       "state": "EXPLICITLY_AUTHORIZED_IMPLEMENTATION_PENDING",
       "readback_verified": true
     },
-    "next_executable_action": "Qualification40904461170 is active on immutable sourcec838c4ea/validation93c77fd1. Do not duplicate, cancel or change frozen source. Prepare original-artifact receiver and isolated next-dependent-gate review. On terminal, check newer receipts/successors then receive original artifacts exactly once, verify all compile/test/negative/source/snapshot gates; no green-workflow acceptance. Pending additiveWAR/full card+Assay+same-source compatibility gates remain.",
+    "next_executable_action": "Dispatch exactly validation901e0120 on validation/manual-fblthp-entry-origin-early-r2-20261029 once. R1 original failure received166a54c7: collector doc-binding mismatch before compilation; unchanged runtime/assertions on R2sourcebfa09702. Compile normal/all8mutants then targeted/executable controls; prepare original receiver and isolated dependent review. No feature/card admission without every downstream gate.",
     "actual_stopping_reason": null,
     "continuation_state": "WORKING_AUTHORIZED_FBLTHP",
     "read_sections": [
@@ -6767,7 +6770,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-29T15:44:37.983Z",
+  "updated_utc": "2026-10-29T15:51:51.292Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -8722,6 +8725,15 @@
       "no_newer_receipts": true,
       "source_delta_verified": 31,
       "validation_delta_verified": 1
+    },
+    "fblthp_early_r2": {
+      "utc": "2026-10-29T15:51:51.292Z",
+      "owner": "manual-work-foreground-fblthp-2026-10-29T14:53:28.528Z",
+      "automation_run": "075b1bac-c324-8328-8079-a4939fd7e2c0",
+      "active_workflows": [],
+      "ignored_ancient_pest": 34749202144,
+      "newer_receipts": false,
+      "source_and_validation_deltas_verified": true
     }
   },
   "spellskite_card_early_r1": {
@@ -9439,7 +9451,7 @@
     "manifest_entries": 15
   },
   "fblthp_entry_origin_early_r1": {
-    "state": "RUNNING_COMPILE_FIRST",
+    "state": "FAILED_PRECOMPILE_BINDING_RECEIVED",
     "source": "c838c4eabbc1c2209228f1bb16fe861b2139d0eb",
     "tree": "6d00e204519d2552abf2bfe9593e15e85a7fe339",
     "validation": "93c77fd1e85126b68f89fe06babcda9b9e467455",
@@ -9455,6 +9467,74 @@
     "feature_admitted": false,
     "card_admitted": false,
     "run": 40904461170,
-    "validation_tree": "ba57b532698425e3e782476fd2b98adb38339932"
+    "validation_tree": "ba57b532698425e3e782476fd2b98adb38339932",
+    "receipt": {
+      "sha": "166a54c7c8b25b7272a3f5fcc491f547f6fe8995",
+      "tree": "44eea976a1f875f9667d0bc5eb4f61aee51300c9",
+      "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r1-20261029",
+      "entries": [
+        {
+          "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r1-20261029/FAILED_RECEIPT.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "16854bfbf6d9052ccb7ee954ad9040bf41696b5d"
+        },
+        {
+          "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r1-20261029/FAILURE.txt",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "f56fb1b404b6d4b8ced33cd6d1ce5b51ad925954"
+        },
+        {
+          "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r1-20261029/PINS.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "a7b636287eab95301c89902421990eece72f2b75"
+        },
+        {
+          "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r1-20261029/RUN.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "09a05bd3087f37fa74ecbecddf48652535ee57eb"
+        },
+        {
+          "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r1-20261029/JOBS.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "bae8e60724d55f67f90dd44ca9eb910c39998e5a"
+        },
+        {
+          "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r1-20261029/ARTIFACTS.json",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "761f079a4775ff41f7f5a1bc88cb7fdbd39b5a11"
+        },
+        {
+          "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r1-20261029/original.zip",
+          "mode": "100644",
+          "type": "blob",
+          "sha": "3ae8295be9b51f3fcb290e2117eff0fce2fd91e5"
+        }
+      ]
+    },
+    "failure": "Authorized SDK doc successor rejected by unchanged accepted-binding check; zero compilations/tests. Original363manifest archive verified."
+  },
+  "fblthp_entry_origin_early_r2": {
+    "source": "bfa09702758ded631bd8e81d3f2aa4206d38e84c",
+    "tree": "409c0678e481a3d052e2a358814535bc98692687",
+    "record": "experiments/manual-transmission/research/fblthp-entry-origin-early-r2-20261029",
+    "validation": "901e01202bc52a5d8c7d485187209a73f22dee44",
+    "validation_tree": "de272de4abd0d3550f438a13c22206080170a472",
+    "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r2-20261029.yml",
+    "workflow_blob": "19d951354a2b27d3c2acdc6a5c512ac357879d62",
+    "branch": "validation/manual-fblthp-entry-origin-early-r2-20261029",
+    "state": "FROZEN_READY_FOR_ONE_DISPATCH",
+    "implementation_source": "c838c4eabbc1c2209228f1bb16fe861b2139d0eb",
+    "source_delta": 6,
+    "runtime_changes": 0,
+    "assertion_changes": 0,
+    "original_failure_receipt": "166a54c7c8b25b7272a3f5fcc491f547f6fe8995",
+    "feature_admitted": false,
+    "card_admitted": false
   }
 }
