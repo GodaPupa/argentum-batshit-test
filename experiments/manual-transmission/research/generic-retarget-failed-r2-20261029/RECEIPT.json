@@ -1,0 +1,181 @@
+{
+  "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
+  "source": "79d4b9723eb1dc07a86a206bc939932113b3f55c",
+  "tree": "1cc99c903f1e2806b9e0c7866d1ae6837c318d34",
+  "validation": "f1d75852d45b3fdaa26f651e30f8745e63d400af",
+  "workflow_blob": "943184114a31a7759243ecd0fd88702fcd6104d4",
+  "run": 40943208221,
+  "job": 123691676229,
+  "attempt": 1,
+  "artifact": 12930105471,
+  "bytes": 5662741,
+  "sha256": "6f61aaf59be972d999f3ebbd0d3b8294686ee01c0bc77755ad476ed897dd3f2f",
+  "manifest_entries": 919,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "stages": {
+    "compile-normal": {
+      "compiled": true
+    },
+    "compile-missing-cast": {
+      "compiled": true
+    },
+    "compile-wrong-owner": {
+      "compiled": true
+    },
+    "compile-live-recapture": {
+      "compiled": true
+    },
+    "compile-copy-false-cast": {
+      "compiled": true
+    },
+    "compile-drop-queued": {
+      "compiled": true
+    },
+    "compile-drop-serialized": {
+      "compiled": true
+    },
+    "compile-ability-as-spell": {
+      "compiled": true
+    },
+    "compile-drop-modal": {
+      "compiled": true
+    },
+    "compile-gr-drop-events": {
+      "compiled": true
+    },
+    "compile-gr-wrong-source-kind": {
+      "compiled": true
+    },
+    "compile-gr-drop-authority": {
+      "compiled": true
+    },
+    "compile-gr-recapture-plan": {
+      "compiled": true
+    },
+    "compile-gr-recapture-stack-visit": {
+      "compiled": true
+    },
+    "compile-gr-recapture-recipient-visit": {
+      "compiled": true
+    },
+    "compile-gr-bypass-current-legality": {
+      "compiled": true
+    }
+  },
+  "observed_reports": {
+    "generic-normal": {
+      "reports": 1,
+      "tests": 25,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "legacy-modal": {
+      "reports": 1,
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "normal": {
+      "reports": 2,
+      "tests": 24,
+      "failures": 1,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "source_binding_phases_verified": [
+    "initial",
+    "final",
+    "compiled-restored"
+  ],
+  "failure": "Traceback (most recent call last):\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/generic-retarget-early-r2-20261029/run.py\", line 91, in <module>\n    try:main()\n        ~~~~^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/generic-retarget-early-r2-20261029/run.py\", line 75, in main\n    bind('compiled-restored');stage('generic-normal','generic','test',P['generic_cases']);stage('legacy-modal','legacy','test',P['legacy_cases']);stage('normal','normal','test',P['normal_cases'])\n                                                                                                                                                  ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/generic-retarget-early-r2-20261029/run.py\", line 65, in stage\n    result=compile_gate(folder) if kind=='compile' else reports(folder,expected,failures)\n                                                        ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/generic-retarget-early-r2-20261029/audit.py\", line 16, in reports\n    assert (rc!=0)==bool(failures)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "generic_normal_verified": {
+    "rows": 25,
+    "passes": 25,
+    "failures": {},
+    "skips": 0,
+    "identities": {
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR source kind spell": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR source kind activation": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR source kind trigger": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR original groups optional": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR original groups division": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR original groups modal": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR original groups splice": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR ward ordering spell pay=false": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR ward ordering spell pay=true": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR ward ordering activation pay=false": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR ward ordering activation pay=true": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR stale expected plan": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR stale object visit recipient": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR stale object visit stack": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR illegal target after pause": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR original controller rejects opponent hexproof": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR stale decision response": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR unoffered and original recipients": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR missing authority never reconstructs groups": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR Meddle filters players and emits spell event": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR Meddle cannot redirect ability": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR player-only redirect preserves its restriction": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR current-target controller restriction fails closed": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR continuation without snapshot is harmless": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.GenericRetargetContinuationTest\tGR continuation rejects multiple selections": 1
+    }
+  },
+  "legacy_verified": {
+    "rows": 4,
+    "passes": 4,
+    "failures": {},
+    "skips": 0,
+    "identities": {
+      "rules-engine\tcom.wingedsheep.engine.handlers.continuations.ModalTargetForcednessTest\tresolution-time modal target is surfaced when the lone opponent may be declined": 1,
+      "rules-engine\tcom.wingedsheep.engine.handlers.continuations.ModalTargetForcednessTest\tresolution-time modal target still auto-selects the lone mandatory opponent": 1,
+      "rules-engine\tcom.wingedsheep.engine.handlers.continuations.ModalTargetForcednessTest\tstack-time modal target is surfaced when the lone opponent may be declined": 1,
+      "rules-engine\tcom.wingedsheep.engine.handlers.continuations.ModalTargetForcednessTest\tstack-time modal target still auto-selects the lone mandatory opponent": 1
+    }
+  },
+  "normal_failure_verified": {
+    "rows": 24,
+    "passes": 23,
+    "failures": {
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\ta spell redirected to Fblthp causes the same self shuffle": {
+        "type": "org.opentest4j.AssertionFailedError",
+        "frame": "FblthpTheLostScenarioTest.kt:217",
+        "message": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null."
+      }
+    },
+    "skips": 0,
+    "identities": {
+      "rules-engine\tcom.wingedsheep.engine.scenarios.EntryOriginRuntimeTest\tzone condition survives polymorphic SDK serialization": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.EntryOriginRuntimeTest\tevent capture keeps both direct and cast zones and the exact entry object": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.EntryOriginRuntimeTest\tnon entry events cannot provide battlefield entry provenance": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.EntryOriginRuntimeTest\tunknown legacy origin is false and its default remains omitted": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.EntryOriginRuntimeTest\towner constraint distinguishes the controller library from another library": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.EntryOriginRuntimeTest\tunrelated triggering entity cannot borrow captured origin": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.EntryOriginRuntimeTest\tstack and nested effect continuation serialize the same captured origin": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.EntryOriginRuntimeTest\teach entry keeps its own immutable origin across successive visits": 1,
+      "rules-engine\tcom.wingedsheep.engine.scenarios.EntryOriginRuntimeTest\tqueued modal and nested choices retain origin through every serialized pause": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\tcast from hand draws exactly one card": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\tcast from library draws exactly two cards": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\tdirect library entry draws exactly two cards": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\topponent library entry under our control draws exactly one card": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\tlibrary entry still draws two after Fblthp leaves before the trigger resolves": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\tblink gives the new exile-entry trigger one card and preserves the old library trigger's two": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\tinitial spell targeting shuffles Fblthp before that spell resolves": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\ta spell redirected to Fblthp causes the same self shuffle": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\ttargeting Fblthp with an ability does not cause a shuffle": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\ta spell targeting another creature does not shuffle Fblthp": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\tcanonical WAR discovery supplies exactly one Fblthp with both abilities": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\texile from library then actual exile cast draws only one": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\ta copied library spell does not inherit actual cast origin": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\tlibrary entry bonus survives serialized stack after source departure": 1,
+      "mtg-sets/2017-2022/tests\tcom.wingedsheep.engine.scenarios.FblthpTheLostScenarioTest\tself shuffle still resolves after the targeting spell is countered": 1
+    }
+  },
+  "diagnosis": "All16forms compiled; generic25/legacy4 pass, unchanged Fblthp23/24 pass. Actual ordinary spell producer stores TargetsComponent without CurrentTargetPlan; new generic guard prevents menu at217. Bounded supporting repair handles only single mandatory legacy requirement with no authoritative/original slot plan, no division/modal/splice; does not infer omitted groups. All existing assertions preserved."
+}

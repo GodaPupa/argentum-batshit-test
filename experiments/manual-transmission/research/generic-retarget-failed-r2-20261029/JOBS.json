@@ -1,0 +1,121 @@
+{
+  "total_count": 1,
+  "jobs": [
+    {
+      "id": 123691676229,
+      "run_id": 40943208221,
+      "workflow_name": "Manual generic retarget and Fblthp early R2",
+      "head_branch": "validation/manual-generic-retarget-early-r2-20261029",
+      "run_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/runs/40943208221",
+      "run_attempt": 1,
+      "node_id": "CR_kwDOUSZvqc8AAAAczJkyRQ",
+      "head_sha": "f1d75852d45b3fdaa26f651e30f8745e63d400af",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/jobs/123691676229",
+      "html_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/40943208221/job/123691676229",
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-10-29T19:47:19Z",
+      "started_at": "2026-10-29T19:47:21Z",
+      "completed_at": "2026-10-29T20:07:17Z",
+      "name": "verify",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-29T19:47:22Z",
+          "completed_at": "2026-10-29T19:47:24Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-29T19:47:24Z",
+          "completed_at": "2026-10-29T19:48:00Z"
+        },
+        {
+          "name": "Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-29T19:48:00Z",
+          "completed_at": "2026-10-29T19:48:00Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-29T19:48:00Z",
+          "completed_at": "2026-10-29T19:48:04Z"
+        },
+        {
+          "name": "Install approved locked recipe runner",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-29T19:48:04Z",
+          "completed_at": "2026-10-29T19:48:21Z"
+        },
+        {
+          "name": "Compile sixteen forms then generic retarget and unchanged Fblthp controls",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 6,
+          "started_at": "2026-10-29T19:48:21Z",
+          "completed_at": "2026-10-29T20:07:11Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-29T20:07:11Z",
+          "completed_at": "2026-10-29T20:07:14Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12,
+          "started_at": "2026-10-29T20:07:14Z",
+          "completed_at": "2026-10-29T20:07:14Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 13,
+          "started_at": "2026-10-29T20:07:14Z",
+          "completed_at": "2026-10-29T20:07:14Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-29T20:07:14Z",
+          "completed_at": "2026-10-29T20:07:15Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-29T20:07:15Z",
+          "completed_at": "2026-10-29T20:07:15Z"
+        }
+      ],
+      "check_run_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/check-runs/123691676229",
+      "labels": [
+        "ubuntu-latest"
+      ],
+      "runner_id": 1000023165,
+      "runner_name": "GitHub Actions 1000023165",
+      "runner_group_id": 0,
+      "runner_group_name": "GitHub Actions"
+    }
+  ]
+}
