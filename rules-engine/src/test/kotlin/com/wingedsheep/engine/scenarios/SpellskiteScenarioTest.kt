@@ -26,32 +26,15 @@ import com.wingedsheep.sdk.dsl.*
 import com.wingedsheep.sdk.scripting.targets.*
 import io.kotest.matchers.shouldBe
 
-/** Test-local Spellskite qualification; no discoverable production definition. */
+/** The original 49 acceptance cases, now bound to the discoverable production card. */
 class SpellskiteScenarioTest : ScenarioTestBase() {
     init {
-        val skiteDefinition = card("Spellskite") {
-            manaCost = "{2}"; typeLine = "Artifact Creature — Phyrexian Horror"; power = 0; toughness = 4
-            activatedAbility {
-                cost = Costs.Mana("{U/P}")
-                val selectedStack = target("spell or ability", Targets.SpellOrAbility)
-                effect = Effects.ChangeTargetTo(stackObject = selectedStack, recipient = EffectTarget.Self)
-            }
-        }
+        val skiteDefinition = requireNotNull(cardRegistry.getCard("Spellskite"))
 
         for (kind in listOf("activation", "trigger")) for (targetCount in listOf(0, 1))
             for (payLife in listOf(false, true)) {
                 test("Spellskite actual $kind targetCount=$targetCount payLife=$payLife") {
-                    val definition = card("Spellskite") {
-                        manaCost = "{2}"
-                        typeLine = "Artifact Creature — Phyrexian Horror"
-                        power = 0; toughness = 4
-                        activatedAbility {
-                            cost = Costs.Mana("{U/P}")
-                            val selectedStack = target("spell or ability", Targets.SpellOrAbility)
-                            effect = Effects.ChangeTargetTo(stackObject = selectedStack, recipient = EffectTarget.Self)
-                        }
-                    }
-                    cardRegistry.register(definition)
+                    val definition = requireNotNull(cardRegistry.getCard("Spellskite"))
                     val game = scenario().withPlayers("One", "Two").withPriorityPlayer(2)
                         .withCardOnBattlefield(1, "Grizzly Bears")
                         .withCardOnBattlefield(1, "Hill Giant")
@@ -132,7 +115,6 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
                 spell { reqs.forEachIndexed { index, requirement -> target(requirement.id ?: "fixture-$index", requirement) }; effect = destroy }
             }
             cardRegistry.register(spell); cardRegistry.register(splice)
-            cardRegistry.register(skiteDefinition)
             val emitter = card("Spellskite Ward Fixture") {
                 manaCost = "{2}"; typeLine = "Enchantment"
                 staticAbility { ability = GrantWard(cost = WardCost.Life(2), filter = GroupFilter(GameObjectFilter.Creature.youControl())) }

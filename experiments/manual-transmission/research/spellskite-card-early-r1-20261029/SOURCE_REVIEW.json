@@ -1,0 +1,50 @@
+{
+  "state": "OWNER_STATIC_REVIEW_NOT_EXTERNAL_INDEPENDENT_REVIEW",
+  "authorization": "9f96b3d429ad1cb5303c40712ea50f37b73272bc",
+  "scope": [
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Spellskite.kt",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/cards/SpellskiteReprint.kt",
+    "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/SpellskiteRegistrationTest.kt",
+    "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/SpellskiteSnapshotExportTest.kt",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellskiteScenarioTest.kt"
+  ],
+  "mechanical_definition": "Same DSL operations as accepted 49case fixture; metadata exact archived NPH/CLB proposal; six official rulings. Catalog already discovers both sets.",
+  "assertions_preserved": 101,
+  "original_cases_preserved": 49,
+  "scenario_binding": "Two local definitions replaced by required registered production lookup; local Spellskite registration removed. All case bodies and assertions otherwise unchanged.",
+  "protected_snapshot": "Original exact bytes archived. No source snapshot changes in early stage; compiled candidate is original-artifact output for subsequent immutable successor review.",
+  "mutants": {
+    "blue-only": [
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR02 mechanics equal accepted test-local definition",
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR03 Phyrexian activation payment"
+    ],
+    "permanent-target": [
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR02 mechanics equal accepted test-local definition",
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR04 spell or ability target requirement"
+    ],
+    "wrong-recipient": [
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR02 mechanics equal accepted test-local definition",
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR05 fixed self recipient"
+    ],
+    "absent-discovery": [
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR01 unique canonical discovery in NPH",
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR02 mechanics equal accepted test-local definition",
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR03 Phyrexian activation payment",
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR04 spell or ability target requirement",
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR05 fixed self recipient",
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR06 canonical metadata and characteristics"
+    ],
+    "wrong-canonical": [
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR01 unique canonical discovery in NPH"
+    ],
+    "wrong-reprint": [
+      "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR07 CLB873 reprint discovered with exact metadata"
+    ]
+  },
+  "ux": "Existing accepted occurrence-choice and activated Phyrexian payment UI reused; no new SDK or UI semantics. Actual player paths remain covered by 49 production-bound cases.",
+  "compilation": "NOT_YET_EXECUTED; seven forms compile before behavioral or registration tests.",
+  "dependent_admission": "PENDING; early run is not card admission.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
