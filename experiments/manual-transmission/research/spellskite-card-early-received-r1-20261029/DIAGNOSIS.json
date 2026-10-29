@@ -1,0 +1,15 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "cause": "New production and registration test imported EffectTarget from sdk.scripting; immutable declaration is sdk.scripting.targets.EffectTarget. Kotlin reported two unresolved references in production file at 5:38 and17:82; test compilation did not run. Correct both new imports, no assertion or expectation changes.",
+  "declaration_blob": "6329954f48574b1ae3026b09a77d6476b92a7d18",
+  "diagnostics": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Spellskite.kt:5:38 Unresolved reference 'EffectTarget'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Spellskite.kt:17:82 Unresolved reference 'EffectTarget'."
+  ],
+  "executed_behavioral_tests": 0,
+  "negative_evidence": false,
+  "archive": "original.zip.xz",
+  "archive_sha256": "d9065f42febc02acbe14c899431fff752b2f6075da77ba0a2fe709ccf5b6d0f0",
+  "original_sha256": "c9925d248465d6be154e2666cdbf2e30973f7db1a346553d187a65cf69d7b572",
+  "repair_scope": "Two imports only; preserve original failure and all tests/frames. Rebind normal/mutants on immutable R2, then compile seven forms before tests."
+}
