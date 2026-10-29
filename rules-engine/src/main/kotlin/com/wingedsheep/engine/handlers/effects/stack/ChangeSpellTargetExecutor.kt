@@ -8,7 +8,9 @@ import com.wingedsheep.engine.handlers.effects.EffectExecutor
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
-import com.wingedsheep.engine.state.components.stack.TargetsComponent
+import com.wingedsheep.engine.mechanics.targeting.GenericRetargeting
+import com.wingedsheep.engine.mechanics.targeting.currentTargetPlan
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.sdk.scripting.effects.ChangeSpellTargetEffect
 import kotlin.reflect.KClass
 
@@ -45,17 +47,8 @@ class ChangeSpellTargetExecutor : EffectExecutor<ChangeSpellTargetEffect> {
         val spellEntity = state.getEntity(targetSpell.spellEntityId)
             ?: return EffectResult.error(state, "Spell not found on stack")
 
-        // 2. Get the spell's targets
-        val targetsComponent = spellEntity.get<TargetsComponent>()
-        val spellTargets = targetsComponent?.targets ?: emptyList()
-
-        // 3. Validate: spell must have exactly one target
-        if (spellTargets.size != 1) {
-            return EffectResult.success(state)
-        }
-
-        // 4. Validate: that target must be a creature on the battlefield
-        val singleTarget = spellTargets.first()
+        if (spellEntity.get<SpellOnStackComponent>() == null) return EffectResult.success(state)
+        val singleTarget = spellEntity.currentTargetPlan()?.targets?.singleOrNull() ?: return EffectResult.success(state)
         if (singleTarget !is ChosenTarget.Permanent) {
             return EffectResult.success(state)
         }
@@ -72,24 +65,16 @@ class ChangeSpellTargetExecutor : EffectExecutor<ChangeSpellTargetEffect> {
             return EffectResult.success(state)
         }
 
-        // 5. Find all other creatures on the battlefield as legal new targets
-        val currentTargetId = singleTarget.entityId
-        val otherCreatures = state.getBattlefield()
-            .filter { entityId ->
-                entityId != currentTargetId && projected.hasType(entityId, "CREATURE")
-            }
-
-        if (otherCreatures.isEmpty()) {
-            // No other creatures to redirect to
-            return EffectResult.success(state)
-        }
+        val snapshot = GenericRetargeting.capture(state, targetSpell.spellEntityId, context.controllerId,
+            creaturesOnly = true) ?: return EffectResult.success(state)
 
         // 6. Present selection decision to the controller
         val sourceName = context.sourceId?.let { state.getEntity(it)?.get<CardComponent>()?.name }
         val continuation = ChangeSpellTargetContinuation(
             spellEntityId = targetSpell.spellEntityId,
             sourceId = context.sourceId,
-            objectReferences = context.objectReferences
+            objectReferences = context.objectReferences,
+            retargetSnapshot = snapshot
         )
 
         val decisionResult = decisionHandler.createCardSelectionDecision(
@@ -98,7 +83,7 @@ class ChangeSpellTargetExecutor : EffectExecutor<ChangeSpellTargetEffect> {
             sourceId = context.sourceId,
             sourceName = sourceName,
             prompt = "Choose a new creature target",
-            options = otherCreatures,
+            options = snapshot.recipients.keys.toList(),
             minSelections = 1,
             maxSelections = 1,
             useTargetingUI = true,

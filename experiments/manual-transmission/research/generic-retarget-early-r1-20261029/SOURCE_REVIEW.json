@@ -1,0 +1,33 @@
+{
+  "state": "OWNER_SOURCE_REVIEW_NOT_EXTERNAL_REVIEW_OR_ACCEPTANCE",
+  "proposal": "a29b468838edc1993d8ce4e53ac901928efd9501",
+  "grant": "bb917fe5800e2d066d14522e88b4e85962597cd5",
+  "base": "027a20e5287be636170980b8b7237fccaa69fabb",
+  "changes": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CardSpecificContinuations.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeSpellTargetExecutor.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeTargetExecutor.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/GenericRetargeting.kt",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GenericRetargetContinuationTest.kt"
+  ],
+  "preservation": [
+    "Only resumeChangeSpellTarget changed in ManaPaymentContinuationResumer",
+    "Four original input Git blobs verified complete before editing",
+    "No existing test/assertion or protected source/golden/fixture byte changed from R4",
+    "Authoritative adapter reused byte-for-byte; no reconstruction from flattened targets",
+    "Original groups/visits/division/modal/splice and source characteristic checks remain delegated to accepted adapter",
+    "Serialized old continuation without snapshot fails closed; default omitted from serialization",
+    "Player, battlefield and stack recipient enumeration narrowed by original source-specific target legality",
+    "All fifteen mutant forms compile before normal or negative behavior; generic and Fblthp exact report identities audited separately"
+  ],
+  "remaining": "Dependent full compatibility, metadata/printing/lint/Assay and additive WAR snapshot still required; no feature/card/multiplayer/game admission",
+  "expected": {
+    "normal_compilations": 1,
+    "mutant_compilations": 15,
+    "generic_normal_and_restored": 25,
+    "fblthp_early_normal_and_restored": 24,
+    "generic_negative_witnesses": 26,
+    "fblthp_negative_witnesses": 25
+  }
+}

@@ -4,18 +4,14 @@ import com.wingedsheep.engine.core.ChangeSpellTargetContinuation
 import com.wingedsheep.engine.core.EffectResult
 import com.wingedsheep.engine.handlers.DecisionHandler
 import com.wingedsheep.engine.handlers.EffectContext
-import com.wingedsheep.engine.handlers.PredicateContext
-import com.wingedsheep.engine.handlers.PredicateEvaluator
+import com.wingedsheep.engine.mechanics.targeting.GenericRetargeting
+import com.wingedsheep.engine.mechanics.targeting.currentTargetPlan
 import com.wingedsheep.engine.handlers.effects.EffectExecutor
-import com.wingedsheep.engine.mechanics.layers.ProjectedState
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
-import com.wingedsheep.engine.state.components.stack.TargetsComponent
-import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.effects.ChangeTargetEffect
-import com.wingedsheep.sdk.scripting.targets.*
 import kotlin.reflect.KClass
 
 /**
@@ -34,7 +30,6 @@ class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
     override val effectType: KClass<ChangeTargetEffect> = ChangeTargetEffect::class
 
     private val decisionHandler = DecisionHandler()
-    private val predicateEvaluator = PredicateEvaluator()
 
     override fun execute(
         state: GameState,
@@ -50,46 +45,21 @@ class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
         val stackEntity = state.getEntity(targetSpell.spellEntityId)
             ?: return EffectResult.error(state, "Spell/ability not found on stack")
 
-        // 2. Get the spell/ability's targets
-        val targetsComponent = stackEntity.get<TargetsComponent>()
-        val spellTargets = targetsComponent?.targets ?: emptyList()
-
-        // Must have exactly one target
-        if (spellTargets.size != 1) {
+        val plan = stackEntity.currentTargetPlan() ?: return EffectResult.success(state)
+        val currentTarget = plan.targets.singleOrNull() ?: return EffectResult.success(state)
+        if (effect.onlyIfCurrentTargetIsController && getTargetEntityId(currentTarget) != context.controllerId) {
             return EffectResult.success(state)
         }
-
-        val currentTarget = spellTargets.first()
-        val targetRequirements = targetsComponent?.targetRequirements ?: emptyList()
-
-        // "…if that target is you" (Reflecting Mirror). Checked at resolution, so a spell whose
-        // target changed hands in response is no longer redirectable.
-        if (effect.onlyIfCurrentTargetIsController &&
-            getTargetEntityId(currentTarget) != context.controllerId
-        ) {
-            return EffectResult.success(state)
-        }
-
-        // 3. Find all legal new targets based on target requirements
-        var legalNewTargets = findLegalNewTargets(state, currentTarget, targetRequirements, context.controllerId)
-
-        // "The new target must be a player" (Reflecting Mirror) — narrowed *after* the spell's own
-        // requirement, so the redirect can never make an otherwise-illegal choice legal.
-        if (effect.newTargetMustBePlayer) {
-            legalNewTargets = legalNewTargets.filter { it in state.turnOrder }
-        }
-
-        if (legalNewTargets.isEmpty()) {
-            // No other legal targets to redirect to
-            return EffectResult.success(state)
-        }
+        val snapshot = GenericRetargeting.capture(state, targetSpell.spellEntityId, context.controllerId,
+            playersOnly = effect.newTargetMustBePlayer) ?: return EffectResult.success(state)
 
         // 4. Present selection decision to the controller
         val sourceName = context.sourceId?.let { state.getEntity(it)?.get<CardComponent>()?.name }
         val continuation = ChangeSpellTargetContinuation(
             spellEntityId = targetSpell.spellEntityId,
             sourceId = context.sourceId,
-            objectReferences = context.objectReferences
+            objectReferences = context.objectReferences,
+            retargetSnapshot = snapshot
         )
 
         val decisionResult = decisionHandler.createCardSelectionDecision(
@@ -98,7 +68,7 @@ class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
             sourceId = context.sourceId,
             sourceName = sourceName,
             prompt = "Choose a new target",
-            options = legalNewTargets,
+            options = snapshot.recipients.keys.toList(),
             minSelections = 1,
             maxSelections = 1,
             useTargetingUI = true,
@@ -109,104 +79,6 @@ class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
             decisionResult.state,
             decisionResult.events
         )
-    }
-
-    /**
-     * Find all legal new targets for the spell/ability, excluding the current target.
-     * Uses the spell's target requirements to determine what types of entities are valid.
-     */
-    private fun findLegalNewTargets(
-        state: GameState,
-        currentTarget: ChosenTarget,
-        targetRequirements: List<TargetRequirement>,
-        controllerId: EntityId
-    ): List<EntityId> {
-        val projected = state.projectedState
-        val currentTargetId = getTargetEntityId(currentTarget)
-
-        // If we have target requirements, use the first one to determine legal targets
-        val requirement = targetRequirements.firstOrNull()
-
-        return when {
-            // AnyTarget: creatures/planeswalkers on battlefield + players
-            requirement is AnyTarget -> {
-                val permanents = state.getBattlefield().filter { entityId ->
-                    projected.hasType(entityId, "CREATURE") || projected.hasType(entityId, "PLANESWALKER")
-                }
-                val players = state.turnOrder.filter { state.hasEntity(it) }
-                (permanents + players).filter { it != currentTargetId }
-            }
-
-            // TargetCreatureOrPlayer: creatures on battlefield + players
-            requirement is TargetCreatureOrPlayer -> {
-                val creatures = state.getBattlefield().filter { entityId ->
-                    projected.hasType(entityId, "CREATURE")
-                }
-                val players = state.turnOrder.filter { state.hasEntity(it) }
-                (creatures + players).filter { it != currentTargetId }
-            }
-
-            // TargetPermanentOrPlayer: permanents matching the filter + players
-            requirement is TargetPermanentOrPlayer -> {
-                val predContext = PredicateContext(controllerId = controllerId)
-                val permanents = state.getBattlefield().filter { entityId ->
-                    predicateEvaluator.matches(
-                        state, projected, entityId, requirement.permanentFilter.baseFilter, predContext
-                    )
-                }
-                val players = state.turnOrder.filter { state.hasEntity(it) }
-                (permanents + players).filter { it != currentTargetId }
-            }
-
-            // TargetOpponentOrPlaneswalker: opponents + planeswalkers on battlefield
-            requirement is TargetOpponentOrPlaneswalker -> {
-                val opponents = state.turnOrder.filter { it != controllerId && state.hasEntity(it) }
-                val planeswalkers = state.getBattlefield().filter { entityId ->
-                    projected.hasType(entityId, "PLANESWALKER")
-                }
-                (opponents + planeswalkers).filter { it != currentTargetId }
-            }
-
-            // TargetCreatureOrPlaneswalker: creatures and planeswalkers on battlefield
-            requirement is TargetCreatureOrPlaneswalker -> {
-                state.getBattlefield().filter { entityId ->
-                    entityId != currentTargetId &&
-                        (projected.hasType(entityId, "CREATURE") || projected.hasType(entityId, "PLANESWALKER"))
-                }
-            }
-
-            // TargetObject with battlefield zone: use filter to match permanents
-            requirement is TargetObject && requirement.filter.zone == Zone.BATTLEFIELD -> {
-                val predContext = PredicateContext(controllerId = controllerId)
-                state.getBattlefield().filter { entityId ->
-                    entityId != currentTargetId &&
-                        predicateEvaluator.matches(state, state.projectedState, entityId, requirement.filter.baseFilter, predContext)
-                }
-            }
-
-            // Fallback: infer from current target type
-            else -> findTargetsByCurrentType(state, currentTarget, projected)
-        }
-    }
-
-    /**
-     * Fallback: find targets of the same type as the current target.
-     */
-    private fun findTargetsByCurrentType(
-        state: GameState,
-        currentTarget: ChosenTarget,
-        projected: ProjectedState
-    ): List<EntityId> {
-        val currentTargetId = getTargetEntityId(currentTarget)
-        return when (currentTarget) {
-            is ChosenTarget.Permanent -> {
-                state.getBattlefield().filter { it != currentTargetId }
-            }
-            is ChosenTarget.Player -> {
-                state.turnOrder.filter { it != currentTargetId && state.hasEntity(it) }
-            }
-            else -> emptyList()
-        }
     }
 
     private fun getTargetEntityId(target: ChosenTarget): EntityId? {

@@ -504,6 +504,9 @@ data class ChangeSpellTargetContinuation(
     val spellEntityId: EntityId,
     val sourceId: EntityId?,
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val retargetSnapshot: com.wingedsheep.engine.mechanics.targeting.GenericRetargetSnapshot? = null,
 ) : AnswerContinuation
 
 /**

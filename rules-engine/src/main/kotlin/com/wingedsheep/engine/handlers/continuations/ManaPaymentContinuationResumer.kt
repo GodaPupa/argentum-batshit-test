@@ -871,29 +871,12 @@ class ManaPaymentContinuationResumer(
             return ExecutionResult.error(state, "Expected card selection response for change spell target")
         }
 
-        val selectedEntityId = response.selectedCards.firstOrNull()
-            ?: return ExecutionResult.error(state, "No target selected for change spell target")
-
-        // Get the spell entity and update its target
-        val spellEntity = state.getEntity(continuation.spellEntityId)
-            ?: return checkForMore(state, emptyList()) // Spell no longer on stack
-
-        val targetsComponent = spellEntity.get<TargetsComponent>()
-            ?: return checkForMore(state, emptyList())
-
-        // Determine the appropriate ChosenTarget type based on the selected entity
-        val newTarget = if (state.turnOrder.contains(selectedEntityId)) {
-            ChosenTarget.Player(selectedEntityId)
-        } else {
-            ChosenTarget.Permanent(selectedEntityId)
-        }
-
-        val newTargets = listOf(newTarget)
-        val updatedState = state.updateEntity(continuation.spellEntityId) { container ->
-            container.with(TargetsComponent.capture(state, newTargets, targetsComponent.targetRequirements))
-        }
-
-        return checkForMore(updatedState, emptyList())
+        val selectedEntityId = response.selectedCards.singleOrNull()
+            ?: return ExecutionResult.error(state, "Expected exactly one target for change spell target")
+        val snapshot = continuation.retargetSnapshot ?: return checkForMore(state, emptyList())
+        if (snapshot.stackRef.entityId != continuation.spellEntityId) return checkForMore(state, emptyList())
+        val result = com.wingedsheep.engine.mechanics.targeting.GenericRetargeting.apply(state, snapshot, selectedEntityId)
+        return checkForMore(result.state, result.events)
     }
 
     /**
