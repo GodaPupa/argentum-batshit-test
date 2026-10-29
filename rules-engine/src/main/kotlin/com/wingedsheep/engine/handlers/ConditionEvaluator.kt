@@ -668,6 +668,13 @@ class ConditionEvaluator(
                 ifResolution { evaluateTriggeringSpellCastWithoutPayingMana(state, it) }
             is com.wingedsheep.sdk.scripting.conditions.TriggeringSpellManaSpentAtLeast ->
                 ifResolution { evaluateTriggeringSpellManaSpentAtLeast(state, condition.amount, it) }
+            is com.wingedsheep.sdk.scripting.conditions.TriggeringEntityEnteredOrWasCastFromZone ->
+                ifResolution { context ->
+                    val origin = context.triggerEntryOrigin
+                    origin != null && origin.entityId == context.triggeringEntityId &&
+                        (!condition.ownedByController || origin.ownerId == (context.effectControllerId ?: context.controllerId)) &&
+                        (origin.fromZone == condition.zone || origin.castFromZone == condition.zone)
+                }
             is TriggeringEntityEnteredOrWasCastFromGraveyard ->
                 ifResolution { evaluateTriggeringEntityEnteredOrWasCastFromGraveyard(state, it) }
             is TriggeringEntityHadMinusOneMinusOneCounter ->

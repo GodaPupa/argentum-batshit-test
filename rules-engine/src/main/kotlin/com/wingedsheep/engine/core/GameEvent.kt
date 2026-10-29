@@ -107,6 +107,10 @@ data class ZoneChangeEvent(
     @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
     @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
     val observedEntryTriggers: List<com.wingedsheep.engine.event.PendingTrigger>? = null,
+    /** Original spell's cast zone, captured only for an actual cast on permanent entry. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val entryCastFromZone: Zone? = null,
 ) : GameEvent {
     init {
         require(!entryTriggersAlreadyProcessed || toZone == Zone.BATTLEFIELD) {

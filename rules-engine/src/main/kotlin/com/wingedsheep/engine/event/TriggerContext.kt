@@ -212,12 +212,17 @@ data class TriggerContext(
      */
     val unattachedFromEntityId: EntityId? = null,
     /** Full departure information, including for a token already removed by state-based actions. */
+    /** Immutable entry-event provenance; absent in legacy contexts, never recaptured live. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val entryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     val triggeringSnapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot? = null,
 ) {
     companion object {
         fun fromEvent(event: com.wingedsheep.engine.core.GameEvent): TriggerContext {
             return when (event) {
                 is ZoneChangeEvent -> TriggerContext(
+                    entryOrigin = EntryOrigin.fromEvent(event),
                     triggeringSnapshot = event.lastKnown,
                     triggeringEntityId = event.entityId,
                     triggeringOrigin = if (event.toZone == Zone.BATTLEFIELD) event.newObject else event.oldObject,

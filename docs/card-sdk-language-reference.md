@@ -9767,6 +9767,8 @@ keywordAbilities(KeywordAbility.Protection(Color.BLUE), KeywordAbility.Annihilat
 
 ## 12. Conditions (`Conditions.*`)
 
+`Conditions.TriggeringEntityEnteredOrWasCastFromZone(zone, ownedByController = false)` reads the immutable origin of the triggering battlefield entry. It matches either the direct entry zone or the actual original spell's cast zone. With `ownedByController = true`, that origin must belong to the ability controller's zone. It retains the entry object's identity through departure, later visits, queued triggers, modal and nested choices, and serialization. A spell copy has no actual-cast origin; an absent legacy capture is unknown and evaluates false. It does not change `TriggeringEntityEnteredOrWasCastFromGraveyard` or its existing behavior.
+
 **One "entity matches a filter" primitive.** "Does *some entity* match a `GameObjectFilter`" is a
 single condition — `EntityMatches(entity: EffectTarget, filter)` — that names *which* entity via the
 shared `EffectTarget` vocabulary. It subsumes the four former near-clones; each is now a facade

@@ -2169,6 +2169,15 @@ object Conditions {
     val TriggeringEntityEnteredOrWasCastFromGraveyard: ConditionInterface =
         com.wingedsheep.sdk.scripting.conditions.TriggeringEntityEnteredOrWasCastFromGraveyard
 
+    /** Event-bound entry/cast origin; unknown legacy provenance never satisfies this condition. */
+    fun TriggeringEntityEnteredOrWasCastFromZone(
+        zone: com.wingedsheep.sdk.core.Zone,
+        ownedByController: Boolean = false
+    ): ConditionInterface = com.wingedsheep.sdk.scripting.conditions.TriggeringEntityEnteredOrWasCastFromZone(
+        zone, ownedByController
+    )
+
+
     /**
      * If the triggering entity had a -1/-1 counter on it when it left the battlefield.
      * Used as an intervening-if condition on dies/leaves triggers (e.g., Retched Wretch).

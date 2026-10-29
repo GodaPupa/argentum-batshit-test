@@ -148,6 +148,7 @@ class ModalAndCloneContinuationResumer(
             sourceId = continuation.sourceId,
             sourceName = continuation.sourceName,
             xValue = continuation.xValue,
+            triggerEntryOrigin = continuation.triggerEntryOrigin,
             triggeringEntityId = continuation.triggeringEntityId,
             allowCancelBackToModesList = if (allowCancelBackToModes) continuation.modes else null,
             outerTargets = continuation.outerTargets,
@@ -195,6 +196,7 @@ class ModalAndCloneContinuationResumer(
             xValue = continuation.xValue,
             targets = chosenTargets,
             pipeline = continuation.pipeline.copy(namedTargets = continuation.pipeline.namedTargets + EffectContext.buildNamedTargets(continuation.targetRequirements, chosenTargets)),
+            triggerEntryOrigin = continuation.triggerEntryOrigin,
             triggeringEntityId = continuation.triggeringEntityId
         )
 
@@ -212,6 +214,7 @@ class ModalAndCloneContinuationResumer(
             sourceId = continuation.sourceId,
             sourceName = continuation.sourceName,
             xValue = continuation.xValue,
+            triggerEntryOrigin = continuation.triggerEntryOrigin,
             triggeringEntityId = continuation.triggeringEntityId,
             outerTargets = continuation.outerTargets,
             outerNamedTargets = continuation.outerNamedTargets,
@@ -1622,6 +1625,7 @@ class ModalAndCloneContinuationResumer(
             sourceName = continuation.sourceName,
             modes = modes,
             xValue = continuation.xValue,
+            triggerEntryOrigin = continuation.triggerEntryOrigin,
             triggeringEntityId = continuation.triggeringEntityId,
             outerTargets = continuation.outerTargets,
             outerNamedTargets = continuation.outerNamedTargets,
@@ -1662,6 +1666,7 @@ class ModalAndCloneContinuationResumer(
             objectReferences = continuation.objectReferences,
             controllerId = continuation.controllerId,
             targets = continuation.targets,
+            triggerEntryOrigin = continuation.triggerEntryOrigin,
             triggeringEntityId = continuation.triggeringEntityId,
             pipeline = PipelineState(namedTargets = continuation.namedTargets)
         )
@@ -1704,6 +1709,7 @@ internal fun processChosenModeQueue(
     sourceName: String?,
     xValue: Int?,
     triggeringEntityId: EntityId?,
+    triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin?,
     allowCancelBackToModesList: List<Mode>?,
     outerTargets: List<com.wingedsheep.engine.state.components.stack.ChosenTarget>,
     outerNamedTargets: Map<String, com.wingedsheep.engine.state.components.stack.ChosenTarget>,
@@ -1729,11 +1735,12 @@ internal fun processChosenModeQueue(
             xValue = xValue,
             targets = outerTargets,
             pipeline = pipeline.copy(namedTargets = pipeline.namedTargets + outerNamedTargets),
+            triggerEntryOrigin = triggerEntryOrigin,
             triggeringEntityId = triggeringEntityId
         )
         return executeChosenModeWithTail(
             services, state, head.effect, context, tail,
-            controllerId, sourceId, sourceName, xValue, triggeringEntityId,
+            controllerId, sourceId, sourceName, xValue, triggeringEntityId, triggerEntryOrigin,
             outerTargets, outerNamedTargets, accumulatedEvents, checkForMore
         )
     }
@@ -1763,7 +1770,7 @@ internal fun processChosenModeQueue(
         // Fizzle just this mode; continue with the rest.
         return processChosenModeQueue(
             services, state, tail, controllerId, sourceId, sourceName, xValue,
-            triggeringEntityId, allowCancelBackToModesList, outerTargets, outerNamedTargets,
+            triggeringEntityId, triggerEntryOrigin, allowCancelBackToModesList, outerTargets, outerNamedTargets,
             accumulatedEvents, checkForMore, pipeline, objectReferences
         )
     }
@@ -1781,11 +1788,12 @@ internal fun processChosenModeQueue(
                 xValue = xValue,
                 targets = chosenTargets,
                 pipeline = pipeline.copy(namedTargets = pipeline.namedTargets + EffectContext.buildNamedTargets(head.targetRequirements, chosenTargets)),
+                triggerEntryOrigin = triggerEntryOrigin,
                 triggeringEntityId = triggeringEntityId
             )
             return executeChosenModeWithTail(
                 services, state, head.effect, context, tail,
-                controllerId, sourceId, sourceName, xValue, triggeringEntityId,
+                controllerId, sourceId, sourceName, xValue, triggeringEntityId, triggerEntryOrigin,
                 outerTargets, outerNamedTargets, accumulatedEvents, checkForMore
             )
         }
@@ -1818,6 +1826,7 @@ internal fun processChosenModeQueue(
         xValue = xValue,
         targetRequirements = head.targetRequirements,
         modes = if (tail.isEmpty()) allowCancelBackToModesList else null,
+        triggerEntryOrigin = triggerEntryOrigin,
         triggeringEntityId = triggeringEntityId,
         remainingChosenModes = tail,
         outerTargets = outerTargets,
@@ -1852,6 +1861,7 @@ private fun executeChosenModeWithTail(
     sourceName: String?,
     xValue: Int?,
     triggeringEntityId: EntityId?,
+    triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin?,
     outerTargets: List<com.wingedsheep.engine.state.components.stack.ChosenTarget>,
     outerNamedTargets: Map<String, com.wingedsheep.engine.state.components.stack.ChosenTarget>,
     accumulatedEvents: List<GameEvent>,
@@ -1864,6 +1874,7 @@ private fun executeChosenModeWithTail(
                 sourceId = sourceId,
                 sourceName = sourceName,
                 xValue = xValue,
+                triggerEntryOrigin = triggerEntryOrigin,
                 triggeringEntityId = triggeringEntityId,
                 remainingChosenModes = tail,
                 outerTargets = outerTargets,
@@ -1888,7 +1899,7 @@ private fun executeChosenModeWithTail(
     val nextState = if (tail.isNotEmpty()) result.state.popContinuation().second else result.state
     return processChosenModeQueue(
         services, nextState, tail, controllerId, sourceId, sourceName, xValue,
-        triggeringEntityId, allowCancelBackToModesList = null,
+        triggeringEntityId, triggerEntryOrigin, allowCancelBackToModesList = null,
         outerTargets, outerNamedTargets, events, checkForMore,
         context.pipeline, context.objectReferences.authorize(result.events)
     )

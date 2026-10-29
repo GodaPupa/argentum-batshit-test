@@ -308,6 +308,10 @@ data class EffectContext(
      * dies/leaves trigger needs to put every counter — not just +1/+1 — onto another
      * permanent (e.g., Essence Channeler).
      */
+    /** Immutable entry-event provenance; absent in legacy contexts, never recaptured live. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     val triggerLastKnownCounters: Map<String, Int>? = null,
     /**
      * Per-player damage dealt to the trigger's source the moment it left the battlefield.
@@ -630,6 +634,7 @@ data class EffectContext(
             triggerDamageAmount = ability.triggerDamageAmount,
             triggerCounterCount = ability.triggerCounterCount,
             triggerTotalCounterCount = ability.triggerTotalCounterCount,
+            triggerEntryOrigin = ability.triggerEntryOrigin,
             triggerLastKnownCounters = ability.triggerLastKnownCounters,
             triggerLastKnownSubtypes = ability.triggerLastKnownSubtypes,
             triggerLastKnownCardTypes = ability.triggerLastKnownCardTypes,

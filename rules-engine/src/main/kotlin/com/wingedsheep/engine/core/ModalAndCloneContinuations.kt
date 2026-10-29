@@ -47,6 +47,10 @@ data class ModalContinuation(
     val sourceName: String?,
     val modes: List<@Serializable Mode>,
     val xValue: Int? = null,
+    /** Immutable entry-event provenance; absent in legacy contexts, never recaptured live. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     val triggeringEntityId: EntityId? = null,
     val chooseCount: Int = 1,
     /**
@@ -130,6 +134,10 @@ data class ModalPreChosenContinuation(
     val sourceId: EntityId?,
     val sourceName: String?,
     val xValue: Int? = null,
+    /** Immutable entry-event provenance; absent in legacy contexts, never recaptured live. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     val triggeringEntityId: EntityId? = null,
     /**
      * The enclosing resolution's pipeline, so the modes still queued behind a paused one read the
@@ -190,6 +198,10 @@ data class ModalChosenModeTailContinuation(
     val sourceId: EntityId?,
     val sourceName: String?,
     val xValue: Int? = null,
+    /** Immutable entry-event provenance; absent in legacy contexts, never recaptured live. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     val triggeringEntityId: EntityId? = null,
     val remainingChosenModes: List<@Serializable Mode>,
     /** Outer-scope targets propagated to any remaining no-target modes. See
@@ -222,6 +234,10 @@ data class ModalTargetContinuation(
     val targetRequirements: List<TargetRequirement> = emptyList(),
     /** Original modes list for cancelling back to mode selection */
     val modes: List<@Serializable Mode>? = null,
+    /** Immutable entry-event provenance; absent in legacy contexts, never recaptured live. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     val triggeringEntityId: EntityId? = null,
     /** For "Choose N" modal spells: modes still queued to execute after this one. */
     val remainingChosenModes: List<@Serializable Mode> = emptyList(),
@@ -684,6 +700,10 @@ data class ChooseActionContinuation(
     val choices: List<@Serializable EffectChoice>,
     val targets: List<ChosenTarget> = emptyList(),
     val namedTargets: Map<String, ChosenTarget> = emptyMap(),
+    /** Immutable entry-event provenance; absent in legacy contexts, never recaptured live. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     val triggeringEntityId: EntityId? = null,
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation

@@ -2079,6 +2079,7 @@ class TriggerMatcher(
                 // Per-kind last-known counters, so an intervening "if" can name the counter it
                 // cares about ("if it had a revival counter on it" — Nine-Lives Familiar) instead
                 // of settling for the +1/+1-only or sum-of-all-kinds scalars above.
+                triggerEntryOrigin = trigger.triggerContext.entryOrigin,
                 triggerLastKnownCounters = trigger.triggerContext.lastKnownCounters,
                 triggerLastKnownSubtypes = trigger.triggerContext.lastKnownSubtypes,
                 triggerLastKnownCardTypes = trigger.triggerContext.lastKnownCardTypes,

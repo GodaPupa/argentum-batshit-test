@@ -221,6 +221,7 @@ class CoreAutoResumerModule(
                 sourceId = continuation.sourceId,
                 sourceName = continuation.sourceName,
                 xValue = continuation.xValue,
+                triggerEntryOrigin = continuation.triggerEntryOrigin,
                 triggeringEntityId = continuation.triggeringEntityId,
                 pipeline = continuation.pipeline,
                 objectReferences = continuation.objectReferences
@@ -271,6 +272,7 @@ class CoreAutoResumerModule(
                 sourceId = continuation.sourceId,
                 sourceName = continuation.sourceName,
                 xValue = continuation.xValue,
+                triggerEntryOrigin = continuation.triggerEntryOrigin,
                 triggeringEntityId = continuation.triggeringEntityId,
                 allowCancelBackToModesList = null,
                 outerTargets = continuation.outerTargets,

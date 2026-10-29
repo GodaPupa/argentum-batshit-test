@@ -212,6 +212,10 @@ data class TriggeredAbilityOnStackComponent(
     val triggerCounterCount: Int? = null,
     val triggerTotalCounterCount: Int? = null,
     /** Last-known counter map (counter-type-string → count) of the trigger's source on leave-battlefield. */
+    /** Immutable entry-event provenance; absent in legacy contexts, never recaptured live. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     val triggerLastKnownCounters: Map<String, Int>? = null,
     /**
      * Projected subtypes and card types the triggering permanent had the moment it left the

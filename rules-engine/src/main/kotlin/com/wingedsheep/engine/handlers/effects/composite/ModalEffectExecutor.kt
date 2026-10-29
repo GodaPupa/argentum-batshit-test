@@ -150,6 +150,7 @@ class ModalEffectExecutor(
             sourceName = sourceName,
             modes = effect.modes,
             xValue = context.xValue,
+            triggerEntryOrigin = context.triggerEntryOrigin,
             triggeringEntityId = context.triggeringEntityId,
             chooseCount = effectiveChooseCount,
             minChooseCount = effectiveMinChooseCount,
@@ -190,6 +191,7 @@ class ModalEffectExecutor(
             sourceId = context.sourceId,
             sourceName = sourceName,
             xValue = context.xValue,
+            triggerEntryOrigin = context.triggerEntryOrigin,
             triggeringEntityId = context.triggeringEntityId,
             // The resolution so far, carried into each mode. A mode's effect can read what an
             // earlier step of the same resolution stored — Cemetery Desecrator's two modes both
@@ -246,6 +248,8 @@ internal data class PreTargetedEffectContext(
     val sourceId: com.wingedsheep.sdk.model.EntityId?,
     val sourceName: String?,
     val xValue: Int?,
+    /** Immutable entry-event provenance; absent in legacy contexts, never recaptured live. */
+    val triggerEntryOrigin: com.wingedsheep.engine.event.EntryOrigin? = null,
     val triggeringEntityId: com.wingedsheep.sdk.model.EntityId?,
     /**
      * Pipeline state the enclosing resolution had already built — stored collections, numbers,
@@ -337,6 +341,7 @@ internal fun processPreTargetedEffectQueue(
                 } }) +
                 (head.resolvedView?.named ?: EffectContext.buildNamedTargets(head.targetRequirements, head.targets))
         ),
+        triggerEntryOrigin = ctx.triggerEntryOrigin,
         triggeringEntityId = ctx.triggeringEntityId
     )
 
@@ -351,6 +356,7 @@ internal fun processPreTargetedEffectQueue(
             objectReferences = ctx.objectReferences,
                 sourceName = ctx.sourceName,
                 xValue = ctx.xValue,
+                triggerEntryOrigin = ctx.triggerEntryOrigin,
                 triggeringEntityId = ctx.triggeringEntityId,
                 pipeline = ctx.pipeline,
                 remainingEntries = tail

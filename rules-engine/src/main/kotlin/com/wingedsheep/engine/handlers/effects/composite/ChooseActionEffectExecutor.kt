@@ -84,6 +84,7 @@ class ChooseActionEffectExecutor(
             choices = feasibleChoices,
             targets = context.targets,
             namedTargets = context.pipeline.namedTargets,
+            triggerEntryOrigin = context.triggerEntryOrigin,
             triggeringEntityId = context.triggeringEntityId
         )
 
