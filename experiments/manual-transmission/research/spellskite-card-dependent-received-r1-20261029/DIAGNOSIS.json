@@ -1,0 +1,26 @@
+{
+  "state": "ORIGINAL_RECEIVER_FAILURE_PRESERVED_REGRESSION_REPORTS_VERIFIED",
+  "source": "48beeca1fb5730b1a4ace43b3de6c2f22da3e82a",
+  "run": 40814222861,
+  "artifact": 12872214018,
+  "artifact_bytes": 8934662,
+  "artifact_sha256": "610ed6a29f3eccf7667e5e471990cf93d6221cb9f287aec567f20acd23c98d4f",
+  "manifest_entries": 5287,
+  "observed": {
+    "compile": 1,
+    "cards": 388,
+    "ordinary_passes": 18980,
+    "exact_historical_skips": 43,
+    "original_nph_entries": 10,
+    "additive_entries": 1,
+    "protected_bindings": 197
+  },
+  "failure": "Frozen RECEIVE.py requires final/source/.../CLB.json but frozen collector archives only protected/bindings/new_bindings; CLB is absent from those maps. No CLB member exists in original ZIP. Workflow succeeded; receiver fails closed. This is missing collection evidence, not behavioral negative evidence.",
+  "next": "Preserve original failure and original ZIP unchanged. Freeze same-code-source supplementary metadata/printing/Assay qualification with explicit initial/final CLB bytes, source tree binding, original compiled early CLB export and current snapshot comparison. Reuse completed compile/card/ordinary reports only after supplemental original evidence closes missing CLB gate; no regression rerun or original receiver relaxation.",
+  "admission": false,
+  "archive": {
+    "file": "original.zip.xz",
+    "bytes": 5759468,
+    "sha256": "5e3b19ca4621d41fa1dbe81b4fd7738b130af85d44e7b1f873f286552e483cd6"
+  }
+}
