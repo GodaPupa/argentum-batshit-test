@@ -1,0 +1,57 @@
+{
+  "state": "FAILED_ORIGINAL_RECEIVED_PRECOMPILE_SOURCE_INTEGRITY",
+  "pins": {
+    "source": "bfa09702758ded631bd8e81d3f2aa4206d38e84c",
+    "tree": "409c0678e481a3d052e2a358814535bc98692687",
+    "validation": "901e01202bc52a5d8c7d485187209a73f22dee44",
+    "validation_tree": "de272de4abd0d3550f438a13c22206080170a472",
+    "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r2-20261029.yml",
+    "workflow_blob": "19d951354a2b27d3c2acdc6a5c512ac357879d62",
+    "branch": "validation/manual-fblthp-entry-origin-early-r2-20261029",
+    "run": 40905841877,
+    "protocol_blobs": {
+      "validation.just": "93f3b9e8c784cbf695bf302ce79f5e8c12d55094",
+      "run.py": "7a1fabd28fae1edb79be6ce38527ccf062ed9bca",
+      "PROTOCOL.json": "7824bc1a9d3806a66b436588afb1236a6aea1fd8",
+      "audit_selftest.py": "68bdd6d59a4c83b75f208474b8d5dbcf27de2e8e",
+      "SOURCE_REVIEW.json": "05b074e4c6a581e1e2423e7365687d3b306057e0",
+      "audit.py": "e2104e2cf3f0808ac229a37aadf6148193565ed4"
+    }
+  },
+  "run": 40905841877,
+  "job": 123560230071,
+  "attempt": 1,
+  "artifact": 12911456526,
+  "bytes": 3530762,
+  "sha256": "b9feba01bccd5b8b03a095aefd948b29700ca28c03b97b7127418ae15448e3f2",
+  "manifest_entries": 549,
+  "available_source_files_verified": {
+    "initial": 270,
+    "final": 270
+  },
+  "protected_restoration": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "expected": "2bffed553bad9bea595ae1b51ef42051c315e8c8c84bf097d1fac2eebd753561",
+      "actual": "97cbe7838906055aaf4af3d60e5d97174b51281517ed41c03dd9d55e492a0070",
+      "restored": false
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": {
+      "expected": "433df449e768cae024d3e0910f7449dd2503f716e86b5bb12d1ef4f7c2f415fd",
+      "actual": "433df449e768cae024d3e0910f7449dd2503f716e86b5bb12d1ef4f7c2f415fd",
+      "restored": true
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": {
+      "expected": "4cd3eec6ca547dd1cc3209a93b62a79a290c3322c70f5775ac46bd838ed59204",
+      "actual": "4cd3eec6ca547dd1cc3209a93b62a79a290c3322c70f5775ac46bd838ed59204",
+      "restored": true
+    }
+  },
+  "failure": "Traceback (most recent call last):\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r2-20261029/run.py\", line 84, in <module>\n    try:main()\n        ~~~~^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r2-20261029/run.py\", line 64, in main\n    OUT.mkdir();bind('initial')\n                ~~~~^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r2-20261029/run.py\", line 42, in bind\n    assert new==old,path\n           ^^^^^^^^\nAssertionError: rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt\n",
+  "cause": "Local hydration truncated StackResolver.kt and CoreContinuations.kt tails. Frozen candidate hashes identify these incomplete files; exact protected restoration correctly rejected StackResolver before compilation.",
+  "repair": "Restore exact authoritative Git blobs386edc58 and086271fc before reapplying authorized additions. Verify every hydrated input Git blob and every successor original-byte restoration before a new freeze. No assertions relaxed.",
+  "accepted_gates": [],
+  "feature_admitted": false,
+  "card_admitted": false,
+  "official_games": 0,
+  "official_seeds": 0
+}
