@@ -3,14 +3,14 @@
   "updated_date": "2026-10-29",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "RUNNING",
-  "owner": "manual-work-d0da9f2a-dependent",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "owner": "manual-work-d0da9f2a-dependent",
-    "state": "ACTIVE",
-    "claimed_utc": "2026-10-29T22:40:08.437Z",
-    "expires_utc": "2026-10-29T23:40:08.437Z",
-    "automation_run": "d0da9f2a-be74-8327-be3e-8c31c7b47398"
+    "state": "RELEASED",
+    "owner": null,
+    "previous_owner": "manual-work-d0da9f2a-dependent",
+    "released_utc": "2026-10-29T22:45:47.581Z",
+    "reason": "External dependency: original dependent run40968021606 is in_progress. Exact receiver and isolated next supplement review are saved; no useful safely independent authorized work remains before original dependent evidence. Ownership released; no continuous execution implied."
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -30,16 +30,18 @@
     "review_path": "experiments/manual-transmission/research/fblthp-entry-origin-admission-proposal-r1-20261029/NEXT_ADMISSION.json",
     "card_acceptance_scenarios": 10,
     "registration": "Fblthp canonical WAR50 implementation frozen; feature/card admission withheld pending all source-specific gates and original receiving.",
-    "current_subproblem": "Full source-bound Fblthp/generic retarget dependent qualification after original early behavioral receiving",
+    "current_subproblem": "Original dependent card/whole-project qualification; remaining client/metadata/printing/Assay admission gates prepared",
     "source_candidate": "c81721a6312edef529218820a8dbf04f861443b0",
     "source_tree": "e086f4908edecc0a627f962e6fedd02af4d74d88",
-    "source_branch": "source/manual-fblthp-dependent-prepared-r2-20261029",
+    "source_branch": "source/manual-fblthp-dependent-r1-20261029",
     "protocol": "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/generic-retarget-early-r3-20261029/SOURCE_REVIEW.json",
+    "design": "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/SOURCE_REVIEW.json",
     "validation": "6039c60756c11ba4a4e4bc4c8ffdb269def67a74",
     "validation_branch": "validation/manual-fblthp-dependent-r1-20261029",
     "workflow": ".github/workflows/manual-fblthp-dependent-r1-20261029.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40968021606
+    ],
     "planned_not_observed": {
       "compilations": 16,
       "generic_normal": 25,
@@ -51,7 +53,7 @@
     },
     "negative_scope": "Frozen executable seven generic mutants with26exact assertion witnesses plus unchanged eight Fblthp mutants with25witnesses; all15mutants and normal compile before targeted execution. Planned, not accepted evidence.",
     "source_delta": "One test import corrected, six new protocol files; all assertions and production unchanged.",
-    "next_executable_action": "Dispatch sole reviewed Fblthp dependent card/ordinary validation; prepare exact original receiving. Other client/metadata/printing/Assay gates remain mandatory before admission.",
+    "next_executable_action": "Reconcile fresh CURRENT, exact owner/task run, newer receipts/successors and all workflow event/status types. Once original dependent run40968021606 is terminal, claim fresh-blob CAS and receive exactly once using 37e2df81b9489640d06405cbfba4e4a16bdabb2f/experiments/manual-transmission/research/fblthp-dependent-receiving-r1-20261029/NEXT_ACTION.json and RECEIVE.py. Require compile-all,389cardcases and19074ordinary rows19031passes43exactunchangedskips, independent inventory hashes, immutable source/tree/workflow/run/job/attempt/artifact pins, bytes/hash/manifest and all protected bindings. Preserve failures and repair only bounded causes without weakening assertions or unchanged reruns. Then execute isolated NEXT_SUPPLEMENT_REVIEW for coherent-client64, fresh WAR50 metadata/rulings/printing/images, Assay parse/explain/compile/WAR differential/currentIR and original receiving. Reuse verified R3 early evidence and accepted Spellskite/registry. No feature/card admission until all gates; no multiplayer or official games/seeds.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -4112,7 +4114,12 @@
       }
     },
     "prepared_receiver": {
-      "state": "DEPENDENT_RECEIVER_NOT_YET_PREPARED"
+      "commit": "37e2df81b9489640d06405cbfba4e4a16bdabb2f",
+      "path": "experiments/manual-transmission/research/fblthp-dependent-receiving-r1-20261029",
+      "run": 40968021606,
+      "job": 123777376486,
+      "state": "PREPARED_NOT_EXECUTED",
+      "readback_verified": true
     },
     "previous_guidance_before_payment_ui_r1": {
       "current_subproblem": "Frozen bounded activated Phyrexian payment repair early qualification",
@@ -4193,8 +4200,15 @@
     },
     "read_sections": [
       {
-        "ref": "5e866498251ebd505496e0d247f4b164d1c7e6e4",
-        "path": "experiments/manual-transmission/research/fblthp-dependent-prepared-r1-20261029/NEXT_ACTION.json",
+        "ref": "c81721a6312edef529218820a8dbf04f861443b0",
+        "path": "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/PROTOCOL.json",
+        "sections": [
+          "all"
+        ]
+      },
+      {
+        "ref": "c81721a6312edef529218820a8dbf04f861443b0",
+        "path": "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/SOURCE_REVIEW.json",
         "sections": [
           "all"
         ]
@@ -4207,28 +4221,21 @@
         ]
       },
       {
-        "ref": "1a6a89f2311ebfddc75dc73d260d814ec2536ee6",
-        "path": "experiments/manual-transmission/research/generic-retarget-received-r3-20261029/BEHAVIORAL_VERIFICATION.json",
+        "ref": "37e2df81b9489640d06405cbfba4e4a16bdabb2f",
+        "path": "experiments/manual-transmission/research/fblthp-dependent-receiving-r1-20261029/NEXT_ACTION.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "1a6a89f2311ebfddc75dc73d260d814ec2536ee6",
-        "path": "experiments/manual-transmission/research/generic-retarget-received-r3-20261029/SNAPSHOT_SUPPLEMENT.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "f862a0ddcbffb0becae5b4929f670cc225b00a00",
-        "path": "experiments/manual-transmission/research/generic-retarget-receiving-r3-20261029/NEXT_DEPENDENT_REVIEW.json",
+        "ref": "37e2df81b9489640d06405cbfba4e4a16bdabb2f",
+        "path": "experiments/manual-transmission/research/fblthp-dependent-receiving-r1-20261029/NEXT_SUPPLEMENT_REVIEW.json",
         "sections": [
           "all"
         ]
       }
     ],
-    "continuation_state": "READY_FOR_NEXT_ITERATION_OWNERSHIP_RELEASED",
+    "continuation_state": "WAITING_EXTERNAL_OWNERSHIP_RELEASED",
     "source_protocol_history": [
       null,
       {
@@ -4351,9 +4358,15 @@
       "workflow": ".github/workflows/manual-fblthp-dependent-r1-20261029.yml",
       "workflow_blob": "0ba7aed9e1f02c367f223b8797eef48139114039",
       "branch": "validation/manual-fblthp-dependent-r1-20261029",
-      "state": "FROZEN_REVIEWED_DISPATCH_PENDING",
+      "state": "DEPENDENT_QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
       "feature_admitted": false,
-      "card_admitted": false
+      "card_admitted": false,
+      "run": 40968021606,
+      "job": 123777376486,
+      "workflow_id": 401174935,
+      "attempt": 1,
+      "status": "in_progress",
+      "observed_utc": "2026-10-29T22:45:47.581Z"
     },
     "prepared_receiver_history": [
       {
@@ -4459,7 +4472,7 @@
       "cause": "All runtime gates pass. Raw snapshot export omitted original final newline; unchanged byte gate correctly failed. Separate additive construction inserts exported block into archived original; unchanged auditor and3negative controls pass.",
       "readback_verified": true
     },
-    "actual_stopping_reason": null,
+    "actual_stopping_reason": "External dependency: original dependent run40968021606 is in_progress. Exact receiver and isolated next supplement review are saved; no useful safely independent authorized work remains before original dependent evidence. Ownership released; no continuous execution implied.",
     "previous_card_guidance_before_registry_receipt": {
       "dependency": "Spellskite fixed-recipient one-target-slot retargeting",
       "registration": "Canonical NPH159 and CLB873 implemented and early-qualified; production card admission awaits supplemental original receiving and classification.",
@@ -5965,7 +5978,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
     "last_verified_enabled_utc": "2026-10-29T19:27:12.652Z",
-    "next_authorized_action": "Follow CURRENT.summary and next.next_executable_action; prepare full dependent qualification from verified R3 evidence and additive WAR successor. Existing executor/schedule unchanged.",
+    "next_authorized_action": "Follow CURRENT.summary and next.next_executable_action; receive original dependent qualification before remaining supplement and admission. Sole executor and schedule unchanged.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -6105,10 +6118,10 @@
     "work_owner": null,
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "READY_FOR_NEXT_ITERATION",
-    "last_execution_owner": "manual-work-2a6efce0-generic-r3",
+    "activity": "WAITING_EXTERNAL",
+    "last_execution_owner": "manual-work-d0da9f2a-dependent",
     "intervention_watch": "READ_ONLY",
-    "automation_run": "2a6efce0-3ef4-8330-9325-9e0db7e93e89",
+    "automation_run": "d0da9f2a-be74-8327-be3e-8c31c7b47398",
     "automation_reconciliation": "Exact single continuation run reconciled before claim and dispatch; prior foreground owner explicitly released. No new worker or schedule."
   },
   "blockers": [],
@@ -6800,7 +6813,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External dependency: original dependent run40968021606 is in_progress. Exact receiver and isolated next supplement review are saved; no useful safely independent authorized work remains before original dependent evidence. Ownership released; no continuous execution implied.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -6821,12 +6834,12 @@
     ],
     "unfinished_implementation": [
       "Six Manual cards missing: Fblthp, the Lost; Reckless Bushwhacker; Amphin Mutineer; Disciple of Freyalise; Veil of Summer; Opal Palace. Remaining opponent missing slots307. Registry presence alone is not rules correctness.",
-      "Bounded Fblthp implementation plus authorized generic redirect fix frozen; additive WAR snapshot and feature/card admission remain pending all gates.",
+      "Fblthp implementation and authorized generic redirect early behavioral gates verified; additive WAR snapshot preserves70originalentries. Full dependent and remaining card admission gates pending.",
       "Remaining Phase2 multiplayer admission, four-player runtime/pilots/hidden-information/telemetry/replay and frozen-input gates. Official games/seeds remain0; both Precision games reserved."
     ],
     "pending_evidence": [
-      "Original R3 received:1290manifest entries,17compiled forms,22exact report gates. Raw snapshot final-newline failure retained; offline additive construction verified without weakening the gate.",
-      "Full dependent card/snapshot/lint/ordinary/client/metadata/printing/Assay gates and original receiving remain pending. No active qualification."
+      "Dependent original run40968021606 active: compile-all,389cardcases,19074ordinary rows with43unchangedskips expected. Source c81721a6; no Kotlin or assertion changes from verified R3/additive WAR base.",
+      "Original dependent receiving prepared at37e2df81. Coherent client64, fresh metadata/printing/images and Assay/currentIR supplement remain mandatory; isolated source review saved, not dispatched."
     ],
     "source_protocol": {
       "source": "c81721a6312edef529218820a8dbf04f861443b0",
@@ -6837,9 +6850,15 @@
       "workflow": ".github/workflows/manual-fblthp-dependent-r1-20261029.yml",
       "workflow_blob": "0ba7aed9e1f02c367f223b8797eef48139114039",
       "branch": "validation/manual-fblthp-dependent-r1-20261029",
-      "state": "FROZEN_REVIEWED_DISPATCH_PENDING",
+      "state": "DEPENDENT_QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
       "feature_admitted": false,
-      "card_admitted": false
+      "card_admitted": false,
+      "run": 40968021606,
+      "job": 123777376486,
+      "workflow_id": 401174935,
+      "attempt": 1,
+      "status": "in_progress",
+      "observed_utc": "2026-10-29T22:45:47.581Z"
     },
     "accepted_receipt": {
       "commit": "e5c5b2a387b8e2cc528d17db7c20267e3938d516",
@@ -6885,7 +6904,12 @@
       "state": "ORIGINAL_REGISTRY_INVENTORY_RECEIVED"
     },
     "prepared_receiver": {
-      "state": "DEPENDENT_RECEIVER_NOT_YET_PREPARED"
+      "commit": "37e2df81b9489640d06405cbfba4e4a16bdabb2f",
+      "path": "experiments/manual-transmission/research/fblthp-dependent-receiving-r1-20261029",
+      "run": 40968021606,
+      "job": 123777376486,
+      "state": "PREPARED_NOT_EXECUTED",
+      "readback_verified": true
     },
     "proposal": {
       "commit": "5ff97c89039bb93a0f7633bc5f2778701dcfc551",
@@ -6895,13 +6919,20 @@
       "state": "EXPLICITLY_AUTHORIZED_IMPLEMENTED_QUALIFICATION_PENDING",
       "readback_verified": true
     },
-    "next_executable_action": "Dispatch sole reviewed Fblthp dependent card/ordinary validation; prepare exact original receiving. Other client/metadata/printing/Assay gates remain mandatory before admission.",
-    "actual_stopping_reason": null,
-    "continuation_state": "RUNNING_OWNED",
+    "next_executable_action": "Reconcile fresh CURRENT, exact owner/task run, newer receipts/successors and all workflow event/status types. Once original dependent run40968021606 is terminal, claim fresh-blob CAS and receive exactly once using 37e2df81b9489640d06405cbfba4e4a16bdabb2f/experiments/manual-transmission/research/fblthp-dependent-receiving-r1-20261029/NEXT_ACTION.json and RECEIVE.py. Require compile-all,389cardcases and19074ordinary rows19031passes43exactunchangedskips, independent inventory hashes, immutable source/tree/workflow/run/job/attempt/artifact pins, bytes/hash/manifest and all protected bindings. Preserve failures and repair only bounded causes without weakening assertions or unchanged reruns. Then execute isolated NEXT_SUPPLEMENT_REVIEW for coherent-client64, fresh WAR50 metadata/rulings/printing/images, Assay parse/explain/compile/WAR differential/currentIR and original receiving. Reuse verified R3 early evidence and accepted Spellskite/registry. No feature/card admission until all gates; no multiplayer or official games/seeds.",
+    "actual_stopping_reason": "External dependency: original dependent run40968021606 is in_progress. Exact receiver and isolated next supplement review are saved; no useful safely independent authorized work remains before original dependent evidence. Ownership released; no continuous execution implied.",
+    "continuation_state": "WAITING_EXTERNAL_OWNERSHIP_RELEASED",
     "read_sections": [
       {
-        "ref": "5e866498251ebd505496e0d247f4b164d1c7e6e4",
-        "path": "experiments/manual-transmission/research/fblthp-dependent-prepared-r1-20261029/NEXT_ACTION.json",
+        "ref": "c81721a6312edef529218820a8dbf04f861443b0",
+        "path": "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/PROTOCOL.json",
+        "sections": [
+          "all"
+        ]
+      },
+      {
+        "ref": "c81721a6312edef529218820a8dbf04f861443b0",
+        "path": "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/SOURCE_REVIEW.json",
         "sections": [
           "all"
         ]
@@ -6914,22 +6945,15 @@
         ]
       },
       {
-        "ref": "1a6a89f2311ebfddc75dc73d260d814ec2536ee6",
-        "path": "experiments/manual-transmission/research/generic-retarget-received-r3-20261029/BEHAVIORAL_VERIFICATION.json",
+        "ref": "37e2df81b9489640d06405cbfba4e4a16bdabb2f",
+        "path": "experiments/manual-transmission/research/fblthp-dependent-receiving-r1-20261029/NEXT_ACTION.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "1a6a89f2311ebfddc75dc73d260d814ec2536ee6",
-        "path": "experiments/manual-transmission/research/generic-retarget-received-r3-20261029/SNAPSHOT_SUPPLEMENT.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "f862a0ddcbffb0becae5b4929f670cc225b00a00",
-        "path": "experiments/manual-transmission/research/generic-retarget-receiving-r3-20261029/NEXT_DEPENDENT_REVIEW.json",
+        "ref": "37e2df81b9489640d06405cbfba4e4a16bdabb2f",
+        "path": "experiments/manual-transmission/research/fblthp-dependent-receiving-r1-20261029/NEXT_SUPPLEMENT_REVIEW.json",
         "sections": [
           "all"
         ]
@@ -6942,11 +6966,11 @@
       "reason": "New authority boundary: missing Fblthp entry-origin transport requires narrowly scoped successors of protected StackResolver.kt, StackComponents.kt and TriggerProcessor.kt, plus one additive protected WAR.json entry. Source review and archived original/drafts are complete at 5ff97c89039bb93a0f7633bc5f2778701dcfc551. No relevant external workflow remains active. Implementation across this boundary is not covered by existing grants; ownership released awaiting this exact approval.",
       "state": "BLOCKED_NEW_PROTECTED_BOUNDARY_AUTHORITY; ownership remains released; existing continuation paused with schedule and prompt preserved."
     },
-    "concrete_blocker_removed": "R3 original evidence proves generic retarget and unchanged Fblthp early behavior, including54executable negative witnesses. Export final-newline collection failure diagnosed; additive WAR preserves all70originalentries and originalbytes.",
+    "concrete_blocker_removed": "Dependent expected inventory independently rebound to51new Fblthp/export/generic rows, preserving prior identities and43skip identities; strict auditor13rejection controls pass. Sole compile-first card/ordinary qualification dispatched on frozen source.",
     "ownership": {
       "owner": null,
       "state": "RELEASED",
-      "status": "READY_FOR_NEXT_ITERATION",
+      "status": "WAITING_EXTERNAL",
       "sole_executor": "6adbe33033e481918659ce578f64f31e",
       "schedule_unchanged": true
     }
@@ -7010,7 +7034,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-29T22:43:27.699Z",
+  "updated_utc": "2026-10-29T22:45:47.581Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -8512,7 +8536,7 @@
     "artifact_sha256": "sha256:879f74749b54f7d636f848c6981bf45470a392a8d40023008af219d1ab79908b",
     "manifest_entries": 259
   },
-  "last_execution_owner": "manual-work-2a6efce0-generic-r3",
+  "last_execution_owner": "manual-work-d0da9f2a-dependent",
   "spellskite_behavior_r1": {
     "state": "ORIGINAL_BEHAVIORAL_FAILURE_RECEIVED",
     "source": "f58a64db3a133d86090dddf9776e622c981298cc",
