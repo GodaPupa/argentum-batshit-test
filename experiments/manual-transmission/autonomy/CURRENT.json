@@ -5490,7 +5490,7 @@
   "automation": {
     "execution_task": "Manual Work Continuation",
     "execution_task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_schedule": "Existing executor paused pending bounded card-registration authorization; stored schedule unchanged.",
+    "execution_schedule": "Existing single hourly Work executor re-enabled; stored schedule unchanged; bounded Spellskite grant included in prompt.",
     "intervention_watch": {
       "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
       "enabled": false,
@@ -5654,14 +5654,14 @@
       "prompt_readback_verified": true
     },
     "previous_execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
-    "is_enabled": false,
-    "pause": {
+    "is_enabled": true,
+    "resume_requested": false,
+    "previous_pause": {
       "utc": "2026-10-28T16:47:53Z",
       "reason": "Scheduled runtime requires pausing fully blocked tasks; proposal awaiting explicit protected-boundary authorization.",
       "schedule_preserved": true,
       "prompt_preserved": true
-    },
-    "resume_requested": true
+    }
   },
   "previous_qualified": {
     "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
@@ -5684,7 +5684,7 @@
     "session": "390bd1587480",
     "work_owner": null,
     "discussion": "READ_ONLY",
-    "scheduled_executor": "PAUSED_PENDING_BOUNDED_CARD_ADMISSION_AUTHORIZATION",
+    "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
     "activity": "READY_FOR_NEXT_ITERATION",
     "last_execution_owner": "manual-work-8396a949-d5a0-832d-b02d-f4422fd043db"
   },
@@ -6498,7 +6498,7 @@
       "run": 40710387291,
       "readback_verified": true
     },
-    "continuation_state": "READY_FOR_NEXT_ITERATION; explicit bounded grant recorded; existing executor resumption requested",
+    "continuation_state": "READY_FOR_NEXT_ITERATION; existing sole executor enabled; bounded registration and qualification pending",
     "previous_guidance_at_ready_4e14a8c9": {
       "read_sections": [
         {
