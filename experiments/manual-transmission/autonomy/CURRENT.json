@@ -3,17 +3,15 @@
   "updated_date": "2026-10-29",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "RUNNING",
+  "owner": "manual-work-fblthp-r3-receiving-2026-10-29T16:45:04.920Z",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "previous_owner": "manual-work-foreground-fblthp-2026-10-29T14:53:28.528Z",
-    "claimed_utc": "2026-10-29T14:53:28.528Z",
-    "renewed_utc": "2026-10-29T16:01:46.241Z",
-    "released_utc": "2026-10-29T16:08:51.502Z",
-    "expires_utc": null,
-    "release_reason": "External qualification40907500576 remains in progress. Original receiver and isolated next-dependent review are checkpointed at78fbf432. The next production step requires received early evidence and generated WAR bytes; no useful safely independent authorized work remains for this invocation."
+    "state": "ACTIVE",
+    "owner": "manual-work-fblthp-r3-receiving-2026-10-29T16:45:04.920Z",
+    "claimed_utc": "2026-10-29T16:45:04.920Z",
+    "renewed_utc": "2026-10-29T16:45:04.920Z",
+    "expires_utc": "2026-10-29T17:45:04.920Z",
+    "automation_run": "3d0cbdc9-65ac-8333-a6ea-3a9eff677da2"
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -6822,7 +6820,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-29T16:08:51.502Z",
+  "updated_utc": "2026-10-29T16:45:04.920Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -8725,91 +8723,17 @@
     "Explicit authorization needed for proposal 858dac7a631d9b357c2bf7f1694a3de4fd1c94ba:experiments/manual-transmission/research/spellskite-card-admission-proposal-r1-20261028/NEXT_ADMISSION.json; protected NPH snapshot and production registration boundary."
   ],
   "ownership_reconciliation": {
-    "observed_utc": "2026-10-29T06:51:41.687Z",
-    "previous_checkpoint": "1e2629fe5699d644c8d98586dc6112437633e65d",
-    "previous_owner": null,
-    "automation_run": "38ba11bc-c8ec-8327-883f-3e8d92a777c0",
+    "utc": "2026-10-29T16:45:04.920Z",
+    "previous_checkpoint": "7ac5db6ead4b18e2e7320928596bc6ff692d5117",
+    "previous_owner_released": true,
+    "automation_run": "3d0cbdc9-65ac-8333-a6ea-3a9eff677da2",
+    "workflow": 40907500576,
+    "status": "completed",
+    "conclusion": "failure",
     "active_workflows": [],
     "ignored_ancient_pest": 34749202144,
-    "terminal_run": 40826645494,
-    "newer_receipt": false,
-    "release_20261029": {
-      "observed_utc": "2026-10-29T07:12:04.717Z",
-      "current_blob": "52ec5f815c4e56f44c09baa9de83f2cb1cb4a60f",
-      "automation_run": "38ba11bc-c8ec-8327-883f-3e8d92a777c0",
-      "automation_status": "in_progress",
-      "automation_result_note": "Current invocation releasing its own lease; older latest_result not current evidence.",
-      "all_event_status_counts": {
-        "in_progress": 0,
-        "queued": 1,
-        "waiting": 0,
-        "requested": 0,
-        "pending": 0
-      },
-      "ignored_only": 34749202144,
-      "latest_run": 40826645494,
-      "latest_run_state": "completed_success_received",
-      "ledger_head": "29f1772599461881b629bb17f61d404bc79a0f59",
-      "proposal_research_delta_verified": true
-    },
-    "blocked_recheck_20261029": {
-      "observed_utc": "2026-10-29T07:42:30.509Z",
-      "automation_run": "d0491638-82cc-8332-8e87-291b37585ad2",
-      "owner": null,
-      "lease": "RELEASED",
-      "execution_admitted": true,
-      "ledger_base": "f431a6a39a884e4507828ae8085396a0f44fddaf",
-      "proposal_unchanged": true,
-      "active_relevant_workflows": [],
-      "ignored_only": 34749202144,
-      "no_production_changes": true,
-      "no_repeat_receiving_or_qualifications": true
-    },
-    "fblthp_early_dispatch": {
-      "observed_utc": "2026-10-29T15:43:17.765Z",
-      "owner": "manual-work-foreground-fblthp-2026-10-29T14:53:28.528Z",
-      "automation_run": "d0491638-82cc-8332-8e87-291b37585ad2",
-      "automation_status": "completed",
-      "enabled": true,
-      "schedule_preserved": true,
-      "active_relevant_workflows": [],
-      "ignored_ancient_pest": 34749202144,
-      "no_newer_receipts": true,
-      "source_delta_verified": 31,
-      "validation_delta_verified": 1
-    },
-    "fblthp_early_r2": {
-      "utc": "2026-10-29T15:51:51.292Z",
-      "owner": "manual-work-foreground-fblthp-2026-10-29T14:53:28.528Z",
-      "automation_run": "075b1bac-c324-8328-8079-a4939fd7e2c0",
-      "active_workflows": [],
-      "ignored_ancient_pest": 34749202144,
-      "newer_receipts": false,
-      "source_and_validation_deltas_verified": true
-    },
-    "fblthp_early_r3": {
-      "observed_utc": "2026-10-29T16:01:46.241Z",
-      "owner": "manual-work-foreground-fblthp-2026-10-29T14:53:28.528Z",
-      "automation_run": "075b1bac-c324-8328-8079-a4939fd7e2c0",
-      "same_active_session": true,
-      "active_relevant_workflows": [],
-      "ignored_ancient_pest": 34749202144,
-      "newer_receipts": false,
-      "source_diff_verified": true
-    },
-    "fblthp_release": {
-      "observed_utc": "2026-10-29T16:08:51.502Z",
-      "owner_released": "manual-work-foreground-fblthp-2026-10-29T14:53:28.528Z",
-      "automation_run": "075b1bac-c324-8328-8079-a4939fd7e2c0",
-      "same_session_run_in_progress_at_release": true,
-      "active_workflows": [
-        40907500576
-      ],
-      "ignored_ancient_pest": 34749202144,
-      "other_statuses_empty": true,
-      "sole_executor_enabled": true,
-      "schedule_preserved": true
-    }
+    "newer_receipts": false,
+    "action": "Receive original R3 failure, diagnose exact cause and continue bounded repair."
   },
   "spellskite_card_early_r1": {
     "state": "QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
