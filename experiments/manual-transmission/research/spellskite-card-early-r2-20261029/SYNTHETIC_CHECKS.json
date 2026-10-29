@@ -1,0 +1,131 @@
+{
+  "kind": "receiver robustness not engine evidence",
+  "checks": [
+    {
+      "name": "exact normal",
+      "passed": true,
+      "expected_rejection": false
+    },
+    {
+      "name": "exact executable assertion pair",
+      "passed": true,
+      "expected_rejection": false
+    },
+    {
+      "name": "wrong identity",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "duplicate identity",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "unexpected skip",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "error instead of assertion",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "missing case",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "wrong failure type",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "wrong assertion frame",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "extra failure",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "compiler contamination",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "negative success exit",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "unrelated failed task",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "compile success",
+      "passed": true,
+      "expected_rejection": false
+    },
+    {
+      "name": "compile failure",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "compile diagnostic",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "one insertion exact old bytes",
+      "passed": true,
+      "expected_rejection": false
+    },
+    {
+      "name": "unrelated content edit",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "old whitespace edit",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "missing original entry",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "second addition",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "duplicate Spellskite",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "no insertion",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "wrong name",
+      "passed": true,
+      "expected_rejection": true
+    },
+    {
+      "name": "last insertion",
+      "passed": true,
+      "expected_rejection": false
+    }
+  ],
+  "count": 25
+}

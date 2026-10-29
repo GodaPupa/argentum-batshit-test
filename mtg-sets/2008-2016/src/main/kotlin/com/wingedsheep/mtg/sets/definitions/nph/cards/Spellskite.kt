@@ -2,7 +2,7 @@ package com.wingedsheep.mtg.sets.definitions.nph.cards
 
 import com.wingedsheep.sdk.dsl.*
 import com.wingedsheep.sdk.model.Rarity
-import com.wingedsheep.sdk.scripting.EffectTarget
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
 
 val Spellskite = card("Spellskite") {
     manaCost = "{2}"

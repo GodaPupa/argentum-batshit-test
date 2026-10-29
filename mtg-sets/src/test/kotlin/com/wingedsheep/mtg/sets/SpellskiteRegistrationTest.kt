@@ -3,7 +3,7 @@ package com.wingedsheep.mtg.sets
 import com.wingedsheep.sdk.dsl.*
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.model.*
-import com.wingedsheep.sdk.scripting.EffectTarget
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import com.wingedsheep.sdk.serialization.CardExporter
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
