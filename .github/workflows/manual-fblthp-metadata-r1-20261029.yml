@@ -1,0 +1,34 @@
+name: Manual Fblthp metadata intake R1
+on:
+  push:
+    branches: [validation/manual-fblthp-metadata-r1-20261029]
+    paths: ['.github/workflows/manual-fblthp-metadata-r1-20261029.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: b6adc80687793c0d75f87cde7cba0e1e1812b62b
+  SOURCE_TREE: ea591657f8d64176680d84fc5ed547b0cb588c44
+  WORKFLOW: .github/workflows/manual-fblthp-metadata-r1-20261029.yml
+  RECORD: experiments/manual-transmission/research/fblthp-metadata-r1-20261029
+jobs:
+  collect:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - name: Read-only original metadata intake
+        run: |
+          mkdir -p "$HOME/.cache/argentum"
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" python3 "$RECORD/run.py"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-fblthp-metadata-r1-${{ github.run_id }}
+          path: manual-fblthp-metadata-r1-evidence/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
