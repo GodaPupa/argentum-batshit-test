@@ -1,0 +1,72 @@
+{
+  "state": "COMPLETE_INPUTS_AND_PROTECTED_RESTORATION_VERIFIED_EXECUTION_PENDING",
+  "reviewer": "Same foreground implementation agent; not independent review",
+  "base": "fd55b9904ab42e873b34e9557a2462fac9447512",
+  "proposal": "5ff97c89039bb93a0f7633bc5f2778701dcfc551",
+  "authority": "ad96838120be35e1bb6d9da1dde248419bcd9ef4",
+  "metadata_receipt": "0aac4ec80805ab48aff63826e264fe174ad26d1c",
+  "protected_runtime_boundary": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt"
+  ],
+  "protected_runtime_verification": "Only additive event-origin field/assignment additions; deleting exact frozen additions restores original bytes. Existing targeting, original-source characteristic logic and fallback unchanged.",
+  "protected_snapshot": "Original WAR bytes unchanged in this early source. Export creates candidate evidence only; additive successor requires exact original-byte restoration and received review.",
+  "compatibility": "Optional serialized carrier fields omit null defaults; immutable per-entry origin survives queue/order/serialization/source departure. No live origin recapture. Modal/choice continuation changes only transport this fact.",
+  "sdk": "Pure-data condition plus facade/evaluator and SDK section12 documentation; no card-specific branching. Existing graveyard condition untouched.",
+  "original_scenarios": "Ten saved scenario bodies preserved byte-for-byte; five additive card controls and nine new engine scenarios.",
+  "static_api_check": "Replaced unsupported triggered-builder modal shorthand with existing ModalEffect/Mode.noTarget before freeze. Confirmed driver, copy, serialization and continuation signatures.",
+  "normal_cases": 24,
+  "mutants": 8,
+  "compile_forms_before_tests": 9,
+  "negative_assertion_witnesses": 25,
+  "audit_selftest": {
+    "synthetic_only": true,
+    "valid_report_controls": 2,
+    "valid_compile_control": 1,
+    "rejected": [
+      "missing report",
+      "duplicate report multiplicity",
+      "wrong count",
+      "skip",
+      "runtime error",
+      "compiler contamination",
+      "non assertion failure",
+      "wrong assertion location",
+      "wrong test identity",
+      "mutant zero exit",
+      "compiler log despite zero exit"
+    ]
+  },
+  "skills_applied": [
+    "add-feature",
+    "add-card",
+    "verify",
+    "generate-scenario"
+  ],
+  "manual_fixture": "Fixed local scenario setup only; no official seeds/games or multiplayer admission.",
+  "remaining_gates": [
+    "Review generated WAR entry; preserve all original bytes before one additive snapshot successor.",
+    "Fresh metadata re-verification, canonical printing, lint, snapshots and Assay parse/explain/compile/differential classification.",
+    "Affected SDK, engine, card, server, ordinary, full same-source compatibility including 64 client and exact43historical skips.",
+    "Original full artifact receiving before any feature or card admission."
+  ],
+  "accepted_evidence_reuse": [
+    "Spellskite behavior34676300",
+    "same-source compatibilitya50d97c6",
+    "Spellskite registrationcdb1bc6c",
+    "registrye5c5b2a387b8e2cc528d17db7c20267e3938d516"
+  ],
+  "no_admission": true,
+  "original_failure_receipt": "fd55b9904ab42e873b34e9557a2462fac9447512",
+  "repair": "Restore exact omitted original source tails of StackResolver.kt and CoreContinuations.kt; retain authorized additions, all tests and all assertion expectations. Original R1/R2 evidence retained.",
+  "evidence_capture_improvement": "Archive immutable identity/protocol/workflow at start of binding so a precompile source-check failure retains its own input pins. Acceptance checks unchanged except exact authorized documentation binding.",
+  "all_hydrated_inputs_git_verified": 25,
+  "protected_original_sha256_restoration": "All3pass against frozen accepted hashes; no comparison solely to local copies.",
+  "restored_original_bytes": {
+    "StackResolver.kt": 20444,
+    "CoreContinuations.kt": 6053
+  },
+  "restored_tail_review": "Core continuation tail retains full EffectContext for ForEach/RepeatWhile/CoinFlip/Reflexive frames; no additional origin field needed there. Resolver tail restored without edits.",
+  "runtime_original_behavior": "All original source tail content restored. Intended runtime additions unchanged; original and additive assertions unchanged."
+}

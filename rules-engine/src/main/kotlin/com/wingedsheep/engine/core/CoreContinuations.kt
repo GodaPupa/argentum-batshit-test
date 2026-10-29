@@ -474,4 +474,112 @@ data class ForEachContinuation(
  * @property repeatCondition The serialized repeat condition
  * @property resolvedDeciderId For PlayerChooses — the resolved player entity ID
  * @property sourceId The spell/ability that caused this effect
- * @property sourceName Name of the sourc
+ * @property sourceName Name of the source for display
+ * @property controllerId The controller of the effect
+ * @property xValue The X value (if applicable)
+ * @property targets The chosen targets (for effect context)
+ * @property phase Current phase of the repeat loop
+ * @property bodyCollections Pipeline collections produced by *this pass's* body, captured when the
+ *   body paused for a decision. The AFTER_BODY resumer feeds these to the repeat condition as
+ *   bodyOutputs — mirroring the synchronous path, where the body's own outputs (e.g. `putting`,
+ *   the land put this pass) are what a WhileCondition evaluates. Kept separate from [effectContext]
+ *   on purpose: [effectContext] must stay the pristine pre-loop context so the *next* iteration
+ *   re-gathers fresh (a stale collection leaking forward would mask the next pass and the loop
+ *   would never terminate — see RepeatWhileExecutor.executeIteration).
+ */
+@Serializable
+data class RepeatWhileContinuation(
+    val body: Effect,
+    val repeatCondition: com.wingedsheep.sdk.scripting.effects.RepeatCondition,
+    val resolvedDeciderId: EntityId? = null,
+    val sourceName: String?,
+    val effectContext: EffectContext,
+    val bodyCollections: Map<String, List<EntityId>> = emptyMap()
+) : AutomaticContinuation
+
+/** The loop's player-choice phase; the body tail itself is automatic work. */
+@Serializable
+data class RepeatWhileDecisionContinuation(
+    val loop: RepeatWhileContinuation,
+) : AnswerContinuation
+
+/**
+ * Resume after the flipper answers "flip another coin?" during a
+ * [com.wingedsheep.sdk.scripting.effects.FlipCoinsUntilLossEffect] (Fiery Gambit).
+ *
+ * [winsSoFar] is the whole reason this frame exists. The tally cannot ride the pipeline between
+ * flips: pipeline `storedNumbers` only reach a consumer on the result that publishes them, so a
+ * per-flip tally would be dropped at each pause and the card would pay out differently depending on
+ * whether a prompt was raised — the "pipeline numbers lost across pause" shape. Carrying it in the
+ * frame, and publishing once when the run ends, is the same idiom as
+ * [PayManaCostRepeatedlyContinuation]'s count.
+ *
+ * @property flipperId The player flipping — resolved once, so the run stays with them.
+ * @property storeWinsAs Pipeline variable the final tally is published under.
+ * @property winsSoFar Flips won *before* the next flip; the answer "stop" publishes exactly this.
+ * @property sourceId The spell or ability doing the flipping, for the coin-flip events' source.
+ */
+@Serializable
+data class FlipCoinsUntilLossContinuation(
+    val flipperId: EntityId,
+    val storeWinsAs: String,
+    val winsSoFar: Int,
+    val sourceId: EntityId?,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
+) : AnswerContinuation
+
+/**
+ * Resume a coin flip after the flipper says which of the coins to keep — the pause a
+ * [com.wingedsheep.sdk.scripting.FlipAdditionalCoins] replacement (Krark's Thumb) introduces into
+ * every coin-flip executor.
+ *
+ * One frame serves all four flip effects because the *only* thing the pause interrupts is producing
+ * the results; what each effect does with them afterwards is decided from [effect] on resume. That
+ * is why [effect] and [effectContext] are carried whole rather than the four executors each getting
+ * a frame of their own: the sub-effect a [com.wingedsheep.sdk.scripting.effects.FlipCoinEffect]
+ * runs on a win needs the original context's targets, and re-deriving them field by field is how
+ * continuations lose them.
+ *
+ * A batch can owe several answers (one per coin whose replacement came up mixed), so resuming may
+ * push this same frame again — [pending] carries how far the batch got.
+ *
+ * @property effect The flip effect that was executing; decides what happens once the coins settle.
+ * @property effectContext The context that effect was running under, restored verbatim on resume.
+ * @property pending The batch part-way through being resolved (see
+ *   [com.wingedsheep.engine.handlers.effects.CoinFlipService.PendingCoinFlipChoice]).
+ * @property winsSoFar Only meaningful for
+ *   [com.wingedsheep.sdk.scripting.effects.FlipCoinsUntilLossEffect]: flips won before this one, so
+ *   the run's tally survives the extra pause exactly as it survives the "flip again?" one.
+ */
+@Serializable
+data class CoinFlipChoiceContinuation(
+    val effect: Effect,
+    val effectContext: EffectContext,
+    val pending: com.wingedsheep.engine.handlers.effects.CoinFlipService.PendingCoinFlipChoice,
+    val winsSoFar: Int = 0
+) : AnswerContinuation
+
+/**
+ * Pre-pushed before executing a `ReflexiveTriggerEffect`'s action half. Auto-resumed after the
+ * action completes to emit a [com.wingedsheep.engine.core.ReflexiveAbilityTriggeredEvent] — CR
+ * 603.12's "when you do" reflexive triggered ability is a genuinely separate stack object, not
+ * something resolved inline, so this continuation's only job is to notice the action finished and
+ * fire the event that [com.wingedsheep.engine.event.TriggerDetector] turns into a real
+ * [com.wingedsheep.engine.event.PendingTrigger].
+ *
+ * Flow: executor pre-pushes this → executes action → on success, pops and emits inline; on pause,
+ * the auto-resumer emits after the action's own decision resolves.
+ *
+ * @property reflexiveEffect The effect the reflexive triggered ability will run once it resolves
+ * @property reflexiveTargetRequirements Target requirements for the reflexive triggered ability
+ * @property effectContext The execution context from the parent ability (source/controller/pipeline)
+ */
+@Serializable
+data class ReflexiveTriggerTargetContinuation(
+    val reflexiveEffect: Effect,
+    val reflexiveTargetRequirements: List<TargetRequirement>,
+    val effectContext: EffectContext,
+    /** Optional human-readable description override, carried through to the emitted
+     *  [com.wingedsheep.engine.core.ReflexiveAbilityTriggeredEvent]. */
+    val descriptionOverride: String? = null
+) : AutomaticContinuation
