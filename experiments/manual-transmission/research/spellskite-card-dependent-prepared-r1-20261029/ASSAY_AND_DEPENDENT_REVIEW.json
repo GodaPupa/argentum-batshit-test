@@ -1,0 +1,15 @@
+{
+  "state": "ISOLATED_SOURCE_REVIEW_NOT_ASSAY_RESULT",
+  "source": "426a4ac78945535cf996d048f5b84b5b9ad4d8e0",
+  "cli_blob": "ec8e3b425ece2c8a8c3020462a70088115271fee",
+  "differential_blob": "b89639ae29b4f820d0bfebfb589ade5f29f7b75e",
+  "compiler_blob": "d0bb6ea7dc59eaad811c4c69e1f7a76c29b66f8f",
+  "parse_explain": "Exit0 is inspection completion only. Inspect every line/verdict; a decline is not passing evidence. Capture original stdout/stderr, source corpus hash and exits.",
+  "compile": "Exit0 supplies full serialized CardDefinition; exit1 is classified decline, exit2 input error. Never count either as successful compilation. Preserve full reasons and warnings.",
+  "differential": "Exit0 only means golden decoding succeeded. Capture full top10000 divergences and population counts for NPH and CLB; classify every divergence and the Spellskite population against pinned source/Oracle text. No parser/emitter fixes or expectation relaxation included.",
+  "printing": "Run unchanged just check-card-printing Spellskite; script27963936 uses User-Agent+Accept headers. Its exit0 requires earliest real canonical and all scaffolded reprints. Archive raw cache/input+fields and metadata/image verification. No gate inferred from static source review.",
+  "card_rows": 388,
+  "ordinary_passes": 18980,
+  "historical_skips": 43,
+  "reuse": "Accepted behavior34676300 and compatibilitya50d97c6 remain unchanged historical acceptance; changed catalog dependencies require current-source card/ordinary gates. Rebind all unchanged engine/SDK/server/client/generator source trees and exact accepted test/protocol identities before reuse; production-bound49scenario changes are requalified in early/current ordinary."
+}
