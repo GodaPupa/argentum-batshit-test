@@ -1,0 +1,41 @@
+{
+  "state": "FAILED_ORIGINAL_RECEIVED_PRECOMPILE_BINDING_FAILURE",
+  "pins": {
+    "source": "c838c4eabbc1c2209228f1bb16fe861b2139d0eb",
+    "tree": "6d00e204519d2552abf2bfe9593e15e85a7fe339",
+    "validation": "93c77fd1e85126b68f89fe06babcda9b9e467455",
+    "validation_tree": "ba57b532698425e3e782476fd2b98adb38339932",
+    "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r1-20261029.yml",
+    "workflow_blob": "1ae5de941ee365f32d8067ec59cd97d04e49f68d",
+    "branch": "validation/manual-fblthp-entry-origin-early-r1-20261029",
+    "run": 40904461170,
+    "protocol_blobs": {
+      "PROTOCOL.json": "2dbc98e1d829c4f6c31482ed98f923094dc73b7a",
+      "SOURCE_REVIEW.json": "232993a7d2e308f2a0ccc72dae8cc59373a69456",
+      "audit.py": "e2104e2cf3f0808ac229a37aadf6148193565ed4",
+      "audit_selftest.py": "68bdd6d59a4c83b75f208474b8d5dbcf27de2e8e",
+      "run.py": "90c3a8fb8229ab24454f4dd938477f3a245f0414",
+      "validation.just": "93f3b9e8c784cbf695bf302ce79f5e8c12d55094"
+    }
+  },
+  "run": 40904461170,
+  "job": 123555306231,
+  "attempt": 1,
+  "artifact": 12910612626,
+  "bytes": 1287482,
+  "sha256": "48ecbb955b80e23e65603c76fc889ccaf9512e0f061503843467d1a65f7f03b7",
+  "manifest_entries": 363,
+  "available_source_files_verified": {
+    "initial": 181,
+    "final": 181
+  },
+  "missing_binding_and_protocol": "Collector failed before its binding/protocol archive step. Immutable GitHub source/protocol/workflow pins independently retained; no full-run binding claim.",
+  "failure": "Traceback (most recent call last):\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r1-20261029/run.py\", line 82, in <module>\n    try:main()\n        ~~~~^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r1-20261029/run.py\", line 62, in main\n    OUT.mkdir();bind('initial')\n                ~~~~^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r1-20261029/run.py\", line 18, in bind\n    if path not in P['allowed_protected_successors']:assert sha(actual)==digest,path\n                                                            ^^^^^^^^^^^^^^^^^^^\nAssertionError: docs/card-sdk-language-reference.md\n",
+  "cause": "Authorized SDK doc successor is bound by git_bindings but accepted_bindings checks unchanged bytes first. No runtime/compiler/test execution occurred.",
+  "repair": "On new immutable successor validate authorized git_bindings before unchanged accepted check, preserve original baseline hash verification and exact source/protocol gates.",
+  "accepted_gates": [],
+  "feature_admitted": false,
+  "card_admitted": false,
+  "official_games": 0,
+  "official_seeds": 0
+}

@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r1-20261029/run.py", line 82, in <module>
+    try:main()
+        ~~~~^^
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r1-20261029/run.py", line 62, in main
+    OUT.mkdir();bind('initial')
+                ~~~~^^^^^^^^^^^
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r1-20261029/run.py", line 18, in bind
+    if path not in P['allowed_protected_successors']:assert sha(actual)==digest,path
+                                                            ^^^^^^^^^^^^^^^^^^^
+AssertionError: docs/card-sdk-language-reference.md
