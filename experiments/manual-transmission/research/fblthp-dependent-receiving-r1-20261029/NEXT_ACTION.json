@@ -1,0 +1,14 @@
+{
+  "state": "PREPARED_ORIGINAL_RECEIVING_NOT_ACCEPTANCE",
+  "pins": "PINS.json",
+  "run": 40968021606,
+  "next_executable_action": "Reconcile live CURRENT, ownership, exact automation run, newer receipts/successors and all workflow statuses. After terminal run, download original attempt1 artifact exactly once and save RUN/JOBS/ARTIFACTS.json and original.zip beside RECEIVE.py. Verify immutable pins, bytes/hash/manifest, source bindings/restoration, compile result, raw identities/multiplicities/skips using independently derived inventory. Preserve original failure if any, diagnose bounded cause without weakening expectations. Card/ordinary success alone is not feature/card acceptance; follow NEXT_SUPPLEMENT_REVIEW.json.",
+  "gates": {
+    "compile_all": true,
+    "cards": 389,
+    "ordinary_rows": 19074,
+    "ordinary_passes": 19031,
+    "ordinary_skips": 43
+  },
+  "no_admission": true
+}
