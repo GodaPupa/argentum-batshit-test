@@ -1,0 +1,214 @@
+{
+  "source": "426a4ac78945535cf996d048f5b84b5b9ad4d8e0",
+  "tree": "181571e1dbf3547280a8f969eb1e748929d893f2",
+  "validation": "46144806b08af07dcb1667e7107a953427de169f",
+  "validation_tree": "a2b32128c18fe14673d46268dc88fba6cc9c4af1",
+  "workflow": ".github/workflows/manual-spellskite-card-early-r2-20261029.yml",
+  "workflow_blob": "970f866254d165aa759707e88f57164e6f641456",
+  "branch": "validation/manual-spellskite-card-early-r2-20261029",
+  "run": 40805567331,
+  "workflow_id": 400114720,
+  "job": 123223575671,
+  "attempt": 1,
+  "artifact_name": "manual-spellskite-card-early-r2-40805567331",
+  "protocol_files": {
+    "validation.just": "2a1fff5116342aca3462a9f52a0f4d4c11a762218db6ae49c5f5d84e3963448e",
+    "NEXT_CONTRACT.json": "0337c1938072c0dbc1beabf8a8df7c15282854dff29f21fc0317178d393a345d",
+    "run.py": "3e2213785c2c9f6282b1534f4d8d7ce7176dae17862f60987327bb4089906d95",
+    "PROTOCOL.json": "51ed155682a729734b3592b7458f852ab655587f4edf77de541afa1de55ccf33",
+    "check_audit.py": "f191dab7df2fa4e6c02eb37f2d7f7578f7ebb98e07a838811f9ca54111b1293e",
+    "SOURCE_REVIEW.json": "0e4b92c6c61db149578964e14d45e2b50566fbdc9e511a27c1452a8b682dcfd0",
+    "RECEIVE.py": "077e03dc5c9f84ededd66a71404faea6d3d52b9b67e8649ba1078534f0065125",
+    "SYNTHETIC_CHECKS.json": "74c8ee48041ae3c0938365d9d855cc22069c433afe8947022c9fdfdb3990cba2",
+    "audit.py": "f24945d82a1b81f146f98352f825872e317de836e26fbdbb4cee6b67578a52e2",
+    "NPH.original.json": "88b21c3c6de85f734294bf1e9c56e06895eaebbccfccef8c2b8d78868650a21a"
+  },
+  "original_clb_sha256": "bfa57f17dbb6bd134d7b510419bfb8c748932a85b9e999a9da63b9bbc9bd877b",
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "artifact": 12868711717,
+  "artifact_bytes": 4730640,
+  "artifact_sha256": "c72580fe410eccf52d018222fb59d95c1d77cfd72330c0f766642e44b95b53c6",
+  "manifest_entries": 803,
+  "gates": {
+    "compile-normal": {
+      "compiled": true
+    },
+    "compile-blue-only": {
+      "compiled": true
+    },
+    "compile-permanent-target": {
+      "compiled": true
+    },
+    "compile-wrong-recipient": {
+      "compiled": true
+    },
+    "compile-absent-discovery": {
+      "compiled": true
+    },
+    "compile-wrong-canonical": {
+      "compiled": true
+    },
+    "compile-wrong-reprint": {
+      "compiled": true
+    },
+    "normal": {
+      "rows": 57,
+      "passes": 57,
+      "failures": {},
+      "skips": 0,
+      "identities": {
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSpellskite actual activation targetCount=0 payLife=false": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSpellskite actual activation targetCount=0 payLife=true": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSpellskite actual activation targetCount=1 payLife=false": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSpellskite actual activation targetCount=1 payLife=true": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSpellskite actual trigger targetCount=0 payLife=false": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSpellskite actual trigger targetCount=0 payLife=true": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSpellskite actual trigger targetCount=1 payLife=false": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSpellskite actual trigger targetCount=1 payLife=true": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK matrix optional public named resolution instant": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK matrix division public occurrence amounts instant": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK matrix optional public named resolution activation": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK matrix division public occurrence amounts activation": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK matrix optional public named resolution trigger": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK matrix division public occurrence amounts trigger": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK matrix modal public original boundaries instant": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK matrix modal public original boundaries trigger": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK matrix splice public original boundaries and tail": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK source departure returned=false": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK source departure returned=true": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK same instance replace exactly one and reject duplicate": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK cross instance duplicate retains old occurrence without retrigger": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK another-target relation cannot invalidate unchanged later slot": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK same controller whole group restriction": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK different controllers whole group restriction": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK original source legality HEXPROOF": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK original source legality SHROUD": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK original source legality PROTECTION_FROM_GREEN": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK dynamic count retains original declared count": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK unchanged illegal target keeps its occurrence stamp": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK same physical id different visits stay occurrence-specific": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK serialized choice rejects wrong identity and replays exactly": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK invalid payment multiset [RED]": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK invalid payment multiset [BLUE, BLUE]": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK repeated activations debit each time": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK invalid stack target rolls payment back": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK single spell redirects and deals damage to same visit": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK insufficient life leaves activation and payment unchanged": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK no reselection preserves complete stack object": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK actual targeting triggers ward pay=false": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK actual targeting triggers ward pay=true": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK explicit life with no blue mana": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK zero target spell still permits activation": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK illegal occurrence index preserves choice -1": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK illegal occurrence index preserves choice 2": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK explicit original source legality instant HEXPROOF": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK explicit original source legality instant SHROUD": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK explicit original source legality activation HEXPROOF": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK explicit original source legality activation SHROUD": 1,
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SpellskiteScenarioTest\tSK explicit original source legality activation PROTECTION_FROM_GREEN": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR01 unique canonical discovery in NPH": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR02 mechanics equal accepted test-local definition": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR03 Phyrexian activation payment": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR04 spell or ability target requirement": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR05 fixed self recipient": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR06 canonical metadata and characteristics": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR07 CLB873 reprint discovered with exact metadata": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR08 existing discovery control": 1
+      }
+    },
+    "blue-only": {
+      "rows": 8,
+      "passes": 6,
+      "failures": {
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR02 mechanics equal accepted test-local definition": {
+          "type": "org.opentest4j.AssertionFailedError",
+          "frame": "SpellskiteRegistrationTest.kt:30",
+          "message": "org.opentest4j.AssertionFailedError: Values differed at keys activatedAbilities\nexpected:<{\n  \"activatedAbilities\" = [[(\"id\", \"ability_1\"), (\"cost\", [(\"type\", \"CostAtomWrapper\"), (\"atom\", [(\"type\", \"AtomMana\"), (\"cost\", \"{U/P}\")])]), (\"effect\", [(\"type\", \"ChangeTargetTo\"), (\"stackObject\", [(\"type\", \"BoundVariable\"), (\"name\", \"spell or ability\")])]), (\"targetRequirements\", [[(\"type\", \"TargetObject\"), (\"filter\", [(\"baseFilter\", []), (\"zone\", \"Stack\")]), (\"id\", \"spell or ability\")]])]]\n}> but was:<{\n  \"activatedAbilities\" = [[(\"id\", \"ability_1\"), (\"cost\", [(\"type\", \"CostAtomWrapper\"), (\"atom\", [(\"type\", \"AtomMana\"), (\"cost\", \"{U}\")])]), (\"effect\", [(\"type\", \"ChangeTargetTo\"), (\"stackObject\", [(\"type\", \"BoundVariable\"), (\"name\", \"spell or ability\")])]), (\"targetRequirements\", [[(\"type\", \"TargetObject\"), (\"filter\", [(\"baseFilter\", []), (\"zone\", \"Stack\")]), (\"id\", \"spell or ability\")]])]]\n}>"
+        },
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR03 Phyrexian activation payment": {
+          "type": "org.opentest4j.AssertionFailedError",
+          "frame": "SpellskiteRegistrationTest.kt:33",
+          "message": "org.opentest4j.AssertionFailedError: data class diff for com.wingedsheep.sdk.scripting.AbilityCost.Atom\n\u2514 atom: data class diff for com.wingedsheep.sdk.scripting.costs.CostAtom.Mana\n   \u2514 cost: data class diff for com.wingedsheep.sdk.core.ManaCost\n      \u2514 symbols: Element differ at index: [0]\n\nThe following element(s) differ:\nindex 0: Error: object is not an instance of declaring classexpected:<{U/P}> but was:<{U}>\n\nexpected:<[{U/P}]> but was:<[{U}]>\n\nexpected:<Atom(atom=Mana(cost={U/P}))> but was:<Atom(atom=Mana(cost={U}))>"
+        }
+      },
+      "skips": 0,
+      "identities": {
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR01 unique canonical discovery in NPH": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR02 mechanics equal accepted test-local definition": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR03 Phyrexian activation payment": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR04 spell or ability target requirement": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR05 fixed self recipient": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR06 canonical metadata and characteristics": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR07 CLB873 reprint discovered with exact metadata": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR08 existing discovery control": 1
+      }
+    },
+    "permanent-target": {
+      "rows": 8,
+      "passes": 6,
+      "failures": {
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR02 mechanics equal accepted test-local definition": {
+          "type": "org.opentest4j.AssertionFailedError",
+          "frame": "SpellskiteRegistrationTest.kt:30",
+          "message": "org.opentest4j.AssertionFailedError: Values differed at keys activatedAbilities\nexpected:<{\n  \"activatedAbilities\" = [[(\"id\", \"ability_1\"), (\"cost\", [(\"type\", \"CostAtomWrapper\"), (\"atom\", [(\"type\", \"AtomMana\"), (\"cost\", \"{U/P}\")])]), (\"effect\", [(\"type\", \"ChangeTargetTo\"), (\"stackObject\", [(\"type\", \"BoundVariable\"), (\"name\", \"spell or ability\")])]), (\"targetRequirements\", [[(\"type\", \"TargetObject\"), (\"filter\", [(\"baseFilter\", []), (\"zone\", \"Stack\")]), (\"id\", \"spell or ability\")]])]]\n}> but was:<{\n  \"activatedAbilities\" = [[(\"id\", \"ability_1\"), (\"cost\", [(\"type\", \"CostAtomWrapper\"), (\"atom\", [(\"type\", \"AtomMana\"), (\"cost\", \"{U/P}\")])]), (\"effect\", [(\"type\", \"ChangeTargetTo\"), (\"stackObject\", [(\"type\", \"BoundVariable\"), (\"name\", \"spell or ability\")])]), (\"targetRequirements\", [[(\"type\", \"TargetObject\"), (\"filter\", [(\"baseFilter\", \"creature\")]), (\"id\", \"spell or ability\")]])]]\n}>"
+        },
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR04 spell or ability target requirement": {
+          "type": "org.opentest4j.AssertionFailedError",
+          "frame": "SpellskiteRegistrationTest.kt:36",
+          "message": "org.opentest4j.AssertionFailedError: Element differ at index: [0]\n\nThe following element(s) differ:\nindex 0: data class diff for com.wingedsheep.sdk.scripting.targets.TargetObject\n\u2514 filter: data class diff for com.wingedsheep.sdk.scripting.filters.unified.TargetFilter\n   \u251c baseFilter: data class diff for com.wingedsheep.sdk.scripting.GameObjectFilter\n   \u2502  \u2514 cardPredicates: Unexpected elements from index 0\nexpected:<[]> but was:<[IsCreature]>\n   \u2514 zone: expected:<STACK> but was:<BATTLEFIELD>\n\nexpected:<[TargetObject(count=1, minCount=1, optional=false, unlimited=false, filter=TargetFilter(baseFilter=GameObjectFilter(cardPredicates=[], statePredicates=[], controllerPredicate=null, anyOf=[]), zone=STACK, excludeSelf=false, excludeTriggeringEntity=false, alternatives=[]), id=spell or ability, dynamicMaxCount=null, sameController=false, sameOwner=false, sameCreatureType=false, sameCardType=false, totalManaValueAtMost=null, differentNames=false, differentControllers=false, chooser=Controller)]> but was:<[TargetObject(count=1, minCount=1, optional=false, unlimited=false, filter=TargetFilter(baseFilter=GameObjectFilter(cardPredicates=[IsCreature], statePredicates=[], controllerPredicate=null, anyOf=[]), zone=BATTLEFIELD, excludeSelf=false, excludeTriggeringEntity=false, alternatives=[]), id=spell or ability, dynamicMaxCount=null, sameController=false, sameOwner=false, sameCreatureType=false, sameCardType=false, totalManaValueAtMost=null, differentNames=false, differentControllers=false, chooser=Controller)]>"
+        }
+      },
+      "skips": 0,
+      "identities": {
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR01 unique canonical discovery in NPH": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR02 mechanics equal accepted test-local definition": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR03 Phyrexian activation payment": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR04 spell or ability target requirement": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR05 fixed self recipient": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR06 canonical metadata and characteristics": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR07 CLB873 reprint discovered with exact metadata": 1,
+        "mtg-sets\tcom.wingedsheep.mtg.sets.SpellskiteRegistrationTest\tSR08 existing discovery control": 1
+      }
+    }
+  },
+  "gate_errors": [
+    {
+      "stage": "wrong-recipient",
+      "error": "AssertionError: "
+    },
+    {
+      "stage": "absent-discovery",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpvz_7achb/absent-discovery/output.log'"
+    },
+    {
+      "stage": "wrong-canonical",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpvz_7achb/wrong-canonical/output.log'"
+    },
+    {
+      "stage": "wrong-reprint",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpvz_7achb/wrong-reprint/output.log'"
+    },
+    {
+      "stage": "restored",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpvz_7achb/restored/output.log'"
+    },
+    {
+      "stage": "export",
+      "error": "FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpvz_7achb/export/output.log'"
+    },
+    {
+      "stage": "snapshot candidate",
+      "error": "KeyError: 'export/NPH.json'"
+    },
+    {
+      "stage": "collector",
+      "error": "AssertionError: "
+    }
+  ],
+  "protected_bindings": 197,
+  "card_admission": false,
+  "multiplayer_admission": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

@@ -1,0 +1,11 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "run": 40805567331,
+  "manifest_entries": 803,
+  "passed": "7 compilation forms,57normal,blue-only2negative6controls,permanent-target2negative6controls",
+  "failure": "wrong-recipient has SR02 assertion failure and7passes; expected SR02+SR05. SR05 object-level shouldBe comparison did not detect changed recipient. Exact archived mutant sets ContextTarget(0); serialized script witness shows mutation present.",
+  "repair": "Preserve existing SR05 statement and every original assertion; add explicit typed ChangeTargetToEffect.recipient assertion against EffectTarget.Self. Keep14negative34controls contract; SR05 expected failure frame follows added assertion. No production change.",
+  "limits": "No absent/wrong-canonical/wrong-reprint/restored/export result; no card admission. No claim about unverified matcher internals.",
+  "archive_sha256": "d81b05d94e7e03290430c74c68230f9084871d0d75c26570e4046cf0c118bded",
+  "original_sha256": "c72580fe410eccf52d018222fb59d95c1d77cfd72330c0f766642e44b95b53c6"
+}
