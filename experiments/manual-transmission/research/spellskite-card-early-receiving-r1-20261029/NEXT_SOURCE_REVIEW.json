@@ -1,0 +1,93 @@
+{
+  "state": "ISOLATED_DEPENDENT_SOURCE_REVIEW_NOT_ACCEPTANCE",
+  "source": "00cd009de9b72da78a7820fcd8f54cae0b58e20d",
+  "protected_snapshot": "unchanged in current frozen source; exact NPH original archived at source record",
+  "backlog": {
+    "tree": "f524a4fbdc8e6a6bb91f8a41208572ac82e5f3a1",
+    "truncated": false,
+    "finding": "No NPH/New Phyrexia or CLB/Baldur's Gate backlog/cards.md exists; no checklist file to edit."
+  },
+  "printing_scope": {
+    "archived_metadata_commit": "858dac7a631d9b357c2bf7f1694a3de4fd1c94ba",
+    "script_blob": "279639367a3f518b3f95a4c5b10e18f8dd0c81c4",
+    "required": "Run unchanged check-card-printing; examines all scaffolded real printings, not only CLB. No missing-scaffolded-row finding established by this source review; no gate bypass or new authorization presumed.",
+    "observed_era_trees": {
+      "NPH": "b52533efd5cf102f5f0e6f54520a82aeb2d9ce2a",
+      "CLB": "d19ccccece3ff21c246c8d93b35406e7179b586d"
+    },
+    "other_printings": "No MM2/2XM/J17/PRM/SLD set objects found in their 2008-2016/2017-2022 era trees; exact unchanged printing gate remains required."
+  },
+  "test_inventory": {
+    "reviewed_sources": [
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/BasicLandArtOrderTest.kt",
+        "blob": "85516675568a87881d1fae015b1f51262a8cb606"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/CardDefinitionSnapshotTest.kt",
+        "blob": "c6bc66985b709b2da320ac596269d5fb459f7abe"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/CardImageUriTest.kt",
+        "blob": "6ea078f9fb1eb8004795a685acdcb7e520105e69"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/CardLintTest.kt",
+        "blob": "d518badb870039cda072e10d81c0839560fb75b7"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/DoubleFacedPrintingArtTest.kt",
+        "blob": "6bdb37f63d4971940f14970dc5395ad9723f6ae6"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/EquipQualityVariantTest.kt",
+        "blob": "681c4573565017efff37fbdab3c06b67c4ff852a"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/FacadeBoundaryTest.kt",
+        "blob": "57375e6def9996c31c31025d678566799952c88b"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/InterveningIfClassificationTest.kt",
+        "blob": "935866eff64ed3d7788211a7823ec0eb5feb62d0"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/MeldResultFlagTest.kt",
+        "blob": "6ae4731147d712a5ab1b50b702761ffdf7110d33"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/MtgSetCatalogTest.kt",
+        "blob": "bea9647652f827c24257e51b5438adcc39aa5885"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/PatternsNamespaceTest.kt",
+        "blob": "cc51c216e2477f7052ec2772c4bdf8fad5941b5f"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/SuccessCriterionValidationTest.kt",
+        "blob": "681a7c46427faedc0572438dc899329024c39139"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/definitions/ecl/LorwynEclipsedVariantPrintingsTest.kt",
+        "blob": "2c8c555cf4aec3cc28c797fb8305881f54b5c658"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/discovery/CardDiscoveryEquivalenceTest.kt",
+        "blob": "4fa4842c5344f26d52cb595e969d866066234a25"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/discovery/CardDiscoveryTest.kt",
+        "blob": "dfabc55e177fc045d8ff162ee70c207b96874ebb"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/legality/LegalityDataTest.kt",
+        "blob": "a79c1a6a8241305a7c784a75d02e599ee558927b"
+      }
+    ],
+    "finding": "Catalog/snapshot cases are per set; lint/facade/discovery are aggregate assertions. Adding one card and printing changes gate inputs but not those test identities. Derive nine new identities from newly frozen test source before observing candidate full run. Existing49behavior identities unchanged."
+  },
+  "required_followup": "After early original receiving only: byte-exact insertion review, freeze successor including additive NPH snapshot, same-source card gates and ordinary18980passes/43unchangedskips, applicable Assay classification and fresh metadata/printing evidence. Exact dependency binding required for reused client/UI/generator/R5 evidence. Card acceptance before multiplayer review.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
