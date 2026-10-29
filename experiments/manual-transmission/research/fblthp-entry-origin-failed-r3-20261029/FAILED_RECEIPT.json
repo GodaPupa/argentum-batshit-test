@@ -1,0 +1,29 @@
+{
+  "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
+  "source": "bad842502afdb8d4150cbef84bc1c7942666f193",
+  "tree": "7a32c0d3b3a96c90733de57316892bdf5f54509c",
+  "validation": "738a230cdb0f163725b0dd3bfa947b9bffe4cb4c",
+  "workflow_blob": "1619ae66e7f36ed64be821718262813a0feaf8d5",
+  "run": 40907500576,
+  "job": 123566161300,
+  "attempt": 1,
+  "artifact": 12912961607,
+  "bytes": 3547774,
+  "sha256": "09ff02f6ccdf0e3aad9a2f7600ccb798e3174ba3031b9a05174d3a321d94d6f1",
+  "manifest_entries": 554,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "stages": {
+    "compile-normal": {
+      "passed": false,
+      "behavioral_negative_evidence": false
+    }
+  },
+  "failure": "Traceback (most recent call last):\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r3-20261029/run.py\", line 86, in <module>\n    try:main()\n        ~~~~^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r3-20261029/run.py\", line 69, in main\n    stage('compile-normal','compile','compile')\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r3-20261029/run.py\", line 63, in stage\n    result=compile_gate(folder) if kind=='compile' else reports(folder,expected,failures)\n           ~~~~~~~~~~~~^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-entry-origin-early-r3-20261029/audit.py\", line 10, in compile_gate\n    assert (folder/'exit.txt').read_text().strip()=='0' and 'BUILD SUCCESSFUL' in log\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+  "cause": "New processChosenModeQueue origin parameter omitted its nullable default. Existing ModalTargetForcednessTest named call failed compilation at line54. This is caused by the entry-origin change; no existing test changed.",
+  "repair": "Default new processChosenModeQueue triggerEntryOrigin to null. Explicit runtime transports remain unchanged. Preserve every assertion and add execution of unchanged four-case ModalTargetForcednessTest after all nine compilations.",
+  "protected_restoration": "All three exact original SHA restorations passed; 270 source bindings verified in each initial/final capture.",
+  "accepted_gates": []
+}
