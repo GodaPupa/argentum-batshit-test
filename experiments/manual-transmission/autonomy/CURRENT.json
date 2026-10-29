@@ -32,17 +32,15 @@
     "card_acceptance_scenarios": 10,
     "registration": "Fblthp canonical WAR50 implementation frozen; feature/card admission withheld pending all source-specific gates and original receiving.",
     "current_subproblem": "Authorized generic retarget continuation repair and unchanged Fblthp early qualification",
-    "source_candidate": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
-    "source_tree": "0fad7f8f66f20f8716c119b51ad41af8499ec93e",
+    "source_candidate": "79d4b9723eb1dc07a86a206bc939932113b3f55c",
+    "source_tree": "1cc99c903f1e2806b9e0c7866d1ae6837c318d34",
     "source_branch": "source/manual-generic-retarget-early-r1-20261029",
-    "protocol": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029/SOURCE_REVIEW.json",
-    "validation": "b861e228085760ccdf395eccfd76717b9dcba81d",
+    "protocol": "experiments/manual-transmission/research/generic-retarget-early-r2-20261029/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/generic-retarget-early-r2-20261029/SOURCE_REVIEW.json",
+    "validation": "f1d75852d45b3fdaa26f651e30f8745e63d400af",
     "validation_branch": "validation/manual-generic-retarget-early-r1-20261029",
-    "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
-    "pending_runs": [
-      40940228314
-    ],
+    "workflow": ".github/workflows/manual-generic-retarget-early-r2-20261029.yml",
+    "pending_runs": [],
     "planned_not_observed": {
       "compilations": 16,
       "generic_normal": 25,
@@ -53,8 +51,8 @@
       "export": 1
     },
     "negative_scope": "Frozen executable seven generic mutants with26exact assertion witnesses plus unchanged eight Fblthp mutants with25witnesses; all15mutants and normal compile before targeted execution. Planned, not accepted evidence.",
-    "source_delta": "Twelve paths: four existing production plumbing files, one new generic-retarget helper, one new focused25case test, and six protocol/audit files. No existing test/assertion/protected source/golden/fixture changes from R4.",
-    "next_executable_action": "Reconcile live CURRENT, exact owner/task run, recent commits/newer receipts and workflows across every event and active/queued/waiting/requested/pending status. If original run40940228314 is terminal, claim fresh-blob CAS and receive its attempt1 original artifact exactly once using 39db7a565e0d0ca77121a34783aa0f9958bb4e9f/experiments/manual-transmission/research/generic-retarget-receiving-r1-20261029/NEXT_ACTION.json and RECEIVE.py. Require16compiles,25generic normal/restored,26generic assertion witnesses149controls,24unchanged Fblthp normal/restored,25Fblthp witnesses167controls,4legacy/export1 and all source/restoration/protected bindings. On success follow conditional NEXT_DEPENDENT_REVIEW for additive WAR and full compatibility/metadata/printing/lint/Assay before any repair or card acceptance. Preserve all failures and reuse accepted Spellskite/registry. No competing run or frozen source edit while active; no multiplayer/games/seeds.",
+    "source_delta": "One test import corrected, six new protocol files; all assertions and production unchanged.",
+    "next_executable_action": "Dispatch exact reviewed R2 once, then prepare and receive original artifacts; all16compilation and original gates mandatory. Import-only repair; no acceptance.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -4201,36 +4199,8 @@
     },
     "read_sections": [
       {
-        "ref": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
-        "path": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029/PROTOCOL.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
-        "path": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029/SOURCE_REVIEW.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "a29b468838edc1993d8ce4e53ac901928efd9501",
-        "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029/FAILED_RECEIPT.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "39db7a565e0d0ca77121a34783aa0f9958bb4e9f",
-        "path": "experiments/manual-transmission/research/generic-retarget-receiving-r1-20261029/NEXT_ACTION.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "39db7a565e0d0ca77121a34783aa0f9958bb4e9f",
-        "path": "experiments/manual-transmission/research/generic-retarget-receiving-r1-20261029/NEXT_DEPENDENT_REVIEW.json",
+        "ref": "79d4b9723eb1dc07a86a206bc939932113b3f55c",
+        "path": "experiments/manual-transmission/research/generic-retarget-early-r2-20261029/PROTOCOL.json",
         "sections": [
           "all"
         ]
@@ -4274,28 +4244,41 @@
           "skips": 0,
           "behavioral_mutants_executed": 0
         }
+      },
+      {
+        "source": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
+        "tree": "0fad7f8f66f20f8716c119b51ad41af8499ec93e",
+        "record": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029",
+        "validation": "b861e228085760ccdf395eccfd76717b9dcba81d",
+        "validation_tree": "7461aa5a9c20228eafb474044b257593f9428801",
+        "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
+        "workflow_blob": "ac8c62b30f536760a49e9ffc6711db1b399de202",
+        "branch": "validation/manual-generic-retarget-early-r1-20261029",
+        "state": "QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
+        "feature_admitted": false,
+        "card_admitted": false,
+        "run": 40940228314,
+        "job": 123681352521,
+        "workflow_id": 401012396,
+        "attempt": 1,
+        "run_number": 1,
+        "event": "push",
+        "status": "in_progress",
+        "observed_utc": "2026-10-29T19:30:23.245Z"
       }
     ],
     "source_protocol": {
-      "source": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
-      "tree": "0fad7f8f66f20f8716c119b51ad41af8499ec93e",
-      "record": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029",
-      "validation": "b861e228085760ccdf395eccfd76717b9dcba81d",
-      "validation_tree": "7461aa5a9c20228eafb474044b257593f9428801",
-      "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
-      "workflow_blob": "ac8c62b30f536760a49e9ffc6711db1b399de202",
-      "branch": "validation/manual-generic-retarget-early-r1-20261029",
-      "state": "QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
+      "source": "79d4b9723eb1dc07a86a206bc939932113b3f55c",
+      "tree": "1cc99c903f1e2806b9e0c7866d1ae6837c318d34",
+      "record": "experiments/manual-transmission/research/generic-retarget-early-r2-20261029",
+      "validation": "f1d75852d45b3fdaa26f651e30f8745e63d400af",
+      "validation_tree": "2b0d9de976bc1b473705c4721ffd4efdaa3d5260",
+      "workflow": ".github/workflows/manual-generic-retarget-early-r2-20261029.yml",
+      "workflow_blob": "943184114a31a7759243ecd0fd88702fcd6104d4",
+      "branch": "validation/manual-generic-retarget-early-r2-20261029",
+      "state": "FROZEN_DISPATCH_PENDING",
       "feature_admitted": false,
-      "card_admitted": false,
-      "run": 40940228314,
-      "job": 123681352521,
-      "workflow_id": 401012396,
-      "attempt": 1,
-      "run_number": 1,
-      "event": "push",
-      "status": "in_progress",
-      "observed_utc": "2026-10-29T19:30:23.245Z"
+      "card_admitted": false
     },
     "prepared_receiver_history": [
       {
@@ -4311,24 +4294,35 @@
       }
     ],
     "latest_receiving_history": [
-      null
+      null,
+      {
+        "commit": "a29b468838edc1993d8ce4e53ac901928efd9501",
+        "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029",
+        "run": 40915565531,
+        "job": 123594729427,
+        "artifact": 12916242931,
+        "bytes": 5537704,
+        "sha256": "a27d92857f41d16dc4e59756050fd49571e21379cacd00bef33ccdf417f0842a",
+        "manifest_entries": 869,
+        "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
+        "compiled_forms": 9,
+        "legacy_modal_passes": 4,
+        "normal_passes": 23,
+        "normal_failures": 1,
+        "skips": 0,
+        "behavioral_mutants_executed": 0
+      }
     ],
     "latest_receiving": {
-      "commit": "a29b468838edc1993d8ce4e53ac901928efd9501",
-      "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029",
-      "run": 40915565531,
-      "job": 123594729427,
-      "artifact": 12916242931,
-      "bytes": 5537704,
-      "sha256": "a27d92857f41d16dc4e59756050fd49571e21379cacd00bef33ccdf417f0842a",
-      "manifest_entries": 869,
+      "commit": "f93733b379f0872ce23e042c6ef304cd88ea990f",
+      "path": "experiments/manual-transmission/research/generic-retarget-failed-r1-20261029",
+      "run": 40940228314,
+      "artifact": 12926936795,
+      "bytes": 3619112,
+      "sha256": "b614d5683450c4b8a277af2c9e2736d66490d4c1d7f713f62f3a17bcc726a33b",
+      "manifest_entries": 568,
       "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
-      "compiled_forms": 9,
-      "legacy_modal_passes": 4,
-      "normal_passes": 23,
-      "normal_failures": 1,
-      "skips": 0,
-      "behavioral_mutants_executed": 0
+      "cause": "Incorrect new test import; normal compile failed, zero runtime evidence."
     },
     "actual_stopping_reason": "External dependency: frozen-source run40940228314 remains in_progress in compile/targeted gates. Exact original receiver/pins and isolated dependent inventory review are checkpointed at39db7a56. No useful safely independent work remains before original early artifacts establish the next source-specific action. Ownership released; no continuous execution between invocations.",
     "previous_card_guidance_before_registry_receipt": {
@@ -6700,25 +6694,17 @@
       "Additive WAR snapshot, full dependent compatibility/card/metadata/printing/lint/Assay and original receiving remain pending."
     ],
     "source_protocol": {
-      "source": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
-      "tree": "0fad7f8f66f20f8716c119b51ad41af8499ec93e",
-      "record": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029",
-      "validation": "b861e228085760ccdf395eccfd76717b9dcba81d",
-      "validation_tree": "7461aa5a9c20228eafb474044b257593f9428801",
-      "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
-      "workflow_blob": "ac8c62b30f536760a49e9ffc6711db1b399de202",
-      "branch": "validation/manual-generic-retarget-early-r1-20261029",
-      "state": "QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
+      "source": "79d4b9723eb1dc07a86a206bc939932113b3f55c",
+      "tree": "1cc99c903f1e2806b9e0c7866d1ae6837c318d34",
+      "record": "experiments/manual-transmission/research/generic-retarget-early-r2-20261029",
+      "validation": "f1d75852d45b3fdaa26f651e30f8745e63d400af",
+      "validation_tree": "2b0d9de976bc1b473705c4721ffd4efdaa3d5260",
+      "workflow": ".github/workflows/manual-generic-retarget-early-r2-20261029.yml",
+      "workflow_blob": "943184114a31a7759243ecd0fd88702fcd6104d4",
+      "branch": "validation/manual-generic-retarget-early-r2-20261029",
+      "state": "FROZEN_DISPATCH_PENDING",
       "feature_admitted": false,
-      "card_admitted": false,
-      "run": 40940228314,
-      "job": 123681352521,
-      "workflow_id": 401012396,
-      "attempt": 1,
-      "run_number": 1,
-      "event": "push",
-      "status": "in_progress",
-      "observed_utc": "2026-10-29T19:30:23.245Z"
+      "card_admitted": false
     },
     "accepted_receipt": {
       "commit": "e5c5b2a387b8e2cc528d17db7c20267e3938d516",
@@ -6730,21 +6716,15 @@
       "readback_verified": true
     },
     "latest_receiving": {
-      "commit": "a29b468838edc1993d8ce4e53ac901928efd9501",
-      "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029",
-      "run": 40915565531,
-      "job": 123594729427,
-      "artifact": 12916242931,
-      "bytes": 5537704,
-      "sha256": "a27d92857f41d16dc4e59756050fd49571e21379cacd00bef33ccdf417f0842a",
-      "manifest_entries": 869,
+      "commit": "f93733b379f0872ce23e042c6ef304cd88ea990f",
+      "path": "experiments/manual-transmission/research/generic-retarget-failed-r1-20261029",
+      "run": 40940228314,
+      "artifact": 12926936795,
+      "bytes": 3619112,
+      "sha256": "b614d5683450c4b8a277af2c9e2736d66490d4c1d7f713f62f3a17bcc726a33b",
+      "manifest_entries": 568,
       "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
-      "compiled_forms": 9,
-      "legacy_modal_passes": 4,
-      "normal_passes": 23,
-      "normal_failures": 1,
-      "skips": 0,
-      "behavioral_mutants_executed": 0
+      "cause": "Incorrect new test import; normal compile failed, zero runtime evidence."
     },
     "receiving": {
       "commit": "e5c5b2a387b8e2cc528d17db7c20267e3938d516",
@@ -6757,9 +6737,7 @@
       "state": "ORIGINAL_REGISTRY_INVENTORY_RECEIVED"
     },
     "prepared_receiver": {
-      "state": "CONSUMED",
-      "commit": "9fe450899337f0007c15a48ffdc8fa9b6ff8dfc9",
-      "received_at": "a29b468838edc1993d8ce4e53ac901928efd9501"
+      "state": "R2_PINS_PENDING"
     },
     "proposal": {
       "commit": "5ff97c89039bb93a0f7633bc5f2778701dcfc551",
@@ -6769,29 +6747,15 @@
       "state": "EXPLICITLY_AUTHORIZED_IMPLEMENTED_QUALIFICATION_PENDING",
       "readback_verified": true
     },
-    "next_executable_action": "Reconcile live CURRENT, exact owner/task run, recent commits/newer receipts and workflows across every event and active/queued/waiting/requested/pending status. If original run40940228314 is terminal, claim fresh-blob CAS and receive its attempt1 original artifact exactly once using 39db7a565e0d0ca77121a34783aa0f9958bb4e9f/experiments/manual-transmission/research/generic-retarget-receiving-r1-20261029/NEXT_ACTION.json and RECEIVE.py. Require16compiles,25generic normal/restored,26generic assertion witnesses149controls,24unchanged Fblthp normal/restored,25Fblthp witnesses167controls,4legacy/export1 and all source/restoration/protected bindings. On success follow conditional NEXT_DEPENDENT_REVIEW for additive WAR and full compatibility/metadata/printing/lint/Assay before any repair or card acceptance. Preserve all failures and reuse accepted Spellskite/registry. No competing run or frozen source edit while active; no multiplayer/games/seeds.",
+    "next_executable_action": "Dispatch exact reviewed R2 once, then prepare and receive original artifacts; all16compilation and original gates mandatory. Import-only repair; no acceptance.",
     "actual_stopping_reason": "External dependency: frozen-source run40940228314 remains in_progress in compile/targeted gates. Exact original receiver/pins and isolated dependent inventory review are checkpointed at39db7a56. No useful safely independent work remains before original early artifacts establish the next source-specific action. Ownership released; no continuous execution between invocations.",
     "continuation_state": "ACTIVE_AUTHORIZED_GENERIC_RETARGET_REPAIR",
     "read_sections": [
       {
-        "ref": "a29b468838edc1993d8ce4e53ac901928efd9501",
-        "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029/FAILED_RECEIPT.json",
+        "ref": "79d4b9723eb1dc07a86a206bc939932113b3f55c",
+        "path": "experiments/manual-transmission/research/generic-retarget-early-r2-20261029/PROTOCOL.json",
         "sections": [
           "all"
-        ]
-      },
-      {
-        "ref": "a29b468838edc1993d8ce4e53ac901928efd9501",
-        "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029/NEXT_ADMISSION.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "027a20e5287be636170980b8b7237fccaa69fabb",
-        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt",
-        "sections": [
-          "resumeChangeSpellTarget"
         ]
       }
     ],
