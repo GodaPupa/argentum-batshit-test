@@ -1,0 +1,90 @@
+{
+  "state": "SOURCE_BOUND_GAP_REVIEW_NOT_FEATURE_OR_CARD_ACCEPTANCE",
+  "source": "f4a25fba9126c80af1909ffb9d2bd073c85ce987",
+  "inventory_receipt": "e5c5b2a387b8e2cc528d17db7c20267e3938d516",
+  "inventory": {
+    "physical_cards": 800,
+    "resolved": 487,
+    "missing": 313,
+    "manual_resolved": 94,
+    "opponent_resolved": 393,
+    "opponent_slots": 700
+  },
+  "manual_missing": [
+    {
+      "card": "Fblthp, the Lost",
+      "saved_review": "6e41eabfc4e3db9df8e9e93fe505a03215aabd9b",
+      "canonical": "WAR50",
+      "protected_snapshot": "WAR.json",
+      "current_gap": "No TriggeringEntityEnteredOrWasCastFromZone condition/facade. Entry events and triggered stack payload have no immutable cast/direct-entry origin transport. Saved10case draft cannot be adopted as compiled evidence.",
+      "next": "Concrete NEXT_ADMISSION.json"
+    },
+    {
+      "card": "Reckless Bushwhacker",
+      "corpus_printing": "OGW116",
+      "protected_snapshot": "OGW.json",
+      "current_gap": "Not registered. Full surge cost and paid-surge ETB behavior remain unqualified; no implementation inferred from corpus.",
+      "next": "Separate composition/feature source review and protected additive snapshot proposal"
+    },
+    {
+      "card": "Amphin Mutineer",
+      "protected_snapshot": "CMR.json if canonical printing confirmation selects CMR",
+      "current_gap": "Not registered. Oracle corpus row is TDC reprint, not canonical-placement proof. Non-Salamander optional target/exile/controller-token binding and multiplayer encore remain unqualified.",
+      "next": "Canonical lookup and full separate mechanic/card contract"
+    },
+    {
+      "card": "Disciple of Freyalise",
+      "corpus_printing": "MH3 250 double-faced",
+      "protected_snapshot": "MH3.json",
+      "current_gap": "Not registered. Preserve original frozen name and both faces; optional sacrifice-other/current-power life+draw and pay3life-land entry remain unqualified.",
+      "next": "Full MDFC and sacrifice/last-known-power review; no name normalization/substitution"
+    },
+    {
+      "card": "Veil of Summer",
+      "corpus_printing": "M20 198",
+      "protected_snapshot": null,
+      "current_gap": "Not registered. Existing cast-spell filter/count and cannot-counter grant found; ControllerHexproof only has unqualified player-wide hexproof and no source-color argument. Exact color-scoped player targeting must be traced across authoritative/protected TargetValidator and enumeration; protection-from-color is not equivalent and must not substitute.",
+      "next": "Separate feature contract; no assumption that absence of protected M20 snapshot authorizes unrelated protected targeting edits"
+    },
+    {
+      "card": "Opal Palace",
+      "saved_review": "0523eb571f068b52101680f1c6a7101b154ef2c4",
+      "canonical": "C13 310",
+      "protected_snapshot": "C13.json",
+      "current_gap": "Saved10case draft uses absent CommanderCastEntryCounters rider and CommanderManaEntryCountersComponent; historical donor adds protected StackResolver counter placement/cleanup, beyond existing resolver grants.",
+      "next": "Separate bounded mana-provenance/entry-counter proposal; Fblthp proposal explicitly excludes it"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Conditions.kt",
+      "blob": "9f8c8aa9c93e83ecc7b7b2327b168beb374d808e",
+      "finding": "No generalized TriggeringEntityEnteredOrWasCastFromZone facade"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/conditions/BattlefieldConditions.kt",
+      "blob": "e8fe6374c4cdd89a0bf71bfb139c6c623ca2941f",
+      "finding": "Existing graveyard-only condition; no generic zone condition"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "blob": "d3a13dda4fc143bc360030167dc61e302abf69b3",
+      "finding": "Existing graveyard helper reads current entity markers at1762-1770; not immutable event-origin support"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshots.kt",
+      "blob": "f7782721a69d74d194127fb1cb1a01cfb674a4f3",
+      "finding": "Current characteristic snapshot preserves projected characteristics, not original cast zone"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/ControllerHexproof.kt",
+      "blob": "4fa5a65c4461dfa3e1d94f43f88b1f671e1ecbdc",
+      "finding": "Player/caster identity-only appliesAgainst; no source-color-sensitive player hexproof check"
+    }
+  ],
+  "historical_donor_limit": "99b5ddcfffeb3f919664ac3ab0ecfd1945b86f44 is research donor only. Its broad SDK/runtime diffs include unrelated and obsolete targeting paths. Do not merge/port wholesale or claim its compilation/behavior on current source.",
+  "selection": "Fblthp is first missing Manual slot and has an archived10case draft plus precise current-source gap. Next necessary critical-path change crosses the three protected runtime bindings and WAR golden in NEXT_ADMISSION; seek only that bounded authority.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
