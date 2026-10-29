@@ -1,0 +1,30 @@
+{
+  "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
+  "source": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
+  "tree": "0fad7f8f66f20f8716c119b51ad41af8499ec93e",
+  "validation": "b861e228085760ccdf395eccfd76717b9dcba81d",
+  "workflow_blob": "ac8c62b30f536760a49e9ffc6711db1b399de202",
+  "run": 40940228314,
+  "job": 123681352521,
+  "attempt": 1,
+  "artifact": 12926936795,
+  "bytes": 3619112,
+  "sha256": "b614d5683450c4b8a277af2c9e2736d66490d4c1d7f713f62f3a17bcc726a33b",
+  "manifest_entries": 568,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "stages": {
+    "compile-normal": {
+      "passed": false,
+      "behavioral_negative_evidence": false
+    }
+  },
+  "observed_reports": {},
+  "source_binding_phases_verified": [
+    "initial",
+    "final"
+  ],
+  "failure": "Traceback (most recent call last):\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/generic-retarget-early-r1-20261029/run.py\", line 91, in <module>\n    try:main()\n        ~~~~^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/generic-retarget-early-r1-20261029/run.py\", line 71, in main\n    stage('compile-normal','compile','compile')\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/generic-retarget-early-r1-20261029/run.py\", line 65, in stage\n    result=compile_gate(folder) if kind=='compile' else reports(folder,expected,failures)\n           ~~~~~~~~~~~~^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/generic-retarget-early-r1-20261029/audit.py\", line 10, in compile_gate\n    assert (folder/'exit.txt').read_text().strip()=='0' and 'BUILD SUCCESSFUL' in log\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+}
