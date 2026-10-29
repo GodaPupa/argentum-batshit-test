@@ -3,14 +3,16 @@
   "updated_date": "2026-10-29",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "RUNNING",
-  "owner": "manual-work-generic-retarget-2026-10-29T19:13:26.126Z",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-generic-retarget-2026-10-29T19:13:26.126Z",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-29T19:13:26.126Z",
     "renewed_utc": "2026-10-29T19:27:12.652Z",
-    "expires_utc": "2026-10-29T20:27:12.652Z"
+    "expires_utc": "2026-10-29T20:27:12.652Z",
+    "released_utc": "2026-10-29T19:30:23.245Z",
+    "release_reason": "External dependency: frozen-source run40940228314 remains in_progress in compile/targeted gates. Exact original receiver/pins and isolated dependent inventory review are checkpointed at39db7a56. No useful safely independent work remains before original early artifacts establish the next source-specific action. Ownership released; no continuous execution between invocations."
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -39,7 +41,9 @@
     "validation": "b861e228085760ccdf395eccfd76717b9dcba81d",
     "validation_branch": "validation/manual-generic-retarget-early-r1-20261029",
     "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40940228314
+    ],
     "planned_not_observed": {
       "compilations": 16,
       "generic_normal": 25,
@@ -49,9 +53,9 @@
       "legacy": 4,
       "export": 1
     },
-    "negative_scope": "Proposed only: see NEXT_ADMISSION acceptance_conditions; no Fblthp mutant compilation or witnesses claimed.",
-    "source_delta": "Seven added research files only at proposal commit; no production/test/protected source or golden changed.",
-    "next_executable_action": "Dispatch frozen reviewed b861e228 exactly once after all-status/automation/CURRENT reconciliation; compile sixteen forms before generic25 and unchanged Fblthp24 controls. During external qualification prepare original receiving; do not edit frozen source or launch competing qualification. Receive original artifacts and all dependent gates before repair/card acceptance.",
+    "negative_scope": "Frozen executable seven generic mutants with26exact assertion witnesses plus unchanged eight Fblthp mutants with25witnesses; all15mutants and normal compile before targeted execution. Planned, not accepted evidence.",
+    "source_delta": "Twelve paths: five existing production plumbing files plus one new focused25case test and six protocol/audit files. No existing test/assertion/protected source/golden/fixture changes from R4.",
+    "next_executable_action": "Reconcile live CURRENT, exact owner/task run, recent commits/newer receipts and workflows across every event and active/queued/waiting/requested/pending status. If original run40940228314 is terminal, claim fresh-blob CAS and receive its attempt1 original artifact exactly once using 39db7a565e0d0ca77121a34783aa0f9958bb4e9f/experiments/manual-transmission/research/generic-retarget-receiving-r1-20261029/NEXT_ACTION.json and RECEIVE.py. Require16compiles,25generic normal/restored,26generic assertion witnesses149controls,24unchanged Fblthp normal/restored,25Fblthp witnesses167controls,4legacy/export1 and all source/restoration/protected bindings. On success follow conditional NEXT_DEPENDENT_REVIEW for additive WAR and full compatibility/metadata/printing/lint/Assay before any repair or card acceptance. Preserve all failures and reuse accepted Spellskite/registry. No competing run or frozen source edit while active; no multiplayer/games/seeds.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -4112,9 +4116,12 @@
       }
     },
     "prepared_receiver": {
-      "state": "CONSUMED",
-      "commit": "9fe450899337f0007c15a48ffdc8fa9b6ff8dfc9",
-      "received_at": "a29b468838edc1993d8ce4e53ac901928efd9501"
+      "state": "PREPARED_NOT_EXECUTED",
+      "commit": "39db7a565e0d0ca77121a34783aa0f9958bb4e9f",
+      "path": "experiments/manual-transmission/research/generic-retarget-receiving-r1-20261029",
+      "run": 40940228314,
+      "job": 123681352521,
+      "readback_verified": true
     },
     "previous_guidance_before_payment_ui_r1": {
       "current_subproblem": "Frozen bounded activated Phyrexian payment repair early qualification",
@@ -4214,9 +4221,23 @@
         "sections": [
           "all"
         ]
+      },
+      {
+        "ref": "39db7a565e0d0ca77121a34783aa0f9958bb4e9f",
+        "path": "experiments/manual-transmission/research/generic-retarget-receiving-r1-20261029/NEXT_ACTION.json",
+        "sections": [
+          "all"
+        ]
+      },
+      {
+        "ref": "39db7a565e0d0ca77121a34783aa0f9958bb4e9f",
+        "path": "experiments/manual-transmission/research/generic-retarget-receiving-r1-20261029/NEXT_DEPENDENT_REVIEW.json",
+        "sections": [
+          "all"
+        ]
       }
     ],
-    "continuation_state": "RUNNING_OWNED",
+    "continuation_state": "WAITING_EXTERNAL_OWNERSHIP_RELEASED",
     "source_protocol_history": [
       null,
       {
@@ -4265,9 +4286,17 @@
       "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
       "workflow_blob": "ac8c62b30f536760a49e9ffc6711db1b399de202",
       "branch": "validation/manual-generic-retarget-early-r1-20261029",
-      "state": "FROZEN_REVIEWED_DISPATCH_PENDING",
+      "state": "QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
       "feature_admitted": false,
-      "card_admitted": false
+      "card_admitted": false,
+      "run": 40940228314,
+      "job": 123681352521,
+      "workflow_id": 401012396,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "status": "in_progress",
+      "observed_utc": "2026-10-29T19:30:23.245Z"
     },
     "prepared_receiver_history": [
       {
@@ -4275,6 +4304,11 @@
         "path": "experiments/manual-transmission/research/spellskite-ordinary-receiving-r1-20261028",
         "run": 40710387291,
         "readback_verified": true
+      },
+      {
+        "state": "CONSUMED",
+        "commit": "9fe450899337f0007c15a48ffdc8fa9b6ff8dfc9",
+        "received_at": "a29b468838edc1993d8ce4e53ac901928efd9501"
       }
     ],
     "latest_receiving_history": [
@@ -4297,7 +4331,7 @@
       "skips": 0,
       "behavioral_mutants_executed": 0
     },
-    "actual_stopping_reason": null,
+    "actual_stopping_reason": "External dependency: frozen-source run40940228314 remains in_progress in compile/targeted gates. Exact original receiver/pins and isolated dependent inventory review are checkpointed at39db7a56. No useful safely independent work remains before original early artifacts establish the next source-specific action. Ownership released; no continuous execution between invocations.",
     "previous_card_guidance_before_registry_receipt": {
       "dependency": "Spellskite fixed-recipient one-target-slot retargeting",
       "registration": "Canonical NPH159 and CLB873 implemented and early-qualified; production card admission awaits supplemental original receiving and classification.",
@@ -5803,7 +5837,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
     "last_verified_enabled_utc": "2026-10-29T19:27:12.652Z",
-    "next_authorized_action": "Follow CURRENT.summary and next.next_executable_action for the granted generic retarget repair.",
+    "next_authorized_action": "Follow CURRENT.summary and next.next_executable_action; sole original generic retarget qualification is active. Preserve schedule; receive original evidence before acceptance.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -5942,9 +5976,9 @@
     "session": "b9827535038f",
     "work_owner": null,
     "discussion": "READ_ONLY",
-    "scheduled_executor": "PAUSED_AWAITING_NEW_SCOPE",
-    "activity": "BLOCKED",
-    "last_execution_owner": "manual-work-r4-receiving-2026-10-29T17:47:06.170Z",
+    "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
+    "activity": "WAITING_EXTERNAL",
+    "last_execution_owner": "manual-work-generic-retarget-2026-10-29T19:13:26.126Z",
     "intervention_watch": "READ_ONLY",
     "automation_run": "41cb8513-7f00-832a-a41a-f84467ca8830",
     "automation_reconciliation": "Exact single continuation run reconciled before claim and dispatch; prior foreground owner explicitly released. No new worker or schedule."
@@ -6663,8 +6697,8 @@
       "Remaining Phase2 multiplayer admission, four-player runtime/pilots/hidden-information/telemetry/replay and frozen-input gates. Official games/seeds remain0; both Precision games reserved."
     ],
     "pending_evidence": [
-      "Frozen generic retarget b31c9f7: sixteen normal/mutant compilations,25 new controls,26 generic negative witnesses and unchanged24 Fblthp/25 negative witnesses await original qualification. No repair or card acceptance.",
-      "Dependent compatibility, card/snapshot/metadata/printing/lint/Assay and original receiving remain mandatory."
+      "Original run40940228314 active:16compile forms,25generic positives/restored,26generic negative witnesses, unchanged24Fblthp positives/restored and25negative witnesses, legacy4/export1. No acceptance inferred.",
+      "Additive WAR snapshot, full dependent compatibility/card/metadata/printing/lint/Assay and original receiving remain pending."
     ],
     "source_protocol": {
       "source": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
@@ -6675,9 +6709,17 @@
       "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
       "workflow_blob": "ac8c62b30f536760a49e9ffc6711db1b399de202",
       "branch": "validation/manual-generic-retarget-early-r1-20261029",
-      "state": "FROZEN_REVIEWED_DISPATCH_PENDING",
+      "state": "QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
       "feature_admitted": false,
-      "card_admitted": false
+      "card_admitted": false,
+      "run": 40940228314,
+      "job": 123681352521,
+      "workflow_id": 401012396,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "status": "in_progress",
+      "observed_utc": "2026-10-29T19:30:23.245Z"
     },
     "accepted_receipt": {
       "commit": "e5c5b2a387b8e2cc528d17db7c20267e3938d516",
@@ -6728,8 +6770,8 @@
       "state": "EXPLICITLY_AUTHORIZED_IMPLEMENTED_QUALIFICATION_PENDING",
       "readback_verified": true
     },
-    "next_executable_action": "Dispatch frozen reviewed b861e228 exactly once after all-status/automation/CURRENT reconciliation; compile sixteen forms before generic25 and unchanged Fblthp24 controls. During external qualification prepare original receiving; do not edit frozen source or launch competing qualification. Receive original artifacts and all dependent gates before repair/card acceptance.",
-    "actual_stopping_reason": null,
+    "next_executable_action": "Reconcile live CURRENT, exact owner/task run, recent commits/newer receipts and workflows across every event and active/queued/waiting/requested/pending status. If original run40940228314 is terminal, claim fresh-blob CAS and receive its attempt1 original artifact exactly once using 39db7a565e0d0ca77121a34783aa0f9958bb4e9f/experiments/manual-transmission/research/generic-retarget-receiving-r1-20261029/NEXT_ACTION.json and RECEIVE.py. Require16compiles,25generic normal/restored,26generic assertion witnesses149controls,24unchanged Fblthp normal/restored,25Fblthp witnesses167controls,4legacy/export1 and all source/restoration/protected bindings. On success follow conditional NEXT_DEPENDENT_REVIEW for additive WAR and full compatibility/metadata/printing/lint/Assay before any repair or card acceptance. Preserve all failures and reuse accepted Spellskite/registry. No competing run or frozen source edit while active; no multiplayer/games/seeds.",
+    "actual_stopping_reason": "External dependency: frozen-source run40940228314 remains in_progress in compile/targeted gates. Exact original receiver/pins and isolated dependent inventory review are checkpointed at39db7a56. No useful safely independent work remains before original early artifacts establish the next source-specific action. Ownership released; no continuous execution between invocations.",
     "continuation_state": "ACTIVE_AUTHORIZED_GENERIC_RETARGET_REPAIR",
     "read_sections": [
       {
@@ -6761,7 +6803,14 @@
       "reason": "New authority boundary: missing Fblthp entry-origin transport requires narrowly scoped successors of protected StackResolver.kt, StackComponents.kt and TriggerProcessor.kt, plus one additive protected WAR.json entry. Source review and archived original/drafts are complete at 5ff97c89039bb93a0f7633bc5f2778701dcfc551. No relevant external workflow remains active. Implementation across this boundary is not covered by existing grants; ownership released awaiting this exact approval.",
       "state": "BLOCKED_NEW_PROTECTED_BOUNDARY_AUTHORITY; ownership remains released; existing continuation paused with schedule and prompt preserved."
     },
-    "concrete_blocker_removed": "User grant resolves pre-existing generic-retarget scope blocker; source now preserves authoritative occurrences and forwards targeting events. Qualification pending, no accepted behavioral claim."
+    "concrete_blocker_removed": "User grant resolves pre-existing generic-retarget scope blocker; source now preserves authoritative occurrences and forwards targeting events. Qualification pending, no accepted behavioral claim.",
+    "ownership": {
+      "owner": null,
+      "state": "RELEASED",
+      "status": "WAITING_EXTERNAL",
+      "sole_executor": "6adbe33033e481918659ce578f64f31e",
+      "schedule_unchanged": true
+    }
   },
   "generator_calibration_repair_authorization": {
     "state": "AUTHORIZED",
@@ -6822,7 +6871,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-29T19:27:12.652Z",
+  "updated_utc": "2026-10-29T19:30:23.245Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -8324,7 +8373,7 @@
     "artifact_sha256": "sha256:879f74749b54f7d636f848c6981bf45470a392a8d40023008af219d1ab79908b",
     "manifest_entries": 259
   },
-  "last_execution_owner": "manual-work-fblthp-r3-receiving-2026-10-29T16:45:04.920Z",
+  "last_execution_owner": "manual-work-generic-retarget-2026-10-29T19:13:26.126Z",
   "spellskite_behavior_r1": {
     "state": "ORIGINAL_BEHAVIORAL_FAILURE_RECEIVED",
     "source": "f58a64db3a133d86090dddf9776e622c981298cc",
@@ -8743,6 +8792,16 @@
       "status": "in_progress",
       "newer_receipt": false,
       "owner_released": true
+    },
+    "generic_retarget_release": {
+      "utc": "2026-10-29T19:30:23.245Z",
+      "automation_last_run": "41cb8513-7f00-832a-a41a-f84467ca8830",
+      "automation_status": "completed",
+      "owner_was": "manual-work-generic-retarget-2026-10-29T19:13:26.126Z",
+      "no_newer_receipts": true,
+      "run": 40940228314,
+      "status": "in_progress",
+      "receiver": "39db7a565e0d0ca77121a34783aa0f9958bb4e9f"
     }
   },
   "spellskite_card_early_r1": {
