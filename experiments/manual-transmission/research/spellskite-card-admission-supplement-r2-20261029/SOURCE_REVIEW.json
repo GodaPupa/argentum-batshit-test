@@ -1,0 +1,24 @@
+{
+  "state": "BOUNDED_COLLECTION_REPAIR_NO_PRODUCTION_CHANGE",
+  "original_failure": "f3caf7f58eba7b937878fe19edfcec200b6de2a4",
+  "actual_cause": "R1 early_clb path referred to top-level receipt file that does not exist. Only original.zip.xz and receipts are present. Original accepted ZIP member export/CLB.json supplies exact bytes.",
+  "changes": [
+    "Add exact accepted CLB export in frozen research record with original artifact/member/hash provenance; protocol points there.",
+    "Move initial run/workflow/protocol binding capture before archival-reference reads so future fail-closed collection failures remain independently diagnosable.",
+    "Keep every original source/restoration/CLB hash assertion, all commands and required classifications. No production/tests/goldens changed."
+  ],
+  "source_paths_verified": [
+    "CLB Git blob ca1d77af8c1807e9da4737b63b59a46336b4e791",
+    "accepted early export/CLB.json sha256 bfa57f17dbb6bd134d7b510419bfb8c748932a85b9e999a9da63b9bbc9bd877b",
+    "proposal/nph.json 0db531a6aa82e602179b2587208f9a7fbf29d4fa",
+    "proposal/clb.json f660471fba75a93a1c1838e41b5f2493e22c4ad5",
+    "dependent receipt blob df19977bdf6410d0d392a241315f3c73b7166022"
+  ],
+  "validation": "18 collection negative controls retained; Python compile and exact archived CLB extraction checked before dispatch. R1 executed zero compilations/tests; no behavioral-negative claim.",
+  "independent_review": false,
+  "card_admission": false,
+  "multiplayer_admission": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
