@@ -3,14 +3,15 @@
   "updated_date": "2026-10-28",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "READY_FOR_NEXT_ITERATION",
-  "owner": null,
+  "status": "WORKING",
+  "owner": "manual-work-8f1edb27-93b4-832c-8526-5ea662ce2092",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
+    "state": "ACTIVE",
+    "owner": "manual-work-8f1edb27-93b4-832c-8526-5ea662ce2092",
     "last_owner": "manual-work-8396a949-d5a0-832d-b02d-f4422fd043db",
     "released_utc": "2026-10-28T16:47:53Z",
-    "expires_utc": null
+    "expires_utc": "2026-10-29T02:52:04.658Z",
+    "claimed_utc": "2026-10-29T01:52:04.658Z"
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -5682,10 +5683,10 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "390bd1587480",
-    "work_owner": null,
+    "work_owner": "manual-work-8f1edb27-93b4-832c-8526-5ea662ce2092",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "READY_FOR_NEXT_ITERATION",
+    "activity": "WORKING",
     "last_execution_owner": "manual-work-8396a949-d5a0-832d-b02d-f4422fd043db"
   },
   "blockers": [],
@@ -6377,7 +6378,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "Foreground authorization handoff to existing sole Work executor; implementation and qualification pending.",
+  "actual_stopping_reason": null,
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -6457,7 +6458,7 @@
       "path": "experiments/manual-transmission/research/public-occurrence-flow-receiving-r4-20261026/NEXT_SOURCE_REVIEW.json"
     },
     "critical_path": "Spellskite behavioral gate accepted34676300 → required same-source compatibility → card admission → multiplayer admission",
-    "actual_stopping_reason": "Foreground authorization handoff to existing sole Work executor; implementation and qualification pending.",
+    "actual_stopping_reason": null,
     "receiving": {
       "state": "RECEIVED_PUBLIC_MATRIX_ONLY_FINAL_COMPATIBILITY_PENDING",
       "source": "6b3c5e4d8441b25525bd45b6237525cb12883a38",
@@ -8683,5 +8684,14 @@
   },
   "previous_card_authority_blockers": [
     "Explicit authorization needed for proposal 858dac7a631d9b357c2bf7f1694a3de4fd1c94ba:experiments/manual-transmission/research/spellskite-card-admission-proposal-r1-20261028/NEXT_ADMISSION.json; protected NPH snapshot and production registration boundary."
-  ]
+  ],
+  "ownership_reconciliation": {
+    "observed_utc": "2026-10-29T01:52:04.658Z",
+    "prior_blob": "36e8336e15fcf9669e3bccd16ccae1357df4c840",
+    "automation_run": "8f1edb27-93b4-832c-8526-5ea662ce2092",
+    "automation_status": "in_progress",
+    "relevant_active_workflows": [],
+    "ignored_unrelated_ancient_run": 34749202144,
+    "latest_checkpoint": "31bea04694be53cd7b1ad9237f3fc154f2ca4bd2"
+  }
 }
