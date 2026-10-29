@@ -1,0 +1,1681 @@
+{
+  "source": "f4a25fba9126c80af1909ffb9d2bd073c85ce987",
+  "tree": "fe0c4378e876a4b04efa44e9b8dcf5a9b72c3835",
+  "validation": "9d2da83a75fbcd059911c4f446f320128e07cc29",
+  "validation_tree": "a548218a5f767aaa70c01614a647aebf803fb2ba",
+  "workflow": ".github/workflows/manual-multiplayer-registry-inventory-r1-20261029.yml",
+  "workflow_blob": "9a2fa09b34cf44e1e88838aa7b6c616a0258f6b2",
+  "branch": "validation/manual-multiplayer-registry-inventory-r1-20261029",
+  "run": 40826645494,
+  "workflow_id": 400246445,
+  "job": 123291097552,
+  "attempt": 1,
+  "artifact_name": "manual-multiplayer-registry-inventory-r1-40826645494",
+  "protocol_files": {
+    "INPUT_PROVENANCE.json": "6af033dd6f42f560de826108f57dddb40bdf7459da7bf627a5aa6a5e515c47a5",
+    "PROTOCOL.json": "789adeb32f8b617bb41f8393f0e850d7017da599848df6319c4dbff87abcf5a0",
+    "RECEIVE.py": "06e10845f4360bb5bc6be47d769ec35dc6d8fa6debae4393fe5024b62675a66d",
+    "REQUEST.json": "09b8617057b9bd42fb6501f993588c9bf769e1f0af0c73426ca963da07d20084",
+    "SOURCE_REVIEW.json": "4f036f086858f9cf10161cffe6577c910fd150cd5b1a5e41853bb7c3b8b3dcc1",
+    "SYNTHETIC_CHECKS.json": "b17d378344e05d9780c90f14e7b33a933d19ae7f6f763d39af0ea65807fd83e6",
+    "audit.py": "2ff9adf9e43f8c2c0f02ce96f699539467c862ec7aa2b708874818f6ba56a3fb",
+    "bootstrap_audit.py": "0d358a16e275af4293b1aaad9d6d0200c590be37f0d38f8fd6a230ede4ee3e07",
+    "check_audit.py": "b257d58ef7d228e9afd74421341306466ed90324e9bd55a2bde56295ba0c92c8",
+    "inputs/admission.json": "5d1813c6b47496f1dac8218a2067703fc72a4a624b76d6e377b35542f2d1b946",
+    "inputs/experiments/manual-transmission/control/v0.7.decklist.txt": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
+    "inputs/experiments/manual-transmission/opponents/blue-farm/source-freeze.json": "d069fd460aac14faa985572e5df4837b9b708a74f24a52ba3483726de088c2ee",
+    "inputs/experiments/manual-transmission/opponents/hashaton/source-freeze.json": "5cf9e8470280047287790d56b9b55f2619820138b950891905f5376309a49177",
+    "inputs/experiments/manual-transmission/opponents/kinnan/source-freeze.json": "d86026d9d7cbbb65c7696ab32584c7141eb17ebce6627224ed562a94f36dc63d",
+    "inputs/experiments/manual-transmission/opponents/magda/source-freeze.json": "cadf9e45d64b662772dd91b868b9a8ad83d77c5c6389bd945a7391305187be9f",
+    "inputs/experiments/manual-transmission/opponents/rogsi/source-freeze.json": "4e199de4e145ed7950d99414e6fdc9fba348f0bb5515740b0cd1f60e9c2ae704",
+    "inputs/experiments/manual-transmission/opponents/shorikai/source-freeze.json": "8f02e9507bdb61d88ced0f50326c0966bc19ba9ef9fe3ff1c8390b9322f648b1",
+    "inputs/experiments/manual-transmission/opponents/sisay/source-freeze.json": "50f512f84e7975e3f4ec4de843b94b1f2f47b50f27bae34304e92a8c7648bc25",
+    "inputs/experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md": "b837bb17d6ab091dc63ef00c5bf045a9023c8d3096945101e059d93847427aeb",
+    "inputs/protocol-r1.json": "4cd733c6e472322493cef4f90e157f427dcc2d82346e2f6fac5cf20a9beeb607",
+    "prepare.py": "bcdada62f22ff817a1fa1e10c57f09a07d16f9dfcd4ebb21523c4ff1851cad30",
+    "run.py": "8db822f5c1a9644f6b4db974ec7e78c99ee38301ee491eb615b48186d79b01a1",
+    "validation.just": "3e2ad4273c67d2fe40f3d185a68df1e4548f41370e23bbe22c699f73b9de6b98"
+  },
+  "state": "ORIGINAL_REGISTRY_INVENTORY_RECEIVED",
+  "artifact": 12876383745,
+  "artifact_bytes": 4068218,
+  "artifact_sha256": "ef54bdb2bcff5683a07439041bcdb2248560e5fdb8f86d2c499e09e9ae6b219d",
+  "manifest_entries": 1021,
+  "gate_errors": [],
+  "inventory": {
+    "state": "RECEIVED_REGISTRY_INVENTORY_ONLY_NOT_RULES_ADMISSION",
+    "decks": [
+      {
+        "deck_id": "manual-transmission-v07",
+        "resolved": 94,
+        "total": 100,
+        "missing": [
+          {
+            "index": 23,
+            "name": "Fblthp, the Lost",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 28,
+            "name": "Reckless Bushwhacker",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 30,
+            "name": "Amphin Mutineer",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 52,
+            "name": "Disciple of Freyalise",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 65,
+            "name": "Veil of Summer",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 72,
+            "name": "Opal Palace",
+            "blocker": "NOT_REGISTERED"
+          }
+        ]
+      },
+      {
+        "deck_id": "blue-farm",
+        "resolved": 62,
+        "total": 100,
+        "missing": [
+          {
+            "index": 0,
+            "name": "Kraum, Ludevic's Opus",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 1,
+            "name": "Tymna the Weaver",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 2,
+            "name": "Ad Nauseam",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 9,
+            "name": "Birgi, God of Storytelling // Harnfel, Horn of Bounty",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 13,
+            "name": "Cabal Ritual",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 17,
+            "name": "City of Traitors",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 19,
+            "name": "Commandeer",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 20,
+            "name": "Culling the Weak",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 22,
+            "name": "Deflecting Swat",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 23,
+            "name": "Demonic Consultation",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 28,
+            "name": "Esper Sentinel",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 30,
+            "name": "Faerie Mastermind",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 31,
+            "name": "Fierce Guardianship",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 34,
+            "name": "Flusterstorm",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 36,
+            "name": "Force of Will",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 38,
+            "name": "Gemstone Caverns",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 42,
+            "name": "Jeska's Will",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 44,
+            "name": "Lion's Eye Diamond",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 48,
+            "name": "Mana Vault",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 50,
+            "name": "Mental Misstep",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 51,
+            "name": "Mindbreak Trap",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 52,
+            "name": "Misdirection",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 54,
+            "name": "Mnemonic Betrayal",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 57,
+            "name": "Mox Diamond",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 59,
+            "name": "Mystic Remora",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 61,
+            "name": "Necropotence",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 68,
+            "name": "Praetor's Grasp",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 71,
+            "name": "Rain of Filth",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 72,
+            "name": "Ranger-Captain of Eos",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 74,
+            "name": "Rhystic Study",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 75,
+            "name": "Rite of Flame",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 78,
+            "name": "Silence",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 79,
+            "name": "Simian Spirit Guide",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 80,
+            "name": "Smothering Tithe",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 81,
+            "name": "Snapback",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 86,
+            "name": "Tainted Pact",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 88,
+            "name": "Tataru Taru",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 92,
+            "name": "Underworld Breach",
+            "blocker": "NOT_REGISTERED"
+          }
+        ]
+      },
+      {
+        "deck_id": "rogsi",
+        "resolved": 59,
+        "total": 100,
+        "missing": [
+          {
+            "index": 0,
+            "name": "Rograkh, Son of Rohgahh",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 1,
+            "name": "Silas Renn, Seeker Adept",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 2,
+            "name": "Ad Nauseam",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 9,
+            "name": "Birgi, God of Storytelling // Harnfel, Horn of Bounty",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 14,
+            "name": "Cabal Ritual",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 18,
+            "name": "City of Traitors",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 20,
+            "name": "Culling the Weak",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 22,
+            "name": "Daze",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 23,
+            "name": "Defense Grid",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 24,
+            "name": "Deflecting Swat",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 25,
+            "name": "Demonic Consultation",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 30,
+            "name": "Fierce Guardianship",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 32,
+            "name": "Flare of Duplication",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 35,
+            "name": "Flusterstorm",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 37,
+            "name": "Force of Will",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 39,
+            "name": "Gemstone Caverns",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 40,
+            "name": "Gitaxian Probe",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 41,
+            "name": "Grim Monolith",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 42,
+            "name": "Grinding Station",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 47,
+            "name": "Intuition",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 48,
+            "name": "Jeska's Will",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 50,
+            "name": "Lion's Eye Diamond",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 53,
+            "name": "Mana Vault",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 55,
+            "name": "Mental Misstep",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 56,
+            "name": "Mindbreak Trap",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 59,
+            "name": "Mox Diamond",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 61,
+            "name": "Mystic Remora",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 63,
+            "name": "Necrodominance",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 64,
+            "name": "Necropotence",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 67,
+            "name": "Paradise Mantle",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 70,
+            "name": "Praetor's Grasp",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 73,
+            "name": "Rain of Filth",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 76,
+            "name": "Rhystic Study",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 77,
+            "name": "Rite of Flame",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 79,
+            "name": "Simian Spirit Guide",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 84,
+            "name": "Tainted Pact",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 90,
+            "name": "Underworld Breach",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 93,
+            "name": "Vexing Bauble",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 96,
+            "name": "Wheel of Fortune",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 97,
+            "name": "Windfall",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 99,
+            "name": "Yawgmoth's Will",
+            "blocker": "NOT_REGISTERED"
+          }
+        ]
+      },
+      {
+        "deck_id": "kinnan",
+        "resolved": 59,
+        "total": 100,
+        "missing": [
+          {
+            "index": 0,
+            "name": "Kinnan, Bonder Prodigy",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 9,
+            "name": "Cephalid Coliseum",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 15,
+            "name": "Colossal Skyturtle",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 17,
+            "name": "Commandeer",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 18,
+            "name": "Consecrated Sphinx",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 19,
+            "name": "Copy Artifact",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 22,
+            "name": "Disrupting Shoal",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 27,
+            "name": "Elvish Spirit Guide",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 28,
+            "name": "Endurance",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 30,
+            "name": "Faerie Mastermind",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 32,
+            "name": "Fierce Guardianship",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 33,
+            "name": "Finale of Devastation",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 34,
+            "name": "Flash Photography",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 35,
+            "name": "Flesh Duplicate",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 37,
+            "name": "Flusterstorm",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 39,
+            "name": "Force of Will",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 42,
+            "name": "Gemstone Caverns",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 44,
+            "name": "Grim Monolith",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 45,
+            "name": "Hidden Strings",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 48,
+            "name": "Imposter Mech",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 49,
+            "name": "Invasion of Ikoria // Zilortha, Apex of Ikoria",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 54,
+            "name": "Mana Vault",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 55,
+            "name": "Mental Misstep",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 56,
+            "name": "Mindbreak Trap",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 57,
+            "name": "Mirage Mirror",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 58,
+            "name": "Mirrormade",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 59,
+            "name": "Misdirection",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 63,
+            "name": "Mox Diamond",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 65,
+            "name": "Mystic Remora",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 67,
+            "name": "Nezahal, Primal Tide",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 73,
+            "name": "Rhystic Study",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 75,
+            "name": "Sink into Stupor // Soporific Springs",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 76,
+            "name": "Snapback",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 80,
+            "name": "Talisman of Curiosity",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 82,
+            "name": "The Cabbage Merchant",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 85,
+            "name": "Thrasios, Triton Hero",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 87,
+            "name": "Trophy Mage",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 89,
+            "name": "Twincast",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 91,
+            "name": "Veil of Summer",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 93,
+            "name": "Volatile Stormdrake",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 96,
+            "name": "Whir of Invention",
+            "blocker": "NOT_REGISTERED"
+          }
+        ]
+      },
+      {
+        "deck_id": "sisay",
+        "resolved": 59,
+        "total": 100,
+        "missing": [
+          {
+            "index": 0,
+            "name": "Sisay, Weatherlight Captain",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 3,
+            "name": "Aminatou, the Fateshifter",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 7,
+            "name": "Ashiok, Dream Render",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 15,
+            "name": "Chromatic Orrery",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 18,
+            "name": "Colossal Skyturtle",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 20,
+            "name": "Cultist of the Absolute",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 21,
+            "name": "Deadpool, Trading Card",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 22,
+            "name": "Deathrite Shaman",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 23,
+            "name": "Deflecting Swat",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 26,
+            "name": "Derevi, Empyrial Tactician",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 27,
+            "name": "Dihada, Binder of Wills",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 28,
+            "name": "Drana and Linvala",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 29,
+            "name": "Emiel the Blessed",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 30,
+            "name": "Ertai Resurrected",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 31,
+            "name": "Esper Sentinel",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 33,
+            "name": "Faeburrow Elder",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 35,
+            "name": "Fierce Guardianship",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 37,
+            "name": "Flusterstorm",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 39,
+            "name": "Force of Will",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 41,
+            "name": "Gemstone Caverns",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 46,
+            "name": "Kinnan, Bonder Prodigy",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 47,
+            "name": "Lavinia, Azorius Renegade",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 48,
+            "name": "Legolas's Quick Reflexes",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 52,
+            "name": "Mana Vault",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 55,
+            "name": "Mental Misstep",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 56,
+            "name": "Mindbreak Trap",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 60,
+            "name": "Mox Diamond",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 62,
+            "name": "Mystic Remora",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 63,
+            "name": "Nicol Bolas, Dragon-God",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 64,
+            "name": "Noble Hierarch",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 65,
+            "name": "Noxious Revival",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 74,
+            "name": "Relic of Legends",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 75,
+            "name": "Rhystic Study",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 76,
+            "name": "Saheeli Rai",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 80,
+            "name": "Selvala, Heart of the Wilds",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 82,
+            "name": "Silence",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 83,
+            "name": "Smothering Tithe",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 88,
+            "name": "Tataru Taru",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 89,
+            "name": "Teferi, Time Raveler",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 90,
+            "name": "The Cabbage Merchant",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 93,
+            "name": "Tyvar, Jubilant Brawler",
+            "blocker": "NOT_REGISTERED"
+          }
+        ]
+      },
+      {
+        "deck_id": "magda",
+        "resolved": 50,
+        "total": 100,
+        "missing": [
+          {
+            "index": 0,
+            "name": "Magda, Brazen Outlaw",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 5,
+            "name": "Barbarian Ring",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 7,
+            "name": "Battered Golem",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 9,
+            "name": "Bottle-Cap Blast",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 11,
+            "name": "Captain America's Motorcycle",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 13,
+            "name": "City of Traitors",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 14,
+            "name": "Clock of Omens",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 15,
+            "name": "Clown Car",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 17,
+            "name": "Cursed Mirror",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 19,
+            "name": "Deflecting Swat",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 20,
+            "name": "Dragon-Cursed Halls",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 24,
+            "name": "Dwarven Scorcher",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 25,
+            "name": "Elixir of Immortality",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 28,
+            "name": "Flywheel Racer",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 29,
+            "name": "F\u00edli and K\u00edli, Joyous",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 30,
+            "name": "Gemstone Caverns",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 32,
+            "name": "Gogo, Mysterious Mime",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 33,
+            "name": "Grafdigger's Cage",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 35,
+            "name": "Grim Monolith",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 36,
+            "name": "Hammerheim",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 38,
+            "name": "Holdout Settlement",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 39,
+            "name": "Jeska's Will",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 41,
+            "name": "Knuckles the Echidna",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 46,
+            "name": "Liquimetal Torque",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 49,
+            "name": "Mana Vault",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 50,
+            "name": "Maskwood Nexus",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 58,
+            "name": "Pinnacle Monk // Mystic Peak",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 59,
+            "name": "Plundering Barbarian",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 60,
+            "name": "Portal to Phyrexia",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 61,
+            "name": "Professional Face-Breaker",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 62,
+            "name": "Pyrokinesis",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 64,
+            "name": "Ramunap Ruins",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 66,
+            "name": "Relic of Legends",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 68,
+            "name": "Rite of Flame",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 71,
+            "name": "Shatterskull Smashing // Shatterskull, the Hammer Pass",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 73,
+            "name": "Siege Smash",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 74,
+            "name": "Simian Spirit Guide",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 77,
+            "name": "Spark Mage",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 80,
+            "name": "Sudden Shock",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 81,
+            "name": "Sundering Eruption // Volcanic Fissure",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 82,
+            "name": "Survivors' Encampment",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 83,
+            "name": "Talon Gates of Madara",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 85,
+            "name": "Thorin, Company's Leader",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 88,
+            "name": "Treasonous Ogre",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 89,
+            "name": "Treasure Vault",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 90,
+            "name": "Twinshot Sniper",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 92,
+            "name": "Unlicensed Hearse",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 94,
+            "name": "Urza's Cave",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 95,
+            "name": "Urza's Saga",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 98,
+            "name": "Xorn",
+            "blocker": "NOT_REGISTERED"
+          }
+        ]
+      },
+      {
+        "deck_id": "hashaton",
+        "resolved": 49,
+        "total": 100,
+        "missing": [
+          {
+            "index": 0,
+            "name": "Hashaton, Scarab's Fist",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 2,
+            "name": "Archon of Emeria",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 4,
+            "name": "Baleful Force",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 8,
+            "name": "Chancellor of the Annex",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 12,
+            "name": "Commandeer",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 13,
+            "name": "Consecrated Sphinx",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 14,
+            "name": "Contagion",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 15,
+            "name": "Daze",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 16,
+            "name": "Deadly Rollick",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 17,
+            "name": "Demonic Consultation",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 19,
+            "name": "Disrupting Shoal",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 21,
+            "name": "Eidolon of Rhetoric",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 22,
+            "name": "Elesh Norn, Grand Cenobite",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 24,
+            "name": "Esper Sentinel",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 25,
+            "name": "Ethersworn Canonist",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 26,
+            "name": "Fierce Guardianship",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 28,
+            "name": "Flusterstorm",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 29,
+            "name": "Foil",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 31,
+            "name": "Force of Will",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 32,
+            "name": "Gemstone Caverns",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 33,
+            "name": "Glory",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 38,
+            "name": "Hydroelectric Specimen // Hydroelectric Laboratory",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 40,
+            "name": "Jin-Gitaxias, Core Augur",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 41,
+            "name": "Lion's Eye Diamond",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 46,
+            "name": "Mental Misstep",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 47,
+            "name": "Mindbreak Trap",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 48,
+            "name": "Misdirection",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 51,
+            "name": "Mox Diamond",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 53,
+            "name": "Mystic Remora",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 54,
+            "name": "Nezahal, Primal Tide",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 55,
+            "name": "Ori, Plate Stacker",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 57,
+            "name": "Phyrexian Censor",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 59,
+            "name": "Pollywog Prodigy",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 60,
+            "name": "Praetor's Grasp",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 61,
+            "name": "Putrid Imp",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 62,
+            "name": "Razaketh, the Foulblooded",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 63,
+            "name": "Reanimate",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 64,
+            "name": "Reverent Mantra",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 65,
+            "name": "Rhystic Study",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 68,
+            "name": "Scheming Symmetry",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 71,
+            "name": "Smirking Spelljacker",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 72,
+            "name": "Snapback",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 75,
+            "name": "Solitude",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 79,
+            "name": "Strix Serenade",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 80,
+            "name": "Submerge",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 81,
+            "name": "Subtlety",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 83,
+            "name": "Tainted Pact",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 85,
+            "name": "Teferi, Mage of Zhalfir",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 92,
+            "name": "Unmask",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 93,
+            "name": "Urza's Saga",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 97,
+            "name": "Vilis, Broker of Blood",
+            "blocker": "NOT_REGISTERED"
+          }
+        ]
+      },
+      {
+        "deck_id": "shorikai",
+        "resolved": 55,
+        "total": 100,
+        "missing": [
+          {
+            "index": 0,
+            "name": "Shorikai, Genesis Engine",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 2,
+            "name": "Amphibian Downpour",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 8,
+            "name": "Azorius Signet",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 9,
+            "name": "Blind Obedience",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 14,
+            "name": "City of Traitors",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 16,
+            "name": "Commandeer",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 18,
+            "name": "Counterbalance",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 20,
+            "name": "Cyclonic Rift",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 23,
+            "name": "Esper Sentinel",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 24,
+            "name": "Faerie Mastermind",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 26,
+            "name": "Fierce Guardianship",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 27,
+            "name": "Flash Photography",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 29,
+            "name": "Flusterstorm",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 31,
+            "name": "Force of Will",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 32,
+            "name": "Gemstone Caverns",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 33,
+            "name": "Gilded Drake",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 35,
+            "name": "Grafdigger's Cage",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 36,
+            "name": "Grim Monolith",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 39,
+            "name": "Humility",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 40,
+            "name": "Imposter Mech",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 48,
+            "name": "Mana Drain",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 49,
+            "name": "Mana Vault",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 50,
+            "name": "Manifold Key",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 52,
+            "name": "Mental Misstep",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 55,
+            "name": "Mind Over Matter",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 56,
+            "name": "Mindbreak Trap",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 57,
+            "name": "Mirrormade",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 58,
+            "name": "Misdirection",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 61,
+            "name": "Mox Diamond",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 64,
+            "name": "Mystic Remora",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 69,
+            "name": "Permission Denied",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 71,
+            "name": "Ranger-Captain of Eos",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 72,
+            "name": "Rhystic Study",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 74,
+            "name": "Sea Gate Restoration // Sea Gate, Reborn",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 75,
+            "name": "Sea of Clouds",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 77,
+            "name": "Sevinne's Reclamation",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 78,
+            "name": "Silence",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 79,
+            "name": "Smothering Tithe",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 84,
+            "name": "Tataru Taru",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 85,
+            "name": "Tezzeret the Seeker",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 90,
+            "name": "Unwinding Clock",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 91,
+            "name": "Urza's Saga",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 94,
+            "name": "Volatile Stormdrake",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 97,
+            "name": "Whir of Invention",
+            "blocker": "NOT_REGISTERED"
+          },
+          {
+            "index": 99,
+            "name": "Witch Enchanter // Witch-Blessed Meadow",
+            "blocker": "NOT_REGISTERED"
+          }
+        ]
+      }
+    ],
+    "resolved": 487,
+    "physical_cards": 800,
+    "official_games": 0,
+    "official_seeds": 0,
+    "multiplayer_admission": false
+  },
+  "card_admission": false,
+  "multiplayer_admission": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
