@@ -9,8 +9,8 @@
     "state": "ACTIVE",
     "owner": "manual-work-generic-retarget-2026-10-29T19:13:26.126Z",
     "claimed_utc": "2026-10-29T19:13:26.126Z",
-    "renewed_utc": "2026-10-29T19:13:26.126Z",
-    "expires_utc": "2026-10-29T20:13:26.126Z"
+    "renewed_utc": "2026-10-29T19:27:12.652Z",
+    "expires_utc": "2026-10-29T20:27:12.652Z"
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -30,20 +30,28 @@
     "review_path": "experiments/manual-transmission/research/fblthp-entry-origin-admission-proposal-r1-20261029/NEXT_ADMISSION.json",
     "card_acceptance_scenarios": 10,
     "registration": "Fblthp canonical WAR50 implementation frozen; feature/card admission withheld pending all source-specific gates and original receiving.",
-    "current_subproblem": "Fblthp entry-origin optional modal-helper compatibility and bounded card registration",
-    "source_candidate": "027a20e5287be636170980b8b7237fccaa69fabb",
-    "source_tree": "a8486fea21e3ea7af7cf7bf2273feabb42c537fd",
-    "source_branch": "checkpoint/manual-fblthp-entry-origin-early-r4-20261029",
-    "protocol": "experiments/manual-transmission/research/fblthp-entry-origin-early-r4-20261029/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/fblthp-entry-origin-early-r4-20261029/SOURCE_REVIEW.json",
-    "validation": "35effcea935216802be3550ef6d71af16420d7c3",
-    "validation_branch": "validation/manual-fblthp-entry-origin-early-r4-20261029",
-    "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r4-20261029.yml",
+    "current_subproblem": "Authorized generic retarget continuation repair and unchanged Fblthp early qualification",
+    "source_candidate": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
+    "source_tree": "0fad7f8f66f20f8716c119b51ad41af8499ec93e",
+    "source_branch": "source/manual-generic-retarget-early-r1-20261029",
+    "protocol": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029/SOURCE_REVIEW.json",
+    "validation": "b861e228085760ccdf395eccfd76717b9dcba81d",
+    "validation_branch": "validation/manual-generic-retarget-early-r1-20261029",
+    "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
     "pending_runs": [],
-    "planned_not_observed": [],
+    "planned_not_observed": {
+      "compilations": 16,
+      "generic_normal": 25,
+      "fblthp_normal": 24,
+      "generic_negative_witnesses": 26,
+      "fblthp_negative_witnesses": 25,
+      "legacy": 4,
+      "export": 1
+    },
     "negative_scope": "Proposed only: see NEXT_ADMISSION acceptance_conditions; no Fblthp mutant compilation or witnesses claimed.",
     "source_delta": "Seven added research files only at proposal commit; no production/test/protected source or golden changed.",
-    "next_executable_action": "Implement exact authorized generic retarget proposal a29b4688 after source/skills review; preserve all assertions and authoritative groups. Compile normal/mutants first; generic controls, Fblthp early and dependent gates plus original receiving mandatory. Reuse accepted evidence. No card/multiplayer/gameplay admission.",
+    "next_executable_action": "Dispatch frozen reviewed b861e228 exactly once after all-status/automation/CURRENT reconciliation; compile sixteen forms before generic25 and unchanged Fblthp24 controls. During external qualification prepare original receiving; do not edit frozen source or launch competing qualification. Receive original artifacts and all dependent gates before repair/card acceptance.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -160,7 +168,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "45e08ca3ae036e7b1c1fa49aa6fb9f55b94d7a16",
+    "validation_tree": "7461aa5a9c20228eafb474044b257593f9428801",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -4187,66 +4195,79 @@
     },
     "read_sections": [
       {
+        "ref": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
+        "path": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029/PROTOCOL.json",
+        "sections": [
+          "all"
+        ]
+      },
+      {
+        "ref": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
+        "path": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029/SOURCE_REVIEW.json",
+        "sections": [
+          "all"
+        ]
+      },
+      {
         "ref": "a29b468838edc1993d8ce4e53ac901928efd9501",
         "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029/FAILED_RECEIPT.json",
         "sections": [
           "all"
         ]
-      },
-      {
-        "ref": "a29b468838edc1993d8ce4e53ac901928efd9501",
-        "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029/NEXT_ADMISSION.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "027a20e5287be636170980b8b7237fccaa69fabb",
-        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt",
-        "sections": [
-          "resumeChangeSpellTarget"
-        ]
       }
     ],
-    "continuation_state": "BLOCKED_OWNERSHIP_RELEASED",
+    "continuation_state": "RUNNING_OWNED",
     "source_protocol_history": [
-      null
-    ],
-    "source_protocol": {
-      "source": "027a20e5287be636170980b8b7237fccaa69fabb",
-      "tree": "a8486fea21e3ea7af7cf7bf2273feabb42c537fd",
-      "record": "experiments/manual-transmission/research/fblthp-entry-origin-early-r4-20261029",
-      "validation": "35effcea935216802be3550ef6d71af16420d7c3",
-      "validation_tree": "45e08ca3ae036e7b1c1fa49aa6fb9f55b94d7a16",
-      "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r4-20261029.yml",
-      "workflow_blob": "82b78818e2d5782498b33b48ee29a536fa46f65c",
-      "branch": "validation/manual-fblthp-entry-origin-early-r4-20261029",
-      "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
-      "original_failure_receipt": "0a57d1d54a71104362712d04754df7f05882f143",
-      "source_delta": 7,
-      "production_delta": "One added null default in unprotected modal helper; original tests and all protected source bytes unchanged from R3",
-      "feature_admitted": false,
-      "card_admitted": false,
-      "run": 40915565531,
-      "job": 123594729427,
-      "attempt": 1,
-      "receipt": {
-        "commit": "a29b468838edc1993d8ce4e53ac901928efd9501",
-        "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029",
+      null,
+      {
+        "source": "027a20e5287be636170980b8b7237fccaa69fabb",
+        "tree": "a8486fea21e3ea7af7cf7bf2273feabb42c537fd",
+        "record": "experiments/manual-transmission/research/fblthp-entry-origin-early-r4-20261029",
+        "validation": "35effcea935216802be3550ef6d71af16420d7c3",
+        "validation_tree": "45e08ca3ae036e7b1c1fa49aa6fb9f55b94d7a16",
+        "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r4-20261029.yml",
+        "workflow_blob": "82b78818e2d5782498b33b48ee29a536fa46f65c",
+        "branch": "validation/manual-fblthp-entry-origin-early-r4-20261029",
+        "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
+        "original_failure_receipt": "0a57d1d54a71104362712d04754df7f05882f143",
+        "source_delta": 7,
+        "production_delta": "One added null default in unprotected modal helper; original tests and all protected source bytes unchanged from R3",
+        "feature_admitted": false,
+        "card_admitted": false,
         "run": 40915565531,
         "job": 123594729427,
-        "artifact": 12916242931,
-        "bytes": 5537704,
-        "sha256": "a27d92857f41d16dc4e59756050fd49571e21379cacd00bef33ccdf417f0842a",
-        "manifest_entries": 869,
-        "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
-        "compiled_forms": 9,
-        "legacy_modal_passes": 4,
-        "normal_passes": 23,
-        "normal_failures": 1,
-        "skips": 0,
-        "behavioral_mutants_executed": 0
+        "attempt": 1,
+        "receipt": {
+          "commit": "a29b468838edc1993d8ce4e53ac901928efd9501",
+          "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029",
+          "run": 40915565531,
+          "job": 123594729427,
+          "artifact": 12916242931,
+          "bytes": 5537704,
+          "sha256": "a27d92857f41d16dc4e59756050fd49571e21379cacd00bef33ccdf417f0842a",
+          "manifest_entries": 869,
+          "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
+          "compiled_forms": 9,
+          "legacy_modal_passes": 4,
+          "normal_passes": 23,
+          "normal_failures": 1,
+          "skips": 0,
+          "behavioral_mutants_executed": 0
+        }
       }
+    ],
+    "source_protocol": {
+      "source": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
+      "tree": "0fad7f8f66f20f8716c119b51ad41af8499ec93e",
+      "record": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029",
+      "validation": "b861e228085760ccdf395eccfd76717b9dcba81d",
+      "validation_tree": "7461aa5a9c20228eafb474044b257593f9428801",
+      "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
+      "workflow_blob": "ac8c62b30f536760a49e9ffc6711db1b399de202",
+      "branch": "validation/manual-generic-retarget-early-r1-20261029",
+      "state": "FROZEN_REVIEWED_DISPATCH_PENDING",
+      "feature_admitted": false,
+      "card_admitted": false
     },
     "prepared_receiver_history": [
       {
@@ -5780,9 +5801,9 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "PAUSED_AWAITING_NEW_GENERIC_RETARGET_SCOPE",
-    "last_verified_enabled_utc": "2026-10-28T00:02:00Z",
-    "next_authorized_action": "Explicit Fblthp grant recorded. Implement exact proposal5ff97c89 on isolated current-source successor after applicable AGENTS/skills/source review and fresh canonical metadata. Preserve three protected boundaries and additive-only WAR snapshot; compile normal/every mutant first, execute all proposal gates and receive original artifacts before feature/card admission. Reuse accepted Spellskite/registry evidence. Follow shared fresh-blob ownership; no multiplayer,official seeds or gameplay.",
+    "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
+    "last_verified_enabled_utc": "2026-10-29T19:27:12.652Z",
+    "next_authorized_action": "Follow CURRENT.summary and next.next_executable_action for the granted generic retarget repair.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -5860,7 +5881,7 @@
       "prompt_readback_verified": true
     },
     "previous_execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
-    "is_enabled": false,
+    "is_enabled": true,
     "resume_requested": false,
     "previous_pause": {
       "utc": "2026-10-28T16:47:53Z",
@@ -5891,6 +5912,13 @@
       "proposal": "a29b468838edc1993d8ce4e53ac901928efd9501",
       "schedule_preserved": true,
       "prompt_preserved": true
+    },
+    "generic_retarget_resume": {
+      "verified_utc": "2026-10-29T19:27:12.652Z",
+      "grant": "bb917fe5800e2d066d14522e88b4e85962597cd5",
+      "is_enabled": true,
+      "schedule_preserved": true,
+      "prompt_extended_only_with_grant": true
     }
   },
   "previous_qualified": {
@@ -6631,48 +6659,25 @@
     ],
     "unfinished_implementation": [
       "Six Manual cards missing: Fblthp, the Lost; Reckless Bushwhacker; Amphin Mutineer; Disciple of Freyalise; Veil of Summer; Opal Palace. Remaining opponent missing slots307. Registry presence alone is not rules correctness.",
-      "Bounded Fblthp null-default successor frozen on027a20e5; original R1/R2/R3 failures archived; qualification and additive WAR admission pending.",
+      "Bounded Fblthp implementation plus authorized generic redirect fix frozen; additive WAR snapshot and feature/card admission remain pending all gates.",
       "Remaining Phase2 multiplayer admission, four-player runtime/pilots/hidden-information/telemetry/replay and frozen-input gates. Official games/seeds remain0; both Precision games reserved."
     ],
     "pending_evidence": [
-      "R4 received:9compileforms and legacy4 pass;23/24normal pass. Redirect-to-Fblthp assertion fails; behavioral mutants/restored/export not reached.",
-      "Bounded generic retarget repair authority, then original early and all card/dependent gates remain. No admission."
+      "Frozen generic retarget b31c9f7: sixteen normal/mutant compilations,25 new controls,26 generic negative witnesses and unchanged24 Fblthp/25 negative witnesses await original qualification. No repair or card acceptance.",
+      "Dependent compatibility, card/snapshot/metadata/printing/lint/Assay and original receiving remain mandatory."
     ],
     "source_protocol": {
-      "source": "027a20e5287be636170980b8b7237fccaa69fabb",
-      "tree": "a8486fea21e3ea7af7cf7bf2273feabb42c537fd",
-      "record": "experiments/manual-transmission/research/fblthp-entry-origin-early-r4-20261029",
-      "validation": "35effcea935216802be3550ef6d71af16420d7c3",
-      "validation_tree": "45e08ca3ae036e7b1c1fa49aa6fb9f55b94d7a16",
-      "workflow": ".github/workflows/manual-fblthp-entry-origin-early-r4-20261029.yml",
-      "workflow_blob": "82b78818e2d5782498b33b48ee29a536fa46f65c",
-      "branch": "validation/manual-fblthp-entry-origin-early-r4-20261029",
-      "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
-      "original_failure_receipt": "0a57d1d54a71104362712d04754df7f05882f143",
-      "source_delta": 7,
-      "production_delta": "One added null default in unprotected modal helper; original tests and all protected source bytes unchanged from R3",
+      "source": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57",
+      "tree": "0fad7f8f66f20f8716c119b51ad41af8499ec93e",
+      "record": "experiments/manual-transmission/research/generic-retarget-early-r1-20261029",
+      "validation": "b861e228085760ccdf395eccfd76717b9dcba81d",
+      "validation_tree": "7461aa5a9c20228eafb474044b257593f9428801",
+      "workflow": ".github/workflows/manual-generic-retarget-early-r1-20261029.yml",
+      "workflow_blob": "ac8c62b30f536760a49e9ffc6711db1b399de202",
+      "branch": "validation/manual-generic-retarget-early-r1-20261029",
+      "state": "FROZEN_REVIEWED_DISPATCH_PENDING",
       "feature_admitted": false,
-      "card_admitted": false,
-      "run": 40915565531,
-      "job": 123594729427,
-      "attempt": 1,
-      "receipt": {
-        "commit": "a29b468838edc1993d8ce4e53ac901928efd9501",
-        "path": "experiments/manual-transmission/research/fblthp-entry-origin-failed-r4-20261029",
-        "run": 40915565531,
-        "job": 123594729427,
-        "artifact": 12916242931,
-        "bytes": 5537704,
-        "sha256": "a27d92857f41d16dc4e59756050fd49571e21379cacd00bef33ccdf417f0842a",
-        "manifest_entries": 869,
-        "state": "FAILED_ORIGINAL_RECEIVED_NO_ADMISSION",
-        "compiled_forms": 9,
-        "legacy_modal_passes": 4,
-        "normal_passes": 23,
-        "normal_failures": 1,
-        "skips": 0,
-        "behavioral_mutants_executed": 0
-      }
+      "card_admitted": false
     },
     "accepted_receipt": {
       "commit": "e5c5b2a387b8e2cc528d17db7c20267e3938d516",
@@ -6723,7 +6728,7 @@
       "state": "EXPLICITLY_AUTHORIZED_IMPLEMENTED_QUALIFICATION_PENDING",
       "readback_verified": true
     },
-    "next_executable_action": "Implement exact authorized generic retarget proposal a29b4688 after source/skills review; preserve all assertions and authoritative groups. Compile normal/mutants first; generic controls, Fblthp early and dependent gates plus original receiving mandatory. Reuse accepted evidence. No card/multiplayer/gameplay admission.",
+    "next_executable_action": "Dispatch frozen reviewed b861e228 exactly once after all-status/automation/CURRENT reconciliation; compile sixteen forms before generic25 and unchanged Fblthp24 controls. During external qualification prepare original receiving; do not edit frozen source or launch competing qualification. Receive original artifacts and all dependent gates before repair/card acceptance.",
     "actual_stopping_reason": null,
     "continuation_state": "ACTIVE_AUTHORIZED_GENERIC_RETARGET_REPAIR",
     "read_sections": [
@@ -6755,7 +6760,8 @@
       "next": "Await explicit user authorization of bounded Fblthp proposal 5ff97c89039bb93a0f7633bc5f2778701dcfc551/experiments/manual-transmission/research/fblthp-entry-origin-admission-proposal-r1-20261029/NEXT_ADMISSION.json. It requests only immutable entry-origin transport through three named protected runtime files plus canonical WAR50 registration and one additive WAR snapshot entry; all compile-first, executable-negative, card and dependent gates remain required. Existing resolver/calibration/Spellskite grants remain valid but do not cover this new boundary. On grant, first reconcile fresh CURRENT, exact owner/automation, recent receipts/successors and all workflow statuses, then claim by fresh-blob CAS. Do not repeat accepted registry or Spellskite qualifications. No multiplayer or official games/seeds. After the explicit grant, re-enable only the same existing continuation with its preserved schedule; create no replacement.",
       "reason": "New authority boundary: missing Fblthp entry-origin transport requires narrowly scoped successors of protected StackResolver.kt, StackComponents.kt and TriggerProcessor.kt, plus one additive protected WAR.json entry. Source review and archived original/drafts are complete at 5ff97c89039bb93a0f7633bc5f2778701dcfc551. No relevant external workflow remains active. Implementation across this boundary is not covered by existing grants; ownership released awaiting this exact approval.",
       "state": "BLOCKED_NEW_PROTECTED_BOUNDARY_AUTHORITY; ownership remains released; existing continuation paused with schedule and prompt preserved."
-    }
+    },
+    "concrete_blocker_removed": "User grant resolves pre-existing generic-retarget scope blocker; source now preserves authoritative occurrences and forwards targeting events. Qualification pending, no accepted behavioral claim."
   },
   "generator_calibration_repair_authorization": {
     "state": "AUTHORIZED",
@@ -6816,7 +6822,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-29T19:13:26.126Z",
+  "updated_utc": "2026-10-29T19:27:12.652Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -9644,7 +9650,8 @@
     "granted_utc": "2026-10-29T19:13:26.126Z",
     "authority": "User explicitly authorizes bounded generic resumeChangeSpellTarget authoritative occurrence and BecomesTarget event repair, directly necessary plumbing/tests, all proposal gates and original receiving.",
     "exclusions": "No unrelated protected files/cards,multiplayer,official seeds/gameplay; preserve all original assertions,accepted Spellskite,groups,omissions,occurrence identity,divisions,modal/splice,v0.7,budgets,2Precision.",
-    "resume_existing_executor": true
+    "resume_existing_executor": true,
+    "implementation_source": "b31c9f7ec6c7cc8d3a922adbcac6242fa2f36b57"
   },
   "previous_generic_retarget_blockers": [
     {
