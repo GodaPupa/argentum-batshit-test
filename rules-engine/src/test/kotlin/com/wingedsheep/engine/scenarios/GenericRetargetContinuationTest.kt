@@ -16,7 +16,7 @@ import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.*
 import com.wingedsheep.sdk.scripting.effects.*
 import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
-import com.wingedsheep.sdk.scripting.filters.unified.GameObjectFilter
+import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.scripting.targets.*
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.json.Json
