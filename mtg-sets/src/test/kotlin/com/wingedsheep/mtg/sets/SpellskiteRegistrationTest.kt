@@ -37,6 +37,7 @@ class SpellskiteRegistrationTest : FunSpec({
     }
     test("SR05 fixed self recipient") {
         actual()?.activatedAbilities?.singleOrNull()?.effect shouldBe expected.activatedAbilities.single().effect
+        (actual()?.activatedAbilities?.singleOrNull()?.effect as? com.wingedsheep.sdk.scripting.effects.ChangeTargetToEffect)?.recipient shouldBe EffectTarget.Self
     }
     test("SR06 canonical metadata and characteristics") {
         val a = actual()
