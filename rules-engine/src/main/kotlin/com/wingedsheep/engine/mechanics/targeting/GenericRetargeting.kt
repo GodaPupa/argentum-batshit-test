@@ -20,6 +20,28 @@ data class GenericRetargetSnapshot(
 
 /** The generic redirect continuation delegates legality and mutation to the accepted adapter. */
 internal object GenericRetargeting {
+    /** Legacy single mandatory occurrence only: there is no omitted group to reconstruct. */
+    fun prepareLegacy(state: GameState, stackId: EntityId): GameState {
+        val c = state.getEntity(stackId) ?: return state
+        if (c.currentTargetPlan() != null || c.hasConflictingTargetAuthority()) return state
+        val targets = c.get<TargetsComponent>() ?: return state
+        val requirement = targets.targetRequirements.singleOrNull() ?: return state
+        if (requirement.optional || requirement.minCount != 1 || requirement.count != 1) return state
+        val target = targets.targets.singleOrNull() ?: return state
+        val spell = c.get<SpellOnStackComponent>()
+        val trigger = c.get<TriggeredAbilityOnStackComponent>()
+        val activation = c.get<ActivatedAbilityOnStackComponent>()
+        if (spell?.originalTargetSlots != null || trigger?.originalTargetSlots != null || activation?.originalTargetSlots != null) return state
+        if (spell?.damageDistribution != null || trigger?.damageDistribution != null || activation?.damageDistribution != null) return state
+        if (target is ChosenTarget.Permanent && TargetsComponent.isDifferentObject(state, target.entityId, targets.targetEntryStamps)) return state
+        val ref = if (target is ChosenTarget.Player) null else state.objectRef(targetEntityId(target)) ?: return state
+        val plan = CurrentTargetPlan(TargetSlotPlan(listOf(TargetInstanceSelection(listOf(TargetSlot(target, ref))))))
+        // Coherence rejects modal/splice shapes; their omitted groups must never be inferred.
+        if (!plan.isCoherent(c)) return state
+        val prepared = c.withCurrentTargetPlan(null, plan) ?: return state
+        return state.withEntity(stackId, prepared)
+    }
+
     fun capture(state: GameState, stackId: EntityId, chooserId: EntityId,
         playersOnly: Boolean = false, creaturesOnly: Boolean = false): GenericRetargetSnapshot? {
         val container = state.getEntity(stackId) ?: return null

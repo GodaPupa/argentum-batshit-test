@@ -36,25 +36,28 @@ class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
         effect: ChangeTargetEffect,
         context: EffectContext
     ): EffectResult {
+        var preparedState = state
         // 1. Get target spell/ability
         val targetSpell = context.targets.firstOrNull()
         if (targetSpell !is ChosenTarget.Spell) {
-            return EffectResult.error(state, "No valid spell/ability target for ChangeTarget")
+            return EffectResult.error(preparedState, "No valid spell/ability target for ChangeTarget")
         }
 
-        val stackEntity = state.getEntity(targetSpell.spellEntityId)
-            ?: return EffectResult.error(state, "Spell/ability not found on stack")
+        preparedState = GenericRetargeting.prepareLegacy(preparedState, targetSpell.spellEntityId)
 
-        val plan = stackEntity.currentTargetPlan() ?: return EffectResult.success(state)
-        val currentTarget = plan.targets.singleOrNull() ?: return EffectResult.success(state)
+        val stackEntity = preparedState.getEntity(targetSpell.spellEntityId)
+            ?: return EffectResult.error(preparedState, "Spell/ability not found on stack")
+
+        val plan = stackEntity.currentTargetPlan() ?: return EffectResult.success(preparedState)
+        val currentTarget = plan.targets.singleOrNull() ?: return EffectResult.success(preparedState)
         if (effect.onlyIfCurrentTargetIsController && getTargetEntityId(currentTarget) != context.controllerId) {
-            return EffectResult.success(state)
+            return EffectResult.success(preparedState)
         }
-        val snapshot = GenericRetargeting.capture(state, targetSpell.spellEntityId, context.controllerId,
-            playersOnly = effect.newTargetMustBePlayer) ?: return EffectResult.success(state)
+        val snapshot = GenericRetargeting.capture(preparedState, targetSpell.spellEntityId, context.controllerId,
+            playersOnly = effect.newTargetMustBePlayer) ?: return EffectResult.success(preparedState)
 
         // 4. Present selection decision to the controller
-        val sourceName = context.sourceId?.let { state.getEntity(it)?.get<CardComponent>()?.name }
+        val sourceName = context.sourceId?.let { preparedState.getEntity(it)?.get<CardComponent>()?.name }
         val continuation = ChangeSpellTargetContinuation(
             spellEntityId = targetSpell.spellEntityId,
             sourceId = context.sourceId,
@@ -63,7 +66,7 @@ class ChangeTargetExecutor : EffectExecutor<ChangeTargetEffect> {
         )
 
         val decisionResult = decisionHandler.createCardSelectionDecision(
-            state = state,
+            state = preparedState,
             playerId = context.controllerId,
             sourceId = context.sourceId,
             sourceName = sourceName,

@@ -211,5 +211,17 @@ class GenericRetargetContinuationTest : ScenarioTestBase() {
                 CardsSelectedResponse("bad", listOf(f.recipient, f.old))) { s, e -> ExecutionResult.success(s, e) }
             (r.error != null) shouldBe true; r.state shouldBe f.state; r.events shouldBe emptyList()
         }
+        test("GR legacy mandatory occurrence is preserved through redirect") {
+            val f = fixture()
+            val legacy = f.state.updateEntity(f.stack) { c -> c.without<CurrentTargetPlanComponent>()
+                .with(c.get<TargetsComponent>()!!.copy(targetRequirements = listOf(AnyTarget()), currentTargetPlan = null))
+                .with(c.get<SpellOnStackComponent>()!!.copy(originalTargetSlots = null)) }
+            val prepared = GenericRetargeting.prepareLegacy(legacy, f.stack)
+            (prepared.getEntity(f.stack)!!.currentTargetPlan() != null) shouldBe true
+            val result = submit(f, menu(f.copy(state = legacy)))
+            result.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 1
+            result.state.getEntity(f.stack)!!.currentTargetPlan()?.targets shouldBe listOf(ChosenTarget.Permanent(f.recipient))
+            result.state.getEntity(f.stack)!!.get<SpellOnStackComponent>()!!.originalTargetSlots shouldBe null
+        }
     }
 }

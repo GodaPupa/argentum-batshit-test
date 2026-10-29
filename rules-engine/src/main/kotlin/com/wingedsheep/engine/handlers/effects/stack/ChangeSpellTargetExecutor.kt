@@ -38,38 +38,41 @@ class ChangeSpellTargetExecutor : EffectExecutor<ChangeSpellTargetEffect> {
         effect: ChangeSpellTargetEffect,
         context: EffectContext
     ): EffectResult {
+        var preparedState = state
         // 1. Get target spell
         val targetSpell = context.targets.firstOrNull()
         if (targetSpell !is ChosenTarget.Spell) {
-            return EffectResult.error(state, "No valid spell target for ChangeSpellTarget")
+            return EffectResult.error(preparedState, "No valid spell target for ChangeSpellTarget")
         }
 
-        val spellEntity = state.getEntity(targetSpell.spellEntityId)
-            ?: return EffectResult.error(state, "Spell not found on stack")
+        preparedState = GenericRetargeting.prepareLegacy(preparedState, targetSpell.spellEntityId)
 
-        if (spellEntity.get<SpellOnStackComponent>() == null) return EffectResult.success(state)
-        val singleTarget = spellEntity.currentTargetPlan()?.targets?.singleOrNull() ?: return EffectResult.success(state)
+        val spellEntity = preparedState.getEntity(targetSpell.spellEntityId)
+            ?: return EffectResult.error(preparedState, "Spell not found on stack")
+
+        if (spellEntity.get<SpellOnStackComponent>() == null) return EffectResult.success(preparedState)
+        val singleTarget = spellEntity.currentTargetPlan()?.targets?.singleOrNull() ?: return EffectResult.success(preparedState)
         if (singleTarget !is ChosenTarget.Permanent) {
-            return EffectResult.success(state)
+            return EffectResult.success(preparedState)
         }
 
-        val projected = state.projectedState
+        val projected = preparedState.projectedState
 
         // Check the target is a creature using projected types
         if (!projected.hasType(singleTarget.entityId, "CREATURE")) {
-            return EffectResult.success(state)
+            return EffectResult.success(preparedState)
         }
 
         // If targetMustBeSource, verify the spell's target is the source of this effect
         if (effect.targetMustBeSource && singleTarget.entityId != context.sourceId) {
-            return EffectResult.success(state)
+            return EffectResult.success(preparedState)
         }
 
-        val snapshot = GenericRetargeting.capture(state, targetSpell.spellEntityId, context.controllerId,
-            creaturesOnly = true) ?: return EffectResult.success(state)
+        val snapshot = GenericRetargeting.capture(preparedState, targetSpell.spellEntityId, context.controllerId,
+            creaturesOnly = true) ?: return EffectResult.success(preparedState)
 
         // 6. Present selection decision to the controller
-        val sourceName = context.sourceId?.let { state.getEntity(it)?.get<CardComponent>()?.name }
+        val sourceName = context.sourceId?.let { preparedState.getEntity(it)?.get<CardComponent>()?.name }
         val continuation = ChangeSpellTargetContinuation(
             spellEntityId = targetSpell.spellEntityId,
             sourceId = context.sourceId,
@@ -78,7 +81,7 @@ class ChangeSpellTargetExecutor : EffectExecutor<ChangeSpellTargetEffect> {
         )
 
         val decisionResult = decisionHandler.createCardSelectionDecision(
-            state = state,
+            state = preparedState,
             playerId = context.controllerId,
             sourceId = context.sourceId,
             sourceName = sourceName,
