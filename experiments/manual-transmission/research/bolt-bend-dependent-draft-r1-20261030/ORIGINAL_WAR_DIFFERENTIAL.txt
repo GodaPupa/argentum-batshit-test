@@ -1,0 +1,108 @@
+Argentum Assay — differential (spellEffect, targetRequirements, triggeredAbilities, activatedAbilities, staticAbilities, replacementEffects, auraTarget, castRestrictions, additionalCosts, cantBeCountered, conditionalFlash, keywords, equipCost, defined P/T)
+==============================================================================
+
+  Hand-written cards                 71
+    compared                         66
+    not yet covered by the grammar   5
+    script slot not modelled yet     0
+    lines do not fold into one card  0
+    multi-face (out of scope)        0
+    no Scryfall Oracle entry         0
+    Oracle text differs from golden  0
+    golden would not decode          0
+
+  Confirmed — models agree           65   984.8‰ (98.5%)
+  DIVERGENT — read every one         1
+
+DIVERGENCES — each is a parser bug, a card bug, or a fold. Classify all of them.
+------------------------------------------------------------------------------
+  Bolt Bend  [WAR]
+    script from text:      {
+    "spellEffect": {
+        "type": "ChangeTarget"
+    },
+    "targetRequirements": [
+        {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": {},
+                "zone": "Stack"
+            }
+        }
+    ],
+    "staticAbilities": [
+        {
+            "type": "ModifySpellCost",
+            "target": {
+                "type": "SelfCast"
+            },
+            "modification": {
+                "type": "ReduceGeneric",
+                "amount": 3
+            },
+            "gating": {
+                "type": "OnlyIf",
+                "condition": {
+                    "type": "Exists",
+                    "player": {
+                        "type": "You"
+                    },
+                    "zone": "Battlefield",
+                    "filter": {
+                        "cardPredicates": [
+                            {
+                                "type": "IsCreature"
+                            },
+                            {
+                                "type": "PowerAtLeast",
+                                "min": 4
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
+    script on the card:    {
+    "spellEffect": {
+        "type": "ChangeTarget"
+    },
+    "targetRequirements": [
+        {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": {},
+                "zone": "Stack"
+            },
+            "id": "target"
+        }
+    ],
+    "staticAbilities": [
+        {
+            "type": "ModifySpellCost",
+            "target": {
+                "type": "SelfCast"
+            },
+            "modification": {
+                "type": "ReduceGenericBy",
+                "source": {
+                    "type": "FixedIfControlFilter",
+                    "amount": 3,
+                    "filter": {
+                        "cardPredicates": [
+                            {
+                                "type": "IsCreature"
+                            },
+                            {
+                                "type": "PowerAtLeast",
+                                "min": 4
+                            }
+                        ]
+                    }
+                }
+            }
+        }
+    ]
+}
+
