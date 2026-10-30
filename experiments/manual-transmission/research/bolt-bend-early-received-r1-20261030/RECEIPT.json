@@ -1,0 +1,197 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED_NO_ADMISSION",
+  "source": "b13631c6fcf726576b28df14abf2297a6f911f93",
+  "validation": "c2a6c2396bad132fbe4fdc7d9aac4c3164fe571a",
+  "run": 41035962802,
+  "job": 123996732705,
+  "attempt": 1,
+  "artifact": 12969331381,
+  "bytes": 5833206,
+  "sha256": "85996bda1a5e9056100d53cb468b5087cc20c2aca2d44900ad96602bed02e5f6",
+  "manifest_entries": 687,
+  "gates": {
+    "initial": {
+      "sha256_bindings": 279,
+      "git_bindings": 25,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "rules-engine/src/main": "236b9a8b07c055743d5f8d777cf14afe79501052",
+        "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+        "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499",
+        "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d"
+      }
+    },
+    "final": {
+      "sha256_bindings": 279,
+      "git_bindings": 25,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "rules-engine/src/main": "236b9a8b07c055743d5f8d777cf14afe79501052",
+        "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+        "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499",
+        "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d"
+      }
+    },
+    "compile-normal": {
+      "compiled": true,
+      "output_sha256": "b51147499b4bdedf1913fb33acd528bcd243fb1da30dae4d71819d044dcac1b7"
+    },
+    "compile-drop-power": {
+      "compiled": true,
+      "output_sha256": "990e741a4e20c5ca33c5926a7b1d0429b469d7fc4ede2dd30326f3df2af6534a"
+    },
+    "compile-exclusive-threshold": {
+      "compiled": true,
+      "output_sha256": "f18a5632910226b71ef3679d25524d34e47866e57ccd92b9def9757d3d873523"
+    },
+    "compile-base-power": {
+      "compiled": true,
+      "output_sha256": "aa8b2da12dae1aa7f9313151422bf91e2df39b08bde1f41c9ac9eedc08efa323"
+    },
+    "compile-owner-battlefield": {
+      "compiled": true,
+      "output_sha256": "6a82aa21046da6af1d7db6f80ebd857e866734f59452c660aa17d19f278abe9e"
+    },
+    "compile-ignore-controller": {
+      "compiled": true,
+      "output_sha256": "5fad09053ecb6650b56eb44c2568cf084e2e4f1973607af370b8512cf85beba6"
+    },
+    "compile-wrong-amount": {
+      "compiled": true,
+      "output_sha256": "d268d54e091d3da929c60637eb23a10979c31ce67e419617ca925d4f93a4cf15"
+    },
+    "compile-drop-red": {
+      "compiled": true,
+      "output_sha256": "99641bb0d72471f6179bc4d2b9828563cae2fdda3672a8fa7eb7be942d3dd9d0"
+    },
+    "compile-base-type": {
+      "compiled": true,
+      "output_sha256": "00d0d622f4387977852a66edaffb7239da16b43688c51edc96e99a69f8b7051b"
+    },
+    "source_forms_and_restoration": {
+      "normal_sha256": "0720af3cf7d8bb8977421902a1c6f195155c78acdbfe75c9db947dc26e02ee5e",
+      "mutants": 8,
+      "restored": true
+    },
+    "normal": {
+      "form": "normal",
+      "rows": 16,
+      "failures": [],
+      "passing_controls": 16,
+      "skips": 0
+    },
+    "negative-base-power": {
+      "form": "base-power",
+      "rows": 16,
+      "failures": [
+        {
+          "id": "BP03",
+          "line": 88,
+          "message": "org.opentest4j.AssertionFailedError: expected:<{R}> but was:<{3}{R}>"
+        },
+        {
+          "id": "BP04",
+          "line": 96,
+          "message": "org.opentest4j.AssertionFailedError: expected:<{3}{R}> but was:<{R}>"
+        },
+        {
+          "id": "BP06",
+          "line": 114,
+          "message": "org.opentest4j.AssertionFailedError: expected:<{R}> but was:<{3}{R}>"
+        }
+      ],
+      "passing_controls": 13,
+      "skips": 0
+    },
+    "negative-owner-battlefield": {
+      "form": "owner-battlefield",
+      "rows": 16,
+      "failures": [
+        {
+          "id": "BP01",
+          "line": 71,
+          "message": "org.opentest4j.AssertionFailedError: expected:<{R}> but was:<{3}{R}>"
+        },
+        {
+          "id": "BP02",
+          "line": 80,
+          "message": "org.opentest4j.AssertionFailedError: expected:<{3}{R}> but was:<{R}>"
+        }
+      ],
+      "passing_controls": 14,
+      "skips": 0
+    },
+    "synthetic_auditor_controls": {
+      "accepted_synthetic_forms": 10,
+      "rejected_corruptions": 12,
+      "engine_evidence": false
+    }
+  },
+  "gate_errors": [
+    {
+      "gate": "compile-restored",
+      "error": "KeyError('compile-restored/exit.txt')"
+    },
+    {
+      "gate": "negative-drop-power",
+      "error": "AssertionError()"
+    },
+    {
+      "gate": "negative-exclusive-threshold",
+      "error": "AssertionError()"
+    },
+    {
+      "gate": "negative-ignore-controller",
+      "error": "AssertionError()"
+    },
+    {
+      "gate": "negative-wrong-amount",
+      "error": "AssertionError()"
+    },
+    {
+      "gate": "negative-drop-red",
+      "error": "AssertionError()"
+    },
+    {
+      "gate": "negative-base-type",
+      "error": "FileNotFoundError(2, 'No such file or directory')"
+    },
+    {
+      "gate": "restored",
+      "error": "FileNotFoundError(2, 'No such file or directory')"
+    },
+    {
+      "gate": "completion",
+      "error": "KeyError('RESULT.json')"
+    },
+    {
+      "gate": "collector",
+      "error": "Traceback (most recent call last):\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/bolt-bend-early-r1-20261030/run.py\", line 72, in <module>\n    try:main()\n        ~~~~^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/bolt-bend-early-r1-20261030/run.py\", line 64, in main\n    path.write_text(content);stage('negative-'+name,'tests',name)\n                             ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/bolt-bend-early-r1-20261030/run.py\", line 49, in stage\n    else:js(folder/'SUMMARY.json',verify(folder,form))\n                                  ~~~~~~^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/bolt-bend-early-r1-20261030/audit.py\", line 27, in verify\n    assert w[id]['message'] in f.get('message','') and w[id]['message'] in (f.text or '')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+    },
+    {
+      "gate": "workflow",
+      "error": [
+        "failure",
+        "failure"
+      ]
+    }
+  ],
+  "feature_admitted": false,
+  "card_admitted": false
+}
