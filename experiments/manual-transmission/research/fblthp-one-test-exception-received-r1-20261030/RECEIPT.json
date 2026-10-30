@@ -1,0 +1,144 @@
+{
+  "state": "ONE_TEST_DEPENDENT_CLIENT_ORIGINAL_VERIFIED_NOT_CARD_ADMISSION",
+  "source": "ce5145a2f3a361ad202ebc9cb86ef5b88a57dfc3",
+  "validation": "2219d5783d67fd3b674cdd7850502cc1b1976668",
+  "run": 40977504099,
+  "job": 123809068798,
+  "attempt": 1,
+  "artifact": 12944142965,
+  "bytes": 16267175,
+  "sha256": "65783176e2d0f8d35a7b65da6dd47e71bae5e43bbbb2f24d1ea00fb63887e0b4",
+  "manifest_entries": 5986,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "gates": {
+    "initial": {
+      "sha256_bindings": 278,
+      "git_bindings": 15,
+      "tracked_clean": true
+    },
+    "compiled-restored": {
+      "sha256_bindings": 278,
+      "git_bindings": 15,
+      "tracked_clean": true
+    },
+    "mutants-restored": {
+      "sha256_bindings": 278,
+      "git_bindings": 15,
+      "tracked_clean": true
+    },
+    "final": {
+      "sha256_bindings": 278,
+      "git_bindings": 15,
+      "tracked_clean": true
+    },
+    "form-drop-events": {
+      "sha256": "9cb49e07da4e5aecb634733732dc1d2dd6bb68b1f5680be2e192b28077735205"
+    },
+    "form-wrong-source-kind": {
+      "sha256": "f6765d02cfddd97bf23823901cedf15e5a0824c36a13ab23174b3e440f83256f"
+    },
+    "compile-normal": {
+      "compiled": true
+    },
+    "compile-drop-events": {
+      "compiled": true
+    },
+    "compile-wrong-source-kind": {
+      "compiled": true
+    },
+    "focused-normal": {
+      "rows": 65,
+      "passes": 65,
+      "failures": {},
+      "skips": 0
+    },
+    "focused-restored": {
+      "rows": 65,
+      "passes": 65,
+      "failures": {},
+      "skips": 0
+    },
+    "drop-events": {
+      "rows": 15,
+      "passes": 14,
+      "failures": {
+        "rules-engine\tcom.wingedsheep.engine.triggers.BecomesTargetPlayerAndAbilityAxesTest\tchanging a spell's target to a player emits exactly one correctly attributed BecomesTargetEvent": {
+          "type": "org.opentest4j.AssertionFailedError",
+          "frame": "BecomesTargetPlayerAndAbilityAxesTest.kt:318",
+          "message": "org.opentest4j.AssertionFailedError: Collection should have size 1 but has size 0. Values: []\nexpected:<1> but was:<0>"
+        }
+      },
+      "skips": 0
+    },
+    "wrong-source-kind": {
+      "rows": 15,
+      "passes": 14,
+      "failures": {
+        "rules-engine\tcom.wingedsheep.engine.triggers.BecomesTargetPlayerAndAbilityAxesTest\tchanging a spell's target to a player emits exactly one correctly attributed BecomesTargetEvent": {
+          "type": "org.opentest4j.AssertionFailedError",
+          "frame": "BecomesTargetPlayerAndAbilityAxesTest.kt:323",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>"
+        }
+      },
+      "skips": 0
+    },
+    "cards": {
+      "rows": 389,
+      "passed": 389,
+      "skips": 0
+    },
+    "ordinary": {
+      "rows": 19074,
+      "passed": 19031,
+      "skips": 43
+    },
+    "client": {
+      "passed": 64,
+      "skips": 0
+    },
+    "check_audit.py": {
+      "state": "SYNTHETIC_AUDITOR_ONLY",
+      "valid_shapes": 2,
+      "rejected": [
+        "missing",
+        "duplicate",
+        "skip",
+        "error",
+        "failure",
+        "wrongcount",
+        "wrongidentity",
+        "nonzeroexit",
+        "compilercontamination",
+        "missingreport",
+        "client identity",
+        "client status",
+        "client pending"
+      ]
+    },
+    "check_reports.py": {
+      "synthetic_only": true,
+      "valid_report_controls": 2,
+      "valid_compile_control": 1,
+      "rejected": [
+        "missing report",
+        "duplicate report multiplicity",
+        "wrong count",
+        "skip",
+        "runtime error",
+        "compiler contamination",
+        "non assertion failure",
+        "wrong assertion location",
+        "wrong test identity",
+        "mutant zero exit",
+        "compiler log despite zero exit"
+      ]
+    },
+    "completion": {
+      "workflow_success": true,
+      "collector_complete": true
+    }
+  },
+  "gate_errors": [],
+  "raw_identity_evidence": "Original ZIP raw XML/Vitest, frozen inventory derivation and exact receiver; all identities/multiplicities independently checked before this compact receipt."
+}
