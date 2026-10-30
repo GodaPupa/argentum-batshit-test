@@ -1,0 +1,78 @@
+{
+  "state": "OWNER_SOURCE_REVIEW_NOT_ACCEPTANCE",
+  "base": "e91c971e4b34c8d8deb250243d417f6cceeab439",
+  "authorization": "5227285533a77679b048761ad4f9768b80a473b2",
+  "production_changes": 0,
+  "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/triggers/BecomesTargetPlayerAndAbilityAxesTest.kt",
+  "test_changed_cases": 1,
+  "unchanged_other_cases": 14,
+  "exact_proposed_sha256": "c8f6cac1fb574e10818d9e8de33af042bb12d9c6d6a6d7e8f07f395d359b97c0",
+  "original_restoration_byte_exact": true,
+  "inventory_identity_replacements": 1,
+  "expected": {
+    "ordinary_rows": 19074,
+    "ordinary_passes": 19031,
+    "ordinary_skips": 43,
+    "cards": 389,
+    "axes": 15,
+    "focused": 65,
+    "mutant_forms": 2,
+    "compiled_forms": 3,
+    "negative_witnesses": 2,
+    "mutant_passing_controls": 28,
+    "client": 64
+  },
+  "bindings": 278,
+  "git_bindings": 15,
+  "mutant_source_sha256": {
+    "drop-events": "9cb49e07da4e5aecb634733732dc1d2dd6bb68b1f5680be2e192b28077735205",
+    "wrong-source-kind": "f6765d02cfddd97bf23823901cedf15e5a0824c36a13ab23174b3e440f83256f"
+  },
+  "normal_and_mutant_compilation": "MANDATORY_FIRST_IN_FROZEN_RUN_NOT_YET_OBSERVED",
+  "controls": {
+    "check_audit.py": {
+      "state": "SYNTHETIC_AUDITOR_ONLY",
+      "valid_shapes": 2,
+      "rejected": [
+        "missing",
+        "duplicate",
+        "skip",
+        "error",
+        "failure",
+        "wrongcount",
+        "wrongidentity",
+        "nonzeroexit",
+        "compilercontamination",
+        "missingreport",
+        "client identity",
+        "client status",
+        "client pending"
+      ]
+    },
+    "check_reports.py": {
+      "synthetic_only": true,
+      "valid_report_controls": 2,
+      "valid_compile_control": 1,
+      "rejected": [
+        "missing report",
+        "duplicate report multiplicity",
+        "wrong count",
+        "skip",
+        "runtime error",
+        "compiler contamination",
+        "non assertion failure",
+        "wrong assertion location",
+        "wrong test identity",
+        "mutant zero exit",
+        "compiler log despite zero exit"
+      ]
+    }
+  },
+  "remaining": [
+    "Original one-test/dependent/client receiving",
+    "Fresh WAR50 metadata/rulings/printing/images",
+    "Assay parse/explain/compile/WAR differential/currentIR classification",
+    "Feature/card admission after all gates"
+  ],
+  "external_independent_review": false
+}
