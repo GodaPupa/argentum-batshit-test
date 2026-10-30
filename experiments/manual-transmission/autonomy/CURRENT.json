@@ -6256,8 +6256,8 @@
       "prompt_readback_verified": true
     },
     "previous_execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
-    "is_enabled": false,
-    "resume_requested": true,
+    "is_enabled": true,
+    "resume_requested": false,
     "previous_pause": {
       "utc": "2026-10-28T16:47:53Z",
       "reason": "Scheduled runtime requires pausing fully blocked tasks; proposal awaiting explicit protected-boundary authorization.",
@@ -6301,6 +6301,13 @@
       "schedule_preserved": true,
       "prompt_preserved": true,
       "reason": "Fully blocked pending new scope; scheduled runtime requires pause."
+    },
+    "bolt_bend_cost_resume": {
+      "grant": "d576c6b602a674c8a93f5ff5f36c3db0f59c9d0b",
+      "is_enabled": true,
+      "schedule_preserved": true,
+      "prompt_extended_only_with_grant": true,
+      "readback_verified": true
     }
   },
   "previous_qualified": {
@@ -6324,7 +6331,7 @@
     "session": "390bd1587480",
     "work_owner": null,
     "discussion": "READ_ONLY",
-    "scheduled_executor": "RESUME_AUTHORIZED",
+    "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
     "activity": "READY_FOR_NEXT_ITERATION",
     "last_execution_owner": "manual-work-390bd1587480-one-test-exception",
     "intervention_watch": "READ_ONLY",
