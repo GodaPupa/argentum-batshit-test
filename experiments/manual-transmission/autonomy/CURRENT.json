@@ -10,8 +10,8 @@
     "state": "ACTIVE",
     "automation_run": "d3ba70db-f038-8323-b48d-065ca893102f",
     "claimed_utc": "2026-10-30T21:48:09.299Z",
-    "renewed_utc": "2026-10-30T22:10:58.078Z",
-    "expires_utc": "2026-10-30T22:55:58.079Z",
+    "renewed_utc": "2026-10-30T22:27:15.229Z",
+    "expires_utc": "2026-10-30T23:12:15.229Z",
     "reason": "Bounded authorized Opal Palace implementation and compile-first qualification preparation."
   },
   "last_qualified": {
@@ -27,12 +27,10 @@
     "remaining_component_gates": []
   },
   "next": {
-    "dependency": "Opal normal compile and C13 snapshot candidate diagnostic",
-    "source_candidate": "1831fa39f08338676f468b85123ac1641e3df5a3",
-    "next_executable_action": "Receive original compile-only run41136407228 after terminal, checking newer receipts first. Verify source1831fa39/tree6e6140b1/validation8d95132e/workflowade53587/job/attempt/artifact bytes/hash/manifest and raw snapshot-export report. R1 precompile integrity failure already received4e248b14, reuse. During build continue isolated OP01-OP17 tests/mutants and source review without changing frozen source. All behavioral/dependent/card gates remain mandatory; no acceptance from compilation alone.",
-    "pending_runs": [
-      41136407228
-    ]
+    "dependency": "Opal compile-first early behavioral qualification",
+    "source_candidate": "3d2b8a5206136f98a470349b8e4356f5b17bb45a",
+    "next_executable_action": "Dispatch exactly one frozen early qualification3d2b8a52/050912fd after current owner/automation/all-status reconciliation. It compiles normal+17mutants before negative execution, runs56normal56restored/18exactwitnesses170controls and candidate snapshot export. Receive original artifacts before any acceptance. Reuse original compiler failure2827cdf2 and integrity failure4e248b14, never repeat them unchanged. Full dependent389originalcards/19090ordinary+additions/43historicalskips/64client/Fblthp/generic/Spellskite/metadata/printing/lint/C13Assay remain mandatory. Prepared dependent inventory5690e2c0 is not qualification.",
+    "pending_runs": []
   },
   "completion_contract": {
     "engineering": "All frozen Manual/opponent card semantics, exact four-player runtime, executable pilots, hidden information, telemetry, source-bound deterministic replay and production admission qualified.",
@@ -2345,23 +2343,27 @@
       "Multiplayer runtime/pilots/hidden-information/telemetry/replay/frozen-input gates remain unadmitted; official games/seeds0 and2Precision reserved."
     ],
     "pending_evidence": [
-      "Sole compile-only run41136407228 active; all behavioral/mutant/card/dependent gates pending."
+      "Frozen compile-first early qualification not yet executed; all early and dependent/card gates pending. No Opal admission."
     ],
     "source_protocol": {
-      "commit": "1831fa39f08338676f468b85123ac1641e3df5a3",
-      "path": "experiments/manual-transmission/research/opal-palace-compile-r2-20261030/PROTOCOL.json",
-      "state": "FROZEN_NORMAL_COMPILE_ONLY_DISPATCH_READY"
+      "commit": "3d2b8a5206136f98a470349b8e4356f5b17bb45a",
+      "path": "experiments/manual-transmission/research/opal-palace-early-r1-20261030/PROTOCOL.json",
+      "state": "FROZEN_COMPILE_FIRST_EARLY_DISPATCH_READY"
     },
     "latest_receiving": {
-      "commit": "4e248b14ea45a2bdc5f19f8e6997083bcda60fa2",
-      "path": "experiments/manual-transmission/research/opal-palace-compile-received-r1-20261030",
-      "artifact": 13016595105,
-      "bytes": 1314001,
-      "sha256": "07ff23856f58afc210214f82fffcf7c0cbda9560af6db63e594a9a63b341b885",
-      "manifest_entries": 79,
-      "compilations": 0,
+      "commit": "2827cdf21ca99ea8ac1981fb0bd03a8048885742",
+      "path": "experiments/manual-transmission/research/opal-palace-compile-received-r2-20261030",
+      "run": 41136407228,
+      "job": 124339840311,
+      "artifact": 13016433696,
+      "bytes": 6102319,
+      "sha256": "7aa582765a8a2691c6c6772fd09686e17273e8a232cbb5b5583d55b2d2eae45d",
+      "manifest_entries": 651,
+      "readback_verified": true,
+      "archive_parts": 102,
       "reports": 0,
-      "readback_verified": true
+      "compiled_normal": false,
+      "cause": "Missing era-test direct serialization dependency; unchanged original test and supplemental witnesses fail compilation."
     },
     "admission": {
       "commit": "2d4a2fbac7910b180a7a9b1778f81cbae6a3d230",
@@ -2371,8 +2373,8 @@
       "card_admitted": true,
       "readback_verified": true
     },
-    "next_executable_action": "Receive original compile-only run41136407228 after terminal, checking newer receipts first. Verify source1831fa39/tree6e6140b1/validation8d95132e/workflowade53587/job/attempt/artifact bytes/hash/manifest and raw snapshot-export report. R1 precompile integrity failure already received4e248b14, reuse. During build continue isolated OP01-OP17 tests/mutants and source review without changing frozen source. All behavioral/dependent/card gates remain mandatory; no acceptance from compilation alone.",
-    "concrete_blocker_removed": "Original R1 integrity failure diagnosed as one extra trailing LF in frozen Serialization.kt; new immutable R2 restores the declared intended bytes.",
+    "next_executable_action": "Dispatch exactly one frozen early qualification3d2b8a52/050912fd after current owner/automation/all-status reconciliation. It compiles normal+17mutants before negative execution, runs56normal56restored/18exactwitnesses170controls and candidate snapshot export. Receive original artifacts before any acceptance. Reuse original compiler failure2827cdf2 and integrity failure4e248b14, never repeat them unchanged. Full dependent389originalcards/19090ordinary+additions/43historicalskips/64client/Fblthp/generic/Spellskite/metadata/printing/lint/C13Assay remain mandatory. Prepared dependent inventory5690e2c0 is not qualification.",
+    "concrete_blocker_removed": "Missing direct serialization dependency in 2008-2016 tests repaired in a bounded unprotected test-build successor; Opal-only projected counter prohibition and required extra cases included. Original10tests/assertions untouched. All implementation remains unqualified.",
     "continuation_state": "WORKING",
     "actual_stopping_reason": null,
     "ownership": {
@@ -2490,7 +2492,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-30T22:11:28.720Z",
+  "updated_utc": "2026-10-30T22:27:15.229Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -16538,11 +16540,58 @@
     "workflow": ".github/workflows/manual-opal-palace-compile-r2-20261030.yml",
     "workflow_blob": "ade53587f5add32f8e01595e13f9744fc5598471",
     "record": "experiments/manual-transmission/research/opal-palace-compile-r2-20261030",
-    "state": "RUNNING_NORMAL_COMPILE_ONLY",
+    "state": "ORIGINAL_COMPILER_FAILURE_RECEIVED",
     "readback_verified": true,
     "repair": "Exact intended Serialization.kt bytes; no binding assertion relaxation. Preserve R1 original failure. Capture identity before integrity checks.",
     "run": 41136407228,
     "attempt": 1,
-    "status": "in_progress"
+    "status": "completed",
+    "conclusion": "failure",
+    "job": 124339840311,
+    "receipt": {
+      "commit": "2827cdf21ca99ea8ac1981fb0bd03a8048885742",
+      "path": "experiments/manual-transmission/research/opal-palace-compile-received-r2-20261030",
+      "run": 41136407228,
+      "job": 124339840311,
+      "artifact": 13016433696,
+      "bytes": 6102319,
+      "sha256": "7aa582765a8a2691c6c6772fd09686e17273e8a232cbb5b5583d55b2d2eae45d",
+      "manifest_entries": 651,
+      "readback_verified": true,
+      "archive_parts": 102,
+      "reports": 0,
+      "compiled_normal": false,
+      "cause": "Missing era-test direct serialization dependency; unchanged original test and supplemental witnesses fail compilation."
+    }
+  },
+  "opal_palace_early_r1": {
+    "source": "3d2b8a5206136f98a470349b8e4356f5b17bb45a",
+    "tree": "99bfd63b50ab22d3066d9cee8c98c44942b7c412",
+    "validation": "050912fddf089b90f25dfbdd13eff2e4fd3e3c75",
+    "validation_tree": "25460cbbfaff2ba3e0b6281107f842b9e7aba828",
+    "workflow": ".github/workflows/manual-opal-palace-early-r1-20261030.yml",
+    "workflow_blob": "a47223ddebdb017e9d04826ceaaa7e206cad6e35",
+    "record": "experiments/manual-transmission/research/opal-palace-early-r1-20261030",
+    "state": "FROZEN_COMPILE_FIRST_EARLY_DISPATCH_READY",
+    "readback_verified": true,
+    "source_files": 22,
+    "planned": {
+      "distinct_compiles": 18,
+      "restored_compile": 1,
+      "normal": 56,
+      "restored": 56,
+      "negative_witnesses": 18,
+      "negative_controls": 170,
+      "snapshot_export": 1
+    },
+    "feature_admitted": false,
+    "card_admitted": false
+  },
+  "opal_palace_isolated_preparation": {
+    "commit": "5690e2c05c3a4b8df758fabfae159de280643235",
+    "early": "experiments/manual-transmission/research/opal-palace-early-draft-r1-20261030",
+    "dependent": "experiments/manual-transmission/research/opal-palace-dependent-draft-r1-20261030",
+    "state": "EARLY_DRAFT_CONSUMED_IN_FROZEN_SUCCESSOR_DEPENDENT_INVENTORY_PREPARED",
+    "readback_verified": true
   }
 }
