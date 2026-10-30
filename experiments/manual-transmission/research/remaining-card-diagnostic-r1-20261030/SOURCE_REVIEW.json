@@ -1,0 +1,93 @@
+{
+  "state": "SOURCE_REVIEWED_DIAGNOSTIC_ONLY_READY_FOR_ONE_DISPATCH",
+  "base": "180b67fb8fee312e576ff7067954584855d40e0f",
+  "base_tree": "6e19fcc9c26d4fbf5a334115dc37f56bcc721fd1",
+  "scope": "Collect missing-card metadata, original Assay parse/explain/compile and current accepted-IR emit output for the five unresolved Manual cards. No production, test, fixture, snapshot, registry or accepted-source changes.",
+  "skills": {
+    "root": "27cf5a95edae6b354762164f8a9c04ca1fade989",
+    "add_card": "ee2c25e41f4454ea8ad80ff63def6e019ccf5b8c",
+    "add_feature": "a619c57288cf57b44ed49caf85c054461d6d94dc",
+    "verify": "8a5fd2711dcb202dfd1e32bd616cb85e91cb5078"
+  },
+  "accepted_evidence_reused": {
+    "combined_admission": "2d4a2fbac7910b180a7a9b1778f81cbae6a3d230",
+    "dependent_receipt": "899041e3768913832de41ec8f44335aa1303da89",
+    "accepted_ir": "de4cd0150608c43b41d0bb6e9b9bd35a3dfb6992",
+    "ir_archive_record": "experiments/manual-transmission/research/fblthp-card-supplement-failed-r1-20261030",
+    "ir_archive_sha256": "9068a3d60f65c5a6d070b2630932cfd741d210681de4d0f59ad72eeb55df4dcc",
+    "ir_sha256": "f2513283c1ffd32ab954bdc10a4bd78a495f297f532c68b8c69d6f05f1e95d06",
+    "opal_draft": "experiments/manual-transmission/research/opal-palace-source-review-r1-20261022"
+  },
+  "findings": [
+    {
+      "card": "Opal Palace",
+      "saved_draft": "experiments/manual-transmission/research/opal-palace-source-review-r1-20261022/OpalPalace.kt",
+      "draft_blob": "5aae96c0f7b2fefd44160011064f2972ba9fe88d",
+      "preserved_tests_blob": "5b1be3a666cc615d8a274419479f1a885df9968c",
+      "current_sdk_path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt",
+      "current_sdk_blob": "f2b2da5412f1e943fc9348adbbaa059c33832903",
+      "finding": "Saved draft refers to ManaSpellRider.CommanderCastEntryCounters, absent from exact current sealed SDK. Tests also refer to CommanderManaEntryCountersComponent, not present as a named file in complete current engine tree. Neither is a compile/behavioral result. Further current runtime review and an exact protected-boundary proposal required; archived draft and all10tests retained."
+    },
+    {
+      "card": "Reckless Bushwhacker / Amphin Mutineer",
+      "finding": "Current KeywordAbility.kt blob130f77d7583fc2fb6a4c3ad397aaf152c622ee90 contains no Surge/Encore names; generic SelfAlternativeCost exists with a condition. This does not prove lack of a faithful composition. Review condition/cast-choice transport and graveyard activation/token restrictions before proposing new vocabulary."
+    },
+    {
+      "card": "Disciple of Freyalise",
+      "finding": "Accepted IR input has zero exact front-name rows; this is not an engine support or canonical card absence conclusion. Fresh two-face metadata and current source review required."
+    }
+  ],
+  "source_search": {
+    "trees": [
+      {
+        "path": "mtg-sdk",
+        "sha": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "entries": 322,
+        "truncated": false
+      },
+      {
+        "path": "rules-engine",
+        "sha": "e3b1b2cf9f2f8ad8fe1cc79070fba647f5cfcdec",
+        "entries": 1791,
+        "truncated": false
+      },
+      {
+        "path": "mtg-sets/2008-2016",
+        "sha": "8a36b537b4ec4f9e49610f2cd52e081c71692b6c",
+        "entries": 4004,
+        "truncated": false
+      },
+      {
+        "path": "mtg-sets/2017-2022",
+        "sha": "ec7dd7696b1cf1b2b198a91f2505d732d0377d82",
+        "entries": 4145,
+        "truncated": false
+      },
+      {
+        "path": "mtg-sets/2024",
+        "sha": "bdc012806379c37da4a4ae4228a4fc4ea8abc314",
+        "entries": 2603,
+        "truncated": false
+      }
+    ],
+    "limits": "No default-branch search used as absence proof. Diagnostic scans all tracked current source files in five modules, saving identities and matched original bytes."
+  },
+  "gates": {
+    "normal_compilation": "Both unchanged diagnostic tools installDist before any Assay or emit command; scripts/gradle-locked via just, single shared concurrency group.",
+    "synthetic_auditor": "5 normal metadata fixtures and8 corruptions rejected; supports receiving only, not engine behavior.",
+    "metadata": "Five exact-set Scryfall reads, full printings/rulings pagination and all normal face image HEAD; earliest real-printing check.",
+    "original_receiving": "Archive bytes/hash and metadata pins; CRC/duplicate/path/manifest checks; exact workflow/source/tree/attempt1/run1; raw commands and source binding copies independently verified before classification.",
+    "future_admission": "All normal/mutant behavioral/negative/full compatibility/card/snapshot/lint/Assay/client/original-receiving gates remain mandatory after an authorized implementation; no diagnostic output grants admission."
+  },
+  "safeguards": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "all_assertions_unchanged": true,
+    "protected_snapshots_unchanged": true,
+    "v07_unchanged": true,
+    "budgets_unchanged": true,
+    "precision_reserved": 2,
+    "official_games": 0,
+    "official_seeds": 0
+  },
+  "independence": "Same assistant source review and independent original-byte verification; no claimed independent peer review."
+}
