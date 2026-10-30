@@ -10,8 +10,9 @@
     "state": "ACTIVE",
     "automation_run": "e4677af9-4bcc-832e-9871-55b92caf9834",
     "claimed_utc": "2026-10-30T22:44:56Z",
-    "expires_utc": "2026-10-30T23:29:56.000Z",
-    "reason": "Receive original terminal Opal early failure and diagnose bounded cause."
+    "expires_utc": "2026-10-30T23:33:46.000Z",
+    "reason": "Receive original terminal Opal early failure and diagnose bounded cause.",
+    "renewed_utc": "2026-10-30T22:48:46Z"
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -27,11 +28,9 @@
   },
   "next": {
     "dependency": "Opal compile-first early behavioral qualification",
-    "source_candidate": "3d2b8a5206136f98a470349b8e4356f5b17bb45a",
-    "next_executable_action": "Receive original failed Opal early run 41138246041 artifact 13018676295 using frozen protocol and prepared receiver; diagnose actual failed gate without treating compiler failure as behavioral evidence.",
-    "pending_runs": [
-      41138246041
-    ],
+    "source_candidate": "450e7f5ebac550f53ad14e5b5791fe8eb0daeaa5",
+    "next_executable_action": "Dispatch once frozen Opal early R2 e964f487822efdff12ca7b07d798e2e0ff2e28b0 after verified original compiler failure af17138308768c79864c98d3bd57d038267e073d. All normal/mutant compilation and behavioral/restoration/snapshot/dependent gates remain mandatory.",
+    "pending_runs": [],
     "receiving": {
       "commit": "0e14ee74e9ae4de3aa43927040227f6e79963642",
       "path": "experiments/manual-transmission/research/opal-palace-early-receiving-r1-20261030",
@@ -1466,6 +1465,16 @@
       "duplicate_dispatch": false,
       "accepted_qualifications_repeated": false,
       "reason": "External dependency pending: sole frozen Opal Palace early qualification 41138246041 is in_progress. Original-artifact receiving pins and next action are saved and immutable-readback verified at 0e14ee74e9ae4de3aa43927040227f6e79963642; frozen receiver and isolated dependent inventory/source review 5690e2c0 are prepared. Further bounded snapshot integration, coherent dependent qualification and admission require original early results. No useful safely independent authorized work remains before that evidence. Ownership released; no continuous execution implied."
+    },
+    "opal_early_r2_predispatch": {
+      "utc": "2026-10-30T22:48:46Z",
+      "owner": "manual-work-e4677af9-4bcc-832e-9871-55b92caf9834",
+      "automation_run": "e4677af9-4bcc-832e-9871-55b92caf9834",
+      "all_events_all_five_states_checked": true,
+      "active": [],
+      "ignored_only": 34749202144,
+      "newer_receipts": "Own af171383 original receipt only",
+      "source_readback_verified": true
     }
   },
   "automation": {
@@ -2449,28 +2458,22 @@
       "Multiplayer runtime/pilots/hidden-information/telemetry/replay/frozen-input gates remain unadmitted; official games/seeds0 and2Precision reserved."
     ],
     "pending_evidence": [
-      "Frozen early run 41138246041 is active: normal and all 17 mutant compilation forms before behavior; 56 normal and 56 restored cases, 18 exact negative witnesses with 170 unaffected controls, and candidate snapshot export remain pending original-artifact verification.",
-      "All dependent/card admission gates remain pending, including preserved original cards and ordinary inventory, 43 exact historical skips, 64 client cases, metadata/printing/lint and C13 Assay classification. No Opal admission."
+      "Corrected fixture successor requires normal/all17mutant compilation, all56normal/restored cases,18exactnegativewitnesses170controls,snapshot export and original receiving; all dependent gates remain pending."
     ],
     "source_protocol": {
-      "commit": "3d2b8a5206136f98a470349b8e4356f5b17bb45a",
+      "commit": "450e7f5ebac550f53ad14e5b5791fe8eb0daeaa5",
       "path": "experiments/manual-transmission/research/opal-palace-early-r1-20261030/PROTOCOL.json",
-      "state": "ACTIVE_ORIGINAL_RECEIVING_PENDING"
+      "state": "FROZEN_DISPATCH_READY"
     },
     "latest_receiving": {
-      "commit": "2827cdf21ca99ea8ac1981fb0bd03a8048885742",
-      "path": "experiments/manual-transmission/research/opal-palace-compile-received-r2-20261030",
-      "run": 41136407228,
-      "job": 124339840311,
-      "artifact": 13016433696,
-      "bytes": 6102319,
-      "sha256": "7aa582765a8a2691c6c6772fd09686e17273e8a232cbb5b5583d55b2d2eae45d",
-      "manifest_entries": 651,
+      "commit": "af17138308768c79864c98d3bd57d038267e073d",
+      "path": "experiments/manual-transmission/research/opal-palace-early-received-r1-20261030",
       "readback_verified": true,
-      "archive_parts": 102,
-      "reports": 0,
-      "compiled_normal": false,
-      "cause": "Missing era-test direct serialization dependency; unchanged original test and supplemental witnesses fail compilation."
+      "artifact": 13018676295,
+      "bytes": 7273500,
+      "sha256": "05528b935cf7d8f5704aa96a535c20d34749cc623b833fff292bf5f910a7fb85",
+      "manifest_entries": 687,
+      "xml_reports": 0
     },
     "admission": {
       "commit": "2d4a2fbac7910b180a7a9b1778f81cbae6a3d230",
@@ -2480,8 +2483,8 @@
       "card_admitted": true,
       "readback_verified": true
     },
-    "next_executable_action": "Receive original failed Opal early run 41138246041 artifact 13018676295 using frozen protocol and prepared receiver; diagnose actual failed gate without treating compiler failure as behavioral evidence.",
-    "concrete_blocker_removed": "Missing direct serialization dependency in 2008-2016 tests repaired in a bounded unprotected test-build successor; Opal-only projected counter prohibition and required extra cases included. Original10tests/assertions untouched. All implementation remains unqualified.",
+    "next_executable_action": "Dispatch once frozen Opal early R2 e964f487822efdff12ca7b07d798e2e0ff2e28b0 after verified original compiler failure af17138308768c79864c98d3bd57d038267e073d. All normal/mutant compilation and behavioral/restoration/snapshot/dependent gates remain mandatory.",
+    "concrete_blocker_removed": "Two supplemental fixture compiler errors corrected using exact current MayPlayPermission and StaticAbilityBuilder APIs; no assertion or production change. Qualification pending.",
     "continuation_state": "WORKING",
     "actual_stopping_reason": null,
     "ownership": {
@@ -2656,7 +2659,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-30T22:44:56Z",
+  "updated_utc": "2026-10-30T22:48:46Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -16736,7 +16739,7 @@
     "workflow": ".github/workflows/manual-opal-palace-early-r1-20261030.yml",
     "workflow_blob": "a47223ddebdb017e9d04826ceaaa7e206cad6e35",
     "record": "experiments/manual-transmission/research/opal-palace-early-r1-20261030",
-    "state": "TERMINAL_FAILURE_ORIGINAL_RECEIVING_PENDING",
+    "state": "ORIGINAL_NORMAL_COMPILER_FAILURE_RECEIVED",
     "readback_verified": true,
     "source_files": 22,
     "planned": {
@@ -16765,7 +16768,17 @@
       "readback_verified": true
     },
     "dispatched_once": true,
-    "conclusion": "failure"
+    "conclusion": "failure",
+    "receipt": {
+      "commit": "af17138308768c79864c98d3bd57d038267e073d",
+      "path": "experiments/manual-transmission/research/opal-palace-early-received-r1-20261030",
+      "readback_verified": true,
+      "artifact": 13018676295,
+      "bytes": 7273500,
+      "sha256": "05528b935cf7d8f5704aa96a535c20d34749cc623b833fff292bf5f910a7fb85",
+      "manifest_entries": 687,
+      "xml_reports": 0
+    }
   },
   "opal_palace_isolated_preparation": {
     "commit": "5690e2c05c3a4b8df758fabfae159de280643235",
@@ -16773,5 +16786,27 @@
     "dependent": "experiments/manual-transmission/research/opal-palace-dependent-draft-r1-20261030",
     "state": "EARLY_DRAFT_CONSUMED_IN_FROZEN_SUCCESSOR_DEPENDENT_INVENTORY_PREPARED",
     "readback_verified": true
+  },
+  "opal_palace_early_r2": {
+    "source": "450e7f5ebac550f53ad14e5b5791fe8eb0daeaa5",
+    "tree": "388cd02183f2baaf3d72fceee1aa5311e4d8072d",
+    "validation": "e964f487822efdff12ca7b07d798e2e0ff2e28b0",
+    "validation_tree": "6b4a9998eab1eec22fbee161c661d2f9eb6a5044",
+    "workflow": ".github/workflows/manual-opal-palace-early-r2-20261030.yml",
+    "workflow_blob": "9718f0b07703fdad72792d08aaf335b0078a54b0",
+    "record": "experiments/manual-transmission/research/opal-palace-early-r1-20261030",
+    "state": "FROZEN_DISPATCH_READY",
+    "feature_admitted": false,
+    "card_admitted": false,
+    "delta": "Only two supplemental fixture call lines and protocol bindings/review; production, original10 tests, all assertions/case identities/witness lines and mutant forms unchanged.",
+    "planned": {
+      "distinct_compiles": 18,
+      "restored_compile": 1,
+      "normal": 56,
+      "restored": 56,
+      "negative_witnesses": 18,
+      "negative_controls": 170,
+      "snapshot_export": 1
+    }
   }
 }
