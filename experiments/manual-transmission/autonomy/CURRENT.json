@@ -3,15 +3,17 @@
   "updated_date": "2026-10-30",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "IN_PROGRESS",
-  "owner": "manual-work-hourly-90bd3bbd-7d58-832b-8bfa-f7bcba4828b0",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "owner": "manual-work-hourly-90bd3bbd-7d58-832b-8bfa-f7bcba4828b0",
-    "state": "ACTIVE",
+    "owner": null,
+    "state": "RELEASED",
     "automation_run": "90bd3bbd-7d58-832b-8bfa-f7bcba4828b0",
     "claimed_utc": "2026-10-30T11:40:44.165Z",
     "expires_utc": "2026-10-30T12:40:44.165Z",
-    "reason": "Current scheduled start and live run matched; prior lease released; no active relevant workflow or newer receipt."
+    "reason": "External dependency: sole full dependent run41050172581 remains in_progress on frozen180b67fb. Original receiver and combined admission review1d219a7e are complete and readback-verified. Further acceptance and next-card dependency decisions require original full compatibility evidence; no safely independent bounded work remains. Ownership released.",
+    "released_utc": "2026-10-30T11:46:27.702Z",
+    "last_execution_owner": "manual-work-hourly-90bd3bbd-7d58-832b-8bfa-f7bcba4828b0"
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -31,17 +33,17 @@
     "review_path": "experiments/manual-transmission/research/fblthp-entry-origin-admission-proposal-r1-20261029/NEXT_ADMISSION.json",
     "card_acceptance_scenarios": 10,
     "registration": "Fblthp canonical WAR50 implementation frozen; feature/card admission withheld pending all source-specific gates and original receiving.",
-    "current_subproblem": "Receive only missing Bolt Bend early gates then full dependent compatibility",
-    "source_candidate": "5b76957211ef14d5c8f436811a8311774d40cd4a",
-    "source_tree": "13023c7f62fc6a43edc89b79419391828421115d",
+    "current_subproblem": "Receive full Bolt Bend dependent compatibility and complete exact combined Fblthp admission review",
+    "source_candidate": "180b67fb8fee312e576ff7067954584855d40e0f",
+    "source_tree": "6e19fcc9c26d4fbf5a334115dc37f56bcc721fd1",
     "source_branch": "source/manual-bolt-bend-early-r1-20261030",
-    "protocol": "experiments/manual-transmission/research/bolt-bend-early-missing-r2-20261030/PROTOCOL.json",
+    "protocol": "experiments/manual-transmission/research/bolt-bend-dependent-r1-20261030/PROTOCOL.json",
     "design": "experiments/manual-transmission/research/bolt-bend-repair-draft-r2-20261030/DRAFT.json",
-    "validation": "37e0db4637eabc81d4359e657ae0a16c74f73130",
-    "validation_branch": "validation/manual-bolt-bend-early-missing-r2-20261030",
-    "workflow": ".github/workflows/manual-bolt-bend-early-missing-r2-20261030.yml",
+    "validation": "bc6bf1e2d1215c51c5be8a9a372741c2dbcd3ceb",
+    "validation_branch": "validation/manual-bolt-bend-dependent-r1-20261030",
+    "workflow": ".github/workflows/manual-bolt-bend-dependent-r1-20261030.yml",
     "pending_runs": [
-      41043257718
+      41050172581
     ],
     "planned_not_observed": {
       "normal_compilation": false,
@@ -50,7 +52,7 @@
     },
     "negative_scope": "Eight source-bound forms;38predicted exact assertion witnesses90passingcontrols. Original evidence not yet received.",
     "source_delta": "Frozen early7researchfiles only; production repair and16tests unchanged from823fff7d.",
-    "next_executable_action": "Dispatch exactly frozen full dependent validationbc6bf1e2 once after reconciliation; original early receipts44d9920c+d2fd821b verify all9forms/16normal16restored/38negative90controls with unchanged protectedbytes. Full81focused/389cards/19090ordinary43historicalskips/64client/WARAssay gates and original receiving required before repair/Fblthp admission. Prepare original dependent receiver during build; never repeat received early gates.",
+    "next_executable_action": "Reconcile CURRENT/owner/exactautomation/recentreceipts/successors/allworkflowstatuses. Sole full dependent41050172581 on180b67fb/validationbc6bf1e2 is active; never duplicate. When terminal check newer receipts then receive original exactly once using1d219a7e/PINS.json andRECEIVE.py. Verify all source/tree/workflow/run/job/attempt/artifact bytes/digest/manifest/protectedbindings, normalcompilation,81focused,389cards,19090ordinary(19074original+16new)43exacthistoricalskips,64client and exact preserved WAR Assay/corpus. Early Bolt Bend fully verified44d9920c+d2fd821b:all9forms/16normal16restored/38negative90controls; reuse, do not rerun. Preserve any actual failure and repair only authorized bounded cause. If every original dependent gate passes, execute NEXT_COMBINED_REVIEW.json individually binding prior Fblthp metadata/discovery/printing/snapshot/lint/IR/entry-origin/generic/Spellskite receipts to unchanged source before explicit combined repair/card admission. Then continue source-specific remaining missing-card critical path; stop for genuinely new protected authority. No multiplayer/games/seeds.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -4111,11 +4113,11 @@
       }
     },
     "prepared_receiver": {
-      "commit": "a621b5a6b9337461a551d93b5fb58716754411d3",
-      "tree": "36da1ceff039aaf4ef62e1720220974dc7d8b942",
-      "path": "experiments/manual-transmission/research/bolt-bend-early-missing-receiving-r2-20261030",
-      "run": 41043257718,
-      "job": 124020972754,
+      "commit": "1d219a7e065a0dcf41249bcc4d1c2fad3a94dae7",
+      "tree": "ff842c3e0eb357772bdfd19845d41a286c2f05c6",
+      "path": "experiments/manual-transmission/research/bolt-bend-dependent-receiving-r1-20261030",
+      "run": 41050172581,
+      "job": 124043974347,
       "state": "PREPARED_NOT_EXECUTED",
       "readback_verified": true
     },
@@ -4416,10 +4418,10 @@
       }
     ],
     "source_protocol": {
-      "commit": "5b76957211ef14d5c8f436811a8311774d40cd4a",
-      "tree": "13023c7f62fc6a43edc89b79419391828421115d",
-      "path": "experiments/manual-transmission/research/bolt-bend-early-missing-r2-20261030/PROTOCOL.json",
-      "state": "FROZEN_MISSING_GATES_ACTIVE",
+      "commit": "180b67fb8fee312e576ff7067954584855d40e0f",
+      "tree": "6e19fcc9c26d4fbf5a334115dc37f56bcc721fd1",
+      "path": "experiments/manual-transmission/research/bolt-bend-dependent-r1-20261030/PROTOCOL.json",
+      "state": "FROZEN_FULL_COMPATIBILITY_ACTIVE",
       "readback_verified": true
     },
     "prepared_receiver_history": [
@@ -4579,7 +4581,7 @@
       "feature_admitted": false,
       "card_admitted": false
     },
-    "actual_stopping_reason": "External dependency: run41043257718 remains in_progress. Exact original missing-gate receivera621b5a6 and reusable full dependent drafte909c1b7 are prepared; further qualification depends on original base-type/restoration results. No useful safely independent work remains in this bounded step. Ownership released.",
+    "actual_stopping_reason": "External dependency: sole full dependent run41050172581 remains in_progress on frozen180b67fb. Original receiver and combined admission review1d219a7e are complete and readback-verified. Further acceptance and next-card dependency decisions require original full compatibility evidence; no safely independent bounded work remains. Ownership released.",
     "previous_card_guidance_before_registry_receipt": {
       "dependency": "Spellskite fixed-recipient one-target-slot retargeting",
       "registration": "Canonical NPH159 and CLB873 implemented and early-qualified; production card admission awaits supplemental original receiving and classification.",
@@ -6326,9 +6328,9 @@
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
     "activity": "WAITING_EXTERNAL",
-    "last_execution_owner": "manual-work-hourly-cc33f8c9-5028-8320-9057-f3f00d0f57f5",
+    "last_execution_owner": "manual-work-hourly-90bd3bbd-7d58-832b-8bfa-f7bcba4828b0",
     "intervention_watch": "READ_ONLY",
-    "automation_run": "cc33f8c9-5028-8320-9057-f3f00d0f57f5",
+    "automation_run": "90bd3bbd-7d58-832b-8bfa-f7bcba4828b0",
     "automation_reconciliation": "Exact single continuation run reconciled before claim and dispatch; prior foreground owner explicitly released. No new worker or schedule."
   },
   "blockers": [],
@@ -7020,7 +7022,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External dependency: sole full dependent run41050172581 remains in_progress on frozen180b67fb. Original receiver and combined admission review1d219a7e are complete and readback-verified. Further acceptance and next-card dependency decisions require original full compatibility evidence; no safely independent bounded work remains. Ownership released.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -7038,7 +7040,8 @@
       "Authoritative occurrence/group/current-target and original-source characteristics; calibrated generator; public occurrence UI/matrix and actual activated Phyrexian payment accepted under preserved receipts.",
       "Spellskite full22families/49behavioral cases and same-source compatibility accepted at34676300/a50d97c6. Bounded canonical NPH159/CLB873 production registration accepted atcdb1bc6c; existing accepted evidence reused without reruns.",
       "Original seedless registry inventory accepted at e5c5b2a387b8e2cc528d17db7c20267e3938d516: compile-first,1inventorycase0skips,1021manifest,250initial/finalbindings,8decks800orderedrows487resolved. Manual94/100; opponents393/700. This removes uncertainty about exact current registry coverage, not semantic or multiplayer admission.",
-      "Exact authorized one-test regression qualified and original evidence verified at57e1cff2:3compiledforms,65normal+65restored,2assertionnegativewitnesses+28controls,389cards,19074ordinaryrows/43exacthistoricalskips,64client; all source/restoration/protected bindings preserved."
+      "Exact authorized one-test regression qualified and original evidence verified at57e1cff2:3compiledforms,65normal+65restored,2assertionnegativewitnesses+28controls,389cards,19074ordinaryrows/43exacthistoricalskips,64client; all source/restoration/protected bindings preserved.",
+      "Bolt Bend bounded early behavioral gates verified at44d9920c combined withd2fd821b:9distinctcompiledforms,16normal16restored,38negativewitnesses90controls,0skips,allprotected/restorationbindings. Full repair/card admission remains pending source-specific compatibility."
     ],
     "unfinished_implementation": [
       "Fblthp implementation and original early/dependent/client/metadata/printing/Assay/IR evidence collected and verified. Combined admission withheld for pre-existing Bolt Bend card-cost defect exposed by required WAR differential.",
@@ -7046,13 +7049,14 @@
       "Remaining Phase2 multiplayer admission, four-player runtime/pilots/hidden-information/telemetry/replay and frozen-input gates. Official games/seeds remain0; both Precision games reserved."
     ],
     "pending_evidence": [
-      "Frozen full dependent qualification dispatch and original receiving pending; combined Fblthp card admission remains withheld."
+      "Full dependent41050172581 active; original81focused/389cards/19090ordinary43skips/64client/WARAssay receiving pending.",
+      "Combined Bolt Bend repair and Fblthp feature/card admission still withheld pending full evidence and exact-bound combined review."
     ],
     "source_protocol": {
       "commit": "180b67fb8fee312e576ff7067954584855d40e0f",
       "tree": "6e19fcc9c26d4fbf5a334115dc37f56bcc721fd1",
       "path": "experiments/manual-transmission/research/bolt-bend-dependent-r1-20261030/PROTOCOL.json",
-      "state": "FROZEN_REVIEWED_DISPATCH_PENDING",
+      "state": "FROZEN_FULL_COMPATIBILITY_ACTIVE",
       "readback_verified": true
     },
     "accepted_receipt": {
@@ -7103,11 +7107,11 @@
       "card_admitted": false
     },
     "prepared_receiver": {
-      "commit": "a621b5a6b9337461a551d93b5fb58716754411d3",
-      "tree": "36da1ceff039aaf4ef62e1720220974dc7d8b942",
-      "path": "experiments/manual-transmission/research/bolt-bend-early-missing-receiving-r2-20261030",
-      "run": 41043257718,
-      "job": 124020972754,
+      "commit": "1d219a7e065a0dcf41249bcc4d1c2fad3a94dae7",
+      "tree": "ff842c3e0eb357772bdfd19845d41a286c2f05c6",
+      "path": "experiments/manual-transmission/research/bolt-bend-dependent-receiving-r1-20261030",
+      "run": 41050172581,
+      "job": 124043974347,
       "state": "PREPARED_NOT_EXECUTED",
       "readback_verified": true
     },
@@ -7121,41 +7125,48 @@
       "other_class_cases_preserved": 14,
       "existing_grants_preserved": true
     },
-    "next_executable_action": "Dispatch exactly frozen full dependent validationbc6bf1e2 once after reconciliation; original early receipts44d9920c+d2fd821b verify all9forms/16normal16restored/38negative90controls with unchanged protectedbytes. Full81focused/389cards/19090ordinary43historicalskips/64client/WARAssay gates and original receiving required before repair/Fblthp admission. Prepare original dependent receiver during build; never repeat received early gates.",
-    "actual_stopping_reason": null,
+    "next_executable_action": "Reconcile CURRENT/owner/exactautomation/recentreceipts/successors/allworkflowstatuses. Sole full dependent41050172581 on180b67fb/validationbc6bf1e2 is active; never duplicate. When terminal check newer receipts then receive original exactly once using1d219a7e/PINS.json andRECEIVE.py. Verify all source/tree/workflow/run/job/attempt/artifact bytes/digest/manifest/protectedbindings, normalcompilation,81focused,389cards,19090ordinary(19074original+16new)43exacthistoricalskips,64client and exact preserved WAR Assay/corpus. Early Bolt Bend fully verified44d9920c+d2fd821b:all9forms/16normal16restored/38negative90controls; reuse, do not rerun. Preserve any actual failure and repair only authorized bounded cause. If every original dependent gate passes, execute NEXT_COMBINED_REVIEW.json individually binding prior Fblthp metadata/discovery/printing/snapshot/lint/IR/entry-origin/generic/Spellskite receipts to unchanged source before explicit combined repair/card admission. Then continue source-specific remaining missing-card critical path; stop for genuinely new protected authority. No multiplayer/games/seeds.",
+    "actual_stopping_reason": "External dependency: sole full dependent run41050172581 remains in_progress on frozen180b67fb. Original receiver and combined admission review1d219a7e are complete and readback-verified. Further acceptance and next-card dependency decisions require original full compatibility evidence; no safely independent bounded work remains. Ownership released.",
     "continuation_state": "WAITING_EXTERNAL",
     "read_sections": [
       {
-        "ref": "5b76957211ef14d5c8f436811a8311774d40cd4a",
-        "path": "experiments/manual-transmission/research/bolt-bend-early-missing-r2-20261030/PROTOCOL.json",
+        "ref": "180b67fb8fee312e576ff7067954584855d40e0f",
+        "path": "experiments/manual-transmission/research/bolt-bend-dependent-r1-20261030/PROTOCOL.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "d2fd821b2c76f75cef54d37f27f55f0f5881e731",
-        "path": "experiments/manual-transmission/research/bolt-bend-early-received-r1-20261030/CLASSIFICATION.json",
+        "ref": "44d9920c5bffdbafa3fd88449bc724a01554d9be",
+        "path": "experiments/manual-transmission/research/bolt-bend-early-missing-received-r2-20261030/RECEIPT.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "a621b5a6b9337461a551d93b5fb58716754411d3",
-        "path": "experiments/manual-transmission/research/bolt-bend-early-missing-receiving-r2-20261030/PINS.json",
+        "ref": "44d9920c5bffdbafa3fd88449bc724a01554d9be",
+        "path": "experiments/manual-transmission/research/bolt-bend-early-missing-received-r2-20261030/COMBINED_EARLY.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "a621b5a6b9337461a551d93b5fb58716754411d3",
-        "path": "experiments/manual-transmission/research/bolt-bend-early-missing-receiving-r2-20261030/RECEIVE.py",
+        "ref": "1d219a7e065a0dcf41249bcc4d1c2fad3a94dae7",
+        "path": "experiments/manual-transmission/research/bolt-bend-dependent-receiving-r1-20261030/PINS.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "e909c1b7a022ba49508d33fe48b1a18b157fe7aa",
-        "path": "experiments/manual-transmission/research/bolt-bend-dependent-draft-r1-20261030/PROTOCOL.json",
+        "ref": "1d219a7e065a0dcf41249bcc4d1c2fad3a94dae7",
+        "path": "experiments/manual-transmission/research/bolt-bend-dependent-receiving-r1-20261030/RECEIVE.py",
+        "sections": [
+          "all"
+        ]
+      },
+      {
+        "ref": "1d219a7e065a0dcf41249bcc4d1c2fad3a94dae7",
+        "path": "experiments/manual-transmission/research/bolt-bend-dependent-receiving-r1-20261030/NEXT_COMBINED_REVIEW.json",
         "sections": [
           "all"
         ]
@@ -7168,11 +7179,11 @@
       "reason": "New authority boundary: missing Fblthp entry-origin transport requires narrowly scoped successors of protected StackResolver.kt, StackComponents.kt and TriggerProcessor.kt, plus one additive protected WAR.json entry. Source review and archived original/drafts are complete at 5ff97c89039bb93a0f7633bc5f2778701dcfc551. No relevant external workflow remains active. Implementation across this boundary is not covered by existing grants; ownership released awaiting this exact approval.",
       "state": "BLOCKED_NEW_PROTECTED_BOUNDARY_AUTHORITY; ownership remains released; existing continuation paused with schedule and prompt preserved."
     },
-    "concrete_blocker_removed": "Original partial early evidence verified and archived. Exact collector formatting failure diagnosed without production/test changes; successor executes only missing base-type/restoration gates.",
+    "concrete_blocker_removed": "Early qualification evidence complete: all nine distinct normal/mutant forms compiled,16normal/restored cases,38exactnegativewitnesses90controls, source restoration and protectedbytes verified. Only missing gates executed; original collector failure preserved.",
     "ownership": {
       "owner": null,
       "state": "RELEASED",
-      "last_execution_owner": "manual-work-hourly-cc33f8c9-5028-8320-9057-f3f00d0f57f5"
+      "last_execution_owner": "manual-work-hourly-90bd3bbd-7d58-832b-8bfa-f7bcba4828b0"
     },
     "isolated_next_preparation": {
       "commit": "e909c1b7a022ba49508d33fe48b1a18b157fe7aa",
@@ -7242,6 +7253,43 @@
             "all"
           ]
         }
+      ],
+      [
+        {
+          "ref": "5b76957211ef14d5c8f436811a8311774d40cd4a",
+          "path": "experiments/manual-transmission/research/bolt-bend-early-missing-r2-20261030/PROTOCOL.json",
+          "sections": [
+            "all"
+          ]
+        },
+        {
+          "ref": "d2fd821b2c76f75cef54d37f27f55f0f5881e731",
+          "path": "experiments/manual-transmission/research/bolt-bend-early-received-r1-20261030/CLASSIFICATION.json",
+          "sections": [
+            "all"
+          ]
+        },
+        {
+          "ref": "a621b5a6b9337461a551d93b5fb58716754411d3",
+          "path": "experiments/manual-transmission/research/bolt-bend-early-missing-receiving-r2-20261030/PINS.json",
+          "sections": [
+            "all"
+          ]
+        },
+        {
+          "ref": "a621b5a6b9337461a551d93b5fb58716754411d3",
+          "path": "experiments/manual-transmission/research/bolt-bend-early-missing-receiving-r2-20261030/RECEIVE.py",
+          "sections": [
+            "all"
+          ]
+        },
+        {
+          "ref": "e909c1b7a022ba49508d33fe48b1a18b157fe7aa",
+          "path": "experiments/manual-transmission/research/bolt-bend-dependent-draft-r1-20261030/PROTOCOL.json",
+          "sections": [
+            "all"
+          ]
+        }
       ]
     ]
   },
@@ -7304,7 +7352,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-30T11:43:48.078Z",
+  "updated_utc": "2026-10-30T11:46:27.702Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -8806,7 +8854,7 @@
     "artifact_sha256": "sha256:879f74749b54f7d636f848c6981bf45470a392a8d40023008af219d1ab79908b",
     "manifest_entries": 259
   },
-  "last_execution_owner": "manual-work-hourly-cc33f8c9-5028-8320-9057-f3f00d0f57f5",
+  "last_execution_owner": "manual-work-hourly-90bd3bbd-7d58-832b-8bfa-f7bcba4828b0",
   "spellskite_behavior_r1": {
     "state": "ORIGINAL_BEHAVIORAL_FAILURE_RECEIVED",
     "source": "f58a64db3a133d86090dddf9776e622c981298cc",
@@ -15721,9 +15769,55 @@
     "workflow": ".github/workflows/manual-bolt-bend-dependent-r1-20261030.yml",
     "workflow_blob": "cf5971f8152538e91866c30405b99ecde33ce7bb",
     "branch": "validation/manual-bolt-bend-dependent-r1-20261030",
-    "state": "FROZEN_REVIEWED_DISPATCH_PENDING",
+    "state": "WAITING_EXTERNAL_ORIGINAL_FULL_COMPATIBILITY",
     "feature_admitted": false,
     "card_admitted": false,
-    "readback_verified": true
+    "readback_verified": true,
+    "run": 41050172581,
+    "job": 124043974347,
+    "workflow_id": 401691955,
+    "artifact_name": "manual-bolt-bend-dependent-r1-41050172581",
+    "attempt": 1,
+    "run_number": 1,
+    "status": "in_progress",
+    "base": "44d9920c5bffdbafa3fd88449bc724a01554d9be",
+    "unchanged_trees": {
+      "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+      "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+      "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+      "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+      "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+      "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+      "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+      "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+      "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+      "rules-engine/src/main": "236b9a8b07c055743d5f8d777cf14afe79501052",
+      "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+      "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d",
+      "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499"
+    },
+    "protocol_blobs": {
+      "ADDITIONS.json": "b6c3b1fe7ae841dc1cd14912978c2a42682ad2c1",
+      "ORIGINAL_WAR_DIFFERENTIAL.txt": "b24705923e2d2eeda7d1c103e4a06bf52c541a70",
+      "PROTOCOL.json": "f693583620ac0030cef980486ee1c22eb78219df",
+      "SOURCE_REVIEW.json": "ab72f2065f2c53dfe260fdc8f1c0e05d7925890f",
+      "audit.py": "8cf5d00b12d143ded919fd86c41727b20405c300",
+      "check_audit.py": "0f8a6103888e5df047a76795ab3c56f31b386336",
+      "check_differential.py": "8bc64fa17488ed2ae5fc82b16e17c5873e3d2dec",
+      "derive_inventory.py": "46d1c9f8098dde91f6285d4c271d95aea3e93774",
+      "report_audit.py": "e2104e2cf3f0808ac229a37aadf6148193565ed4",
+      "run.py": "c97b574a7d5349f5cd021c079fa18fa61addf74f",
+      "validation.just": "fa3a20bbec2728d1d72c3a07c29bec66b0c2cc3c"
+    },
+    "observed_utc": "2026-10-30T11:46:27.702Z",
+    "prepared_receiver": {
+      "commit": "1d219a7e065a0dcf41249bcc4d1c2fad3a94dae7",
+      "tree": "ff842c3e0eb357772bdfd19845d41a286c2f05c6",
+      "path": "experiments/manual-transmission/research/bolt-bend-dependent-receiving-r1-20261030",
+      "run": 41050172581,
+      "job": 124043974347,
+      "state": "PREPARED_NOT_EXECUTED",
+      "readback_verified": true
+    }
   }
 }
