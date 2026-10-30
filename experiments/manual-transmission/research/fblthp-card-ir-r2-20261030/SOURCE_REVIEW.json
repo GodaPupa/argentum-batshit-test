@@ -1,0 +1,15 @@
+{
+  "state": "FROZEN_RESEARCH_ONLY_MISSING_COMMAND",
+  "base": "766dc5525ba296dd987158c962d93b18ae6fc447",
+  "cause": "Original collector stage directory collided with preserved IR directory",
+  "repair": "Dedicated emit stage directory; original stage no-overwrite guard unchanged. Compile then emit original captured IR only.",
+  "reuse": "All completed original R1 gates retained in failure receipt; no repeated metadata/Assay/card/ordinary/client tests.",
+  "controls": [
+    "reproduce original FileExistsError before subprocess",
+    "new emit stage succeeds preserving raw input",
+    "duplicate emit stage still rejected"
+  ],
+  "source_changes": "Six research files; zero production/test/golden edits",
+  "admission": "Original receiving and complete semantic classification still required",
+  "external_independent_review": false
+}
