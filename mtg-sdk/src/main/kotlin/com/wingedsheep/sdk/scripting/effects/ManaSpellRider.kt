@@ -19,6 +19,14 @@ import kotlinx.serialization.Serializable
 sealed interface ManaSpellRider {
     val description: String
 
+    /** Each spent unit gives the caster's commander entry counters for its command-zone casts. */
+    @SerialName("CommanderCastEntryCounters")
+    @Serializable
+    data object CommanderCastEntryCounters : ManaSpellRider {
+        override val description: String =
+            "Your commander enters with additional +1/+1 counters for its command-zone casts"
+    }
+
     /**
      * "That spell can't be countered." (Cavern of Souls)
      *

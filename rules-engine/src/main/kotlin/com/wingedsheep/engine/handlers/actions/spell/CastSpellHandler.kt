@@ -4096,6 +4096,10 @@ class CastSpellHandler(
         // Some riders mutate the spell directly (e.g., Cavern's MakesSpellUncounterable
         // stamps a component) while others queue a triggered ability above the spell
         // (e.g., Path of Ancestry's conditional scry).
+        // A new paid spell cannot retain a rider from an earlier incarnation.
+        currentCastState = currentCastState.updateEntity(action.cardId) { c ->
+            c.without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+        }
         val riderPendingTriggers = mutableListOf<PendingTrigger>()
         for (rider in paymentResult.consumedRiders) {
             val (newState, riderTriggers) = applyManaSpellRider(
@@ -5203,6 +5207,27 @@ class CastSpellHandler(
         cardComponent: CardComponent,
         rider: com.wingedsheep.sdk.scripting.effects.ManaSpellRider
     ): Pair<GameState, List<PendingTrigger>> = when (rider) {
+        is com.wingedsheep.sdk.scripting.effects.ManaSpellRider.CommanderCastEntryCounters -> {
+            val commander = state.getEntity(action.cardId)
+                ?.get<com.wingedsheep.engine.state.components.identity.CommanderComponent>()
+            val spellRef = state.objectRef(action.cardId)
+            if (commander == null || commander.ownerId != action.playerId || spellRef == null ||
+                state.logicalZone(action.cardId)?.zoneType != Zone.STACK
+            ) {
+                state to emptyList()
+            } else {
+                val count = commander.castsFromCommandZone
+                val nextState = state.updateEntity(action.cardId) { c ->
+                    val previous = c.get<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                        ?.takeIf { it.spellRef == spellRef }?.count ?: 0
+                    c.with(com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent(
+                        count = previous + count, spellRef = spellRef
+                    ))
+                }
+                nextState to emptyList()
+            }
+        }
+
         is com.wingedsheep.sdk.scripting.effects.ManaSpellRider.MakesSpellUncounterable ->
             state.updateEntity(action.cardId) { c -> c.with(CantBeCounteredComponent) } to emptyList()
 
