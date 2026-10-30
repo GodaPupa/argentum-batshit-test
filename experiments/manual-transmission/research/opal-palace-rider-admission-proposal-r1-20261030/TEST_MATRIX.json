@@ -1,0 +1,144 @@
+{
+  "state": "PLANNED_NOT_EXECUTED",
+  "requirements": [
+    {
+      "id": "OP01",
+      "area": "Original ten scenarios",
+      "normal": "All10 archived tests retained byte-for-byte at55820e98; no renamed cases/assertion edits. Normal/restored10/10,0skips.",
+      "proposed_mutation": "drop rider dispatch",
+      "exact_witness_case": "first command-zone cast enters with one counter when paid with Palace mana",
+      "assertion": "counter count expected1 actual0"
+    },
+    {
+      "id": "OP02",
+      "area": "First/current command-zone cast",
+      "normal": "Paid own commander first command-zone cast count1, later casts include current cast; hand/exile cast uses prior command count only.",
+      "proposed_mutation": "subtract current command cast",
+      "exact_witness_case": "Palace counts the current command-zone cast",
+      "assertion": "expected1 actual0"
+    },
+    {
+      "id": "OP03",
+      "area": "Caster/commander identity",
+      "normal": "Caster's own commander only; foreign commander/noncommander no rider, paid prior history cannot leak across partner commanders.",
+      "proposed_mutation": "omit owner check",
+      "exact_witness_case": "Palace does not mark a foreign commander",
+      "assertion": "pending rider absent and counters0"
+    },
+    {
+      "id": "OP04",
+      "area": "Multiplicity",
+      "normal": "Each consumed rider unit contributes; two units first cast2 and two units with prior command count2 =>6; no set flattening.",
+      "proposed_mutation": "deduplicate consumed Palace units",
+      "exact_witness_case": "Palace preserves each consumed mana contribution",
+      "assertion": "expected6 actual3"
+    },
+    {
+      "id": "OP05",
+      "area": "Cast zone",
+      "normal": "Hand/exile cast of own commander with prior count2 adds2 without increment; zero prior count adds0.",
+      "proposed_mutation": "gate rider to command-zone cast",
+      "exact_witness_case": "scoped repair: a later hand cast uses only prior command-zone casts",
+      "assertion": "expected2 actual0"
+    },
+    {
+      "id": "OP06",
+      "area": "Counter modifiers",
+      "normal": "Combine Palace contributions before one modifier application; preserve10th original Hardened Scales assertion3. Solemnity prevents counters; no manual direct counter mutation.",
+      "proposed_mutation": "apply modifiers per mana unit",
+      "exact_witness_case": "scoped repair: two Palace contributions are combined before an additive counter modifier",
+      "assertion": "expected3 actual4"
+    },
+    {
+      "id": "OP07",
+      "area": "Entry ordering",
+      "normal": "Counters visible to original Packleader entry observer before trigger matching; preserve Fblthp entry-origin event and all original events.",
+      "proposed_mutation": "apply counters after entry observers",
+      "exact_witness_case": "entry observers see Palace counters before checking entering power",
+      "assertion": "expected draw decision true actual false"
+    },
+    {
+      "id": "OP08",
+      "area": "Serialization",
+      "normal": "Rider enum and component with exact spell binding survive full serialization/restoration; additive registration only.",
+      "proposed_mutation": "omit component serializer registration",
+      "exact_witness_case": "Palace pending rider serialization succeeds and preserves exact spell",
+      "assertion": "runCatching success boolean expectedtrue actualfalse; exception alone is not the negative witness"
+    },
+    {
+      "id": "OP09",
+      "area": "Direct stack exits",
+      "normal": "Counter to hand/graveyard/exile/library and return-to-hand erase pending rider; ordinary-mana recast0, failed counter leaves live rider intact.",
+      "proposed_mutation": "retain rider on direct stack exit",
+      "exact_witness_case": "countered Palace spell loses its rider before a hand recast with ordinary mana",
+      "assertion": "component has expectedfalse actualtrue"
+    },
+    {
+      "id": "OP10",
+      "area": "Generic stack exits",
+      "normal": "ZoneTransitionService fromSTACK path removes pending rider when original spell leaves; blink/reanimation/noncast entry no inherited counters.",
+      "proposed_mutation": "retain rider on generic stack exit",
+      "exact_witness_case": "Palace generic stack exit clears pending rider",
+      "assertion": "component absent expectedtrue actualfalse"
+    },
+    {
+      "id": "OP11",
+      "area": "Spell copies",
+      "normal": "putSpellCopy does not inherit rider or commander identity; original retains exact paid count and consumes once.",
+      "proposed_mutation": "copy rider onto spell copy",
+      "exact_witness_case": "pending Palace counters survive serialization and apply once on resolution",
+      "assertion": "copy component expectedabsent actualpresent"
+    },
+    {
+      "id": "OP12",
+      "area": "Consumption",
+      "normal": "Successful entry removes component; zero counters on later blink/reanimate or replayed entry with stale object reference.",
+      "proposed_mutation": "retain rider after entry",
+      "exact_witness_case": "Palace entry consumes only its matching spell rider",
+      "assertion": "component expectedabsent actualpresent"
+    },
+    {
+      "id": "OP13",
+      "area": "Mana source behavior",
+      "normal": "Both Opal abilities: first addsC; second costs1+tap and only combined commander-identity colors; no/colorless commander produces0, notC; no new generic mana UI fixes.",
+      "proposed_mutation": "rider unconditional on all mana",
+      "exact_witness_case": "ordinary mana spent on a commander does not add Palace counters",
+      "assertion": "expected0 actualpositive"
+    },
+    {
+      "id": "OP14",
+      "area": "Non-spell spending",
+      "normal": "Tagged mana paying ability costs or another Palace activation is consumed but cannot mark an unrelated later spell; unspent tag alone does not create counters.",
+      "proposed_mutation": "read available instead of consumed mana",
+      "exact_witness_case": "Palace unspent tagged mana does not mark a spell",
+      "assertion": "expected0 actualpositive"
+    },
+    {
+      "id": "OP15",
+      "area": "Cast failure and source departure",
+      "normal": "Failed cast restores state and mana; replay cannot double-apply. Palace leaving after mana production doesn't erase spent rider.",
+      "proposed_mutation": "tie rider to producer presence",
+      "exact_witness_case": "Palace mana rider survives producer departure",
+      "assertion": "expected1 actual0"
+    },
+    {
+      "id": "OP16",
+      "area": "Baseline negative controls",
+      "normal": "Existing Cavern/Path of Ancestry/Goggles/Orb riders, color choice, payment semantics, target source/occurrence axes, serialization and entry-origin unaffected.",
+      "proposed_mutation": "not a new mutation",
+      "exact_witness_case": "all exact unaffected controls",
+      "assertion": "0failures/0errors/0skips"
+    }
+  ],
+  "compilation": "Freeze exact normal and every mutant source/test/protocol form, compile all forms before any behavioral negative witness. Compiler failures, missing XML or unrelated failures are invalid evidence. Any initially uncompiled normal/mutant form is repaired on a new immutable source without weakening tests.",
+  "inventory": "All original389card cases,19090current ordinary cases including19074original baseline and16Bolt additions,exact43historical skips; add new cases and bind identities/multiplicities.64client floor; never change skip/inventory expectations to hide failure.",
+  "gates": [
+    "Original10Opal plus primitive normal/restored regressions and exact assertion-based negative controls.",
+    "Source instance/restoration before and after each mutant; unrelated controls must pass.",
+    "Original Fblthp early/generic,one-test event/source-kind and Spellskite accepted runtime/metadata protections retained; rerun affected dependent gates only as required by changed source binding.",
+    "Complete389cards plus Opal cases and all current ordinary original identities with43unchanged historical skips,64client and necessary UI/transport coverage.",
+    "CanonicalC13#310 metadata,rulings,printing,discovery,one additive protected snapshot entry,lint and required build.",
+    "Assay C13 differential with every original row/decline retained and classified; Opal grammar decline not pass. No parser/IR repair in this proposal.",
+    "Original artifact receiving:source/tree/validation/workflow/run/job/attempt/artifact,ZIP bytes/hash/manifest,raw XML identities/multiplicities/counts/skips,witness assertions,source forms/restoration,protected originals. Green workflow alone cannot admit."
+  ]
+}

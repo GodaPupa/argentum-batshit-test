@@ -1,0 +1,29 @@
+[
+  {
+    "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt",
+    "blob": "f2b2da5412f1e943fc9348adbbaa059c33832903",
+    "change": "Add serializable data-object CommanderCastEntryCounters only. Preserve every existing rider variant, field and behavior."
+  },
+  {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+    "blob": "c565ec9d2ceae4fcce2f52dc5f982654c482da71",
+    "change": "Only existing applyManaSpellRider dispatch and adjacent cast-commit rider initialization: bind rider to the exact successfully cast spell, verify it is the caster's commander, accumulate multiplicity-preserving contributions from already-consumed mana and include current command-zone cast. Clear stale prior-incarnation rider before new paid contributions. No payment selection, mana consumption or other rider changes."
+  },
+  {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+    "blob": "1e62583369e428bf103838755869712a668ab3fb",
+    "protected_sha256": "8ee1424c20dc06dbe1fbb676a5024b7632fbb88b3879e69cf4c27e925ef1b4ac",
+    "change": "Only capture/consume new exact-spell rider in enterPermanentOnBattlefield and remove it in existing stack-exit cleanup paths. Apply combined Palace contributions through unchanged EntersWithReplacements.placeEntryCounters before ETB observers. Keep putSpellCopy's existing noninheritance of arbitrary components. No target resolution, occurrence/group/source context, clone, trigger ordering, commander-count increment or existing entry-origin changes."
+  },
+  {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+    "blob": "57ed4bbdf43540a8bfe47f176bfa6749e8d0c28f",
+    "change": "Only clear the new pending Palace component when the source spell leaves STACK through this generic path; never transfer it to an unrelated incarnation. No other zone transition, entry-origin, replacement, event or identity behavior changes."
+  },
+  {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+    "blob": "1fa93c79abc7184b04f55df1e7e06ff176697986",
+    "protected_sha256": "c657a1db22398c601ae6ba8972448bd0c046b017e0ddfe755622e23750479577",
+    "change": "One additive registration for CommanderManaEntryCountersComponent in existing polymorphic Component module; preserve all current registrations and serializers."
+  }
+]
