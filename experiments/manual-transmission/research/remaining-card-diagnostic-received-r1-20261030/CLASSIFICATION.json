@@ -1,0 +1,83 @@
+{
+  "schema": 1,
+  "state": "ORIGINAL_DIAGNOSTIC_VERIFIED_NO_CARD_OR_FEATURE_ADMISSION",
+  "source": "4fbe7821c1c8083d2452d1ac78890f9e0caa74c8",
+  "runtime_base": "180b67fb8fee312e576ff7067954584855d40e0f",
+  "pins": {
+    "bytes": 37744655,
+    "sha256": "004a17fb78460f35dd72762321d66e088b89872ca1a995be62efd0196f4f88a6",
+    "artifact": 12986504200,
+    "job": 124129840982,
+    "source": "4fbe7821c1c8083d2452d1ac78890f9e0caa74c8",
+    "tree": "25f06bfbe49bb7ce1f695e01bd6e23fa9d96502d",
+    "validation": "23ed2ce1c70ce1ce8a77610314edfd92a6a4b13b",
+    "validation_tree": "2957d7391ef014c1eebcb88b5b9795175c52198c",
+    "workflow": ".github/workflows/manual-remaining-card-diagnostic-r1-20261030.yml",
+    "workflow_blob": "b119eac0334f7ea795f787247288a635c6f38d14",
+    "run": 41075326079,
+    "attempt": 1,
+    "run_number": 1
+  },
+  "manifest_entries": 1161,
+  "classification": [
+    {
+      "card": "Reckless Bushwhacker",
+      "canonical": "OGW116",
+      "assay": "Haste ROUND_TRIP; Surge and surge-paid intervening condition LINE_DECLINED.",
+      "ir": "SCAFFOLD; Surge structure unwired. Emit exit0 is not acceptance.",
+      "next_source_contract": "Alternative-cost eligibility from another spell cast by self or teammate; preserve historical cast records after resolve/counter; immutable paid-surge fact through entry and copying; other-creature pump/haste; no mana-value change. Generic SelfAlternativeCost alone does not establish paid-choice transport."
+    },
+    {
+      "card": "Amphin Mutineer",
+      "canonical": "CMR55",
+      "assay": "ETB target-controller token clause and Encore LINE_DECLINED.",
+      "ir": "SCAFFOLD; PlayerAction unwired.",
+      "next_source_contract": "Preserve optional target identity/controller after exile and illegal-target behavior. Graveyard sorcery-speed self-exile cost; one copy per remaining opponent controlled by activator; distinct required defender per token, haste and next-end-step sacrifice with control-change behavior. Generic ForEach player-controller rebinding is not sufficient proof."
+    },
+    {
+      "card": "Disciple of Freyalise // Garden of Freyalise",
+      "canonical": "MH3 250",
+      "assay": "Front optional sacrifice clause LINE_DECLINED; both land-face lines ROUND_TRIP; full compile MULTI_FACE decline.",
+      "ir": "No exact front-name IR row; emit exit1 explicitly not found. No fixture/IR normalization or engine-support conclusion.",
+      "next_source_contract": "MDFC front creature and back land composition; optional other-creature sacrifice captures last-known projected power once for life/draw; pay3life entry option and green mana; face-specific play permissions and zone characteristics. Existing MDFC/entry-life primitives should be reused before proposing new runtime."
+    },
+    {
+      "card": "Veil of Summer",
+      "canonical": "M20 198",
+      "assay": "Conditional draw compound LINE_DECLINED.",
+      "ir": "SCAFFOLD; If structure unwired.",
+      "next_source_contract": "One draw if any opponent cast blue/black this turn; existing DynamicAmount.SpellsCastThisTurn and GrantSpellsCantBeCounteredEffect candidates. Existing colored-hexproof validation explicitly accepts only Permanent targets, and GrantEvasionKeyword player branch supports only ordinary hexproof/shroud. Player-specific color scope requires exact source-characteristic-aware proposal, preserving all existing source/target axes. Protection is not an equivalent substitute."
+    },
+    {
+      "card": "Opal Palace",
+      "canonical": "C13 310",
+      "assay": "Colorless mana line ROUND_TRIP; commander-color rider LINE_DECLINED.",
+      "ir": "SCAFFOLD; second AddManaWithModifiers unwired.",
+      "next_source_contract": "Reuse archived card draft and all10 scenario tests; missing SDK CommanderCastEntryCounters and serializable CommanderManaEntryCountersComponent. Existing CastPaymentProcessor consumedRiders is a multiplicity-preserving List, existing commander cast count includes current command-zone cast, and placeEntryCounters applies modifiers before observers. Need bounded cast/entry/stack-exit transport, serialization and exactly one additive protected C13 entry before card admission."
+    }
+  ],
+  "gates": {
+    "diagnostic_tools_compile": true,
+    "metadata_all_pages": true,
+    "all_normal_faces_image_head": true,
+    "source_files_scanned": 24692,
+    "sha_bindings": 279,
+    "git_bindings": 27,
+    "unchanged_module_trees": 10,
+    "behavioral_tests_run": 0,
+    "mutant_tests_run": 0,
+    "card_admitted": false,
+    "feature_admitted": false,
+    "multiplayer_admitted": false,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
+  },
+  "receiving": "Original ZIP downloaded once after canonical newer-receipt/successor reconciliation; exact size/digest, CRC, path/duplicate/manifest membership, all1161 file hashes, immutable source/tree/validation/workflow/attempt pins, unchanged source binding originals, raw compile/command exits and metadata pagination independently checked by frozen RECEIVE.py. Diagnostic nonzero exits are classified tool declines, not behavioral negative evidence.",
+  "limits": [
+    "No peer-independent reviewer claimed; same assistant separately verified original artifact.",
+    "No card implementation/registration, protected snapshot edit, new feature admission or multiplayer admission was performed.",
+    "Preserve all raw failures and full original ZIP; do not rerun this diagnostic merely for context changes."
+  ],
+  "next": "Prepare an exact bounded Opal Palace rider/registration proposal against accepted runtime180b67fb, preserving original10tests and proposing only necessary source boundaries plus one additive C13 snapshot entry. Other four source contracts remain open and are not authority to implement protected changes."
+}
