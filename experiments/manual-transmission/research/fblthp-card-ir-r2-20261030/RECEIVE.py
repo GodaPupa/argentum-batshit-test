@@ -31,7 +31,6 @@ def receive():
  assert int(binding['run'])==r['id'] and binding['attempt']==binding['run_number']==1
  out=H/'extracted';assert not out.exists(),'Original must not be received twice'
  for n,v in data.items():f=out/n;f.parent.mkdir(parents=True,exist_ok=True);f.write_bytes(v)
- sys.path.insert(0,str(out/'protocol'));from metadata_audit import verify
  result=dict(state='ORIGINAL_RECEIVED_CLASSIFICATION_PENDING',source=p['source'],validation=p['validation'],run=r['id'],job=j['id'],attempt=1,artifact=a['id'],bytes=len(raw),sha256=sha(raw),manifest_entries=len(manifest),gates={},gate_errors=[],feature_admitted=False,card_admitted=False)
  def gate(name,f):
   try:result['gates'][name]=f()

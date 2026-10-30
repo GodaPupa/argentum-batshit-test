@@ -1,6 +1,8 @@
 from pathlib import Path
-import ast,json,tempfile,types
+import ast,json,tempfile,types,runpy
 H=Path(__file__).resolve().parent
+runpy.run_path(str(H/'run.py'),run_name='import_smoke')
+runpy.run_path(str(H/'RECEIVE.py'),run_name='import_smoke')
 node=next(n for n in ast.parse((H/'run.py').read_text()).body if isinstance(n,ast.FunctionDef) and n.name=='stage')
 with tempfile.TemporaryDirectory() as tmp:
  root=Path(tmp);(root/'current-ir').mkdir();(root/'current-ir/input').write_bytes(b'preserved');calls=[]

@@ -1,7 +1,6 @@
 """Isolated remaining Fblthp evidence collector; no card or feature admission."""
 from pathlib import Path
 import os,json,subprocess,hashlib,urllib.request,time,traceback,gzip
-from metadata_audit import verify
 HERE=Path(__file__).resolve().parent;ROOT=Path.cwd();P=json.loads((HERE/'PROTOCOL.json').read_text());OUT=ROOT/P['evidence']
 sha=lambda b:hashlib.sha256(b).hexdigest()
 git=lambda *a:subprocess.check_output(['git',*a],text=True).strip()
