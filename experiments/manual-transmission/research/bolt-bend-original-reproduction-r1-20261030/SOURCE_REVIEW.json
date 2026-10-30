@@ -1,0 +1,26 @@
+{
+  "state": "SOURCE_REVIEWED_ORIGINAL_REPRODUCTION_NOT_RUNTIME_EVIDENCE",
+  "authority": "d576c6b602a674c8a93f5ff5f36c3db0f59c9d0b",
+  "proposal": "de4cd0150608c43b41d0bb6e9b9bd35a3dfb6992",
+  "production_delta": [],
+  "test_delta": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mana/BoltBendCostPredicateTest.kt": 5
+  },
+  "original_expected": {
+    "rows": 5,
+    "failures": 2,
+    "passes": 3,
+    "skips": 0,
+    "witnesses": {
+      "BB03 own power four reduces exactly three generic and preserves red": 46,
+      "BB04 own power five reduces exactly three generic and preserves red": 51
+    }
+  },
+  "finding": "FixedIfControlFilter is the sole caller of controlsMatchingPermanent. Its cardPredicates use matchesBattlefieldPredicate, which lacks PowerAtLeast. The latter matcher also serves other cost sources, so the later bounded repair must avoid changing those callers.",
+  "first_step": "Compile unchanged production plus new test; run actual discovered Bolt Bend original five cases; receive original artifacts before repair.",
+  "rules_source": "https://magic.wizards.com/en/news/feature/war-spark-release-notes-2019-04-19",
+  "rules_read": "Bolt Bend entry: own power at least four permits reduction of three generic; cost is determined before post-cast control changes.",
+  "subsequent_required": "Proposal required normal/all-mutant compile-first, projected power/type/controller, reduction and colored costs, exact negative witnesses/restoration; original Fblthp/generic/389cards/19074originalrows43skips plus additions/64client/Assay; original receiving before combined Fblthp admission.",
+  "reuse": "IR original de4cd015 and one-test57e1cff2/early1a6a89f2/Spellskitecdb1bc6c kept, no repeated qualifications.",
+  "reviewer": "Same execution assistant; no independent human or external reviewer claimed"
+}
