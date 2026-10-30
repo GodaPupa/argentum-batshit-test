@@ -1,0 +1,28 @@
+{
+  "state": "SOURCE_AND_PROTOCOL_REVIEWED_NOT_COMPILED",
+  "base": "823fff7d168ce4cfabd068786449700b4b25f836",
+  "production_change_in_this_successor": false,
+  "tests_unchanged": [
+    "ec830478d66622a735e21c0a3f275886c19f5f40",
+    "0ab034cbe48f4e2097a277168c8a0536e86cf726"
+  ],
+  "normal_cost_blob": "46e9d25121bdd50c8babc048ad3c4fbb04e0e286",
+  "forms": 8,
+  "early_rows_per_form": 16,
+  "negative_witnesses": 38,
+  "passing_negative_controls": 90,
+  "compile_order": "normal + all eight distinct mutant forms before normal or negative tests; explicit restored compilation then restored tests",
+  "static_auditor_checks": {
+    "accepted_forms": 10,
+    "rejected_corruptions": 12
+  },
+  "scope": "Early bounded qualification only. All required same-source dependent, original Fblthp/generic/card/client/Assay gates remain mandatory before acceptance. No official games/seeds.",
+  "fixture_source_review": [
+    "GameTestDriver.replaceState and putPermanentOnBattlefield verified",
+    "FloatingEffectFactory.addFloatingEffect with Sublayer parameters verified",
+    "ActiveFloatingEffect modifications ChangeController, ModifyPowerToughness, SetCardTypes, AddType, SetPowerToughness verified",
+    "ManaCost.toString joins symbols; empty cost is empty string, not {0}",
+    "Actual BoltBend definition preserved; named FixedIfControlFilter parameters copied from canonical definition"
+  ],
+  "reviewer": "Same execution assistant; no external independent reviewer claimed."
+}
