@@ -1,0 +1,7 @@
+diff --git a/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt b/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+@@ -1874,1 +1874,2 @@
+-        if (commanderManaRider != null && commanderManaRider.count > 0 && !resolvingAsSpellCopy) {
++        if (commanderManaRider != null && commanderManaRider.count > 0 && !resolvingAsSpellCopy &&
++            newState.projectedState.canReceiveCounters(spellId)) {
