@@ -1,0 +1,248 @@
+{
+  "state": "PREDICTED_NOT_EXECUTED",
+  "cases": {
+    "BB01": {
+      "name": "BB01 no creature preserves full generic and red cost",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostPredicateTest",
+      "file": "BoltBendCostPredicateTest.kt",
+      "cost_assertions": [
+        {
+          "line": 36,
+          "expected": "{3}{R}"
+        }
+      ]
+    },
+    "BB02": {
+      "name": "BB02 own power three preserves full generic and red cost",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostPredicateTest",
+      "file": "BoltBendCostPredicateTest.kt",
+      "cost_assertions": [
+        {
+          "line": 41,
+          "expected": "{3}{R}"
+        }
+      ]
+    },
+    "BB03": {
+      "name": "BB03 own power four reduces exactly three generic and preserves red",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostPredicateTest",
+      "file": "BoltBendCostPredicateTest.kt",
+      "cost_assertions": [
+        {
+          "line": 46,
+          "expected": "{R}"
+        }
+      ]
+    },
+    "BB04": {
+      "name": "BB04 own power five reduces exactly three generic and preserves red",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostPredicateTest",
+      "file": "BoltBendCostPredicateTest.kt",
+      "cost_assertions": [
+        {
+          "line": 51,
+          "expected": "{R}"
+        }
+      ]
+    },
+    "BB05": {
+      "name": "BB05 opponent power four cannot reduce caster cost",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostPredicateTest",
+      "file": "BoltBendCostPredicateTest.kt",
+      "cost_assertions": [
+        {
+          "line": 56,
+          "expected": "{3}{R}"
+        }
+      ]
+    },
+    "BP01": {
+      "name": "BP01 gaining opponent owned creature uses projected controller",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 71,
+          "expected": "{R}"
+        }
+      ]
+    },
+    "BP02": {
+      "name": "BP02 losing own creature uses projected controller",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 80,
+          "expected": "{3}{R}"
+        }
+      ]
+    },
+    "BP03": {
+      "name": "BP03 projected boost crosses inclusive power threshold",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 88,
+          "expected": "{R}"
+        }
+      ]
+    },
+    "BP04": {
+      "name": "BP04 projected shrink removes qualification",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 96,
+          "expected": "{3}{R}"
+        }
+      ]
+    },
+    "BP05": {
+      "name": "BP05 losing creature type removes qualification",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 104,
+          "expected": "{3}{R}"
+        }
+      ]
+    },
+    "BP06": {
+      "name": "BP06 animated artifact qualifies with projected type and power",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 114,
+          "expected": "{R}"
+        }
+      ]
+    },
+    "BP07": {
+      "name": "BP07 multiple qualifying creatures preserve red",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 120,
+          "expected": "{R}"
+        }
+      ]
+    },
+    "BP08": {
+      "name": "BP08 fixed reduction applies exactly once above generic floor",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 126,
+          "expected": "{5}{R}"
+        }
+      ]
+    },
+    "BP09": {
+      "name": "BP09 synthetic fixed reduction remains conditional",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 131,
+          "expected": "{8}{R}"
+        }
+      ]
+    },
+    "BP10": {
+      "name": "BP10 unrelated unconditional generic reduction is preserved",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 135,
+          "expected": "{6}{R}"
+        },
+        {
+          "line": 137,
+          "expected": "{6}{R}"
+        }
+      ]
+    },
+    "BP11": {
+      "name": "BP11 unrelated artifact predicate preserves positive and negative cases",
+      "class": "com.wingedsheep.engine.mana.BoltBendCostProjectionTest",
+      "file": "BoltBendCostProjectionTest.kt",
+      "cost_assertions": [
+        {
+          "line": 142,
+          "expected": "{8}{R}"
+        },
+        {
+          "line": 144,
+          "expected": "{5}{R}"
+        }
+      ]
+    }
+  },
+  "expected_failure_ids": {
+    "drop-power": [
+      "BB03",
+      "BB04",
+      "BP01",
+      "BP03",
+      "BP06",
+      "BP07",
+      "BP08"
+    ],
+    "exclusive-threshold": [
+      "BB03",
+      "BP01",
+      "BP03",
+      "BP06"
+    ],
+    "base-power": [
+      "BP03",
+      "BP04",
+      "BP06"
+    ],
+    "owner-battlefield": [
+      "BP01",
+      "BP02"
+    ],
+    "ignore-controller": [
+      "BB05",
+      "BP02",
+      "BP09"
+    ],
+    "wrong-amount": [
+      "BB03",
+      "BB04",
+      "BP01",
+      "BP03",
+      "BP06",
+      "BP07",
+      "BP08",
+      "BP11"
+    ],
+    "drop-red": [
+      "BB03",
+      "BB04",
+      "BP01",
+      "BP03",
+      "BP06",
+      "BP07",
+      "BP08",
+      "BP10",
+      "BP11"
+    ],
+    "base-type": [
+      "BP05",
+      "BP06"
+    ]
+  },
+  "skips": 0,
+  "compile_first": "Normal plus every mutant before behavioral tests; restoration normal compilation before restored positives.",
+  "remaining": "Pin exact actual cost messages and failing frame per form, then execute compiler/behavior/dependent gates and receive originals. This static inventory is not qualification evidence."
+}
