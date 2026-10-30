@@ -1,0 +1,118 @@
+{
+  "state": "BOLT_BEND_EARLY_ORIGINAL_VERIFIED_DEPENDENT_GATES_PENDING",
+  "source": "5b76957211ef14d5c8f436811a8311774d40cd4a",
+  "validation": "37e0db4637eabc81d4359e657ae0a16c74f73130",
+  "run": 41043257718,
+  "job": 124020972754,
+  "attempt": 1,
+  "artifact": 12971841600,
+  "bytes": 5780242,
+  "sha256": "58af7c05424fdb46321f5d18da46cbea6698b782390cdd097a4bcabb542a8619",
+  "manifest_entries": 650,
+  "gates": {
+    "initial": {
+      "sha256_bindings": 279,
+      "git_bindings": 27,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "rules-engine/src/main": "236b9a8b07c055743d5f8d777cf14afe79501052",
+        "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+        "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499",
+        "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d"
+      }
+    },
+    "final": {
+      "sha256_bindings": 279,
+      "git_bindings": 27,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "rules-engine/src/main": "236b9a8b07c055743d5f8d777cf14afe79501052",
+        "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+        "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499",
+        "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d"
+      }
+    },
+    "compile-base-type": {
+      "compiled": true,
+      "output_sha256": "592b1f82c38b4e673c0097a58b2cf2518032d0ec74a7a390a10aec201623d66e"
+    },
+    "compile-restored": {
+      "compiled": true,
+      "output_sha256": "d6c0bbcd7ebed12133bcceeff7c9ce48bb2241aec2b0e61926fdc6725514ffc1"
+    },
+    "source_forms_and_restoration": {
+      "normal_sha256": "0720af3cf7d8bb8977421902a1c6f195155c78acdbfe75c9db947dc26e02ee5e",
+      "mutants": 8,
+      "restored": true
+    },
+    "negative-base-type": {
+      "form": "base-type",
+      "rows": 16,
+      "failures": [
+        {
+          "id": "BP05",
+          "line": 104,
+          "message": "org.opentest4j.AssertionFailedError: expected:<{3}{R}> but was:<{R}>"
+        },
+        {
+          "id": "BP06",
+          "line": 114,
+          "message": "org.opentest4j.AssertionFailedError: expected:<{R}> but was:<{3}{R}>"
+        }
+      ],
+      "passing_controls": 14,
+      "skips": 0
+    },
+    "restored": {
+      "form": "restored",
+      "rows": 16,
+      "failures": [],
+      "passing_controls": 16,
+      "skips": 0
+    },
+    "synthetic_auditor_controls": {
+      "accepted_synthetic_forms": 10,
+      "rejected_corruptions": 12,
+      "engine_evidence": false
+    },
+    "completion": {
+      "state": "MISSING_EARLY_GATES_COMPLETE_ORIGINAL_RECEIVING_PENDING",
+      "feature_admitted": false,
+      "card_admitted": false,
+      "remaining_mandatory_gates": [
+        "Original early artifact receiving; no green-only acceptance",
+        "Original Fblthp24/generic26/Spellskite cases and affected cost tests",
+        "389 exact card cases",
+        "19074 original ordinary identities with43 exact historical skips plus all16 new Bolt Bend cases",
+        "64 client cases",
+        "WAR Assay differential classification preserving structural divergence evidence",
+        "Combined Fblthp feature/card admission only after every original artifact and protected byte gate"
+      ]
+    },
+    "reused_original_partial": {
+      "original_run": 41035962802,
+      "compiled_forms": 9,
+      "negative_witnesses": 36,
+      "passing_controls": 76
+    }
+  },
+  "gate_errors": [],
+  "feature_admitted": false,
+  "card_admitted": false
+}
