@@ -1,0 +1,192 @@
+{
+  "state": "ORIGINAL_FAILURE_RECEIVED_NO_ADMISSION",
+  "source": "b6b00c6d702125b8199594556e1a3f2c95c0c654",
+  "validation": "b92d43134ab7e7a69ad86204ce978ce065ea0ce8",
+  "run": 40982111046,
+  "job": 123824392301,
+  "attempt": 1,
+  "artifact": 12945277869,
+  "bytes": 33462933,
+  "sha256": "9068a3d60f65c5a6d070b2630932cfd741d210681de4d0f59ad72eeb55df4dcc",
+  "manifest_entries": 653,
+  "gates": {
+    "initial": {
+      "sha256_bindings": 278,
+      "git_bindings": 21,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "rules-engine": "017eef2ee9747772d4d549753436187398ca3fa5",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638"
+      }
+    },
+    "final": {
+      "sha256_bindings": 278,
+      "git_bindings": 21,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "rules-engine": "017eef2ee9747772d4d549753436187398ca3fa5",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638"
+      }
+    },
+    "dependent": {
+      "receipt_blob": "1af2974fbd8c7b7352e2e47de229b90e35759e93",
+      "run": 40977504099,
+      "reused": true
+    },
+    "compile-normal": {
+      "exit": 0,
+      "stdout_sha256": "716ee636234ce6e67e96878e41c11baedc860a7a919a30cec808cd0c3fee3b84",
+      "stderr_sha256": "d3d905abea993b8cc0c49bb1bbe9e23f1ad1ce9d74a3e92158c2308c079f85fe",
+      "classification_required": false
+    },
+    "printing": {
+      "exit": 0,
+      "stdout_sha256": "68e740d06e019408b0ad6d8ffb2b1ad6a1d87e077a0b2568d69f05d7d57b1d30",
+      "stderr_sha256": "d553998a18bd15ddd4e1ea9c52f19d762896abda913953d620b0f43e5f867f92",
+      "classification_required": false
+    },
+    "corpus": {
+      "exit": 0,
+      "stdout_sha256": "1637dcddf65201b6979d43052beba43c85963b9d8eca96c2a952ac2ac1de7c84",
+      "stderr_sha256": "0a6bb3a416179ee4e606efdb1c8bee2b78d72a5ce2442772a7c91999dd769d0f",
+      "classification_required": false
+    },
+    "parse": {
+      "exit": 0,
+      "stdout_sha256": "bb6d53bf0564b68c773f5370fa3f0a43c2797cd038b5ecf1f18007b5c7ca67b4",
+      "stderr_sha256": "c57263a083aaefbd0bb1c9d4c7f189f115da3d0610c0fe6be67c7060dca6374b",
+      "classification_required": true
+    },
+    "explain": {
+      "exit": 0,
+      "stdout_sha256": "c0ac6ed74a6201a800f457aa45bdc3fd08d4945e120efd45fa116fbfc6471f81",
+      "stderr_sha256": "b442ba272b908e35d9e4144e771859879ee20506b5f4b4c42c413b78e5ec4d95",
+      "classification_required": true
+    },
+    "assay-compile": {
+      "exit": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3baa6cda6de6ea604f3ab88503cbf0fdc5e71cf564ce457f5900b273d44f1379",
+      "classification_required": true
+    },
+    "assay-war": {
+      "exit": 0,
+      "stdout_sha256": "b8c9a7c89a002a494f7d8d019fe8ec1c8df3122afbbbd7838e4a9adf22cc584e",
+      "stderr_sha256": "64a4ac270735a0dc651faee52b8aa8f7d79b6bc8bef482a102a7ba6f2903124c",
+      "classification_required": true
+    },
+    "metadata": {
+      "fields": [
+        "name",
+        "mana_cost",
+        "type_line",
+        "oracle_text",
+        "power",
+        "toughness",
+        "colors",
+        "color_identity",
+        "oracle_id",
+        "id",
+        "rarity",
+        "collector_number",
+        "artist",
+        "flavor_text",
+        "released_at",
+        "set"
+      ],
+      "printings": 8,
+      "printing_pages": 1,
+      "rulings": 5,
+      "ruling_pages": 1,
+      "image": {
+        "url": "https://cards.scryfall.io/normal/front/5/2/52558748-6893-4c72-a9e2-e87d31796b59.jpg?1783933465",
+        "status": 200,
+        "headers": {
+          "Date": "Sun, 02 Aug 2026 10:03:38 GMT",
+          "Content-Type": "image/jpeg",
+          "Content-Length": "102155",
+          "Content-Disposition": "inline; filename=\"war-50-fblthp-the-lost.jpg\"",
+          "ETag": "\"ed0a1662a03cc7f4d709fb46ac496b0d\"",
+          "Last-Modified": "Mon, 29 Jun 2026 08:52:15 GMT",
+          "Accept-Ranges": "bytes",
+          "Cache-Control": "public, max-age=31556952",
+          "Server": "ScryfallEdgeCDN (scryfall.io)",
+          "Strict-Transport-Security": "max-age=15552000; includeSubDomains; preload",
+          "X-Content-Type-Options": "nosniff",
+          "Age": "7656605",
+          "Connection": "close",
+          "Scyfall-Cache-Status": "hit-fresh",
+          "Scyfall-Node": "us-west",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "GET, OPTIONS",
+          "Access-Control-Allow-Headers": "Accept, Accept-Charset, Accept-Language, Cache-Control, Content-Language, Content-Type, DNT, Host, If-Modified-Since, Keep-Alive, Origin, Referer, User-Agent, X-Requested-With"
+        }
+      },
+      "snapshot_sha256": "9564b58258f712f3d36bf11fab8c7c1f72157d97a07f33f93a41df4063c58c49",
+      "pagination_complete": true
+    },
+    "corpus_identity": {
+      "cards": 39196,
+      "sha256": "c1c9dc28fa9a7a4bae61c02330ba5a1190205aab1a93361e590ff5d9a146af08",
+      "exact_fblthp_rows": 1
+    },
+    "current_ir_identity": {
+      "sha256": "f2513283c1ffd32ab954bdc10a4bd78a495f297f532c68b8c69d6f05f1e95d06",
+      "exact_fblthp_rows": 1,
+      "classification_required": true
+    },
+    "synthetic_metadata_controls": {
+      "synthetic_only": true,
+      "valid_archived_shape": 1,
+      "rejected": [
+        "oracle_text",
+        "collector_number",
+        "id",
+        "artist",
+        "flavor_text",
+        "missing printing page",
+        "duplicate printing",
+        "ruling drift",
+        "missing image",
+        "snapshot stat drift"
+      ]
+    }
+  },
+  "gate_errors": [
+    {
+      "gate": "current-ir",
+      "error": "KeyError('current-ir/exit.txt')"
+    },
+    {
+      "gate": "collector_result",
+      "error": "KeyError('RESULT.json')"
+    },
+    {
+      "gate": "collector",
+      "error": "Traceback (most recent call last):\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-card-supplement-draft-r1-20261030/run.py\", line 76, in <module>\n    try:main()\n        ~~~~^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-card-supplement-draft-r1-20261030/run.py\", line 73, in main\n    stage('current-ir','current-ir');assert (ROOT/'mtgish-tooling/data/mtgish.lines.json').read_bytes()==ir\n    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/fblthp-card-supplement-draft-r1-20261030/run.py\", line 37, in stage\n    folder=OUT/name;folder.mkdir(parents=True)\n                    ~~~~~~~~~~~~^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.14/pathlib/__init__.py\", line 1012, in mkdir\n    os.mkdir(self, mode)\n    ~~~~~~~~^^^^^^^^^^^^\nFileExistsError: [Errno 17] File exists: '/home/runner/work/argentum-batshit-test/argentum-batshit-test/manual-fblthp-card-supplement-r1-evidence/current-ir'\n"
+    },
+    {
+      "gate": "workflow",
+      "error": [
+        "failure",
+        "failure"
+      ]
+    }
+  ],
+  "feature_admitted": false,
+  "card_admitted": false
+}
