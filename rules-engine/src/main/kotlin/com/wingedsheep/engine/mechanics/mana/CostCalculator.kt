@@ -1046,11 +1046,15 @@ class CostCalculator(
      */
     private fun controlsMatchingPermanent(state: GameState, playerId: EntityId, filter: GameObjectFilter): Boolean {
         val projectedState = state.projectedState
-        return state.getBattlefield(playerId).any { entityId ->
+        return projectedState.getBattlefieldControlledBy(playerId).any { entityId ->
             val card = state.getEntity(entityId)?.get<CardComponent>() ?: return@any false
             val cardDef = cardRegistry.getCard(card.cardDefinitionId) ?: return@any false
             filter.cardPredicates.all { predicate ->
-                matchesBattlefieldPredicate(entityId, cardDef, predicate, projectedState)
+                if (predicate is CardPredicate.PowerAtLeast) {
+                    (projectedState.getPower(entityId) ?: card.baseStats?.basePower ?: 0) >= predicate.min
+                } else {
+                    matchesBattlefieldPredicate(entityId, cardDef, predicate, projectedState)
+                }
             }
         }
     }

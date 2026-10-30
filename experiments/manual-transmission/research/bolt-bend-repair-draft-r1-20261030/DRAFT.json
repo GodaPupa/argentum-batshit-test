@@ -1,0 +1,16 @@
+{
+  "state": "IMPLEMENTED_DRAFT_NOT_COMPILED_NOT_QUALIFIED",
+  "original_defect_receipt": "bb1aa3554278f4efcb157c38475ea279efa5a51d",
+  "production_paths": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt"
+  ],
+  "scope": "Only controlsMatchingPermanent: projected current controller and inclusive projected PowerAtLeast; shared matcher and all other cost sources unchanged.",
+  "tests": "Original five assertions unchanged. Expanded projected power/type/controller/multiple-reduction and colored-mana controls plus all eight mutant forms still required; use 8e987cef NEXT_REPAIR_SOURCE_REVIEW.",
+  "required_next": "Complete new controls and exact source forms, compile normal/all mutants first, execute targeted positives/negatives and source restoration, then required full dependent compatibility/card/client/Assay and original receiving before any acceptance.",
+  "normal_compilation": false,
+  "mutant_compilation": false,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "official_games": 0,
+  "official_seeds": 0
+}
