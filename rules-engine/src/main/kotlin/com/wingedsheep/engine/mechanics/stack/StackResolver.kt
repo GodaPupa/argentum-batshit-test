@@ -1474,6 +1474,11 @@ class StackResolver(
         val graveyardCastRider =
             state.getEntity(spellId)?.get<com.wingedsheep.engine.state.components.stack.GraveyardCastRiderComponent>()
 
+        val commanderManaRider = state.getEntity(spellId)
+            ?.get<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+            ?.takeIf { it.spellRef == state.objectRef(spellId) &&
+                state.logicalZone(spellId)?.zoneType == Zone.STACK }
+
         // For Auras: get the target before removing TargetsComponent. The target is usually a
         // permanent, but "enchant player" Auras (Grievous Wound) attach to a player — both are
         // entities, so AttachedToComponent holds either id (CR 303.4).
@@ -1507,6 +1512,7 @@ class StackResolver(
             var updated = c.without<SpellOnStackComponent>()
                 .without<TargetsComponent>()
                 .without<com.wingedsheep.engine.state.components.stack.GraveyardCastRiderComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
                 .with(ControllerComponent(controllerId))
 
             if (resolvingAsSpellCopy) {
@@ -1862,6 +1868,17 @@ class StackResolver(
             )
             newState = counterState
             counterEvents.addAll(events)
+        }
+
+        // Aggregate all consumed mana contributions before applying entry counter modifiers once.
+        if (commanderManaRider != null && commanderManaRider.count > 0 && !resolvingAsSpellCopy &&
+            newState.projectedState.canReceiveCounters(spellId)) {
+            val (riderState, riderEvents) = EntersWithReplacements.placeEntryCounters(
+                newState, spellId, CounterTypeFilter.PlusOnePlusOne, commanderManaRider.count,
+                controllerId, cardComponent?.name ?: "", sourceState = state
+            )
+            newState = riderState
+            counterEvents.addAll(riderEvents)
         }
 
         // The Tomb of Aclazotz cast-this-way entry rider: a creature cast from the graveyard under
@@ -3122,6 +3139,7 @@ class StackResolver(
                     .without<com.wingedsheep.engine.state.components.identity.PrototypeComponent>()
             } else container
             com.wingedsheep.engine.handlers.effects.ZoneMovementUtils.restoreBestowAfterZoneExit(restoredPrototype)
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
         }
     }
 

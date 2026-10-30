@@ -23,4 +23,5 @@ dependencies {
 
     testImplementation(libs.kotestRunner)
     testImplementation(libs.kotestAssertions)
+    testImplementation(libs.kotlinxSerialization)
 }
