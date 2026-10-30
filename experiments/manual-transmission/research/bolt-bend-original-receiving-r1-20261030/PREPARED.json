@@ -1,0 +1,17 @@
+{
+  "state": "PREPARED_NOT_EXECUTED",
+  "run": 41010389962,
+  "job": 123914704347,
+  "steps": [
+    "Reconcile fresh CURRENT, recent canonical/checkpoint commits and newer receipt/successor before receiving; no duplicate receiving.",
+    "Fetch terminal run, jobs, artifacts and git source/validation/main/source_delta/validation_delta metadata into GITHUB_METADATA.json matching PINS.",
+    "Download only original artifact with connected GitHub artifact tool; record digest/size and preserve full ZIP.",
+    "Run RECEIVE.py once in clean receipt folder with original.zip and pinned files. Archive original ZIP parts, metadata, receipt and receiver unchanged.",
+    "Inspect raw XML witnesses and compile logs independently, classify all errors. If gates pass proceed immediately to smallest authorized repair; reproduction is not repair acceptance.",
+    "If compile/report/collector failure, preserve original and diagnose exact cause. Never accept compiler error as behavioral evidence or blindly rerun."
+  ],
+  "new_test": "Five correct-cost assertions are intended to fail exactly BB03/BB04 on unchanged original production. They must pass after later repair; no assertion weakening.",
+  "original_zip_received": false,
+  "feature_admitted": false,
+  "card_admitted": false
+}

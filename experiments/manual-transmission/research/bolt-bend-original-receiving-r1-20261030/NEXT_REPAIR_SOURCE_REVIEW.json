@@ -1,0 +1,92 @@
+{
+  "state": "ISOLATED_NEXT_DEPENDENCY_SOURCE_REVIEW_NOT_IMPLEMENTATION",
+  "source": "b316dbd060c4cf41afa3bd756e47f281c079f78c",
+  "source_tree": "e2e3600c79adbdd9c6071822784420fde92ad024",
+  "dependent_run": 41010389962,
+  "entry_condition": "First receive original reproduction; do not presume success or implement repair on frozen source.",
+  "proposal": "de4cd0150608c43b41d0bb6e9b9bd35a3dfb6992",
+  "authority": "d576c6b602a674c8a93f5ff5f36c3db0f59c9d0b",
+  "protected_file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+  "protected_original_blob": "aec22c65328baa9404eca5d500393645bb75d0a8",
+  "callers": [
+    {
+      "line": 532,
+      "function": "evaluateReduction",
+      "text": "val controls = controlsMatchingPermanent(state, playerId, source.filter)"
+    },
+    {
+      "line": 723,
+      "function": "greatestPropertyAmongMatching",
+      "text": "matchesBattlefieldPredicate(entityId, cardDef, predicate, projectedState)"
+    },
+    {
+      "line": 1047,
+      "function": "controlsMatchingPermanent",
+      "text": "private fun controlsMatchingPermanent(state: GameState, playerId: EntityId, filter: GameObjectFilter): Boolean {"
+    },
+    {
+      "line": 1053,
+      "function": "controlsMatchingPermanent",
+      "text": "matchesBattlefieldPredicate(entityId, cardDef, predicate, projectedState)"
+    },
+    {
+      "line": 1113,
+      "function": "matchesBattlefieldPredicate",
+      "text": "private fun matchesBattlefieldPredicate("
+    },
+    {
+      "line": 1150,
+      "function": "countPermanentsWithCounter",
+      "text": "matchesBattlefieldPredicate(entityId, cardDef, predicate, projectedState)"
+    },
+    {
+      "line": 1188,
+      "function": "countDifferentlyNamedPermanents",
+      "text": "matchesBattlefieldPredicate(entityId, cardDef, predicate, projectedState)"
+    }
+  ],
+  "read_bindings": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt": "cc74a8d50060d85608e1cbcd83583f71be98891f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt": "97fe6f40bad0a21b5e4cee49e0182c300c6bc995",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectedState.kt": "2edebf66d934001e06685508e5261533e3f25541",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/EvaluateExistsControllerProjectionTest.kt": "3b14eaccac5f488c139d1505cf7278820c99aacc",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/mana/DynamicCostReductionTest.kt": "35877ce139e285039a29cbb3570d62b4baa0ab3d",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LayerSystemTest.kt": "cc035d174e661e375ab0b1dc73632e734697f62d"
+  },
+  "findings": [
+    "Only evaluateReduction.FixedIfControlFilter calls controlsMatchingPermanent.",
+    "Shared matchesBattlefieldPredicate also serves greatestPropertyAmongMatching, countPermanentsWithCounter, countDifferentlyNamedPermanents; preserve this shared helper byte-for-byte to avoid broadening other cost sources.",
+    "GameState.getBattlefield(playerId) returns owner-keyed zone; controlledBattlefield(playerId) delegates to projected current controller. Both original power predicate omission and controller read belong to authorized boundary.",
+    "Existing PredicateEvaluator.PowerAtLeast uses projected power, falling back to CardComponent baseStats.basePower then zero, and inclusive predicate.min comparison.",
+    "Existing EvaluateExistsControllerProjectionTest demonstrates addFloatingEffect(ChangeController) while owner-zone and base ControllerComponent stay unchanged. Use this fixture pattern without modifying that test."
+  ],
+  "minimal_candidate_after_original": "Confine changes to controlsMatchingPermanent body: select projectedState.getBattlefieldControlledBy(playerId), special-case PowerAtLeast with projected power (same base fallback as existing evaluator) and inclusive min; delegate all other predicates to existing shared matcher unchanged. Do not generalize unsupported predicates, filter composition, or other cost sources.",
+  "positive_test_matrix": [
+    "Keep all original BB01-BB05 assertions; add missing coverage only.",
+    "Projected control gain of opponent-owned power4 qualifies; projected loss of own power4 does not; assert owner zone and base controller unchanged.",
+    "Projected boost from base3 to4 qualifies; projected reduction from5 to3 does not; assert both base/projected values.",
+    "Remove CREATURE type from qualifying permanent: no reduction; animate noncreature into power4 creature: qualifies.",
+    "Several qualifying creatures yield one fixed reduction of3; colored red is preserved.",
+    "Supplemental synthetic higher generic cost with same FixedIfControlFilter permits observing fixed amount once rather than mana-floor masking; never change actual BoltBend definition.",
+    "Paired unaffected other cost source and unrelated predicate controls remain unchanged.",
+    "Use original Fblthp/generic and accepted Spellskite identities in dependent compatibility; no targeting reconstruction."
+  ],
+  "required_mutant_shapes": [
+    "Drop PowerAtLeast branch: original own4/5 and projected boost fail.",
+    "Exclusive > instead of >=: exact threshold4 fails while5 passes.",
+    "Use base power instead of projected: both boost and shrink cases fail.",
+    "Use owner-keyed battlefield: projected control gain/loss cases fail.",
+    "Ignore caster controller across battlefield: opponent-only control fails.",
+    "Apply wrong reduction amount: actual Bolt Bend and supplemental exact generic remainder fail.",
+    "Remove red requirement: actual cost/red assertions fail.",
+    "Use base creature type: projected type-change controls fail."
+  ],
+  "compilation_contract": "Construct every normal/mutant source form and compile all before executing behavioral negatives; any compiler error is diagnostic only. Freeze exact identities/frames/failure sets and unchanged passing controls; restore/rebind source between forms.",
+  "dependent_contract": "389-card suite; full19074 original ordinary identities with43exact historical skips plus every added test;64clientfloor; affected cost suite, original Fblthp/generic checks, WAR Assay differential classification, protected byte checks and original artifact receiving. Reuse accepted evidence only when exact bindings still support it.",
+  "ui_and_sdk": "No SDK vocabulary or UI implementation change proposed. Existing cost/affordability consumers must use corrected computed cost and dependent checks; public target semantics remain frozen.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "reviewer": "Same execution assistant; source review only, no fabricated independent reviewer."
+}
