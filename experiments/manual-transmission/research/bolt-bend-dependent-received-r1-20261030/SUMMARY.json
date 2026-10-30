@@ -1,0 +1,132 @@
+{
+  "state": "BOLT_BEND_DEPENDENT_ORIGINAL_VERIFIED_COMBINED_CARD_REVIEW_PENDING",
+  "source": "180b67fb8fee312e576ff7067954584855d40e0f",
+  "validation": "bc6bf1e2d1215c51c5be8a9a372741c2dbcd3ceb",
+  "run": 41050172581,
+  "job": 124043974347,
+  "attempt": 1,
+  "artifact": 12976011646,
+  "bytes": 36163706,
+  "sha256": "1000f6e417b31ae26683f3e90b4119a0a6e1077f3b2d7dd99187e463be5ac59a",
+  "manifest_entries": 5412,
+  "gate_errors": [],
+  "feature_admitted": false,
+  "card_admitted": false,
+  "gates": {
+    "initial": {
+      "sha256_bindings": 279,
+      "git_bindings": 27,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "rules-engine/src/main": "236b9a8b07c055743d5f8d777cf14afe79501052",
+        "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+        "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499",
+        "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d"
+      }
+    },
+    "final": {
+      "sha256_bindings": 279,
+      "git_bindings": 27,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "rules-engine/src/main": "236b9a8b07c055743d5f8d777cf14afe79501052",
+        "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+        "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499",
+        "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d"
+      }
+    },
+    "inventory": {
+      "ordinary": 19090,
+      "original": 19074,
+      "added": 16,
+      "skips": 43,
+      "cards": 389
+    },
+    "compile-normal": {
+      "compiled": true
+    },
+    "focused": {
+      "rows": 81,
+      "passes": 81,
+      "failures": {},
+      "skips": 0
+    },
+    "cards": {
+      "rows": 389,
+      "passed": 389,
+      "skips": 0
+    },
+    "ordinary": {
+      "rows": 19090,
+      "passed": 19047,
+      "skips": 43
+    },
+    "client": {
+      "passed": 64,
+      "skips": 0
+    },
+    "assay": {
+      "original_differential_preserved": true,
+      "sha256": "b8c9a7c89a002a494f7d8d019fe8ec1c8df3122afbbbd7838e4a9adf22cc584e",
+      "corpus_sha256": "ee1d8e6781cd60863bf5ff8959d1f3770e05a21a9fe5b2159a587833a23fdffb",
+      "classified_bolt_bend_structural_divergences": 1
+    },
+    "early_evidence_reuse": {
+      "run": 41043257718,
+      "receipt_blob": "aa18dcd7d5cf15a43c30250763173e2961d9e0a7",
+      "source": "5b76957211ef14d5c8f436811a8311774d40cd4a"
+    },
+    "auditor_controls": {
+      "state": "SYNTHETIC_AUDITOR_ONLY",
+      "valid_shapes": 2,
+      "rejected": [
+        "missing",
+        "duplicate",
+        "skip",
+        "error",
+        "failure",
+        "wrongcount",
+        "wrongidentity",
+        "nonzeroexit",
+        "compilercontamination",
+        "missingreport",
+        "client identity",
+        "client status",
+        "client pending"
+      ]
+    },
+    "assay_controls": {
+      "unchanged_baseline_accepted": true,
+      "rejected": [
+        "missing",
+        "zero-divergences",
+        "wrong-amount",
+        "missing-power",
+        "extra-divergence"
+      ],
+      "engine_evidence": false
+    },
+    "completion": {
+      "state": "DEPENDENT_EXECUTION_COMPLETE_ORIGINAL_RECEIVING_PENDING",
+      "feature_admitted": false,
+      "card_admitted": false
+    }
+  },
+  "full_receipt_sha256": "ce88b32eeeab5eceefac7ff6b52ccbc227e9b275b9ac89232f59606035193146"
+}
