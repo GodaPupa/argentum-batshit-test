@@ -1,0 +1,12 @@
+{
+  "state": "PRECOMPILE_PYTHON_IMPORT_FAILURE_NO_ARTIFACT_NO_BEHAVIORAL_EVIDENCE",
+  "run": 40988921416,
+  "job": 123846342218,
+  "source": "1ce3c8bb0dd5bcdea2b780eb6c8def267b389250",
+  "validation": "7b70a0a43a4efb00fa921f4787afbbe1cac5e7b5",
+  "cause": "Unused inherited metadata_audit import in missing-IR-only runner prevents module loading. Receiver also retains unused metadata helper import, must remove before use.",
+  "compiled_forms": 0,
+  "behavioral_tests": 0,
+  "artifact_count": 0,
+  "repair": "Remove only unused research imports; add real import smoke check; preserve existing directory collision controls and every runtime assertion."
+}
