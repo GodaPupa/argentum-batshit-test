@@ -1,0 +1,54 @@
+{
+  "state": "ACCEPTED_BOUNDED_BOLT_BEND_REPAIR_AND_FBLTHP_ENTRY_ORIGIN_CARD",
+  "source": "180b67fb8fee312e576ff7067954584855d40e0f",
+  "tree": "6e19fcc9c26d4fbf5a334115dc37f56bcc721fd1",
+  "feature_admitted": true,
+  "card_admitted": true,
+  "card": "Fblthp, the Lost — canonical WAR50",
+  "production_changes_this_review": 0,
+  "reviewer": "Same execution assistant; original artifact verification, not independent peer review.",
+  "requirements": [
+    {
+      "condition": "Preimplementation fresh metadata, all printings/rulings/image",
+      "evidence": "0aac4ec80805ab48aff63826e264fe174ad26d1c; supplementary 766dc5525ba296dd987158c962d93b18ae6fc447 verifies16fields/8printings/5rulings/image; unchanged mtg-sets/SDK trees"
+    },
+    {
+      "condition": "Frozen normal and every mutant compile-first; original assertions retained",
+      "evidence": "1a6a89f2311ebfddc75dc73d260d814ec2536ee6:17compiledforms; original24 Fblthp/entry-origin and26generic cases,54exact negative witnesses. 57e1cff26e72503f7e6d45b07ae254d79aac91ee separately qualifies sole authorized test exception"
+    },
+    {
+      "condition": "Origin semantics, copies, controller/owner, departure/blink, trigger ordering/nested serialization, spell-versus-ability and occurrence preservation",
+      "evidence": "Exact-bound generic early BEHAVIORAL_VERIFICATION.json blobf102d489d75ef0d91551a1c5656501d859b1d1f0; all original Fblthp24/generic26/axes15 rerun within81focused on current source"
+    },
+    {
+      "condition": "Discovery and canonical printing",
+      "evidence": "Current81focused includes discovery assertion; original printing exit0 at766dc552 unchanged mtg-sets/scripts trees"
+    },
+    {
+      "condition": "Snapshot and lint",
+      "evidence": "COMBINED_BINDINGS.json: all originalWAR bytes retained plusoneFblthpentry; unchanged audit and negative controls at1a6a89f2; current ordinary suite contains passingWAR golden/roundtrip and cardlint cases"
+    },
+    {
+      "condition": "Assay parse/explain/compile/IR/differential classification",
+      "evidence": "de4cd015 CLASSIFICATION.json: two explicit Fblthp grammar declines, LINE_DECLINED not compilererror; currentIR SCAFFOLD explicitly unrecovered IfElse neveradopted. Handwritten behavior proven independently. WAR71/66compared/65agree/5uncovered/1BoltBend divergence unchanged"
+    },
+    {
+      "condition": "Bolt Bend original defect and smallest authorized repair",
+      "evidence": "Original reproductionbb1aa355:2exact failures3controls. Earlyd2fd821b+44d9920c:9compiledforms16normal16restored38exactnegative90controls. Only authorizedCostCalculator boundary changed; BoltBend card unchanged. Projected type/controller/power inclusive4, amount3generic/red preservation and unrelated cost/predicate controls qualify runtime form; serialized Assay forms still differ and are preserved, not normalized"
+    },
+    {
+      "condition": "All dependent compatibility",
+      "evidence": "899041e3768913832de41ec8f44335aa1303da89:normalcompile81focused389cards19090ordinary(19074original+16new)43exacthistoricalskips64client; exact original WAR differential and freshcorpus retained"
+    },
+    {
+      "condition": "Original evidence, protected boundaries, restoration",
+      "evidence": "899041e3:36163706bytes/SHA2561000f6e417b31ae26683f3e90b4119a0a6e1077f3b2d7dd99187e463be5ac59a/5412manifest;279SHA+27Gitbindings13trees initial/final; prior original failures preserved; COMBINED_BINDINGS verifies exact-boundreuse"
+    }
+  ],
+  "scope": "Accept bounded Bolt Bend cost repair, generic retarget/entry-origin capabilities and Fblthp WAR50 card on exact qualified source only. Accepted Spellskite evidence preserved. No other card or multiplayer admission.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "main_unchanged": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "next": "Review remaining five missing Manual cards against current source and existing saved drafts; new protected boundaries require concrete proposals. No gameplay."
+}
