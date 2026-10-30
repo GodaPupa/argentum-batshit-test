@@ -1,0 +1,66 @@
+{
+  "state": "FROZEN_RESEARCH_ONLY_AFTER_VERIFIED_DEPENDENT_RECEIPT",
+  "based_on": "ce5145a2f3a361ad202ebc9cb86ef5b88a57dfc3",
+  "blocked_on_original_receiving": null,
+  "production_test_golden_changes": 0,
+  "metadata_controls": {
+    "synthetic_only": true,
+    "valid_archived_shape": 1,
+    "rejected": [
+      "oracle_text",
+      "collector_number",
+      "id",
+      "artist",
+      "flavor_text",
+      "missing printing page",
+      "duplicate printing",
+      "ruling drift",
+      "missing image",
+      "snapshot stat drift"
+    ]
+  },
+  "archived_metadata_reuse": {
+    "receipt": "0aac4ec80805ab48aff63826e264fe174ad26d1c",
+    "artifact": 12906973695,
+    "zip_bytes": 257050,
+    "zip_sha256": "591a339572ed073afa9056b27b1dda0ac1b2cb91fcec0a53037dbbf2e86ca5e8",
+    "war_member": "metadata/war.json",
+    "war_sha256": "3eb24ea67ceefc6f776a6a8977c3c3a8d34e7b0556ccf4e549852d45501e2054"
+  },
+  "bindings": 278,
+  "git_bindings": 21,
+  "scope": [
+    "Compile normal Assay and mtgish tooling before collection",
+    "Fresh exact WAR50/printings/rulings/image verification",
+    "Unchanged printing check with fresh transient cache",
+    "Archive original oracle corpus and Assay parse/explain/compile/WAR differential",
+    "Archive full current mtgish IR and exact Fblthp row; inspect original emitted draft without installation",
+    "Original receiving and explicit semantic classification before any combined admission"
+  ],
+  "negative_scope": "Ten executable synthetic metadata rejection controls; no runtime changes or new runtime mutants. Reuse exact-bound accepted early54 and one-test2 executable negative witnesses.",
+  "proof_required_before_dispatch": [
+    "Successful committed original dependent receipt with 389card/19074ordinary43skips/64client",
+    "PREPARE.py exact receipt blob and state validation",
+    "Review exact resulting source/protocol/collector/receiver and workflow-only child",
+    "Fresh CURRENT CAS and all workflow/automation ownership reconciliation; no competing qualification"
+  ],
+  "external_independent_review": false,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "multiplayer_admitted": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "verified_dependent_receipt": {
+    "commit": "57e1cff26e72503f7e6d45b07ae254d79aac91ee",
+    "blob": "1af2974fbd8c7b7352e2e47de229b90e35759e93",
+    "source": "ce5145a2f3a361ad202ebc9cb86ef5b88a57dfc3",
+    "run": 40977504099,
+    "compiled_forms": 3,
+    "cards": 389,
+    "ordinary_rows": 19074,
+    "historical_skips": 43,
+    "client": 64
+  },
+  "review_changes_from_saved_draft": "PREPARE binds verified receipt; receiver additionally requires exact collector RESULT.json; no production/test/golden changes."
+}
