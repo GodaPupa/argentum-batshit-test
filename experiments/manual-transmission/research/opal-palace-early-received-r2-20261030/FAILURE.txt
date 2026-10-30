@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/opal-palace-early-r1-20261030/run.py", line 99, in <module>
+    try:main()
+        ~~~~^^
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/opal-palace-early-r1-20261030/run.py", line 86, in main
+    apply({});stage('normal','normal',{})
+              ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/opal-palace-early-r1-20261030/run.py", line 68, in stage
+    else:js(folder/'SUMMARY.json',verify(raw,C,form))
+                                  ~~~~~~^^^^^^^^^^^^
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/opal-palace-early-r1-20261030/audit.py", line 28, in verify
+    assert (rc!=0)==negative
+           ^^^^^^^^^^^^^^^^^
+AssertionError
