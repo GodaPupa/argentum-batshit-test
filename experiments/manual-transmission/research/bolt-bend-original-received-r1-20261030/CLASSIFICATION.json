@@ -1,0 +1,26 @@
+{
+  "state": "ORIGINAL_EXECUTABLE_DEFECT_VERIFIED_COLLECTOR_FAILURE_PRESERVED",
+  "run": 41010389962,
+  "source": "b316dbd060c4cf41afa3bd756e47f281c079f78c",
+  "manifest_entries": 622,
+  "compiled": true,
+  "exact_witnesses": [
+    {
+      "name": "BB03 own power four reduces exactly three generic and preserves red",
+      "line": 46,
+      "message": "org.opentest4j.AssertionFailedError: expected:<{R}> but was:<{3}{R}>"
+    },
+    {
+      "name": "BB04 own power five reduces exactly three generic and preserves red",
+      "line": 51,
+      "message": "org.opentest4j.AssertionFailedError: expected:<{R}> but was:<{3}{R}>"
+    }
+  ],
+  "passing_controls": 3,
+  "skips": 0,
+  "cause": "Research auditor expected quotation marks around cost strings; original Kotest assertion message omits them. Original numeric/color assertions and frames match exactly. No production or test change, no repeated qualification needed.",
+  "repair_admitted": false,
+  "card_admitted": false,
+  "original_failure_receipt": "RECEIPT.json",
+  "next": "Proceed with already authorized smallest CostCalculator-only repair and every proposal gate; no additional authority needed."
+}
