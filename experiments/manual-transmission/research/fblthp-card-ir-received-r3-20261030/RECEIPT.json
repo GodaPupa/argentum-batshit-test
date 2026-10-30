@@ -1,0 +1,96 @@
+{
+  "state": "ORIGINAL_RECEIVED_CLASSIFICATION_PENDING",
+  "source": "073c4db12b98073c308f4456544a017541cf1e5b",
+  "validation": "1709e384e24741239a5c031d7ec83986fc1051bd",
+  "run": 40989401356,
+  "job": 123847889240,
+  "attempt": 1,
+  "artifact": 12948866068,
+  "bytes": 8221572,
+  "sha256": "aa8aa26f0bbf8c92f3dabaf5556043449fe42d13034e8919300bc4c4eb8280a0",
+  "manifest_entries": 623,
+  "gates": {
+    "initial": {
+      "sha256_bindings": 278,
+      "git_bindings": 21,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "rules-engine": "017eef2ee9747772d4d549753436187398ca3fa5",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638"
+      }
+    },
+    "final": {
+      "sha256_bindings": 278,
+      "git_bindings": 21,
+      "unchanged_trees": {
+        "mtg-sdk": "5e57341745ada1b3c2625d15c82aee3e9f5a0c92",
+        "rules-engine": "017eef2ee9747772d4d549753436187398ca3fa5",
+        "mtg-sets": "5674dda362b22f210aa18a2eea20b17314834818",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638"
+      }
+    },
+    "prior": {
+      "blob": "e92499415d4eef4465fda6af435342b29f45ca15",
+      "completed_gates_reused": [
+        "initial",
+        "final",
+        "dependent",
+        "compile-normal",
+        "printing",
+        "corpus",
+        "parse",
+        "explain",
+        "assay-compile",
+        "assay-war",
+        "metadata",
+        "corpus_identity",
+        "current_ir_identity",
+        "synthetic_metadata_controls"
+      ],
+      "failure_preserved": true
+    },
+    "compile-normal": {
+      "exit": 0,
+      "stdout_sha256": "87ce600a656c76818a3394fa6c0805b5da92f8f7cea48f534d95753ec48ac3f1",
+      "stderr_sha256": "d3d905abea993b8cc0c49bb1bbe9e23f1ad1ce9d74a3e92158c2308c079f85fe"
+    },
+    "emit": {
+      "exit": 0,
+      "stdout_sha256": "1220becb9f39f1f23b22527a225673484cd0f9a345b5531d2328a67b073be94e",
+      "stderr_sha256": "ea5b8e5e04e930390a9045ec7d675835e3eb86c6e627e9ec5b5f755e3aa8cdb0"
+    },
+    "ir": {
+      "sha256": "f2513283c1ffd32ab954bdc10a4bd78a495f297f532c68b8c69d6f05f1e95d06",
+      "exact_fblthp_rows": 1,
+      "classification_required": true
+    },
+    "stage_collision_controls": {
+      "synthetic_only": true,
+      "original_collision_reproduced": true,
+      "separate_emit_directory_passed": true,
+      "raw_input_preserved": true,
+      "duplicate_stage_rejected": true
+    },
+    "completion": {
+      "state": "MISSING_IR_COMMAND_COLLECTED_CLASSIFICATION_PENDING",
+      "feature_admitted": false,
+      "card_admitted": false
+    }
+  },
+  "gate_errors": [],
+  "feature_admitted": false,
+  "card_admitted": false
+}

@@ -1,0 +1,78 @@
+{
+  "state": "ORIGINAL_IR_RECEIVED_CARD_ADMISSION_WITHHELD",
+  "source": "073c4db12b98073c308f4456544a017541cf1e5b",
+  "original_run": 40982111046,
+  "original_receipt": "766dc5525ba296dd987158c962d93b18ae6fc447",
+  "assay": {
+    "fblthp_lines": [
+      {
+        "line": 0,
+        "verdict": "DECLINED",
+        "reason": "Entry-origin conditional not read by Assay grammar; original explain stops at it entered from library.",
+        "behavioral_proof": "Accepted source-bound early/runtime cases, not this declined parse."
+      },
+      {
+        "line": 1,
+        "verdict": "DECLINED",
+        "reason": "Spell-only becomes-target self-shuffle trigger not read by current Assay grammar.",
+        "behavioral_proof": "Accepted generic/one-test event witnesses and original Fblthp scenarios, not this declined parse."
+      }
+    ],
+    "compile_exit": 1,
+    "compile_classification": "Two explicit LINE_DECLINED diagnostics, not Kotlin/compiler contamination.",
+    "WAR": {
+      "total": 71,
+      "compared": 66,
+      "confirmed": 65,
+      "grammar_not_covered": 5,
+      "divergent": 1,
+      "oracle_text_drift": 0
+    }
+  },
+  "bolt_bend": {
+    "classification": "PREEXISTING_SEMANTIC_COST_PATH_MISMATCH_NOT_PROVEN_EQUIVALENT",
+    "card_blob": "954987a400ab6ce10436ca116b1b15c8d9655984",
+    "cost_calculator_blob": "aec22c65328baa9404eca5d500393645bb75d0a8",
+    "unchanged_main_cost_blob": "aec22c65328baa9404eca5d500393645bb75d0a8",
+    "condition_evaluator_blob": "156f8cea458359ddff01f3e5655773ab75bb506b",
+    "predicate_evaluator_blob": "97fe6f40bad0a21b5e4cee49e0182c300c6bc995",
+    "observation": "Stored ReduceGenericBy(FixedIfControlFilter) calls controlsMatchingPermanent then matchesBattlefieldPredicate; latter has no PowerAtLeast branch and defaults false. Parser ReduceGeneric3 gated by Exists delegates to general PredicateEvaluator, which implements PowerAtLeast using projected power. Both serialize creature+power>=4, but this runtime difference prevents classifying models as equivalent.",
+    "evidence_lines": {
+      "CostCalculator": [
+        97,
+        396,
+        442,
+        531,
+        1047,
+        1113
+      ],
+      "ConditionEvaluator": [
+        955
+      ],
+      "PredicateEvaluator": [
+        743
+      ]
+    },
+    "scope": "No unrelated runtime/card repair authorized or performed. Determine governing admission disposition explicitly; do not silently normalize this divergence or claim it passes. Current missing-IR work remains separately authorized."
+  },
+  "remaining": [
+    "Bounded authority for pre-existing Bolt Bend cost predicate defect; then source-specific qualification and combined Fblthp admission."
+  ],
+  "feature_admitted": false,
+  "card_admitted": false,
+  "ir": {
+    "run": 40989401356,
+    "sha256": "f2513283c1ffd32ab954bdc10a4bd78a495f297f532c68b8c69d6f05f1e95d06",
+    "emitter_stdout_sha256": "1220becb9f39f1f23b22527a225673484cd0f9a345b5531d2328a67b073be94e",
+    "classification": "SCAFFOLD; IfElse explicitly unrecovered. Incomplete generated skeleton has no executable abilities and must not be adopted. Handwritten Fblthp behavior is covered by received source-bound scenarios, not the generator.",
+    "admission_effect": "No emitter repair required by this draftability probe; add-card Step0 explicitly permits SCAFFOLD with handwritten completion."
+  },
+  "disposition": {
+    "rule": "add-card Step10: Classify every row — card bug, parser bug, or known fold — and fix the card bugs here. verify: Fix only failures your change caused.",
+    "finding": "WAR differential exit0 is collection success, not proof the divergent card is correct. Source review establishes a runtime card-cost defect; cannot declare equivalent or waive it through classification.",
+    "authority": "Existing Fblthp and generic retarget grants do not cover unrelated cost calculation. No existing grant revoked or treated as missing.",
+    "feature_admitted": false,
+    "card_admitted": false
+  }
+}
+

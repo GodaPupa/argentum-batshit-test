@@ -1,0 +1,34 @@
+{
+  "state": "PROPOSED_NOT_AUTHORIZED",
+  "source": "073c4db12b98073c308f4456544a017541cf1e5b",
+  "purpose": "Resolve pre-existing Bolt Bend cost-reduction defect exposed by required WAR Assay differential before combined Fblthp admission.",
+  "boundary": {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+    "blob": "aec22c65328baa9404eca5d500393645bb75d0a8",
+    "scope": "Only FixedIfControlFilter battlefield matching and necessary PowerAtLeast predicate handling, using projected power/type/controller for the caster's current battlefield. Preserve all other cost sources and predicate behavior; no generalized matcher refactor."
+  },
+  "card_preserved": {
+    "path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/war/cards/BoltBend.kt",
+    "blob": "954987a400ab6ce10436ca116b1b15c8d9655984"
+  },
+  "required": [
+    "Source-review the exact FixedIfControlFilter path and all callers; archive original runtime bytes. Establish original failure with executable scenario, not only source inference.",
+    "Compile normal and all bounded mutant forms first. Test actual discovered Bolt Bend: own creature power3/4/5; no creature; opponent-only qualifying creature; control changes; projected power boosts/reductions and creature-type changes; multiple eligible creatures reduce only3; colored red cost preserved; existing target legality and retarget event behavior unchanged.",
+    "Executable negative controls for dropped PowerAtLeast support, incorrect exclusive threshold, base-power substitution, opponent-controller leakage and reduction amount/color error; exact assertion witnesses and passing controls, no compiler or unrelated failure accepted.",
+    "Freeze exact source/protocol/test identities and controls; use approved locked commands and single qualification concurrency.",
+    "Preserve all existing assertions, all snapshots/goldens/82fixtures and all source boundaries outside the named runtime file and necessary new tests. No WAR snapshot modification or Bolt Bend card rewrite.",
+    "Run affected cost/engine/card scenarios, original Fblthp early/generic targeting checks,389card gates, full same-source ordinary suite with19074original rows43exacthistorical skips plus additive new cases,64client and required Assay differential; classify any still-structural cost-model difference with executable semantics, no normalization or relaxation.",
+    "Receive original artifacts with source/tree/workflow/run/job/attempt/hash/manifest/raw report identity and count/source restoration/protected bytes verification. Reuse completed exact-bound evidence where valid; never rerun accepted work for context.",
+    "After repair is qualified, complete combined Fblthp admission and resume existing critical path subject to all remaining source-specific gates."
+  ],
+  "exclusions": [
+    "No other card registration or protected runtime changes",
+    "No parser normalization, expectation relaxation, skips or golden changes",
+    "No main merge, extra spending, privileged resources",
+    "No multiplayer admission, official games or seeds",
+    "Frozen Manual v0.7 and both Precision games preserved"
+  ],
+  "review": "Same-assistant source diagnosis, no new executable defect reproduction claimed yet.",
+  "next_executable_action": "Await explicit bounded cost-predicate repair authorization; resume only existing executor and preserved schedule after grant."
+}
+
