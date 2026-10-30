@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/opal-palace-early-r1-20261030/run.py", line 99, in <module>
+    try:main()
+        ~~~~^^
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/opal-palace-early-r1-20261030/run.py", line 83, in main
+    stage('compile-normal','compile',{})
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/opal-palace-early-r1-20261030/run.py", line 64, in stage
+    log=raw['output.log'].decode();assert rc==0 and 'BUILD SUCCESSFUL' in log
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
