@@ -12,7 +12,7 @@
     "automation_run": "89c81450-b6b8-8324-8557-17cf35c83add",
     "released_utc": "2026-10-30T15:16:32.092Z",
     "expires_utc": "2026-10-30T15:16:32.092Z",
-    "reason": "Exact Opal Palace mana-rider/serialization/stack-exit and C13 registration proposal57338719 requires an explicit bounded grant. Existing targeting/Fblthp/Bolt grants exclude this different protected behavior and card. No qualification is active; original five-card diagnostic and complete reviewable proposal are archived. No silent extension of authority."
+    "reason": "Released; exact Opal grant recorded and existing Work executor resumed. A future execution must reconcile and CAS-claim before work."
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -1367,7 +1367,7 @@
   "automation": {
     "execution_task": "Manual Work Continuation",
     "execution_task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_schedule": "Existing single Work continuation paused at exact new Opal authority boundary; stored schedule preserved. No worker created and no read-only task changed.",
+    "execution_schedule": "Existing single Work executor resumed for explicit bounded Opal grant; stored schedule unchanged.",
     "intervention_watch": {
       "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
       "enabled": false,
@@ -1452,8 +1452,8 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "PAUSED_AUTHORITY_BLOCKER",
-    "last_verified_enabled_utc": "2026-10-30T00:18:16.309Z",
+    "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
+    "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
     "next_authorized_action": "Follow live CURRENT.summary and next.next_executable_action; all historical current-run references superseded.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
@@ -1532,7 +1532,7 @@
       "prompt_readback_verified": true
     },
     "previous_execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
-    "is_enabled": false,
+    "is_enabled": true,
     "resume_requested": false,
     "previous_pause": {
       "utc": "2026-10-28T16:47:53Z",
@@ -1592,6 +1592,13 @@
       "schedule_preserved": true,
       "execution_admitted_unchanged": true,
       "resolved_by": "opal_palace_rider_registration_authorization"
+    },
+    "opal_authority_resume": {
+      "utc": "2026-10-30T21:18:51.573Z",
+      "grant_commit": "5fb4a1cb15b34e09515779652ff3653e3c305feb",
+      "task_id": "6adbe33033e481918659ce578f64f31e",
+      "schedule_preserved": true,
+      "prompt_grant_added": true
     }
   },
   "previous_qualified": {
@@ -1615,7 +1622,7 @@
     "session": "390bd1587480",
     "work_owner": null,
     "discussion": "READ_ONLY",
-    "scheduled_executor": "RESUME_REQUEST_PENDING",
+    "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
     "activity": "READY_FOR_NEXT_ITERATION",
     "last_execution_owner": "manual-work-hourly-89c81450-b6b8-8324-8557-17cf35c83add",
     "intervention_watch": "READ_ONLY",
@@ -2311,7 +2318,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "Explicit Opal grant recorded; administrative handoff to sole existing executor. Implementation and qualification remain pending. No worker claimed or qualification dispatched by this grant-recording action.",
+  "actual_stopping_reason": "Grant-recording and sole-executor resume handoff complete. Runnable authorized work is checkpointed with ownership released; no implementation or qualification was executed during this administrative handoff.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -2377,7 +2384,7 @@
     "next_executable_action": "Read opal_palace_rider_registration_authorization and exact proposal57338719 NEXT_ADMISSION.json/TEST_MATRIX.json. Reconcile fresh CURRENT, exact owner/automation state, newer commits/receipts/successors and all workflow events/statuses; CAS claim only if no active owner. Read applicable AGENTS/skills; implement only named mana-rider, exact-spell identity, serialization and stack-exit boundaries, canonical C13#310 and one additive C13 snapshot entry on immutable successor to180b67fb. Preserve original10tests and all other assertions. Compile normal/allmutants first, execute exact negatives and controls, then all required card/dependent/ordinary43historicalskip/64client/metadata/printing/lint/Assay gates; receive original artifacts before acceptance. Reuse accepted evidence where bindings permit. No additional payment/UI/protected repairs,othercards,multiplayer,games,seeds or spending authorized. Continue existing critical path after bounded acceptance.",
     "concrete_blocker_removed": "Explicit user grant resolves the exact Opal Palace rider/protected-runtime/C13 registration authority blocker. No implementation or acceptance is implied.",
     "continuation_state": "READY_FOR_NEXT_ITERATION",
-    "actual_stopping_reason": "Explicit Opal grant recorded; administrative handoff to sole existing executor. Implementation and qualification remain pending. No worker claimed or qualification dispatched by this grant-recording action.",
+    "actual_stopping_reason": "Grant-recording and sole-executor resume handoff complete. Runnable authorized work is checkpointed with ownership released; no implementation or qualification was executed during this administrative handoff.",
     "ownership": {
       "owner": null,
       "state": "RELEASED",
@@ -2494,7 +2501,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-30T21:18:30.865Z",
+  "updated_utc": "2026-10-30T21:18:51.573Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
