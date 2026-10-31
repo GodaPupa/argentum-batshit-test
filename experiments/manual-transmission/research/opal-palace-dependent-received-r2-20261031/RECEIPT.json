@@ -1,0 +1,184 @@
+{
+  "state": "OPAL_DEPENDENT_ORIGINAL_VERIFIED_C13_CLASSIFICATION_AND_COMBINED_REVIEW_PENDING",
+  "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
+  "validation": "b91e0cce519e98ea446d30f7df5968002cfdfde2",
+  "run": 41161910425,
+  "job": 124421090642,
+  "attempt": 1,
+  "artifact": 13027944981,
+  "bytes": 36945924,
+  "sha256": "a0172d45911f773a180a4e8e8ac8c3c46af6ecdc0274d09b85a34c81e9f36351",
+  "manifest_entries": 5450,
+  "gates": {
+    "initial": {
+      "sha256_bindings": 289,
+      "git_bindings": 27,
+      "unchanged_trees": {
+        "mtg-sdk": "51b097156bff57e30aeca2d6338ccfc5a62a65e3",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "rules-engine/src/main": "4af72e97ca0b86c0c0600762ae87d2171cce18dd",
+        "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+        "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499",
+        "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d",
+        "mtg-sets/src/main": "b828fb3c7f72af0c07801c72bf532aac6cb8700a",
+        "mtg-sets/2008-2016": "748604fba9b275b521b0de32049422c03de4695f",
+        "mtg-sets/src/test/kotlin": "4f6598eda71e2c6909c8c9fcd69014ecece28074"
+      }
+    },
+    "final": {
+      "sha256_bindings": 289,
+      "git_bindings": 27,
+      "unchanged_trees": {
+        "mtg-sdk": "51b097156bff57e30aeca2d6338ccfc5a62a65e3",
+        "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+        "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+        "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+        "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+        "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+        "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+        "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+        "rules-engine/src/main": "4af72e97ca0b86c0c0600762ae87d2171cce18dd",
+        "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+        "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499",
+        "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d",
+        "mtg-sets/src/main": "b828fb3c7f72af0c07801c72bf532aac6cb8700a",
+        "mtg-sets/2008-2016": "748604fba9b275b521b0de32049422c03de4695f",
+        "mtg-sets/src/test/kotlin": "4f6598eda71e2c6909c8c9fcd69014ecece28074"
+      }
+    },
+    "inventory": {
+      "ordinary": 19139,
+      "original": 19074,
+      "added": 65,
+      "skips": 43,
+      "cards": 390
+    },
+    "compile_and_focused_reuse": {
+      "compile_normal_reused": true,
+      "focused_reused": 137,
+      "receipt_commit": "a5944c62a5532274b3983d98450367145267b475"
+    },
+    "cards": {
+      "rows": 390,
+      "passed": 390,
+      "skips": 0,
+      "skipped_identities": {},
+      "identity_multiplicity_detail": "FULL_REPORT_AUDIT.json.gz.base64 and original artifact raw XML/inventory"
+    },
+    "ordinary": {
+      "rows": 19139,
+      "passed": 19096,
+      "skips": 43,
+      "skipped_identities": {
+        "game-server\tcom.wingedsheep.gameserver.ai.benchmark.AIBenchmark\tAI benchmark (10 game pairs)": 1,
+        "game-server\tcom.wingedsheep.gameserver.replay.ReplayDivergenceReproTest\trecorded games reconstruct to the full frame stream (no truncation)": 1,
+        "game-server\tcom.wingedsheep.gameserver.replay.ReplayDivergenceReproTest\ta persistent yield set mid-game is captured and reproduced on reconstruction": 1,
+        "game-server\tcom.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark\tcompact replay size over 10 random games (POR)": 1,
+        "ai\tcom.wingedsheep.ai.arena.ArenaBudgetScalingTest\tbudget scaling: strength is monotone in the decision budget": 1,
+        "gym\tcom.wingedsheep.gym.PestControlV2QualifyingSmokeTest\tone production Pest versus SoterX game reaches a legitimate audited terminal": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialExecutionRunnerTest\texecute frozen Grixis twelve-game replication vector exactly once": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneGrixisDisabledOfficialArtifactLoaderTest\tauthorized validation reads exact official bytes without exposing or consuming seeds": 1,
+        "gym\tcom.wingedsheep.gym.PestControlV2OfficialSeedFreezeGeneratorTest\tgenerate and quarantine exactly ten V2 official seeds without gameplay": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneGrixisOfficialExecutionRunnerTest\texecute frozen Grixis four-game vector exactly once": 1,
+        "gym\tcom.wingedsheep.gym.PestControlMatchupBlockARunnerTest\texecute frozen Pest Control versus Mono Red Madness Block A exactly once": 1,
+        "gym\tcom.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest\tinventory exact Phase 2 candidate decks without treating registry presence as rules qualification": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest\texecute frozen Mono-Blue Terror twelve-game replication exactly once": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneMonsterTronOneShotBoundaryTest\tpinned official bytes satisfy sealed binding without initialization": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneMonsterTronOfficialExecutionRunnerTest\texecute the four frozen Monster Tron assignments through the sealed one-shot boundary": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest\texact frozen twelve-game Terror replication artifact validates without gameplay": 1,
+        "gym\tcom.wingedsheep.gym.PestControlV2OfficialExecutionRunnerTest\tvalidate or execute the frozen V2 official block through the fail-closed coordinator": 1,
+        "gym\tcom.wingedsheep.gym.PestControlV2QualificationShardRunnerTest\tvalidate or run one exact qualification shard through the fail-closed coordinator": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialExecutionRunnerTest\texecute untouched Grixis Games 2 through 12 exactly once": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneMonoBlueTerrorComposedValidationTest\tofficial frozen input validates while synthetic shadow runs through full stack": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialArtifactValidationTest\texact frozen twelve-game replication artifact validates without gameplay": 1,
+        "gym\tcom.wingedsheep.gym.PestControlV2QualificationReconcilerTest\treconcile both exact qualification shards into one fail-closed block": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneGrixisComposedValidationTest\tofficial artifact validates while synthetic shadow executes through complete stack": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\treproduce rejected Pest Control Game 25 Scion provenance": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 rejected Sample 1 regression replay": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 fresh Goldfish Sample 1": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 1 fresh performance sample": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 1 untouched performance vector": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 2 independent replication": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 2 Take 2 independent replication": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 2 Take 3 independent replication": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 2 Take 4 independent replication": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 2 Take 5 independent replication": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 2 Take 6 independent replication": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 2 Take 7 independent replication": 1,
+        "gym\tcom.wingedsheep.gym.PestControlGoldfishTest\tPest Control v1.0 Goldfish Sample 2 Take 8 independent replication": 1,
+        "gym\tcom.wingedsheep.gym.PestControlV2QualificationHarnessValidationTest\tvalidate exact frozen qualification inputs without initializing a game": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest\texecute frozen Mono-Blue Terror four-game vector exactly once": 1,
+        "gym\tcom.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest\texact frozen artifact exposes only untouched Games 2 through 12 to continuation": 1,
+        "gym\tcom.wingedsheep.gym.BatshitEconomicsPreboardSmokeTest\tfive seeded preboard Argentum agent self-play games": 1,
+        "mtgish-tooling\tcom.wingedsheep.tooling.coverage.dashboard.DashboardTest\tAnalyzer classifies a set's cards into a partition that sums to the whole": 1,
+        "mtgish-tooling\tcom.wingedsheep.tooling.coverage.dashboard.DashboardTest\tcross-set index carries the blocked cards behind each ranked capability": 1,
+        "mtgish-tooling\tcom.wingedsheep.tooling.coverage.EmitterSmokeTest\tPortal renders a high rate of whole, well-formed cards": 1
+      },
+      "identity_multiplicity_detail": "FULL_REPORT_AUDIT.json.gz.base64 and original artifact raw XML/inventory"
+    },
+    "client": {
+      "passed": 64,
+      "skips": 0
+    },
+    "assay": {
+      "original_differential_preserved": true,
+      "sha256": "b8c9a7c89a002a494f7d8d019fe8ec1c8df3122afbbbd7838e4a9adf22cc584e",
+      "corpus_sha256": "e8b920b7d77e0b314575d18312b53f4307c6cda75eaea52008ae93550f66af54",
+      "classified_bolt_bend_structural_divergences": 1
+    },
+    "C13_raw_collection": {
+      "raw_sha256": "1166ffebcaa6d0be144ba4767036d52f644cf03a51e011b97bf6e13ca6be4c87",
+      "classification_pending": true,
+      "decline_is_not_pass": true
+    },
+    "early_evidence_reuse": {
+      "run": 41146402474,
+      "receipt_blob": "9c8654e728b4c6156b1bfd34db0a80737cc218d8",
+      "source": "b504395fadd32ae6041f4ede1dd075ce792cb47f"
+    },
+    "auditor_controls": {
+      "state": "SYNTHETIC_AUDITOR_ONLY",
+      "valid_shapes": 2,
+      "rejected": [
+        "missing",
+        "duplicate",
+        "skip",
+        "error",
+        "failure",
+        "wrongcount",
+        "wrongidentity",
+        "nonzeroexit",
+        "compilercontamination",
+        "missingreport",
+        "client identity",
+        "client status",
+        "client pending"
+      ]
+    },
+    "assay_controls": {
+      "unchanged_baseline_accepted": true,
+      "rejected": [
+        "missing",
+        "zero-divergences",
+        "wrong-amount",
+        "missing-power",
+        "extra-divergence"
+      ],
+      "engine_evidence": false
+    },
+    "completion": {
+      "state": "DEPENDENT_EXECUTION_COMPLETE_ORIGINAL_RECEIVING_PENDING",
+      "feature_admitted": false,
+      "card_admitted": false
+    }
+  },
+  "gate_errors": [],
+  "feature_admitted": false,
+  "card_admitted": false
+}
