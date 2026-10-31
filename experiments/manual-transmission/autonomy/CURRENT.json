@@ -44,7 +44,7 @@
       "state": "EXPLICIT_USER_AUTHORIZED",
       "readback_verified": true
     },
-    "next_executable_action": "Read receipt f0b482ba2e22cacbbf4479c8594d5921612b1765 experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-received-r2-20261031/RECEIPT.json and exact exception proposal 6b45962cfad7d3d50330afa36856a2beb17c6d13 experiments/manual-transmission/research/disciple-freyalise-pause-assertion-exception-proposal-r1-20261031/NEXT_ADMISSION.json, EXACT_ASSERTION_DELTA.json and PROPOSED.patch. Await explicit authorization for exactly22named pause-status assertion replacements; do not apply silently or rerun original R2. Existing MH3 card grant remains valid. After grant reconcile fresh CURRENT/automation/owners/allworkflowstatuses/newerreceipts, combine named exception with isolated authorized setup/card preparation b9eee78fb5d1580ef91250c7b953820524bcbcc5 (experiments/manual-transmission/research/disciple-freyalise-independent-preparation-r3-20261031), rebind exact source/protocol/allforms and controls, compile all forms before28same-case diagnostic observations. Preserve all remaining154assertionlines,original176line archive/failures/28names; prove exact phase/error/decision behavior. Any actual runtime/payment/UI defect needs separate proposal. Full22requirements/fullmutants/card/ordinary43historicalskips/64client/metadata/printing/lint/Assay/snapshot/originalreceiving still mandatory before admission.",
+    "next_executable_action": "Read receipt f0b482ba2e22cacbbf4479c8594d5921612b1765 experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-received-r2-20261031/RECEIPT.json and exact exception proposal 6b45962cfad7d3d50330afa36856a2beb17c6d13 experiments/manual-transmission/research/disciple-freyalise-pause-assertion-exception-proposal-r1-20261031/NEXT_ADMISSION.json, EXACT_ASSERTION_DELTA.json and PROPOSED.patch. Await explicit authorization for exactly22named pause-status assertion replacements; do not apply silently or rerun original R2. Existing MH3 card grant remains valid. After grant reconcile fresh CURRENT/automation/owners/allworkflowstatuses/newerreceipts, combine named exception with isolated authorized setup/card preparation b9eee78fb5d1580ef91250c7b953820524bcbcc5 (experiments/manual-transmission/research/disciple-freyalise-independent-preparation-r3-20261031), rebind exact source/protocol/allforms and controls, compile all forms before28same-case diagnostic observations. Preserve all remaining154assertionlines,original176line archive/failures/28names; prove exact phase/error/decision behavior. Any actual runtime/payment/UI defect needs separate proposal. Full22requirements/fullmutants/card/ordinary43historicalskips/64client/metadata/printing/lint/Assay/snapshot/originalreceiving still mandatory before admission. After explicit exception grant, resume the same paused executor with its original schedule.",
     "draft": {
       "commit": "b5b3f382171c1561c3ece4c6e09e964e1d2401d8",
       "tree": "701eac77177c4f0c0c46bbe5d78cdff035d1caa7",
@@ -1598,6 +1598,23 @@
         "last_execution_owner": "manual-work-e1bbc47c-8b64-8325-a177-07ee5aaa8810",
         "released_utc": "2026-10-30T23:46:43Z"
       }
+    },
+    "disciple_assertion_blocker_recheck": {
+      "utc": "2026-10-31T08:47:15.721Z",
+      "run": "c84bfaa6-cad8-8322-b39e-9658c0272bdc",
+      "head": "5cd129e9d8349b08b686ba113cb0e6c942c29287",
+      "no_newer_receipts_successors_or_authority": true,
+      "all_workflow_statuses_checked": [
+        "in_progress",
+        "queued",
+        "waiting",
+        "requested",
+        "pending"
+      ],
+      "only_ignored_run": 34749202144,
+      "no_qualification_or_source_changes": true,
+      "no_execution_claim_taken": true,
+      "owner_remains_released": true
     }
   },
   "automation": {
@@ -1688,7 +1705,7 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
+    "execution_enabled_state": "PAUSED_AUTHORITY_BLOCKER",
     "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
     "next_authorized_action": "Follow live CURRENT.summary and next.next_executable_action; all historical current-run references superseded.",
     "execution_efficiency_policy": {
@@ -1768,7 +1785,7 @@
       "prompt_readback_verified": true
     },
     "previous_execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
-    "is_enabled": true,
+    "is_enabled": false,
     "resume_requested": false,
     "previous_pause": {
       "utc": "2026-10-28T16:47:53Z",
@@ -1835,6 +1852,18 @@
       "task_id": "6adbe33033e481918659ce578f64f31e",
       "schedule_preserved": true,
       "prompt_grant_added": true
+    },
+    "disciple_assertion_exception_pause": {
+      "utc": "2026-10-31T08:47:15.721Z",
+      "task_id": "6adbe33033e481918659ce578f64f31e",
+      "is_enabled": false,
+      "schedule_preserved": true,
+      "prompt_preserved": true,
+      "readback_verified": true,
+      "run_id": "c84bfaa6-cad8-8322-b39e-9658c0272bdc",
+      "reason": "Fully blocked on exact 22-assertion exception; scheduled runtime requires pausing fully blocked continuation. Existing card grant remains active; no new grant inferred.",
+      "proposal": "6b45962cfad7d3d50330afa36856a2beb17c6d13",
+      "resume": "Only after explicit exception authorization, resume this same executor with preserved schedule; never create another."
     }
   },
   "previous_qualified": {
@@ -1858,7 +1887,7 @@
     "session": "5b039033-97c0-832b-9d9d-d6514c54cd6a",
     "work_owner": null,
     "discussion": "READ_ONLY",
-    "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
+    "scheduled_executor": "PAUSED_AUTHORITY_BLOCKER",
     "activity": "BLOCKED",
     "last_execution_owner": "manual-work-5b039033-97c0-832b-9d9d-d6514c54cd6a",
     "intervention_watch": "READ_ONLY",
@@ -2560,7 +2589,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "BLOCKED on explicit narrow exception to frozen Disciple assertions: 22 draft completion-status assertions reject valid asynchronous pauses. Original R2 received once, all6forms compiled,28rows each/no skips,25normal failures,zero valid negative witnesses. Exact exception proposal 6b45962cfad7d3d50330afa36856a2beb17c6d13 preserves154otherassertionlines and all28identities/outcome checks. Independent negative-power fixture/card CANT_TRANSFORM preparation b9eee78fb5d1580ef91250c7b953820524bcbcc5 checkpointed; no safe qualification can pass preserved contradictory status assertions. No runtime/payment repair authority inferred; no active workflow/worker.",
+  "actual_stopping_reason": "BLOCKED on explicit narrow exception to frozen Disciple assertions: 22 draft completion-status assertions reject valid asynchronous pauses. Original R2 received once, all6forms compiled,28rows each/no skips,25normal failures,zero valid negative witnesses. Exact exception proposal 6b45962cfad7d3d50330afa36856a2beb17c6d13 preserves154otherassertionlines and all28identities/outcome checks. Independent negative-power fixture/card CANT_TRANSFORM preparation b9eee78fb5d1580ef91250c7b953820524bcbcc5 checkpointed; no safe qualification can pass preserved contradictory status assertions. No runtime/payment repair authority inferred; no active workflow/worker. Continuation paused after fresh unchanged-authority and all-status workflow reconciliation; existing schedule and prompt preserved.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -2612,7 +2641,7 @@
     },
     "concrete_blocker_removed": "Opal Palace lacked its serializable exact-spell commander-cast entry-counter rider and canonical registration. The bounded implementation and one additive snapshot are now qualified on immutable source; current cast counting, multiplicity, entry ordering, prohibition, cleanup and original ten assertions are proven.",
     "continuation_state": "BLOCKED",
-    "actual_stopping_reason": "BLOCKED on explicit narrow exception to frozen Disciple assertions: 22 draft completion-status assertions reject valid asynchronous pauses. Original R2 received once, all6forms compiled,28rows each/no skips,25normal failures,zero valid negative witnesses. Exact exception proposal 6b45962cfad7d3d50330afa36856a2beb17c6d13 preserves154otherassertionlines and all28identities/outcome checks. Independent negative-power fixture/card CANT_TRANSFORM preparation b9eee78fb5d1580ef91250c7b953820524bcbcc5 checkpointed; no safe qualification can pass preserved contradictory status assertions. No runtime/payment repair authority inferred; no active workflow/worker.",
+    "actual_stopping_reason": "BLOCKED on explicit narrow exception to frozen Disciple assertions: 22 draft completion-status assertions reject valid asynchronous pauses. Original R2 received once, all6forms compiled,28rows each/no skips,25normal failures,zero valid negative witnesses. Exact exception proposal 6b45962cfad7d3d50330afa36856a2beb17c6d13 preserves154otherassertionlines and all28identities/outcome checks. Independent negative-power fixture/card CANT_TRANSFORM preparation b9eee78fb5d1580ef91250c7b953820524bcbcc5 checkpointed; no safe qualification can pass preserved contradictory status assertions. No runtime/payment repair authority inferred; no active workflow/worker. Continuation paused after fresh unchanged-authority and all-status workflow reconciliation; existing schedule and prompt preserved.",
     "ownership": {
       "owner": null,
       "last_execution_owner": "manual-work-5b039033-97c0-832b-9d9d-d6514c54cd6a",
@@ -2662,7 +2691,7 @@
         ]
       }
     ],
-    "next_executable_action": "Read receipt f0b482ba2e22cacbbf4479c8594d5921612b1765 experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-received-r2-20261031/RECEIPT.json and exact exception proposal 6b45962cfad7d3d50330afa36856a2beb17c6d13 experiments/manual-transmission/research/disciple-freyalise-pause-assertion-exception-proposal-r1-20261031/NEXT_ADMISSION.json, EXACT_ASSERTION_DELTA.json and PROPOSED.patch. Await explicit authorization for exactly22named pause-status assertion replacements; do not apply silently or rerun original R2. Existing MH3 card grant remains valid. After grant reconcile fresh CURRENT/automation/owners/allworkflowstatuses/newerreceipts, combine named exception with isolated authorized setup/card preparation b9eee78fb5d1580ef91250c7b953820524bcbcc5 (experiments/manual-transmission/research/disciple-freyalise-independent-preparation-r3-20261031), rebind exact source/protocol/allforms and controls, compile all forms before28same-case diagnostic observations. Preserve all remaining154assertionlines,original176line archive/failures/28names; prove exact phase/error/decision behavior. Any actual runtime/payment/UI defect needs separate proposal. Full22requirements/fullmutants/card/ordinary43historicalskips/64client/metadata/printing/lint/Assay/snapshot/originalreceiving still mandatory before admission.",
+    "next_executable_action": "Read receipt f0b482ba2e22cacbbf4479c8594d5921612b1765 experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-received-r2-20261031/RECEIPT.json and exact exception proposal 6b45962cfad7d3d50330afa36856a2beb17c6d13 experiments/manual-transmission/research/disciple-freyalise-pause-assertion-exception-proposal-r1-20261031/NEXT_ADMISSION.json, EXACT_ASSERTION_DELTA.json and PROPOSED.patch. Await explicit authorization for exactly22named pause-status assertion replacements; do not apply silently or rerun original R2. Existing MH3 card grant remains valid. After grant reconcile fresh CURRENT/automation/owners/allworkflowstatuses/newerreceipts, combine named exception with isolated authorized setup/card preparation b9eee78fb5d1580ef91250c7b953820524bcbcc5 (experiments/manual-transmission/research/disciple-freyalise-independent-preparation-r3-20261031), rebind exact source/protocol/allforms and controls, compile all forms before28same-case diagnostic observations. Preserve all remaining154assertionlines,original176line archive/failures/28names; prove exact phase/error/decision behavior. Any actual runtime/payment/UI defect needs separate proposal. Full22requirements/fullmutants/card/ordinary43historicalskips/64client/metadata/printing/lint/Assay/snapshot/originalreceiving still mandatory before admission. After explicit exception grant, resume the same paused executor with its original schedule.",
     "next_admission": {
       "commit": "6b45962cfad7d3d50330afa36856a2beb17c6d13",
       "path": "experiments/manual-transmission/research/disciple-freyalise-pause-assertion-exception-proposal-r1-20261031/NEXT_ADMISSION.json",
@@ -2729,7 +2758,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-31T07:58:17.739Z",
+  "updated_utc": "2026-10-31T08:47:15.721Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
