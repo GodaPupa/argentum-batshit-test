@@ -63,4 +63,25 @@ def corrupt_xml(f,kind):
 for kind in ['missing','duplicate','skip','class']:rejects('raw report '+kind,lambda f,k=kind:corrupt_xml(f,k))
 rejects('summary cannot conceal raw counts',lambda f:f.update({'observe-normal/SUMMARY.json':enc(dict(total=27,failed=0,skipped=0,rows=[]))}))
 rejects('unsafe member path',lambda f:f.update({'../outside':b'unsafe'}))
-print(json.dumps(dict(state='SYNTHETIC_AUDITOR_TESTS_ONLY',accepted_synthetic_valid_archive=True,rejected=checks,experiment_behavior_executed=False),indent=2))
+def add_failure(fs,form,kind,message,line):
+ prefix='observe-'+form+'/'
+ key=prefix+'junit/synthetic/TEST-case.xml'
+ root=ET.fromstring(fs[key]);case=next(c for c in root if c.get('name')==P['controls']['life2']['case'])
+ text='at com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest.invoke(DiscipleOfFreyaliseScenarioTest.kt:'+str(line)+')'
+ failure=dict(type=kind,message=message,text=text)
+ ET.SubElement(case,'failure',type=kind,message=message).text=text
+ fs[key]=ET.tostring(root);fs[prefix+'exit.txt']=b'1\n'
+ summary=json.loads(fs[prefix+'SUMMARY.json']);summary['failed']=1
+ next(r for r in summary['rows'] if r['name']==case.get('name'))['failures']=[failure]
+ fs[prefix+'SUMMARY.json']=enc(summary)
+valid=copy.deepcopy(files);line=P['controls']['life2']['assertion_line']
+add_failure(valid,'life2','org.opentest4j.AssertionFailedError','expected:<17> but was:<18>',line)
+assert len(run(valid)['negative_witnesses'])==1
+invalid_witness_checks=[]
+for label,kind,message,at in [('wrong failure type','java.lang.IllegalStateException','expected:<17> but was:<18>',line),('wrong exact values','org.opentest4j.AssertionFailedError','expected:<117> but was:<118>',line),('wrong assertion line','org.opentest4j.AssertionFailedError','expected:<17> but was:<18>',int(str(line)+'0'))]:
+ fs=copy.deepcopy(files);add_failure(fs,'life2',kind,message,at)
+ assert not run(fs)['negative_witnesses'],label
+ invalid_witness_checks.append(label)
+fs=copy.deepcopy(valid);add_failure(fs,'normal','org.opentest4j.AssertionFailedError','expected:<17> but was:<18>',line)
+assert not run(fs)['negative_witnesses'];invalid_witness_checks.append('normal must pass')
+print(json.dumps(dict(state='SYNTHETIC_AUDITOR_TESTS_ONLY',accepted_synthetic_valid_archive=True,rejected=checks,valid_synthetic_witness_detected=True,invalid_witnesses_excluded=invalid_witness_checks,experiment_behavior_executed=False),indent=2))

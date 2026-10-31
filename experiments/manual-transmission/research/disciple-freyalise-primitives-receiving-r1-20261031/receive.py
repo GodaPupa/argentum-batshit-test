@@ -82,8 +82,9 @@ def receive(archive,meta,here):
   text='\n'.join(str(f.get('message',''))+'\n'+str(f.get('text','')) for f in mutant['failures'])
   line='DiscipleOfFreyaliseScenarioTest.kt:'+str(c['assertion_line'])
   expected_text=str(c['expected_normal']).lower();actual_text=str(c['expected_mutant']).lower()
-  exact_values=bool(re.search(r'expected[^\n]*?'+re.escape(expected_text)+r'[^\n]*?(?:but was|actual|got)[^\n]*?'+re.escape(actual_text),text,re.I))
-  valid=not normal['failures'] and not normal['errors'] and mutant['failures'] and not mutant['errors'] and line in text and exact_values
+  exact_values=bool(re.search(r'expected[^\n]*?(?<![\w.-])'+re.escape(expected_text)+r'(?![\w.-])[^\n]*?(?:but was|actual|got)[^\n]*?(?<![\w.-])'+re.escape(actual_text)+r'(?![\w.-])',text,re.I))
+  assertion_failure=bool(mutant['failures']) and all(re.search(r'Assertion(?:Failed)?Error',f.get('type') or '') for f in mutant['failures'])
+  valid=not normal['failures'] and not normal['errors'] and assertion_failure and not mutant['errors'] and re.search(re.escape(line)+r'(?!\d)',text) and exact_values
   (witnesses if valid else not_witnesses).append(dict(form=form,case=c['case'],assertion_line=c['assertion_line'],raw_failure=mutant['failures']))
  require(get('restored/PROTECTED.json')==expected['protected'],'restored protected')
  return dict(state='ORIGINAL_DIAGNOSTIC_VERIFIED_NOT_ADMISSION',pins=meta,archive_sha256=sha(b),manifest_entries=len(manifest),all_forms_compiled=True,counts={form:dict(total=len(rows),failed=sum(bool(r['failures'] or r['errors']) for r in rows.values())) for form,rows in observed.items()},normal_failures=[r for r in observed['normal'].values() if r['failures'] or r['errors']],negative_witnesses=witnesses,not_negative_witnesses=not_witnesses,localization_only=[k for k,v in p['controls'].items() if v.get('kind')=='localization_only'],card_admitted=False,feature_admitted=False,full_qualification=False)

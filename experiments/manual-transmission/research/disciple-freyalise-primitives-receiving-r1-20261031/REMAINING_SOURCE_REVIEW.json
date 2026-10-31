@@ -1,0 +1,25 @@
+{
+  "state": "ISOLATED_NEXT_DEPENDENCY_SOURCE_REVIEW_NOT_IMPLEMENTATION_OR_PROOF",
+  "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
+  "bindings": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt": "1eede4b53b416b5692d5a9c2b241092fe38d1204",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": "2befd23e7c6c5a2b68e75b3256fb70526397f1e4",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/life/LifePaymentService.kt": "69b6d7253ef048cc90256cac9b94b4863d45b167",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/types/TransformEffectExecutor.kt": "3d54350d6750883fef18cc895dbf5a3e15877b07",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/MiscStaticAbilities.kt": "8e35c7c55321e472543d7bc3c7593a8ba7355b07",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/SpellStaticAbilities.kt": "5f4d96a5aafde8dc9928a404c8dae584bad3ae2b",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/KeywordAbility.kt": "130f77d7583fc2fb6a4c3ad397aaf152c622ee90",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/core/AbilityFlag.kt": "9c9d414b3f0784a35b5fd7a181574cedd31166da"
+  },
+  "frozen_diagnostic_source": "87f4560d68825e8dc98c14cae569fc3807a56bef",
+  "frozen_source_changed": false,
+  "requirements": {
+    "DF12": "Existing KeywordAbility.Ward and hexproof fixture capabilities available. Add ward-bearing own sacrifice case, assert absence of BecomesTargetEvent, no tax decision, and completed gain/draw before priority resumes. Own ward alone is not a targeting discriminator; explicit target-event absence is required.",
+    "DF16": "PlayLandHandler constructs pay-life YesNo unconditionally for EntersTapped(payLifeCost). ModalAndCloneContinuationResumer true branch calls LifePaymentService.pay directly; that service checks life component/nonpositive amount but not affordability. Original runtime behavior remains unproven until original diagnostic received. No SDK prohibition primitive identified in inspected static/replacement/flag definitions; do not fabricate a fixture by deleting the player life component.",
+    "DF19": "Existing MayPlayLandsFromGraveyard and MayCastFromGraveyard(filter) distinguish land play from cast grants. PlayersCantCastSpells(affected=Player.You,spellFilter=Creature) provides a creature-casting-only prohibition. Dedicated new card-specific tests must verify both enumeration and authoritative PlayLand(asBackFace=true), preserving land drops and no SpellCastEvent; no implementation while frozen diagnostic runs.",
+    "DF20": "Effects.PutOntoBattlefieldFromGraveyard and Effects.ReturnToHandFromGraveyard exist, along with target filters scoped to graveyard and creature/land. Need actual effect-driven creature reanimation and land-ineligible rejection plus Garden bounce/front identity/replay. Direct fixture zone mutation is insufficient to prove these gates.",
+    "DF21": "TransformEffectExecutor.flipDfcInPlace checks existing AbilityFlag.CANT_TRANSFORM; frozen diagnostic includes a card-only flag localization control. Do not assume a shared transform repair is necessary. Original canonical card remains unchanged pending executable evidence. Accepted Opal rider source remains untouched; a dedicated noncast Garden exclusion case is still required.",
+    "DF22": "CardDefinition and both metadata objects serialize through existing Json machinery. Canonical discovery and one additive snapshot export remain pending compile. Archive MH3 blob25b01370752b8d2fe97389c453a300dce833531a and recover every original byte after removing only inserted block/separator."
+  },
+  "decision": "Receive original diagnostic before selecting a repair or freezing full admission. No feature/card/multiplayer/games/seeds admitted; no waived assertions/gates. Existing card composition may be corrected only within exact grant; a payment/UI/runtime boundary cannot be silently expanded."
+}
