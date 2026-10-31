@@ -1,0 +1,48 @@
+{
+  "state": "FROZEN_REQUIRES_FULL_DEPENDENT_QUALIFICATION",
+  "early_receipt": "experiments/manual-transmission/research/opal-palace-early-received-r3-20261031/RECEIPT.json",
+  "source": "b470711655da386f0b3913cbbe16befe86d139ee",
+  "runtime_tests_unchanged": true,
+  "snapshot_original_sha256": "deeded259c45d22ecab7371f67c8c1059992d0c9b3aa4c79ee51e3c7cd8b40ff",
+  "snapshot_candidate_sha256": "068f044d60583fdb99d16d8ec39ecd9591f64cfdaf1dc33330180284027328af",
+  "snapshot_delta": "Exactly one original-exported Opal block; original two entries unchanged",
+  "counts": {
+    "ordinary_rows": 19139,
+    "original_ordinary_rows": 19074,
+    "additive_bolt_bend_cases": 16,
+    "additive_opal_cases": 49,
+    "ordinary_skips": 43,
+    "cards": 390,
+    "focused": 137,
+    "client": 64
+  },
+  "assay": "Collect original C13 and WAR differential outputs and corpus. WAR must equal accepted baseline exactly. C13 requires original receiving and classification of every row: preserve two prior entries, Opal grammar decline is not a pass; no automatic admission.",
+  "remaining": "Review protocol bindings, synthetic controls, workflow pins and original receiving; no card admission",
+  "review": {
+    "all_bindings_matched_original_R3": true,
+    "inventory_additions_matched_original_reports": 49,
+    "ordinary_originals_and_skips_preserved": true,
+    "synthetic_audit_controls": "2 valid shapes,13 reject controls plus5 exact WAR differential reject controls",
+    "C13_classification": "Original raw C13 rows must be independently classified after terminal run; decline never equals pass",
+    "no_runtime_or_assertion_changes": true
+  },
+  "delta": "Exactly one required final LF on Opal block; existing two entries untouched; no source or assertion change",
+  "received_failure": "a5944c62a5532274b3983d98450367145267b475",
+  "reuse": {
+    "receipt_commit": "a5944c62a5532274b3983d98450367145267b475",
+    "receipt_path": "experiments/manual-transmission/research/opal-palace-dependent-received-r1-20261031/RECEIPT.json",
+    "source": "b470711655da386f0b3913cbbe16befe86d139ee",
+    "run": 41157568547,
+    "compile_normal_passed": true,
+    "focused_passed": 137,
+    "change": "Exactly one terminal LF on additive Opal snapshot block; all production and test source trees unchanged",
+    "required_remaining": [
+      "cards390",
+      "ordinary19139with43exactskips",
+      "client64",
+      "WAR differential exact baseline",
+      "C13 original classification",
+      "original receiving and combined card gates"
+    ]
+  }
+}
