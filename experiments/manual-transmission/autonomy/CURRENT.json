@@ -12,7 +12,7 @@
     "claimed_utc": "2026-10-31T01:49:35.252Z",
     "expires_utc": "2026-10-31T02:34:35.253Z",
     "reason": "Original Opal R3 receiving; current scheduled runtime start matches sole live run, prior invocation completed.",
-    "renewed_utc": "2026-10-31T01:51:53.637Z"
+    "renewed_utc": "2026-10-31T01:54:45.175Z"
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -2778,7 +2778,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-31T01:51:53.637Z",
+  "updated_utc": "2026-10-31T01:54:45.175Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -16996,5 +16996,25 @@
       "path": "experiments/manual-transmission/research/opal-palace-early-received-r3-20261031",
       "readback_verified": true
     }
+  },
+  "opal_palace_dependent_r1": {
+    "state": "FROZEN_DISPATCH_PENDING",
+    "source": "b470711655da386f0b3913cbbe16befe86d139ee",
+    "tree": "74975807a951f4389af71db741dabeff9900bd02",
+    "validation": "9e8b9d64272777ee29c90fa004ad09a470491230",
+    "validation_tree": "2c9da0736478993eb24dea20ed01e258764036b1",
+    "workflow": ".github/workflows/manual-opal-palace-dependent-r1-20261031.yml",
+    "workflow_blob": "6cacdc6220e5ef0c268eb63ed5ec5b7715c625dc",
+    "record": "experiments/manual-transmission/research/opal-palace-dependent-r1-20261031",
+    "early_receipt": "75a5683f31588d741cd0822173d79c396c323c45",
+    "expected": {
+      "focused": 137,
+      "cards": 390,
+      "ordinary": 19139,
+      "skips": 43,
+      "client": 64
+    },
+    "feature_admitted": false,
+    "card_admitted": false
   }
 }
