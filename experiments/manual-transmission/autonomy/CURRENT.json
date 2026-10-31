@@ -11,7 +11,8 @@
     "automation_run": "7883b626-3130-8330-9fb3-579dc9e99019",
     "claimed_utc": "2026-10-31T02:48:48.798Z",
     "expires_utc": "2026-10-31T03:33:48.798Z",
-    "reason": "Original Opal dependent receiving; sole scheduled invocation reconciled with explicit prior release."
+    "reason": "Original Opal dependent receiving; sole scheduled invocation reconciled with explicit prior release.",
+    "renewed_utc": "2026-10-31T02:52:25.721Z"
   },
   "last_qualified": {
     "source": "3b998dd7d1d5a683aca42c203da9877173dd8ab6",
@@ -2771,7 +2772,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-31T02:48:48.798Z",
+  "updated_utc": "2026-10-31T02:52:25.721Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -16991,7 +16992,7 @@
     }
   },
   "opal_palace_dependent_r1": {
-    "state": "ACTIVE_ORIGINAL_RECEIVING_PENDING",
+    "state": "ORIGINAL_SNAPSHOT_FAILURE_VERIFIED",
     "source": "b470711655da386f0b3913cbbe16befe86d139ee",
     "tree": "74975807a951f4389af71db741dabeff9900bd02",
     "validation": "9e8b9d64272777ee29c90fa004ad09a470491230",
@@ -17019,6 +17020,27 @@
       "commit": "aeead458482c03e30664d34d136a27e5db28f80a",
       "path": "experiments/manual-transmission/research/opal-palace-dependent-receiving-r1-20261031",
       "readback_verified": true
+    },
+    "receipt": {
+      "commit": "a5944c62a5532274b3983d98450367145267b475",
+      "path": "experiments/manual-transmission/research/opal-palace-dependent-received-r1-20261031",
+      "readback_verified": true
     }
+  },
+  "opal_palace_dependent_r2": {
+    "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
+    "tree": "18e9627ff65f54fc88f7e30dda6f78095544ece7",
+    "validation": "b91e0cce519e98ea446d30f7df5968002cfdfde2",
+    "validation_tree": "033263ab1a2b4b52afab93016e116e57f6d53f0a",
+    "workflow": ".github/workflows/manual-opal-palace-dependent-r2-20261031.yml",
+    "workflow_blob": "2a7ae2cbcf2090d5e77244ec9bee9b44f3bcd571",
+    "record": "experiments/manual-transmission/research/opal-palace-dependent-r2-20261031",
+    "state": "FROZEN_DISPATCH_PENDING",
+    "reused_receipt": "a5944c62a5532274b3983d98450367145267b475",
+    "reused_compile": true,
+    "reused_focused": 137,
+    "delta": "Exactly one final LF on authorized Opal snapshot block; production/tests/assertions unchanged",
+    "feature_admitted": false,
+    "card_admitted": false
   }
 }
