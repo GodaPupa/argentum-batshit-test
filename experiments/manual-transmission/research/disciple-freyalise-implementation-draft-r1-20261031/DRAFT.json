@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "state": "PARTIAL_DRAFT_NOT_COMPILED_NOT_REGISTERED_NOT_ADMITTED",
+  "base": "d5f258de423503e7054528bb3f6a7a71c5314057",
+  "proposal": "1d61c80f7e0c2ce898e8dc283208a99a18561e0f",
+  "grant": "ee2e8e46850544a41a9775a82a177ee2b790f71a",
+  "card_draft_reused_exact_blob": "fd90e0da65d05860c81570f67eec4f0b4c6bdf22",
+  "scenario_file": "draft/DiscipleOfFreyaliseScenarioTest.kt",
+  "generated_case_count": 12,
+  "coverage": {
+    "DF01": "five-power own creature through real cast/entry/optional/select/sacrifice, exact life/draw/zone/stack",
+    "DF02": "decline no payoff",
+    "DF03": "reject self then accept own fodder",
+    "DF04": "reject opponent then accept own fodder",
+    "DF06": "separate zero and negative power cases",
+    "DF08": "source departure while trigger pending; fixture direct zone move explicitly labeled",
+    "DF11": "full GameState roundtrip separately at optional and selection pauses",
+    "DF14": "pay3 enter untapped and consume land drop",
+    "DF15": "decline enter tapped",
+    "DF16": "insufficientlife partial; prohibited-life still pending"
+  },
+  "pending": [
+    "DF03/DF04 no other own creatures and optional feasibility cases",
+    "DF05 projected power and last-known amount",
+    "DF07 unsuccessful/unsacrificable selection and exact no payoff",
+    "DF09 token projected last-known power",
+    "DF10 sacrifice with replacement destination",
+    "DF12 non-targeted choice ward/hexproof/event/order",
+    "DF13 actual legal-action enumeration",
+    "DF16 prohibited life payment",
+    "DF17 green mana activation and other color absence",
+    "DF18 front/back characteristics in stack/battlefield/other zones",
+    "DF19 play versus cast permission for exile/graveyard",
+    "DF20 noncast entry/qualified movement/bounce/reentry",
+    "DF21 no transform and no inherited Opal rider",
+    "DF22 canonical discovery/metadata/roundtrip/snapshot",
+    "Exact final normal/mutant byte forms and assertion witnesses; all normal/mutant compilation before behavior",
+    "Full declared dependent gates and original receiving"
+  ],
+  "source_review": {
+    "driver_blob": "7738b6a9e861d4675a3785404870a0eea3daacf8",
+    "ruthless_test_blob": "d96ec826b89c2c9f090dff3ea1b13a43a01d0270",
+    "action_blob": "3664ceb0ad9ad3d6178054cfba770d7a9a2809eb",
+    "risks": [
+      "GatedEffectExecutor.executeDoAction synchronously merges updatedCollections but does not visibly merge updatedSacrificedPermanents. The candidate selection pause may use different continuation transport. This is a source concern only, not an executable failure; mandatory DF01/05/09/11 must prove transport before acceptance. No runtime modification permitted.",
+      "SelectTarget resolution choice uses ChooseTargetsDecision; source-only similarity to RuthlessLawbringer is not proof that no BecomesTarget/ward event occurs. DF12 remains mandatory."
+    ]
+  },
+  "mutant_preparation": {
+    "fixed_amount": "Replace captured power with Constant(1), bind DF01/DF06/DF11 witnesses separately",
+    "other_filter": "Remove other(), bind DF03",
+    "controller_filter": "Replace CreatureYouControl with Creature, bind DF04",
+    "source_zone": "Require battlefield source for May, bind DF08",
+    "life_cost": "3 to2 for DF14;3 to1 for DF16",
+    "tapped": "Remove EntersTapped for DF15",
+    "status": "Proposed operations only; exact replacement APIs/source bytes and all remaining forms must be verified and frozen before compile/behavior"
+  },
+  "local_access": {
+    "clone": "git clone via configured allowed git.chatgpt-team.site returned could not read Username",
+    "impact": "No local checkout. Connected GitHub reads/writes remain available; this is not a revocation or authority blocker. No credential bypass or admission preflight."
+  },
+  "preserved": {
+    "production_changes": 0,
+    "snapshot_changes": 0,
+    "assertion_changes": 0,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
+  },
+  "next": "Complete every pending case using existing harness APIs; inspect and freeze exact normal/mutant forms and compile-first protocol, then one justified qualification. Do not treat draft coverage as behavioral evidence. Reuse accepted metadata/source bindings. No runtime/SDK/server/client changes."
+}
