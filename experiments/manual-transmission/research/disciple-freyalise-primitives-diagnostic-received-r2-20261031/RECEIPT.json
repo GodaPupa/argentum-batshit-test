@@ -1,0 +1,435 @@
+{
+  "state": "ORIGINAL_DIAGNOSTIC_VERIFIED_NOT_ADMISSION",
+  "pins": {
+    "run_id": 41179046741,
+    "attempt": 1,
+    "head_sha": "11e205fd475baf21013113dfc17ce056e5d9e776",
+    "event": "push",
+    "job_id": 124472484982,
+    "artifact_id": 13033874528,
+    "size_in_bytes": 181963,
+    "digest": "sha256:e2187b629a04b3d7603fb5654754e840d50281702dd88150ea58c7f2673b2a6f"
+  },
+  "archive_sha256": "e2187b629a04b3d7603fb5654754e840d50281702dd88150ea58c7f2673b2a6f",
+  "manifest_entries": 72,
+  "all_forms_compiled": true,
+  "counts": {
+    "normal": {
+      "total": 28,
+      "failed": 25
+    },
+    "life2": {
+      "total": 28,
+      "failed": 25
+    },
+    "life1": {
+      "total": 28,
+      "failed": 25
+    },
+    "no_tapped": {
+      "total": 28,
+      "failed": 25
+    },
+    "white": {
+      "total": 28,
+      "failed": 25
+    },
+    "cant_transform": {
+      "total": 28,
+      "failed": 24
+    }
+  },
+  "normal_failures": [
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF01 sacrifice gives exactly five life and five cards",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF02 decline preserves the creature life and hand",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF03 selection rejects the source and still accepts another own creature",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF04 selection rejects an opponent creature",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF06 power 0 sacrifices without drawing or losing life",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF06 power -2 sacrifices without drawing or losing life",
+      "failures": [
+        {
+          "type": "java.lang.IllegalArgumentException",
+          "message": "java.lang.IllegalArgumentException: Base power cannot be negative: -2",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF08 source departure before trigger resolution preserves the payoff",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF11 full state serialization at optional preserves five power payoff",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF11 full state serialization at selection preserves five power payoff",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF14 Garden pays exactly three life to enter untapped",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF15 declined Garden payment keeps life and enters tapped",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF16 two life cannot pay Garden entry cost",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF05 projected boost is captured before the sacrifice",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF03 DF04 no other own creature gives no payoff opponentOnly=false",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF03 DF04 no other own creature gives no payoff opponentOnly=true",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF07 an unsacrificable chosen creature gives no payoff",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF12 resolution choice of hexproof fodder emits no targeting event",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF13 legal Garden land action is distinct from a creature cast",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF17 Garden activation produces exactly one green and no other mana",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF18 Garden battlefield uses land characteristics and mana value zero",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF09 token sacrifice retains projected five power after departure",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF19 exile permission castOnly=false distinguishes Garden play",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+      "name": "DF21 external transform instruction leaves Disciple front face unchanged",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: Contents did not match exactly, but found the following partial match(es):\nMatch[0]: part of slice with indexes [8..20] matched actual[6..18]\nLine[0] =\"Garden of Freyalise\"\nMatch[0]= ------+++++++++++++\nexpected:<Disciple of Freyalise> but was:<Garden of Freyalise>",
+          "text": "Original full stack preserved in original.zip.base64, observe-normal JUnit report."
+        }
+      ],
+      "errors": [],
+      "skipped": 0
+    }
+  ],
+  "negative_witnesses": [],
+  "not_negative_witnesses": [
+    {
+      "form": "life2",
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "assertion_line": 193,
+      "raw_failure": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, corresponding observe-form JUnit report."
+        }
+      ]
+    },
+    {
+      "form": "no_tapped",
+      "case": "DF15 declined Garden payment keeps life and enters tapped",
+      "assertion_line": 209,
+      "raw_failure": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+          "text": "Original full stack preserved in original.zip.base64, corresponding observe-form JUnit report."
+        }
+      ]
+    },
+    {
+      "form": "white",
+      "case": "DF17 Garden activation produces exactly one green and no other mana",
+      "assertion_line": 336,
+      "raw_failure": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "text": "Original full stack preserved in original.zip.base64, corresponding observe-form JUnit report."
+        }
+      ]
+    }
+  ],
+  "localization_only": [
+    "life1",
+    "cant_transform"
+  ],
+  "card_admitted": false,
+  "feature_admitted": false,
+  "full_qualification": false,
+  "source": "a3355618c4de98681be19d6bd04df7bc9a54b271",
+  "tree": "a011d9fb843c713314f856cbd10340034d13a1f7",
+  "validation": "11e205fd475baf21013113dfc17ce056e5d9e776",
+  "workflow_blob": "8abd54fc8aa93054890bb9dfb516b495a7f7dbe1",
+  "receiver": "269c74f8ecf4bd2715c6febe30a2138290612ae3",
+  "original_archive_bytes": 181963,
+  "original_failure_preserved": true,
+  "protected_and_restoration_verified": true,
+  "remaining_admission_gates_not_waived": true,
+  "interpretation": {
+    "normal_passes": 3,
+    "normal_failures": 25,
+    "setup_or_pause_status_failures": 23,
+    "invalid_negative_base_power_fixture": 1,
+    "observed_transform_failure": 1,
+    "negative_witnesses_accepted": 0,
+    "cant_transform_localization": "DF21 passes with existing card-only CANT_TRANSFORM flags; diagnostic localization, not full qualification",
+    "affordability": "Not established behaviorally: normal and life1 stop at PlayLand isSuccess assertion before payment. No runtime repair inferred from these reports.",
+    "pause_contract": "ExecutionResult blob3973eb0577d5617c5b2ce8d68929062c55753cac defines isSuccess=false whenever a pendingDecision is present. Draft assertions require true immediately before expecting a pending decision; preserve originals and propose exact correction rather than weaken silently."
+  }
+}
