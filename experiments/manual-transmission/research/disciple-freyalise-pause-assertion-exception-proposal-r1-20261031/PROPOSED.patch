@@ -1,1 +1,195 @@
-cat: disciple-diagnostic-r2/assertion-proposal/PROPOSED.patch: No such file or directory
+--- original/DiscipleOfFreyaliseScenarioTest.kt
++++ proposed/DiscipleOfFreyaliseScenarioTest.kt
+@@ -61,7 +61,7 @@
+         val source = d.putCardInHand(me, "Disciple of Freyalise")
+         d.castSpell(me, source).isSuccess shouldBe true
+         d.bothPass().isSuccess shouldBe true
+-        d.bothPass().isSuccess shouldBe true
++        d.bothPass().error shouldBe null
+         return source
+     }
+ 
+@@ -78,7 +78,7 @@
+         val source = cast(d)
+         val hand = d.getHandSize(me)
+         d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+-        d.submitYesNo(me, true).isSuccess shouldBe true
++        d.submitYesNo(me, true).error shouldBe null
+         d.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+         d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 25
+@@ -108,7 +108,7 @@
+         val me = d.activePlayer!!
+         val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
+         val source = cast(d)
+-        d.submitYesNo(me, true).isSuccess shouldBe true
++        d.submitYesNo(me, true).error shouldBe null
+         d.submitTargetSelection(me, listOf(source)).isSuccess shouldBe false
+         d.getPermanents(me).contains(source) shouldBe true
+         d.getLifeTotal(me) shouldBe 20
+@@ -123,7 +123,7 @@
+         val own = d.putCreatureOnBattlefield(me, "Disciple test fodder")
+         val foreign = d.putCreatureOnBattlefield(opp, "Disciple test fodder")
+         cast(d)
+-        d.submitYesNo(me, true).isSuccess shouldBe true
++        d.submitYesNo(me, true).error shouldBe null
+         d.submitTargetSelection(me, listOf(foreign)).isSuccess shouldBe false
+         d.getPermanents(opp).contains(foreign) shouldBe true
+         d.getLifeTotal(me) shouldBe 20
+@@ -138,7 +138,7 @@
+             val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
+             cast(d)
+             val hand = d.getHandSize(me)
+-            d.submitYesNo(me, true).isSuccess shouldBe true
++            d.submitYesNo(me, true).error shouldBe null
+             d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
+             d.getGraveyard(me).contains(fodder) shouldBe true
+             d.getLifeTotal(me) shouldBe 20
+@@ -157,9 +157,9 @@
+         d.bothPass().isSuccess shouldBe true
+         // Explicit fixture zone departure; trigger already on stack.
+         d.moveToGraveyard(source)
+-        d.bothPass().isSuccess shouldBe true
+-        val hand = d.getHandSize(me)
+-        d.submitYesNo(me, true).isSuccess shouldBe true
++        d.bothPass().error shouldBe null
++        val hand = d.getHandSize(me)
++        d.submitYesNo(me, true).error shouldBe null
+         d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 25
+         d.getHandSize(me) shouldBe hand + 5
+@@ -174,7 +174,7 @@
+             cast(d)
+             val hand = d.getHandSize(me)
+             if (pause == "optional") roundtrip(d)
+-            d.submitYesNo(me, true).isSuccess shouldBe true
++            d.submitYesNo(me, true).error shouldBe null
+             if (pause == "selection") roundtrip(d)
+             d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
+             d.getLifeTotal(me) shouldBe 25
+@@ -187,7 +187,7 @@
+         val d = driver()
+         val me = d.activePlayer!!
+         val land = d.putCardInHand(me, "Disciple of Freyalise")
+-        d.submit(PlayLand(me, land, asBackFace = true)).isSuccess shouldBe true
++        d.submit(PlayLand(me, land, asBackFace = true)).error shouldBe null
+         d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+         d.submitYesNo(me, true).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 17
+@@ -203,7 +203,7 @@
+         val d = driver()
+         val me = d.activePlayer!!
+         val land = d.putCardInHand(me, "Disciple of Freyalise")
+-        d.submit(PlayLand(me, land, asBackFace = true)).isSuccess shouldBe true
++        d.submit(PlayLand(me, land, asBackFace = true)).error shouldBe null
+         d.submitYesNo(me, false).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 20
+         d.isTapped(land) shouldBe true
+@@ -216,7 +216,7 @@
+         val me = d.activePlayer!!
+         d.setLifeTotal(me, 2)
+         val land = d.putCardInHand(me, "Disciple of Freyalise")
+-        d.submit(PlayLand(me, land, asBackFace = true)).isSuccess shouldBe true
++        d.submit(PlayLand(me, land, asBackFace = true)).error shouldBe null
+         d.pendingDecision shouldBe null
+         d.getLifeTotal(me) shouldBe 2
+         d.isTapped(land) shouldBe true
+@@ -232,7 +232,7 @@
+         d.bothPass().isSuccess shouldBe true
+         cast(d)
+         val hand = d.getHandSize(me)
+-        d.submitYesNo(me, true).isSuccess shouldBe true
++        d.submitYesNo(me, true).error shouldBe null
+         d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 25
+         d.getHandSize(me) shouldBe hand + 5
+@@ -251,7 +251,7 @@
+             // Both skipping an impossible optional action and accepting it to no-op
+             // are inspected; neither may sacrifice self or an opponent's creature.
+             if (d.pendingDecision is YesNoDecision)
+-                d.submitYesNo(me, true).isSuccess shouldBe true
++                d.submitYesNo(me, true).error shouldBe null
+             d.pendingDecision shouldBe null
+             d.getLifeTotal(me) shouldBe 20
+             d.getHandSize(me) shouldBe hand
+@@ -274,7 +274,7 @@
+         cast(d)
+         val hand = d.getHandSize(me)
+         if (d.pendingDecision is YesNoDecision)
+-            d.submitYesNo(me, true).isSuccess shouldBe true
++            d.submitYesNo(me, true).error shouldBe null
+         if (d.pendingDecision is ChooseTargetsDecision)
+             d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.pendingDecision shouldBe null
+@@ -297,7 +297,7 @@
+         cast(d)
+         val hand = d.getHandSize(me)
+         val events = d.events.size
+-        d.submitYesNo(me, true).isSuccess shouldBe true
++        d.submitYesNo(me, true).error shouldBe null
+         d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.events.drop(events).filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+         d.getLifeTotal(me) shouldBe 25
+@@ -315,7 +315,7 @@
+         offered.size shouldBe 1
+         offered.single().asBackFace shouldBe true
+         val events = d.events.size
+-        d.submit(offered.single()).isSuccess shouldBe true
++        d.submit(offered.single()).error shouldBe null
+         d.submitYesNo(me, false).isSuccess shouldBe true
+         d.events.drop(events).filterIsInstance<SpellCastEvent>().size shouldBe 0
+         d.getCreatures(me).contains(id) shouldBe false
+@@ -328,7 +328,7 @@
+         val d = driver()
+         val me = d.activePlayer!!
+         val id = d.putCardInHand(me, "Disciple of Freyalise")
+-        d.submit(PlayLand(me, id, asBackFace = true)).isSuccess shouldBe true
++        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+         d.submitYesNo(me, true).isSuccess shouldBe true
+         val ability = DiscipleOfFreyalise.backFace!!.script.activatedAbilities.single().id
+         d.submit(ActivateAbility(me, id, ability)).isSuccess shouldBe true
+@@ -366,7 +366,7 @@
+         val d = driver()
+         val me = d.activePlayer!!
+         val id = d.putCardInHand(me, "Disciple of Freyalise")
+-        d.submit(PlayLand(me, id, asBackFace = true)).isSuccess shouldBe true
++        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+         d.submitYesNo(me, false).isSuccess shouldBe true
+         val component = d.state.getEntity(id)!!.get<CardComponent>()!!
+         component.name shouldBe "Garden of Freyalise"
+@@ -401,7 +401,7 @@
+         d.bothPass().isSuccess shouldBe true
+         cast(d)
+         val hand = d.getHandSize(me)
+-        d.submitYesNo(me, true).isSuccess shouldBe true
++        d.submitYesNo(me, true).error shouldBe null
+         d.submitTargetSelection(me, listOf(token)).isSuccess shouldBe true
+         d.getPermanents(me).contains(token) shouldBe false
+         d.getLifeTotal(me) shouldBe 25
+@@ -426,7 +426,7 @@
+         val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
+         cast(d)
+         val hand = d.getHandSize(me)
+-        d.submitYesNo(me, true).isSuccess shouldBe true
++        d.submitYesNo(me, true).error shouldBe null
+         d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.getPermanents(me).contains(fodder) shouldBe false
+         d.getGraveyard(me).contains(fodder) shouldBe false
+@@ -440,7 +440,7 @@
+         val me = d.activePlayer!!
+         d.setLifeTotal(me, 2)
+         val id = d.putCardInHand(me, "Disciple of Freyalise")
+-        d.submit(PlayLand(me, id, asBackFace = true)).isSuccess shouldBe true
++        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+         if (d.pendingDecision is YesNoDecision) {
+             val answer = d.submitYesNo(me, true)
+             if (!answer.isSuccess) d.submitYesNo(me, false).isSuccess shouldBe true
+@@ -464,7 +464,7 @@
+                 .any { it.cardId == id && it.asBackFace }
+             offered shouldBe !castOnly
+             val result = d.submit(PlayLand(me, id, asBackFace = true))
+-            result.isSuccess shouldBe !castOnly
++            (result.error == null) shouldBe !castOnly
+             if (castOnly) {
+                 d.getExile(me).contains(id) shouldBe true
+             } else {

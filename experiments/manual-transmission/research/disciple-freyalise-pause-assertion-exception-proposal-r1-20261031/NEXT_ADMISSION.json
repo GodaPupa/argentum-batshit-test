@@ -1,1 +1,58 @@
-cat: disciple-diagnostic-r2/assertion-proposal/NEXT_ADMISSION.json: No such file or directory
+{
+  "schema": 1,
+  "state": "PROPOSED_EXPLICIT_EXCEPTION_REQUIRED_NOT_APPLIED",
+  "source": "a3355618c4de98681be19d6bd04df7bc9a54b271",
+  "original_receipt": "f0b482ba2e22cacbbf4479c8594d5921612b1765",
+  "original_run": 41179046741,
+  "card": "Disciple of Freyalise // Garden of Freyalise",
+  "concrete_blocker": "Draft requires isSuccess immediately before mandatory asynchronous decisions; engine defines success as no pending decision. The continuation freezes all 176 assertion lines. Correcting 22 completion-status assertions requires a narrow exception; no runtime failure inferred from early status failures.",
+  "requested_authority": {
+    "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt",
+    "original_sha256": "9553b333e837a8d0b8b1d193fb026da29a2ebe1ef2ee19ad0a64243aed63ebd6",
+    "proposed_sha256": "0bfaae306acff1edcc6da42e8f879dbcf07ff1e062cf3738394dede8868d5e60",
+    "changed_assertions": 22,
+    "unchanged_assertions": 154,
+    "exact_delta": "EXACT_ASSERTION_DELTA.json",
+    "patch": "PROPOSED.patch",
+    "contract": "Only named completion-status assertions become no-error assertions at actions that may pause. DF19 retains cast-only rejection and requires an actual error. All downstream pending-decision, choice, life, draw, mana, zone, identity, ordering, serialization and transform assertions remain byte-identical."
+  },
+  "preserved": {
+    "test_names": 28,
+    "assertion_lines": 176,
+    "unchanged_assertion_lines": 154,
+    "original_bytes": "scenario.kt inside original.zip.base64 at receipt f0b482ba",
+    "original_failures": true,
+    "all_other_tests": true,
+    "protected_boundaries": true,
+    "legacy_fixtures": true,
+    "snapshot_original_entries": 24,
+    "manual": "v0.7",
+    "precision_reserved": 2,
+    "budgets": true,
+    "statistical_design": true
+  },
+  "evidence": {
+    "execution_result_blob": "3973eb0577d5617c5b2ce8d68929062c55753cac",
+    "contract": "isSuccess = error == null && pendingDecision == null; isPaused = pendingDecision != null",
+    "limits": "Raw reports establish failing lines. Source grounds pause-contract diagnosis. No payment-affordability conclusion from tests stopped before payment. Zero R2 negative witnesses."
+  },
+  "existing_authorized_followup": [
+    "Repair newly authored negative-power fixture using existing projected-stat primitives, keeping its name and all assertions; nonnegative printed base plus negative modifier. Freeze setup before successor.",
+    "Existing card-only CANT_TRANSFORM on both faces passes R2 DF21 localization; not admission. Freeze candidate with all required controls."
+  ],
+  "mandatory_gates": [
+    "Preserve verified original R2 archive and receipt; never rerun unchanged source.",
+    "Compile normal and all diagnostic forms before 28 same-case observations, no skips. Preserve every actual failure.",
+    "Executable test-local controls must reject an actual error and distinguish valid pause from completed success; compile these forms first. Bind exact changed lines, decision types and unaffected assertions before dispatch.",
+    "Full DF01–22 and full card-only mutant matrix; 390-card baseline plus additions; 19139 ordinary baseline plus additions with 43 exact historical skips; 64 clients and typecheck; metadata, printing, lint, Assay classification; one additive MH3 snapshot and original-artifact verification before admission.",
+    "Any observed runtime, payment or UI defect still requires a separate exact proposal."
+  ],
+  "exclusions": [
+    "No other assertion changes, removed tests, skips, renames, weakened outcome checks or thresholds.",
+    "No runtime/SDK/server/client/payment/UI change or additional protected boundary.",
+    "No other cards, multiplayer admission, official games/seeds, extra spending, new workers or schedule change."
+  ],
+  "authority_granted": false,
+  "card_admitted": false,
+  "supersedes_invalid_draft_commit": "f1fd4b7ef6fc7520af2bd5166ab28a0361509d03"
+}
