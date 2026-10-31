@@ -1,0 +1,201 @@
+{
+  "schema": 1,
+  "state": "FROZEN_BOUNDED_DIAGNOSTIC_NOT_ADMISSION_QUALIFICATION",
+  "base": "d5f258de423503e7054528bb3f6a7a71c5314057",
+  "base_tree": "18e9627ff65f54fc88f7e30dda6f78095544ece7",
+  "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "proposal": "1d61c80f7e0c2ce898e8dc283208a99a18561e0f",
+  "grant": "ee2e8e46850544a41a9775a82a177ee2b790f71a",
+  "record": "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031",
+  "evidence": "manual-disciple-primitives-diagnostic-r3-evidence",
+  "card": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+  "test": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt",
+  "forms": [
+    "normal",
+    "life2",
+    "life1",
+    "no_tapped",
+    "white",
+    "allow_transform",
+    "actual_error",
+    "require_complete"
+  ],
+  "form_hashes": {
+    "normal": "4f2769e7cdec31c1e02d379402295dfdc1aa5c72546ce1d85f08911234ed2ea6",
+    "life2": "1e9d2df5d1a335afdb74cda057c16684788b92c9d7648d2d1b5b507fb140b65a",
+    "life1": "77cd6ee4cb9dc3585d97548bd6f003763fc4e85774f8946c28cae84ddb7b5f73",
+    "no_tapped": "67d34ba86be2ab89930c437df1c9ff67f438e2a8b3c6f22973daa238f6dc44a1",
+    "white": "0d946e45792b84fdb79b7f0eb7083a16c14b97b54f0a348909d0457f6a4ca375",
+    "allow_transform": "87a4d9493c1dd824f78eb40b808ba26217975fd31be92c3c03ffef36a86df665",
+    "actual_error": "4f2769e7cdec31c1e02d379402295dfdc1aa5c72546ce1d85f08911234ed2ea6",
+    "require_complete": "4f2769e7cdec31c1e02d379402295dfdc1aa5c72546ce1d85f08911234ed2ea6"
+  },
+  "test_sha256": "6afe86804448d18c7926e31ff0ac03ee48c9a215f61ae1129a12dac545abc130",
+  "case_names": [
+    "DF01 sacrifice gives exactly five life and five cards",
+    "DF02 decline preserves the creature life and hand",
+    "DF03 selection rejects the source and still accepts another own creature",
+    "DF04 selection rejects an opponent creature",
+    "DF06 power 0 sacrifices without drawing or losing life",
+    "DF06 power -2 sacrifices without drawing or losing life",
+    "DF08 source departure before trigger resolution preserves the payoff",
+    "DF11 full state serialization at optional preserves five power payoff",
+    "DF11 full state serialization at selection preserves five power payoff",
+    "DF14 Garden pays exactly three life to enter untapped",
+    "DF15 declined Garden payment keeps life and enters tapped",
+    "DF16 two life cannot pay Garden entry cost",
+    "DF05 projected boost is captured before the sacrifice",
+    "DF03 DF04 no other own creature gives no payoff opponentOnly=false",
+    "DF03 DF04 no other own creature gives no payoff opponentOnly=true",
+    "DF07 an unsacrificable chosen creature gives no payoff",
+    "DF12 resolution choice of hexproof fodder emits no targeting event",
+    "DF13 legal Garden land action is distinct from a creature cast",
+    "DF17 Garden activation produces exactly one green and no other mana",
+    "DF18 front cast keeps creature characteristics and mana value six",
+    "DF18 Garden battlefield uses land characteristics and mana value zero",
+    "DF22 both card faces and metadata survive polymorphic JSON roundtrip",
+    "DF09 token sacrifice retains projected five power after departure",
+    "DF10 successful sacrifice redirected to exile retains five power payoff",
+    "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+    "DF19 exile permission castOnly=false distinguishes Garden play",
+    "DF19 exile permission castOnly=true distinguishes Garden play",
+    "DF21 external transform instruction leaves Disciple front face unchanged"
+  ],
+  "class": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+  "purpose": "Resolve source-grounded DF16 affordability/payment and DF21 transform concerns by original executable observations before expensive compatibility. Exercise all28 currently drafted cases, not all22 complete requirement groups. No acceptance, snapshot export, protected/runtime change or waived gate.",
+  "all_diagnostic_forms_compile_before_any_behavior": true,
+  "source_concerns": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt",
+      "reason": "payLifeCost asks YesNo without visible affordability check"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "method": "resumePayLifeOrEnterTappedLand",
+      "reason": "true response directly calls LifePaymentService.pay"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/life/LifePaymentService.kt",
+      "reason": "pay checks life component and positive amount; no visible sufficient-life test"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/types/TransformEffectExecutor.kt",
+      "method": "flipDfcInPlace",
+      "reason": "shared double-face flipping; counterfactual card flag isolates existing cant-transform primitive"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/GatedEffectExecutor.kt",
+      "reason": "paused sacrificed-power transport must be observed, not inferred"
+    }
+  ],
+  "controls": {
+    "life2": {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "expected_normal": "17",
+      "expected_mutant": "18",
+      "assertion": "d.getLifeTotal(me) shouldBe 17",
+      "test_declaration_line": 205,
+      "assertion_line": 212
+    },
+    "no_tapped": {
+      "case": "DF15 declined Garden payment keeps life and enters tapped",
+      "expected_normal": true,
+      "expected_mutant": false,
+      "assertion": "d.isTapped(land) shouldBe true",
+      "warning": "If missing decision fails earlier, that is not a tapped assertion witness",
+      "test_declaration_line": 221,
+      "assertion_line": 228
+    },
+    "white": {
+      "case": "DF17 Garden activation produces exactly one green and no other mana",
+      "expected_normal": 1,
+      "expected_mutant": 0,
+      "assertion": "pool.green shouldBe 1",
+      "test_declaration_line": 346,
+      "assertion_line": 355
+    },
+    "life1": {
+      "kind": "localization_only",
+      "case": "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+      "no_acceptance_credit": true,
+      "test_declaration_line": 457
+    },
+    "allow_transform": {
+      "case": "DF21 external transform instruction leaves Disciple front face unchanged",
+      "assertion": "d.getCardName(id) shouldBe \"Disciple of Freyalise\"",
+      "assertion_line": 507,
+      "test_declaration_line": 497
+    },
+    "actual_error": {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "assertion": "d.submit(PlayLand(d.getOpponent(me), land, asBackFace = true)).error shouldBe null",
+      "assertion_line": 209,
+      "test_declaration_line": 205
+    },
+    "require_complete": {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "assertion": "d.submit(PlayLand(me, land, asBackFace = true)).isSuccess shouldBe true",
+      "assertion_line": 209,
+      "test_declaration_line": 205
+    }
+  },
+  "witness_policy": "Raw classname/name multiplicities exactly28, no skips. Require normal pass and mutant assertion failure at named assertion with exact values for any negative-witness claim. Compile error, missing report, earlier setup/decision failure, unrelated failure, or already-failing normal is not negative evidence. Localization forms are never qualification credit.",
+  "remaining_admission_gates": [
+    "Complete DF12 ward and ordering, DF16 prohibited payment, DF18 outside battlefield, DF19 graveyard and cast restriction, DF20 noncast qualified entry and bounce, DF21 Opal exclusion, DF22 registration/additive snapshot",
+    "Freeze all full-admission card mutants and every matrix witness; compile all forms first; this diagnostic does not substitute",
+    "Original full card/19139ordinary plus additions/43 historical skips/64client/typecheck/metadata/printing/lint/Assay classification",
+    "Original artifact receiving with all immutable run/job/attempt/artifact bytes/hash/manifest/raw identities/forms/restoration/protected pins"
+  ],
+  "preserved": {
+    "existing_assertions": true,
+    "original_12_draft_assertions": true,
+    "all_existing_source_bytes": true,
+    "snapshot_changes": 0,
+    "runtime_changes": 0,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "schedule_changed": false,
+    "workers_created": 0
+  },
+  "unchanged_paths": [
+    "rules-engine",
+    "mtg-sdk",
+    "game-server",
+    "web-client",
+    "mtg-sets/src/test/resources/snapshots/cards/MH3.json"
+  ],
+  "source_delta": [
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt",
+    "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/forms/normal.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/forms/life2.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/forms/life1.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/forms/no_tapped.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/forms/white.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/forms/allow_transform.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/forms/actual_error.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/forms/require_complete.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/tests/normal.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/tests/actual_error.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/tests/require_complete.kt",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/run.py",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/validation.just",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/SOURCE_REVIEW.json",
+    "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r3-20261031/PROTOCOL.json"
+  ],
+  "predecessor": {
+    "source": "a3355618c4de98681be19d6bd04df7bc9a54b271",
+    "receipt": "f0b482ba2e22cacbbf4479c8594d5921612b1765"
+  },
+  "setup_bindings": {
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/SerializationTestSupport.kt": "5253189c1a0dc1cff3b7e30791a73fcb866f80bb",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLoader.kt": "15a7b94824ed172c67e197cb402e9ae8a704eb62",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardExporter.kt": "57bbdbecc895681d8cd184f7f4964110c2059802"
+  },
+  "test_form_hashes": {
+    "normal": "6afe86804448d18c7926e31ff0ac03ee48c9a215f61ae1129a12dac545abc130",
+    "actual_error": "da9512e8003c0dd2c6367bfdaf31d6c6817256699937a647ff43c54f094bde44",
+    "require_complete": "d1cecf886770b75dd28ffb9c8237af44b5561ee59f701e44cea1f7f3256c0330"
+  }
+}
