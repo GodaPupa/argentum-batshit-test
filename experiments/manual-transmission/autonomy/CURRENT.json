@@ -3,16 +3,15 @@
   "updated_date": "2026-10-31",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "EXECUTING",
+  "owner": "manual-work-5b039033-97c0-832b-9d9d-d6514c54cd6a",
   "lease": {
-    "owner": null,
-    "state": "RELEASED",
-    "last_owner": "manual-work-1e696091-4ba8-8320-8516-a8b1c5d2f7d8",
-    "automation_run": "1e696091-4ba8-8320-8516-a8b1c5d2f7d8",
-    "released_utc": "2026-10-31T07:05:15.197Z",
-    "expires_utc": null,
-    "reason": "WAITING_EXTERNAL: original diagnostic active; receiving and isolated review checkpointed."
+    "owner": "manual-work-5b039033-97c0-832b-9d9d-d6514c54cd6a",
+    "state": "ACTIVE",
+    "automation_run": "5b039033-97c0-832b-9d9d-d6514c54cd6a",
+    "acquired_utc": "2026-10-31T07:50:57.382Z",
+    "expires_utc": "2026-10-31T08:50:57.382Z",
+    "reason": "Receive original terminal Disciple R2 diagnostic and diagnose within bounded authority."
   },
   "last_qualified": {
     "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
@@ -1855,14 +1854,14 @@
   },
   "execution_channel": {
     "primary": "Work execution conversation",
-    "session": "1e696091-4ba8-8320-8516-a8b1c5d2f7d8",
-    "work_owner": null,
+    "session": "5b039033-97c0-832b-9d9d-d6514c54cd6a",
+    "work_owner": "manual-work-5b039033-97c0-832b-9d9d-d6514c54cd6a",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "WAITING_EXTERNAL",
+    "activity": "EXECUTING",
     "last_execution_owner": "manual-work-1e696091-4ba8-8320-8516-a8b1c5d2f7d8",
     "intervention_watch": "READ_ONLY",
-    "automation_run": "1e696091-4ba8-8320-8516-a8b1c5d2f7d8",
+    "automation_run": "5b039033-97c0-832b-9d9d-d6514c54cd6a",
     "automation_reconciliation": "Current exact run in_progress; live lease matches; all five workflow statuses reconciled, only unrelated ancient Pest34749202144 queued; no newer canonical receipt/successor."
   },
   "blockers": [],
@@ -2740,7 +2739,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-10-31T07:05:15.197Z",
+  "updated_utc": "2026-10-31T07:50:57.382Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -4643,39 +4642,14 @@
     "Explicit authorization needed for proposal 858dac7a631d9b357c2bf7f1694a3de4fd1c94ba:experiments/manual-transmission/research/spellskite-card-admission-proposal-r1-20261028/NEXT_ADMISSION.json; protected NPH snapshot and production registration boundary."
   ],
   "ownership_reconciliation": {
-    "observed_utc": "2026-10-30T09:54:22.607Z",
-    "owner_released": true,
-    "automation_run": "00c84d4a-acfc-8327-98af-49a772af42b8",
-    "automation_enabled": true,
-    "schedule_unchanged": true,
-    "active_runs": [
-      41035962802
-    ],
-    "ignored_only": [
-      34749202144
-    ],
-    "other_queued_waiting_requested_pending": [],
-    "canonical_head_before_release": "4e221346593961ad8023f56e23ae1067f11a153f",
-    "newer_receipts_or_competing_successors": false,
-    "last_reconciled_utc": "2026-10-30T21:18:30.865Z",
-    "exact_automation_run": "89c81450-b6b8-8324-8557-17cf35c83add",
-    "canonical_predecessor": "5afb8f2fb06ac1513d3648e1fea4ff85f58dc508",
-    "terminal_run_received": 41075326079,
-    "active_workflows": [],
-    "ignored_unrelated_ancient_queued": [
-      34749202144
-    ],
-    "all_event_types": true,
-    "statuses_checked": [
-      "in_progress",
-      "queued",
-      "waiting",
-      "requested",
-      "pending"
-    ],
-    "newer_receipts_or_successors": "Only this invocation's diagnostic receipt and proposal; no competing owner.",
-    "automation_run_state": "completed",
-    "operation": "Explicit user grant recording and resume handoff; no execution claim."
+    "utc": "2026-10-31T07:50:57.382Z",
+    "automation_run": "5b039033-97c0-832b-9d9d-d6514c54cd6a",
+    "predecessor_released": true,
+    "canonical_head": "d807c71e52ff61e335f6afb8d513c434ca980994",
+    "terminal_run": 41179046741,
+    "all_five_statuses_checked": true,
+    "only_ignored_run": 34749202144,
+    "no_newer_receipt_or_successor": true
   },
   "spellskite_card_early_r1": {
     "state": "QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
