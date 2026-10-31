@@ -1,0 +1,50 @@
+{
+  "source": "2a0b8842a79909d10111bd5e3cac089f43c77cb9",
+  "run": 41245535657,
+  "artifact": 13059373327,
+  "original_failure_preserved": "original.zip.base64",
+  "findings": [
+    {
+      "id": "DF16_AFFORDABILITY",
+      "classification": "EXECUTABLE_RUNTIME_FAILURE",
+      "case": "DF16 two life cannot pay Garden entry cost",
+      "line": 239,
+      "observed": "At two life, pendingDecision is a YesNoDecision offering Pay 3 life, expected null."
+    },
+    {
+      "id": "DF16_PAYMENT",
+      "classification": "EXECUTABLE_RUNTIME_FAILURE",
+      "case": "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+      "line": 467,
+      "observed": "After accepting, life expected2 but actual-1. The later tapped/zone assertions were not reached and are not claimed.",
+      "source_cause": "PlayLandHandler offers the payLifeCost branch without affordability guard; resumePayLifeOrEnterTappedLand directly invokes LifePaymentService.pay, which does not validate affordability."
+    },
+    {
+      "id": "DF19_ENUMERATION",
+      "classification": "EXECUTABLE_LEGAL_ACTION_FAILURE_SOURCE_LOCALIZED",
+      "case": "DF19 exile permission castOnly=false distinguishes Garden play",
+      "line": 484,
+      "observed": "Eligible land-back action expectedtrue but absent. Submission/outcome assertions after this line did not execute.",
+      "source_cause": "CastFromZoneEnumerator active may-play permission land branch checks only front CardComponent.typeLine.isLand and constructs only front PlayLand; PlayLandEnumerator face helper is used for other routes. The existing handler already checks the chosen back face and rejects nonLandOnly grants."
+    },
+    {
+      "id": "CHOICE_FIXTURE",
+      "classification": "SOURCE_GROUNDED_TEST_SETUP_MISMATCH_NOT_RUNTIME_PROOF",
+      "affected_cases": 12,
+      "observed": "One eligible creature auto-selects synchronously; original tests then demand a target-choice pause. Independent second-candidate fixture draft preserves all assertions and names.",
+      "limits": "No payoff/serialization correctness inferred from cases stopped before their outcome assertions. No target-pipeline runtime change proposed from these failures."
+    }
+  ],
+  "witnesses": [
+    "life2",
+    "white",
+    "allow_transform",
+    "actual_error",
+    "require_complete"
+  ],
+  "excluded_controls": {
+    "no_tapped": "Earlier No pending YesNoDecision at line226, not declared tapped assertion line228.",
+    "life1": "Localization only; normal already fails at life total. No negative qualification credit."
+  },
+  "admitted": false
+}

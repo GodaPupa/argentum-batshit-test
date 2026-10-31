@@ -1,0 +1,44 @@
+{
+  "state": "PROPOSED_NOT_EXECUTED",
+  "original_cases": [
+    "DF16 two life cannot pay Garden entry cost",
+    "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+    "DF19 exile permission castOnly=false distinguishes Garden play",
+    "DF19 exile permission castOnly=true distinguishes Garden play"
+  ],
+  "requirements": [
+    "Freeze exact source/protocol/test/negative forms and immutable bindings before one justified dispatch; normal and all mutants compile before behavior.",
+    "Prove preserved DF16 and DF19 failures pass; exact assertion-level negative witnesses from removing offer guard, bypassing stale-answer validation and suppressing modal-back action, with normal passing controls.",
+    "Payment threshold cases below/equal/above cost, decline, stale/malformed/replayed answers, serialized pending decision, one land drop, no duplicate entry events/triggers, exact identity, forced-tapped permission and existing legal payment-replacement behavior; do not infer prohibited-payment support without a separate proved existing mechanism.",
+    "Permission/controller/expiry/zone/timing/drop/prohibition cases; play versus cast-only permissions; preserve front spell behavior and direct-handler validation; test offered-action/handler agreement.",
+    "Complete all original DF01\u2013DF22 scenario families and full card-only mutant matrix. Singleton fixture localization and prior witnesses can be reused only at exact source bindings.",
+    "Required affected runtime/card regressions; at least390 existing card cases plus additions;19139 ordinary baseline plus additions and exact43 historical skips;64client floor/typecheck; metadata/printing/lint/Assay classifications; exactly one additive MH3 snapshot preserving24original entries.",
+    "Original run/job/attempt/artifact bytes/hash/manifest, raw identity/multiplicity/count/skip and executable witness verification, source/restoration/protected bindings. Green workflow alone is never acceptance."
+  ],
+  "negative_controls": [
+    {
+      "id": "PAY_OFFER_GUARD",
+      "normal": "At2life no affirmative3life decision; entry tapped and life2.",
+      "mutant": "Remove initial affordability guard.",
+      "witness": "Original pendingDecision expectednull but actualYesNoDecision; do not count an earlier failure."
+    },
+    {
+      "id": "PAY_RESUME_GUARD",
+      "normal": "Affordable prompt is serialized then life becomes insufficient; affirmative rejected without mutation and decline still finishes tapped.",
+      "mutant": "Bypass revalidation only.",
+      "witness": "Exact protected life total or explicit-error assertion fails on original report; compile first and bind line before dispatch."
+    },
+    {
+      "id": "MODAL_LAND_PERMISSION",
+      "normal": "Play-specific permission offers exactly one back-face land action; cast-only does not and direct submission gives actual error.",
+      "mutant": "Suppress back-face land action only.",
+      "witness": "Original DF19 offered expectedtrue actualfalse at rebound exact line."
+    },
+    {
+      "id": "CONTROLS",
+      "normal": "DF14pay3/DF15decline/DF17green/DF21no-transform and accepted prior behavior remain unchanged.",
+      "mutant": "Reuse exact-bound diagnostic witnesses only where justified.",
+      "witness": "All unaffected required controls pass; full qualification never inferred from diagnostic."
+    }
+  ]
+}

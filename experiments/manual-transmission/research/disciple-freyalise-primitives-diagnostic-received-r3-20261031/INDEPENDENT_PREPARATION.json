@@ -1,0 +1,32 @@
+{
+  "state": "ISOLATED_UNCOMPILED_NOT_QUALIFIED_NOT_APPLIED",
+  "base": "2a0b8842a79909d10111bd5e3cac089f43c77cb9",
+  "scope": "Named Disciple scenario fixture only. A second eligible own creature forces the existing SelectTargetPipelineExecutor multiple-candidate branch. Original target IDs and all178 current assertion lines remain unchanged; the extra candidate is never chosen. No blanket driver change, so no-other-own-creature controls remain unchanged.",
+  "source_evidence": {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/SelectTargetPipelineExecutor.kt",
+    "blob": "afae77bea6cf07c86b7bef60799f4dadb1fd99f6",
+    "finding": "A single mandatory target is automatically selected. R3 tests expecting a ChooseTargetsDecision had only one eligible creature. This is a setup mismatch; it is not proof that paused sacrifice-power transport failed."
+  },
+  "sites_before_line_numbers": [
+    76,
+    108,
+    121,
+    137,
+    170,
+    191,
+    246,
+    307,
+    414,
+    433
+  ],
+  "expanded_affected_cases": 12,
+  "identities_preserved": 28,
+  "assertion_lines_preserved": 178,
+  "sha256": "43fc06aea833a8c6d8ae2d90cb51bca5f91c278227af6a269f9aa2e2675513c8",
+  "needs": [
+    "Compile and execute on a bounded successor before claiming any payoff, serialization or non-targeting result.",
+    "Verify the unchosen creature remains, and add separate singleton/autoselection coverage without removing original tests.",
+    "DF12 still needs ward/shroud/non-targeting and ordering coverage; do not treat hexproof alone as complete.",
+    "No full qualification until the separate payment/enumeration boundary is authorized and all remaining DF01\u2013DF22 gates are complete."
+  ]
+}

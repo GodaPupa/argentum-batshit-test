@@ -1,0 +1,320 @@
+{
+  "state": "ORIGINAL_DIAGNOSTIC_VERIFIED_NOT_ADMISSION",
+  "pins": {
+    "source": "2a0b8842a79909d10111bd5e3cac089f43c77cb9",
+    "tree": "6e73cf0427d225352ed852ad2b3d7e20a0d5ab6b",
+    "validation": "5f950abbf1f06847651c93e6aed13b292dfbd245",
+    "validation_tree": "76dfae809ecb0b309604dacd3efd71be09c42e77",
+    "workflow": ".github/workflows/manual-disciple-primitives-diagnostic-r3-20261031.yml",
+    "workflow_blob": "8b3df22c06ec78cf079a4d359db7fa08562e59ec"
+  },
+  "run": 41245535657,
+  "job": 124668066700,
+  "attempt": 1,
+  "artifact": 13059373327,
+  "archive_bytes": 331955,
+  "archive_sha256": "31739cb48ea58747adfc7dc3e7d8ea402839eb0e997af7527d9de367cc33e9a3",
+  "manifest_entries": 111,
+  "all_eight_forms_compiled_before_behavior": true,
+  "counts": {
+    "normal": {
+      "total": 28,
+      "failed": 15
+    },
+    "life2": {
+      "total": 28,
+      "failed": 16
+    },
+    "life1": {
+      "total": 28,
+      "failed": 16
+    },
+    "no_tapped": {
+      "total": 28,
+      "failed": 20
+    },
+    "white": {
+      "total": 28,
+      "failed": 16
+    },
+    "allow_transform": {
+      "total": 28,
+      "failed": 16
+    },
+    "actual_error": {
+      "total": 28,
+      "failed": 16
+    },
+    "require_complete": {
+      "total": 28,
+      "failed": 16
+    }
+  },
+  "skips_per_form": 0,
+  "exact_identities_per_form": 28,
+  "verified_witnesses": {
+    "life2": {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "line": 212,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<18>",
+      "type": "org.opentest4j.AssertionFailedError",
+      "normal_pass": true
+    },
+    "white": {
+      "case": "DF17 Garden activation produces exactly one green and no other mana",
+      "line": 355,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>",
+      "type": "org.opentest4j.AssertionFailedError",
+      "normal_pass": true
+    },
+    "allow_transform": {
+      "case": "DF21 external transform instruction leaves Disciple front face unchanged",
+      "line": 507,
+      "message": "org.opentest4j.AssertionFailedError: Contents did not match exactly, but found the following partial match(es):\nMatch[0]: part of slice with indexes [8..20] matched actual[6..18]\nLine[0] =\"Garden of Freyalise\"\nMatch[0]= ------+++++++++++++\nexpected:<Disciple of Freyalise> but was:<Garden of Freyalise>",
+      "type": "org.opentest4j.AssertionFailedError",
+      "normal_pass": true
+    },
+    "actual_error": {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "line": 209,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"You can only play lands on your turn\"",
+      "type": "org.opentest4j.AssertionFailedError",
+      "normal_pass": true
+    },
+    "require_complete": {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "line": 209,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "type": "org.opentest4j.AssertionFailedError",
+      "normal_pass": true
+    }
+  },
+  "excluded_controls": {
+    "no_tapped": "Earlier No pending YesNoDecision at line226, not declared tapped assertion line228.",
+    "life1": "Localization only; normal already fails at life total. No negative qualification credit."
+  },
+  "normal_failures": [
+    {
+      "name": "DF01 sacrifice gives exactly five life and five cards",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:523"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF03 selection rejects the source and still accepts another own creature",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:112",
+            "DiscipleOfFreyaliseScenarioTest.kt:112"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF04 selection rejects an opponent creature",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:127",
+            "DiscipleOfFreyaliseScenarioTest.kt:127"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF06 power 0 sacrifices without drawing or losing life",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:161",
+            "DiscipleOfFreyaliseScenarioTest.kt:161"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF06 power -2 sacrifices without drawing or losing life",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:161",
+            "DiscipleOfFreyaliseScenarioTest.kt:161"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF08 source departure before trigger resolution preserves the payoff",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:182",
+            "DiscipleOfFreyaliseScenarioTest.kt:182"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF11 full state serialization at optional preserves five power payoff",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:198",
+            "DiscipleOfFreyaliseScenarioTest.kt:198"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF11 full state serialization at selection preserves five power payoff",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:198",
+            "DiscipleOfFreyaliseScenarioTest.kt:198"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF16 two life cannot pay Garden entry cost",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: Expected null but actual was YesNoDecision(id=r0, playerId=e0, prompt=Pay 3 life to have Garden of Freyalise enter untapped?, context=DecisionContext(sourceId=ee99124c-0e89-4cd5-a4da-ab5b4b77b455, sourceName=Garden of Freyalise, phase=RESOLUTION, triggeringEntityId=null, inlineOnTrigger=false, effectHint=null, subjectEntityId=null, abilityIdentity=null), yesText=Yes, noText=No, hint=null)",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:239"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF05 projected boost is captured before the sacrifice",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:255",
+            "DiscipleOfFreyaliseScenarioTest.kt:255"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF12 resolution choice of hexproof fodder emits no targeting event",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:320",
+            "DiscipleOfFreyaliseScenarioTest.kt:320"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF09 token sacrifice retains projected five power after departure",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:424",
+            "DiscipleOfFreyaliseScenarioTest.kt:424"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "failures": [
+        {
+          "type": "java.lang.IllegalStateException",
+          "message": "java.lang.IllegalStateException: No pending ChooseTargetsDecision",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:449",
+            "DiscipleOfFreyaliseScenarioTest.kt:449"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<-1>",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:467"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "DF19 exile permission castOnly=false distinguishes Garden play",
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "lines": [
+            "DiscipleOfFreyaliseScenarioTest.kt:484"
+          ]
+        }
+      ]
+    }
+  ],
+  "df19_cast_only_rejected_with_actual_error": true,
+  "protected_bindings": {
+    "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+    "mtg-sdk": "51b097156bff57e30aeca2d6338ccfc5a62a65e3",
+    "rules-engine": "ba2e20898cc69d709d895933952301c8ff23ce2e",
+    "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+    "mtg-sets/src/test/resources/snapshots/cards/MH3.json": "25b01370752b8d2fe97389c453a300dce833531a"
+  },
+  "source_restored": true,
+  "restoration_limit": "Original frozen runner checked clean tracked source and protected trees after restoration; no restored behavioral rerun was declared or performed.",
+  "card_admitted": false,
+  "feature_admitted": false,
+  "full_qualification": false,
+  "remaining_gates": [
+    "Complete DF12 ward and ordering, DF16 prohibited payment, DF18 outside battlefield, DF19 graveyard and cast restriction, DF20 noncast qualified entry and bounce, DF21 Opal exclusion, DF22 registration/additive snapshot",
+    "Freeze all full-admission card mutants and every matrix witness; compile all forms first; this diagnostic does not substitute",
+    "Original full card/19139ordinary plus additions/43 historical skips/64client/typecheck/metadata/printing/lint/Assay classification",
+    "Original artifact receiving with all immutable run/job/attempt/artifact bytes/hash/manifest/raw identities/forms/restoration/protected pins"
+  ],
+  "assertion_verification": {
+    "original_sha256": "9553b333e837a8d0b8b1d193fb026da29a2ebe1ef2ee19ad0a64243aed63ebd6",
+    "authorized_delta": 22,
+    "unchanged_original_assertions": 154,
+    "authorized_assertions_preserved": 176,
+    "additional_setup_assertions": 2,
+    "approved_sha256": "0bfaae306acff1edcc6da42e8f879dbcf07ff1e062cf3738394dede8868d5e60",
+    "r3_sha256": "6afe86804448d18c7926e31ff0ac03ee48c9a215f61ae1129a12dac545abc130",
+    "test_identities": 28,
+    "downstream_assertions_preserved": true
+  },
+  "concrete_blocker_removed": "Exact 22-site pause-status correction is byte-verified, with actual-error and pause-v-completion witnesses and DF19 actual-error rejection preserved. This resolves the status-assertion blocker only; Disciple remains unadmitted."
+}

@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "state": "PROPOSED_EXPLICIT_NEW_BOUNDARY_AUTHORIZATION_REQUIRED_NOT_APPLIED",
+  "source": "2a0b8842a79909d10111bd5e3cac089f43c77cb9",
+  "source_tree": "6e73cf0427d225352ed852ad2b3d7e20a0d5ab6b",
+  "base_accepted": "d5f258de423503e7054528bb3f6a7a71c5314057",
+  "evidence": {
+    "receipt": "RECEIPT.json at this commit",
+    "diagnosis": "DIAGNOSIS.json at this commit",
+    "run": 41245535657,
+    "job": 124668066700,
+    "artifact": 13059373327,
+    "archive_sha256": "31739cb48ea58747adfc7dc3e7d8ea402839eb0e997af7527d9de367cc33e9a3"
+  },
+  "concrete_blocker": "Original R3 proves unaffordable three-life entry payment reaches minus one life and a play-permitted modal land back face is absent from legal actions. Existing user grants exclude runtime and payment/UI repairs.",
+  "requested_boundaries": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt",
+      "original_blob": "1eede4b53b416b5692d5a9c2b241092fe38d1204",
+      "original_sha256": "80d089dc99dc29097a70eaacc142e2d3bbe1dafe49f04e046d08d230301d28f4",
+      "allowed_delta": "Only EntersTapped.payLifeCost direct-land entry branch: check affordability before presenting the existing yes/no decision. If the life cost cannot be paid, use the existing tapped-entry completion with one land drop and normal entry events/triggers. Preserve all other entry replacements, permissions, counters and riders.",
+      "archived_original": "source-review/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "original_blob": "2befd23e7c6c5a2b68e75b3256fb70526397f1e4",
+      "original_sha256": "83729294d16865a99f48b86c584e1609779673b58cafd31b626c422fc617c377",
+      "allowed_delta": "Only resumePayLifeOrEnterTappedLand: revalidate affordability of the exact pending life cost before payment. Reject an invalid/stale affirmative response without life deduction or untapped completion and preserve a valid decline route. Preserve decline behavior, existing payment service/replacement behavior, exact entry identities, event multiplicity and trigger ordering. Do not change the adjacent spell-entry continuation.",
+      "archived_original": "source-review/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt",
+      "original_blob": "3de2462d8bc2cea7a488a94b7ef1da11466738d0",
+      "original_sha256": "40f4301cf3b4b9b5e6d45d0e9063dea62ea7791a6a599dcb18f99d6e7c1b247f",
+      "allowed_delta": "Only active per-card MayPlayPermission land-action enumeration: consider the eligible modal land back face and emit PlayLand(asBackFace=true) with its face name and source zone when a non-cast-only permission authorizes it. Respect normal land timing/drop/prohibition gates, controller, active permission and actual zone; keep front spell enumeration and all other zone/linked-exile/library routes unchanged.",
+      "archived_original": "source-review/rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt"
+    }
+  ],
+  "tests": [
+    "Preserve all28 Disciple identities, all176 authorized original assertion lines plus two existing fixture assertions, DF19 actual-error requirement, all downstream outcomes and archived originals.",
+    "Permit only additive focused tests for the two named runtime seams and the already-authorized Disciple fixture/card tests. No existing test/expectation rewrite.",
+    "Use existing runtime primitives only. No change to LifePaymentService, CostHandler, target pipeline, SDK models/serialization, source/group resolution, server/client or snapshots beyond the existing separately authorized one-entry MH3 grant."
+  ],
+  "mandatory_gates": [
+    "Freeze exact source/protocol/test/negative forms and immutable bindings before one justified dispatch; normal and all mutants compile before behavior.",
+    "Prove preserved DF16 and DF19 failures pass; exact assertion-level negative witnesses from removing offer guard, bypassing stale-answer validation and suppressing modal-back action, with normal passing controls.",
+    "Payment threshold cases below/equal/above cost, decline, stale/malformed/replayed answers, serialized pending decision, one land drop, no duplicate entry events/triggers, exact identity, forced-tapped permission and existing legal payment-replacement behavior; do not infer prohibited-payment support without a separate proved existing mechanism.",
+    "Permission/controller/expiry/zone/timing/drop/prohibition cases; play versus cast-only permissions; preserve front spell behavior and direct-handler validation; test offered-action/handler agreement.",
+    "Complete all original DF01\u2013DF22 scenario families and full card-only mutant matrix. Singleton fixture localization and prior witnesses can be reused only at exact source bindings.",
+    "Required affected runtime/card regressions; at least390 existing card cases plus additions;19139 ordinary baseline plus additions and exact43 historical skips;64client floor/typecheck; metadata/printing/lint/Assay classifications; exactly one additive MH3 snapshot preserving24original entries.",
+    "Original run/job/attempt/artifact bytes/hash/manifest, raw identity/multiplicity/count/skip and executable witness verification, source/restoration/protected bindings. Green workflow alone is never acceptance."
+  ],
+  "excluded": [
+    "No blanket life-payment service repair or other payment systems, spell-entry continuation, target/choice pipeline or protected resolver change.",
+    "No SDK/server/client/UI model changes, other cards/registrations, existing assertion changes or extra snapshot entries.",
+    "No multiplayer admission, official games/seeds, extra spending, new workers or schedule changes.",
+    "If implementation or remaining requirements need another file or protected boundary, stop and prepare a separate concrete proposal; this proposal is not blanket runtime authority."
+  ],
+  "preserve": [
+    "Accepted Spellskite/Fblthp/Opal and original failures/receipts",
+    "All legacy fixtures/protected entries/assertions",
+    "Frozen Manual v0.7, statistical design, budgets and both reserved Precision games"
+  ],
+  "independent_work": "Selection fixture draft and source review saved without claiming compile/behavior success. No duplicate run launched.",
+  "authority_granted": false,
+  "feature_admitted": false,
+  "card_admitted": false
+}
