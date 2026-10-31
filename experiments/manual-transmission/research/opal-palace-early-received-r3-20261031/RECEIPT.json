@@ -1,0 +1,294 @@
+{
+  "state": "ORIGINAL_EARLY_VERIFIED_DEPENDENT_GATES_PENDING",
+  "pins": {
+    "source": "b504395fadd32ae6041f4ede1dd075ce792cb47f",
+    "tree": "eea56c72542c0a6d4bd8de04da1f0183086e7f96",
+    "validation": "7e5c137853f9e61a29f74ebfd6aa0cb274f6ae85",
+    "validation_tree": "9ea9192f531b7429633466617969e3c3ad79cad3",
+    "workflow": ".github/workflows/manual-opal-palace-early-r3-20261030.yml",
+    "workflow_blob": "3adff2be2454857e6cbf3cd263cf2b338cdba310",
+    "record": "experiments/manual-transmission/research/opal-palace-early-r1-20261030",
+    "state": "ACTIVE_ORIGINAL_RECEIVING_PENDING",
+    "planned": {
+      "distinct_compiles": 18,
+      "restored_compile": 1,
+      "normal": 56,
+      "restored": 56,
+      "negative_witnesses": 18,
+      "negative_controls": 170,
+      "snapshot_export": 1
+    },
+    "feature_admitted": false,
+    "card_admitted": false,
+    "delta": "Only authorized Opal counter-prevention guard uses discarded immutable battlefield membership preview; actual entry order/other riders/payment/count increments and all tests/assertions unchanged. All mutant hashes regenerated.",
+    "run": 41146402474,
+    "job": 124372413207,
+    "workflow_id": 402334811,
+    "event": "push",
+    "attempt": 1,
+    "run_number": 1,
+    "observed_status": "in_progress",
+    "observed_utc": "2026-10-30T23:46:43Z",
+    "receiving": {
+      "commit": "a43f8b82002cc84c5590761efd0ecb29e9d27434",
+      "path": "experiments/manual-transmission/research/opal-palace-early-receiving-r3-20261030",
+      "state": "PREPARED_NOT_EXECUTED",
+      "readback_verified": true
+    },
+    "dispatched_once": true,
+    "artifact": 13023525060,
+    "bytes": 8644674,
+    "sha256": "ed7e1b84ad261dde9edd7965af5761ad3358467845a42910a6b827e68b330d42"
+  },
+  "manifest_entries": 1052,
+  "distinct_compiled_forms": 18,
+  "restored_compile": true,
+  "normal": 56,
+  "restored": 56,
+  "negative_witnesses": 18,
+  "negative_controls": 170,
+  "summaries": {
+    "normal": {
+      "form": "normal",
+      "rows": 56,
+      "failures": [],
+      "passing_controls": 56,
+      "skips": 0
+    },
+    "restored": {
+      "form": "restored",
+      "rows": 56,
+      "failures": [],
+      "passing_controls": 56,
+      "skips": 0
+    },
+    "negative-OP01-drop": {
+      "form": "OP01-drop",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP01Test::first command-zone cast enters with one counter when paid with Palace mana",
+          "line": 145,
+          "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP02-current-cast": {
+      "form": "OP02-current-cast",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP02Test::Palace counts the current command-zone cast",
+          "line": 333,
+          "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP03-owner": {
+      "form": "OP03-owner",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP03Test::Palace does not mark a foreign commander",
+          "line": 351,
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP04-multiplicity": {
+      "form": "OP04-multiplicity",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP04Test::Palace preserves each consumed mana contribution",
+          "line": 366,
+          "message": "org.opentest4j.AssertionFailedError: expected:<6> but was:<3>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP05-cast-zone": {
+      "form": "OP05-cast-zone",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP05Test::scoped repair: a later hand cast uses only prior command-zone casts",
+          "line": 182,
+          "message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<0>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP06-per-unit": {
+      "form": "OP06-per-unit",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP06Test::scoped repair: two Palace contributions are combined before an additive counter modifier",
+          "line": 208,
+          "message": "org.opentest4j.AssertionFailedError: expected:<3> but was:<4>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP07-order": {
+      "form": "OP07-order",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP07Test::entry observers see Palace counters before checking entering power",
+          "line": 232,
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP08-serializer": {
+      "form": "OP08-serializer",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP08Test::Palace pending rider serialization succeeds and preserves exact spell",
+          "line": 386,
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP09-direct-exit": {
+      "form": "OP09-direct-exit",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP09Test::countered Palace spell loses its rider before a hand recast with ordinary mana",
+          "line": 257,
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP10-generic-exit": {
+      "form": "OP10-generic-exit",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP10Test::Palace generic stack exit clears pending rider",
+          "line": 401,
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP11-copy": {
+      "form": "OP11-copy",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP11Test::pending Palace counters survive serialization and apply once on resolution",
+          "line": 294,
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP12-consume": {
+      "form": "OP12-consume",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP12Test::Palace entry consumes only its matching spell rider",
+          "line": 416,
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP13-ordinary": {
+      "form": "OP13-ordinary",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP13Test::ordinary mana spent on a commander does not add Palace counters",
+          "line": 321,
+          "message": "org.opentest4j.AssertionFailedError: expected:<0> but was:<1>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP14-unspent": {
+      "form": "OP14-unspent",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP14Test::Palace unspent tagged mana does not mark a spell",
+          "line": 431,
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP15-producer": {
+      "form": "OP15-producer",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP15Test::Palace mana rider survives producer departure",
+          "line": 448,
+          "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP17-identity": {
+      "form": "OP17-identity",
+      "rows": 12,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP17Test::Palace rejects another generation of the same card",
+          "line": 42,
+          "message": "org.opentest4j.AssertionFailedError: expected:<0> but was:<1>"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP17Test::Palace rejects a rider belonging to a different entity",
+          "line": 53,
+          "message": "org.opentest4j.AssertionFailedError: expected:<0> but was:<1>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    },
+    "negative-OP18-prohibition": {
+      "form": "OP18-prohibition",
+      "rows": 11,
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.OpalWitnessOP18Test::Palace respects Solemnity shaped counter prevention before entry observers",
+          "line": 234,
+          "message": "org.opentest4j.AssertionFailedError: expected:<0> but was:<1>"
+        }
+      ],
+      "passing_controls": 10,
+      "skips": 0
+    }
+  },
+  "feature_admitted": false,
+  "card_admitted": false
+}
