@@ -1,0 +1,65 @@
+{
+  "schema": 1,
+  "state": "PROPOSED_EXPLICIT_AUTHORIZATION_REQUIRED_NOT_IMPLEMENTED",
+  "card": "Disciple of Freyalise // Garden of Freyalise",
+  "canonical": "MH3#250",
+  "runtime_base": "d5f258de423503e7054528bb3f6a7a71c5314057",
+  "runtime_base_tree": "18e9627ff65f54fc88f7e30dda6f78095544ece7",
+  "accepted_base_admission": "2320eb33bbca0807989f1770b6948fb12a78723e",
+  "diagnostic_receipt": "d0ada58b64cbd6bde866c89f91b8ce81eca6a068",
+  "concrete_blocker": "The four remaining Manual cards lack registration authority. Disciple has a candidate composition from existing primitives; its canonical card and one additive protected MH3 snapshot entry require a separate bounded grant. This proposal does not assert that the draft compiles or passes.",
+  "requested_authority": {
+    "new_card_path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+    "draft": "draft/DiscipleOfFreyalise.kt",
+    "card_contract": "Only canonical MH3#250 front creature/back land using existing immutable CardDefinition MODAL_DFC/backFace composition; optional resolution-time other-own-creature sacrifice, explicit PermanentsSacrificed success gate, projected last-known sacrificed power for life/draw; existing EntersTapped(payLifeCost=3) and green mana on land face. Front/back metadata and seven archived rulings. No new reprints.",
+    "new_tests": [
+      "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt",
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/DiscipleOfFreyaliseRegistrationTest.kt"
+    ],
+    "test_contract": "One card scenario file with exact positive, negative, identity, pause/serialization, face/permission/payment/entry tests; additive registration/snapshot-export assertions only. Existing assertions and inventories never edited except explicit additive identities.",
+    "protected_snapshot": {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/MH3.json",
+      "blob": "25b01370752b8d2fe97389c453a300dce833531a",
+      "sha256": "b021d21c371237f2f080f751b9ccc256e5de91f4bb559a0c5fb4c50ae537b4c3",
+      "bytes": 67843,
+      "original_entries": 24,
+      "archive": "archive/MH3.original.json",
+      "delta": "Exactly one additive Disciple of Freyalise block including its backFace, generated after successful normal compilation. Preserve every original byte and entry; deleting only new block with its insertion separator must recover original exactly. No normalization, blanket rebless, or extra entry."
+    },
+    "research": "Scoped immutable protocol, locked runner, compile-first card-mutant forms, raw report auditor, source/validation pins and original receiving infrastructure. Existing singleexecutor/schedule/concurrency/budget only.",
+    "production_engine_sdk_server_client_changes": []
+  },
+  "mandatory_gates": {
+    "matrix": "TEST_MATRIX.json",
+    "compile_first": "Freeze normal and all distinct card-mutant forms, compile normal/all mutants before any behavioral witnesses. Invalid compiler/missing-report/unrelated failures never qualify. Fix only bounded card/test setup on a new immutable source; runtime defects outside this scope require a separate proposal.",
+    "behavior": "All DF01-22 cases and exact original unaffected controls. Freeze exact discovered test identities/multiplicities and witness lines before qualification. Every substantive shape requires an executable mutation; consolidate duplicate mutations only with all corresponding exact witnesses preserved.",
+    "dependent": "Current390card baseline plus additive registrationcases;19139ordinary baseline including19074original16Bolt49Opal and43exacthistoricalskips plusnewcases;coherent-source64client floor/typecheck. Preserve Spellskite,Fblthp,Bolt,Opal,occurrence/groups/divisions/modal-splice/source/ward/trigger gates. Reuse exact-bound accepted evidence only, with explicit file/tree proof.",
+    "card": "Canonical printing metadata/image checks,discovery,roundtrip,printing,catalog,lint,required locked build and full tests;oneadditiveMH3snapshot and exact original-byte restoration.",
+    "assay": "Original MH3 differential before/after or exact-bound original baseline; classify every existing/new row/decline. Front grammar decline and whole-card MULTI_FACE decline are not passes. Accepted IR lacks exact front-name row; do not normalize fixture or manufacture IR evidence.",
+    "receiving": "Immutable source/tree/validation/workflow/run/job/attempt/artifact pins, bytes/hash/manifest, raw report identities/multiplicities/counts/skips, exact executable assertion witnesses/forms/restoration/rebinding and all protected originals before acceptance."
+  },
+  "reuse": {
+    "metadata": "Received d0ada58b: one earliest real printing MH3#250, two original face image HEAD successes,7rulings; reuse where exact bindings match.",
+    "source_review": "SOURCE_REVIEW.json; candidate only, no executable proof.",
+    "accepted": "Opal2320eb33,Fblthp/Bolt2d4a2fba,Spellskitecdb1bc6c and earlier exact-bound receipts. Do not rerun historical accepted qualifications because context changed."
+  },
+  "exclusions": [
+    "No engine,SDK,server,client,payment/UI,commander-count,mana-rider or additional protected-boundary changes. If a mandatory case reveals such a cause, preserve original failure and prepare a separate exact proposal.",
+    "No other card registrations, no reprints, no fixture/golden/assertion/threshold/skip relaxation or renaming.",
+    "No multiplayer admission,official games/seeds,extra spending,newworkers,statistical/budget/v0.7 changes;bothPrecisiongames remainreserved."
+  ],
+  "next_after_grant": "Record explicit grant by fresh-blob CURRENT CAS, reconcile exact owner/automation/all workflows and newer receipts; implement only named card/tests plus one snapshot entry after candidate export. Freeze all source/protocol/test/mutant forms before single justified qualification. Receive originals and admit only after every declared gate.",
+  "authority_granted": false,
+  "feature_admitted": false,
+  "card_admitted": false,
+  "multiplayer_admitted": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "draft_status": {
+    "compiled": false,
+    "behavior_executed": false,
+    "registered": false,
+    "expected_scope": "Reviewable candidate composition only; compile errors in candidate may be repaired under a future bounded grant without changing runtime or original assertions."
+  }
+}

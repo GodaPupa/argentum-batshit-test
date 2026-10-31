@@ -1,0 +1,89 @@
+{
+  "schema": 1,
+  "state": "SOURCE_REVIEW_AND_DRAFT_ONLY_NO_EXECUTION",
+  "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
+  "accepted_base": "2320eb33bbca0807989f1770b6948fb12a78723e",
+  "skills": {
+    "root": "27cf5a95edae6b354762164f8a9c04ca1fade989",
+    "add_card": "ee2c25e41f4454ea8ad80ff63def6e019ccf5b8c",
+    "verify": "8a5fd2711dcb202dfd1e32bd616cb85e91cb5078"
+  },
+  "bindings": {
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/CardDefinition.kt": {
+      "git_blob": "816017d3170edb203e1c0838dd28f63d8bc9d8c4"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/CardBuilder.kt": {
+      "git_blob": "40c05dfb0e1f5c4b588f7230f45adce349803da6"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/SacrificeAndPayContinuationResumer.kt": {
+      "git_blob": "e98691cba95ccaf0b16abeac10447e2fa58d27cd"
+    },
+    "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/otj/cards/RuthlessLawbringer.kt": {
+      "git_blob": "42acf12aee35a5d37c2bf41df44911be82883adf"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/PermanentEffects.kt": {
+      "git_blob": "5aa7b47f51cf946e35b4b8b6f31cc674d2861c79"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/CompositeEffects.kt": {
+      "git_blob": "80152e2d238877b1cd594435f66c34eb2896077e"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/SacrificeExecutor.kt": {
+      "git_blob": "54b05f0289cb06741b7ee487725ba34d0130f547"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/SacrificeTargetExecutor.kt": {
+      "git_blob": "0b1a919bd9c6de167d852287df0011d79b50a15b"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/values/DynamicAmount.kt": {
+      "git_blob": "74edccae8ca3b14ebac545e76a4cbb9ac5e486b0"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ReplacementEffect.kt": {
+      "git_blob": "6aefb5b7234ca739ef64e9769218ec54611fef1f"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt": {
+      "git_blob": "1eede4b53b416b5692d5a9c2b241092fe38d1204"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt": {
+      "git_blob": "4099863e90f812023a44cfd3e51d60c3b873afc4"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/MH3.json": {
+      "git_blob": "25b01370752b8d2fe97389c453a300dce833531a"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/GatedEffectExecutor.kt": {
+      "git_blob": "9addcc586754b09bd15a346dd4da9af7dc00a981"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/ModalDfcCasts.kt": {
+      "git_blob": "72dc12b20be4055340f831c2e873645ca2e2ab76"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt": {
+      "git_blob": "2cf9c51f497797e654ce399a5343c55527006565"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/PlayLandEnumerator.kt": {
+      "git_blob": "8fd0c1d63edd26b1e36e55cd1a84733b81fed056"
+    },
+    "web-client/src/components/decisions/DecisionUI.tsx": {
+      "git_blob": "2b111bca348235f31e1e8064d6dda56b2e2cea20"
+    },
+    "web-client/src/components/ui/ActionMenu.tsx": {
+      "git_blob": "613e8641b0ef439cab4d79651fd6b58345cec962"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/GatedEffects.kt": {
+      "git_blob": "8cb1545450bb18be7b47db06fc3d9a4c353baccc"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/values/EntityReference.kt": {
+      "git_blob": "a167a9fbf6499458c7529010b2288ef8ae81b6cc"
+    }
+  },
+  "findings": [
+    "Do not use modalDoubleFacedPermanent factory: it requires a back-face mana cost. Do not use modalDoubleFacedLand factory: it requires two lands. Existing immutable front.copy(layout=MODAL_DFC,backFace=land) supplies the model consumed by ModalDfcCasts.landFace and PlayLandHandler.",
+    "PlayLandEnumerator emits asBackFace=true and Garden description. PlayLandHandler chooses face before entry, reads played face replacement effects, and uses existing PayLifeOrEnterTappedLandContinuation. No land play, payment or UI changes proposed.",
+    "MayEffect plus IfYouDo/PermanentsSacrificed gates on actual sacrifice. SelectTarget resolution choice + SacrificeTarget mirrors existing other-creature composition; sacrifice-target executor guards controller and cannot-sacrifice and captures projected snapshot. Required no-target-event/hexproof/ward case must prove this choice is suitable; failures requiring shared repair are outside grant.",
+    "EntityReference.Sacrificed and EntityNumericProperty.Power refer to captured characteristics; require equal gain/draw amounts and projected zero/negative/token/replacement/source-departure cases. This is source evidence, not execution.",
+    "DecisionUI already routes YesNo and battlefield choices; ActionMenu consumes server descriptions. Required player flow and64client/typecheck gates before admission. No new visual mechanic assumed.",
+    "Received diagnostic: front optional-sacrifice clause grammar-declined, land lines roundtrip, fullcard MULTI_FACE decline; no exact currentIR front-name row. No repeated diagnostic or parser repair.",
+    "Only new canonicalcard/test files and one additive MH3 snapshot proposed. All24MH3 originalblocks archived, source bindings frozen; no production changes made."
+  ],
+  "unresolved": "Normal/mutant compilation and every planned executable/card/dependent gate await explicit bounded card/snapshot authority. A source-only plausible composition is not acceptance.",
+  "independence": "Same assistant source review; no independent peer review claimed.",
+  "current_2024_tree": "bdc012806379c37da4a4ae4228a4fc4ea8abc314",
+  "no_existing_Disciple_canonical": "Full received source inventory has no Disciple name; current2024 tree exactly equals diagnostic treebdc01280. No new registration performed."
+}

@@ -1,0 +1,163 @@
+{
+  "schema": 1,
+  "state": "PLANNED_NOT_EXECUTED",
+  "requirements": [
+    {
+      "id": "DF01",
+      "proposed_case_name": "accepting sacrifice gains and draws the other creature's power",
+      "normal": "Sacrifice a 5-power own creature; exactly5life/5draw, creature leaves, Disciple remains.",
+      "proposed_card_only_mutation": "replace captured power with fixed1",
+      "required_assertion_witness": "expected5 actual1"
+    },
+    {
+      "id": "DF02",
+      "proposed_case_name": "declining sacrifices nothing and gives no payoff",
+      "normal": "Decline optional decision; no zone/life/draw changes.",
+      "proposed_card_only_mutation": "remove May wrapper",
+      "required_assertion_witness": "original creature remains expectedtrue actualfalse"
+    },
+    {
+      "id": "DF03",
+      "proposed_case_name": "Disciple cannot sacrifice itself",
+      "normal": "Only Disciple controlled; no successful sacrifice/payoff.",
+      "proposed_card_only_mutation": "remove other restriction",
+      "required_assertion_witness": "Disciple remains expectedtrue actualfalse"
+    },
+    {
+      "id": "DF04",
+      "proposed_case_name": "opponent creatures are not sacrifice candidates",
+      "normal": "Only opponent fodder; no own sacrifice/payoff.",
+      "proposed_card_only_mutation": "widen control filter",
+      "required_assertion_witness": "opponent creature remains expectedtrue actualfalse"
+    },
+    {
+      "id": "DF05",
+      "proposed_case_name": "sacrifice uses projected last-known power",
+      "normal": "Base2/2 plus3/+3;5life/5draw, not2.",
+      "proposed_card_only_mutation": "read printed base power or fixed2",
+      "required_assertion_witness": "expected5 actual2"
+    },
+    {
+      "id": "DF06",
+      "proposed_case_name": "zero and negative power still sacrifice without life loss or draw",
+      "normal": "Use zero then negative power, assert sacrifice happens, gain/draw0 and life unchanged.",
+      "proposed_card_only_mutation": "replace captured amount with fixed1",
+      "required_assertion_witness": "expected0 actual1"
+    },
+    {
+      "id": "DF07",
+      "proposed_case_name": "no successful sacrifice produces no payoff",
+      "normal": "Unavailable/unsacrificable selection cannot satisfy success gate; no phantom reward.",
+      "proposed_card_only_mutation": "replace PermanentsSacrificed success with Always",
+      "required_assertion_witness": "expected0 actualpositive"
+    },
+    {
+      "id": "DF08",
+      "proposed_case_name": "source leaving does not erase its pending trigger",
+      "normal": "Remove Disciple before trigger resolution; other-creature sacrifice and exact payoff still work.",
+      "proposed_card_only_mutation": "add sourceRequiredZone=BATTLEFIELD",
+      "required_assertion_witness": "expected payoff actual0"
+    },
+    {
+      "id": "DF09",
+      "proposed_case_name": "token sacrifice preserves last-known power",
+      "normal": "Sacrifice a token with modified power; token departure and one matched gain/draw amount.",
+      "proposed_card_only_mutation": "replace captured power with source power",
+      "required_assertion_witness": "expected modified power actual3"
+    },
+    {
+      "id": "DF10",
+      "proposed_case_name": "sacrifice replacement does not require graveyard growth",
+      "normal": "Exile replacement on successful sacrifice still yields captured-power payoff.",
+      "proposed_card_only_mutation": "score success by graveyard growth",
+      "required_assertion_witness": "expected payoff actual0"
+    },
+    {
+      "id": "DF11",
+      "proposed_case_name": "paused choice and game state serialize without changing the payoff",
+      "normal": "Roundtrip at optional and selection pauses; same legal choices, captured amount and exact completion.",
+      "proposed_card_only_mutation": "card-only replacement of payoff amount",
+      "required_assertion_witness": "expected payoff actualdifferent"
+    },
+    {
+      "id": "DF12",
+      "proposed_case_name": "non-targeted sacrifice does not invoke ward or hexproof targeting",
+      "normal": "Own hexproof/ward creature is a legal sacrifice; no BecomesTarget/ward tax and no priority between payoff components.",
+      "proposed_card_only_mutation": "replace resolution choice with triggered target requirement",
+      "required_assertion_witness": "no target-event expected actualevent"
+    },
+    {
+      "id": "DF13",
+      "proposed_case_name": "manual land action chooses Garden without casting Disciple",
+      "normal": "Legal action exposes PlayLand(asBackFace=true), consumes1landdrop; no spell cast/creatureETB.",
+      "proposed_card_only_mutation": "omit MODAL_DFC layout",
+      "required_assertion_witness": "land action expectedtrue actualfalse"
+    },
+    {
+      "id": "DF14",
+      "proposed_case_name": "Garden can pay exactly three life to enter untapped",
+      "normal": "Accept with sufficientlife:life-3,untapped,land face,greenmana.",
+      "proposed_card_only_mutation": "set payLifeCost=2",
+      "required_assertion_witness": "life expected17 actual18"
+    },
+    {
+      "id": "DF15",
+      "proposed_case_name": "declined life payment enters tapped without life loss",
+      "normal": "Decline:lifeunchanged,tapped.",
+      "proposed_card_only_mutation": "omit EntersTapped replacement",
+      "required_assertion_witness": "tapped expectedtrue actualfalse"
+    },
+    {
+      "id": "DF16",
+      "proposed_case_name": "insufficient or prohibited life payment cannot untap Garden",
+      "normal": "At2life or cantpaylife effect, no paid3 route; enterstapped.",
+      "proposed_card_only_mutation": "reduce cost to1",
+      "required_assertion_witness": "tapped expectedtrue actualfalse"
+    },
+    {
+      "id": "DF17",
+      "proposed_case_name": "Garden produces only green mana",
+      "normal": "Tap untappedGarden:oneG,noothercolor,no creature ability.",
+      "proposed_card_only_mutation": "produceWHITE",
+      "required_assertion_witness": "green expected1 actual0"
+    },
+    {
+      "id": "DF18",
+      "proposed_case_name": "faces retain their own battlefield and stack characteristics",
+      "normal": "Creaturefront manaValue6,3/3;landback manaValue0,colorless,typeLand;outsidebattlefield frontcharacteristics.",
+      "proposed_card_only_mutation": "wrong back face type or copy front cost",
+      "required_assertion_witness": "back manaValue expected0 actual6"
+    },
+    {
+      "id": "DF19",
+      "proposed_case_name": "play permission and cast permission remain distinct",
+      "normal": "Play-specific exile/graveyard permission admits eligible landface;cast-only excludesland;frontcreaturecast restriction doesnotbanGarden.",
+      "proposed_card_only_mutation": "omit MODAL_DFC layout",
+      "required_assertion_witness": "expected land permission actualfalse"
+    },
+    {
+      "id": "DF20",
+      "proposed_case_name": "noncast entry and later return use the front face",
+      "normal": "Creature-qualified reanimation entersDisciple and triggers once;land-qualified nonplay move cannot treatfrontasland;bounce/replayfacescorrect.",
+      "proposed_card_only_mutation": "replace front with Garden as canonical",
+      "required_assertion_witness": "front creature expectedtrue actualfalse"
+    },
+    {
+      "id": "DF21",
+      "proposed_case_name": "modal faces do not transform and do not inherit Opal riders",
+      "normal": "No transform route; Garden noncast entry doesnotinheritpendingcommander mana rider; existingOpal andFblthpcontrolsunchanged.",
+      "proposed_card_only_mutation": "not an additional mutation",
+      "required_assertion_witness": "exact unaffected controls pass"
+    },
+    {
+      "id": "DF22",
+      "proposed_case_name": "canonical discovery metadata and lossless snapshot entry",
+      "normal": "ExactlyoneMH3#250canonical withbothfaces/images/rulings;24oldblocks byte-identical;oneadditiveblock;JSONroundtrip.",
+      "proposed_card_only_mutation": "omit back face or wrong collector number",
+      "required_assertion_witness": "back face present or collector250 assertion fails"
+    }
+  ],
+  "mutations_scope": "Only isolated candidate card data; no mutation of shared production runtime is authorized by this proposal. Final protocol must bind exact normal/mutant source bytes, test identities/lines and unaffected controls before dispatch.",
+  "all_forms_compile_before_behavior": true,
+  "original_assertions_preserved": true
+}
