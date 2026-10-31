@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r1-20261031/run.py", line 85, in <module>
+    try:status=main()
+               ~~~~^^
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r1-20261031/run.py", line 75, in main
+    for form in P['forms']:stage('compile-'+form,'compile',form)
+                           ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-r1-20261031/run.py", line 58, in stage
+    assert ok,('Compilation failed; no behavioral inference',form,rc)
+           ^^
+AssertionError: ('Compilation failed; no behavioral inference', 'normal', 1)

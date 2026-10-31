@@ -1,0 +1,34 @@
+{
+  "state": "ORIGINAL_COMPILATION_FAILURE_VERIFIED_NOT_BEHAVIORAL",
+  "source": "87f4560d68825e8dc98c14cae569fc3807a56bef",
+  "tree": "9faf799232d26d0f2cf42b5f57dc55c660100e4f",
+  "validation": "cedc5039420cea81d9ac16a0e85906e073647e57",
+  "pins": {
+    "run_id": 41178448307,
+    "attempt": 1,
+    "head_sha": "cedc5039420cea81d9ac16a0e85906e073647e57",
+    "event": "push",
+    "job_id": 124470747196,
+    "artifact_id": 13034176359,
+    "size_in_bytes": 35658,
+    "digest": "sha256:5d04f5a804a14f0b1747f0e23fc74e4cc9d8c4d23707b0678cb1a070813426bb",
+    "run_conclusion": "failure",
+    "job_conclusion": "failure",
+    "artifact_name": "manual-disciple-primitives-diagnostic-r1-41178448307"
+  },
+  "archive_sha256": "5d04f5a804a14f0b1747f0e23fc74e4cc9d8c4d23707b0678cb1a070813426bb",
+  "manifest_entries": 20,
+  "original_archive_bytes": 35658,
+  "compiled": [],
+  "compile_failures": [
+    "normal"
+  ],
+  "behavior_executed": false,
+  "negative_witnesses": [],
+  "card_admitted": false,
+  "runtime_defect_established": false,
+  "cause": "Scenario imports kotlinx.serialization but :mtg-sets:2024:tests does not expose that dependency; unresolved serialization/Json causes cascading inferred-field errors. Card production compiled; normal scenario compilation failed. No behavioral result.",
+  "bounded_repair": "Use already-existing SerializationTestSupport.roundTrip for full GameState and CardExporter.exportToCompactJson + CardLoader.fromJsonPreservingIds for full card roundtrip. Preserve every assertion and test identity; no runtime/module/dependency/snapshot changes.",
+  "auditor": "80bb2eeab4d9caa1cbc35711fe4b0dc30af91e9a",
+  "original_failure_preserved": true
+}
