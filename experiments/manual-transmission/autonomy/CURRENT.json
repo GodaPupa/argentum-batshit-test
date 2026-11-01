@@ -10,8 +10,8 @@
     "owner": "manual-work-e92e8ff0-disciple-r2-receiving",
     "run_id": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
     "claimed_utc": "2026-11-01T16:40:17.523Z",
-    "expires_utc": "2026-11-01T17:20:17.523Z",
-    "purpose": "Receive original R2 artifacts and continue exact authorized compatibility path"
+    "expires_utc": "2026-11-01T17:28:34.469Z",
+    "purpose": "Freeze and dispatch full compatibility; prepare original-artifact receiving"
   },
   "last_qualified": {
     "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
@@ -30,8 +30,8 @@
     "positive_artifact": 13027944981
   },
   "next": {
-    "dependency": "Disciple non-targeted selection all20 compile-first qualification",
-    "source_candidate": "c59959c5c9c11b8d26bc3ebd22746262dabb3656",
+    "dependency": "Disciple same-source full compatibility and original receiving",
+    "source_candidate": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
     "pending_runs": [],
     "receipt": {
       "counts": {
@@ -182,7 +182,7 @@
       "required_controls": 57,
       "runtime_sdk_server_client_changes": false,
       "implementation_applied": true,
-      "compiled": false,
+      "compiled": true,
       "dispatched": true,
       "readback_verified": true
     },
@@ -204,7 +204,7 @@
       "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
       "frozen_source_unchanged": true
     },
-    "next_executable_action": "Prepare immutable same-source full compatibility successor from received c59959c5 with only verified additive MH3 snapshot and qualification records. Reuse targeted receipt677a7a45. Fresh normal fullcompile,137focused396cards19212ordinary43exacthistoricalskips64client/typecheck,metadata/printing/lint/discovery/MH3Assay and original receiving mandatory.",
+    "next_executable_action": "Dispatch frozen full compatibility validation f13c3cec once on validation/manual-disciple-dependent-r1-20261101 after fresh owner/activity reconciliation; then prepare original receiving while running. Fresh compile,137focused396cards19212ordinary43exacthistoricalskips64client/typecheck,printing/lint/discovery/MH3Assay and original artifact verification required.",
     "early": {
       "source": "80b5a52d775dad05801b103ee5e12c0e31edcf39",
       "tree": "c8e69d893d615b2c98583fc547db9e3d6d7f3bbe",
@@ -596,14 +596,14 @@
       "proposal": "4b5b5acf9c56911c4aad2f145f8dea3081d9bd52",
       "grant": "1814b73e8edaa0128680ec4e824f9ce426f902d2",
       "readback_verified": true,
-      "compiled": false,
+      "compiled": true,
       "card_admitted": false,
       "full_qualification": false,
       "run": 41323107878,
       "job": 124897314878,
       "attempt": 1,
       "event": "push",
-      "observed_status": "in_progress",
+      "observed_status": "completed",
       "dispatched": true,
       "receiving": {
         "commit": "6a483ea3d85db37e27124972ad80d2ffd18d6407",
@@ -623,7 +623,32 @@
         "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
         "frozen_source_unchanged": true
       },
-      "receipt": "677a7a455134d516d33706835dc0e55391f48752"
+      "receipt": "677a7a455134d516d33706835dc0e55391f48752",
+      "conclusion": "success"
+    },
+    "full_compatibility": {
+      "state": "FROZEN_DISPATCH_INTENT",
+      "source": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
+      "tree": "d279f1a2e253fcbe11381ffccfc3f98cf1c6d9c0",
+      "validation": "f13c3cec6295bb23faa109ec518e6e0e67fe3cbc",
+      "validation_tree": "f8ad327572adf9535ee8ebb4f477c801d93ed93d",
+      "workflow": ".github/workflows/manual-disciple-dependent-r1-20261101.yml",
+      "workflow_blob": "8c92cf6f3ad064d368cebfa56255eaad361ae965",
+      "record": "experiments/manual-transmission/research/disciple-dependent-r1-20261101",
+      "branch": "validation/manual-disciple-dependent-r1-20261101",
+      "early_receipt": "677a7a455134d516d33706835dc0e55391f48752",
+      "expected": {
+        "focused": 137,
+        "cards": 396,
+        "ordinary": 19212,
+        "historical_skips": 43,
+        "client": 64
+      },
+      "snapshot_sha256": "be0fc81423d4e857bd5eefc2fd73d781da71eacad363f586b916dd37632bf7f2",
+      "readback_verified": true,
+      "compiled": false,
+      "card_admitted": false,
+      "full_qualification": false
     }
   },
   "completion_contract": {
@@ -3433,17 +3458,16 @@
       "Disciple non-targeted selection bounded controls verified at677a7a45: original20formscompiled67normal67restored6registration+restored,24exactassertionwitnesses57controls,450manifest,zero skips/errors; original shroud failure reproduced by targeting regression mutant. Card/fulladmission pending."
     ],
     "unfinished_implementation": [
-      "Exact authorized Disciple non-targeted composition and16 transport replacements plus2DF12 cases applied atc59959c5.65identities/386unchangedassertionlines preserved; no runtime/SDK/server/client changes. Not compiled or admitted.",
-      "Exact16authorized transport lines and2DF12cases applied atc59959c5;65existing identities386unchangedassertionlines/all gameplay outcomes/DF19actualerror preserved. Same-source protected snapshot and full admission remain pending.",
+      "Disciple non-targeted composition and exact16transport replacements plus2DF12cases are implemented and bounded controls verified at677a7a45;65original identities386unchangedassertionlines and DF19actualerror preserved. Verified sole additive MH3 snapshot frozen at2fe23b5f; full card admission pending.",
       "Reckless Bushwhacker, Amphin Mutineer and Veil of Summer registrations remain unauthorized; opponent coverage and all multiplayer/pilot/hidden-information/telemetry/replay/frozen-input gates remain unadmitted."
     ],
     "pending_evidence": [
-      "Targeted controls received; additive snapshot integration and all full compatibility gates remain pending."
+      "Fresh full compatibility R1 dispatch and original receiving; targeted R2 evidence is complete and reused."
     ],
     "source_protocol": {
-      "commit": "c59959c5c9c11b8d26bc3ebd22746262dabb3656",
-      "path": "experiments/manual-transmission/research/disciple-card-controls-r2-20261101/PROTOCOL.json",
-      "state": "FROZEN_R2_QUALIFICATION_IN_PROGRESS"
+      "commit": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
+      "path": "experiments/manual-transmission/research/disciple-dependent-r1-20261101/PROTOCOL.json",
+      "state": "FROZEN_DISPATCH_INTENT"
     },
     "latest_receiving": {
       "counts": {
@@ -3585,7 +3609,7 @@
       "card_admitted": true,
       "readback_verified": true
     },
-    "concrete_blocker_removed": "The authorized source correction replaces targeting-restricted sacrifice selection with existing non-targeted collection selection while preserving exact approved test scope. Behavioral repair,card admission and full compatibility remain unproven until original qualification evidence is received.",
+    "concrete_blocker_removed": "Original targeted evidence proves non-targeted shroud/hexproof/ward sacrifice selection and its targeting-regression witness; all20forms compile,67normal67restored6registration/restored24witnesses57controls. Full compatibility remains unqualified.",
     "continuation_state": "WORKING",
     "actual_stopping_reason": null,
     "ownership": {
@@ -3593,8 +3617,8 @@
       "owner": "manual-work-e92e8ff0-disciple-r2-receiving",
       "run_id": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
       "claimed_utc": "2026-11-01T16:40:17.523Z",
-      "expires_utc": "2026-11-01T17:20:17.523Z",
-      "purpose": "Receive original R2 artifacts and continue exact authorized compatibility path"
+      "expires_utc": "2026-11-01T17:28:34.469Z",
+      "purpose": "Freeze and dispatch full compatibility; prepare original-artifact receiving"
     },
     "read_sections": [
       {
@@ -3633,13 +3657,13 @@
         ]
       }
     ],
-    "next_executable_action": "Prepare immutable same-source full compatibility successor from received c59959c5 with only verified additive MH3 snapshot and qualification records. Reuse targeted receipt677a7a45. Fresh normal fullcompile,137focused396cards19212ordinary43exacthistoricalskips64client/typecheck,metadata/printing/lint/discovery/MH3Assay and original receiving mandatory.",
+    "next_executable_action": "Dispatch frozen full compatibility validation f13c3cec once on validation/manual-disciple-dependent-r1-20261101 after fresh owner/activity reconciliation; then prepare original receiving while running. Fresh compile,137focused396cards19212ordinary43exacthistoricalskips64client/typecheck,printing/lint/discovery/MH3Assay and original artifact verification required.",
     "next_admission": {
       "commit": "4b5b5acf9c56911c4aad2f145f8dea3081d9bd52",
       "path": "experiments/manual-transmission/research/disciple-nontargeted-selection-proposal-r1-20261101/NEXT_ADMISSION.json",
       "test_matrix_path": "experiments/manual-transmission/research/disciple-nontargeted-selection-proposal-r1-20261101/TEST_MATRIX.json",
       "source_review_path": "experiments/manual-transmission/research/disciple-nontargeted-selection-proposal-r1-20261101/SOURCE_REVIEW.json",
-      "state": "EXPLICIT_USER_AUTHORIZED",
+      "state": "BOUNDED_TARGETED_GATE_RECEIVED_FULL_PENDING",
       "base_source": "a15c7859ea1e0a3155168338c8e465b975bc6a19",
       "exact_replacements": 16,
       "transport_assertion_lines": 15,
@@ -3650,9 +3674,9 @@
       "required_witnesses": 24,
       "required_controls": 57,
       "runtime_sdk_server_client_changes": false,
-      "implementation_applied": false,
-      "compiled": false,
-      "dispatched": false,
+      "implementation_applied": true,
+      "compiled": true,
+      "dispatched": true,
       "readback_verified": true
     },
     "independent_preparation": {
@@ -3734,7 +3758,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-01T16:43:06.477Z",
+  "updated_utc": "2026-11-01T16:48:34.469Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -5637,21 +5661,14 @@
     "Explicit authorization needed for proposal 858dac7a631d9b357c2bf7f1694a3de4fd1c94ba:experiments/manual-transmission/research/spellskite-card-admission-proposal-r1-20261028/NEXT_ADMISSION.json; protected NPH snapshot and production registration boundary."
   ],
   "ownership_reconciliation": {
-    "at": "2026-11-01T07:54:19.732Z",
-    "current_blob": "ed20f902d491a61b543990c65087168ffb1bba78",
-    "automation_run": "e44dfa24-4d9c-8329-8547-50ef23356fd9",
-    "owner": "manual-work-e44dfa24-disciple-receiving",
-    "all_five_statuses_clear_except_ancient_pest": true,
-    "recent_current_commits": [
-      "c554e2fe0993dc1288b28a5d681d278dfbeffe77",
-      "a493a4d41725e67c17d4dd25b8b622c353ea3bf1",
-      "75c250ee295e796bf9300a69e78645d368562a1b",
-      "b8243dd40a2900e4d9707af9d47efa99579582aa",
-      "e56861646c268272d8c17d7093a61b089cefe836",
-      "8f076fff68d5745d463a6706d9e1ed132056e9e2",
-      "27aa1d031f7f2dad4dd651358115c0041d288abb",
-      "ab11557303568ea755ed1bb41ee2ebf25dd72997"
-    ]
+    "checked_utc": "2026-11-01T16:48:34.469Z",
+    "automation_run": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
+    "sole_work_task_enabled": true,
+    "schedule_unchanged": true,
+    "active_workflows_all_events": [],
+    "ignored_ancient_pest": 34749202144,
+    "latest_checkpoint": "782ceebd32eff225f314df422332bf7867de90c9",
+    "no_newer_receipt_or_successor": true
   },
   "spellskite_card_early_r1": {
     "state": "QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
@@ -25220,14 +25237,14 @@
     "proposal": "4b5b5acf9c56911c4aad2f145f8dea3081d9bd52",
     "grant": "1814b73e8edaa0128680ec4e824f9ce426f902d2",
     "readback_verified": true,
-    "compiled": false,
+    "compiled": true,
     "card_admitted": false,
     "full_qualification": false,
     "run": 41323107878,
     "job": 124897314878,
     "attempt": 1,
     "event": "push",
-    "observed_status": "in_progress",
+    "observed_status": "completed",
     "dispatched": true,
     "receiving": {
       "commit": "6a483ea3d85db37e27124972ad80d2ffd18d6407",
@@ -25247,7 +25264,8 @@
       "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
       "frozen_source_unchanged": true
     },
-    "receipt": "677a7a455134d516d33706835dc0e55391f48752"
+    "receipt": "677a7a455134d516d33706835dc0e55391f48752",
+    "conclusion": "success"
   },
   "disciple_r2_prior_current_guidance": {
     "execution_channel": {
@@ -25494,5 +25512,29 @@
     "commit": "677a7a455134d516d33706835dc0e55391f48752",
     "path": "experiments/manual-transmission/research/disciple-card-controls-received-r2-20261101/RECEIPT.json",
     "readback_verified": true
+  },
+  "disciple_dependent_r1": {
+    "state": "FROZEN_DISPATCH_INTENT",
+    "source": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
+    "tree": "d279f1a2e253fcbe11381ffccfc3f98cf1c6d9c0",
+    "validation": "f13c3cec6295bb23faa109ec518e6e0e67fe3cbc",
+    "validation_tree": "f8ad327572adf9535ee8ebb4f477c801d93ed93d",
+    "workflow": ".github/workflows/manual-disciple-dependent-r1-20261101.yml",
+    "workflow_blob": "8c92cf6f3ad064d368cebfa56255eaad361ae965",
+    "record": "experiments/manual-transmission/research/disciple-dependent-r1-20261101",
+    "branch": "validation/manual-disciple-dependent-r1-20261101",
+    "early_receipt": "677a7a455134d516d33706835dc0e55391f48752",
+    "expected": {
+      "focused": 137,
+      "cards": 396,
+      "ordinary": 19212,
+      "historical_skips": 43,
+      "client": 64
+    },
+    "snapshot_sha256": "be0fc81423d4e857bd5eefc2fd73d781da71eacad363f586b916dd37632bf7f2",
+    "readback_verified": true,
+    "compiled": false,
+    "card_admitted": false,
+    "full_qualification": false
   }
 }
