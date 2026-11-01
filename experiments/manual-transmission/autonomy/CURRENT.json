@@ -32,7 +32,9 @@
   "next": {
     "dependency": "Disciple same-source full compatibility and original receiving",
     "source_candidate": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
-    "pending_runs": [],
+    "pending_runs": [
+      41328226658
+    ],
     "receipt": {
       "counts": {
         "normal": {
@@ -204,7 +206,7 @@
       "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
       "frozen_source_unchanged": true
     },
-    "next_executable_action": "Dispatch frozen full compatibility validation f13c3cec once on validation/manual-disciple-dependent-r1-20261101 after fresh owner/activity reconciliation; then prepare original receiving while running. Fresh compile,137focused396cards19212ordinary43exacthistoricalskips64client/typecheck,printing/lint/discovery/MH3Assay and original artifact verification required.",
+    "next_executable_action": "During full compatibility run41328226658 prepare original-artifact receiving against frozen source2fe23b5f/validationf13c3cec and saved auditors. Do not duplicate qualification or change frozen source. When terminal, reconcile newer receipts/successors then receive original artifact exactly once, preserving all gates and failures.",
     "early": {
       "source": "80b5a52d775dad05801b103ee5e12c0e31edcf39",
       "tree": "c8e69d893d615b2c98583fc547db9e3d6d7f3bbe",
@@ -627,7 +629,7 @@
       "conclusion": "success"
     },
     "full_compatibility": {
-      "state": "FROZEN_DISPATCH_INTENT",
+      "state": "FULL_COMPATIBILITY_IN_PROGRESS",
       "source": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
       "tree": "d279f1a2e253fcbe11381ffccfc3f98cf1c6d9c0",
       "validation": "f13c3cec6295bb23faa109ec518e6e0e67fe3cbc",
@@ -648,7 +650,13 @@
       "readback_verified": true,
       "compiled": false,
       "card_admitted": false,
-      "full_qualification": false
+      "full_qualification": false,
+      "run": 41328226658,
+      "job": 124912577325,
+      "attempt": 1,
+      "event": "push",
+      "observed_status": "in_progress",
+      "dispatched": true
     }
   },
   "completion_contract": {
@@ -3462,12 +3470,12 @@
       "Reckless Bushwhacker, Amphin Mutineer and Veil of Summer registrations remain unauthorized; opponent coverage and all multiplayer/pilot/hidden-information/telemetry/replay/frozen-input gates remain unadmitted."
     ],
     "pending_evidence": [
-      "Fresh full compatibility R1 dispatch and original receiving; targeted R2 evidence is complete and reused."
+      "Run41328226658 original full compatibility evidence pending; prepare receiver without changing frozen source."
     ],
     "source_protocol": {
       "commit": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
       "path": "experiments/manual-transmission/research/disciple-dependent-r1-20261101/PROTOCOL.json",
-      "state": "FROZEN_DISPATCH_INTENT"
+      "state": "FULL_COMPATIBILITY_IN_PROGRESS"
     },
     "latest_receiving": {
       "counts": {
@@ -3657,7 +3665,7 @@
         ]
       }
     ],
-    "next_executable_action": "Dispatch frozen full compatibility validation f13c3cec once on validation/manual-disciple-dependent-r1-20261101 after fresh owner/activity reconciliation; then prepare original receiving while running. Fresh compile,137focused396cards19212ordinary43exacthistoricalskips64client/typecheck,printing/lint/discovery/MH3Assay and original artifact verification required.",
+    "next_executable_action": "During full compatibility run41328226658 prepare original-artifact receiving against frozen source2fe23b5f/validationf13c3cec and saved auditors. Do not duplicate qualification or change frozen source. When terminal, reconcile newer receipts/successors then receive original artifact exactly once, preserving all gates and failures.",
     "next_admission": {
       "commit": "4b5b5acf9c56911c4aad2f145f8dea3081d9bd52",
       "path": "experiments/manual-transmission/research/disciple-nontargeted-selection-proposal-r1-20261101/NEXT_ADMISSION.json",
@@ -3758,7 +3766,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-01T16:48:34.469Z",
+  "updated_utc": "2026-11-01T16:49:17.138Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -25514,7 +25522,7 @@
     "readback_verified": true
   },
   "disciple_dependent_r1": {
-    "state": "FROZEN_DISPATCH_INTENT",
+    "state": "FULL_COMPATIBILITY_IN_PROGRESS",
     "source": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
     "tree": "d279f1a2e253fcbe11381ffccfc3f98cf1c6d9c0",
     "validation": "f13c3cec6295bb23faa109ec518e6e0e67fe3cbc",
@@ -25535,6 +25543,12 @@
     "readback_verified": true,
     "compiled": false,
     "card_admitted": false,
-    "full_qualification": false
+    "full_qualification": false,
+    "run": 41328226658,
+    "job": 124912577325,
+    "attempt": 1,
+    "event": "push",
+    "observed_status": "in_progress",
+    "dispatched": true
   }
 }
