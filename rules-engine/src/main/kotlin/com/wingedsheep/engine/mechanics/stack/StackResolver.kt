@@ -1578,6 +1578,13 @@ class StackResolver(
                 val entered = updated.get<com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent>()
                 var bag = entered ?: com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent()
                 spellComponent.xValue?.let { bag = bag.copy(x = it) }
+                // Preserve the explicitly selected casting choice in the existing durable bag.
+                if (spellComponent.alternativeCost == com.wingedsheep.engine.core.AlternativeCostType.SELF_ALTERNATIVE) {
+                    bag = bag.withChoice(
+                        com.wingedsheep.sdk.scripting.ChoiceSlot.SELF_ALTERNATIVE,
+                        com.wingedsheep.engine.state.components.battlefield.ChoiceValue.Flag
+                    )
+                }
                 // The optional additional cost declared while casting (kicker → KICKED, bargain →
                 // BARGAINED, CR 702.166b) marks the permanent under its own slot, so a bargained
                 // permanent's "if it was bargained" enters trigger reads true while a kicker payoff

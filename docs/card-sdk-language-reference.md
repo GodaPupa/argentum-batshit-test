@@ -145,6 +145,11 @@ section; do not let SDK additions land without a corresponding doc update.
   beginning of the next end step.
 - `evoke: String?` — Evoke alt-cost; sacrifices on ETB.
 - `selfAlternativeCost: SelfAlternativeCost?` — generic alternative-cost slot.
+  An explicitly selected `AlternativeCostType.SELF_ALTERNATIVE` is retained on the resulting
+  permanent as `ChoiceSlot.SELF_ALTERNATIVE` with `ChoiceValue.Flag`, readable through
+  `CastChoiceMade(ChoiceSlot.SELF_ALTERNATIVE)` while that source exists. Eligibility, reductions
+  and mana spent do not imply the choice. Existing entry choices are merged. This transport
+  does not implement Surge, teammate eligibility or source-departure trigger semantics.
 - `castTimeCreatureTypeChoice: CastTimeCreatureTypeSource?` — forces a creature-type choice at cast time.
 - `cantBeCountered: Boolean` — spell is uncounterable.
 - `cantBeCopied: Boolean` — spell can't be copied (CR 707.10); copy effects that name it create no copy (Display of Power).
