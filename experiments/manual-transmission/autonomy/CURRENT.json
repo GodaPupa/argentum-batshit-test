@@ -3,15 +3,15 @@
   "updated_date": "2026-11-01",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WORKING",
-  "owner": "manual-work-e92e8ff0-disciple-r2-receiving",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-e92e8ff0-disciple-r2-receiving",
+    "state": "RELEASED",
+    "owner": null,
+    "previous_owner": "manual-work-e92e8ff0-disciple-r2-receiving",
     "run_id": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
-    "claimed_utc": "2026-11-01T16:40:17.523Z",
-    "expires_utc": "2026-11-01T17:28:34.469Z",
-    "purpose": "Freeze and dispatch full compatibility; prepare original-artifact receiving"
+    "released_utc": "2026-11-01T16:57:01.308Z",
+    "pending_workflow": 41328226658
   },
   "last_qualified": {
     "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
@@ -189,24 +189,16 @@
       "readback_verified": true
     },
     "independent_preparation": {
-      "commit": "6a483ea3d85db37e27124972ad80d2ffd18d6407",
-      "path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/RECEIVING_REVIEW.json",
-      "receiver_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/receive.py",
-      "inventory_additions_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/dependent-additions.draft.json",
-      "inventory_derivation_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/derive_inventory.py",
-      "assay_review_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/ASSAY_SOURCE_REVIEW.json",
-      "readback_verified": true,
-      "state": "ORIGINAL_RECEIVER_AND_DEPENDENT_DRAFT_PREPARED_NOT_ACCEPTED",
-      "synthetic_corruptions_rejected": 12,
-      "snapshot_synthetic_corruptions_reused": 5,
-      "derived_ordinary_rows": 19212,
-      "derived_card_rows": 396,
-      "historical_skips": 43,
-      "client_rows": 64,
-      "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
+      "commit": "987184528884d5d4716b8d3bf3d63e38ea64a2c0",
+      "path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receiving-review.json",
+      "receiver_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receive.py",
+      "expected_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/receiver-data/EXPECTED.json",
+      "synthetic_rejections": 16,
+      "immutable_readback_verified": true,
+      "original_receiving_complete": false,
       "frozen_source_unchanged": true
     },
-    "next_executable_action": "During full compatibility run41328226658 prepare original-artifact receiving against frozen source2fe23b5f/validationf13c3cec and saved auditors. Do not duplicate qualification or change frozen source. When terminal, reconcile newer receipts/successors then receive original artifact exactly once, preserving all gates and failures.",
+    "next_executable_action": "Reconcile fresh CURRENT ownership,sole Work run,all-event active workflows and newer receipts/successors. While run41328226658 is active, do not duplicate/cancel/interfere; receiving preparation98718452 and isolated source review5c5c043a are complete. At terminal, claim via fresh-blob CAS and receive original source2fe23b5f/tree d279f1a2/validationf13c3cec/workflow8c92cf6f/run41328226658/job124912577325/attempt1 artifacts exactly once with pinned receiver and auditors. Verify bytes/hash/manifest, freshcompile137focused396cards19212ordinary43exacthistoricalskips64client/typecheck,initial/finalsource/protectedbytes,printing and original24/candidate25 MH3Assay outputs. Classify every divergence/decline and preserve all failures; no semantic pass from decline, no unchanged rerun. Only all-gate original receipt permits bounded Disciple admission. Then use read-only remaining-card source review5c5c043a for an exact next protected-boundary proposal; no automatic other-card/multiplayer/games/seeds.",
     "early": {
       "source": "80b5a52d775dad05801b103ee5e12c0e31edcf39",
       "tree": "c8e69d893d615b2c98583fc547db9e3d6d7f3bbe",
@@ -656,7 +648,17 @@
       "attempt": 1,
       "event": "push",
       "observed_status": "in_progress",
-      "dispatched": true
+      "dispatched": true,
+      "receiving": {
+        "commit": "987184528884d5d4716b8d3bf3d63e38ea64a2c0",
+        "path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receiving-review.json",
+        "receiver_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receive.py",
+        "expected_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/receiver-data/EXPECTED.json",
+        "synthetic_rejections": 16,
+        "immutable_readback_verified": true,
+        "original_receiving_complete": false,
+        "frozen_source_unchanged": true
+      }
     }
   },
   "completion_contract": {
@@ -2540,7 +2542,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
     "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
-    "next_authorized_action": "Reconcile fresh CURRENT owner/task/all-event workflow activity and newer receipts/successors. If run41323107878 remains active, do not duplicate/cancel/interfere; saved receiving/inventory/Assay preparations at6a483ea3 are complete. At terminal, claim via fresh-blob CAS and receive original sourcec59959c5/tree f1c96543/validationbaf8c21f/workflowe3fc3719/run41323107878/job124897314878/attempt1 artifacts exactly once using pinned receiver; verify bytes/hash/manifest/raw67normal+restored/6registration/20compileforms/24witnesses57controls/source-restoration/protectedbytes and classify every failure. Preserve original R1 and any R2 failure; no unchanged rerun. Only if all targeted gates pass, verify generated one-entry MH3 addition preserving original67843bytes24entries,freeze exact successor, then fresh full compile and required137focused/396cards/19212ordinary with43exacthistoricalskips/64client/metadata/printing/lint/discovery/MH3Assay/original receiving. Reuse exact-bound runtimeR2 and prior accepted evidence. No new scope or games.",
+    "next_authorized_action": "Read live CURRENT.summary and next.next_executable_action, source/protocol/receipt references and ownership; historical current-run strings are archival only.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2741,15 +2743,15 @@
   },
   "execution_channel": {
     "primary": "Work execution conversation",
-    "session": "9f54df74-985c-8333-9afe-78530c0261a5",
-    "automation_run": "9f54df74-985c-8333-9afe-78530c0261a5",
+    "session": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
+    "automation_run": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
     "work_owner": null,
-    "last_execution_owner": "manual-work-6adbe33033e481918659ce578f64f31e-9f54df74-985c-8333-9afe-78530c0261a5",
+    "last_execution_owner": "manual-work-e92e8ff0-disciple-r2-receiving",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
     "activity": "WAITING_EXTERNAL",
-    "automation_reconciliation": "Sole existing executor enabled with preserved schedule; current platform run still recorded in_progress at explicit ownership release. No worker claimed between invocations."
+    "automation_reconciliation": "Sole executor enabled with preserved hourly schedule. Current platform run recorded in_progress at explicit release; no persistent worker claim."
   },
   "blockers": [],
   "qualified_components": {
@@ -3440,7 +3442,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "Original full compatibility run41328226658 is active. Original receiver with16synthetic corruption controls and isolated next-dependency source review are checkpointed. Frozen source cannot change; exact next card-boundary proposal must bind the coherent source after receiving. No remaining safely independent work within this bounded qualification; no worker claimed between invocations.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -3470,7 +3472,7 @@
       "Reckless Bushwhacker, Amphin Mutineer and Veil of Summer registrations remain unauthorized; opponent coverage and all multiplayer/pilot/hidden-information/telemetry/replay/frozen-input gates remain unadmitted."
     ],
     "pending_evidence": [
-      "Run41328226658 original full compatibility evidence pending; prepare receiver without changing frozen source."
+      "Original full compatibility run41328226658 remains in_progress; original receiving and Assay/printing classification pending. No full Disciple/card admission."
     ],
     "source_protocol": {
       "commit": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
@@ -3618,54 +3620,47 @@
       "readback_verified": true
     },
     "concrete_blocker_removed": "Original targeted evidence proves non-targeted shroud/hexproof/ward sacrifice selection and its targeting-regression witness; all20forms compile,67normal67restored6registration/restored24witnesses57controls. Full compatibility remains unqualified.",
-    "continuation_state": "WORKING",
-    "actual_stopping_reason": null,
+    "continuation_state": "WAITING_EXTERNAL",
+    "actual_stopping_reason": "Original full compatibility run41328226658 is active. Original receiver with16synthetic corruption controls and isolated next-dependency source review are checkpointed. Frozen source cannot change; exact next card-boundary proposal must bind the coherent source after receiving. No remaining safely independent work within this bounded qualification; no worker claimed between invocations.",
     "ownership": {
-      "state": "ACTIVE",
-      "owner": "manual-work-e92e8ff0-disciple-r2-receiving",
+      "state": "RELEASED",
+      "owner": null,
+      "previous_owner": "manual-work-e92e8ff0-disciple-r2-receiving",
       "run_id": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
-      "claimed_utc": "2026-11-01T16:40:17.523Z",
-      "expires_utc": "2026-11-01T17:28:34.469Z",
-      "purpose": "Freeze and dispatch full compatibility; prepare original-artifact receiving"
+      "released_utc": "2026-11-01T16:57:01.308Z",
+      "pending_workflow": 41328226658
     },
     "read_sections": [
       {
-        "ref": "13a8130e50ead09aceff8439c083a25bfcd2a60f",
-        "path": "experiments/manual-transmission/research/disciple-runtime-early-received-r1-20261101/RECEIPT.json",
+        "ref": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
+        "path": "experiments/manual-transmission/research/disciple-dependent-r1-20261101/PROTOCOL.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
-        "path": "experiments/manual-transmission/research/disciple-card-payoff-early-r1-20261101/PROTOCOL.json",
+        "ref": "677a7a455134d516d33706835dc0e55391f48752",
+        "path": "experiments/manual-transmission/research/disciple-card-controls-received-r2-20261101/RECEIPT.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "fb4461621c4df12ca183ea2b3e4d7960dcacd840",
-        "path": "experiments/manual-transmission/research/disciple-card-payoff-receiving-r1-20261101/RECEIVING.json",
+        "ref": "987184528884d5d4716b8d3bf3d63e38ea64a2c0",
+        "path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receiving-review.json",
         "sections": [
           "all"
         ]
       },
       {
-        "ref": "1d61c80f7e0c2ce898e8dc283208a99a18561e0f",
-        "path": "experiments/manual-transmission/research/disciple-freyalise-card-admission-proposal-r1-20261031/TEST_MATRIX.json",
-        "sections": [
-          "all"
-        ]
-      },
-      {
-        "ref": "c3d4c4e78846031cfb76dced6be45ed66cc379f9",
-        "path": "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-received-r3-20261031/TEST_MATRIX.json",
+        "ref": "5c5c043a41eea064b76e6231d8679f3efad9a4e7",
+        "path": "experiments/manual-transmission/research/remaining-manual-source-review-r2-20261101/RECKLESS_SOURCE_REVIEW.json",
         "sections": [
           "all"
         ]
       }
     ],
-    "next_executable_action": "During full compatibility run41328226658 prepare original-artifact receiving against frozen source2fe23b5f/validationf13c3cec and saved auditors. Do not duplicate qualification or change frozen source. When terminal, reconcile newer receipts/successors then receive original artifact exactly once, preserving all gates and failures.",
+    "next_executable_action": "Reconcile fresh CURRENT ownership,sole Work run,all-event active workflows and newer receipts/successors. While run41328226658 is active, do not duplicate/cancel/interfere; receiving preparation98718452 and isolated source review5c5c043a are complete. At terminal, claim via fresh-blob CAS and receive original source2fe23b5f/tree d279f1a2/validationf13c3cec/workflow8c92cf6f/run41328226658/job124912577325/attempt1 artifacts exactly once with pinned receiver and auditors. Verify bytes/hash/manifest, freshcompile137focused396cards19212ordinary43exacthistoricalskips64client/typecheck,initial/finalsource/protectedbytes,printing and original24/candidate25 MH3Assay outputs. Classify every divergence/decline and preserve all failures; no semantic pass from decline, no unchanged rerun. Only all-gate original receipt permits bounded Disciple admission. Then use read-only remaining-card source review5c5c043a for an exact next protected-boundary proposal; no automatic other-card/multiplayer/games/seeds.",
     "next_admission": {
       "commit": "4b5b5acf9c56911c4aad2f145f8dea3081d9bd52",
       "path": "experiments/manual-transmission/research/disciple-nontargeted-selection-proposal-r1-20261101/NEXT_ADMISSION.json",
@@ -3688,21 +3683,13 @@
       "readback_verified": true
     },
     "independent_preparation": {
-      "commit": "6a483ea3d85db37e27124972ad80d2ffd18d6407",
-      "path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/RECEIVING_REVIEW.json",
-      "receiver_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/receive.py",
-      "inventory_additions_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/dependent-additions.draft.json",
-      "inventory_derivation_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/derive_inventory.py",
-      "assay_review_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/ASSAY_SOURCE_REVIEW.json",
-      "readback_verified": true,
-      "state": "ORIGINAL_RECEIVER_AND_DEPENDENT_DRAFT_PREPARED_NOT_ACCEPTED",
-      "synthetic_corruptions_rejected": 12,
-      "snapshot_synthetic_corruptions_reused": 5,
-      "derived_ordinary_rows": 19212,
-      "derived_card_rows": 396,
-      "historical_skips": 43,
-      "client_rows": 64,
-      "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
+      "commit": "987184528884d5d4716b8d3bf3d63e38ea64a2c0",
+      "path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receiving-review.json",
+      "receiver_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receive.py",
+      "expected_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/receiver-data/EXPECTED.json",
+      "synthetic_rejections": 16,
+      "immutable_readback_verified": true,
+      "original_receiving_complete": false,
       "frozen_source_unchanged": true
     },
     "automation_state": "ENABLED_AUTHORIZED_EXECUTION"
@@ -3766,7 +3753,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-01T16:49:17.138Z",
+  "updated_utc": "2026-11-01T16:57:01.308Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -5268,7 +5255,7 @@
     "artifact_sha256": "sha256:879f74749b54f7d636f848c6981bf45470a392a8d40023008af219d1ab79908b",
     "manifest_entries": 259
   },
-  "last_execution_owner": "manual-work-6adbe33033e481918659ce578f64f31e-9f54df74-985c-8333-9afe-78530c0261a5",
+  "last_execution_owner": "manual-work-e92e8ff0-disciple-r2-receiving",
   "spellskite_behavior_r1": {
     "state": "ORIGINAL_BEHAVIORAL_FAILURE_RECEIVED",
     "source": "f58a64db3a133d86090dddf9776e622c981298cc",
@@ -5669,14 +5656,24 @@
     "Explicit authorization needed for proposal 858dac7a631d9b357c2bf7f1694a3de4fd1c94ba:experiments/manual-transmission/research/spellskite-card-admission-proposal-r1-20261028/NEXT_ADMISSION.json; protected NPH snapshot and production registration boundary."
   ],
   "ownership_reconciliation": {
-    "checked_utc": "2026-11-01T16:48:34.469Z",
+    "checked_utc": "2026-11-01T16:57:01.308Z",
     "automation_run": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
-    "sole_work_task_enabled": true,
+    "sole_work_enabled": true,
     "schedule_unchanged": true,
-    "active_workflows_all_events": [],
+    "all_event_statuses_checked": [
+      "in_progress",
+      "queued",
+      "waiting",
+      "requested",
+      "pending"
+    ],
+    "active_relevant_runs": [
+      41328226658
+    ],
     "ignored_ancient_pest": 34749202144,
-    "latest_checkpoint": "782ceebd32eff225f314df422332bf7867de90c9",
-    "no_newer_receipt_or_successor": true
+    "newer_receipt_or_successor": false,
+    "latest_checkpoint": "19f3585cb3a63781416372b00b10392a1d1048a0",
+    "released_explicitly": true
   },
   "spellskite_card_early_r1": {
     "state": "QUALIFICATION_ACTIVE_ORIGINAL_RECEIVING_PENDING",
@@ -25549,6 +25546,58 @@
     "attempt": 1,
     "event": "push",
     "observed_status": "in_progress",
-    "dispatched": true
+    "dispatched": true,
+    "receiving": {
+      "commit": "987184528884d5d4716b8d3bf3d63e38ea64a2c0",
+      "path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receiving-review.json",
+      "receiver_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receive.py",
+      "expected_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/receiver-data/EXPECTED.json",
+      "synthetic_rejections": 16,
+      "immutable_readback_verified": true,
+      "original_receiving_complete": false,
+      "frozen_source_unchanged": true
+    }
+  },
+  "disciple_full_preparation_r1": {
+    "commit": "987184528884d5d4716b8d3bf3d63e38ea64a2c0",
+    "path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receiving-review.json",
+    "receiver_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/disciple-full-receive.py",
+    "expected_path": "experiments/manual-transmission/research/disciple-dependent-receiving-r1-20261101/receiver-data/EXPECTED.json",
+    "synthetic_rejections": 16,
+    "immutable_readback_verified": true,
+    "original_receiving_complete": false,
+    "frozen_source_unchanged": true
+  },
+  "remaining_manual_source_review_r2": {
+    "commit": "5c5c043a41eea064b76e6231d8679f3efad9a4e7",
+    "path": "experiments/manual-transmission/research/remaining-manual-source-review-r2-20261101/RECKLESS_SOURCE_REVIEW.json",
+    "state": "ISOLATED_READ_ONLY_SOURCE_REVIEW",
+    "readback_verified": true,
+    "production_changes": false,
+    "implementation_authorized": false
+  },
+  "disciple_full_r1_previous_guidance": {
+    "execution_channel": {
+      "primary": "Work execution conversation",
+      "session": "9f54df74-985c-8333-9afe-78530c0261a5",
+      "automation_run": "9f54df74-985c-8333-9afe-78530c0261a5",
+      "work_owner": null,
+      "last_execution_owner": "manual-work-6adbe33033e481918659ce578f64f31e-9f54df74-985c-8333-9afe-78530c0261a5",
+      "discussion": "READ_ONLY",
+      "intervention_watch": "READ_ONLY",
+      "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
+      "activity": "WAITING_EXTERNAL",
+      "automation_reconciliation": "Sole existing executor enabled with preserved schedule; current platform run still recorded in_progress at explicit ownership release. No worker claimed between invocations."
+    },
+    "automation_next_authorized_action": "Reconcile fresh CURRENT owner/task/all-event workflow activity and newer receipts/successors. If run41323107878 remains active, do not duplicate/cancel/interfere; saved receiving/inventory/Assay preparations at6a483ea3 are complete. At terminal, claim via fresh-blob CAS and receive original sourcec59959c5/tree f1c96543/validationbaf8c21f/workflowe3fc3719/run41323107878/job124897314878/attempt1 artifacts exactly once using pinned receiver; verify bytes/hash/manifest/raw67normal+restored/6registration/20compileforms/24witnesses57controls/source-restoration/protectedbytes and classify every failure. Preserve original R1 and any R2 failure; no unchanged rerun. Only if all targeted gates pass, verify generated one-entry MH3 addition preserving original67843bytes24entries,freeze exact successor, then fresh full compile and required137focused/396cards/19212ordinary with43exacthistoricalskips/64client/metadata/printing/lint/discovery/MH3Assay/original receiving. Reuse exact-bound runtimeR2 and prior accepted evidence. No new scope or games.",
+    "active_lease": {
+      "state": "ACTIVE",
+      "owner": "manual-work-e92e8ff0-disciple-r2-receiving",
+      "run_id": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
+      "claimed_utc": "2026-11-01T16:40:17.523Z",
+      "expires_utc": "2026-11-01T17:28:34.469Z",
+      "purpose": "Freeze and dispatch full compatibility; prepare original-artifact receiving"
+    },
+    "prior_stopping_reason": null
   }
 }
