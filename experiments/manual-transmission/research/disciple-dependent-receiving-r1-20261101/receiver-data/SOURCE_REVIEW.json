@@ -1,0 +1,43 @@
+{
+  "state": "FROZEN_FULL_COMPATIBILITY_NOT_EXECUTED",
+  "base": "677a7a455134d516d33706835dc0e55391f48752",
+  "early_source": "c59959c5c9c11b8d26bc3ebd22746262dabb3656",
+  "targeted_receipt": "experiments/manual-transmission/research/disciple-card-controls-received-r2-20261101/RECEIPT.json",
+  "snapshot_sha256": "be0fc81423d4e857bd5eefc2fd73d781da71eacad363f586b916dd37632bf7f2",
+  "snapshot_preservation": "Original67843bytes24entries recovered exactly by verified receiver; one additive Disciple entry only.",
+  "tests_unchanged": true,
+  "production_unchanged": true,
+  "fresh_compile_and_focused": true,
+  "expected": {
+    "ordinary_rows": 19212,
+    "original_ordinary_rows": 19139,
+    "additive_bolt_bend_cases": 16,
+    "additive_opal_cases": 49,
+    "ordinary_skips": 43,
+    "cards": 396,
+    "focused": 137,
+    "client": 64,
+    "additive_disciple_cases": 67,
+    "additive_registration_cases": 6
+  },
+  "assay_method": "Same installed Assay binary/corpus; isolated original/candidate MH3 inputs; raw output classification mandatory.",
+  "receiving_required": true,
+  "accepted": false,
+  "syntax_checked": true,
+  "auditors_reused_from": "d5f258de423503e7054528bb3f6a7a71c5314057",
+  "no_games_or_seeds": true,
+  "binding_review": {
+    "accepted_baseline": "d5f258de423503e7054528bb3f6a7a71c5314057",
+    "immutable_compare_to_early_source": "ahead; only6 non-research paths changed, matching accepted3runtimefiles and3Disciplefiles",
+    "unchanged_sha256_bindings": 287,
+    "changed_sha256_bindings": 7,
+    "unchanged_git_bindings": 27,
+    "changed_values_verified_against_original_R2_normal_artifact_and_snapshot": true
+  },
+  "runner_review": [
+    "Fresh compile then137focused then396cards then19212ordinary43exactskips then64client thenprinting/Assay.",
+    "Bind exact earlyreceipt,source-parent,workflow-only validation diff,allsourcefiles and protectedtrees initially/finally.",
+    "Original/candidate Assay run in isolated roots with same installed distribution and corpus;classification deferred to original receiving.",
+    "No new scenario assertions, production changes or snapshot reblesing."
+  ]
+}

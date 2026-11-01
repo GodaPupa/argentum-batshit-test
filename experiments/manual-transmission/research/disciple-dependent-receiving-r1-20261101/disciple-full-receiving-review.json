@@ -1,0 +1,43 @@
+{
+  "state": "ORIGINAL_RECEIVING_PREPARED_NOT_EXECUTED",
+  "source": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
+  "validation": "f13c3cec6295bb23faa109ec518e6e0e67fe3cbc",
+  "run": 41328226658,
+  "job": 124912577325,
+  "attempt": 1,
+  "receiver": "disciple-full-receive.py",
+  "expected": "receiver-data/EXPECTED.json",
+  "immutable_source_readbacks": true,
+  "raw_report_auditors_reused_from": "d5f258de423503e7054528bb3f6a7a71c5314057",
+  "protected_trees_bound_to_source": {
+    "mtg-sdk": "51b097156bff57e30aeca2d6338ccfc5a62a65e3",
+    "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+    "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+    "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+    "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+    "ai": "5b7c2f0a0527f23f9e809cf3953d66b7f8e21838",
+    "gym": "79b84d2aac69c35ba72edf27d5440968c7f90370",
+    "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+    "rules-engine/src/main": "c2cb7990a188506b396ef13e270b005d5f7f49c9",
+    "rules-engine/src/testFixtures": "4652ed962c747e488a6044c01514f0e47953870c",
+    "rules-engine/src/test/resources": "66b077f98c8b79ee97bb2efdc939e162cfc49499",
+    "rules-engine/src/test": "f99d051ee7baaecd109569210204af42f3d6da0d",
+    "mtg-sets/src/main": "b828fb3c7f72af0c07801c72bf532aac6cb8700a",
+    "mtg-sets/2008-2016": "748604fba9b275b521b0de32049422c03de4695f",
+    "mtg-sets/src/test/kotlin": "864e0fc2e3e5f0c77c0a86ed1b026a3a8c5a23ab"
+  },
+  "synthetic_rejections": 16,
+  "positive_checks": "Synthetic manifest,API pins and isolated Assay inputs accepted;these are not qualification evidence.",
+  "gates": [
+    "Original API run/job/attempt/artifact/source/validation pins;original ZIP bytes/hash/unique entries/manifest.",
+    "Exact frozen protocol/workflow/receipt/source forms and unchanged initial/final protected bytes/trees.",
+    "Fresh normal compile;137focused396cards19212ordinary43exacthistoricalskips64client/typecheck from raw reports.",
+    "Original24/candidate25 MH3 and same corpus/distribution; classify all original differential findings/declines and printing output before admission.",
+    "Terminal failure is archived and diagnosed;success-only receiver rejection never converts a compile or unrelated error into negative evidence."
+  ],
+  "remaining": "Original workflow still active; receive original artifacts exactly once after terminal-state and newer-receipt reconciliation.",
+  "frozen_source_unchanged": true,
+  "accepted": false,
+  "card_admitted": false,
+  "full_qualification": false
+}
