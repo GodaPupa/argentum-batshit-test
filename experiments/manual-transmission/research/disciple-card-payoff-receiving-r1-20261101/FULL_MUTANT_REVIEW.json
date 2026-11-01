@@ -1,0 +1,125 @@
+{
+  "state": "ISOLATED_SOURCE_REVIEW_NOT_COMPILED_NOT_QUALIFIED",
+  "source": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
+  "card_path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+  "card_blob": "1c79e49f0ab227b6f85a5c8f641c8cad4d900e03",
+  "candidate_mutations": [
+    {
+      "id": "fixed_one",
+      "requirements": [
+        "DF01",
+        "DF06",
+        "DF11"
+      ],
+      "before": "val sacrificedPower = DynamicAmount.VariableReference(\"discipleSacrificedPower\")",
+      "after": "val sacrificedPower = DynamicAmount.Fixed(1)",
+      "witness": "Original payoff/zero/negative outcomes; bind exact lines after full draft review."
+    },
+    {
+      "id": "fixed_base_two",
+      "requirements": [
+        "DF05"
+      ],
+      "before": "val sacrificedPower = DynamicAmount.VariableReference(\"discipleSacrificedPower\")",
+      "after": "val sacrificedPower = DynamicAmount.Fixed(2)",
+      "witness": "Projected boost5 expected versus2; exactoriginalassertion."
+    },
+    {
+      "id": "source_power",
+      "requirements": [
+        "DF09"
+      ],
+      "before": "val sacrificedPower = DynamicAmount.VariableReference(\"discipleSacrificedPower\")",
+      "after": "val sacrificedPower = DynamicAmount.EntityProperty(EntityReference.Source, EntityNumericProperty.Power)",
+      "witness": "Token modifiedpower5 versus source3."
+    },
+    {
+      "id": "allow_self",
+      "requirements": [
+        "DF03"
+      ],
+      "before": "TargetFilter.CreatureYouControl.other()",
+      "after": "TargetFilter.CreatureYouControl",
+      "witness": "Dedicated source-remains assertion before payoff checks; original source-selection rejection also required."
+    },
+    {
+      "id": "gate_bypass",
+      "requirements": [
+        "DF07"
+      ],
+      "before": "successCriterion = SuccessCriterion.PermanentsSacrificed",
+      "after": "successCriterion = SuccessCriterion.Always",
+      "witness": "Reuse exact card+test-bound early line315 only after original receipt; full dependent remains."
+    },
+    {
+      "id": "no_modal_layout",
+      "requirements": [
+        "DF13",
+        "DF19"
+      ],
+      "before": "layout = CardLayout.MODAL_DFC",
+      "after": "layout = CardLayout.NORMAL",
+      "witness": "Compile enum first, then actual offered-land assertions; no compiler failure counts."
+    },
+    {
+      "id": "life_cost_two",
+      "requirements": [
+        "DF14"
+      ],
+      "before": "EntersTapped(payLifeCost = 3)",
+      "after": "EntersTapped(payLifeCost = 2)",
+      "witness": "Life17 vs18."
+    },
+    {
+      "id": "life_cost_one",
+      "requirements": [
+        "DF16"
+      ],
+      "before": "EntersTapped(payLifeCost = 3)",
+      "after": "EntersTapped(payLifeCost = 1)",
+      "witness": "At2 life expectedtapped but mutantpaid1; original pending-prompt difference requires focused late-state witness too."
+    },
+    {
+      "id": "no_tapped_replacement",
+      "requirements": [
+        "DF15"
+      ],
+      "before": "    replacementEffect(EntersTapped(payLifeCost = 3))",
+      "after": "    // Isolated negative: omit Garden entry replacement.",
+      "witness": "Dedicated tapped/life outcome bypassing absent-prompt helper exception. Keep original scenarios untouched."
+    },
+    {
+      "id": "white_mana",
+      "requirements": [
+        "DF17"
+      ],
+      "before": "Effects.AddMana(Color.GREEN, 1)",
+      "after": "Effects.AddMana(Color.WHITE, 1)",
+      "witness": "Green1actual0."
+    },
+    {
+      "id": "back_cost_six",
+      "requirements": [
+        "DF18"
+      ],
+      "before": "    typeLine = \"Land\"",
+      "after": "    typeLine = \"Land\"\n    manaCost = \"{3}{G}{G}{G}\"",
+      "witness": "Back manaValue0actual6."
+    }
+  ],
+  "requirements_pending_exact_forms": [
+    "DF02 May removal needs a focused non-prompt-assuming outcome test so missing prompt helper exception cannot be counted.",
+    "DF04 widen control filter together with card's sacrificedByItsController=true only if necessary to defeat the independent runtime ownership guard; exact opponent-remains assertion must be observed, not inferred from a different failure.",
+    "DF08 sourceRequiredZone=BATTLEFIELD facade parameter is confirmed existing in GatedEffects.kt; preserve proper Kotlin parentheses and test source departure.",
+    "DF10 graveyard-growth mutant must use actual existing primitive; never substitute impossible Auto shape or invalid compiler failure.",
+    "DF12 triggered target requirement mutant requires exact existing primitive and focus on event/ward/order assertions; no runtime mutation authorized by card grant.",
+    "DF20 noncast/bounce and canonical-front replacement need complete tests and card-only semantic mutant.",
+    "DF22 omitted backface/collector metadata exactsource forms and one additive snapshot originalbyte recovery."
+  ],
+  "safeguards": "All proposed edits are research only. No frozen source or running qualification changed. Compile every distinct normal/mutant source before behavior; no missing reports or setup exceptions count. Preserve all30current identities/196assertions and all prior evidence. No additional boundary implied.",
+  "remaining_full_requirements": [
+    "expiry/zone/timing/land-prohibition agreement; one entry/trigger exact object identity; existing payment replacement/prohibition mechanism",
+    "DF12 ward/shroud/priority; DF18 outside battlefield; DF20 noncast/bounce; DF21 Opal exclusion; DF22 registration/snapshot",
+    "full original card mutant matrix with exact assertion-level witnesses, no stronger admission inferred from early stage"
+  ]
+}
