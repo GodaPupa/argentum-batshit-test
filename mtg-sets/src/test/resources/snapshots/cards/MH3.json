@@ -254,6 +254,221 @@
     ]
 }
 
+// Disciple of Freyalise
+{
+    "name": "Disciple of Freyalise",
+    "manaCost": "{3}{G}{G}{G}",
+    "typeLine": "Creature — Elf Druid",
+    "oracleText": "When this creature enters, you may sacrifice another creature. If you do, you gain X life and draw X cards, where X is that creature's power.",
+    "creatureStats": {
+        "power": 3,
+        "toughness": 3
+    },
+    "flags": [
+        "CANT_TRANSFORM"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Gated",
+                    "gate": "Gate.MayDecide",
+                    "then": {
+                        "type": "Composite",
+                        "effects": [
+                            {
+                                "type": "GatherCards",
+                                "source": {
+                                    "type": "BattlefieldMatching",
+                                    "filter": "creature",
+                                    "player": "You",
+                                    "excludeSelf": true
+                                },
+                                "storeAs": "discipleEligibleSacrifices"
+                            },
+                            {
+                                "type": "SelectFromCollection",
+                                "from": "discipleEligibleSacrifices",
+                                "selection": {
+                                    "type": "ChooseExactly",
+                                    "count": {
+                                        "type": "Fixed",
+                                        "amount": 1
+                                    }
+                                },
+                                "storeSelected": "discipleSacrifice",
+                                "prompt": "Choose another creature you control to sacrifice",
+                                "useTargetingUI": true
+                            },
+                            {
+                                "type": "StoreNumber",
+                                "name": "discipleSacrificedPower",
+                                "amount": {
+                                    "type": "EntityProperty",
+                                    "entity": {
+                                        "type": "FromCostStorage",
+                                        "collectionName": "discipleSacrifice"
+                                    },
+                                    "numericProperty": "Power"
+                                }
+                            },
+                            {
+                                "type": "Gated",
+                                "gate": {
+                                    "type": "Gate.DoAction",
+                                    "action": {
+                                        "type": "SacrificeTarget",
+                                        "target": {
+                                            "type": "PipelineTarget",
+                                            "collectionName": "discipleSacrifice"
+                                        }
+                                    },
+                                    "successCriterion": "SuccessCriterion.PermanentsSacrificed"
+                                },
+                                "then": {
+                                    "type": "Composite",
+                                    "effects": [
+                                        {
+                                            "type": "GainLife",
+                                            "amount": {
+                                                "type": "VariableReference",
+                                                "variableName": "discipleSacrificedPower"
+                                            }
+                                        },
+                                        {
+                                            "type": "DrawCards",
+                                            "count": {
+                                                "type": "VariableReference",
+                                                "variableName": "discipleSacrificedPower"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
+                    }
+                },
+                "descriptionOverride": "When this creature enters, you may sacrifice another creature. If you do, you gain X life and draw X cards, where X is that creature's power."
+            }
+        ]
+    },
+    "backFace": {
+        "name": "Garden of Freyalise",
+        "manaCost": "",
+        "typeLine": "Land",
+        "oracleText": "As this land enters, you may pay 3 life. If you don't, it enters tapped.\n{T}: Add {G}.",
+        "flags": [
+            "CANT_TRANSFORM"
+        ],
+        "script": {
+            "activatedAbilities": [
+                {
+                    "id": "ability_2",
+                    "cost": "CostTap",
+                    "effect": {
+                        "type": "AddMana",
+                        "color": "GREEN"
+                    },
+                    "timing": "ManaAbility",
+                    "isManaAbility": true
+                }
+            ],
+            "replacementEffects": [
+                {
+                    "type": "EntersTapped",
+                    "payLifeCost": 3
+                }
+            ]
+        },
+        "metadata": {
+            "collectorNumber": "250",
+            "rarity": "UNCOMMON",
+            "artist": "Valera Lutfullina",
+            "flavorText": "The Juniper Order safeguards secret places that still thrum with traces of Freyalise's life-giving magic.",
+            "imageUri": "https://cards.scryfall.io/normal/back/a/8/a8e9ea5a-5e10-4b77-baef-0352ff035483.jpg?1783911228",
+            "rulings": [
+                {
+                    "date": "2024-06-07",
+                    "text": "Use the power of the sacrificed creature as it last existed on the battlefield to determine the value of X."
+                },
+                {
+                    "date": "2024-06-07",
+                    "text": "To determine whether it is legal to play a modal double-faced card, consider only the characteristics of the face you're playing and ignore the other face's characteristics. For example, if an effect stops you from casting creature spells, you can't cast Disciple of Freyalise, but you can still play Garden of Freyalise."
+                },
+                {
+                    "date": "2024-06-07",
+                    "text": "If an effect allows you to play a specific modal double-faced card, you may cast it as a spell or play it as a land, as determined by which face you choose to play. If an effect allows you to cast (rather than \"play\") a specific modal double-faced card, you can't play it as a land."
+                },
+                {
+                    "date": "2024-06-07",
+                    "text": "If an effect allows you to play a land or cast a spell from among a group of cards, you may play or cast a modal double-faced card with any face that fits the criteria of that effect. For example, if an effect allows you to play lands from your graveyard, you can play Garden of Freyalise, but you can't cast Disciple of Freyalise."
+                },
+                {
+                    "date": "2024-06-07",
+                    "text": "If an effect allows you to put a card with particular characteristics onto the battlefield without instructing you to play or cast it, you consider only the characteristics of a modal double-faced card's front face to see if that card qualifies. If it does, it enters the battlefield with its front face up. For example, if an effect allows you to put a creature card from your graveyard onto the battlefield, you can put Disciple of Freyalise onto the battlefield. However, an effect that lets you return a land card from your graveyard to your hand won't let you return Garden of Freyalise to your hand, as that card has only its front face's characteristics while in the graveyard."
+                },
+                {
+                    "date": "2024-06-07",
+                    "text": "The mana value of a modal double-faced card is based on the characteristics of the face that's being considered. On the stack or the battlefield, consider whichever face is up. In all other zones, consider only the front face. This is different than how the mana value of a transforming double-faced card is determined."
+                },
+                {
+                    "date": "2024-06-07",
+                    "text": "A modal double-faced card can't be transformed or be put onto the battlefield transformed. Ignore any instruction to transform a modal double-faced card or to put one onto the battlefield transformed."
+                }
+            ]
+        },
+        "colorIdentityOverride": [
+            "GREEN"
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "250",
+        "rarity": "UNCOMMON",
+        "artist": "Valera Lutfullina",
+        "flavorText": "\"Freyalise is gone, but her song lives on.\"",
+        "imageUri": "https://cards.scryfall.io/normal/front/a/8/a8e9ea5a-5e10-4b77-baef-0352ff035483.jpg?1783911228",
+        "rulings": [
+            {
+                "date": "2024-06-07",
+                "text": "Use the power of the sacrificed creature as it last existed on the battlefield to determine the value of X."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "To determine whether it is legal to play a modal double-faced card, consider only the characteristics of the face you're playing and ignore the other face's characteristics. For example, if an effect stops you from casting creature spells, you can't cast Disciple of Freyalise, but you can still play Garden of Freyalise."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "If an effect allows you to play a specific modal double-faced card, you may cast it as a spell or play it as a land, as determined by which face you choose to play. If an effect allows you to cast (rather than \"play\") a specific modal double-faced card, you can't play it as a land."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "If an effect allows you to play a land or cast a spell from among a group of cards, you may play or cast a modal double-faced card with any face that fits the criteria of that effect. For example, if an effect allows you to play lands from your graveyard, you can play Garden of Freyalise, but you can't cast Disciple of Freyalise."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "If an effect allows you to put a card with particular characteristics onto the battlefield without instructing you to play or cast it, you consider only the characteristics of a modal double-faced card's front face to see if that card qualifies. If it does, it enters the battlefield with its front face up. For example, if an effect allows you to put a creature card from your graveyard onto the battlefield, you can put Disciple of Freyalise onto the battlefield. However, an effect that lets you return a land card from your graveyard to your hand won't let you return Garden of Freyalise to your hand, as that card has only its front face's characteristics while in the graveyard."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "The mana value of a modal double-faced card is based on the characteristics of the face that's being considered. On the stack or the battlefield, consider whichever face is up. In all other zones, consider only the front face. This is different than how the mana value of a transforming double-faced card is determined."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "A modal double-faced card can't be transformed or be put onto the battlefield transformed. Ignore any instruction to transform a modal double-faced card or to put one onto the battlefield transformed."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ],
+    "layout": "MODAL_DFC"
+}
+
 // Eldrazi Repurposer
 {
     "name": "Eldrazi Repurposer",
