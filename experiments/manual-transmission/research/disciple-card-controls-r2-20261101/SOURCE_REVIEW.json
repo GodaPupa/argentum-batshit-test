@@ -1,0 +1,135 @@
+{
+  "state": "EXACT_AUTHORIZED_SUCCESSOR_SOURCE_REVIEW_NOT_COMPILED_NOT_ACCEPTED",
+  "proposal": {
+    "commit": "4b5b5acf9c56911c4aad2f145f8dea3081d9bd52",
+    "record": "experiments/manual-transmission/research/disciple-nontargeted-selection-proposal-r1-20261101",
+    "card_draft": "DiscipleOfFreyalise.non-targeted.proposal.kt",
+    "test_draft": "DiscipleOfFreyaliseScenarioTest.non-targeted.proposal.kt",
+    "original_test_sha256": "7c5edb279879e709984efb14d71f9d3e064551397498b54d82d5d546f43a631d",
+    "exact_line_replacements": [
+      {
+        "line": 84,
+        "before": "        d.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()",
+        "after": "        d.pendingDecision.shouldBeInstanceOf<com.wingedsheep.engine.core.SelectCardsDecision>()"
+      },
+      {
+        "line": 85,
+        "before": "        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true",
+        "after": "        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true"
+      },
+      {
+        "line": 116,
+        "before": "        d.submitTargetSelection(me, listOf(source)).isSuccess shouldBe false",
+        "after": "        d.submitCardSelection(me, listOf(source)).isSuccess shouldBe false"
+      },
+      {
+        "line": 119,
+        "before": "        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true",
+        "after": "        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true"
+      },
+      {
+        "line": 133,
+        "before": "        d.submitTargetSelection(me, listOf(foreign)).isSuccess shouldBe false",
+        "after": "        d.submitCardSelection(me, listOf(foreign)).isSuccess shouldBe false"
+      },
+      {
+        "line": 136,
+        "before": "        d.submitTargetSelection(me, listOf(own)).isSuccess shouldBe true",
+        "after": "        d.submitCardSelection(me, listOf(own)).isSuccess shouldBe true"
+      },
+      {
+        "line": 169,
+        "before": "            d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true",
+        "after": "            d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true"
+      },
+      {
+        "line": 192,
+        "before": "        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true",
+        "after": "        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true"
+      },
+      {
+        "line": 210,
+        "before": "            d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true",
+        "after": "            d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true"
+      },
+      {
+        "line": 269,
+        "before": "        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true",
+        "after": "        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true"
+      },
+      {
+        "line": 311,
+        "before": "        if (d.pendingDecision is ChooseTargetsDecision)",
+        "after": "        if (d.pendingDecision is com.wingedsheep.engine.core.SelectCardsDecision)"
+      },
+      {
+        "line": 312,
+        "before": "            d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true",
+        "after": "            d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true"
+      },
+      {
+        "line": 336,
+        "before": "        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true",
+        "after": "        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true"
+      },
+      {
+        "line": 442,
+        "before": "        d.submitTargetSelection(me, listOf(token)).isSuccess shouldBe true",
+        "after": "        d.submitCardSelection(me, listOf(token)).isSuccess shouldBe true"
+      },
+      {
+        "line": 469,
+        "before": "        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true",
+        "after": "        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true"
+      },
+      {
+        "line": 973,
+        "before": "        if (d.pendingDecision is ChooseTargetsDecision) d.submitTargetSelection(me, listOf(fodder)).error shouldBe null",
+        "after": "        if (d.pendingDecision is com.wingedsheep.engine.core.SelectCardsDecision) d.submitCardSelection(me, listOf(fodder)).error shouldBe null"
+      }
+    ],
+    "transport_only_sha256": "e321e86c47d7ea397ed6ee8d3182cc0dde5313c9cb5a1526c7c7ff1ecd23f9da"
+  },
+  "authorization": "1814b73e8edaa0128680ec4e824f9ce426f902d2",
+  "base": "a15c7859ea1e0a3155168338c8e465b975bc6a19",
+  "candidate_card_sha256": "f659920fc36d1737f22dd3679fcb6a62d0799767f66aec3770530f02db88381c",
+  "candidate_test_sha256": "cd76d90cddd88ed3d8df810f7c85707b5b030fca981233f95fe4a98e040394a8",
+  "preserved_identities": 65,
+  "unchanged_assertion_lines": 386,
+  "exact_transport_replacements": 16,
+  "new_cases": [
+    "DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder",
+    "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud"
+  ],
+  "forms": 20,
+  "required_witnesses": 24,
+  "controls": 57,
+  "checks": "All exact form hashes,edit cardinalities,witness lines,names,controls,original prefix and unchanged assertions checked locally;Python runner syntax parsed. This is source validation only.",
+  "production_delta": [
+    "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt"
+  ],
+  "test_delta": [
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt"
+  ],
+  "registration_runtime_sdk_server_client_unchanged": true,
+  "reviewer": "Same execution agent; not independent review",
+  "remaining": {
+    "ordinary_rows_derived": 19212,
+    "historical_exact_skips": 43,
+    "card_rows_derived": 396,
+    "client_rows": 64,
+    "derived_counts_not_observed": true,
+    "required": [
+      "Fresh same-source normal/full compile",
+      "Required affected focused regressions",
+      "All ordinary rows and exact identities/multiplicities/skips",
+      "Card regressions and six registration checks",
+      "64 client cases and typecheck",
+      "metadata/printing/discovery/lint",
+      "original MH3 snapshot differential preserving every existing byte and entry",
+      "Assay classification with no semantic passes inferred from grammar declines",
+      "Original artifact verification with immutable source/tree/validation/workflow/run/job/attempt/artifact pins, bytes/hash/manifest/raw XML, executable witnesses/source restoration/protected bytes"
+    ]
+  },
+  "original_failure_receipt": "588276f457428e927b83512bcb3d8a8476441402"
+}

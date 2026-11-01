@@ -8,12 +8,16 @@ import com.wingedsheep.sdk.model.CardDefinition
 import com.wingedsheep.sdk.model.CardLayout
 import com.wingedsheep.sdk.model.Rarity
 import com.wingedsheep.sdk.scripting.EntersTapped
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.effects.CardSource
+import com.wingedsheep.sdk.scripting.effects.GatherCardsEffect
+import com.wingedsheep.sdk.scripting.effects.SelectionMode
+import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
+import com.wingedsheep.sdk.scripting.references.Player
 import com.wingedsheep.sdk.scripting.TimingRule
 import com.wingedsheep.sdk.scripting.effects.MayEffect
 import com.wingedsheep.sdk.scripting.effects.SuccessCriterion
-import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
-import com.wingedsheep.sdk.scripting.targets.TargetObject
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
 import com.wingedsheep.sdk.scripting.values.EntityReference
 import com.wingedsheep.sdk.scripting.values.EntityNumericProperty
@@ -60,9 +64,20 @@ val DiscipleOfFreyalise: CardDefinition = card("Disciple of Freyalise") {
         trigger = Triggers.EntersBattlefield
         val sacrificedPower = DynamicAmount.VariableReference("discipleSacrificedPower")
         effect = MayEffect(Effects.Composite(listOf(
-            Effects.SelectTarget(
-                TargetObject(filter = TargetFilter.CreatureYouControl.other()),
-                storeAs = "discipleSacrifice"
+            GatherCardsEffect(
+                source = CardSource.BattlefieldMatching(
+                    filter = GameObjectFilter.Creature,
+                    player = Player.You,
+                    excludeSelf = true
+                ),
+                storeAs = "discipleEligibleSacrifices"
+            ),
+            SelectFromCollectionEffect(
+                from = "discipleEligibleSacrifices",
+                selection = SelectionMode.ChooseExactly(DynamicAmount.Fixed(1)),
+                storeSelected = "discipleSacrifice",
+                prompt = "Choose another creature you control to sacrifice",
+                useTargetingUI = true
             ),
             // Capture the selected creature's projected power before the sacrifice changes
             // its zone. StoreNumber does not change state; SacrificeTarget reads the same
