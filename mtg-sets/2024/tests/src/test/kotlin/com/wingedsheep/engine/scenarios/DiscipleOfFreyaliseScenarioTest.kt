@@ -567,4 +567,312 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
         d.getPermanents(me).contains(source) shouldBe true
     }
 
+
+    listOf(3, 4).forEach { life ->
+        listOf(false, true).forEach { accept ->
+            test("DF16 Garden threshold life=$life accept=$accept pays once or declines") {
+                val d = driver()
+                val me = d.activePlayer!!
+                d.setLifeTotal(me, life)
+                val id = d.putCardInHand(me, "Disciple of Freyalise")
+                d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+                d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+                roundtrip(d)
+                d.submitYesNo(me, accept).error shouldBe null
+                d.getLifeTotal(me) shouldBe if (accept) life - 3 else life
+                d.isTapped(id) shouldBe !accept
+                d.getCardName(id) shouldBe "Garden of Freyalise"
+                d.getLands(me).count { it == id } shouldBe 1
+                d.pendingDecision shouldBe null
+            }
+        }
+    }
+
+    test("DF16 malformed land payment response preserves the pending choice") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInHand(me, "Disciple of Freyalise")
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        val question = d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        val before = d.state
+        val invalid = d.submitDecision(me,
+            com.wingedsheep.engine.core.TargetsResponse(question.id, emptyMap()))
+        (invalid.error != null) shouldBe true
+        invalid.events.size shouldBe 0
+        d.state shouldBe before
+        d.submitYesNo(me, false).error shouldBe null
+        d.getLifeTotal(me) shouldBe 20
+        d.isTapped(id) shouldBe true
+        d.pendingDecision shouldBe null
+    }
+
+    test("DF16 replayed land payment response cannot charge life twice") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInHand(me, "Disciple of Freyalise")
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        val question = d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        val answer = com.wingedsheep.engine.core.YesNoResponse(question.id, true)
+        d.submitDecision(me, answer).error shouldBe null
+        d.getLifeTotal(me) shouldBe 17
+        val before = d.state
+        val replay = d.submitDecision(me, answer)
+        (replay.error != null) shouldBe true
+        replay.events.size shouldBe 0
+        d.state shouldBe before
+        d.getLifeTotal(me) shouldBe 17
+        d.isTapped(id) shouldBe false
+        d.getLands(me).count { it == id } shouldBe 1
+    }
+
+    listOf(false, true).forEach { castOnly ->
+        test("DF19 graveyard permission castOnly=$castOnly agrees with direct Garden action") {
+            val d = driver()
+            val me = d.activePlayer!!
+            val id = d.putCardInGraveyard(me, "Disciple of Freyalise")
+            d.replaceState(d.state.addMayPlayPermission(MayPlayPermission(
+                id = EntityId.generate(), cardIds = setOf(id), controllerId = me,
+                nonLandOnly = castOnly, timestamp = d.state.timestamp
+            )))
+            val offered = d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+                .count { it.cardId == id && it.asBackFace }
+            offered shouldBe if (castOnly) 0 else 1
+            val before = d.state
+            val action = d.submit(PlayLand(me, id, asBackFace = true))
+            (action.error == null) shouldBe !castOnly
+            if (castOnly) {
+                d.state shouldBe before
+                d.getGraveyard(me).contains(id) shouldBe true
+            } else {
+                d.submitYesNo(me, false).error shouldBe null
+                d.getLifeTotal(me) shouldBe 20
+                d.isTapped(id) shouldBe true
+                d.getLands(me).count { it == id } shouldBe 1
+                d.getGraveyard(me).contains(id) shouldBe false
+            }
+        }
+    }
+
+    test("DF19 permission forced tapped Garden does not charge life") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInExile(me, "Disciple of Freyalise")
+        d.replaceState(d.state.addMayPlayPermission(MayPlayPermission(
+            id = EntityId.generate(), cardIds = setOf(id), controllerId = me,
+            landEntersTapped = true, timestamp = d.state.timestamp
+        )))
+        d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+            .count { it.cardId == id && it.asBackFace } shouldBe 1
+        val castsBefore = d.events.filterIsInstance<SpellCastEvent>().size
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        d.pendingDecision shouldBe null
+        d.getLifeTotal(me) shouldBe 20
+        d.isTapped(id) shouldBe true
+        d.getLands(me).count { it == id } shouldBe 1
+        d.events.filterIsInstance<SpellCastEvent>().size shouldBe castsBefore
+    }
+
+    test("DF19 another player's permission does not authorize Garden") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInExile(me, "Disciple of Freyalise")
+        d.replaceState(d.state.addMayPlayPermission(MayPlayPermission(
+            id = EntityId.generate(), cardIds = setOf(id), controllerId = d.getOpponent(me),
+            timestamp = d.state.timestamp
+        )))
+        d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+            .count { it.cardId == id && it.asBackFace } shouldBe 0
+        val before = d.state
+        val invalid = d.submit(PlayLand(me, id, asBackFace = true))
+        (invalid.error != null) shouldBe true
+        invalid.events.size shouldBe 0
+        d.state shouldBe before
+        d.getExile(me).contains(id) shouldBe true
+    }
+
+    test("DF19 permitted Garden consumes the ordinary land drop") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInExile(me, "Disciple of Freyalise")
+        val second = d.putCardInHand(me, "Disciple of Freyalise")
+        d.replaceState(d.state.addMayPlayPermission(MayPlayPermission(
+            id = EntityId.generate(), cardIds = setOf(id), controllerId = me,
+            timestamp = d.state.timestamp
+        )))
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        d.submitYesNo(me, false).error shouldBe null
+        d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+            .count { it.cardId == second } shouldBe 0
+        val before = d.state
+        val invalid = d.submit(PlayLand(me, second, asBackFace = true))
+        (invalid.error != null) shouldBe true
+        invalid.events.size shouldBe 0
+        d.state shouldBe before
+        d.getLands(me).count { it == id } shouldBe 1
+    }
+
+
+    test("DF19 expired permission stays revoked at the next own main phase") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInExile(me, "Disciple of Freyalise")
+        val permission = MayPlayPermission(id = EntityId.generate(), cardIds = setOf(id),
+            controllerId = me, expiresAfterTurn = d.state.turnNumber, timestamp = d.state.timestamp)
+        d.replaceState(d.state.addMayPlayPermission(permission))
+        d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+            .count { it.cardId == id && it.asBackFace } shouldBe 1
+        for (player in listOf(me, d.getOpponent(me))) {
+            d.getHand(player).toList().forEach { d.moveToGraveyard(it) }
+        }
+        repeat(2) {
+            d.passPriorityUntil(Step.POSTCOMBAT_MAIN)
+            d.passPriorityUntil(Step.PRECOMBAT_MAIN)
+        }
+        d.activePlayer shouldBe me
+        d.state.mayPlayPermissions.any { it.id == permission.id } shouldBe false
+        d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+            .count { it.cardId == id } shouldBe 0
+        val before = d.state
+        val rejected = d.submit(PlayLand(me, id, asBackFace = true))
+        (rejected.error != null) shouldBe true
+        rejected.events.size shouldBe 0
+        d.state shouldBe before
+    }
+
+    test("DF19 per-card permission does not admit a command-zone Garden") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInCommandZone(me, "Disciple of Freyalise")
+        d.replaceState(d.state.addMayPlayPermission(MayPlayPermission(
+            id = EntityId.generate(), cardIds = setOf(id), controllerId = me, timestamp = d.state.timestamp)))
+        d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+            .count { it.cardId == id } shouldBe 0
+        val before = d.state
+        val rejected = d.submit(PlayLand(me, id, asBackFace = true))
+        (rejected.error != null) shouldBe true
+        rejected.events.size shouldBe 0
+        d.state shouldBe before
+    }
+
+    listOf("nonmain", "nonactive", "stack").forEach { restriction ->
+        test("DF19 permitted Garden respects timing restriction=$restriction") {
+            val d = driver()
+            val me = d.activePlayer!!
+            val id = d.putCardInExile(me, "Disciple of Freyalise")
+            d.replaceState(d.state.addMayPlayPermission(MayPlayPermission(
+                id = EntityId.generate(), cardIds = setOf(id), controllerId = me,
+                permanent = true, asThoughFlash = true, timestamp = d.state.timestamp)))
+            when (restriction) {
+                "nonmain" -> d.passPriorityUntil(Step.BEGIN_COMBAT)
+                "nonactive" -> {
+                    d.passPriorityUntil(Step.POSTCOMBAT_MAIN)
+                    d.passPriorityUntil(Step.PRECOMBAT_MAIN)
+                    d.activePlayer shouldBe d.getOpponent(me)
+                }
+                "stack" -> {
+                    val front = d.putCardInHand(me, "Disciple of Freyalise")
+                    d.giveMana(me, Color.GREEN, 3)
+                    d.giveColorlessMana(me, 3)
+                    d.castSpell(me, front).isSuccess shouldBe true
+                    d.state.stack.size shouldBe 1
+                }
+            }
+            d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+                .count { it.cardId == id } shouldBe 0
+            val before = d.state
+            val rejected = d.submit(PlayLand(me, id, asBackFace = true))
+            (rejected.error != null) shouldBe true
+            rejected.events.size shouldBe 0
+            d.state shouldBe before
+        }
+    }
+
+    test("DF19 land prohibition defeats a per-card play permission") {
+        val d = driver()
+        val me = d.activePlayer!!
+        d.registerCard(card("Disciple land prohibition fixture") {
+            typeLine = "Enchantment"
+            staticAbility(com.wingedsheep.sdk.scripting.PlayersCantPlayLands())
+        })
+        d.putPermanentOnBattlefield(me, "Disciple land prohibition fixture")
+        val id = d.putCardInExile(me, "Disciple of Freyalise")
+        d.replaceState(d.state.addMayPlayPermission(MayPlayPermission(
+            id = EntityId.generate(), cardIds = setOf(id), controllerId = me, timestamp = d.state.timestamp)))
+        d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+            .count { it.cardId == id } shouldBe 0
+        val before = d.state
+        val rejected = d.submit(PlayLand(me, id, asBackFace = true))
+        (rejected.error != null) shouldBe true
+        rejected.events.size shouldBe 0
+        d.state shouldBe before
+    }
+
+    listOf(false, true).forEach { shallow ->
+        test("DF16 Garden payment uses existing library replacement shallow=$shallow") {
+            val d = driver()
+            val me = d.activePlayer!!
+            d.registerCard(card("Disciple payment replacement fixture") {
+                typeLine = "Enchantment"
+                replacementEffect(com.wingedsheep.sdk.scripting.ReplaceLifePaymentWithLibraryExile())
+            })
+            d.putPermanentOnBattlefield(me, "Disciple payment replacement fixture")
+            if (shallow) {
+                d.state.getLibrary(me).drop(2).forEach { d.moveToGraveyard(it) }
+            }
+            val library = d.state.getLibrary(me).toList()
+            val exile = d.getExile(me).toSet()
+            val id = d.putCardInHand(me, "Disciple of Freyalise")
+            d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+            roundtrip(d)
+            d.submitYesNo(me, true).error shouldBe null
+            d.getLifeTotal(me) shouldBe if (shallow) 17 else 20
+            d.state.getLibrary(me) shouldBe if (shallow) library else library.drop(3)
+            (d.getExile(me).toSet() - exile) shouldBe if (shallow) emptySet() else library.take(3).toSet()
+            d.isTapped(id) shouldBe false
+            d.getLands(me).count { it == id } shouldBe 1
+            d.pendingDecision shouldBe null
+        }
+    }
+
+    listOf(false, true).forEach { accept ->
+        test("DF16 serialized Garden entry emits one identity and one landfall accept=$accept") {
+            val d = driver()
+            val me = d.activePlayer!!
+            d.registerCard(card("Disciple landfall observer fixture") {
+                typeLine = "Enchantment"
+                triggeredAbility {
+                    trigger = com.wingedsheep.sdk.dsl.Triggers.LandYouControlEnters
+                    effect = com.wingedsheep.sdk.dsl.Effects.GainLife(1)
+                }
+            })
+            val observer = d.putPermanentOnBattlefield(me, "Disciple landfall observer fixture")
+            val id = d.putCardInHand(me, "Disciple of Freyalise")
+            val oldObject = d.state.objectRef(id)
+            val start = d.events.size
+            d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+            val enteredObject = d.state.objectRef(id)
+            roundtrip(d)
+            d.submitYesNo(me, accept).error shouldBe null
+            val events = d.events.drop(start)
+            val entries = events.filterIsInstance<com.wingedsheep.engine.core.ZoneChangeEvent>()
+                .filter { it.entityId == id && it.toZone == Zone.BATTLEFIELD }
+            entries.size shouldBe 1
+            entries.single().oldObject shouldBe oldObject
+            entries.single().newObject shouldBe enteredObject
+            (oldObject != enteredObject) shouldBe true
+            events.filterIsInstance<com.wingedsheep.engine.core.LandPlayedEvent>()
+                .count { it.cardId == id } shouldBe 1
+            events.filterIsInstance<com.wingedsheep.engine.core.AbilityTriggeredEvent>()
+                .count { it.sourceId == observer } shouldBe 1
+            events.filterIsInstance<SpellCastEvent>().size shouldBe 0
+            d.state.stack.size shouldBe 1
+            d.bothPass().error shouldBe null
+            d.getLifeTotal(me) shouldBe if (accept) 18 else 21
+            d.isTapped(id) shouldBe !accept
+            d.getLands(me).count { it == id } shouldBe 1
+            d.state.stack.size shouldBe 0
+            d.pendingDecision shouldBe null
+        }
+    }
+
 })

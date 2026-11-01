@@ -1,0 +1,163 @@
+{
+  "state": "FROZEN_RUNTIME_EXTENSION_COMPILE_FIRST_NOT_ADMISSION",
+  "base": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
+  "base_tree": "86e209528d1eafbfc23323451589f69730f2e7a0",
+  "proposal": "c3d4c4e78846031cfb76dced6be45ed66cc379f9",
+  "grant": "27aa1d031f7f2dad4dd651358115c0041d288abb",
+  "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "record": "experiments/manual-transmission/research/disciple-runtime-extension-r1-20261101",
+  "evidence": "manual-disciple-runtime-extension-r1-evidence",
+  "test": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt",
+  "paths": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt",
+    "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt"
+  ],
+  "forms": [
+    "normal",
+    "offer_guard",
+    "resume_guard",
+    "modal_land"
+  ],
+  "mutations": [
+    {
+      "id": "offer_guard",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt",
+      "before": "newState.lifeTotal(action.playerId) < entersTapped.payLifeCost!!",
+      "after": "false"
+    },
+    {
+      "id": "resume_guard",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "before": "if (response.choice && (continuation.lifeCost < 0 ||\n                state.lifeTotal(continuation.controllerId) < continuation.lifeCost))",
+      "after": "if (false)"
+    },
+    {
+      "id": "modal_land",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt",
+      "before": "if (cardComponent.isDoubleFaced) {",
+      "after": "if (false) {"
+    }
+  ],
+  "case_names": [
+    "DF01 sacrifice gives exactly five life and five cards",
+    "DF02 decline preserves the creature life and hand",
+    "DF03 selection rejects the source and still accepts another own creature",
+    "DF04 selection rejects an opponent creature",
+    "DF06 power 0 sacrifices without drawing or losing life",
+    "DF06 power -2 sacrifices without drawing or losing life",
+    "DF08 source departure before trigger resolution preserves the payoff",
+    "DF11 full state serialization at optional preserves five power payoff",
+    "DF11 full state serialization at selection preserves five power payoff",
+    "DF14 Garden pays exactly three life to enter untapped",
+    "DF15 declined Garden payment keeps life and enters tapped",
+    "DF16 two life cannot pay Garden entry cost",
+    "DF05 projected boost is captured before the sacrifice",
+    "DF03 DF04 no other own creature gives no payoff opponentOnly=false",
+    "DF03 DF04 no other own creature gives no payoff opponentOnly=true",
+    "DF07 an unsacrificable chosen creature gives no payoff",
+    "DF12 resolution choice of hexproof fodder emits no targeting event",
+    "DF13 legal Garden land action is distinct from a creature cast",
+    "DF17 Garden activation produces exactly one green and no other mana",
+    "DF18 front cast keeps creature characteristics and mana value six",
+    "DF18 Garden battlefield uses land characteristics and mana value zero",
+    "DF22 both card faces and metadata survive polymorphic JSON roundtrip",
+    "DF09 token sacrifice retains projected five power after departure",
+    "DF10 successful sacrifice redirected to exile retains five power payoff",
+    "DF16 stale serialized payment rejects yes and preserves decline",
+    "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+    "DF19 exile permission castOnly=false distinguishes Garden play",
+    "DF19 exile permission castOnly=true distinguishes Garden play",
+    "DF21 external transform instruction leaves Disciple front face unchanged",
+    "DF01 singleton automatic selection preserves five power payoff",
+    "DF16 Garden threshold life=3 accept=false pays once or declines",
+    "DF16 Garden threshold life=3 accept=true pays once or declines",
+    "DF16 Garden threshold life=4 accept=false pays once or declines",
+    "DF16 Garden threshold life=4 accept=true pays once or declines",
+    "DF16 malformed land payment response preserves the pending choice",
+    "DF16 replayed land payment response cannot charge life twice",
+    "DF19 graveyard permission castOnly=false agrees with direct Garden action",
+    "DF19 graveyard permission castOnly=true agrees with direct Garden action",
+    "DF19 permission forced tapped Garden does not charge life",
+    "DF19 another player's permission does not authorize Garden",
+    "DF19 permitted Garden consumes the ordinary land drop",
+    "DF19 expired permission stays revoked at the next own main phase",
+    "DF19 per-card permission does not admit a command-zone Garden",
+    "DF19 permitted Garden respects timing restriction=nonmain",
+    "DF19 permitted Garden respects timing restriction=nonactive",
+    "DF19 permitted Garden respects timing restriction=stack",
+    "DF19 land prohibition defeats a per-card play permission",
+    "DF16 Garden payment uses existing library replacement shallow=false",
+    "DF16 Garden payment uses existing library replacement shallow=true",
+    "DF16 serialized Garden entry emits one identity and one landfall accept=false",
+    "DF16 serialized Garden entry emits one identity and one landfall accept=true"
+  ],
+  "class": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+  "preserved_assertions": 196,
+  "original_identities": 30,
+  "total": 51,
+  "unaffected": [
+    "rules-engine",
+    "mtg-sdk",
+    "game-server",
+    "web-client",
+    "mtg-sets/2024/src/main",
+    "mtg-sets/src/test/resources/snapshots/cards/MH3.json"
+  ],
+  "required_witnesses": {
+    "offer_guard": {
+      "case": "DF16 two life cannot pay Garden entry cost",
+      "assertion": "d.pendingDecision shouldBe null",
+      "line": 251
+    },
+    "resume_guard": {
+      "case": "DF16 stale serialized payment rejects yes and preserves decline",
+      "assertion": "(rejected.error != null) shouldBe true",
+      "line": 486
+    },
+    "modal_land": {
+      "case": "DF19 exile permission castOnly=false distinguishes Garden play",
+      "assertion": "offered shouldBe !castOnly",
+      "line": 525
+    }
+  },
+  "remaining": "All original card DF01\u2013DF22/card mutant/discovery/metadata/printing/lint/Assay and390card/19139ordinary+additions/43historicalskips/64client/typecheck/snapshot/fullbuild/originalreceiving gates. DF16 prohibited-payment branch is not inferred; additional shared mechanisms require separate scope if found necessary.",
+  "expected_failed": {
+    "normal": 0,
+    "offer_guard": 1,
+    "resume_guard": 1,
+    "modal_land": 4
+  },
+  "original_receipt": {
+    "commit": "0f7bd7b2864a0b4bd3c34f345ff76e15bc2b48df",
+    "path": "experiments/manual-transmission/research/disciple-card-payoff-received-r1-20261101/RECEIPT.json",
+    "run": 41286630084
+  },
+  "source_review": "No production changes. Reuse received original runtime and payoff evidence. Apply the saved11case draft unchanged plus10newcases: expiry,zone,3timing,landprohibition,2existingpaymentreplacement,2serializedentry/landfall. Preserve all30identities196assertionlines verbatim. Existing library-exile replacement does not expand affordability; no unproved payment prohibition support inferred. All normal/mutants compile before behavior. All originals retained; no test expectation changes and no admission from this stage.",
+  "total_assertion_lines": 297,
+  "changed_paths": [
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt"
+  ],
+  "expected_failed_identities": {
+    "normal": [],
+    "offer_guard": [
+      "DF16 two life cannot pay Garden entry cost"
+    ],
+    "resume_guard": [
+      "DF16 stale serialized payment rejects yes and preserves decline"
+    ],
+    "modal_land": [
+      "DF19 exile permission castOnly=false distinguishes Garden play",
+      "DF19 graveyard permission castOnly=false agrees with direct Garden action",
+      "DF19 permission forced tapped Garden does not charge life",
+      "DF19 expired permission stays revoked at the next own main phase"
+    ]
+  },
+  "unaffected_controls": [
+    "DF14 Garden pays exactly three life to enter untapped",
+    "DF15 declined Garden payment keeps life and enters tapped",
+    "DF17 Garden activation produces exactly one green and no other mana",
+    "DF21 external transform instruction leaves Disciple front face unchanged"
+  ]
+}
