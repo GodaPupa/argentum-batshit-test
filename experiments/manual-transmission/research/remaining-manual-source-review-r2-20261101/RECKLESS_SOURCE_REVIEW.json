@@ -1,0 +1,80 @@
+{
+  "state": "ISOLATED_READ_ONLY_NEXT_DEPENDENCY_REVIEW",
+  "source": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
+  "card": "Reckless Bushwhacker",
+  "canonical_from_received_metadata": "OGW116",
+  "diagnostic_receipt": "d0ada58b64cbd6bde866c89f91b8ce81eca6a068",
+  "prior_diagnostic_reused_without_rerun": true,
+  "files": {
+    "SelfAlternativeCost.kt": {
+      "git_blob": "d3c0f98adb4c813994d91d23857341c5fe3e1863"
+    },
+    "SourceConditions.kt": {
+      "git_blob": "796e551e0fa21273911e96f253e8c7f90b591c5a"
+    },
+    "TurnConditions.kt": {
+      "git_blob": "6d4ba469b64602df4afb47b452f5660709bcc5d2"
+    },
+    "CastPaymentProcessor.kt": {
+      "git_blob": "24afa8dc691755cc010a6d03e15160f6ccffea51"
+    },
+    "CastSpellHandler.kt": {
+      "git_blob": "e6216b851da7a1fbcfcfab7746d65f4cae6277ac"
+    },
+    "ConditionEvaluator.kt": {
+      "git_blob": "156f8cea458359ddff01f3e5655773ab75bb506b"
+    },
+    "ChoiceSlot.kt": {
+      "git_blob": "057df7a72759076acb8e3c1b5ec2fe3a26f3a4ba"
+    },
+    "CastChoicesComponent.kt": {
+      "git_blob": "add67a553eedd391e35fe5832dfec4ba35b13afa"
+    },
+    "StackResolver.kt": {
+      "git_blob": "2bb231b45291bb9e8a4d25ec149b94218f6131b9"
+    },
+    "Player.kt": {
+      "git_blob": "10a72167c06a51eba1ea76449c8375a069144c62"
+    }
+  },
+  "findings": [
+    {
+      "topic": "Eligibility",
+      "source": "SelfAlternativeCost.kt/TurnConditions.kt/CastSpellHandler.kt",
+      "finding": "SelfAlternativeCost has manaCost, additionalCosts and a game-state condition. PlayerCastSpellsThisTurn uses captured cast records, and CastSpellHandler appends records when casting. This supplies candidate own-prior-spell eligibility semantics without relying on a spell remaining on the stack.",
+      "limit": "No execution or surge qualification inferred. Teammate eligibility is not expressed by a named Player reference in the complete reviewed sealed Player.kt."
+    },
+    {
+      "topic": "Actual chosen payment",
+      "source": "CastSpellHandler.kt:4031-4034;StackResolver.kt:395",
+      "finding": "The selected AlternativeCostType is transported onto SpellOnStackComponent. The generic SELF_ALTERNATIVE choice is not itself a durable paid-surge condition."
+    },
+    {
+      "topic": "Entry marker gap",
+      "source": "StackResolver.kt:1577-1656;ChoiceSlot.kt",
+      "finding": "The durable CastChoices bag stamps declared additional costs and named sneak/web-slinging/mayhem/waterbend/gift flags. The complete reviewed ChoiceSlot enum has no SELF_ALTERNATIVE or SURGE slot, and this entry-transfer block does not stamp the generic chosen alternative. A faithful paid-surge ETB requires an explicitly proposed protected-boundary extension; existing Disciple/Opal/Fblthp grants do not authorize it."
+    },
+    {
+      "topic": "Rejected shortcut",
+      "source": "SourceConditions.kt:475-495",
+      "finding": "CastTimeFlagSet captures whether a game-state condition held, not which alternative was paid. Eligibility, amount of mana spent, or current spell count must not substitute for actual surge payment: normal-price casts on the same eligible board must produce no surge payoff."
+    }
+  ],
+  "required_future_controls": [
+    "Eligible own earlier spell resolved/countered/still on stack; opponent-only prior spell must not qualify.",
+    "Normal-price cast on an eligible board versus actual alternative-price cast; discounts/taxes must not infer paid choice.",
+    "Serialized stack and entering permanent preserve the exact actual choice; copied/direct/blinked objects do not acquire it from eligibility alone.",
+    "Other creatures get the bounded pump/haste until end of turn; source exclusion and correct controller remain exact.",
+    "Explicitly scope teammate support and multiplayer admission; preserve every existing choice slot and all target/source behavior.",
+    "Compile normal and every declared mutant before behavior, then full same-source compatibility/card/snapshot/lint/metadata/printing/Assay/original receiving."
+  ],
+  "implementation_authorized": false,
+  "production_edits": 0,
+  "test_edits": 0,
+  "snapshot_edits": 0,
+  "workflow_dispatches": 0,
+  "card_admitted": false,
+  "frozen_disciple_source_unchanged": true,
+  "next": "After Disciple original full receiving determines the accepted coherent source, turn this bound source review into an exact protected-boundary/card-registration proposal and matrix. Do not register Reckless Bushwhacker or modify casting/entry transport under existing grants.",
+  "independence": "Same assistant isolated source review, not a peer review or behavioral result."
+}
