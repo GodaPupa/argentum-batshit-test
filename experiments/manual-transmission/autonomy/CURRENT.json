@@ -31,58 +31,48 @@
   },
   "next": {
     "dependency": "Remaining Disciple runtime and card qualification on assertion-preserving successor",
-    "source_candidate": "9b46148f257b133bc4592729fddd3504732a710b",
-    "pending_runs": [
-      41291145372
-    ],
+    "source_candidate": "be6b10da62d5a9e96eac8e635534e935d489cf0f",
+    "pending_runs": [],
     "receipt": {
-      "commit": "0f7bd7b2864a0b4bd3c34f345ff76e15bc2b48df",
-      "path": "experiments/manual-transmission/research/disciple-card-payoff-received-r1-20261101/RECEIPT.json",
+      "commit": "847cc965fc8d2c255695802546eae62a3d300fc7",
+      "path": "experiments/manual-transmission/research/disciple-runtime-extension-received-r1-20261101/RECEIPT.json",
       "schema": 1,
-      "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_PROTOCOL_COUNT_MISMATCH",
-      "source": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
-      "source_tree": "86e209528d1eafbfc23323451589f69730f2e7a0",
-      "validation": "75f8234c101af177c42a62677648f06475c9a292",
-      "validation_tree": "0b4417cdf7b621e21d425b0e3d153a7083dcd5ac",
-      "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
-      "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
-      "run": 41286630084,
-      "job": 124789138819,
-      "attempt": 1,
-      "artifact": 13075204415,
-      "archive_bytes": 130762,
-      "archive_sha256": "3537bb71b3d8b7bfbdf94c268dd240f2a2c8ef16dc357360832473e3bb956e65",
-      "manifest_entries": 65,
-      "archive": "original-artifact.zip.b64",
-      "counts": {
-        "normal": {
-          "total": 30,
-          "failed": 0
-        },
-        "stored_power": {
-          "total": 30,
-          "failed": 11
-        },
-        "draw_count": {
-          "total": 30,
-          "failed": 9
-        },
-        "success_gate": {
-          "total": 30,
-          "failed": 1
-        }
-      },
-      "restored_failed": 0,
-      "skips": 0,
-      "valid_negative_witnesses": 3,
-      "unaffected_outcomes": 69,
-      "diagnosis": "Protocol incorrectly copied eleven power-mutant failures to draw mutant: DF03 and DF04 assert life payoff but contain no hand-size assertion. All nine draw assertions fail, including the exact declared line87 witness. No test assertion, report, or original protocol changed; full qualification remains pending.",
+      "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED_NOT_BEHAVIORAL_EVIDENCE",
+      "source": "9b46148f257b133bc4592729fddd3504732a710b",
+      "tree": "7ddbd16e067c663d15534f51c43c62d87ddbb180",
+      "validation": "27a49b82a568eaac19eae07abbefa8535bdef173",
+      "validation_tree": "36b71ae221ea0d5fdc20358178ad68171d87a55d",
+      "workflow": ".github/workflows/manual-disciple-runtime-extension-r1-20261101.yml",
+      "workflow_blob": "b77bc41c261a1b4809befc96d77d0af833b3811c",
+      "run": "41291145372",
+      "attempt": "1",
+      "run_number": "1",
+      "job": 124802502956,
+      "artifact": 13077682036,
+      "bytes": 77588,
+      "sha256": "7b8769bdbb19b716a281edd83b57edef18db34c3066009aad2c8c50c35dc068d",
+      "manifest_entries": 16,
+      "compiler_errors": [
+        "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt:795:27 Argument type mismatch: actual type is 'PlayersCantPlayLands', but 'StaticAbilityBuilder.() -> Unit' was expected."
+      ],
+      "behavioral_reports": 0,
+      "negative_witnesses": 0,
+      "production_source_unchanged": true,
+      "protected_initial_final_equal": true,
       "original_failure_preserved": true,
+      "admitted": false,
+      "repair": "Change only the new fixture call to staticAbility { ability = PlayersCantPlayLands() }; preserve all51identities297assertionlines. Compile all4forms before behavior on a new immutable successor.",
+      "archive": "original-artifact.zip.b64",
+      "original_receiving_complete": true,
       "card_admitted": false,
       "full_qualification": false,
-      "accepted": false,
-      "next": "Reuse exact-bound original observations without rerunning unchanged early qualification. Complete remaining three-file runtime and DF01–DF22/card controls on a bounded assertion-preserving successor. Keep all full compatibility/metadata/printing/lint/Assay/snapshot/original receiving gates.",
-      "received_utc": "2026-11-01 08:53:01 UTC",
+      "independent_preparation": {
+        "draft": "disciple-card-controls-isolated.kt",
+        "review": "card-controls-review.json",
+        "state": "ISOLATED_NOT_APPLIED_NOT_COMPILED",
+        "runtime_production_changes": false
+      },
+      "received_utc": "2026-11-01 09:09:27 UTC",
       "readback_verified": true
     },
     "proposal": {
@@ -116,7 +106,7 @@
       "identities_preserved": 28,
       "readback_verified": true
     },
-    "next_executable_action": "Do not duplicate/cancel active runtime-extension41291145372 on validation27a49b82/source9b46148f. At terminal receive original artifacts under source PROTOCOL. All4normal/runtime-mutant forms compile first;51identities/form,normal/restored0,exactmutant failure identities1/1/4 and original lines251/486/525. Preserve all30prioridentities196assertions; no production changes. During run finish isolated remaining card-only matrix source review; do not change frozen source or launch competing qualification. Reuse0f7bd7b2 payoff receipt and13a8130e runtime receipt. Full card/compatibility/admission gates remain mandatory.",
+    "next_executable_action": "Dispatch exactly once validation/manual-disciple-runtime-extension-r2-20261101 at9bf8f7a6/sourcebe6b10da after fresh reconciliation. Only corrected staticAbility builder fixture; all51identities297assertions and production bytes preserved. All4forms compile before behavior; exact normal/restored0 and mutant1/1/4 identity controls mandatory. Original R1 compilefailure received at847cc965, not behavioral evidence. Reuse original payoff/runtime evidence and finish isolated full card controls while running; no competing qualification or admission.",
     "early": {
       "source": "80b5a52d775dad05801b103ee5e12c0e31edcf39",
       "tree": "c8e69d893d615b2c98583fc547db9e3d6d7f3bbe",
@@ -238,7 +228,7 @@
       "workflow": ".github/workflows/manual-disciple-runtime-extension-r1-20261101.yml",
       "workflow_blob": "b77bc41c261a1b4809befc96d77d0af833b3811c",
       "record": "experiments/manual-transmission/research/disciple-runtime-extension-r1-20261101",
-      "state": "RUNNING",
+      "state": "RECEIVED_COMPILE_FAILURE",
       "tests": 51,
       "forms": 4,
       "prior_identities_preserved": 30,
@@ -251,7 +241,68 @@
       "job": 124802502956,
       "attempt": 1,
       "event": "push",
-      "observed_status": "in_progress"
+      "observed_status": "completed",
+      "conclusion": "failure",
+      "receipt": {
+        "commit": "847cc965fc8d2c255695802546eae62a3d300fc7",
+        "path": "experiments/manual-transmission/research/disciple-runtime-extension-received-r1-20261101/RECEIPT.json",
+        "schema": 1,
+        "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED_NOT_BEHAVIORAL_EVIDENCE",
+        "source": "9b46148f257b133bc4592729fddd3504732a710b",
+        "tree": "7ddbd16e067c663d15534f51c43c62d87ddbb180",
+        "validation": "27a49b82a568eaac19eae07abbefa8535bdef173",
+        "validation_tree": "36b71ae221ea0d5fdc20358178ad68171d87a55d",
+        "workflow": ".github/workflows/manual-disciple-runtime-extension-r1-20261101.yml",
+        "workflow_blob": "b77bc41c261a1b4809befc96d77d0af833b3811c",
+        "run": "41291145372",
+        "attempt": "1",
+        "run_number": "1",
+        "job": 124802502956,
+        "artifact": 13077682036,
+        "bytes": 77588,
+        "sha256": "7b8769bdbb19b716a281edd83b57edef18db34c3066009aad2c8c50c35dc068d",
+        "manifest_entries": 16,
+        "compiler_errors": [
+          "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt:795:27 Argument type mismatch: actual type is 'PlayersCantPlayLands', but 'StaticAbilityBuilder.() -> Unit' was expected."
+        ],
+        "behavioral_reports": 0,
+        "negative_witnesses": 0,
+        "production_source_unchanged": true,
+        "protected_initial_final_equal": true,
+        "original_failure_preserved": true,
+        "admitted": false,
+        "repair": "Change only the new fixture call to staticAbility { ability = PlayersCantPlayLands() }; preserve all51identities297assertionlines. Compile all4forms before behavior on a new immutable successor.",
+        "archive": "original-artifact.zip.b64",
+        "original_receiving_complete": true,
+        "card_admitted": false,
+        "full_qualification": false,
+        "independent_preparation": {
+          "draft": "disciple-card-controls-isolated.kt",
+          "review": "card-controls-review.json",
+          "state": "ISOLATED_NOT_APPLIED_NOT_COMPILED",
+          "runtime_production_changes": false
+        },
+        "received_utc": "2026-11-01 09:09:27 UTC",
+        "readback_verified": true
+      }
+    },
+    "extension_r2": {
+      "source": "be6b10da62d5a9e96eac8e635534e935d489cf0f",
+      "tree": "e26a2c2292d5414f44decc0282536f5a5c02b769",
+      "validation": "9bf8f7a66153540efae4c502f8eb9a5a495c413b",
+      "validation_tree": "2f8cbfe642ebf1bb9f0a4f8c84afa3f133c869ee",
+      "workflow": ".github/workflows/manual-disciple-runtime-extension-r2-20261101.yml",
+      "workflow_blob": "fefd569fc042c0cc6824a033f690e55178a24923",
+      "record": "experiments/manual-transmission/research/disciple-runtime-extension-r2-20261101",
+      "state": "FROZEN_READY_FOR_ONE_DISPATCH",
+      "tests": 51,
+      "forms": 4,
+      "prior_identities_preserved": 51,
+      "prior_assertions_preserved": 297,
+      "production_changes": false,
+      "card_admitted": false,
+      "full_qualification": false,
+      "readback_verified": true
     }
   },
   "completion_contract": {
@@ -2249,7 +2300,7 @@
     "work_owner": "manual-work-ddd174fa-payoff-receiving",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "ACTIVE_INDEPENDENT_PREPARATION",
+    "activity": "ACTIVE_FROZEN_SUCCESSOR_PREPARATION",
     "last_execution_owner": "manual-work-e44dfa24-disciple-receiving",
     "intervention_watch": "READ_ONLY",
     "automation_run": "ddd174fa-5f18-8320-a162-5cb89ff77fc7",
@@ -2969,65 +3020,57 @@
     ],
     "unfinished_implementation": [
       "Disciple three-file runtime and existing-primitives card composition have original early evidence; all30payoff normal/restored pass,3negativewitnesses69controls. Frozenprotocol11vs9draw-failure mismatch preserved, not normalized or admitted. Fullqualification pending.",
-      "Remaining full three-file runtime and DF01–DF22/card mutant,registration/compatibility/metadata/printing/lint/Assay/additiveMH3 gates; uncompiled11case future test draft saved separately.",
+      "Remaining full three-file runtime and DF01–DF22/card mutant,registration/compatibility/metadata/printing/lint/Assay/additiveMH3 gates; isolated64case/18card-mutant draft saved, not compiled.",
       "Reckless Bushwhacker,Amphin Mutineer,Veil of Summer registrations remain unauthorized;307opponent missing slots and all multiplayer/pilot/hidden-information/telemetry/replay/frozen-input gates remain unadmitted."
     ],
     "pending_evidence": [
-      "Running41291145372/job124802502956:4compile-first forms then51cases/form,21newcases,full original receiving mandatory."
+      "Frozen R2 one-line fixture compile repair; four-form compile-first and51-case behavioral gate not executed."
     ],
     "source_protocol": {
-      "commit": "9b46148f257b133bc4592729fddd3504732a710b",
-      "path": "experiments/manual-transmission/research/disciple-runtime-extension-r1-20261101/PROTOCOL.json",
-      "state": "RUNNING_ORIGINAL_EVIDENCE_PENDING"
+      "commit": "be6b10da62d5a9e96eac8e635534e935d489cf0f",
+      "path": "experiments/manual-transmission/research/disciple-runtime-extension-r2-20261101/PROTOCOL.json",
+      "state": "FROZEN_READY_FOR_ONE_DISPATCH"
     },
     "latest_receiving": {
-      "commit": "0f7bd7b2864a0b4bd3c34f345ff76e15bc2b48df",
-      "path": "experiments/manual-transmission/research/disciple-card-payoff-received-r1-20261101/RECEIPT.json",
+      "commit": "847cc965fc8d2c255695802546eae62a3d300fc7",
+      "path": "experiments/manual-transmission/research/disciple-runtime-extension-received-r1-20261101/RECEIPT.json",
       "schema": 1,
-      "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_PROTOCOL_COUNT_MISMATCH",
-      "source": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
-      "source_tree": "86e209528d1eafbfc23323451589f69730f2e7a0",
-      "validation": "75f8234c101af177c42a62677648f06475c9a292",
-      "validation_tree": "0b4417cdf7b621e21d425b0e3d153a7083dcd5ac",
-      "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
-      "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
-      "run": 41286630084,
-      "job": 124789138819,
-      "attempt": 1,
-      "artifact": 13075204415,
-      "archive_bytes": 130762,
-      "archive_sha256": "3537bb71b3d8b7bfbdf94c268dd240f2a2c8ef16dc357360832473e3bb956e65",
-      "manifest_entries": 65,
-      "archive": "original-artifact.zip.b64",
-      "counts": {
-        "normal": {
-          "total": 30,
-          "failed": 0
-        },
-        "stored_power": {
-          "total": 30,
-          "failed": 11
-        },
-        "draw_count": {
-          "total": 30,
-          "failed": 9
-        },
-        "success_gate": {
-          "total": 30,
-          "failed": 1
-        }
-      },
-      "restored_failed": 0,
-      "skips": 0,
-      "valid_negative_witnesses": 3,
-      "unaffected_outcomes": 69,
-      "diagnosis": "Protocol incorrectly copied eleven power-mutant failures to draw mutant: DF03 and DF04 assert life payoff but contain no hand-size assertion. All nine draw assertions fail, including the exact declared line87 witness. No test assertion, report, or original protocol changed; full qualification remains pending.",
+      "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED_NOT_BEHAVIORAL_EVIDENCE",
+      "source": "9b46148f257b133bc4592729fddd3504732a710b",
+      "tree": "7ddbd16e067c663d15534f51c43c62d87ddbb180",
+      "validation": "27a49b82a568eaac19eae07abbefa8535bdef173",
+      "validation_tree": "36b71ae221ea0d5fdc20358178ad68171d87a55d",
+      "workflow": ".github/workflows/manual-disciple-runtime-extension-r1-20261101.yml",
+      "workflow_blob": "b77bc41c261a1b4809befc96d77d0af833b3811c",
+      "run": "41291145372",
+      "attempt": "1",
+      "run_number": "1",
+      "job": 124802502956,
+      "artifact": 13077682036,
+      "bytes": 77588,
+      "sha256": "7b8769bdbb19b716a281edd83b57edef18db34c3066009aad2c8c50c35dc068d",
+      "manifest_entries": 16,
+      "compiler_errors": [
+        "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt:795:27 Argument type mismatch: actual type is 'PlayersCantPlayLands', but 'StaticAbilityBuilder.() -> Unit' was expected."
+      ],
+      "behavioral_reports": 0,
+      "negative_witnesses": 0,
+      "production_source_unchanged": true,
+      "protected_initial_final_equal": true,
       "original_failure_preserved": true,
+      "admitted": false,
+      "repair": "Change only the new fixture call to staticAbility { ability = PlayersCantPlayLands() }; preserve all51identities297assertionlines. Compile all4forms before behavior on a new immutable successor.",
+      "archive": "original-artifact.zip.b64",
+      "original_receiving_complete": true,
       "card_admitted": false,
       "full_qualification": false,
-      "accepted": false,
-      "next": "Reuse exact-bound original observations without rerunning unchanged early qualification. Complete remaining three-file runtime and DF01–DF22/card controls on a bounded assertion-preserving successor. Keep all full compatibility/metadata/printing/lint/Assay/snapshot/original receiving gates.",
-      "received_utc": "2026-11-01 08:53:01 UTC",
+      "independent_preparation": {
+        "draft": "disciple-card-controls-isolated.kt",
+        "review": "card-controls-review.json",
+        "state": "ISOLATED_NOT_APPLIED_NOT_COMPILED",
+        "runtime_production_changes": false
+      },
+      "received_utc": "2026-11-01 09:09:27 UTC",
       "readback_verified": true
     },
     "admission": {
@@ -3086,7 +3129,7 @@
         ]
       }
     ],
-    "next_executable_action": "Do not duplicate/cancel active runtime-extension41291145372 on validation27a49b82/source9b46148f. At terminal receive original artifacts under source PROTOCOL. All4normal/runtime-mutant forms compile first;51identities/form,normal/restored0,exactmutant failure identities1/1/4 and original lines251/486/525. Preserve all30prioridentities196assertions; no production changes. During run finish isolated remaining card-only matrix source review; do not change frozen source or launch competing qualification. Reuse0f7bd7b2 payoff receipt and13a8130e runtime receipt. Full card/compatibility/admission gates remain mandatory.",
+    "next_executable_action": "Dispatch exactly once validation/manual-disciple-runtime-extension-r2-20261101 at9bf8f7a6/sourcebe6b10da after fresh reconciliation. Only corrected staticAbility builder fixture; all51identities297assertions and production bytes preserved. All4forms compile before behavior; exact normal/restored0 and mutant1/1/4 identity controls mandatory. Original R1 compilefailure received at847cc965, not behavioral evidence. Reuse original payoff/runtime evidence and finish isolated full card controls while running; no competing qualification or admission.",
     "next_admission": {
       "commit": "c3d4c4e78846031cfb76dced6be45ed66cc379f9",
       "path": "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-received-r3-20261031/NEXT_ADMISSION.json",
@@ -3110,15 +3153,11 @@
       "authority_granted": true
     },
     "independent_preparation": {
-      "commit": "fb4461621c4df12ca183ea2b3e4d7960dcacd840",
-      "path": "experiments/manual-transmission/research/disciple-card-payoff-receiving-r1-20261101/RECEIVING.json",
-      "receiver_path": "experiments/manual-transmission/research/disciple-card-payoff-receiving-r1-20261101/receive.py",
-      "draft_path": "experiments/manual-transmission/research/disciple-card-payoff-receiving-r1-20261101/DiscipleOfFreyaliseScenarioTest.runtime-extra.draft.kt",
-      "mutant_review_path": "experiments/manual-transmission/research/disciple-card-payoff-receiving-r1-20261101/FULL_MUTANT_REVIEW.json",
-      "readback_verified": true,
-      "synthetic_corruptions_rejected": 7,
-      "isolated_draft_new_cases": 11,
-      "frozen_source_unchanged": true
+      "commit": "847cc965fc8d2c255695802546eae62a3d300fc7",
+      "path": "experiments/manual-transmission/research/disciple-runtime-extension-received-r1-20261101/card-controls-review.json",
+      "draft_path": "experiments/manual-transmission/research/disciple-runtime-extension-received-r1-20261101/disciple-card-controls-isolated.kt",
+      "state": "ISOLATED_NOT_APPLIED_NOT_COMPILED",
+      "mutants": 18
     }
   },
   "generator_calibration_repair_authorization": {
@@ -3180,7 +3219,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-01T08:01:06Z",
+  "updated_utc": "2026-11-01 09:12:49 UTC",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -19506,7 +19545,7 @@
     "workflow": ".github/workflows/manual-disciple-runtime-extension-r1-20261101.yml",
     "workflow_blob": "b77bc41c261a1b4809befc96d77d0af833b3811c",
     "record": "experiments/manual-transmission/research/disciple-runtime-extension-r1-20261101",
-    "state": "RUNNING",
+    "state": "RECEIVED_COMPILE_FAILURE",
     "tests": 51,
     "forms": 4,
     "prior_identities_preserved": 30,
@@ -19519,6 +19558,109 @@
     "job": 124802502956,
     "attempt": 1,
     "event": "push",
-    "observed_status": "in_progress"
+    "observed_status": "completed",
+    "conclusion": "failure",
+    "receipt": {
+      "commit": "847cc965fc8d2c255695802546eae62a3d300fc7",
+      "path": "experiments/manual-transmission/research/disciple-runtime-extension-received-r1-20261101/RECEIPT.json",
+      "schema": 1,
+      "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED_NOT_BEHAVIORAL_EVIDENCE",
+      "source": "9b46148f257b133bc4592729fddd3504732a710b",
+      "tree": "7ddbd16e067c663d15534f51c43c62d87ddbb180",
+      "validation": "27a49b82a568eaac19eae07abbefa8535bdef173",
+      "validation_tree": "36b71ae221ea0d5fdc20358178ad68171d87a55d",
+      "workflow": ".github/workflows/manual-disciple-runtime-extension-r1-20261101.yml",
+      "workflow_blob": "b77bc41c261a1b4809befc96d77d0af833b3811c",
+      "run": "41291145372",
+      "attempt": "1",
+      "run_number": "1",
+      "job": 124802502956,
+      "artifact": 13077682036,
+      "bytes": 77588,
+      "sha256": "7b8769bdbb19b716a281edd83b57edef18db34c3066009aad2c8c50c35dc068d",
+      "manifest_entries": 16,
+      "compiler_errors": [
+        "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt:795:27 Argument type mismatch: actual type is 'PlayersCantPlayLands', but 'StaticAbilityBuilder.() -> Unit' was expected."
+      ],
+      "behavioral_reports": 0,
+      "negative_witnesses": 0,
+      "production_source_unchanged": true,
+      "protected_initial_final_equal": true,
+      "original_failure_preserved": true,
+      "admitted": false,
+      "repair": "Change only the new fixture call to staticAbility { ability = PlayersCantPlayLands() }; preserve all51identities297assertionlines. Compile all4forms before behavior on a new immutable successor.",
+      "archive": "original-artifact.zip.b64",
+      "original_receiving_complete": true,
+      "card_admitted": false,
+      "full_qualification": false,
+      "independent_preparation": {
+        "draft": "disciple-card-controls-isolated.kt",
+        "review": "card-controls-review.json",
+        "state": "ISOLATED_NOT_APPLIED_NOT_COMPILED",
+        "runtime_production_changes": false
+      },
+      "received_utc": "2026-11-01 09:09:27 UTC",
+      "readback_verified": true
+    }
+  },
+  "disciple_runtime_extension_r1_receipt": {
+    "commit": "847cc965fc8d2c255695802546eae62a3d300fc7",
+    "path": "experiments/manual-transmission/research/disciple-runtime-extension-received-r1-20261101/RECEIPT.json",
+    "schema": 1,
+    "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED_NOT_BEHAVIORAL_EVIDENCE",
+    "source": "9b46148f257b133bc4592729fddd3504732a710b",
+    "tree": "7ddbd16e067c663d15534f51c43c62d87ddbb180",
+    "validation": "27a49b82a568eaac19eae07abbefa8535bdef173",
+    "validation_tree": "36b71ae221ea0d5fdc20358178ad68171d87a55d",
+    "workflow": ".github/workflows/manual-disciple-runtime-extension-r1-20261101.yml",
+    "workflow_blob": "b77bc41c261a1b4809befc96d77d0af833b3811c",
+    "run": "41291145372",
+    "attempt": "1",
+    "run_number": "1",
+    "job": 124802502956,
+    "artifact": 13077682036,
+    "bytes": 77588,
+    "sha256": "7b8769bdbb19b716a281edd83b57edef18db34c3066009aad2c8c50c35dc068d",
+    "manifest_entries": 16,
+    "compiler_errors": [
+      "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt:795:27 Argument type mismatch: actual type is 'PlayersCantPlayLands', but 'StaticAbilityBuilder.() -> Unit' was expected."
+    ],
+    "behavioral_reports": 0,
+    "negative_witnesses": 0,
+    "production_source_unchanged": true,
+    "protected_initial_final_equal": true,
+    "original_failure_preserved": true,
+    "admitted": false,
+    "repair": "Change only the new fixture call to staticAbility { ability = PlayersCantPlayLands() }; preserve all51identities297assertionlines. Compile all4forms before behavior on a new immutable successor.",
+    "archive": "original-artifact.zip.b64",
+    "original_receiving_complete": true,
+    "card_admitted": false,
+    "full_qualification": false,
+    "independent_preparation": {
+      "draft": "disciple-card-controls-isolated.kt",
+      "review": "card-controls-review.json",
+      "state": "ISOLATED_NOT_APPLIED_NOT_COMPILED",
+      "runtime_production_changes": false
+    },
+    "received_utc": "2026-11-01 09:09:27 UTC",
+    "readback_verified": true
+  },
+  "disciple_runtime_extension_r2": {
+    "source": "be6b10da62d5a9e96eac8e635534e935d489cf0f",
+    "tree": "e26a2c2292d5414f44decc0282536f5a5c02b769",
+    "validation": "9bf8f7a66153540efae4c502f8eb9a5a495c413b",
+    "validation_tree": "2f8cbfe642ebf1bb9f0a4f8c84afa3f133c869ee",
+    "workflow": ".github/workflows/manual-disciple-runtime-extension-r2-20261101.yml",
+    "workflow_blob": "fefd569fc042c0cc6824a033f690e55178a24923",
+    "record": "experiments/manual-transmission/research/disciple-runtime-extension-r2-20261101",
+    "state": "FROZEN_READY_FOR_ONE_DISPATCH",
+    "tests": 51,
+    "forms": 4,
+    "prior_identities_preserved": 51,
+    "prior_assertions_preserved": 297,
+    "production_changes": false,
+    "card_admitted": false,
+    "full_qualification": false,
+    "readback_verified": true
   }
 }
