@@ -30,49 +30,57 @@
     "positive_artifact": 13027944981
   },
   "next": {
-    "dependency": "Original card-only Disciple payoff early qualification and receiving",
+    "dependency": "Remaining Disciple runtime and card qualification on assertion-preserving successor",
     "source_candidate": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
-    "pending_runs": [
-      41286630084
-    ],
+    "pending_runs": [],
     "receipt": {
-      "commit": "13a8130e50ead09aceff8439c083a25bfcd2a60f",
-      "path": "experiments/manual-transmission/research/disciple-runtime-early-received-r1-20261101/RECEIPT.json",
+      "commit": "0f7bd7b2864a0b4bd3c34f345ff76e15bc2b48df",
+      "path": "experiments/manual-transmission/research/disciple-card-payoff-received-r1-20261101/RECEIPT.json",
       "schema": 1,
-      "state": "ORIGINAL_EARLY_DIAGNOSTIC_RECEIVED_WITH_FAILURES",
-      "source": "80b5a52d775dad05801b103ee5e12c0e31edcf39",
-      "source_tree": "c8e69d893d615b2c98583fc547db9e3d6d7f3bbe",
-      "validation": "260261ebb5207c8265ab4575a38e5b4f5f2aa63d",
-      "validation_tree": "a5ff3c6f3d4dfc523b8a8da6e61afe3afd3f2dc5",
-      "workflow": ".github/workflows/manual-disciple-runtime-early-r1-20261101.yml",
-      "workflow_blob": "233e5986990af83830fd20bd420480faa5c255e8",
-      "run": 41282463247,
-      "job": 124776990869,
+      "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_PROTOCOL_COUNT_MISMATCH",
+      "source": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
+      "source_tree": "86e209528d1eafbfc23323451589f69730f2e7a0",
+      "validation": "75f8234c101af177c42a62677648f06475c9a292",
+      "validation_tree": "0b4417cdf7b621e21d425b0e3d153a7083dcd5ac",
+      "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
+      "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
+      "run": 41286630084,
+      "job": 124789138819,
       "attempt": 1,
-      "artifact": 13073926795,
-      "archive_bytes": 614916,
-      "archive_sha256": "487d10d5e8f40589d9ff92caf2c825839266503afc63a5761bf1bc903598de78",
+      "artifact": 13075204415,
+      "archive_bytes": 130762,
+      "archive_sha256": "3537bb71b3d8b7bfbdf94c268dd240f2a2c8ef16dc357360832473e3bb956e65",
+      "manifest_entries": 65,
       "archive": "original-artifact.zip.b64",
-      "manifest_entries": 84,
-      "compile_forms": 4,
-      "rows_per_form": 29,
-      "normal_passed": 19,
-      "normal_failed": 10,
-      "restored_failed": 10,
+      "counts": {
+        "normal": {
+          "total": 30,
+          "failed": 0
+        },
+        "stored_power": {
+          "total": 30,
+          "failed": 11
+        },
+        "draw_count": {
+          "total": 30,
+          "failed": 9
+        },
+        "success_gate": {
+          "total": 30,
+          "failed": 1
+        }
+      },
+      "restored_failed": 0,
       "skips": 0,
       "valid_negative_witnesses": 3,
-      "unaffected_outcomes": 84,
-      "assertions": {
-        "prior_178_preserved": true,
-        "original_28_identities_preserved": true,
-        "new_serialized_payment_case": 1,
-        "new_assertions": 11
-      },
+      "unaffected_outcomes": 69,
+      "diagnosis": "Protocol incorrectly copied eleven power-mutant failures to draw mutant: DF03 and DF04 assert life payoff but contain no hand-size assertion. All nine draw assertions fail, including the exact declared line87 witness. No test assertion, report, or original protocol changed; full qualification remains pending.",
+      "original_failure_preserved": true,
       "card_admitted": false,
       "full_qualification": false,
-      "original_failures_preserved": true,
-      "received_utc": "2026-11-01T07:50:49.400Z",
-      "next": "Diagnose and repair only bounded card composition using existing StoreNumber/VariableReference/FromCostStorage primitives; preserve explicit PermanentsSacrificed gate and all 189 assertion lines/29identities. Compile normal/all card mutants before behavior; receive successor originals. All full runtime/card/compatibility/admission gates remain pending.",
+      "accepted": false,
+      "next": "Reuse exact-bound original observations without rerunning unchanged early qualification. Complete remaining three-file runtime and DF01–DF22/card controls on a bounded assertion-preserving successor. Keep all full compatibility/metadata/printing/lint/Assay/snapshot/original receiving gates.",
+      "received_utc": "2026-11-01 08:53:01 UTC",
       "readback_verified": true
     },
     "proposal": {
@@ -106,7 +114,7 @@
       "identities_preserved": 28,
       "readback_verified": true
     },
-    "next_executable_action": "Reconcile fresh CURRENT, exact owner/automation state, newer receipts/successors and all workflow events/statuses. Do not duplicate/cancel active run41286630084 job124789138819 attempt1, validation75f8234c101af177c42a62677648f06475c9a292/source12adbbbcb5f8957c3efbbc70dfdef4ca2b876279. At terminal receive original artifacts once usingfb4461621c4df12ca183ea2b3e4d7960dcacd840 experiments/manual-transmission/research/disciple-card-payoff-receiving-r1-20261101/RECEIVING.json and receive.py plus source PROTOCOL.json. Verify all pins/bytes/hash/manifest,4compile forms before30cases each/restored,normal0/restored0,mutantcounts11/11/1,exactlines86/87/315 and raw unaffected outcomes,source/restoration/protected bytes. Preserve unexpected failures; no admission from early result. If normal/negative controls pass, reuse saved assertion-preserving11case runtime draft and FULL_MUTANT_REVIEW, finish original three-file TEST_MATRIX and DF01–DF22/full cardmutants,then390card/19139ordinary+additions/43historicalskips/64client/metadata/printing/lint/Assay/oneadditiveMH3/originalreceiving. Never rerun received41282463247 or R3 unchanged; grant remainsvalid. No other runtime boundaries,assertionchanges,cards,multiplayer,officialgames/seeds authorized.",
+    "next_executable_action": "Reuse original payoff receipt0f7bd7b2; no unchanged rerun. All30normal/restored pass and3negativewitnesses verified, but frozenprotocol count mismatch11vs9 retained. Complete saved runtime11case draft plus missing runtime/DF01–DF22/card controls, compile-first exact forms, then full compatibility/registration/metadata/printing/lint/Assay/additiveMH3/originalreceiving. Preserve every original assertion/identity; no admission from diagnostic.",
     "early": {
       "source": "80b5a52d775dad05801b103ee5e12c0e31edcf39",
       "tree": "c8e69d893d615b2c98583fc547db9e3d6d7f3bbe",
@@ -142,7 +150,7 @@
       "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
       "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
       "record": "experiments/manual-transmission/research/disciple-card-payoff-early-r1-20261101",
-      "state": "WAITING_EXTERNAL",
+      "state": "RECEIVED_PROTOCOL_COUNT_MISMATCH",
       "forms": 4,
       "tests": 30,
       "prior_assertions_preserved": 189,
@@ -155,7 +163,7 @@
       "job": 124789138819,
       "attempt": 1,
       "event": "push",
-      "observed_status": "in_progress",
+      "observed_status": "completed",
       "observed_utc": "2026-11-01T08:01:06Z",
       "receiving": {
         "commit": "fb4461621c4df12ca183ea2b3e4d7960dcacd840",
@@ -167,6 +175,57 @@
         "synthetic_corruptions_rejected": 7,
         "isolated_draft_new_cases": 11,
         "frozen_source_unchanged": true
+      },
+      "conclusion": "failure",
+      "receipt": {
+        "commit": "0f7bd7b2864a0b4bd3c34f345ff76e15bc2b48df",
+        "path": "experiments/manual-transmission/research/disciple-card-payoff-received-r1-20261101/RECEIPT.json",
+        "schema": 1,
+        "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_PROTOCOL_COUNT_MISMATCH",
+        "source": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
+        "source_tree": "86e209528d1eafbfc23323451589f69730f2e7a0",
+        "validation": "75f8234c101af177c42a62677648f06475c9a292",
+        "validation_tree": "0b4417cdf7b621e21d425b0e3d153a7083dcd5ac",
+        "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
+        "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
+        "run": 41286630084,
+        "job": 124789138819,
+        "attempt": 1,
+        "artifact": 13075204415,
+        "archive_bytes": 130762,
+        "archive_sha256": "3537bb71b3d8b7bfbdf94c268dd240f2a2c8ef16dc357360832473e3bb956e65",
+        "manifest_entries": 65,
+        "archive": "original-artifact.zip.b64",
+        "counts": {
+          "normal": {
+            "total": 30,
+            "failed": 0
+          },
+          "stored_power": {
+            "total": 30,
+            "failed": 11
+          },
+          "draw_count": {
+            "total": 30,
+            "failed": 9
+          },
+          "success_gate": {
+            "total": 30,
+            "failed": 1
+          }
+        },
+        "restored_failed": 0,
+        "skips": 0,
+        "valid_negative_witnesses": 3,
+        "unaffected_outcomes": 69,
+        "diagnosis": "Protocol incorrectly copied eleven power-mutant failures to draw mutant: DF03 and DF04 assert life payoff but contain no hand-size assertion. All nine draw assertions fail, including the exact declared line87 witness. No test assertion, report, or original protocol changed; full qualification remains pending.",
+        "original_failure_preserved": true,
+        "card_admitted": false,
+        "full_qualification": false,
+        "accepted": false,
+        "next": "Reuse exact-bound original observations without rerunning unchanged early qualification. Complete remaining three-file runtime and DF01–DF22/card controls on a bounded assertion-preserving successor. Keep all full compatibility/metadata/printing/lint/Assay/snapshot/original receiving gates.",
+        "received_utc": "2026-11-01 08:53:01 UTC",
+        "readback_verified": true
       }
     }
   },
@@ -2842,7 +2901,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "External dependency pending: sole qualification41286630084/job124789138819 remains in_progress on frozen75f8234c/source12adbbbc. Original receiver and seven synthetic corruption checks,11isolated next-gate test drafts and complete remaining-mutation source review are checkpointed atfb446162. This invocation's bounded independent preparation is complete; next source/fixture decisions and full-protocol freeze depend on original normal/mutant observations. No competing qualification, frozen-source mutation, admission or continuous execution is implied.",
+  "actual_stopping_reason": null,
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -2866,58 +2925,66 @@
       "Bounded Opal Palace rider and canonical C13#310 accepted at2320eb33 on d5f258de: original early18compiledforms56normal56restored18witnesses170controls reused; compile137focused exact-bound reused;390cards19139ordinary43exacthistoricalskips64client plus metadata/printing/lint/discovery/snapshot and classified C13/WAR original evidence. Full original receiptcc405f3f (5450manifest,625archivefiles) immutable verified. C13 grammar declines are not semantic passes."
     ],
     "unfinished_implementation": [
-      "Disciple bounded three-file land-entry/permission repairs have early diagnostic evidence but no full qualification; card-only captured-power composition successor12adbbbc is frozen under the existing card grant, not yet received or admitted. Original failures and189assertions/29identities preserved; singleton case adds7assertions/1identity.",
+      "Disciple three-file runtime and existing-primitives card composition have original early evidence; all30payoff normal/restored pass,3negativewitnesses69controls. Frozenprotocol11vs9draw-failure mismatch preserved, not normalized or admitted. Fullqualification pending.",
       "Remaining full three-file runtime and DF01–DF22/card mutant,registration/compatibility/metadata/printing/lint/Assay/additiveMH3 gates; uncompiled11case future test draft saved separately.",
       "Reckless Bushwhacker,Amphin Mutineer,Veil of Summer registrations remain unauthorized;307opponent missing slots and all multiplayer/pilot/hidden-information/telemetry/replay/frozen-input gates remain unadmitted."
     ],
     "pending_evidence": [
-      "Active41286630084:4normal/card-mutant forms compile before30cases/form and restorednormal. No candidate pass/admission presumed.",
-      "Original runtime diagnostic received13a8130e:4compiledforms,29identities/form,normal/restored10life-payoff failures;3exact runtime negativewitnesses84unchangedoutcomes. All original bytes retained.",
-      "All full original proposals remain mandatory; preparedreceiver and nextgate drafts atfb446162 are not qualification evidence."
+      "Remaining full runtime/card/compatibility/admission gates. Payoff41286630084 received once; original workflow failure preserved and count mismatch diagnosed."
     ],
     "source_protocol": {
       "commit": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
       "path": "experiments/manual-transmission/research/disciple-card-payoff-early-r1-20261101/PROTOCOL.json",
-      "state": "FROZEN_WAITING_ORIGINAL_EVIDENCE"
+      "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_FULL_GATES_PENDING"
     },
     "latest_receiving": {
-      "commit": "13a8130e50ead09aceff8439c083a25bfcd2a60f",
-      "path": "experiments/manual-transmission/research/disciple-runtime-early-received-r1-20261101/RECEIPT.json",
+      "commit": "0f7bd7b2864a0b4bd3c34f345ff76e15bc2b48df",
+      "path": "experiments/manual-transmission/research/disciple-card-payoff-received-r1-20261101/RECEIPT.json",
       "schema": 1,
-      "state": "ORIGINAL_EARLY_DIAGNOSTIC_RECEIVED_WITH_FAILURES",
-      "source": "80b5a52d775dad05801b103ee5e12c0e31edcf39",
-      "source_tree": "c8e69d893d615b2c98583fc547db9e3d6d7f3bbe",
-      "validation": "260261ebb5207c8265ab4575a38e5b4f5f2aa63d",
-      "validation_tree": "a5ff3c6f3d4dfc523b8a8da6e61afe3afd3f2dc5",
-      "workflow": ".github/workflows/manual-disciple-runtime-early-r1-20261101.yml",
-      "workflow_blob": "233e5986990af83830fd20bd420480faa5c255e8",
-      "run": 41282463247,
-      "job": 124776990869,
+      "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_PROTOCOL_COUNT_MISMATCH",
+      "source": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
+      "source_tree": "86e209528d1eafbfc23323451589f69730f2e7a0",
+      "validation": "75f8234c101af177c42a62677648f06475c9a292",
+      "validation_tree": "0b4417cdf7b621e21d425b0e3d153a7083dcd5ac",
+      "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
+      "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
+      "run": 41286630084,
+      "job": 124789138819,
       "attempt": 1,
-      "artifact": 13073926795,
-      "archive_bytes": 614916,
-      "archive_sha256": "487d10d5e8f40589d9ff92caf2c825839266503afc63a5761bf1bc903598de78",
+      "artifact": 13075204415,
+      "archive_bytes": 130762,
+      "archive_sha256": "3537bb71b3d8b7bfbdf94c268dd240f2a2c8ef16dc357360832473e3bb956e65",
+      "manifest_entries": 65,
       "archive": "original-artifact.zip.b64",
-      "manifest_entries": 84,
-      "compile_forms": 4,
-      "rows_per_form": 29,
-      "normal_passed": 19,
-      "normal_failed": 10,
-      "restored_failed": 10,
+      "counts": {
+        "normal": {
+          "total": 30,
+          "failed": 0
+        },
+        "stored_power": {
+          "total": 30,
+          "failed": 11
+        },
+        "draw_count": {
+          "total": 30,
+          "failed": 9
+        },
+        "success_gate": {
+          "total": 30,
+          "failed": 1
+        }
+      },
+      "restored_failed": 0,
       "skips": 0,
       "valid_negative_witnesses": 3,
-      "unaffected_outcomes": 84,
-      "assertions": {
-        "prior_178_preserved": true,
-        "original_28_identities_preserved": true,
-        "new_serialized_payment_case": 1,
-        "new_assertions": 11
-      },
+      "unaffected_outcomes": 69,
+      "diagnosis": "Protocol incorrectly copied eleven power-mutant failures to draw mutant: DF03 and DF04 assert life payoff but contain no hand-size assertion. All nine draw assertions fail, including the exact declared line87 witness. No test assertion, report, or original protocol changed; full qualification remains pending.",
+      "original_failure_preserved": true,
       "card_admitted": false,
       "full_qualification": false,
-      "original_failures_preserved": true,
-      "received_utc": "2026-11-01T07:50:49.400Z",
-      "next": "Diagnose and repair only bounded card composition using existing StoreNumber/VariableReference/FromCostStorage primitives; preserve explicit PermanentsSacrificed gate and all 189 assertion lines/29identities. Compile normal/all card mutants before behavior; receive successor originals. All full runtime/card/compatibility/admission gates remain pending.",
+      "accepted": false,
+      "next": "Reuse exact-bound original observations without rerunning unchanged early qualification. Complete remaining three-file runtime and DF01–DF22/card controls on a bounded assertion-preserving successor. Keep all full compatibility/metadata/printing/lint/Assay/snapshot/original receiving gates.",
+      "received_utc": "2026-11-01 08:53:01 UTC",
       "readback_verified": true
     },
     "admission": {
@@ -2928,9 +2995,9 @@
       "card_admitted": true,
       "readback_verified": true
     },
-    "concrete_blocker_removed": "Original runtime diagnostic verifies initial affordability, stale serialized payment rejection and permitted modal-land enumeration with three executable negative witnesses. Ten actual payoff failures are now localized to missing sacrifice-snapshot propagation across the action gate; authorized existing-primitives card composition repair is being prepared.",
-    "continuation_state": "WAITING_EXTERNAL",
-    "actual_stopping_reason": "External dependency pending: sole qualification41286630084/job124789138819 remains in_progress on frozen75f8234c/source12adbbbc. Original receiver and seven synthetic corruption checks,11isolated next-gate test drafts and complete remaining-mutation source review are checkpointed atfb446162. This invocation's bounded independent preparation is complete; next source/fixture decisions and full-protocol freeze depend on original normal/mutant observations. No competing qualification, frozen-source mutation, admission or continuous execution is implied.",
+    "concrete_blocker_removed": "Original ten life-payoff failures eliminated in all30normal/restored cases by card-only captured-power composition. Nine actual draw mutants and exactrequiredwitness verified; two selection cases lack hand-size assertions, explaining frozenprotocol's erroneous11count.",
+    "continuation_state": "ACTIVE",
+    "actual_stopping_reason": null,
     "ownership": {
       "state": "ACTIVE",
       "owner": "manual-work-ddd174fa-payoff-receiving",
@@ -2976,7 +3043,7 @@
         ]
       }
     ],
-    "next_executable_action": "Reconcile fresh CURRENT, exact owner/automation state, newer receipts/successors and all workflow events/statuses. Do not duplicate/cancel active run41286630084 job124789138819 attempt1, validation75f8234c101af177c42a62677648f06475c9a292/source12adbbbcb5f8957c3efbbc70dfdef4ca2b876279. At terminal receive original artifacts once usingfb4461621c4df12ca183ea2b3e4d7960dcacd840 experiments/manual-transmission/research/disciple-card-payoff-receiving-r1-20261101/RECEIVING.json and receive.py plus source PROTOCOL.json. Verify all pins/bytes/hash/manifest,4compile forms before30cases each/restored,normal0/restored0,mutantcounts11/11/1,exactlines86/87/315 and raw unaffected outcomes,source/restoration/protected bytes. Preserve unexpected failures; no admission from early result. If normal/negative controls pass, reuse saved assertion-preserving11case runtime draft and FULL_MUTANT_REVIEW, finish original three-file TEST_MATRIX and DF01–DF22/full cardmutants,then390card/19139ordinary+additions/43historicalskips/64client/metadata/printing/lint/Assay/oneadditiveMH3/originalreceiving. Never rerun received41282463247 or R3 unchanged; grant remainsvalid. No other runtime boundaries,assertionchanges,cards,multiplayer,officialgames/seeds authorized.",
+    "next_executable_action": "Reuse original payoff receipt0f7bd7b2; no unchanged rerun. All30normal/restored pass and3negativewitnesses verified, but frozenprotocol count mismatch11vs9 retained. Complete saved runtime11case draft plus missing runtime/DF01–DF22/card controls, compile-first exact forms, then full compatibility/registration/metadata/printing/lint/Assay/additiveMH3/originalreceiving. Preserve every original assertion/identity; no admission from diagnostic.",
     "next_admission": {
       "commit": "c3d4c4e78846031cfb76dced6be45ed66cc379f9",
       "path": "experiments/manual-transmission/research/disciple-freyalise-primitives-diagnostic-received-r3-20261031/NEXT_ADMISSION.json",
@@ -19108,7 +19175,7 @@
     "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
     "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
     "record": "experiments/manual-transmission/research/disciple-card-payoff-early-r1-20261101",
-    "state": "WAITING_EXTERNAL",
+    "state": "RECEIVED_PROTOCOL_COUNT_MISMATCH",
     "forms": 4,
     "tests": 30,
     "prior_assertions_preserved": 189,
@@ -19121,7 +19188,7 @@
     "job": 124789138819,
     "attempt": 1,
     "event": "push",
-    "observed_status": "in_progress",
+    "observed_status": "completed",
     "observed_utc": "2026-11-01T08:01:06Z",
     "receiving": {
       "commit": "fb4461621c4df12ca183ea2b3e4d7960dcacd840",
@@ -19133,6 +19200,57 @@
       "synthetic_corruptions_rejected": 7,
       "isolated_draft_new_cases": 11,
       "frozen_source_unchanged": true
+    },
+    "conclusion": "failure",
+    "receipt": {
+      "commit": "0f7bd7b2864a0b4bd3c34f345ff76e15bc2b48df",
+      "path": "experiments/manual-transmission/research/disciple-card-payoff-received-r1-20261101/RECEIPT.json",
+      "schema": 1,
+      "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_PROTOCOL_COUNT_MISMATCH",
+      "source": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
+      "source_tree": "86e209528d1eafbfc23323451589f69730f2e7a0",
+      "validation": "75f8234c101af177c42a62677648f06475c9a292",
+      "validation_tree": "0b4417cdf7b621e21d425b0e3d153a7083dcd5ac",
+      "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
+      "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
+      "run": 41286630084,
+      "job": 124789138819,
+      "attempt": 1,
+      "artifact": 13075204415,
+      "archive_bytes": 130762,
+      "archive_sha256": "3537bb71b3d8b7bfbdf94c268dd240f2a2c8ef16dc357360832473e3bb956e65",
+      "manifest_entries": 65,
+      "archive": "original-artifact.zip.b64",
+      "counts": {
+        "normal": {
+          "total": 30,
+          "failed": 0
+        },
+        "stored_power": {
+          "total": 30,
+          "failed": 11
+        },
+        "draw_count": {
+          "total": 30,
+          "failed": 9
+        },
+        "success_gate": {
+          "total": 30,
+          "failed": 1
+        }
+      },
+      "restored_failed": 0,
+      "skips": 0,
+      "valid_negative_witnesses": 3,
+      "unaffected_outcomes": 69,
+      "diagnosis": "Protocol incorrectly copied eleven power-mutant failures to draw mutant: DF03 and DF04 assert life payoff but contain no hand-size assertion. All nine draw assertions fail, including the exact declared line87 witness. No test assertion, report, or original protocol changed; full qualification remains pending.",
+      "original_failure_preserved": true,
+      "card_admitted": false,
+      "full_qualification": false,
+      "accepted": false,
+      "next": "Reuse exact-bound original observations without rerunning unchanged early qualification. Complete remaining three-file runtime and DF01–DF22/card controls on a bounded assertion-preserving successor. Keep all full compatibility/metadata/printing/lint/Assay/snapshot/original receiving gates.",
+      "received_utc": "2026-11-01 08:53:01 UTC",
+      "readback_verified": true
     }
   },
   "history_before_payoff_wait_20261101": {
@@ -19286,5 +19404,55 @@
       "reason": "Actively freeze and dispatch bounded card-only Disciple payoff repair after original receiving"
     },
     "original_receipt_commit": "13a8130e50ead09aceff8439c083a25bfcd2a60f"
+  },
+  "disciple_card_payoff_receipt": {
+    "commit": "0f7bd7b2864a0b4bd3c34f345ff76e15bc2b48df",
+    "path": "experiments/manual-transmission/research/disciple-card-payoff-received-r1-20261101/RECEIPT.json",
+    "schema": 1,
+    "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_PROTOCOL_COUNT_MISMATCH",
+    "source": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
+    "source_tree": "86e209528d1eafbfc23323451589f69730f2e7a0",
+    "validation": "75f8234c101af177c42a62677648f06475c9a292",
+    "validation_tree": "0b4417cdf7b621e21d425b0e3d153a7083dcd5ac",
+    "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
+    "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
+    "run": 41286630084,
+    "job": 124789138819,
+    "attempt": 1,
+    "artifact": 13075204415,
+    "archive_bytes": 130762,
+    "archive_sha256": "3537bb71b3d8b7bfbdf94c268dd240f2a2c8ef16dc357360832473e3bb956e65",
+    "manifest_entries": 65,
+    "archive": "original-artifact.zip.b64",
+    "counts": {
+      "normal": {
+        "total": 30,
+        "failed": 0
+      },
+      "stored_power": {
+        "total": 30,
+        "failed": 11
+      },
+      "draw_count": {
+        "total": 30,
+        "failed": 9
+      },
+      "success_gate": {
+        "total": 30,
+        "failed": 1
+      }
+    },
+    "restored_failed": 0,
+    "skips": 0,
+    "valid_negative_witnesses": 3,
+    "unaffected_outcomes": 69,
+    "diagnosis": "Protocol incorrectly copied eleven power-mutant failures to draw mutant: DF03 and DF04 assert life payoff but contain no hand-size assertion. All nine draw assertions fail, including the exact declared line87 witness. No test assertion, report, or original protocol changed; full qualification remains pending.",
+    "original_failure_preserved": true,
+    "card_admitted": false,
+    "full_qualification": false,
+    "accepted": false,
+    "next": "Reuse exact-bound original observations without rerunning unchanged early qualification. Complete remaining three-file runtime and DF01–DF22/card controls on a bounded assertion-preserving successor. Keep all full compatibility/metadata/printing/lint/Assay/snapshot/original receiving gates.",
+    "received_utc": "2026-11-01 08:53:01 UTC",
+    "readback_verified": true
   }
 }
