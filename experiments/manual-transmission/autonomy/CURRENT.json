@@ -2300,9 +2300,9 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
+    "execution_enabled_state": "PAUSED_FULLY_BLOCKED",
     "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
-    "next_authorized_action": "Follow live CURRENT.summary and next.next_executable_action; preserve sole enabled Work executor and schedule. Do not disable for this ordinary authority wait.",
+    "next_authorized_action": "Await exact selection-transport assertion exception authorization; then resume this same Work executor and follow CURRENT.next.next_executable_action. No preflight repetition or new executor.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2380,7 +2380,7 @@
       "prompt_readback_verified": true
     },
     "previous_execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
-    "is_enabled": true,
+    "is_enabled": false,
     "resume_requested": false,
     "previous_pause": {
       "utc": "2026-10-28T16:47:53Z",
@@ -3376,7 +3376,8 @@
       "historical_skips": 43,
       "client_rows": 64,
       "frozen_source_unchanged": true
-    }
+    },
+    "automation_state": "PAUSED_FULLY_BLOCKED_SCHEDULE_PRESERVED"
   },
   "generator_calibration_repair_authorization": {
     "state": "AUTHORIZED",
@@ -3437,7 +3438,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-01 09:53:54 UTC",
+  "updated_utc": "2026-11-01 10:47:22 UTC",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -24196,5 +24197,33 @@
     "sole_work_enabled": true,
     "schedule_unchanged": true,
     "no_new_executor": true
+  },
+  "disciple_selection_authority_pause": {
+    "utc": "2026-11-01 10:47:22 UTC",
+    "task_id": "6adbe33033e481918659ce578f64f31e",
+    "is_enabled": false,
+    "schedule_preserved": true,
+    "prompt_preserved": true,
+    "readback_verified": true,
+    "automation_run": "379c7ab0-e320-8324-b4f4-420068647dc1",
+    "proposal": "4b5b5acf9c56911c4aad2f145f8dea3081d9bd52",
+    "reason": "Fully blocked on exact selection-transport assertion exception; scheduled runtime requires disabling a fully blocked continuation. Existing card/runtime grants and execution admission remain valid.",
+    "reconciliation": {
+      "current_blob": "3b158cfa9a9565c104e81a82bedaf1f0a272ebd1",
+      "recent_checkpoint": "555bf19ef43469347c344998d70697123c722b0f",
+      "owner": null,
+      "relevant_workflows": [],
+      "statuses": [
+        "in_progress",
+        "queued",
+        "waiting",
+        "requested",
+        "pending"
+      ],
+      "event_filter": null,
+      "ignored_unrelated_ancient_run": 34749202144,
+      "no_new_authorization_or_successor": true
+    },
+    "resume": "After explicit authorization of the exact16 replacement proposal, resume this same executor preserving schedule; never create a replacement."
   }
 }
