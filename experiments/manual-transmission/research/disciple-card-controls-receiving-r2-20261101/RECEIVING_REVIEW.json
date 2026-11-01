@@ -1,0 +1,166 @@
+{
+  "state": "ISOLATED_R2_RECEIVING_PREPARED_NO_ACCEPTANCE",
+  "source": {
+    "sha": "c59959c5c9c11b8d26bc3ebd22746262dabb3656",
+    "tree": "f1c96543db837b24bd504cecb70b1eb3200081ae"
+  },
+  "validation": {
+    "sha": "baf8c21f2f2756e8c78235c8f551ff4fd9832afa",
+    "tree": "e99327340203875913eacc6a175418397e99e788"
+  },
+  "run": 41323107878,
+  "job": 124897314878,
+  "attempt": 1,
+  "workflow": ".github/workflows/manual-disciple-card-controls-r2-20261101.yml",
+  "workflow_blob": "e3fc3719d0b8e8752084c54a4ebe5d4fe799e0fe",
+  "receiver": "receive.py",
+  "synthetic": "synthetic-result.json",
+  "snapshot_receiver": "verify-disciple-snapshot.py",
+  "original_snapshot": {
+    "ref": "be6b10da62d5a9e96eac8e635534e935d489cf0f",
+    "path": "mtg-sets/src/test/resources/snapshots/cards/MH3.json",
+    "blob": "25b01370752b8d2fe97389c453a300dce833531a",
+    "bytes": 67843,
+    "sha256": "b021d21c371237f2f080f751b9ccc256e5de91f4bb559a0c5fb4c50ae537b4c3",
+    "entries": 24
+  },
+  "receiving_command": "python receive.py ORIGINAL.zip API.json PROTOCOL.json verify-disciple-snapshot.py MH3.original.json",
+  "api_required": [
+    "run",
+    "jobs",
+    "artifacts",
+    "source",
+    "validation",
+    "delta",
+    "validation_delta"
+  ],
+  "additional_manual_receiving_requirements": [
+    "Check newer receipts/successors and original attempt before download; receive once.",
+    "Classify every additional mutant failure by raw identity and assertion/source frame; only declared assertion witnesses count as negative controls.",
+    "Verify exact original seven rulings/image/metadata against archived canonical MH3#250 evidence.",
+    "Archive original bytes and metadata; frozen source/protocol tests and all protected bindings remain exact.",
+    "For compiler/missing-report failures preserve original artifacts; do not claim behavioral evidence, do not rerun unchanged."
+  ],
+  "runtime_receipt": "43e383148f0a09a715f3ae67e8ce4dcecf61f698",
+  "card_admitted": false,
+  "full_qualification": false,
+  "dependent_draft": {
+    "baseline_source": "d5f258de423503e7054528bb3f6a7a71c5314057",
+    "baseline_receipt": "cc405f3fbe9fb6af7b024c7c38116dfe2356d639",
+    "baseline_inventory_path": "experiments/manual-transmission/research/opal-palace-dependent-r2-20261031/INVENTORY.json.gz.base64",
+    "baseline_inventory_blob": "aa29e792657c723a1a5e0a39347c04da13ec58e7",
+    "baseline_inventory_sha256": "111b5366daa39dc97d0d1184f7b31323935ade5b4639ab9867aa939eed342f40",
+    "additions": "disciple-dependent-additions.draft.json",
+    "expected": {
+      "ordinary": 19212,
+      "ordinary_original": 19139,
+      "ordinary_additions": 73,
+      "skips": 43,
+      "cards": 396,
+      "original_cards": 390,
+      "registration_additions": 6,
+      "client": 64
+    },
+    "source_delta": [
+      {
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+        "sha": "69ae2777e9b96313e708affa1836fca933a1f3a0",
+        "status": "added"
+      },
+      {
+        "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt",
+        "sha": "2daeeede385111682fd4a399a002f609aa720ab7",
+        "status": "added"
+      },
+      {
+        "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/DiscipleOfFreyaliseRegistrationTest.kt",
+        "sha": "37fb6b51ff23479ab9dee06e89c9ba65cf52e4c0",
+        "status": "added"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt",
+        "sha": "c6cdd3682ddf70190718077e02fc7d15c2500840",
+        "status": "modified"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+        "sha": "f88855a8d70a7c2c7449c46c228269bb0aa1b60d",
+        "status": "modified"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt",
+        "sha": "2145cae496683983b94722aa24080daec8dca63b",
+        "status": "modified"
+      }
+    ],
+    "requirements": [
+      "Reuse exact-bound original runtime/card controls; do not rerun unchanged qualifications.",
+      "After targeted controls received, verify/apply exactly one additive MH3 snapshot preserving all67843originalbytes/24entries. Freeze successor; no protected source changes.",
+      "Rebind only exact3authorized runtime sections plus newcard/test/snapshot against accepted Opal baseline. Preserve every other SHA256/git binding/golden/legacyfixture/Manualv0.7.",
+      "Full compile via locked just recipe on actual successor before remaining regressions; Opal reused compile was on different source and cannot bypass this compile.",
+      "Original19139row identities plus exact73additions and exact43historicalskips;396cardrows. Full build, affected137focused controls,client64/typecheck/lint/discovery/printing remain mandatory.",
+      "Collect original MH3 Assay before/after from same source/corpus; classify all rows and declines; old current-IR absence is not a pass.",
+      "No expensive regression until current targeted qualification original artifacts received. Draft expected counts must be reconciled against actual raw inventories without dropping rows."
+    ],
+    "template": {
+      "ref": "d5f258de423503e7054528bb3f6a7a71c5314057",
+      "record": "experiments/manual-transmission/research/opal-palace-dependent-r2-20261031",
+      "files": [
+        "run.py",
+        "audit.py",
+        "report_audit.py",
+        "derive_inventory.py",
+        "validation.just"
+      ],
+      "notes": "Reuse strict inventory/JUnit/client checks. Do not copy stale Opal receipt assertions, reused compilation, WAR-only/C13-only Assay scope or Fblthp-specific snapshot helper."
+    },
+    "derived_inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
+    "derivation_script": "derive_inventory.py",
+    "protocol_draft": "dependent-protocol.draft.json"
+  },
+  "df16_review": {
+    "card_matrix": "1d61c80f7e0c2ce898e8dc283208a99a18561e0f",
+    "card_exact_normal": "At2life or cantpaylife effect, no paid3 route; enterstapped.",
+    "runtime_matrix": "c3d4c4e78846031cfb76dced6be45ed66cc379f9",
+    "runtime_exact_constraint": "do not infer prohibited-payment support without a separate proved existing mechanism",
+    "source_review": "a59a181dc9d417366e0c19d12df56721ba37668c",
+    "interpretation": "The literal card matrix permits the at2life alternative, now covered in the runtime receipt and pending card cost-one mutant. No prohibited-payment mechanism or support is claimed. The runtime grant does not authorize adding such a mechanism. This review neither waives an acceptance condition nor expands authority; evaluate this scope explicitly in final admission."
+  },
+  "no_frozen_source_change": true,
+  "synthetic_result": {
+    "synthetic_only": true,
+    "valid_shape_accepted": true,
+    "corruptions_rejected": [
+      "wrong_run",
+      "selection_witness_shift",
+      "compiler_not_behavior",
+      "missing_compile",
+      "compile_failure",
+      "changed_source",
+      "wrong_witness",
+      "missing_report",
+      "wrong_multiplicity",
+      "report_summary_mismatch",
+      "protected_change",
+      "snapshot_export_mismatch"
+    ],
+    "real_artifact_received": false
+  },
+  "snapshot_receiver_reference": {
+    "commit": "5f58d9ac758039ca4c180cc501256a4a824de864",
+    "record": "experiments/manual-transmission/research/disciple-card-controls-receiving-r1-20261101",
+    "path": "verify-disciple-snapshot.py",
+    "accepted_synthetic_corruptions": 5,
+    "reuse": "unchanged helper; exact original MH3 binding remains identical"
+  },
+  "remaining_limit": "Original run still pending; no raw reports received and no gate accepted. Full draft has explicit unresolved receipt/snapshot/Assay binding requirements; not dispatchable.",
+  "file_hashes": {
+    "receive.py": "52ce554fb4fa457b85fd309619f076add41daab6086173ae236c83ed44d23d33",
+    "synthetic.py": "d7b450aabd39cb88238af581a6e5a7bf13cf1dcfefb94f648eda66ad2c9e8d54",
+    "synthetic-result.json": "3a5ff1e1e36fbf6173a7ff45bcdf6cac3781bfefa65729900412e6935ba31a96",
+    "PROTECTED_EXPECTED.json": "8b1d3579588108b3c7920cd85f8e48efa1fe3b418c3f6d3bb635e37ca56d67d7",
+    "dependent-additions.draft.json": "a127e9e2264fa22637488d6a3f1a8ac0d9b74dc64848851fb8b9d12c708aba74",
+    "dependent-protocol.draft.json": "20cc728ca7221b96b1bb9054fab5e4e0ae826b013b22c118696c78c7f4c8a500",
+    "derive_inventory.py": "e1124b040a8e5c8582128e6801cba96f48576b8163af38347562529a69b6da42"
+  }
+}
