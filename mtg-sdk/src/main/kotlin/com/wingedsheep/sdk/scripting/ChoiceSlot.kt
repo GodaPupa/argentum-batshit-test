@@ -186,4 +186,7 @@ enum class ChoiceSlot {
      * that is not tied to casting.
      */
     CHOSEN_NUMBER,
+
+    /** Explicitly selected self alternative casting cost; never inferred from eligibility or mana spent. */
+    SELF_ALTERNATIVE,
 }
