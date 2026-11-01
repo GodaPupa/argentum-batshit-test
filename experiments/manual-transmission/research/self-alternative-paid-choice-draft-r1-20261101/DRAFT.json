@@ -1,0 +1,40 @@
+{
+  "state": "UNCOMPILED_INCOMPLETE_DRAFT_NOT_QUALIFIED",
+  "base": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
+  "proposal": "c66e9220edb3949e039472acc40ab789a35b4cad",
+  "grant": "6e49200f4e6e106a06a60cc69ef5f468c374871c",
+  "production_applied": false,
+  "compiled": false,
+  "dispatched": false,
+  "qualified": false,
+  "source_bindings": [
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt",
+      "original_blob": "057df7a72759076acb8e3c1b5ec2fe3a26f3a4ba"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "original_blob": "2bb231b45291bb9e8a4d25ec149b94218f6131b9"
+    },
+    {
+      "path": "docs/card-sdk-language-reference.md",
+      "original_blob": "320d0db5c2cc2519487666cc80286ebc1464d6f9"
+    }
+  ],
+  "draft_tests": 3,
+  "remaining": [
+    "Trace and add stack/battlefield whole-state serialization and entry decision pause",
+    "Add reduction, other alternatives and legacy null controls",
+    "Add existing-choice merge, source-generation/zone cleanup and CastChoiceMade reader scenarios",
+    "Executable marker-drop, overbroad-marking and bag-replacement mutants with exact assertion witnesses and unaffected controls",
+    "Complete source/protected inventory and normal/all-mutant compile-first collector",
+    "Freeze bounded source/protocol and qualify targeted then same-source 19212 original ordinary rows/43 skips,396 cards,64 client and all affected focused gates",
+    "Original-artifact receiving; no source-departure semantics inferred"
+  ],
+  "review": {
+    "composition": "Existing CastChoicesComponent.withChoice plus existing CastChoiceMade; no new effect/condition/event/API.",
+    "performance": "One enum comparison on permanent entry; no projection or per-frame work.",
+    "ui": "Internal durable fact only; no new decision/action/DTO/UI.",
+    "limitations": "Draft tests are not executed evidence; all proposal gates remain mandatory."
+  }
+}
