@@ -1,0 +1,39 @@
+{
+  "schema": 1,
+  "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED_NOT_BEHAVIORAL_EVIDENCE",
+  "source": "9b46148f257b133bc4592729fddd3504732a710b",
+  "tree": "7ddbd16e067c663d15534f51c43c62d87ddbb180",
+  "validation": "27a49b82a568eaac19eae07abbefa8535bdef173",
+  "validation_tree": "36b71ae221ea0d5fdc20358178ad68171d87a55d",
+  "workflow": ".github/workflows/manual-disciple-runtime-extension-r1-20261101.yml",
+  "workflow_blob": "b77bc41c261a1b4809befc96d77d0af833b3811c",
+  "run": "41291145372",
+  "attempt": "1",
+  "run_number": "1",
+  "job": 124802502956,
+  "artifact": 13077682036,
+  "bytes": 77588,
+  "sha256": "7b8769bdbb19b716a281edd83b57edef18db34c3066009aad2c8c50c35dc068d",
+  "manifest_entries": 16,
+  "compiler_errors": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt:795:27 Argument type mismatch: actual type is 'PlayersCantPlayLands', but 'StaticAbilityBuilder.() -> Unit' was expected."
+  ],
+  "behavioral_reports": 0,
+  "negative_witnesses": 0,
+  "production_source_unchanged": true,
+  "protected_initial_final_equal": true,
+  "original_failure_preserved": true,
+  "admitted": false,
+  "repair": "Change only the new fixture call to staticAbility { ability = PlayersCantPlayLands() }; preserve all51identities297assertionlines. Compile all4forms before behavior on a new immutable successor.",
+  "archive": "original-artifact.zip.b64",
+  "original_receiving_complete": true,
+  "card_admitted": false,
+  "full_qualification": false,
+  "independent_preparation": {
+    "draft": "disciple-card-controls-isolated.kt",
+    "review": "card-controls-review.json",
+    "state": "ISOLATED_NOT_APPLIED_NOT_COMPILED",
+    "runtime_production_changes": false
+  },
+  "received_utc": "2026-11-01 09:09:27 UTC"
+}
