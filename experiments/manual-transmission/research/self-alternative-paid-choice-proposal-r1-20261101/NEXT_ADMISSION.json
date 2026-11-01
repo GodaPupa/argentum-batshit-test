@@ -1,0 +1,43 @@
+{
+  "state": "PROPOSAL_REQUIRES_EXPLICIT_PROTECTED_BOUNDARY_AUTHORITY",
+  "base": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
+  "accepted_disciple_receipt": "a115b7555d2f4272062010b03332260de8d5a303",
+  "goal": "Retain only an explicitly selected SELF_ALTERNATIVE casting choice in the durable cast-choice bag of the resulting permanent. This removes one prerequisite gap for Reckless Bushwhacker; it is not Surge or card admission.",
+  "source_review": "5c5c043a41eea064b76e6231d8679f3efad9a4e7",
+  "production_boundaries": [
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt",
+      "blob": "057df7a72759076acb8e3c1b5ec2fe3a26f3a4ba",
+      "change": "Add one documented SELF_ALTERNATIVE flag slot; no existing slot renamed or changed."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "blob": "2bb231b45291bb9e8a4d25ec149b94218f6131b9",
+      "change": "In existing durable CastChoices entry transfer, stamp only ChoiceSlot.SELF_ALTERNATIVE with ChoiceValue.Flag when spellComponent.alternativeCost equals AlternativeCostType.SELF_ALTERNATIVE. Preserve all other choices and every target/source binding."
+    }
+  ],
+  "supporting_scope": [
+    "One focused generic runtime scenario test file, using existing test-only synthetic cards; no production card registration.",
+    "One narrowly additive SDK language-reference entry for the new flag.",
+    "Frozen qualification protocol and executable negative controls; original receiving and source-bound full compatibility."
+  ],
+  "acceptance": [
+    "Normal and all declared mutants compile before behavior.",
+    "Exact explicit choice survives stack and battlefield serialization and an entry-decision pause.",
+    "Full-price casting on the same eligible board remains unmarked; reductions or zero mana spent never imply the flag.",
+    "Other alternative-cost types and legacy null alternatives remain unmarked; normal casting/targeting/source behavior unchanged.",
+    "Existing entry choices are merged, never replaced; source generation and zone-exit cleanup preserve new-object semantics.",
+    "Existing CastChoiceMade reader observes the marker while the source exists; source-departure trigger/LKI semantics are a separate unqualified gate, not inferred.",
+    "Same-source full normal compile, original19212ordinary43historicalskips396card64client and all affected focused gates; added synthetic identities tracked separately without baseline removal.",
+    "Original artifacts,rawreports,negative assertion witnesses,restoration,protectedbytes and all source bindings verified before bounded marker admission."
+  ],
+  "exclusions": [
+    "No payment or eligibility algorithm changes; no cost inference from mana totals.",
+    "No Surge keyword, teammate support, new card, snapshot change, multiplayer admission, official game or seed.",
+    "No source-departure trigger repair or additional protected path without a new proposal.",
+    "No schedule change, spending or extra executor."
+  ],
+  "implementation_applied": false,
+  "qualified": false,
+  "card_admitted": false
+}
