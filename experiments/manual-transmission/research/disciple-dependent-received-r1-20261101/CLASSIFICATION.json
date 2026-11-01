@@ -1,0 +1,36 @@
+{
+  "state": "ORIGINAL_ASSAY_AND_PRINTING_CLASSIFIED",
+  "original": {
+    "cards": 24,
+    "compared": 7,
+    "confirmed": 7,
+    "not_covered": 14,
+    "script_not_modelled": 2,
+    "oracle_text_differs": 1,
+    "multi_face": 0,
+    "divergent": 0,
+    "undecodable": 0
+  },
+  "candidate": {
+    "cards": 25,
+    "compared": 7,
+    "confirmed": 7,
+    "not_covered": 14,
+    "script_not_modelled": 2,
+    "oracle_text_differs": 1,
+    "multi_face": 1,
+    "divergent": 0,
+    "undecodable": 0
+  },
+  "finding": "Exactly one added multi-face exclusion is Disciple. Original24 entries recovered byte-for-byte; all original report categories unchanged. Fourteen grammar declines,two unmodelled script slots and one pre-existing Oracle-text difference remain limitations, not semantic passes or repaired cards. Seven compared models agree; no divergences or undecodable goldens.",
+  "text_review": "Original corpus versus golden literals include Arena of Glory 'that mana' versus 'any of that mana', Unfathomable Truths reminder text, and Writhing Chrysalis 'this creature' versus 'this token'. No normalization or golden change was made. Existing Assay reports one Oracle-text difference in both observations; it remains classified as a pre-existing wording mismatch, not a new Disciple defect.",
+  "printing": "Original check-card-printing exits0; canonical MH3#250 earliest real printing2024-06-14; one printing, no missing scaffolded reprints.",
+  "snapshot": {
+    "original_bytes": 67843,
+    "original_entries": 24,
+    "added_entries": 1,
+    "original_bytes_restored": true,
+    "sha256": "be0fc81423d4e857bd5eefc2fd73d781da71eacad363f586b916dd37632bf7f2"
+  },
+  "semantic_pass_inferred_from_decline": false
+}
