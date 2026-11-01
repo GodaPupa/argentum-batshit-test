@@ -875,4 +875,284 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
         }
     }
 
+
+    test("DF02 declining a singleton optional sacrifice preserves its actual creature") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
+        cast(d)
+        if (d.pendingDecision is YesNoDecision) d.submitYesNo(me, false).error shouldBe null
+        d.getPermanents(me).contains(fodder) shouldBe true
+        d.getLifeTotal(me) shouldBe 20
+        d.pendingDecision shouldBe null
+    }
+
+    test("DF03 accepting with only Disciple preserves the source creature") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val source = cast(d)
+        if (d.pendingDecision is YesNoDecision) d.submitYesNo(me, true).error shouldBe null
+        d.getPermanents(me).contains(source) shouldBe true
+        d.getLifeTotal(me) shouldBe 20
+        d.pendingDecision shouldBe null
+    }
+
+    test("DF04 accepting with only opponent fodder preserves that creature") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val opp = d.getOpponent(me)
+        val fodder = d.putCreatureOnBattlefield(opp, "Disciple test fodder")
+        cast(d)
+        if (d.pendingDecision is YesNoDecision) d.submitYesNo(me, true).error shouldBe null
+        d.getPermanents(opp).contains(fodder) shouldBe true
+        d.getLifeTotal(me) shouldBe 20
+        d.pendingDecision shouldBe null
+    }
+
+    test("DF08 departed source singleton trigger still pays five life") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
+        val source = d.putCardInHand(me, "Disciple of Freyalise")
+        d.giveMana(me, Color.GREEN, 3)
+        d.giveColorlessMana(me, 3)
+        d.castSpell(me, source).isSuccess shouldBe true
+        d.bothPass().error shouldBe null
+        d.moveToGraveyard(source)
+        d.bothPass().error shouldBe null
+        if (d.pendingDecision is YesNoDecision) d.submitYesNo(me, true).error shouldBe null
+        d.getLifeTotal(me) shouldBe 25
+        d.getGraveyard(me).contains(fodder) shouldBe true
+        d.getGraveyard(me).contains(source) shouldBe true
+        d.pendingDecision shouldBe null
+    }
+
+    test("DF15 Garden declines any offered payment and ends tapped") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInHand(me, "Disciple of Freyalise")
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        if (d.pendingDecision is YesNoDecision) d.submitYesNo(me, false).error shouldBe null
+        d.isTapped(id) shouldBe true
+        d.getLifeTotal(me) shouldBe 20
+        d.getLands(me).contains(id) shouldBe true
+    }
+
+    test("DF16 Garden at two life cannot buy an untapped final state") {
+        val d = driver()
+        val me = d.activePlayer!!
+        d.setLifeTotal(me, 2)
+        val id = d.putCardInHand(me, "Disciple of Freyalise")
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        if (d.pendingDecision is YesNoDecision) {
+            val answer = d.submitYesNo(me, true)
+            if (answer.error != null) d.submitYesNo(me, false).error shouldBe null
+        }
+        d.isTapped(id) shouldBe true
+        d.getLifeTotal(me) shouldBe 2
+        d.getLands(me).contains(id) shouldBe true
+    }
+
+    test("DF12 selecting own fodder emits no triggered-target event before payoff") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
+        val id = d.putCardInHand(me, "Disciple of Freyalise")
+        d.giveMana(me, Color.GREEN, 3)
+        d.giveColorlessMana(me, 3)
+        val start = d.events.size
+        d.castSpell(me, id).isSuccess shouldBe true
+        d.bothPass().error shouldBe null
+        if (d.pendingDecision is ChooseTargetsDecision) {
+            d.submitTargetSelection(me, listOf(fodder)).error shouldBe null
+        }
+        d.events.drop(start).filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+        d.bothPass().error shouldBe null
+        val hand = d.getHandSize(me)
+        if (d.pendingDecision is YesNoDecision) d.submitYesNo(me, true).error shouldBe null
+        if (d.pendingDecision is ChooseTargetsDecision) d.submitTargetSelection(me, listOf(fodder)).error shouldBe null
+        d.getLifeTotal(me) shouldBe 25
+        d.getHandSize(me) shouldBe hand + 5
+        d.pendingDecision shouldBe null
+        d.state.stack.size shouldBe 0
+    }
+
+    test("DF20 noncast entry uses the front creature and creates exactly one trigger") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInGraveyard(me, "Disciple of Freyalise")
+        d.registerCard(card("Disciple noncast entry fixture") {
+            manaCost = "{G}"
+            typeLine = "Sorcery"
+            spell { effect = com.wingedsheep.sdk.dsl.Effects.PutOntoBattlefieldFromGraveyard(
+                com.wingedsheep.sdk.scripting.targets.EffectTarget.SpecificEntity(id)) }
+        })
+        val spell = d.putCardInHand(me, "Disciple noncast entry fixture")
+        d.giveMana(me, Color.GREEN, 1)
+        val start = d.events.size
+        d.castSpell(me, spell).error shouldBe null
+        d.bothPass().error shouldBe null
+        d.getCreatures(me).contains(id) shouldBe true
+        d.getLands(me).contains(id) shouldBe false
+        d.getCardName(id) shouldBe "Disciple of Freyalise"
+        d.events.drop(start).filterIsInstance<com.wingedsheep.engine.core.AbilityTriggeredEvent>()
+            .count { it.sourceId == id } shouldBe 1
+        d.events.drop(start).filterIsInstance<SpellCastEvent>().count { it.spellEntityId == id } shouldBe 0
+        d.bothPass().error shouldBe null
+        if (d.pendingDecision is YesNoDecision) d.submitYesNo(me, false).error shouldBe null
+        d.pendingDecision shouldBe null
+        d.state.stack.size shouldBe 0
+    }
+
+    test("DF20 bounced Garden returns to front characteristics and can replay its land face") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInHand(me, "Disciple of Freyalise")
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        d.submitYesNo(me, false).error shouldBe null
+        d.registerCard(card("Disciple bounce fixture") {
+            manaCost = "{G}"
+            typeLine = "Instant"
+            spell { effect = com.wingedsheep.sdk.dsl.Effects.ReturnToHand(
+                com.wingedsheep.sdk.scripting.targets.EffectTarget.SpecificEntity(id)) }
+        })
+        val bounce = d.putCardInHand(me, "Disciple bounce fixture")
+        d.giveMana(me, Color.GREEN, 1)
+        d.castSpell(me, bounce).error shouldBe null
+        d.bothPass().error shouldBe null
+        d.getHand(me).contains(id) shouldBe true
+        val front = d.state.getEntity(id)!!.get<CardComponent>()!!
+        front.name shouldBe "Disciple of Freyalise"
+        front.typeLine.isCreature shouldBe true
+        front.typeLine.isLand shouldBe false
+        front.manaCost.cmc shouldBe 6
+        d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>().count { it.cardId == id } shouldBe 0
+        d.addComponent(me, com.wingedsheep.engine.state.components.player.LandDropsComponent())
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        d.submitYesNo(me, false).error shouldBe null
+        d.getCardName(id) shouldBe "Garden of Freyalise"
+        d.getLands(me).count { it == id } shouldBe 1
+        d.getCreatures(me).contains(id) shouldBe false
+    }
+
+
+    test("DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority") {
+        val d = driver()
+        val me = d.activePlayer!!
+        d.registerCard(card("Disciple shroud ward fixture") {
+            typeLine = "Creature — Bear"
+            power = 5
+            toughness = 5
+            keywords(Keyword.SHROUD, Keyword.HEXPROOF)
+            keywordAbility(com.wingedsheep.sdk.scripting.KeywordAbility.Ward(
+                com.wingedsheep.sdk.scripting.effects.WardCost.Mana("{2}")))
+        })
+        val fodder = d.putCreatureOnBattlefield(me, "Disciple shroud ward fixture")
+        cast(d)
+        val hand = d.getHandSize(me)
+        val start = d.events.size
+        d.submitYesNo(me, true).error shouldBe null
+        d.getLifeTotal(me) shouldBe 25
+        d.getHandSize(me) shouldBe hand + 5
+        d.getGraveyard(me).contains(fodder) shouldBe true
+        d.events.drop(start).filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+        d.events.drop(start).filterIsInstance<com.wingedsheep.engine.core.AbilityTriggeredEvent>().size shouldBe 0
+        d.pendingDecision shouldBe null
+        d.state.stack.size shouldBe 0
+    }
+
+    test("DF19 creature cast prohibition leaves permitted Garden playable") {
+        val d = driver()
+        val me = d.activePlayer!!
+        d.registerCard(card("Disciple creature cast lock fixture") {
+            typeLine = "Enchantment"
+            staticAbility { ability = com.wingedsheep.sdk.scripting.PlayersCantCastSpells(
+                affected = com.wingedsheep.sdk.scripting.references.Player.Each,
+                spellFilter = GameObjectFilter.Creature) }
+        })
+        d.putPermanentOnBattlefield(me, "Disciple creature cast lock fixture")
+        val id = d.putCardInExile(me, "Disciple of Freyalise")
+        d.replaceState(d.state.addMayPlayPermission(MayPlayPermission(
+            id = EntityId.generate(), cardIds = setOf(id), controllerId = me, timestamp = d.state.timestamp)))
+        d.giveMana(me, Color.GREEN, 3)
+        d.giveColorlessMana(me, 3)
+        (d.castSpell(me, id).error != null) shouldBe true
+        d.legalActions(me).map { it.action }.filterIsInstance<PlayLand>()
+            .count { it.cardId == id && it.asBackFace } shouldBe 1
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        d.submitYesNo(me, false).error shouldBe null
+        d.getCardName(id) shouldBe "Garden of Freyalise"
+        d.getLands(me).count { it == id } shouldBe 1
+    }
+
+    listOf(false, true).forEach { landQualified ->
+        test("DF20 noncast graveyard selection uses front type landQualified=$landQualified") {
+            val d = driver()
+            val me = d.activePlayer!!
+            val id = d.putCardInGraveyard(me, "Disciple of Freyalise")
+            val front = d.state.getEntity(id)!!.get<CardComponent>()!!
+            front.typeLine.isCreature shouldBe true
+            front.typeLine.isLand shouldBe false
+            front.manaCost.cmc shouldBe 6
+            d.registerCard(card("Disciple qualified reanimation fixture") {
+                manaCost = "{G}"
+                typeLine = "Sorcery"
+                spell {
+                    effect = com.wingedsheep.sdk.dsl.Effects.Composite(listOf(
+                        com.wingedsheep.sdk.dsl.Effects.SelectTarget(
+                            com.wingedsheep.sdk.scripting.targets.TargetObject(filter =
+                                if (landQualified) com.wingedsheep.sdk.scripting.filters.unified.TargetFilter.Land
+                                    .inZone(Zone.GRAVEYARD).ownedByYou()
+                                else com.wingedsheep.sdk.scripting.filters.unified.TargetFilter.CreatureInYourGraveyard),
+                            storeAs = "revive"),
+                        com.wingedsheep.sdk.dsl.Effects.PutOntoBattlefieldFromGraveyard(
+                            com.wingedsheep.sdk.scripting.targets.EffectTarget.PipelineTarget("revive"))
+                    ))
+                }
+            })
+            val spell = d.putCardInHand(me, "Disciple qualified reanimation fixture")
+            d.giveMana(me, Color.GREEN, 1)
+            d.castSpell(me, spell).error shouldBe null
+            d.bothPass().error shouldBe null
+            d.getCreatures(me).contains(id) shouldBe !landQualified
+            d.getGraveyard(me).contains(id) shouldBe landQualified
+            d.getLands(me).contains(id) shouldBe false
+            if (!landQualified) {
+                d.bothPass().error shouldBe null
+                if (d.pendingDecision is YesNoDecision) d.submitYesNo(me, false).error shouldBe null
+            }
+            d.pendingDecision shouldBe null
+        }
+    }
+
+    test("DF21 Garden play neither spends Palace rider mana nor inherits its counters") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val rider = com.wingedsheep.engine.state.components.player.RestrictedManaEntry(
+            color = Color.GREEN,
+            restriction = com.wingedsheep.sdk.scripting.effects.ManaRestriction.AnySpend,
+            riders = setOf(com.wingedsheep.sdk.scripting.effects.ManaSpellRider.CommanderCastEntryCounters))
+        d.replaceState(d.state.updateEntity(me) { player ->
+            val pool = player.get<ManaPoolComponent>() ?: ManaPoolComponent()
+            player.with(pool.copy(restrictedMana = pool.restrictedMana + rider))
+        })
+        val beforePool = d.state.getEntity(me)!!.get<ManaPoolComponent>()!!
+        val id = d.putCardInHand(me, "Disciple of Freyalise")
+        val start = d.events.size
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        roundtrip(d)
+        d.submitYesNo(me, true).error shouldBe null
+        d.getCardName(id) shouldBe "Garden of Freyalise"
+        d.getLifeTotal(me) shouldBe 17
+        d.state.getEntity(me)!!.get<ManaPoolComponent>() shouldBe beforePool
+        (d.state.getEntity(id)!!.get<com.wingedsheep.engine.state.components.battlefield.CountersComponent>()
+            ?.getCount(com.wingedsheep.sdk.core.CounterType.PLUS_ONE_PLUS_ONE) ?: 0) shouldBe 0
+        d.state.getEntity(id)!!.has<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>() shouldBe false
+        d.events.drop(start).filterIsInstance<SpellCastEvent>().size shouldBe 0
+        d.events.drop(start).filterIsInstance<com.wingedsheep.engine.core.AbilityTriggeredEvent>().size shouldBe 0
+        d.pendingDecision shouldBe null
+        d.state.stack.size shouldBe 0
+    }
+
 })
