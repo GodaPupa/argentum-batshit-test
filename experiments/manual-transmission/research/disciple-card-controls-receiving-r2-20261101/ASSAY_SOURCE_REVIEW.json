@@ -1,0 +1,29 @@
+{
+  "state": "ISOLATED_SOURCE_REVIEW_AND_UNEXECUTED_HELPER",
+  "source": "c59959c5c9c11b8d26bc3ebd22746262dabb3656",
+  "finding": "Assay differential reads serialized snapshot files via ImplementedCorpus, not the runtime registry. repoRoot walks cwd upward to settings.gradle.kts. Two isolated roots with exact copied settings and one MH3 file each can compare archived original24 and verified candidate25 using the identical full-source installed binary and corpus, without rewriting tracked protected bytes.",
+  "source_bindings": {
+    "oracle-assay/src/main/kotlin/com/wingedsheep/assay/corpus/ImplementedCorpus.kt": "eb4516955de48c71173360ba6423142a22d13a6a",
+    "oracle-assay/src/main/kotlin/com/wingedsheep/assay/gate/Differential.kt": "b89639ae29b4f820d0bfebfb589ade5f29f7b75e",
+    "oracle-assay/src/main/kotlin/com/wingedsheep/assay/cli/Main.kt": "ec8e3b425ece2c8a8c3020462a70088115271fee",
+    "justfile": "8e3c25afce213f719e7b9d9ac723e33b288b06a9"
+  },
+  "helper": "assay-pair.draft.py",
+  "helper_sha256": "d2a7102b841970b71a7ad57bec93314675bcf361b8a8639ce49e636e308a8ec1",
+  "preconditions": [
+    "Original R2 targeted controls received",
+    "One exact additive snapshot export verified",
+    "Actual successor and protected bindings frozen",
+    "Full normal compilation including oracle-assay installDist succeeds",
+    "Refresh one corpus once then preserve bytes/hash for both observations"
+  ],
+  "receiving": [
+    "Keep raw stdout/stderr/exit bytes, exact original/candidate inputs and installed distribution/corpus hashes",
+    "Verify original24 and candidate25 observed counts; classify every divergence/decline and changed output",
+    "No semantic passes inferred from multi-face/not-covered classification",
+    "No normalization or report expectation relaxation"
+  ],
+  "classification": null,
+  "executed": false,
+  "card_admitted": false
+}
