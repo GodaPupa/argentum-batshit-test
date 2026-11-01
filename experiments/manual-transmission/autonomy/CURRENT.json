@@ -1920,7 +1920,7 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
+    "execution_enabled_state": "PAUSED_AUTHORITY_BLOCKER",
     "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
     "next_authorized_action": "Follow live CURRENT.summary and next.next_executable_action; historical run references are archival.",
     "execution_efficiency_policy": {
@@ -2000,7 +2000,7 @@
       "prompt_readback_verified": true
     },
     "previous_execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
-    "is_enabled": true,
+    "is_enabled": false,
     "resume_requested": false,
     "previous_pause": {
       "utc": "2026-10-28T16:47:53Z",
@@ -2103,6 +2103,13 @@
       "schedule_preserved": true,
       "prompt_preserved": true,
       "readback_verified": true
+    },
+    "self_alternative_authority_pause": {
+      "proposal": "c66e9220edb3949e039472acc40ab789a35b4cad",
+      "enabled": false,
+      "schedule_preserved": true,
+      "reason": "Scheduled runtime requires pausing fully blocked continuation; experiment not completed.",
+      "readback_verified": true
     }
   },
   "previous_qualified": {
@@ -2129,7 +2136,7 @@
     "last_execution_owner": "manual-work-639e8dcd-b80c-8321-9a24-5d65b3da6492-full-receiving",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
-    "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
+    "scheduled_executor": "PAUSED_AUTHORITY_BLOCKER",
     "activity": "BLOCKED",
     "automation_reconciliation": "Sole executor enabled with preserved hourly schedule. Current platform run recorded in_progress at explicit release; no persistent worker claim."
   },
