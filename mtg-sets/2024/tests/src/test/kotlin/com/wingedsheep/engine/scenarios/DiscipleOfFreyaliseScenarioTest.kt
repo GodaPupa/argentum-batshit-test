@@ -551,4 +551,20 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
         d.events.filterIsInstance<TransformedEvent>().size shouldBe before
     }
 
+
+    test("DF01 singleton automatic selection preserves five power payoff") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
+        val source = cast(d)
+        val hand = d.getHandSize(me)
+        d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        d.submitYesNo(me, true).isSuccess shouldBe true
+        d.pendingDecision shouldBe null
+        d.getLifeTotal(me) shouldBe 25
+        d.getHandSize(me) shouldBe hand + 5
+        d.getGraveyard(me).contains(fodder) shouldBe true
+        d.getPermanents(me).contains(source) shouldBe true
+    }
+
 })

@@ -58,23 +58,31 @@ val DiscipleOfFreyalise: CardDefinition = card("Disciple of Freyalise") {
     oracleText = "When this creature enters, you may sacrifice another creature. If you do, you gain X life and draw X cards, where X is that creature's power."
     triggeredAbility {
         trigger = Triggers.EntersBattlefield
-        val sacrificedPower = DynamicAmount.EntityProperty(
-            EntityReference.Sacrificed(), EntityNumericProperty.Power
-        )
-        effect = MayEffect(Effects.IfYouDo(
-            action = Effects.Composite(listOf(
-                Effects.SelectTarget(
-                    TargetObject(filter = TargetFilter.CreatureYouControl.other()),
-                    storeAs = "discipleSacrifice"
-                ),
-                Effects.SacrificeTarget(EffectTarget.PipelineTarget("discipleSacrifice"))
-            )),
-            ifYouDo = Effects.Composite(listOf(
-                Effects.GainLife(sacrificedPower),
-                Effects.DrawCards(sacrificedPower)
-            )),
-            successCriterion = SuccessCriterion.PermanentsSacrificed
-        ))
+        val sacrificedPower = DynamicAmount.VariableReference("discipleSacrificedPower")
+        effect = MayEffect(Effects.Composite(listOf(
+            Effects.SelectTarget(
+                TargetObject(filter = TargetFilter.CreatureYouControl.other()),
+                storeAs = "discipleSacrifice"
+            ),
+            // Capture the selected creature's projected power before the sacrifice changes
+            // its zone. StoreNumber does not change state; SacrificeTarget reads the same
+            // battlefield projection immediately afterward. The success gate still prevents
+            // any payoff when the chosen creature cannot actually be sacrificed.
+            Effects.StoreNumber(
+                "discipleSacrificedPower",
+                DynamicAmount.EntityProperty(
+                    EntityReference.FromCostStorage("discipleSacrifice"), EntityNumericProperty.Power
+                )
+            ),
+            Effects.IfYouDo(
+                action = Effects.SacrificeTarget(EffectTarget.PipelineTarget("discipleSacrifice")),
+                ifYouDo = Effects.Composite(listOf(
+                    Effects.GainLife(sacrificedPower),
+                    Effects.DrawCards(sacrificedPower)
+                )),
+                successCriterion = SuccessCriterion.PermanentsSacrificed
+            )
+        )))
         description = "When this creature enters, you may sacrifice another creature. If you do, you gain X life and draw X cards, where X is that creature's power."
     }
     metadata {

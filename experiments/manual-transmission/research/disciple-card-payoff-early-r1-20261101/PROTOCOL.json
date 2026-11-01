@@ -1,0 +1,113 @@
+{
+  "state": "FROZEN_CARD_ONLY_PAYOFF_EARLY_QUALIFICATION_NOT_ADMISSION",
+  "base": "80b5a52d775dad05801b103ee5e12c0e31edcf39",
+  "base_tree": "c8e69d893d615b2c98583fc547db9e3d6d7f3bbe",
+  "proposal": "1d61c80f7e0c2ce898e8dc283208a99a18561e0f",
+  "grant": "ee2e8e46850544a41a9775a82a177ee2b790f71a",
+  "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "record": "experiments/manual-transmission/research/disciple-card-payoff-early-r1-20261101",
+  "evidence": "manual-disciple-card-payoff-early-r1-evidence",
+  "test": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt",
+  "paths": [
+    "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt"
+  ],
+  "forms": [
+    "normal",
+    "stored_power",
+    "draw_count",
+    "success_gate"
+  ],
+  "mutations": [
+    {
+      "id": "stored_power",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "before": "val sacrificedPower = DynamicAmount.VariableReference(\"discipleSacrificedPower\")",
+      "after": "val sacrificedPower = DynamicAmount.Fixed(0)"
+    },
+    {
+      "id": "draw_count",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "before": "Effects.DrawCards(sacrificedPower)",
+      "after": "Effects.DrawCards(DynamicAmount.Fixed(0))"
+    },
+    {
+      "id": "success_gate",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "before": "successCriterion = SuccessCriterion.PermanentsSacrificed",
+      "after": "successCriterion = SuccessCriterion.Always"
+    }
+  ],
+  "case_names": [
+    "DF01 sacrifice gives exactly five life and five cards",
+    "DF02 decline preserves the creature life and hand",
+    "DF03 selection rejects the source and still accepts another own creature",
+    "DF04 selection rejects an opponent creature",
+    "DF06 power 0 sacrifices without drawing or losing life",
+    "DF06 power -2 sacrifices without drawing or losing life",
+    "DF08 source departure before trigger resolution preserves the payoff",
+    "DF11 full state serialization at optional preserves five power payoff",
+    "DF11 full state serialization at selection preserves five power payoff",
+    "DF14 Garden pays exactly three life to enter untapped",
+    "DF15 declined Garden payment keeps life and enters tapped",
+    "DF16 two life cannot pay Garden entry cost",
+    "DF05 projected boost is captured before the sacrifice",
+    "DF03 DF04 no other own creature gives no payoff opponentOnly=false",
+    "DF03 DF04 no other own creature gives no payoff opponentOnly=true",
+    "DF07 an unsacrificable chosen creature gives no payoff",
+    "DF12 resolution choice of hexproof fodder emits no targeting event",
+    "DF13 legal Garden land action is distinct from a creature cast",
+    "DF17 Garden activation produces exactly one green and no other mana",
+    "DF18 front cast keeps creature characteristics and mana value six",
+    "DF18 Garden battlefield uses land characteristics and mana value zero",
+    "DF22 both card faces and metadata survive polymorphic JSON roundtrip",
+    "DF09 token sacrifice retains projected five power after departure",
+    "DF10 successful sacrifice redirected to exile retains five power payoff",
+    "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+    "DF19 exile permission castOnly=false distinguishes Garden play",
+    "DF19 exile permission castOnly=true distinguishes Garden play",
+    "DF21 external transform instruction leaves Disciple front face unchanged",
+    "DF16 stale serialized payment rejects yes and preserves decline",
+    "DF01 singleton automatic selection preserves five power payoff"
+  ],
+  "class": "com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest",
+  "preserved_assertions": 189,
+  "original_identities": 29,
+  "total": 30,
+  "unaffected": [
+    "rules-engine",
+    "mtg-sdk",
+    "game-server",
+    "web-client",
+    "mtg-sets/src/test/resources/snapshots/cards/MH3.json"
+  ],
+  "required_witnesses": {
+    "stored_power": {
+      "case": "DF01 sacrifice gives exactly five life and five cards",
+      "assertion": "d.getLifeTotal(me) shouldBe 25",
+      "line": 86
+    },
+    "draw_count": {
+      "case": "DF01 sacrifice gives exactly five life and five cards",
+      "assertion": "d.getHandSize(me) shouldBe hand + 5",
+      "line": 87
+    },
+    "success_gate": {
+      "case": "DF07 an unsacrificable chosen creature gives no payoff",
+      "assertion": "d.getLifeTotal(me) shouldBe 20",
+      "line": 315
+    }
+  },
+  "remaining": "All full proposal TEST_MATRIX gates, additional threshold/permissions/entry trigger controls, complete original DF01–DF22/card mutant matrix, full compatibility and original receiving. No card/feature admission from this early stage.",
+  "expected_failed": {
+    "normal": 0,
+    "stored_power": 11,
+    "draw_count": 11,
+    "success_gate": 1
+  },
+  "original_receipt": {
+    "commit": "13a8130e50ead09aceff8439c083a25bfcd2a60f",
+    "path": "experiments/manual-transmission/research/disciple-runtime-early-received-r1-20261101/RECEIPT.json",
+    "run": 41282463247
+  },
+  "source_review": "Original diagnostic receiver preserves ten failures. Existing StoreNumber has no state mutation; projected selected-entity Power is captured immediately before synchronous SacrificeTarget on the same state. PermanentsSacrificed gate still required. No runtime boundaries changed. Parent three-file fixes remain unadmitted pending full matrix."
+}
