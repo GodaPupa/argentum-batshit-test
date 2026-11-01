@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "state": "ORIGINAL_RUNTIME_EXTENSION_GATE_VERIFIED_NOT_CARD_ADMISSION",
+  "zip_bytes": 634330,
+  "zip_sha256": "4f8f27206c3f4a3e9ce23f0143d0d1177ecb9192b8ca0900391c8b7405bf6da7",
+  "manifest_entries": 94,
+  "counts": {
+    "normal": {
+      "total": 51,
+      "failed": 0
+    },
+    "offer_guard": {
+      "total": 51,
+      "failed": 1
+    },
+    "resume_guard": {
+      "total": 51,
+      "failed": 1
+    },
+    "modal_land": {
+      "total": 51,
+      "failed": 4
+    }
+  },
+  "restored_failed": 0,
+  "candidate_witnesses": {
+    "offer_guard": true,
+    "resume_guard": true,
+    "modal_land": true
+  },
+  "card_admitted": false,
+  "full_qualification": false,
+  "source": "be6b10da62d5a9e96eac8e635534e935d489cf0f",
+  "tree": "e26a2c2292d5414f44decc0282536f5a5c02b769",
+  "validation": "9bf8f7a66153540efae4c502f8eb9a5a495c413b",
+  "validation_tree": "2f8cbfe642ebf1bb9f0a4f8c84afa3f133c869ee",
+  "run": 41292141699,
+  "attempt": 1,
+  "run_number": 1,
+  "job": 124805382564,
+  "artifact": 13078450313,
+  "workflow": ".github/workflows/manual-disciple-runtime-extension-r2-20261101.yml",
+  "workflow_blob": "fefd569fc042c0cc6824a033f690e55178a24923",
+  "production_source_unchanged": true,
+  "protected_bindings": {
+    "rules-engine": "70c0e715af78de30ad9fd60c8532ec412b0c58aa",
+    "mtg-sdk": "51b097156bff57e30aeca2d6338ccfc5a62a65e3",
+    "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+    "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+    "mtg-sets/2024/src/main": "94b790b000e428e5d591cea2d6920efcdfb0ec44",
+    "mtg-sets/src/test/resources/snapshots/cards/MH3.json": "25b01370752b8d2fe97389c453a300dce833531a"
+  },
+  "original_receiving_complete": true,
+  "accepted_gate": "Bounded runtime extension positive/negative qualification only",
+  "blocker_removed": "Initial affordability, stale pending payment, eligible modal land permission enumeration and additional runtime fixtures now have compile-first original positive and executable-negative evidence.",
+  "archive": "original-artifact.zip.b64",
+  "auditor": "audit-extension-r2.py",
+  "receiver": "extension-r2-receive.py",
+  "api": "API.json",
+  "prior_failure_receipt": "847cc965fc8d2c255695802546eae62a3d300fc7",
+  "unaffected_controls": 16,
+  "errors": 0,
+  "skips": 0,
+  "normal_restored_identities": 51,
+  "prior_assertions_preserved": 297,
+  "remaining": "18 card mutations/65 scenarios/6registration tests and snapshot/card/compatibility/lint/Assay/original receiving. DF16 prohibition branch unresolved; no full admission.",
+  "received_utc": "2026-11-01 09:30:41 UTC"
+}
