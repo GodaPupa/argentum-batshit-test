@@ -3,14 +3,15 @@
   "updated_date": "2026-11-01",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WORKING",
-  "owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
+    "state": "RELEASED",
+    "owner": null,
+    "last_owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
     "run_id": "9b802846-30c8-8329-9582-5ea27d5effb1",
-    "claimed_utc": "2026-11-01T23:40:01.340Z",
-    "expires_utc": "2026-11-02T00:40:01.340Z"
+    "released_utc": "2026-11-01T23:48:28.605Z",
+    "expires_utc": null
   },
   "last_qualified": {
     "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
@@ -37,9 +38,11 @@
       "readback_verified": true,
       "implementation_applied": true
     },
-    "pending_runs": [],
+    "pending_runs": [
+      41363538430
+    ],
     "source_candidate": "54d58d643fce107aa635b3385675e9d4b9311f52",
-    "next_executable_action": "Dispatch frozen full validation64db4b62eb0f29052149ec6c17a5a4a3097bb6c6 once after reconciled release of R2; original receiving required. Never repeat accepted targeted R2 run41359309233.",
+    "next_executable_action": "Reconcile fresh CURRENT ownership, sole Work task state, all-event active workflows and newer receipts/successors. If original full run41363538430/job125018816463 attempt1 remains active, do not duplicate/cancel/interrupt it. At terminal receive original artifacts using preparation9b3437628c05f26c5ebe7ea89761a4f0e5501897; verify compile164focused396cards19239ordinary43exacthistoricalskips64client, immutable source/validation/workflow, complete artifact list and original bytes/hash/manifest/raw reports, protected bindings and every declared gate. Reuse accepted targeted R2 receiptabc37c54 and exact-bound earlier evidence. Only then assess bounded paid-choice admission and continue authorized critical path. No Surge/payment/eligibility/cards/source-departure/multiplayer/games grant.",
     "draft": {
       "commit": "8a5cc62a6a5926a97ba047b3478717d50a0676ff",
       "tree": "259c23c21cbaedc583df39bef06c68e1b10bbb39",
@@ -77,6 +80,24 @@
         "state": "DRAFT_NOT_APPLIED_NOT_COMPILED",
         "reason": "Add explicit distinct ObjectRef assertions across the real SA10 bounce/recast; preserve all existing27identities/assertions. Reconcile original early evidence first."
       }
+    },
+    "source_protocol": {
+      "commit": "54d58d643fce107aa635b3385675e9d4b9311f52",
+      "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-r1-20261101/PROTOCOL.json"
+    },
+    "latest_receiving": {
+      "commit": "abc37c545987f81aba5cc2a974e8f9de945103d1",
+      "path": "experiments/manual-transmission/research/self-alternative-paid-choice-received-r2-20261101/paid-choice-r2-RECEIPT.json",
+      "readback_verified": true,
+      "archive_preserved": true
+    },
+    "receiving_preparation": {
+      "commit": "9b3437628c05f26c5ebe7ea89761a4f0e5501897",
+      "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-receiving-r1-20261101",
+      "readback_verified": true,
+      "synthetic_rejections": 12,
+      "tree_reconstruction_verified": true,
+      "original_artifact_received": false
     }
   },
   "completion_contract": {
@@ -1274,94 +1295,139 @@
       }
     },
     "latest": {
-      "utc": "2026-11-01T15:57:08.690Z",
-      "owner_released": "manual-work-6adbe33033e481918659ce578f64f31e-9f54df74-985c-8333-9afe-78530c0261a5",
+      "utc": "2026-11-01T23:48:28.605Z",
+      "predecessor_commit": "8113adc07212e70f6f3a8452259c11fd5656e8f2",
+      "predecessor_blob": "3b646c5e155840c6c63e12a4b535a1e4dcb7953d",
+      "owner": null,
+      "last_execution_owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
+      "automation_run": "9b802846-30c8-8329-9582-5ea27d5effb1",
       "task_id": "6adbe33033e481918659ce578f64f31e",
-      "automation_run": "9f54df74-985c-8333-9afe-78530c0261a5",
-      "predecessor": "89ef6d0ecec3afc9f9a0f530ce175a5c5ab3afc2",
-      "blob": "301f504f1e57caa66c308da7014df0e0077d03a9",
+      "enabled": true,
+      "schedule_unchanged": true,
       "active_relevant_runs": [
-        41323107878
+        41363538430
       ],
-      "workflow_status": "in_progress",
-      "all_event_statuses_checked": [
-        "in_progress",
-        "queued",
-        "waiting",
-        "requested",
-        "pending"
+      "all_event_statuses": [
+        {
+          "status": "in_progress",
+          "total": 1,
+          "runs": [
+            {
+              "id": 41363538430,
+              "status": "in_progress",
+              "head_sha": "64db4b62eb0f29052149ec6c17a5a4a3097bb6c6",
+              "event": "push"
+            }
+          ]
+        },
+        {
+          "status": "queued",
+          "total": 1,
+          "runs": [
+            {
+              "id": 34749202144,
+              "status": "queued",
+              "head_sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042",
+              "event": "pull_request"
+            }
+          ]
+        },
+        {
+          "status": "waiting",
+          "total": 0,
+          "runs": []
+        },
+        {
+          "status": "requested",
+          "total": 0,
+          "runs": []
+        },
+        {
+          "status": "pending",
+          "total": 0,
+          "runs": []
+        }
       ],
       "ignored_only": 34749202144,
       "newer_receipts_or_successors": false,
-      "preparation": {
-        "commit": "6a483ea3d85db37e27124972ad80d2ffd18d6407",
-        "path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/RECEIVING_REVIEW.json",
-        "receiver_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/receive.py",
-        "inventory_additions_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/dependent-additions.draft.json",
-        "inventory_derivation_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/derive_inventory.py",
-        "assay_review_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/ASSAY_SOURCE_REVIEW.json",
+      "receiver": {
+        "commit": "9b3437628c05f26c5ebe7ea89761a4f0e5501897",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-receiving-r1-20261101",
         "readback_verified": true,
-        "state": "ORIGINAL_RECEIVER_AND_DEPENDENT_DRAFT_PREPARED_NOT_ACCEPTED",
-        "synthetic_corruptions_rejected": 12,
-        "snapshot_synthetic_corruptions_reused": 5,
-        "derived_ordinary_rows": 19212,
-        "derived_card_rows": 396,
-        "historical_skips": 43,
-        "client_rows": 64,
-        "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
-        "frozen_source_unchanged": true
+        "synthetic_rejections": 12,
+        "tree_reconstruction_verified": true,
+        "original_artifact_received": false
       },
-      "schedule_unchanged": true,
-      "accepted_work_not_rerun": true,
-      "continuous_execution_claimed": false,
-      "reason": "External dependency pending: sole R2 qualification41323107878/job124897314878 remains in_progress. Exact original receiver,12 synthetic integrity controls,deterministic dependent inventory and isolated MH3 Assay input method are saved and immutable-readback verified. Original reports and generated snapshot are required before source-specific full qualification can be frozen; no further safely independent authorized work remains before that evidence. Ownership released; no continuous execution implied.",
-      "guidance": "Follow CURRENT.summary and next.next_executable_action; all earlier current-run references are historical."
+      "reason": "External dependency pending: sole full compatibility run41363538430 is in_progress. Original receiving infrastructure,12 synthetic integrity checks and independent full source-tree proof are complete, immutable and readback verified at9b3437628c05f26c5ebe7ea89761a4f0e5501897. Targeted R2 original evidence is accepted and archived. Further source-specific full admission requires original full reports; remaining card/dependency source review is already saved and excluded implementation requires separate grants. No useful safely independent authorized work remains before that evidence. Ownership released; no continuous execution implied."
     },
     "last_release": {
-      "utc": "2026-11-01T15:57:08.690Z",
-      "owner_released": "manual-work-6adbe33033e481918659ce578f64f31e-9f54df74-985c-8333-9afe-78530c0261a5",
+      "utc": "2026-11-01T23:48:28.605Z",
+      "predecessor_commit": "8113adc07212e70f6f3a8452259c11fd5656e8f2",
+      "predecessor_blob": "3b646c5e155840c6c63e12a4b535a1e4dcb7953d",
+      "owner": null,
+      "last_execution_owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
+      "automation_run": "9b802846-30c8-8329-9582-5ea27d5effb1",
       "task_id": "6adbe33033e481918659ce578f64f31e",
-      "automation_run": "9f54df74-985c-8333-9afe-78530c0261a5",
-      "predecessor": "89ef6d0ecec3afc9f9a0f530ce175a5c5ab3afc2",
-      "blob": "301f504f1e57caa66c308da7014df0e0077d03a9",
+      "enabled": true,
+      "schedule_unchanged": true,
       "active_relevant_runs": [
-        41323107878
+        41363538430
       ],
-      "workflow_status": "in_progress",
-      "all_event_statuses_checked": [
-        "in_progress",
-        "queued",
-        "waiting",
-        "requested",
-        "pending"
+      "all_event_statuses": [
+        {
+          "status": "in_progress",
+          "total": 1,
+          "runs": [
+            {
+              "id": 41363538430,
+              "status": "in_progress",
+              "head_sha": "64db4b62eb0f29052149ec6c17a5a4a3097bb6c6",
+              "event": "push"
+            }
+          ]
+        },
+        {
+          "status": "queued",
+          "total": 1,
+          "runs": [
+            {
+              "id": 34749202144,
+              "status": "queued",
+              "head_sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042",
+              "event": "pull_request"
+            }
+          ]
+        },
+        {
+          "status": "waiting",
+          "total": 0,
+          "runs": []
+        },
+        {
+          "status": "requested",
+          "total": 0,
+          "runs": []
+        },
+        {
+          "status": "pending",
+          "total": 0,
+          "runs": []
+        }
       ],
       "ignored_only": 34749202144,
       "newer_receipts_or_successors": false,
-      "preparation": {
-        "commit": "6a483ea3d85db37e27124972ad80d2ffd18d6407",
-        "path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/RECEIVING_REVIEW.json",
-        "receiver_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/receive.py",
-        "inventory_additions_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/dependent-additions.draft.json",
-        "inventory_derivation_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/derive_inventory.py",
-        "assay_review_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/ASSAY_SOURCE_REVIEW.json",
+      "receiver": {
+        "commit": "9b3437628c05f26c5ebe7ea89761a4f0e5501897",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-receiving-r1-20261101",
         "readback_verified": true,
-        "state": "ORIGINAL_RECEIVER_AND_DEPENDENT_DRAFT_PREPARED_NOT_ACCEPTED",
-        "synthetic_corruptions_rejected": 12,
-        "snapshot_synthetic_corruptions_reused": 5,
-        "derived_ordinary_rows": 19212,
-        "derived_card_rows": 396,
-        "historical_skips": 43,
-        "client_rows": 64,
-        "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
-        "frozen_source_unchanged": true
+        "synthetic_rejections": 12,
+        "tree_reconstruction_verified": true,
+        "original_artifact_received": false
       },
-      "schedule_unchanged": true,
-      "accepted_work_not_rerun": true,
-      "continuous_execution_claimed": false,
-      "reason": "External dependency pending: sole R2 qualification41323107878/job124897314878 remains in_progress. Exact original receiver,12 synthetic integrity controls,deterministic dependent inventory and isolated MH3 Assay input method are saved and immutable-readback verified. Original reports and generated snapshot are required before source-specific full qualification can be frozen; no further safely independent authorized work remains before that evidence. Ownership released; no continuous execution implied."
+      "reason": "External dependency pending: sole full compatibility run41363538430 is in_progress. Original receiving infrastructure,12 synthetic integrity checks and independent full source-tree proof are complete, immutable and readback verified at9b3437628c05f26c5ebe7ea89761a4f0e5501897. Targeted R2 original evidence is accepted and archived. Further source-specific full admission requires original full reports; remaining card/dependency source review is already saved and excluded implementation requires separate grants. No useful safely independent authorized work remains before that evidence. Ownership released; no continuous execution implied."
     },
     "active_relevant_runs": [
-      41323107878
+      41363538430
     ],
     "owner_run": null,
     "spellskite_ordinary_handoff": {
@@ -1386,7 +1452,7 @@
       "completed_stages_repeated": false
     },
     "current_work_invocation": {
-      "run": "9f54df74-985c-8333-9afe-78530c0261a5",
+      "run": "9b802846-30c8-8329-9582-5ea27d5effb1",
       "state": "RELEASED",
       "owner": null,
       "continuous_execution_claimed": false
@@ -2207,14 +2273,14 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
-    "automation_run": "fc7ff521-8f24-8332-a379-bf4522a1f24b",
+    "automation_run": "9b802846-30c8-8329-9582-5ea27d5effb1",
     "work_owner": null,
-    "last_execution_owner": "manual-work-fc7ff521-8f24-8332-a379-bf4522a1f24b-paid-choice-receiving",
+    "last_execution_owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
     "scheduled_executor": "ENABLED",
     "activity": "WAITING_EXTERNAL",
-    "automation_reconciliation": "Sole Work remains enabled with exact original hourly schedule; current run8e019050-a10c-8327-b958-465ec217ef50 owns this release. No task changes. Live all-event scans:41354199921 in_progress; only ancient unrelatedPest34749202144 queued; waiting/requested/pending empty."
+    "automation_reconciliation": "Sole Work enabled with preserved hourly schedule. Exact current invocation9b802846-30c8-8329-9582-5ea27d5effb1 released ownership. All-event five-state scan:full41363538430 active; only unrelated ancientPest34749202144 ignored. No task changes. Follow live summary/next; prior run references historical."
   },
   "blockers": [],
   "qualified_components": {
@@ -2905,7 +2971,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "External dependency pending: sole full compatibility run41363538430 is in_progress. Original receiving infrastructure,12 synthetic integrity checks and independent full source-tree proof are complete, immutable and readback verified at9b3437628c05f26c5ebe7ea89761a4f0e5501897. Targeted R2 original evidence is accepted and archived. Further source-specific full admission requires original full reports; remaining card/dependency source review is already saved and excluded implementation requires separate grants. No useful safely independent authorized work remains before that evidence. Ownership released; no continuous execution implied.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -2933,22 +2999,22 @@
       "Paid-choice targeted controls verified atabc37c545987f81aba5cc2a974e8f9de945103d1:4forms compiled,27normal27restored,29exactassertionwitnesses52controls,zeroerrors/skips; serialization/entrymerge/explicitselection/generationcleanup verified. Full marker admission still withheld."
     ],
     "unfinished_implementation": [
-      "Bounded transport production unchanged fromb302ac4b. Successor0ed5abb8 adds only ObjectRef generation assertions to SA10 while preserving all27identities/all originalassertions, and corrects omitted mark_all SA10 witness; R2 qualification active.",
-      "Amphin Mutineer and Veil of Summer remain unregistered/unqualified; opponent coverage and multiplayer/pilot/hidden-information/telemetry/replay/frozen-input gates remain unadmitted."
+      "Bounded explicit SELF_ALTERNATIVE durable transport implemented and targeted controls verified; full source-specific admission pending.",
+      "Amphin Mutineer and Veil of Summer remain unregistered/unqualified; Surge, source-departure behavior, opponent coverage and multiplayer/pilot/hidden-information/telemetry/replay/frozen-input gates remain unadmitted."
     ],
     "pending_evidence": [
-      "R2 run41359309233 attempt1: all4forms must compile before behavioral observations; exact27normal/restored and29negativewitnesses52controls plus additivegeneration assertions require original receiving.",
-      "Same-source full compilation,19212originalordinary+27additive identities/43historicalskips396cards64client and affectedfocused gates remain mandatory; no paid-choice admission."
+      "Full run41363538430 attempt1 on54d58d643fce107aa635b3385675e9d4b9311f52 remains in_progress: freshcompile164focused396cards19239ordinary(19212original+27additive)/43historicalskips64client and original-artifact receiving mandatory."
     ],
     "source_protocol": {
-      "commit": "0ed5abb8ed8df8446c2460d4a64be38038a3ed6d",
-      "path": "experiments/manual-transmission/research/self-alternative-paid-choice-early-r2-20261101/PROTOCOL.json"
+      "commit": "54d58d643fce107aa635b3385675e9d4b9311f52",
+      "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-r1-20261101/PROTOCOL.json"
     },
     "latest_receiving": {
-      "commit": "afaf235f34ecc8a7820ed0a4760aa54ac256d1d3",
-      "path": "experiments/manual-transmission/research/self-alternative-paid-choice-received-r1-20261101/paid-choice-RECEIPT.json",
+      "commit": "abc37c545987f81aba5cc2a974e8f9de945103d1",
+      "path": "experiments/manual-transmission/research/self-alternative-paid-choice-received-r2-20261101/paid-choice-r2-RECEIPT.json",
       "readback_verified": true,
-      "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_CONTRACT_MISMATCH_NOT_ADMISSION"
+      "archive_preserved": true,
+      "state": "ORIGINAL_TARGETED_CONTROLS_VERIFIED_NOT_FULL_ADMISSION"
     },
     "admission": {
       "commit": "a115b7555d2f4272062010b03332260de8d5a303",
@@ -2958,17 +3024,18 @@
       "readback_verified": true,
       "original_archive_preserved": true
     },
-    "concrete_blocker_removed": "Original evidence resolved the strict-receiving rejection: mark_all correctly failed SA10 normal recast at original line175, omitted from frozen witness list. Failure preserved; exact contract corrected without changing any gameplay expectation. No new capability accepted.",
-    "continuation_state": "WORKING",
-    "actual_stopping_reason": null,
+    "concrete_blocker_removed": "Targeted original evidence now verifies explicit selected-choice transport, serialization/entry merge, generation cleanup and executable negative controls:4compiledforms27normal27restored29assertionwitnesses52controls. Original R1 contract mismatch remains archived; all existing assertions and identities preserved. Full marker admission remains withheld.",
+    "continuation_state": "WAITING_EXTERNAL",
+    "actual_stopping_reason": "External dependency pending: sole full compatibility run41363538430 is in_progress. Original receiving infrastructure,12 synthetic integrity checks and independent full source-tree proof are complete, immutable and readback verified at9b3437628c05f26c5ebe7ea89761a4f0e5501897. Targeted R2 original evidence is accepted and archived. Further source-specific full admission requires original full reports; remaining card/dependency source review is already saved and excluded implementation requires separate grants. No useful safely independent authorized work remains before that evidence. Ownership released; no continuous execution implied.",
     "ownership": {
-      "state": "ACTIVE",
-      "owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
+      "state": "RELEASED",
+      "owner": null,
+      "last_owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
       "run_id": "9b802846-30c8-8329-9582-5ea27d5effb1",
-      "claimed_utc": "2026-11-01T23:40:01.340Z",
-      "expires_utc": "2026-11-02T00:40:01.340Z"
+      "released_utc": "2026-11-01T23:48:28.605Z",
+      "expires_utc": null
     },
-    "next_executable_action": "Dispatch frozen full validation64db4b62eb0f29052149ec6c17a5a4a3097bb6c6 once after reconciled release of R2; original receiving required. Never repeat accepted targeted R2 run41359309233.",
+    "next_executable_action": "Reconcile fresh CURRENT ownership, sole Work task state, all-event active workflows and newer receipts/successors. If original full run41363538430/job125018816463 attempt1 remains active, do not duplicate/cancel/interrupt it. At terminal receive original artifacts using preparation9b3437628c05f26c5ebe7ea89761a4f0e5501897; verify compile164focused396cards19239ordinary43exacthistoricalskips64client, immutable source/validation/workflow, complete artifact list and original bytes/hash/manifest/raw reports, protected bindings and every declared gate. Reuse accepted targeted R2 receiptabc37c54 and exact-bound earlier evidence. Only then assess bounded paid-choice admission and continue authorized critical path. No Surge/payment/eligibility/cards/source-departure/multiplayer/games grant.",
     "next_admission": {
       "commit": "c66e9220edb3949e039472acc40ab789a35b4cad",
       "path": "experiments/manual-transmission/research/self-alternative-paid-choice-proposal-r1-20261101/NEXT_ADMISSION.json",
@@ -3037,7 +3104,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-01T23:43:57.632Z",
+  "updated_utc": "2026-11-01T23:48:28.605Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -4539,7 +4606,7 @@
     "artifact_sha256": "sha256:879f74749b54f7d636f848c6981bf45470a392a8d40023008af219d1ab79908b",
     "manifest_entries": 259
   },
-  "last_execution_owner": "manual-work-fc7ff521-8f24-8332-a379-bf4522a1f24b-paid-choice-receiving",
+  "last_execution_owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
   "spellskite_behavior_r1": {
     "state": "ORIGINAL_BEHAVIORAL_FAILURE_RECEIVED",
     "source": "f58a64db3a133d86090dddf9776e622c981298cc",
@@ -26134,7 +26201,7 @@
     "status": "WAITING_EXTERNAL"
   },
   "self_alternative_paid_choice_full_r1": {
-    "state": "FROZEN_NOT_DISPATCHED",
+    "state": "WAITING_EXTERNAL",
     "source": "54d58d643fce107aa635b3385675e9d4b9311f52",
     "tree": "00a9a4a54549685905f5514ecd02582d9eb51b4a",
     "validation": "64db4b62eb0f29052149ec6c17a5a4a3097bb6c6",
@@ -26152,6 +26219,252 @@
       "client": 64
     },
     "production_unchanged": true,
-    "readback_verified": true
+    "readback_verified": true,
+    "run": 41363538430,
+    "job": 125018816463,
+    "attempt": 1,
+    "event": "push",
+    "dispatched": true,
+    "branch": "validation/manual-self-alternative-paid-choice-full-r1-20261101",
+    "workflow_status": "in_progress",
+    "artifact_name": "manual-self-alternative-paid-choice-full-r1-41363538430",
+    "receiving_preparation": {
+      "commit": "9b3437628c05f26c5ebe7ea89761a4f0e5501897",
+      "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-receiving-r1-20261101",
+      "readback_verified": true,
+      "synthetic_rejections": 12,
+      "tree_reconstruction_verified": true,
+      "original_artifact_received": false
+    }
+  },
+  "history_before_paid_choice_full_wait_20261101": {
+    "summary": {
+      "accepted_capabilities": [
+        "Authoritative occurrence/group/current-target and original-source characteristics; calibrated generator; public occurrence UI/matrix and actual activated Phyrexian payment accepted under preserved receipts.",
+        "Spellskite full22families/49behavioral cases and same-source compatibility accepted at34676300/a50d97c6. Bounded canonical NPH159/CLB873 production registration accepted atcdb1bc6c; existing accepted evidence reused without reruns.",
+        "Original seedless registry inventory accepted at e5c5b2a387b8e2cc528d17db7c20267e3938d516: compile-first,1inventorycase0skips,1021manifest,250initial/finalbindings,8decks800orderedrows487resolved. Manual94/100; opponents393/700. This removes uncertainty about exact current registry coverage, not semantic or multiplayer admission.",
+        "Exact authorized one-test regression qualified and original evidence verified at57e1cff2:3compiledforms,65normal+65restored,2assertionnegativewitnesses+28controls,389cards,19074ordinaryrows/43exacthistoricalskips,64client; all source/restoration/protected bindings preserved.",
+        "Bolt Bend bounded early behavioral gates verified at44d9920c combined withd2fd821b:9distinctcompiledforms,16normal16restored,38negativewitnesses90controls,0skips; full repair and combined Fblthp admission subsequently accepted at2d4a2fba as recorded below.",
+        "Combined Bolt Bend repair and Fblthp entry-origin/generic targeting/WAR50 card admission accepted at2d4a2fbac7910b180a7a9b1778f81cbae6a3d230 on180b67fb. Original full compatibility verified:81focused389cards19090ordinary43unchangedskips64client and original WAR differential preserved. Source-bound prior metadata/printing/discovery/lint/snapshot/IR/negative evidence reused; no extra tests dispatched.",
+        "Bounded Opal Palace rider and canonical C13#310 accepted at2320eb33 on d5f258de: original early18compiledforms56normal56restored18witnesses170controls reused; compile137focused exact-bound reused;390cards19139ordinary43exacthistoricalskips64client plus metadata/printing/lint/discovery/snapshot and classified C13/WAR original evidence. Full original receiptcc405f3f (5450manifest,625archivefiles) immutable verified. C13 grammar declines are not semantic passes.",
+        "Disciple bounded runtime extension gate verified at43e383148f0a09a715f3ae67e8ce4dcecf61f698: all4forms compile first;51normal51restored/0skips,3exactnegative witnesses16unaffectedcontrols,sourceforms/restoration/protectedbytes verified from original634330byteartifact. Card/fulladmission withheld.",
+        "Disciple non-targeted selection bounded controls verified at677a7a45: original20formscompiled67normal67restored6registration+restored,24exactassertionwitnesses57controls,450manifest,zero skips/errors; original shroud failure reproduced by targeting regression mutant. Card/fulladmission pending.",
+        "Disciple MH3#250 bounded card admission accepted ata115b7555d2f4272062010b03332260de8d5a303: original full compile137focused396cards19212ordinary43exacthistoricalskips64client;294SHA256+27gitbindings;5496manifest;original36,644,202byte ZIP preserved in48binaryparts. Original24MH3entries unchanged plus one additiveDisciple. Printing/discovery/lint/snapshot and Assayclassification verified; no newdivergence, explicitmultifaceexclusion is notsemanticpass.",
+        "Paid-choice targeted controls verified atabc37c545987f81aba5cc2a974e8f9de945103d1:4forms compiled,27normal27restored,29exactassertionwitnesses52controls,zeroerrors/skips; serialization/entrymerge/explicitselection/generationcleanup verified. Full marker admission still withheld."
+      ],
+      "unfinished_implementation": [
+        "Bounded transport production unchanged fromb302ac4b. Successor0ed5abb8 adds only ObjectRef generation assertions to SA10 while preserving all27identities/all originalassertions, and corrects omitted mark_all SA10 witness; R2 qualification active.",
+        "Amphin Mutineer and Veil of Summer remain unregistered/unqualified; opponent coverage and multiplayer/pilot/hidden-information/telemetry/replay/frozen-input gates remain unadmitted."
+      ],
+      "pending_evidence": [
+        "R2 run41359309233 attempt1: all4forms must compile before behavioral observations; exact27normal/restored and29negativewitnesses52controls plus additivegeneration assertions require original receiving.",
+        "Same-source full compilation,19212originalordinary+27additive identities/43historicalskips396cards64client and affectedfocused gates remain mandatory; no paid-choice admission."
+      ],
+      "source_protocol": {
+        "commit": "0ed5abb8ed8df8446c2460d4a64be38038a3ed6d",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-early-r2-20261101/PROTOCOL.json"
+      },
+      "latest_receiving": {
+        "commit": "afaf235f34ecc8a7820ed0a4760aa54ac256d1d3",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-received-r1-20261101/paid-choice-RECEIPT.json",
+        "readback_verified": true,
+        "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_CONTRACT_MISMATCH_NOT_ADMISSION"
+      },
+      "admission": {
+        "commit": "a115b7555d2f4272062010b03332260de8d5a303",
+        "path": "experiments/manual-transmission/research/disciple-dependent-received-r1-20261101/ADMISSION.json",
+        "source": "2fe23b5f8769299317f101ee4877e0eaa1fe8926",
+        "card_admitted": true,
+        "readback_verified": true,
+        "original_archive_preserved": true
+      },
+      "concrete_blocker_removed": "Original evidence resolved the strict-receiving rejection: mark_all correctly failed SA10 normal recast at original line175, omitted from frozen witness list. Failure preserved; exact contract corrected without changing any gameplay expectation. No new capability accepted.",
+      "continuation_state": "WORKING",
+      "actual_stopping_reason": null,
+      "ownership": {
+        "state": "ACTIVE",
+        "owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
+        "run_id": "9b802846-30c8-8329-9582-5ea27d5effb1",
+        "claimed_utc": "2026-11-01T23:40:01.340Z",
+        "expires_utc": "2026-11-02T00:40:01.340Z"
+      },
+      "next_executable_action": "Dispatch frozen full validation64db4b62eb0f29052149ec6c17a5a4a3097bb6c6 once after reconciled release of R2; original receiving required. Never repeat accepted targeted R2 run41359309233.",
+      "next_admission": {
+        "commit": "c66e9220edb3949e039472acc40ab789a35b4cad",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-proposal-r1-20261101/NEXT_ADMISSION.json",
+        "state": "IMPLEMENTED_FROZEN_PENDING_QUALIFICATION",
+        "readback_verified": true,
+        "implementation_applied": true
+      },
+      "automation_state": "ENABLED_AUTHORIZED_EXECUTION"
+    },
+    "next": {
+      "dependency": "Bounded self-alternative paid-choice transport prerequisite",
+      "proposal": {
+        "commit": "c66e9220edb3949e039472acc40ab789a35b4cad",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-proposal-r1-20261101/NEXT_ADMISSION.json",
+        "state": "IMPLEMENTED_FROZEN_PENDING_QUALIFICATION",
+        "readback_verified": true,
+        "implementation_applied": true
+      },
+      "pending_runs": [],
+      "source_candidate": "54d58d643fce107aa635b3385675e9d4b9311f52",
+      "next_executable_action": "Dispatch frozen full validation64db4b62eb0f29052149ec6c17a5a4a3097bb6c6 once after reconciled release of R2; original receiving required. Never repeat accepted targeted R2 run41359309233.",
+      "draft": {
+        "commit": "8a5cc62a6a5926a97ba047b3478717d50a0676ff",
+        "tree": "259c23c21cbaedc583df39bef06c68e1b10bbb39",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-draft-r1-20261101/DRAFT.json",
+        "readback_verified": true,
+        "compiled": false,
+        "production_applied": false,
+        "dispatched": false,
+        "qualified": false,
+        "draft_tests": 3
+      },
+      "preparation": {
+        "state": "ISOLATED_PREPARATION_COMPLETE_NOT_QUALIFICATION",
+        "commit": "85da4d9849cb7453bf70ade801d2f0f485f90e98",
+        "tree": "f41df465e43e65c46a8e483c824d2bd3ac137229",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-receiving-preparation-r1-20261101",
+        "readback_verified": true,
+        "receiver_synthetic": {
+          "positive_fixture": "pass",
+          "rejections": 13,
+          "gameplay_evidence": false
+        },
+        "inventory": {
+          "accepted_baseline_receipt": "a115b7555d2f4272062010b03332260de8d5a303",
+          "original_ordinary": 19212,
+          "original_skips": 43,
+          "additive_cases": 27,
+          "ordinary_candidate": 19239,
+          "cards": 396,
+          "client": 64,
+          "baseline_identities_unchanged": true
+        },
+        "generation_supplement": {
+          "file": "paid-choice-generation-supplement.patch",
+          "state": "DRAFT_NOT_APPLIED_NOT_COMPILED",
+          "reason": "Add explicit distinct ObjectRef assertions across the real SA10 bounce/recast; preserve all existing27identities/assertions. Reconcile original early evidence first."
+        }
+      }
+    },
+    "lease": {
+      "state": "ACTIVE",
+      "owner": "manual-work-9b802846-30c8-8329-9582-5ea27d5effb1-paid-choice-r2",
+      "run_id": "9b802846-30c8-8329-9582-5ea27d5effb1",
+      "claimed_utc": "2026-11-01T23:40:01.340Z",
+      "expires_utc": "2026-11-02T00:40:01.340Z"
+    },
+    "execution_channel": {
+      "primary": "Work execution conversation",
+      "session": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
+      "automation_run": "fc7ff521-8f24-8332-a379-bf4522a1f24b",
+      "work_owner": null,
+      "last_execution_owner": "manual-work-fc7ff521-8f24-8332-a379-bf4522a1f24b-paid-choice-receiving",
+      "discussion": "READ_ONLY",
+      "intervention_watch": "READ_ONLY",
+      "scheduled_executor": "ENABLED",
+      "activity": "WAITING_EXTERNAL",
+      "automation_reconciliation": "Sole Work remains enabled with exact original hourly schedule; current run8e019050-a10c-8327-b958-465ec217ef50 owns this release. No task changes. Live all-event scans:41354199921 in_progress; only ancient unrelatedPest34749202144 queued; waiting/requested/pending empty."
+    },
+    "reconcile_current": {
+      "latest": {
+        "utc": "2026-11-01T15:57:08.690Z",
+        "owner_released": "manual-work-6adbe33033e481918659ce578f64f31e-9f54df74-985c-8333-9afe-78530c0261a5",
+        "task_id": "6adbe33033e481918659ce578f64f31e",
+        "automation_run": "9f54df74-985c-8333-9afe-78530c0261a5",
+        "predecessor": "89ef6d0ecec3afc9f9a0f530ce175a5c5ab3afc2",
+        "blob": "301f504f1e57caa66c308da7014df0e0077d03a9",
+        "active_relevant_runs": [
+          41323107878
+        ],
+        "workflow_status": "in_progress",
+        "all_event_statuses_checked": [
+          "in_progress",
+          "queued",
+          "waiting",
+          "requested",
+          "pending"
+        ],
+        "ignored_only": 34749202144,
+        "newer_receipts_or_successors": false,
+        "preparation": {
+          "commit": "6a483ea3d85db37e27124972ad80d2ffd18d6407",
+          "path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/RECEIVING_REVIEW.json",
+          "receiver_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/receive.py",
+          "inventory_additions_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/dependent-additions.draft.json",
+          "inventory_derivation_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/derive_inventory.py",
+          "assay_review_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/ASSAY_SOURCE_REVIEW.json",
+          "readback_verified": true,
+          "state": "ORIGINAL_RECEIVER_AND_DEPENDENT_DRAFT_PREPARED_NOT_ACCEPTED",
+          "synthetic_corruptions_rejected": 12,
+          "snapshot_synthetic_corruptions_reused": 5,
+          "derived_ordinary_rows": 19212,
+          "derived_card_rows": 396,
+          "historical_skips": 43,
+          "client_rows": 64,
+          "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
+          "frozen_source_unchanged": true
+        },
+        "schedule_unchanged": true,
+        "accepted_work_not_rerun": true,
+        "continuous_execution_claimed": false,
+        "reason": "External dependency pending: sole R2 qualification41323107878/job124897314878 remains in_progress. Exact original receiver,12 synthetic integrity controls,deterministic dependent inventory and isolated MH3 Assay input method are saved and immutable-readback verified. Original reports and generated snapshot are required before source-specific full qualification can be frozen; no further safely independent authorized work remains before that evidence. Ownership released; no continuous execution implied.",
+        "guidance": "Follow CURRENT.summary and next.next_executable_action; all earlier current-run references are historical."
+      },
+      "last_release": {
+        "utc": "2026-11-01T15:57:08.690Z",
+        "owner_released": "manual-work-6adbe33033e481918659ce578f64f31e-9f54df74-985c-8333-9afe-78530c0261a5",
+        "task_id": "6adbe33033e481918659ce578f64f31e",
+        "automation_run": "9f54df74-985c-8333-9afe-78530c0261a5",
+        "predecessor": "89ef6d0ecec3afc9f9a0f530ce175a5c5ab3afc2",
+        "blob": "301f504f1e57caa66c308da7014df0e0077d03a9",
+        "active_relevant_runs": [
+          41323107878
+        ],
+        "workflow_status": "in_progress",
+        "all_event_statuses_checked": [
+          "in_progress",
+          "queued",
+          "waiting",
+          "requested",
+          "pending"
+        ],
+        "ignored_only": 34749202144,
+        "newer_receipts_or_successors": false,
+        "preparation": {
+          "commit": "6a483ea3d85db37e27124972ad80d2ffd18d6407",
+          "path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/RECEIVING_REVIEW.json",
+          "receiver_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/receive.py",
+          "inventory_additions_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/dependent-additions.draft.json",
+          "inventory_derivation_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/derive_inventory.py",
+          "assay_review_path": "experiments/manual-transmission/research/disciple-card-controls-receiving-r2-20261101/ASSAY_SOURCE_REVIEW.json",
+          "readback_verified": true,
+          "state": "ORIGINAL_RECEIVER_AND_DEPENDENT_DRAFT_PREPARED_NOT_ACCEPTED",
+          "synthetic_corruptions_rejected": 12,
+          "snapshot_synthetic_corruptions_reused": 5,
+          "derived_ordinary_rows": 19212,
+          "derived_card_rows": 396,
+          "historical_skips": 43,
+          "client_rows": 64,
+          "inventory_sha256": "32ff6d748e30118f20b4784ad83cbbf126db86f1feb6b24b49711af1ce0ed107",
+          "frozen_source_unchanged": true
+        },
+        "schedule_unchanged": true,
+        "accepted_work_not_rerun": true,
+        "continuous_execution_claimed": false,
+        "reason": "External dependency pending: sole R2 qualification41323107878/job124897314878 remains in_progress. Exact original receiver,12 synthetic integrity controls,deterministic dependent inventory and isolated MH3 Assay input method are saved and immutable-readback verified. Original reports and generated snapshot are required before source-specific full qualification can be frozen; no further safely independent authorized work remains before that evidence. Ownership released; no continuous execution implied."
+      },
+      "current_work_invocation": {
+        "run": "9f54df74-985c-8333-9afe-78530c0261a5",
+        "state": "RELEASED",
+        "owner": null,
+        "continuous_execution_claimed": false
+      },
+      "active_relevant_runs": [
+        41323107878
+      ]
+    }
   }
 }
