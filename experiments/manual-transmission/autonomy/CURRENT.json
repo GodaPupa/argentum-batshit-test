@@ -1854,7 +1854,7 @@
   "automation": {
     "execution_task": "Manual Work Continuation",
     "execution_task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_schedule": "Existing sole Work executor resumed for explicit bounded Disciple runtime grant; stored schedule unchanged.",
+    "execution_schedule": "Sole Work executor enabled; original schedule preserved.",
     "intervention_watch": {
       "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
       "enabled": false,
@@ -1939,7 +1939,7 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "PAUSED_AUTHORITY_BLOCKER",
+    "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
     "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
     "next_authorized_action": "Follow live CURRENT.summary and next.next_executable_action; historical run references are archival.",
     "execution_efficiency_policy": {
@@ -2019,8 +2019,8 @@
       "prompt_readback_verified": true
     },
     "previous_execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
-    "is_enabled": false,
-    "resume_requested": true,
+    "is_enabled": true,
+    "resume_requested": false,
     "previous_pause": {
       "utc": "2026-10-28T16:47:53Z",
       "reason": "Scheduled runtime requires pausing fully blocked tasks; proposal awaiting explicit protected-boundary authorization.",
@@ -2130,6 +2130,14 @@
       "reason": "Scheduled runtime requires pausing fully blocked continuation; experiment not completed.",
       "readback_verified": true,
       "resolved_by": "self_alternative_paid_choice_authorization"
+    },
+    "self_alternative_authority_resume": {
+      "grant": "6e49200f4e6e106a06a60cc69ef5f468c374871c",
+      "enabled": true,
+      "schedule_preserved": true,
+      "prompt_extended_only_with_grant": true,
+      "readback_verified": true,
+      "utc": "2026-11-01T20:01:48.838Z"
     }
   },
   "previous_qualified": {
@@ -2156,7 +2164,7 @@
     "last_execution_owner": "manual-work-639e8dcd-b80c-8321-9a24-5d65b3da6492-full-receiving",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
-    "scheduled_executor": "PAUSED_AUTHORITY_BLOCKER",
+    "scheduled_executor": "ENABLED",
     "activity": "READY_FOR_NEXT_ITERATION",
     "automation_reconciliation": "Prior Work run completed; owner released; no relevant active qualification. Explicit grant recorded; resume existing sole executor with preserved schedule."
   },
@@ -2916,7 +2924,8 @@
       "state": "EXPLICITLY_AUTHORIZED_NOT_IMPLEMENTED",
       "readback_verified": true,
       "implementation_applied": false
-    }
+    },
+    "automation_state": "ENABLED_AUTHORIZED_EXECUTION"
   },
   "generator_calibration_repair_authorization": {
     "state": "AUTHORIZED",
@@ -2977,7 +2986,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-01T20:01:25.371Z",
+  "updated_utc": "2026-11-01T20:01:48.838Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
