@@ -1,0 +1,246 @@
+{
+  "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_FAILURE_NOT_ADMISSION",
+  "zip_bytes": 614916,
+  "zip_sha256": "487d10d5e8f40589d9ff92caf2c825839266503afc63a5761bf1bc903598de78",
+  "manifest_entries": 84,
+  "counts": {
+    "normal": {
+      "total": 29,
+      "failed": 10
+    },
+    "offer_guard": {
+      "total": 29,
+      "failed": 11
+    },
+    "resume_guard": {
+      "total": 29,
+      "failed": 11
+    },
+    "modal_land": {
+      "total": 29,
+      "failed": 11
+    }
+  },
+  "restored_failed": 10,
+  "candidate_witnesses": {
+    "offer_guard": true,
+    "resume_guard": true,
+    "modal_land": true
+  },
+  "card_admitted": false,
+  "full_qualification": false,
+  "metadata_verified": true,
+  "immutable_sources_verified": true,
+  "compile_before_behavior_verified": true,
+  "normal_restored_identical": true,
+  "raw_report_agreement": true,
+  "witnesses": [
+    {
+      "form": "offer_guard",
+      "case": "DF16 two life cannot pay Garden entry cost",
+      "assertion": "d.pendingDecision shouldBe null",
+      "line": 251,
+      "raw_failure": {
+        "failed": true,
+        "failures": [
+          {
+            "type": "org.opentest4j.AssertionFailedError",
+            "message": "org.opentest4j.AssertionFailedError: Expected null but actual was YesNoDecision(id=r0, playerId=e0, prompt=Pay 3 life to have Garden of Freyalise enter untapped?, context=DecisionContext(sourceId=c425a65c-0ed2-4824-afb6-56b5c92bc351, sourceName=Garden of Freyalise, phase=RESOLUTION, triggeringEntityId=null, inlineOnTrigger=false, effectHint=null, subjectEntityId=null, abilityIdentity=null), yesText=Yes, noText=No, hint=null)",
+            "line": [
+              "251"
+            ]
+          }
+        ]
+      },
+      "unaffected_outcomes": 28
+    },
+    {
+      "form": "resume_guard",
+      "case": "DF16 stale serialized payment rejects yes and preserves decline",
+      "assertion": "(rejected.error != null) shouldBe true",
+      "line": 486,
+      "raw_failure": {
+        "failed": true,
+        "failures": [
+          {
+            "type": "org.opentest4j.AssertionFailedError",
+            "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+            "line": [
+              "486"
+            ]
+          }
+        ]
+      },
+      "unaffected_outcomes": 28
+    },
+    {
+      "form": "modal_land",
+      "case": "DF19 exile permission castOnly=false distinguishes Garden play",
+      "assertion": "offered shouldBe !castOnly",
+      "line": 525,
+      "raw_failure": {
+        "failed": true,
+        "failures": [
+          {
+            "type": "org.opentest4j.AssertionFailedError",
+            "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+            "line": [
+              "525"
+            ]
+          }
+        ]
+      },
+      "unaffected_outcomes": 28
+    }
+  ],
+  "unaffected_outcomes": 84,
+  "normal_failures": {
+    "DF01 sacrifice gives exactly five life and five cards": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "86"
+          ]
+        }
+      ]
+    },
+    "DF03 selection rejects the source and still accepts another own creature": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "120"
+          ]
+        }
+      ]
+    },
+    "DF04 selection rejects an opponent creature": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "137"
+          ]
+        }
+      ]
+    },
+    "DF08 source departure before trigger resolution preserves the payoff": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "193"
+          ]
+        }
+      ]
+    },
+    "DF11 full state serialization at optional preserves five power payoff": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "211"
+          ]
+        }
+      ]
+    },
+    "DF11 full state serialization at selection preserves five power payoff": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "211"
+          ]
+        }
+      ]
+    },
+    "DF05 projected boost is captured before the sacrifice": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "270"
+          ]
+        }
+      ]
+    },
+    "DF12 resolution choice of hexproof fodder emits no targeting event": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "338"
+          ]
+        }
+      ]
+    },
+    "DF09 token sacrifice retains projected five power after departure": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "444"
+          ]
+        }
+      ]
+    },
+    "DF10 successful sacrifice redirected to exile retains five power payoff": {
+      "failed": true,
+      "failures": [
+        {
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+          "line": [
+            "473"
+          ]
+        }
+      ]
+    }
+  },
+  "source_bindings": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt": "c6cdd3682ddf70190718077e02fc7d15c2500840",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": "f88855a8d70a7c2c7449c46c228269bb0aa1b60d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt": "2145cae496683983b94722aa24080daec8dca63b",
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt": "77f225e6cf658f5448e54bb99efb42ad9f7b2b67",
+    "experiments/manual-transmission/research/disciple-runtime-early-r1-20261101/PROTOCOL.json": "17e35131821e6692f2bb27ff98934ed1df1ad066",
+    "experiments/manual-transmission/research/disciple-runtime-early-r1-20261101/run.py": "3d2276ec95a6c5df14725ebbb3622af6fa0a91a4",
+    "experiments/manual-transmission/research/disciple-runtime-early-r1-20261101/validation.just": "94c21e7692dc8ede45c936d57f8996d9a6cb0015",
+    ".github/workflows/manual-disciple-runtime-early-r1-20261101.yml": "233e5986990af83830fd20bd420480faa5c255e8"
+  },
+  "protected": {
+    "mtg-sdk": "51b097156bff57e30aeca2d6338ccfc5a62a65e3",
+    "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4",
+    "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+    "mtg-sets/src/test/resources/snapshots/cards/MH3.json": "25b01370752b8d2fe97389c453a300dce833531a"
+  },
+  "binding": {
+    "source": "80b5a52d775dad05801b103ee5e12c0e31edcf39",
+    "tree": "c8e69d893d615b2c98583fc547db9e3d6d7f3bbe",
+    "validation": "260261ebb5207c8265ab4575a38e5b4f5f2aa63d",
+    "validation_tree": "a5ff3c6f3d4dfc523b8a8da6e61afe3afd3f2dc5",
+    "workflow": ".github/workflows/manual-disciple-runtime-early-r1-20261101.yml",
+    "workflow_blob": "233e5986990af83830fd20bd420480faa5c255e8",
+    "run": "41282463247",
+    "attempt": "1",
+    "run_number": "1"
+  }
+}

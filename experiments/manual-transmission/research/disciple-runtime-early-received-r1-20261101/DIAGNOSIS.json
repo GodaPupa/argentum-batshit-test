@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "observed": "Ten normal and restored original cases fail their life25 outcome with actual20. Later checks are not claimed executed. Three runtime guards have exact valid negative witnesses and84unchanged outcomes; this is partial diagnostic evidence, not feature/card admission.",
+  "trace": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/SacrificeTargetExecutor.kt",
+      "blob": "0b1a919bd9c6de167d852287df0011d79b50a15b",
+      "finding": "Captures projected snapshot before trackPermanentSacrifice and zone movement; returns updatedSacrificedPermanents."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "blob": "4dcdd4a78f5a17ccb7dafe32c4d39e4acfe5b03d",
+      "finding": "EffectContinuation drain propagates collections/numbers/chosenValues to the underlying GatedAction frame, not sacrifice snapshots."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/GatedEffectExecutor.kt",
+      "blob": "9addcc586754b09bd15a346dd4da9af7dc00a981",
+      "finding": "Synchronous executeDoAction merges only updatedCollections before evaluateAndDispatch; sacrifice snapshot absent from branch context."
+    }
+  ],
+  "bounded_card_resolution": {
+    "authority": "ee2e8e46850544a41a9775a82a177ee2b790f71a / proposal1d61c80f7e0c2ce898e8dc283208a99a18561e0f",
+    "composition": "May(Composite(SelectTarget(other own creature), StoreNumber(projected Power of stored chosen entity), IfYouDo(SacrificeTarget(chosen), GainLife/DrawCards(stored number), PermanentsSacrificed)))",
+    "equivalence": "StoreNumber has no state mutation. After the existing selection pause drains, StoreNumber reads the chosen creature's projected power immediately before the synchronous SacrificeTarget. Gate snapshot capture is a no-op for PermanentsSacrificed. No intervening effect/decision changes the battlefield before SacrificeTarget captures its own projected snapshot. Both reads use the same projected state. A failed/forbidden sacrifice still suppresses payoff via unchanged PermanentsSacrificed gate. Tokens/exile/source departure use the stored number after movement. This is an unqualified candidate until executable original tests and mutants pass.",
+    "preserve": "No runtime changes; preserve all original tests/assertions. Add a singleton path control to compare prompted and automatic selection. Mutants must drop stored value and bypass success criterion with exact payoff assertions. Full mandatory matrices remain."
+  },
+  "new_boundary_requested": false,
+  "implementation_qualified": false
+}
