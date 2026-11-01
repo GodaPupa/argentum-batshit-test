@@ -1731,7 +1731,7 @@
   "automation": {
     "execution_task": "Manual Work Continuation",
     "execution_task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_schedule": "Existing single Work executor resumed for explicit bounded Opal grant; stored schedule unchanged.",
+    "execution_schedule": "Existing sole Work executor resumed for explicit bounded Disciple runtime grant; stored schedule unchanged.",
     "intervention_watch": {
       "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
       "enabled": false,
@@ -1989,6 +1989,15 @@
       "schedule_preserved": true,
       "prompt_preserved": true,
       "reason": "Separate explicit authority for c3d4c4e78846031cfb76dced6be45ed66cc379f9 NEXT_ADMISSION.json/TEST_MATRIX.json is still absent. Existing card and assertion grants remain valid. Scheduled runtime requires disabling fully blocked continuation.",
+      "readback_verified": true,
+      "resolved_by": "disciple_land_entry_payment_permission_authorization"
+    },
+    "disciple_runtime_boundary_resume": {
+      "authorization_commit": "27aa1d031f7f2dad4dd651358115c0041d288abb",
+      "task": "6adbe33033e481918659ce578f64f31e",
+      "enabled": true,
+      "schedule_preserved": true,
+      "prompt_preserved": true,
       "readback_verified": true
     }
   },
@@ -2784,7 +2793,8 @@
       "automation_run": "54bfc18c-e7fc-8320-a884-c8712c4cd441",
       "released_utc": "2026-10-31T22:54:57.743Z",
       "expires_utc": null,
-      "reason": "Grant recorded for transfer to the existing sole Work executor; no foreground implementation owner claimed."
+      "reason": "Grant recorded for transfer to the existing sole Work executor; no foreground implementation owner claimed.",
+      "continuation_enabled": true
     },
     "read_sections": [
       {
