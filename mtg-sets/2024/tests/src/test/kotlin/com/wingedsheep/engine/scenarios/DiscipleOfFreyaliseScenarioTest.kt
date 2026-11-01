@@ -792,7 +792,7 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
         val me = d.activePlayer!!
         d.registerCard(card("Disciple land prohibition fixture") {
             typeLine = "Enchantment"
-            staticAbility(com.wingedsheep.sdk.scripting.PlayersCantPlayLands())
+            staticAbility { ability = com.wingedsheep.sdk.scripting.PlayersCantPlayLands() }
         })
         d.putPermanentOnBattlefield(me, "Disciple land prohibition fixture")
         val id = d.putCardInExile(me, "Disciple of Freyalise")
