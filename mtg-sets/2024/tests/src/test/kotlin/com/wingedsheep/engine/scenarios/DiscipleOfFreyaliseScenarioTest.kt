@@ -74,6 +74,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
     test("DF01 sacrifice gives exactly five life and five cards") {
         val d = driver()
         val me = d.activePlayer!!
+        // Two eligible own creatures force the existing resolution-selection pause.
+        val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         val source = cast(d)
         val hand = d.getHandSize(me)
@@ -106,6 +108,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
     test("DF03 selection rejects the source and still accepts another own creature") {
         val d = driver()
         val me = d.activePlayer!!
+        // Two eligible own creatures force the existing resolution-selection pause.
+        val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         val source = cast(d)
         d.submitYesNo(me, true).error shouldBe null
@@ -119,6 +123,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
     test("DF04 selection rejects an opponent creature") {
         val d = driver()
         val me = d.activePlayer!!
+        // Two eligible own creatures force the existing resolution-selection pause.
+        val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         val opp = d.getOpponent(me)
         val own = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         val foreign = d.putCreatureOnBattlefield(opp, "Disciple test fodder")
@@ -135,6 +141,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
         test("DF06 power $power sacrifices without drawing or losing life") {
             val d = driver(power)
             val me = d.activePlayer!!
+            // Two eligible own creatures force the existing resolution-selection pause.
+            val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
             val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
             if (power < 0) {
                 d.registerCard(CardDefinition.instant(
@@ -168,6 +176,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
     test("DF08 source departure before trigger resolution preserves the payoff") {
         val d = driver()
         val me = d.activePlayer!!
+        // Two eligible own creatures force the existing resolution-selection pause.
+        val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         d.giveMana(me, Color.GREEN, 3)
         d.giveColorlessMana(me, 3)
@@ -189,6 +199,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
         test("DF11 full state serialization at $pause preserves five power payoff") {
             val d = driver()
             val me = d.activePlayer!!
+            // Two eligible own creatures force the existing resolution-selection pause.
+            val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
             val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
             cast(d)
             val hand = d.getHandSize(me)
@@ -244,6 +256,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
     test("DF05 projected boost is captured before the sacrifice") {
         val d = driver(2)
         val me = d.activePlayer!!
+        // Two eligible own creatures force the existing resolution-selection pause.
+        val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         d.giveMana(me, Color.GREEN, 1)
         val growth = d.putCardInHand(me, "Giant Growth")
@@ -305,6 +319,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
     test("DF12 resolution choice of hexproof fodder emits no targeting event") {
         val d = driver()
         val me = d.activePlayer!!
+        // Two eligible own creatures force the existing resolution-selection pause.
+        val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         d.registerCard(card("Disciple hexproof fodder") {
             manaCost = "{G}"
             typeLine = "Creature — Bear"
@@ -412,6 +428,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
     test("DF09 token sacrifice retains projected five power after departure") {
         val d = driver(2)
         val me = d.activePlayer!!
+        // Two eligible own creatures force the existing resolution-selection pause.
+        val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         val token = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         d.addComponent(token, TokenComponent)
         d.giveMana(me, Color.GREEN, 1)
@@ -431,6 +449,8 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
     test("DF10 successful sacrifice redirected to exile retains five power payoff") {
         val d = driver()
         val me = d.activePlayer!!
+        // Two eligible own creatures force the existing resolution-selection pause.
+        val unchosen = d.putCreatureOnBattlefield(me, "Disciple test fodder")
         d.registerCard(card("Disciple exile replacement") {
             typeLine = "Enchantment"
             replacementEffect(RedirectZoneChange(
@@ -452,6 +472,27 @@ class DiscipleOfFreyaliseScenarioTest : FunSpec({
         d.getExile(me).contains(fodder) shouldBe true
         d.getLifeTotal(me) shouldBe 25
         d.getHandSize(me) shouldBe hand + 5
+    }
+
+    test("DF16 stale serialized payment rejects yes and preserves decline") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val id = d.putCardInHand(me, "Disciple of Freyalise")
+        d.submit(PlayLand(me, id, asBackFace = true)).error shouldBe null
+        roundtrip(d)
+        d.setLifeTotal(me, 2)
+        val before = d.state
+        val rejected = d.submitYesNo(me, true)
+        (rejected.error != null) shouldBe true
+        rejected.state shouldBe before
+        rejected.events.size shouldBe 0
+        d.state shouldBe before
+        d.getLifeTotal(me) shouldBe 2
+        d.submitYesNo(me, false).error shouldBe null
+        d.getLifeTotal(me) shouldBe 2
+        d.isTapped(id) shouldBe true
+        d.getLands(me).count { it == id } shouldBe 1
+        d.pendingDecision shouldBe null
     }
 
     test("DF16 accepting an offered three life choice at two life cannot buy untapped entry") {

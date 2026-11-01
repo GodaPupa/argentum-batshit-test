@@ -549,6 +549,10 @@ class PlayLandHandler(
                 // rather than asking the player to make a no-op decision.
                 if (permissionForcesTapped) {
                     // Already handled: TappedComponent applied, control falls through to triggers/finish.
+                } else if (entersTapped.payLifeCost != null &&
+                    newState.lifeTotal(action.playerId) < entersTapped.payLifeCost!!
+                ) {
+                    newState = newState.updateEntity(action.cardId) { c -> c.with(TappedComponent) }
                 } else if (entersTapped.payLifeCost != null) {
                     // Shock land: ask the player if they want to pay life
                     // Use up a land drop first

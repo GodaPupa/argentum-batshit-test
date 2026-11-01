@@ -424,19 +424,30 @@ class CastFromZoneEnumerator : ActionEnumerator {
                 ?.takeIf { it.controllerId == playerId }
             val cardComponent = container.get<CardComponent>() ?: continue
 
-            // Land with play permission — skipped when every applicable permission is
-            // nonLandOnly ("you may cast that card" wording never covers a land's play-as-a-
-            // special-action, CR 305.1; only "you may play" wording does).
-            if (cardComponent.typeLine.isLand && permissions.any { !it.nonLandOnly }) {
-                result.add(
-                    LegalAction(
+            // Per-card play permission covers land faces only at legal land-play timing.
+            if (permissions.any { !it.nonLandOnly } &&
+                context.canPlayLand && !context.cantPlayLand(cardId)) {
+                if (cardComponent.typeLine.isLand) {
+                    result.add(LegalAction(
                         actionType = "PlayLand",
                         description = "Play ${cardComponent.name}",
                         action = PlayLand(playerId, cardId),
-                        affordable = context.canPlayLand,
                         sourceZone = sourceZoneLabel
+                    ))
+                }
+                if (cardComponent.isDoubleFaced) {
+                    val backLand = com.wingedsheep.engine.mechanics.ModalDfcCasts.landFace(
+                        context.cardRegistry.getCard(cardComponent.cardDefinitionId)
                     )
-                )
+                    if (backLand != null) {
+                        result.add(LegalAction(
+                            actionType = "PlayLand",
+                            description = "Play ${backLand.name}",
+                            action = PlayLand(playerId, cardId, asBackFace = true),
+                            sourceZone = sourceZoneLabel
+                        ))
+                    }
+                }
             }
 
             // Non-land spell with play permission

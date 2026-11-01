@@ -36,7 +36,7 @@ class ModalAndCloneContinuationResumer(
         resumer(CloneEntersOnBattlefieldContinuation::class, ::resumeCloneEntersOnBattlefield),
         resumer(EntersWithChoiceSpellContinuation::class, ::resumeEntersWithChoiceSpell),
         resumer(EntersWithChoiceOnBattlefieldContinuation::class, ::resumeEntersWithChoiceOnBattlefield),
-        resumer(PayLifeOrEnterTappedLandContinuation::class, ::resumePayLifeOrEnterTappedLand),
+        questionResumer(PayLifeOrEnterTappedLandContinuation::class, ::resumePayLifeOrEnterTappedLand),
         resumer(PayLifeOrEnterTappedSpellContinuation::class, ::resumePayLifeOrEnterTappedSpell),
         resumer(RevealCountersContinuation::class, ::resumeRevealCounters),
         resumer(ExileCountersContinuation::class, ::resumeExileCounters),
@@ -937,11 +937,18 @@ class ModalAndCloneContinuationResumer(
     fun resumePayLifeOrEnterTappedLand(
         state: GameState,
         continuation: PayLifeOrEnterTappedLandContinuation,
+        question: PendingDecision,
         response: DecisionResponse,
         checkForMore: CheckForMore
     ): ExecutionResult {
+        val retryState = state.copy(continuationStack = state.continuationStack + Suspension(question, continuation))
         if (response !is YesNoResponse) {
-            return ExecutionResult.error(state, "Expected yes/no response for pay life or enter tapped")
+            return ExecutionResult.error(retryState, "Expected yes/no response for pay life or enter tapped")
+        }
+
+        if (response.choice && (continuation.lifeCost < 0 ||
+                state.lifeTotal(continuation.controllerId) < continuation.lifeCost)) {
+            return ExecutionResult.error(retryState, "Cannot afford pending land-entry life payment")
         }
 
         var newState = state
