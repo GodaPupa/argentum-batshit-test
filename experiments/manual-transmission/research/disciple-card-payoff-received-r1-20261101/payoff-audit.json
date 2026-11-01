@@ -1,0 +1,80 @@
+{
+  "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_PROTOCOL_COUNT_MISMATCH",
+  "zip_bytes": 130762,
+  "zip_sha256": "3537bb71b3d8b7bfbdf94c268dd240f2a2c8ef16dc357360832473e3bb956e65",
+  "manifest_entries": 65,
+  "counts": {
+    "normal": {
+      "total": 30,
+      "failed": 0
+    },
+    "stored_power": {
+      "total": 30,
+      "failed": 11
+    },
+    "draw_count": {
+      "total": 30,
+      "failed": 9
+    },
+    "success_gate": {
+      "total": 30,
+      "failed": 1
+    }
+  },
+  "restored_failed": 0,
+  "candidate_witnesses": {
+    "stored_power": true,
+    "draw_count": true,
+    "success_gate": true
+  },
+  "card_admitted": false,
+  "full_qualification": false,
+  "immutable_api_source_bindings": true,
+  "failed_identities": {
+    "normal": [],
+    "stored_power": [
+      "DF01 sacrifice gives exactly five life and five cards",
+      "DF01 singleton automatic selection preserves five power payoff",
+      "DF03 selection rejects the source and still accepts another own creature",
+      "DF04 selection rejects an opponent creature",
+      "DF05 projected boost is captured before the sacrifice",
+      "DF08 source departure before trigger resolution preserves the payoff",
+      "DF09 token sacrifice retains projected five power after departure",
+      "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "DF11 full state serialization at optional preserves five power payoff",
+      "DF11 full state serialization at selection preserves five power payoff",
+      "DF12 resolution choice of hexproof fodder emits no targeting event"
+    ],
+    "draw_count": [
+      "DF01 sacrifice gives exactly five life and five cards",
+      "DF01 singleton automatic selection preserves five power payoff",
+      "DF05 projected boost is captured before the sacrifice",
+      "DF08 source departure before trigger resolution preserves the payoff",
+      "DF09 token sacrifice retains projected five power after departure",
+      "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "DF11 full state serialization at optional preserves five power payoff",
+      "DF11 full state serialization at selection preserves five power payoff",
+      "DF12 resolution choice of hexproof fodder emits no targeting event"
+    ],
+    "success_gate": [
+      "DF07 an unsacrificable chosen creature gives no payoff"
+    ]
+  },
+  "unaffected_outcomes": 69,
+  "missing_draw_assertion_cases": [
+    "DF03 selection rejects the source and still accepts another own creature",
+    "DF04 selection rejects an opponent creature"
+  ],
+  "original_protocol_expected_failed": {
+    "normal": 0,
+    "stored_power": 11,
+    "draw_count": 11,
+    "success_gate": 1
+  },
+  "original_failure_preserved": true,
+  "protected_initial_final_equal": true,
+  "restored_source_exact": true,
+  "normal_and_restored_pass": true,
+  "acceptance": false,
+  "diagnosis": "Protocol incorrectly copied eleven power-mutant failures to draw mutant: DF03 and DF04 assert life payoff but contain no hand-size assertion. All nine draw assertions fail, including the exact declared line87 witness. No test assertion, report, or original protocol changed; full qualification remains pending."
+}

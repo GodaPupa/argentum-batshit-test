@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_PROTOCOL_COUNT_MISMATCH",
+  "source": "12adbbbcb5f8957c3efbbc70dfdef4ca2b876279",
+  "source_tree": "86e209528d1eafbfc23323451589f69730f2e7a0",
+  "validation": "75f8234c101af177c42a62677648f06475c9a292",
+  "validation_tree": "0b4417cdf7b621e21d425b0e3d153a7083dcd5ac",
+  "workflow": ".github/workflows/manual-disciple-card-payoff-early-r1-20261101.yml",
+  "workflow_blob": "af698924c1c768fd26f3b904298659cbb272cd39",
+  "run": 41286630084,
+  "job": 124789138819,
+  "attempt": 1,
+  "artifact": 13075204415,
+  "archive_bytes": 130762,
+  "archive_sha256": "3537bb71b3d8b7bfbdf94c268dd240f2a2c8ef16dc357360832473e3bb956e65",
+  "manifest_entries": 65,
+  "archive": "original-artifact.zip.b64",
+  "counts": {
+    "normal": {
+      "total": 30,
+      "failed": 0
+    },
+    "stored_power": {
+      "total": 30,
+      "failed": 11
+    },
+    "draw_count": {
+      "total": 30,
+      "failed": 9
+    },
+    "success_gate": {
+      "total": 30,
+      "failed": 1
+    }
+  },
+  "restored_failed": 0,
+  "skips": 0,
+  "valid_negative_witnesses": 3,
+  "unaffected_outcomes": 69,
+  "diagnosis": "Protocol incorrectly copied eleven power-mutant failures to draw mutant: DF03 and DF04 assert life payoff but contain no hand-size assertion. All nine draw assertions fail, including the exact declared line87 witness. No test assertion, report, or original protocol changed; full qualification remains pending.",
+  "original_failure_preserved": true,
+  "card_admitted": false,
+  "full_qualification": false,
+  "accepted": false,
+  "next": "Reuse exact-bound original observations without rerunning unchanged early qualification. Complete remaining three-file runtime and DF01–DF22/card controls on a bounded assertion-preserving successor. Keep all full compatibility/metadata/printing/lint/Assay/snapshot/original receiving gates.",
+  "received_utc": "2026-11-01 08:53:01 UTC"
+}
