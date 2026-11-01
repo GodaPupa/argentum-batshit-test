@@ -164,14 +164,29 @@ class SelfAlternativePaidChoiceScenarioTest : ScenarioTestBase() {
             game.execute(action).error shouldBe null
             game.resolveStack().forEach { it.error shouldBe null }
             game.state.getEntity(action.cardId)?.get<CastChoicesComponent>()?.chosen?.get(ChoiceSlot.SELF_ALTERNATIVE) shouldBe ChoiceValue.Flag
+            val firstVisit = game.state.objectRef(action.cardId)
+            firstVisit shouldNotBe null
             game.castSpell(1, "Unsummon", action.cardId).error shouldBe null
             game.resolveStack().forEach { it.error shouldBe null }
             game.state.getHand(game.player1Id).contains(action.cardId) shouldBe true
             game.state.getEntity(action.cardId)?.get<CastChoicesComponent>() shouldBe null
+            val handVisit = game.state.objectRef(action.cardId)
+            handVisit shouldNotBe null
+            handVisit shouldNotBe firstVisit
+            game.state.isCurrentObject(firstVisit!!) shouldBe false
             roundTrip(game)
+            game.state.objectRef(action.cardId) shouldBe handVisit
             game.castSpell(1, "Paid Choice Probe").error shouldBe null
             game.resolveStack().forEach { it.error shouldBe null }
             game.findPermanent("Paid Choice Probe") shouldBe action.cardId
+            val secondVisit = game.state.objectRef(action.cardId)
+            secondVisit shouldNotBe null
+            secondVisit shouldNotBe firstVisit
+            secondVisit shouldNotBe handVisit
+            game.state.isCurrentObject(firstVisit) shouldBe false
+            game.state.isCurrentObject(handVisit!!) shouldBe false
+            roundTrip(game)
+            game.state.objectRef(action.cardId) shouldBe secondVisit
             game.state.getEntity(action.cardId)?.get<CastChoicesComponent>()?.chosen?.get(ChoiceSlot.SELF_ALTERNATIVE) shouldBe null
         }
         test("SA11 normal cast reduced to zero remains unmarked") {
@@ -209,3 +224,4 @@ class SelfAlternativePaidChoiceScenarioTest : ScenarioTestBase() {
         return builder.build()
     }
 }
+

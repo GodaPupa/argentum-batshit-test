@@ -1,0 +1,102 @@
+{
+  "state": "FROZEN_EARLY_COMPILE_FIRST_DIAGNOSTIC_NOT_ADMISSION",
+  "base": "b302ac4b56e13e9ca24b127ab451383661a7ecef",
+  "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "proposal": "c66e9220edb3949e039472acc40ab789a35b4cad",
+  "grant": "6e49200f4e6e106a06a60cc69ef5f468c374871c",
+  "record": "experiments/manual-transmission/research/self-alternative-paid-choice-early-r2-20261101",
+  "evidence": "manual-self-alternative-paid-choice-early-r2-evidence",
+  "paths": [
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+    "docs/card-sdk-language-reference.md"
+  ],
+  "test": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePaidChoiceScenarioTest.kt",
+  "class": "com.wingedsheep.engine.scenarios.SelfAlternativePaidChoiceScenarioTest",
+  "case_names": [
+    "SA01 explicit self alternative writes the durable flag",
+    "SA02 normal casting on the same eligible board stays unmarked",
+    "SA03 zero printed cost does not imply a self alternative choice",
+    "SA04 explicit choice survives whole-state stack and battlefield serialization",
+    "SA05 entry pause serialization merges color with selected casting choice",
+    "SA06 generic condition reader observes explicit choice while source exists",
+    "SA07 generic condition reader rejects normal eligible casting",
+    "SA09 legacy null transport remains unmarked",
+    "SA10 battlefield exit removes choice before normal recast",
+    "SA11 normal cast reduced to zero remains unmarked",
+    "SA08 transport rejects other discriminator FLASHBACK",
+    "SA08 transport rejects other discriminator HARMONIZE",
+    "SA08 transport rejects other discriminator MAYHEM",
+    "SA08 transport rejects other discriminator ESCAPE",
+    "SA08 transport rejects other discriminator DISTURB",
+    "SA08 transport rejects other discriminator WARP",
+    "SA08 transport rejects other discriminator DASH",
+    "SA08 transport rejects other discriminator EVOKE",
+    "SA08 transport rejects other discriminator BESTOW",
+    "SA08 transport rejects other discriminator EMERGE",
+    "SA08 transport rejects other discriminator SNEAK",
+    "SA08 transport rejects other discriminator WEB_SLINGING",
+    "SA08 transport rejects other discriminator IMPENDING",
+    "SA08 transport rejects other discriminator CLEAVE",
+    "SA08 transport rejects other discriminator MIRACLE",
+    "SA08 transport rejects other discriminator GRANTED",
+    "SA08 transport rejects other discriminator MODAL_BACK_FACE"
+  ],
+  "forms": [
+    "normal",
+    "drop_marker",
+    "mark_all",
+    "replace_bag"
+  ],
+  "mutations": [
+    {
+      "id": "drop_marker",
+      "before": "spellComponent.alternativeCost == com.wingedsheep.engine.core.AlternativeCostType.SELF_ALTERNATIVE",
+      "after": "false",
+      "witnesses": [
+        "SA01",
+        "SA04",
+        "SA05",
+        "SA06",
+        "SA10"
+      ],
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt"
+    },
+    {
+      "id": "mark_all",
+      "before": "spellComponent.alternativeCost == com.wingedsheep.engine.core.AlternativeCostType.SELF_ALTERNATIVE",
+      "after": "true",
+      "witnesses": [
+        "SA02",
+        "SA03",
+        "SA07",
+        "SA08",
+        "SA09",
+        "SA11",
+        "SA10"
+      ],
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt"
+    },
+    {
+      "id": "replace_bag",
+      "before": "var bag = entered ?: com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent()",
+      "after": "var bag = com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent()",
+      "witnesses": [
+        "SA05"
+      ],
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt"
+    }
+  ],
+  "unaffected": [],
+  "remaining": [
+    "Original receiving and exact assertion-negative/control audit",
+    "Fresh same-source full compatibility:19212 original ordinary rows/43 exact skips,396cards,64client,all affected focused tests and separately tracked additive identities"
+  ],
+  "review": "Bounded qualification successor: original27identities and every original assertion preserved; SA10 adds distinct ObjectRef visits and serialization assertions; mark_all expected witness list adds original observed SA10 normal-recast assertion. No production changes; original R1 contract mismatch remains unaccepted.",
+  "source_delta": [
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePaidChoiceScenarioTest.kt",
+    "experiments/manual-transmission/research/self-alternative-paid-choice-early-r2-20261101/PROTOCOL.json",
+    "experiments/manual-transmission/research/self-alternative-paid-choice-early-r2-20261101/run.py",
+    "experiments/manual-transmission/research/self-alternative-paid-choice-early-r2-20261101/validation.just"
+  ]
+}
