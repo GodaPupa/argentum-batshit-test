@@ -1,0 +1,2209 @@
+{
+  "observe-allow_opponent": [
+    {
+      "case": "DF04 selection rejects an opponent creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 133,
+      "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+      "mechanism": "Foreign creature incorrectly offered or sacrificed",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 DF04 no other own creature gives no payoff opponentOnly=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 289,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<25>",
+      "mechanism": "Foreign creature incorrectly offered or sacrificed",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF04 accepting with only opponent fodder preserves that creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 907,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Foreign creature incorrectly offered or sacrificed",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1202,
+      "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+      "mechanism": "Foreign creature incorrectly offered or sacrificed",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-allow_self": [
+    {
+      "case": "DF03 selection rejects the source and still accepts another own creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 116,
+      "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+      "mechanism": "Source incorrectly offered or automatically selected",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 DF04 no other own creature gives no payoff opponentOnly=false",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 289,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<23>",
+      "mechanism": "Source incorrectly offered or automatically selected",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 DF04 no other own creature gives no payoff opponentOnly=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 289,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<23>",
+      "mechanism": "Source incorrectly offered or automatically selected",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF01 singleton automatic selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 562,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Source incorrectly offered or automatically selected",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 accepting with only Disciple preserves the source creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 895,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Source incorrectly offered or automatically selected",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF04 accepting with only opponent fodder preserves that creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 908,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<23>",
+      "mechanism": "Source incorrectly offered or automatically selected",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1055,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+      "mechanism": "Source incorrectly offered or automatically selected",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1201,
+      "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+      "mechanism": "Source incorrectly offered or automatically selected",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-back_cost_six": [
+    {
+      "case": "DF18 Garden battlefield uses land characteristics and mana value zero",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 408,
+      "message": "org.opentest4j.AssertionFailedError: expected:<0> but was:<6>",
+      "mechanism": "Back face wrong mana value",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    }
+  ],
+  "observe-canonical_land": [
+    {
+      "case": "DF01 sacrifice gives exactly five life and five cards",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF02 decline preserves the creature life and hand",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 selection rejects the source and still accepts another own creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF04 selection rejects an opponent creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power 0 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power -2 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 source departure before trigger resolution preserves the payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 185,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at optional preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF05 projected boost is captured before the sacrifice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 DF04 no other own creature gives no payoff opponentOnly=false",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 DF04 no other own creature gives no payoff opponentOnly=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF07 an unsacrificable chosen creature gives no payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 resolution choice of hexproof fodder emits no targeting event",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF13 legal Garden land action is distinct from a creature cast",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 350,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<2>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF18 front cast keeps creature characteristics and mana value six",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 388,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF09 token sacrifice retains projected five power after departure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF21 external transform instruction leaves Disciple front face unchanged",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 545,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF01 singleton automatic selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 permitted Garden respects timing restriction=stack",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 776,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF02 declining a singleton optional sacrifice preserves its actual creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 accepting with only Disciple preserves the source creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF04 accepting with only opponent fodder preserves that creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 departed source singleton trigger still pays five life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 919,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 selecting own fodder emits no triggered-target event before payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 964,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF20 noncast entry uses the front creature and creates exactly one trigger",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 995,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF20 bounced Garden returns to front characteristics and can replay its land face",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1026,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF20 noncast graveyard selection uses front type landQualified=false",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1094,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF20 noncast graveyard selection uses front type landQualified=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1094,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 62,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Canonical card becomes land; creature cast/setup and entry characteristics fail",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-fixed_one": [
+    {
+      "case": "DF01 sacrifice gives exactly five life and five cards",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 86,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF03 selection rejects the source and still accepts another own creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 120,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF04 selection rejects an opponent creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 137,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power 0 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 171,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF06 power -2 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 171,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF08 source departure before trigger resolution preserves the payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 193,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at optional preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 211,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF11 full state serialization at selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 211,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF05 projected boost is captured before the sacrifice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 270,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 resolution choice of hexproof fodder emits no targeting event",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 338,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF09 token sacrifice retains projected five power after departure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 444,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 473,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF01 singleton automatic selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 564,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 departed source singleton trigger still pays five life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 924,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 selecting own fodder emits no triggered-target event before payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 974,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1055,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1176,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1205,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<21>",
+      "mechanism": "Payoff fixed to one instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-fixed_two": [
+    {
+      "case": "DF01 sacrifice gives exactly five life and five cards",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 86,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 selection rejects the source and still accepts another own creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 120,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF04 selection rejects an opponent creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 137,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power 0 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 171,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power -2 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 171,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 source departure before trigger resolution preserves the payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 193,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at optional preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 211,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 211,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF05 projected boost is captured before the sacrifice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 270,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF12 resolution choice of hexproof fodder emits no targeting event",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 338,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF09 token sacrifice retains projected five power after departure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 444,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 473,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF01 singleton automatic selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 564,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 departed source singleton trigger still pays five life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 924,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 selecting own fodder emits no triggered-target event before payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 974,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1055,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1176,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1205,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<22>",
+      "mechanism": "Payoff fixed to two instead of stored projected power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-gate_bypass": [
+    {
+      "case": "DF07 an unsacrificable chosen creature gives no payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 315,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<25>",
+      "mechanism": "Pays without successful sacrifice",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    }
+  ],
+  "observe-graveyard_growth": [
+    {
+      "case": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 473,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+      "mechanism": "Reads changed power after departure",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    }
+  ],
+  "observe-life_cost_one": [
+    {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 224,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<19>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 two life cannot pay Garden entry cost",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 251,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was YesNoDecision(id=r0, playerId=e0, prompt=Pay 1 life to have Garden of Freyalise enter untapped?, context=DecisionContext(sourceId=cddbccc7-b912-452e-b7b8-61e9eb05da2b, sourceName=Garden of Freyalise, phase=RESOLUTION, triggeringEntityId=null, inlineOnTrigger=false, effectHint=null, subjectEntityId=null, abilityIdentity=null), yesText=Yes, noText=No, hint=null)",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 stale serialized payment rejects yes and preserves decline",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 486,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 508,
+      "message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<1>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=3 accept=true pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 582,
+      "message": "org.opentest4j.AssertionFailedError: expected:<0> but was:<2>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=4 accept=true pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 582,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<3>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 replayed land payment response cannot charge life twice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 617,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<19>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden payment uses existing library replacement shallow=false",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 829,
+      "message": "org.opentest4j.AssertionFailedError: Element differ at index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...and 10 more (set 'kotest.assertions.collection.print.size' to see more / less items)]\nUnexpected elements from index 31\nexpected:<[e40, e34, e38, e9, e4, e27, e26, e12, e20, e7, e37, e22, e39, e10, e25, e32, e13, e8, e36, e29, ...and 10 more (set 'kotest.assertions.collection.print.size' to see more / less items)]> but was:<[e19, e24, e40, e34, e38, e9, e4, e27, e26, e12, e20, e7, e37, e22, e39, e10, e25, e32, e13, e8, ...and 12 more (set 'kotest.assertions.collection.print.size' to see more / less items)]>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden payment uses existing library replacement shallow=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 828,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<20>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 serialized Garden entry emits one identity and one landfall accept=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 870,
+      "message": "org.opentest4j.AssertionFailedError: expected:<18> but was:<20>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden at two life cannot buy an untapped final state",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 951,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF21 Garden play neither spends Palace rider mana nor inherits its counters",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1147,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<19>",
+      "mechanism": "Entry life amount reduced to one",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-life_cost_two": [
+    {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 224,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<18>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF16 two life cannot pay Garden entry cost",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 251,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was YesNoDecision(id=r0, playerId=e0, prompt=Pay 2 life to have Garden of Freyalise enter untapped?, context=DecisionContext(sourceId=c4a24590-dc3f-4251-b6a1-ef6d34da3c21, sourceName=Garden of Freyalise, phase=RESOLUTION, triggeringEntityId=null, inlineOnTrigger=false, effectHint=null, subjectEntityId=null, abilityIdentity=null), yesText=Yes, noText=No, hint=null)",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 stale serialized payment rejects yes and preserves decline",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 486,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 508,
+      "message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<0>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=3 accept=true pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 582,
+      "message": "org.opentest4j.AssertionFailedError: expected:<0> but was:<1>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=4 accept=true pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 582,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<2>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 replayed land payment response cannot charge life twice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 617,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<18>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden payment uses existing library replacement shallow=false",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 829,
+      "message": "org.opentest4j.AssertionFailedError: Element differ at index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, ...and 10 more (set 'kotest.assertions.collection.print.size' to see more / less items)]\nUnexpected elements from index 30\nexpected:<[e15, e3, e32, e16, e19, e11, e31, e14, e5, e9, e40, e41, e13, e36, e6, e22, e24, e25, e4, e12, ...and 10 more (set 'kotest.assertions.collection.print.size' to see more / less items)]> but was:<[e18, e15, e3, e32, e16, e19, e11, e31, e14, e5, e9, e40, e41, e13, e36, e6, e22, e24, e25, e4, ...and 11 more (set 'kotest.assertions.collection.print.size' to see more / less items)]>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden payment uses existing library replacement shallow=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 828,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<20>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 serialized Garden entry emits one identity and one landfall accept=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 870,
+      "message": "org.opentest4j.AssertionFailedError: expected:<18> but was:<19>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden at two life cannot buy an untapped final state",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 951,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF21 Garden play neither spends Palace rider mana nor inherits its counters",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1147,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<18>",
+      "mechanism": "Entry life amount reduced to two",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-no_may": [
+    {
+      "case": "DF01 sacrifice gives exactly five life and five cards",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: SelectCardsDecision(id=r0, playerId=e0, prompt=Choose another creature you control to sacrifice, context=DecisionContext(sourceId=f23d011f-9ee3-47b3-a77a-d1aa63c201b0, sourceName=Disciple of Freyalise, phase=RESOLUTION, triggeringEntityId=null, inlineOnTrigger=false, effectHint=null, subjectEntityId=null, abilityIdentity=null), options=[da223d3d-6926-4369-9f3d-7ef6e0665784, e840a69a-4386-4350-8e5d-c726f14a41f3], minSelections=1, maxSelections=1, ordered=false, cardInfo={da223d3d-6926-4369-9f3d-7ef6e0665784=SearchCardInfo(name=Disciple test fodder, manaCost={1}{G}, typeLine=Creature \u2014 Bear, imageUri=null, colors=[GREEN], power=5), e840a69a-4386-4350-8e5d-c726f14a41f3=SearchCardInfo(name=Disciple test fodder, manaCost={1}{G}, typeLine=Creature \u2014 Bear, imageUri=null, colors=[GREEN], power=5)}, useTargetingUI=true, selectedLabel=null, remainderLabel=null, nonSelectableOptions=[], onePerCardType=false, onePerColor=false, availableColors=null, onePerCardName=false, onePerBasicLandType=false, onePerPower=false, maxTotalManaValue=null, minTotalManaValue=null, maxTotalPower=null, conditionalMinimums=[], authorizedLibrarySearch=null) is of type com.wingedsheep.engine.core.SelectCardsDecision but expected com.wingedsheep.engine.core.YesNoDecision\nexpected:<com.wingedsheep.engine.core.YesNoDecision> but was:<SelectCardsDecision(id=r0, playerId=e0, prompt=Choose another creature you control to sacrifice, context=DecisionContext(sourceId=f23d011f-9ee3-47b3-a77a-d1aa63c201b0, sourceName=Disciple of Freyalise, phase=RESOLUTION, triggeringEntityId=null, inlineOnTrigger=false, effectHint=null, subjectEntityId=null, abilityIdentity=null), options=[da223d3d-6926-4369-9f3d-7ef6e0665784, e840a69a-4386-4350-8e5d-c726f14a41f3], minSelections=1, maxSelections=1, ordered=false, cardInfo={da223d3d-6926-4369-9f3d-7ef6e0665784=SearchCardInfo(name=Disciple test fodder, manaCost={1}{G}, typeLine=Creature \u2014 Bear, imageUri=null, colors=[GREEN], power=5), e840a69a-4386-4350-8e5d-c726f14a41f3=SearchCardInfo(name=Disciple test fodder, manaCost={1}{G}, typeLine=Creature \u2014 Bear, imageUri=null, colors=[GREEN], power=5)}, useTargetingUI=true, selectedLabel=null, remainderLabel=null, nonSelectableOptions=[], onePerCardType=false, onePerColor=false, availableColors=null, onePerCardName=false, onePerBasicLandType=false, onePerPower=false, maxTotalManaValue=null, minTotalManaValue=null, maxTotalPower=null, conditionalMinimums=[], authorizedLibrarySearch=null)>",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF02 decline preserves the creature life and hand",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 selection rejects the source and still accepts another own creature",
+      "type": "java.lang.IllegalStateException",
+      "line": 115,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF04 selection rejects an opponent creature",
+      "type": "java.lang.IllegalStateException",
+      "line": 132,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power 0 sacrifices without drawing or losing life",
+      "type": "java.lang.IllegalStateException",
+      "line": 168,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power -2 sacrifices without drawing or losing life",
+      "type": "java.lang.IllegalStateException",
+      "line": 168,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 source departure before trigger resolution preserves the payoff",
+      "type": "java.lang.IllegalStateException",
+      "line": 191,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at optional preserves five power payoff",
+      "type": "java.lang.IllegalStateException",
+      "line": 208,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at selection preserves five power payoff",
+      "type": "java.lang.IllegalStateException",
+      "line": 208,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF05 projected boost is captured before the sacrifice",
+      "type": "java.lang.IllegalStateException",
+      "line": 268,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 resolution choice of hexproof fodder emits no targeting event",
+      "type": "java.lang.IllegalStateException",
+      "line": 335,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF09 token sacrifice retains projected five power after departure",
+      "type": "java.lang.IllegalStateException",
+      "line": 441,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "type": "java.lang.IllegalStateException",
+      "line": 468,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF01 singleton automatic selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF02 declining a singleton optional sacrifice preserves its actual creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 885,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF12 selecting own fodder emits no triggered-target event before payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 975,
+      "message": "org.opentest4j.AssertionFailedError: expected:<17> but was:<12>",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+      "type": "java.lang.IllegalStateException",
+      "line": 1054,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder",
+      "type": "java.lang.IllegalStateException",
+      "line": 1172,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud",
+      "type": "java.lang.IllegalStateException",
+      "line": 1199,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes optional decision; legacy response calls become invalid; singleton decline outcome witnesses remain executable",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-no_modal_layout": [
+    {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 221,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF15 declined Garden payment keeps life and enters tapped",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 237,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 two life cannot pay Garden entry cost",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 250,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF13 legal Garden land action is distinct from a creature cast",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 350,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF17 Garden activation produces exactly one green and no other mana",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 366,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF18 Garden battlefield uses land characteristics and mana value zero",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 404,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF22 both card faces and metadata survive polymorphic JSON roundtrip",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 418,
+      "message": "org.opentest4j.AssertionFailedError: expected:<MODAL_DFC> but was:<NORMAL>",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 stale serialized payment rejects yes and preserves decline",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 481,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 503,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 exile permission castOnly=false distinguishes Garden play",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 525,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF16 Garden threshold life=3 accept=false pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 578,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=3 accept=true pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 578,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=4 accept=false pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 578,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=4 accept=true pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 578,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 malformed land payment response preserves the pending choice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 595,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 replayed land payment response cannot charge life twice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 613,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 graveyard permission castOnly=false agrees with direct Garden action",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 639,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 permission forced tapped Garden does not charge life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 664,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 permitted Garden consumes the ordinary land drop",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 702,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 expired permission stays revoked at the next own main phase",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 722,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden payment uses existing library replacement shallow=false",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 825,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden payment uses existing library replacement shallow=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 825,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 serialized Garden entry emits one identity and one landfall accept=false",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 852,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 serialized Garden entry emits one identity and one landfall accept=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 852,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF15 Garden declines any offered payment and ends tapped",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 934,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden at two life cannot buy an untapped final state",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 946,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF20 bounced Garden returns to front characteristics and can replay its land face",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1011,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 creature cast prohibition leaves permitted Garden playable",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1080,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF21 Garden play neither spends Palace rider mana nor inherits its counters",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1142,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Disciple of Freyalise has no land back face to play\"",
+      "mechanism": "Removes modal land action and face identity",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-no_tapped_replacement": [
+    {
+      "case": "DF14 Garden pays exactly three life to enter untapped",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF15 declined Garden payment keeps life and enters tapped",
+      "type": "java.lang.IllegalStateException",
+      "line": 238,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 two life cannot pay Garden entry cost",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 253,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF13 legal Garden land action is distinct from a creature cast",
+      "type": "java.lang.IllegalStateException",
+      "line": 354,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF17 Garden activation produces exactly one green and no other mana",
+      "type": "java.lang.IllegalStateException",
+      "line": 367,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF18 Garden battlefield uses land characteristics and mana value zero",
+      "type": "java.lang.IllegalStateException",
+      "line": 405,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 stale serialized payment rejects yes and preserves decline",
+      "type": "java.lang.IllegalStateException",
+      "line": 485,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 509,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 exile permission castOnly=false distinguishes Garden play",
+      "type": "java.lang.IllegalStateException",
+      "line": 531,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=3 accept=false pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=3 accept=true pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=4 accept=false pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden threshold life=4 accept=true pays once or declines",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 malformed land payment response preserves the pending choice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 replayed land payment response cannot charge life twice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 graveyard permission castOnly=false agrees with direct Garden action",
+      "type": "java.lang.IllegalStateException",
+      "line": 647,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 permitted Garden consumes the ordinary land drop",
+      "type": "java.lang.IllegalStateException",
+      "line": 703,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden payment uses existing library replacement shallow=false",
+      "type": "java.lang.IllegalStateException",
+      "line": 827,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 Garden payment uses existing library replacement shallow=true",
+      "type": "java.lang.IllegalStateException",
+      "line": 827,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 serialized Garden entry emits one identity and one landfall accept=false",
+      "type": "java.lang.IllegalStateException",
+      "line": 855,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF16 serialized Garden entry emits one identity and one landfall accept=true",
+      "type": "java.lang.IllegalStateException",
+      "line": 855,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF15 Garden declines any offered payment and ends tapped",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 936,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF16 Garden at two life cannot buy an untapped final state",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 951,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF20 bounced Garden returns to front characteristics and can replay its land face",
+      "type": "java.lang.IllegalStateException",
+      "line": 1012,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF19 creature cast prohibition leaves permitted Garden playable",
+      "type": "java.lang.IllegalStateException",
+      "line": 1083,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF21 Garden play neither spends Palace rider mana nor inherits its counters",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1220,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Removes entry replacement/choice and tapped outcome",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-require_source": [
+    {
+      "case": "DF08 source departure before trigger resolution preserves the payoff",
+      "type": "java.lang.IllegalStateException",
+      "line": 191,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Departed source incorrectly prevents payoff or selection",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 departed source singleton trigger still pays five life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 924,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+      "mechanism": "Departed source incorrectly prevents payoff or selection",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    }
+  ],
+  "observe-source_power": [
+    {
+      "case": "DF01 sacrifice gives exactly five life and five cards",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 86,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 selection rejects the source and still accepts another own creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 120,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF04 selection rejects an opponent creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 137,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power 0 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 171,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power -2 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 171,
+      "message": "org.opentest4j.AssertionFailedError: expected:<20> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 source departure before trigger resolution preserves the payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 193,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at optional preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 211,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 211,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF05 projected boost is captured before the sacrifice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 270,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 resolution choice of hexproof fodder emits no targeting event",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 338,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF09 token sacrifice retains projected five power after departure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 444,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 473,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF01 singleton automatic selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 564,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 departed source singleton trigger still pays five life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 924,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 selecting own fodder emits no triggered-target event before payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 974,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1055,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1176,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1205,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<23>",
+      "mechanism": "Uses Disciple power instead of sacrificed creature power",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-targeting_choice_regression": [
+    {
+      "case": "DF01 sacrifice gives exactly five life and five cards",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1224,
+      "message": "org.opentest4j.AssertionFailedError: ChooseTargetsDecision(id=r1, playerId=e0, prompt=Choose target other you control creature, context=DecisionContext(sourceId=8b1d0f02-3f3b-4597-9a1b-fc5c46504d47, sourceName=Disciple of Freyalise, phase=RESOLUTION, triggeringEntityId=null, inlineOnTrigger=false, effectHint=null, subjectEntityId=null, abilityIdentity=null), targetRequirements=[TargetRequirementInfo(index=0, description=target other you control creature, minTargets=1, maxTargets=1, sameOwner=false, totalManaValueAtMost=null, differentNames=false, differentControllers=false)], legalTargets={0=[6cc8c2ee-d701-4a60-8ccb-2504190ccb7e, c5965ee5-bf71-4967-820f-f2dd942150d0]}, canCancel=false) is of type com.wingedsheep.engine.core.ChooseTargetsDecision but expected com.wingedsheep.engine.core.SelectCardsDecision\nexpected:<com.wingedsheep.engine.core.SelectCardsDecision> but was:<ChooseTargetsDecision(id=r1, playerId=e0, prompt=Choose target other you control creature, context=DecisionContext(sourceId=8b1d0f02-3f3b-4597-9a1b-fc5c46504d47, sourceName=Disciple of Freyalise, phase=RESOLUTION, triggeringEntityId=null, inlineOnTrigger=false, effectHint=null, subjectEntityId=null, abilityIdentity=null), targetRequirements=[TargetRequirementInfo(index=0, description=target other you control creature, minTargets=1, maxTargets=1, sameOwner=false, totalManaValueAtMost=null, differentNames=false, differentControllers=false)], legalTargets={0=[6cc8c2ee-d701-4a60-8ccb-2504190ccb7e, c5965ee5-bf71-4967-820f-f2dd942150d0]}, canCancel=false)>",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 selection rejects the source and still accepts another own creature",
+      "type": "java.lang.IllegalStateException",
+      "line": 116,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF04 selection rejects an opponent creature",
+      "type": "java.lang.IllegalStateException",
+      "line": 133,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power 0 sacrifices without drawing or losing life",
+      "type": "java.lang.IllegalStateException",
+      "line": 169,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power -2 sacrifices without drawing or losing life",
+      "type": "java.lang.IllegalStateException",
+      "line": 169,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 source departure before trigger resolution preserves the payoff",
+      "type": "java.lang.IllegalStateException",
+      "line": 192,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at optional preserves five power payoff",
+      "type": "java.lang.IllegalStateException",
+      "line": 210,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at selection preserves five power payoff",
+      "type": "java.lang.IllegalStateException",
+      "line": 210,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF05 projected boost is captured before the sacrifice",
+      "type": "java.lang.IllegalStateException",
+      "line": 269,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 resolution choice of hexproof fodder emits no targeting event",
+      "type": "java.lang.IllegalStateException",
+      "line": 336,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF09 token sacrifice retains projected five power after departure",
+      "type": "java.lang.IllegalStateException",
+      "line": 442,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "type": "java.lang.IllegalStateException",
+      "line": 469,
+      "message": "java.lang.IllegalStateException: No pending SelectCardsDecision",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1055,
+      "message": "org.opentest4j.AssertionFailedError: expected:<25> but was:<20>",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 1219,
+      "message": "org.opentest4j.AssertionFailedError: Expecting actual not to be null",
+      "mechanism": "Restores target-based transport and shroud exclusion; selection API/type mismatches are collateral, not negative witnesses",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-triggered_target": [
+    {
+      "case": "DF01 sacrifice gives exactly five life and five cards",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF02 decline preserves the creature life and hand",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF03 selection rejects the source and still accepts another own creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF04 selection rejects an opponent creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power 0 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF06 power -2 sacrifices without drawing or losing life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 source departure before trigger resolution preserves the payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 186,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at optional preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF11 full state serialization at selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF05 projected boost is captured before the sacrifice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF07 an unsacrificable chosen creature gives no payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 resolution choice of hexproof fodder emits no targeting event",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF09 token sacrifice retains projected five power after departure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF10 successful sacrifice redirected to exile retains five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF01 singleton automatic selection preserves five power payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF02 declining a singleton optional sacrifice preserves its actual creature",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF08 departed source singleton trigger still pays five life",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 922,
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"You don't have priority\"",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 selecting own fodder emits no triggered-target event before payoff",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 969,
+      "message": "org.opentest4j.AssertionFailedError: expected:<0> but was:<1>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    },
+    {
+      "case": "DF20 noncast entry uses the front creature and creates exactly one trigger",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 998,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+      "type": "java.lang.IllegalStateException",
+      "line": 1054,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder",
+      "type": "java.lang.IllegalStateException",
+      "line": 1172,
+      "message": "java.lang.IllegalStateException: No pending YesNoDecision",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    },
+    {
+      "case": "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 63,
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "mechanism": "Adds true target requirement and target event; cast/response preconditions differ",
+      "declared_witness": false,
+      "classification": "MUTATION_COLLATERAL_NOT_COUNTED_AS_NEGATIVE_EVIDENCE"
+    }
+  ],
+  "observe-white_mana": [
+    {
+      "case": "DF17 Garden activation produces exactly one green and no other mana",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 371,
+      "message": "org.opentest4j.AssertionFailedError: expected:<1> but was:<0>",
+      "mechanism": "Wrong mana color",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    }
+  ],
+  "observe-wrong_back_collector": [
+    {
+      "case": "DF22 both card faces and metadata survive polymorphic JSON roundtrip",
+      "type": "org.opentest4j.AssertionFailedError",
+      "line": 423,
+      "message": "org.opentest4j.AssertionFailedError: expected:<250> but was:<251>",
+      "mechanism": "Back face collector mismatch",
+      "declared_witness": true,
+      "classification": "DECLARED_ASSERTION_WITNESS"
+    }
+  ]
+}
