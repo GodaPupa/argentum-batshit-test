@@ -1,0 +1,229 @@
+--- mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt
++++ mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt
+@@ -8,12 +8,16 @@
+ import com.wingedsheep.sdk.model.CardLayout
+ import com.wingedsheep.sdk.model.Rarity
+ import com.wingedsheep.sdk.scripting.EntersTapped
++import com.wingedsheep.sdk.scripting.GameObjectFilter
++import com.wingedsheep.sdk.scripting.effects.CardSource
++import com.wingedsheep.sdk.scripting.effects.GatherCardsEffect
++import com.wingedsheep.sdk.scripting.effects.SelectionMode
++import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
++import com.wingedsheep.sdk.scripting.references.Player
+ import com.wingedsheep.sdk.scripting.TimingRule
+ import com.wingedsheep.sdk.scripting.effects.MayEffect
+ import com.wingedsheep.sdk.scripting.effects.SuccessCriterion
+-import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
+ import com.wingedsheep.sdk.scripting.targets.EffectTarget
+-import com.wingedsheep.sdk.scripting.targets.TargetObject
+ import com.wingedsheep.sdk.scripting.values.DynamicAmount
+ import com.wingedsheep.sdk.scripting.values.EntityReference
+ import com.wingedsheep.sdk.scripting.values.EntityNumericProperty
+@@ -60,9 +64,20 @@
+         trigger = Triggers.EntersBattlefield
+         val sacrificedPower = DynamicAmount.VariableReference("discipleSacrificedPower")
+         effect = MayEffect(Effects.Composite(listOf(
+-            Effects.SelectTarget(
+-                TargetObject(filter = TargetFilter.CreatureYouControl.other()),
+-                storeAs = "discipleSacrifice"
++            GatherCardsEffect(
++                source = CardSource.BattlefieldMatching(
++                    filter = GameObjectFilter.Creature,
++                    player = Player.You,
++                    excludeSelf = true
++                ),
++                storeAs = "discipleEligibleSacrifices"
++            ),
++            SelectFromCollectionEffect(
++                from = "discipleEligibleSacrifices",
++                selection = SelectionMode.ChooseExactly(DynamicAmount.Fixed(1)),
++                storeSelected = "discipleSacrifice",
++                prompt = "Choose another creature you control to sacrifice",
++                useTargetingUI = true
+             ),
+             // Capture the selected creature's projected power before the sacrifice changes
+             // its zone. StoreNumber does not change state; SacrificeTarget reads the same
+
+--- mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt
++++ mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt
+@@ -81,8 +81,8 @@
+         val hand = d.getHandSize(me)
+         d.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+         d.submitYesNo(me, true).error shouldBe null
+-        d.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+-        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
++        d.pendingDecision.shouldBeInstanceOf<com.wingedsheep.engine.core.SelectCardsDecision>()
++        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 25
+         d.getHandSize(me) shouldBe hand + 5
+         d.getGraveyard(me).contains(fodder) shouldBe true
+@@ -113,10 +113,10 @@
+         val fodder = d.putCreatureOnBattlefield(me, "Disciple test fodder")
+         val source = cast(d)
+         d.submitYesNo(me, true).error shouldBe null
+-        d.submitTargetSelection(me, listOf(source)).isSuccess shouldBe false
++        d.submitCardSelection(me, listOf(source)).isSuccess shouldBe false
+         d.getPermanents(me).contains(source) shouldBe true
+         d.getLifeTotal(me) shouldBe 20
+-        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
++        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 25
+     }
+ 
+@@ -130,10 +130,10 @@
+         val foreign = d.putCreatureOnBattlefield(opp, "Disciple test fodder")
+         cast(d)
+         d.submitYesNo(me, true).error shouldBe null
+-        d.submitTargetSelection(me, listOf(foreign)).isSuccess shouldBe false
++        d.submitCardSelection(me, listOf(foreign)).isSuccess shouldBe false
+         d.getPermanents(opp).contains(foreign) shouldBe true
+         d.getLifeTotal(me) shouldBe 20
+-        d.submitTargetSelection(me, listOf(own)).isSuccess shouldBe true
++        d.submitCardSelection(me, listOf(own)).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 25
+     }
+ 
+@@ -166,7 +166,7 @@
+             cast(d)
+             val hand = d.getHandSize(me)
+             d.submitYesNo(me, true).error shouldBe null
+-            d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
++            d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true
+             d.getGraveyard(me).contains(fodder) shouldBe true
+             d.getLifeTotal(me) shouldBe 20
+             d.getHandSize(me) shouldBe hand
+@@ -189,7 +189,7 @@
+         d.bothPass().error shouldBe null
+         val hand = d.getHandSize(me)
+         d.submitYesNo(me, true).error shouldBe null
+-        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
++        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 25
+         d.getHandSize(me) shouldBe hand + 5
+         d.getGraveyard(me).contains(source) shouldBe true
+@@ -207,7 +207,7 @@
+             if (pause == "optional") roundtrip(d)
+             d.submitYesNo(me, true).error shouldBe null
+             if (pause == "selection") roundtrip(d)
+-            d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
++            d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true
+             d.getLifeTotal(me) shouldBe 25
+             d.getHandSize(me) shouldBe hand + 5
+             d.pendingDecision shouldBe null
+@@ -266,7 +266,7 @@
+         cast(d)
+         val hand = d.getHandSize(me)
+         d.submitYesNo(me, true).error shouldBe null
+-        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
++        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.getLifeTotal(me) shouldBe 25
+         d.getHandSize(me) shouldBe hand + 5
+         d.getGraveyard(me).contains(fodder) shouldBe true
+@@ -308,8 +308,8 @@
+         val hand = d.getHandSize(me)
+         if (d.pendingDecision is YesNoDecision)
+             d.submitYesNo(me, true).error shouldBe null
+-        if (d.pendingDecision is ChooseTargetsDecision)
+-            d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
++        if (d.pendingDecision is com.wingedsheep.engine.core.SelectCardsDecision)
++            d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.pendingDecision shouldBe null
+         d.getPermanents(me).contains(fodder) shouldBe true
+         d.getLifeTotal(me) shouldBe 20
+@@ -333,7 +333,7 @@
+         val hand = d.getHandSize(me)
+         val events = d.events.size
+         d.submitYesNo(me, true).error shouldBe null
+-        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
++        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.events.drop(events).filterIsInstance<BecomesTargetEvent>().size shouldBe 0
+         d.getLifeTotal(me) shouldBe 25
+         d.getHandSize(me) shouldBe hand + 5
+@@ -439,7 +439,7 @@
+         cast(d)
+         val hand = d.getHandSize(me)
+         d.submitYesNo(me, true).error shouldBe null
+-        d.submitTargetSelection(me, listOf(token)).isSuccess shouldBe true
++        d.submitCardSelection(me, listOf(token)).isSuccess shouldBe true
+         d.getPermanents(me).contains(token) shouldBe false
+         d.getLifeTotal(me) shouldBe 25
+         d.getHandSize(me) shouldBe hand + 5
+@@ -466,7 +466,7 @@
+         cast(d)
+         val hand = d.getHandSize(me)
+         d.submitYesNo(me, true).error shouldBe null
+-        d.submitTargetSelection(me, listOf(fodder)).isSuccess shouldBe true
++        d.submitCardSelection(me, listOf(fodder)).isSuccess shouldBe true
+         d.getPermanents(me).contains(fodder) shouldBe false
+         d.getGraveyard(me).contains(fodder) shouldBe false
+         d.getExile(me).contains(fodder) shouldBe true
+@@ -970,7 +970,7 @@
+         d.bothPass().error shouldBe null
+         val hand = d.getHandSize(me)
+         if (d.pendingDecision is YesNoDecision) d.submitYesNo(me, true).error shouldBe null
+-        if (d.pendingDecision is ChooseTargetsDecision) d.submitTargetSelection(me, listOf(fodder)).error shouldBe null
++        if (d.pendingDecision is com.wingedsheep.engine.core.SelectCardsDecision) d.submitCardSelection(me, listOf(fodder)).error shouldBe null
+         d.getLifeTotal(me) shouldBe 25
+         d.getHandSize(me) shouldBe hand + 5
+         d.pendingDecision shouldBe null
+@@ -1155,4 +1155,60 @@
+         d.state.stack.size shouldBe 0
+     }
+ 
++
++    test("DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder") {
++        val d = driver()
++        val me = d.activePlayer!!
++        d.registerCard(card("Disciple non-targeted shroud fixture") {
++            typeLine = "Creature — Bear"; power = 5; toughness = 5
++            keywords(Keyword.SHROUD, Keyword.HEXPROOF)
++            keywordAbility(com.wingedsheep.sdk.scripting.KeywordAbility.Ward(com.wingedsheep.sdk.scripting.effects.WardCost.Mana("{2}")))
++        })
++        val chosen = d.putCreatureOnBattlefield(me, "Disciple non-targeted shroud fixture")
++        val unchosen = d.putCreatureOnBattlefield(me, "Disciple non-targeted shroud fixture")
++        cast(d)
++        val hand = d.getHandSize(me)
++        val start = d.events.size
++        d.submitYesNo(me, true).error shouldBe null
++        d.pendingDecision.shouldBeInstanceOf<com.wingedsheep.engine.core.SelectCardsDecision>()
++        roundtrip(d)
++        d.submitCardSelection(me, listOf(chosen)).error shouldBe null
++        d.getLifeTotal(me) shouldBe 25
++        d.getHandSize(me) shouldBe hand + 5
++        d.getGraveyard(me).contains(chosen) shouldBe true
++        d.getPermanents(me).contains(unchosen) shouldBe true
++        d.events.drop(start).filterIsInstance<BecomesTargetEvent>().size shouldBe 0
++        d.events.drop(start).filterIsInstance<com.wingedsheep.engine.core.AbilityTriggeredEvent>().size shouldBe 0
++        d.pendingDecision shouldBe null
++        d.state.stack.size shouldBe 0
++    }
++
++    test("DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud") {
++        val d = driver()
++        val me = d.activePlayer!!
++        val opp = d.getOpponent(me)
++        d.registerCard(card("Disciple non-targeted foreign fixture") {
++            typeLine = "Creature — Bear"; power = 5; toughness = 5
++            keywords(Keyword.SHROUD, Keyword.HEXPROOF)
++        })
++        val own = d.putCreatureOnBattlefield(me, "Disciple non-targeted foreign fixture")
++        val other = d.putCreatureOnBattlefield(me, "Disciple test fodder")
++        val foreign = d.putCreatureOnBattlefield(opp, "Disciple non-targeted foreign fixture")
++        val source = cast(d)
++        val hand = d.getHandSize(me)
++        d.submitYesNo(me, true).error shouldBe null
++        d.pendingDecision.shouldBeInstanceOf<com.wingedsheep.engine.core.SelectCardsDecision>()
++        d.submitCardSelection(me, listOf(source)).isSuccess shouldBe false
++        d.submitCardSelection(me, listOf(foreign)).isSuccess shouldBe false
++        d.getLifeTotal(me) shouldBe 20
++        d.submitCardSelection(me, listOf(own)).error shouldBe null
++        d.getLifeTotal(me) shouldBe 25
++        d.getHandSize(me) shouldBe hand + 5
++        d.getGraveyard(me).contains(own) shouldBe true
++        d.getPermanents(me).contains(source) shouldBe true
++        d.getPermanents(me).contains(other) shouldBe true
++        d.getPermanents(opp).contains(foreign) shouldBe true
++        d.pendingDecision shouldBe null
++        d.state.stack.size shouldBe 0
++    }
+ })

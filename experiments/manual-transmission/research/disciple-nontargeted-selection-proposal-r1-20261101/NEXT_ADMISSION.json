@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "state": "AWAITING_EXPLICIT_BOUNDED_ASSERTION_TRANSPORT_EXCEPTION",
+  "base_source": "a15c7859ea1e0a3155168338c8e465b975bc6a19",
+  "failure_receipt": "588276f457428e927b83512bcb3d8a8476441402",
+  "failure_run": 41293652735,
+  "concrete_blocker": "The frozen test requires ChooseTargetsDecision, while the existing non-targeted collection primitive produces SelectCardsDecision. Existing SelectTarget wrongly excludes shroud from a non-targeted sacrifice choice. The card grant does not authorize changing preserved assertions.",
+  "requested_authorization": "Exactly the 16 line replacements in SOURCE_REVIEW.json exact_line_replacements, against the pinned original test; 15 lines contain assertions, whose expected booleans/nulls and downstream outcomes stay unchanged except the explicit decision class. One additional conditional line changes only its decision-class guard. Use existing GatherCardsEffect/SelectFromCollectionEffect in the Disciple card. Add the two exact DF12 scenarios in the draft. No other assertion exception.",
+  "card_path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+  "test_path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt",
+  "original_card_sha256": "0e2823f65ad24c4440c176192d0d3bb5e998eee158f51ae5b165debae06c7ff9",
+  "candidate_card_sha256": "f659920fc36d1737f22dd3679fcb6a62d0799767f66aec3770530f02db88381c",
+  "original_test_sha256": "7c5edb279879e709984efb14d71f9d3e064551397498b54d82d5d546f43a631d",
+  "candidate_test_sha256": "cd76d90cddd88ed3d8df810f7c85707b5b030fca981233f95fe4a98e040394a8",
+  "draft_card": "DiscipleOfFreyalise.non-targeted.proposal.kt",
+  "draft_test": "DiscipleOfFreyaliseScenarioTest.non-targeted.proposal.kt",
+  "patch": "selection-transport.patch",
+  "source_review": "SOURCE_REVIEW.json",
+  "test_matrix": "TEST_MATRIX.json",
+  "preservation": {
+    "original_case_identities": 65,
+    "original_assertion_lines": 401,
+    "byte_identical_assertion_lines": 386,
+    "transport_assertion_lines": 15,
+    "remaining_assertion_expectations": "Preserved; no changed life/card/zone/mana/event/error/skip outcomes.",
+    "true_target_mutant_response_lines": [
+      966,
+      967
+    ],
+    "failure_assertion_line": 1055,
+    "df19_actual_error": "Unchanged",
+    "registration_file": "Unchanged",
+    "runtime_sdk_server_client": "Unchanged",
+    "protected_MH3_original_bytes": 67843,
+    "protected_MH3_original_entries": 24,
+    "legacy_fixtures": 82,
+    "manual": "v0.7",
+    "reserved_precision_games": 2
+  },
+  "exclusions": [
+    "No runtime/SDK/server/client/payment/UI change",
+    "No change to existing 3-file runtime grant boundaries",
+    "No other card registration or assertion relaxation",
+    "No protected snapshot overwrite; only existing authorized one additive entry after all gates",
+    "No multiplayer admission, official games/seeds, extra spending or new workers"
+  ],
+  "acceptance": "TEST_MATRIX.json: normal and every mutant compile first, exact raw identities and zero skips/errors, all declared positive/negative witnesses and unaffected controls, registration/full compatibility/original receiving. No acceptance from source review, synthetic checks or green workflow alone.",
+  "implementation_applied": false,
+  "compiled": false,
+  "dispatched": false
+}

@@ -1,0 +1,684 @@
+{
+  "schema": 1,
+  "state": "PROPOSAL_ONLY_NO_QUALIFICATION_DISPATCHED",
+  "base_source": "a15c7859ea1e0a3155168338c8e465b975bc6a19",
+  "forms": [
+    "normal",
+    "fixed_one",
+    "fixed_two",
+    "source_power",
+    "no_may",
+    "allow_self",
+    "allow_opponent",
+    "gate_bypass",
+    "require_source",
+    "graveyard_growth",
+    "triggered_target",
+    "no_modal_layout",
+    "life_cost_two",
+    "no_tapped_replacement",
+    "life_cost_one",
+    "white_mana",
+    "back_cost_six",
+    "canonical_land",
+    "wrong_back_collector",
+    "targeting_choice_regression"
+  ],
+  "compile_first": "All 20 forms compile scenario and registration test modules using approved locked commands before any behavior.",
+  "normal_and_restored_cases": [
+    "DF01 sacrifice gives exactly five life and five cards",
+    "DF02 decline preserves the creature life and hand",
+    "DF03 selection rejects the source and still accepts another own creature",
+    "DF04 selection rejects an opponent creature",
+    "DF06 power 0 sacrifices without drawing or losing life",
+    "DF06 power -2 sacrifices without drawing or losing life",
+    "DF08 source departure before trigger resolution preserves the payoff",
+    "DF11 full state serialization at optional preserves five power payoff",
+    "DF11 full state serialization at selection preserves five power payoff",
+    "DF14 Garden pays exactly three life to enter untapped",
+    "DF15 declined Garden payment keeps life and enters tapped",
+    "DF16 two life cannot pay Garden entry cost",
+    "DF05 projected boost is captured before the sacrifice",
+    "DF03 DF04 no other own creature gives no payoff opponentOnly=false",
+    "DF03 DF04 no other own creature gives no payoff opponentOnly=true",
+    "DF07 an unsacrificable chosen creature gives no payoff",
+    "DF12 resolution choice of hexproof fodder emits no targeting event",
+    "DF13 legal Garden land action is distinct from a creature cast",
+    "DF17 Garden activation produces exactly one green and no other mana",
+    "DF18 front cast keeps creature characteristics and mana value six",
+    "DF18 Garden battlefield uses land characteristics and mana value zero",
+    "DF22 both card faces and metadata survive polymorphic JSON roundtrip",
+    "DF09 token sacrifice retains projected five power after departure",
+    "DF10 successful sacrifice redirected to exile retains five power payoff",
+    "DF16 stale serialized payment rejects yes and preserves decline",
+    "DF16 accepting an offered three life choice at two life cannot buy untapped entry",
+    "DF19 exile permission castOnly=false distinguishes Garden play",
+    "DF19 exile permission castOnly=true distinguishes Garden play",
+    "DF21 external transform instruction leaves Disciple front face unchanged",
+    "DF01 singleton automatic selection preserves five power payoff",
+    "DF16 Garden threshold life=3 accept=false pays once or declines",
+    "DF16 Garden threshold life=3 accept=true pays once or declines",
+    "DF16 Garden threshold life=4 accept=false pays once or declines",
+    "DF16 Garden threshold life=4 accept=true pays once or declines",
+    "DF16 malformed land payment response preserves the pending choice",
+    "DF16 replayed land payment response cannot charge life twice",
+    "DF19 graveyard permission castOnly=false agrees with direct Garden action",
+    "DF19 graveyard permission castOnly=true agrees with direct Garden action",
+    "DF19 permission forced tapped Garden does not charge life",
+    "DF19 another player's permission does not authorize Garden",
+    "DF19 permitted Garden consumes the ordinary land drop",
+    "DF19 expired permission stays revoked at the next own main phase",
+    "DF19 per-card permission does not admit a command-zone Garden",
+    "DF19 permitted Garden respects timing restriction=nonmain",
+    "DF19 permitted Garden respects timing restriction=nonactive",
+    "DF19 permitted Garden respects timing restriction=stack",
+    "DF19 land prohibition defeats a per-card play permission",
+    "DF16 Garden payment uses existing library replacement shallow=false",
+    "DF16 Garden payment uses existing library replacement shallow=true",
+    "DF16 serialized Garden entry emits one identity and one landfall accept=false",
+    "DF16 serialized Garden entry emits one identity and one landfall accept=true",
+    "DF02 declining a singleton optional sacrifice preserves its actual creature",
+    "DF03 accepting with only Disciple preserves the source creature",
+    "DF04 accepting with only opponent fodder preserves that creature",
+    "DF08 departed source singleton trigger still pays five life",
+    "DF15 Garden declines any offered payment and ends tapped",
+    "DF16 Garden at two life cannot buy an untapped final state",
+    "DF12 selecting own fodder emits no triggered-target event before payoff",
+    "DF20 noncast entry uses the front creature and creates exactly one trigger",
+    "DF20 bounced Garden returns to front characteristics and can replay its land face",
+    "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+    "DF19 creature cast prohibition leaves permitted Garden playable",
+    "DF20 noncast graveyard selection uses front type landQualified=false",
+    "DF20 noncast graveyard selection uses front type landQualified=true",
+    "DF21 Garden play neither spends Palace rider mana nor inherits its counters",
+    "DF12 non-targeted shroud selection survives serialization and preserves unchosen fodder",
+    "DF12 non-targeted choice rejects source and opposing shroud while accepting own shroud"
+  ],
+  "case_count": 67,
+  "assertion_lines": 426,
+  "registration_cases": [
+    "DR01 exactly one canonical MH3 registration and no Garden singleton or reprint",
+    "DR02 canonical front and land back retain distinct characteristics",
+    "DR03 both faces use canonical collector artist rarity and exact original images",
+    "DR04 both faces retain the seven archived rulings",
+    "DR05 both face definitions survive export load and reexport",
+    "DR06 export additive MH3 candidate without rewriting protected original"
+  ],
+  "registration_normal_restored_count": 6,
+  "mutations": [
+    {
+      "id": "fixed_one",
+      "requirements": [
+        "DF01",
+        "DF06",
+        "DF11"
+      ],
+      "edits": [
+        {
+          "before": "val sacrificedPower = DynamicAmount.VariableReference(\"discipleSacrificedPower\")",
+          "after": "val sacrificedPower = DynamicAmount.Fixed(1)"
+        }
+      ],
+      "source_sha256": "38bef6c3facea376b1977541c4268f282685ae9b8e8f609808196d77f2f981e1",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF01 sacrifice gives exactly five life and five cards",
+          "line": 86,
+          "assertion": "d.getLifeTotal(me) shouldBe 25"
+        },
+        {
+          "case": "DF06 power 0 sacrifices without drawing or losing life",
+          "line": 171,
+          "assertion": "d.getLifeTotal(me) shouldBe 20"
+        },
+        {
+          "case": "DF06 power -2 sacrifices without drawing or losing life",
+          "line": 171,
+          "assertion": "d.getLifeTotal(me) shouldBe 20"
+        },
+        {
+          "case": "DF11 full state serialization at optional preserves five power payoff",
+          "line": 211,
+          "assertion": "d.getLifeTotal(me) shouldBe 25"
+        },
+        {
+          "case": "DF11 full state serialization at selection preserves five power payoff",
+          "line": 211,
+          "assertion": "d.getLifeTotal(me) shouldBe 25"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "fixed_two",
+      "requirements": [
+        "DF05"
+      ],
+      "edits": [
+        {
+          "before": "val sacrificedPower = DynamicAmount.VariableReference(\"discipleSacrificedPower\")",
+          "after": "val sacrificedPower = DynamicAmount.Fixed(2)"
+        }
+      ],
+      "source_sha256": "3b9b63b15da77696b781712f533b811c6f51af301c1fc62583107956111ba41c",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF05 projected boost is captured before the sacrifice",
+          "line": 270,
+          "assertion": "d.getLifeTotal(me) shouldBe 25"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "source_power",
+      "requirements": [
+        "DF09"
+      ],
+      "edits": [
+        {
+          "before": "val sacrificedPower = DynamicAmount.VariableReference(\"discipleSacrificedPower\")",
+          "after": "val sacrificedPower = DynamicAmount.EntityProperty(EntityReference.Source, EntityNumericProperty.Power)"
+        }
+      ],
+      "source_sha256": "7c7f23f481b6c9d6a742e039b51c22355ddf5aa4a418d37e6936b47ddbc349ab",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF09 token sacrifice retains projected five power after departure",
+          "line": 444,
+          "assertion": "d.getLifeTotal(me) shouldBe 25"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "no_may",
+      "requirements": [
+        "DF02"
+      ],
+      "edits": [
+        {
+          "before": "effect = MayEffect(Effects.Composite(listOf(",
+          "after": "effect = Effects.Composite(listOf("
+        },
+        {
+          "before": "        )))\n        description =",
+          "after": "        ))\n        description ="
+        }
+      ],
+      "source_sha256": "29b474144301739b3198a85711ef950345e64fc6e8608f62d093813b44fd23d7",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF02 declining a singleton optional sacrifice preserves its actual creature",
+          "line": 885,
+          "assertion": "d.getPermanents(me).contains(fodder) shouldBe true"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "allow_self",
+      "requirements": [
+        "DF03"
+      ],
+      "edits": [
+        {
+          "before": "excludeSelf = true",
+          "after": "excludeSelf = false"
+        }
+      ],
+      "source_sha256": "cb3911bea7a89d28de2d13f9ffdedc9b79cf63f4b6981fb5e8b79d6977e6ab20",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF03 accepting with only Disciple preserves the source creature",
+          "line": 895,
+          "assertion": "d.getPermanents(me).contains(source) shouldBe true"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "allow_opponent",
+      "requirements": [
+        "DF04"
+      ],
+      "edits": [
+        {
+          "before": "player = Player.You",
+          "after": "player = Player.Each"
+        },
+        {
+          "before": "Effects.SacrificeTarget(EffectTarget.PipelineTarget(\"discipleSacrifice\"))",
+          "after": "com.wingedsheep.sdk.scripting.effects.SacrificeTargetEffect(EffectTarget.PipelineTarget(\"discipleSacrifice\"), sacrificedByItsController = true)"
+        }
+      ],
+      "source_sha256": "5026eae25252e9ef10b0398435da7b1029ae9464622c76edf10acfa3976baa82",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF04 accepting with only opponent fodder preserves that creature",
+          "line": 907,
+          "assertion": "d.getPermanents(opp).contains(fodder) shouldBe true"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "gate_bypass",
+      "requirements": [
+        "DF07"
+      ],
+      "edits": [
+        {
+          "before": "successCriterion = SuccessCriterion.PermanentsSacrificed",
+          "after": "successCriterion = SuccessCriterion.Always"
+        }
+      ],
+      "source_sha256": "bffa2047db57224cc5b57ba4af015db2fda75e86c984e8ff3a6f49356f6d3194",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF07 an unsacrificable chosen creature gives no payoff",
+          "line": 315,
+          "assertion": "d.getLifeTotal(me) shouldBe 20"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "require_source",
+      "requirements": [
+        "DF08"
+      ],
+      "edits": [
+        {
+          "before": "        )))\n        description =",
+          "after": "        )), sourceRequiredZone = com.wingedsheep.sdk.core.Zone.BATTLEFIELD)\n        description ="
+        }
+      ],
+      "source_sha256": "5394a3221e679a5cf763b35424da7ce6ff44a5ef3cbba4be572e5ae1678742a5",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF08 departed source singleton trigger still pays five life",
+          "line": 924,
+          "assertion": "d.getLifeTotal(me) shouldBe 25"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "graveyard_growth",
+      "requirements": [
+        "DF10"
+      ],
+      "edits": [
+        {
+          "before": "            Effects.IfYouDo(",
+          "after": "            Effects.StoreNumber(\"beforeGraveyard\", DynamicAmount.Count(com.wingedsheep.sdk.scripting.references.Player.You, com.wingedsheep.sdk.core.Zone.GRAVEYARD)),\n            Effects.IfYouDo("
+        },
+        {
+          "before": "ifYouDo = Effects.Composite(listOf(",
+          "after": "ifYouDo = com.wingedsheep.sdk.scripting.effects.ConditionalEffect(com.wingedsheep.sdk.scripting.conditions.Compare(DynamicAmount.Count(com.wingedsheep.sdk.scripting.references.Player.You, com.wingedsheep.sdk.core.Zone.GRAVEYARD), com.wingedsheep.sdk.scripting.conditions.ComparisonOperator.GT, DynamicAmount.VariableReference(\"beforeGraveyard\")), Effects.Composite(listOf("
+        },
+        {
+          "before": "                )),\n                successCriterion",
+          "after": "                ))),\n                successCriterion"
+        }
+      ],
+      "source_sha256": "b2d9e44b9d163f9bee8862e867da79a2af9bdf84b7dded7128bc3f6ae7d81329",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF10 successful sacrifice redirected to exile retains five power payoff",
+          "line": 473,
+          "assertion": "d.getLifeTotal(me) shouldBe 25"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "triggered_target",
+      "requirements": [
+        "DF12"
+      ],
+      "edits": [
+        {
+          "before": "        trigger = Triggers.EntersBattlefield",
+          "after": "        trigger = Triggers.EntersBattlefield\n        target = com.wingedsheep.sdk.scripting.targets.TargetObject(filter = com.wingedsheep.sdk.scripting.filters.unified.TargetFilter.CreatureYouControl.other())"
+        },
+        {
+          "before": "            GatherCardsEffect(\n                source = CardSource.BattlefieldMatching(\n                    filter = GameObjectFilter.Creature,\n                    player = Player.You,\n                    excludeSelf = true\n                ),\n                storeAs = \"discipleEligibleSacrifices\"\n            ),\n            SelectFromCollectionEffect(\n                from = \"discipleEligibleSacrifices\",\n                selection = SelectionMode.ChooseExactly(DynamicAmount.Fixed(1)),\n                storeSelected = \"discipleSacrifice\",\n                prompt = \"Choose another creature you control to sacrifice\",\n                useTargetingUI = true\n            ),\n",
+          "after": ""
+        },
+        {
+          "before": "EntityReference.FromCostStorage(\"discipleSacrifice\")",
+          "after": "EntityReference.Target(0)"
+        },
+        {
+          "before": "EffectTarget.PipelineTarget(\"discipleSacrifice\")",
+          "after": "EffectTarget.ContextTarget(0)"
+        }
+      ],
+      "source_sha256": "460ebeb1cdf9b8454217b79c83ceacceb31d1e42c7dfda6ccba9bf1cc70eb749",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF12 selecting own fodder emits no triggered-target event before payoff",
+          "line": 969,
+          "assertion": "d.events.drop(start).filterIsInstance<BecomesTargetEvent>().size shouldBe 0"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "no_modal_layout",
+      "requirements": [
+        "DF13",
+        "DF19"
+      ],
+      "edits": [
+        {
+          "before": "layout = CardLayout.MODAL_DFC",
+          "after": "layout = CardLayout.NORMAL"
+        }
+      ],
+      "source_sha256": "ce727dcf0c48d7a4d3419aa44fd960af8454fea51b0a0697b471369da7fbabbc",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF13 legal Garden land action is distinct from a creature cast",
+          "line": 350,
+          "assertion": "offered.size shouldBe 1"
+        },
+        {
+          "case": "DF19 exile permission castOnly=false distinguishes Garden play",
+          "line": 525,
+          "assertion": "offered shouldBe !castOnly"
+        }
+      ],
+      "unaffected_controls": [
+        "DF01 sacrifice gives exactly five life and five cards",
+        "DF02 decline preserves the creature life and hand",
+        "DF06 power 0 sacrifices without drawing or losing life"
+      ]
+    },
+    {
+      "id": "life_cost_two",
+      "requirements": [
+        "DF14"
+      ],
+      "edits": [
+        {
+          "before": "EntersTapped(payLifeCost = 3)",
+          "after": "EntersTapped(payLifeCost = 2)"
+        }
+      ],
+      "source_sha256": "fc93b4b9eabda0d86836a6b3b876ea88d67e7c8bed795db023583f9932a42a3f",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF14 Garden pays exactly three life to enter untapped",
+          "line": 224,
+          "assertion": "d.getLifeTotal(me) shouldBe 17"
+        }
+      ],
+      "unaffected_controls": [
+        "DF01 sacrifice gives exactly five life and five cards",
+        "DF02 decline preserves the creature life and hand",
+        "DF06 power 0 sacrifices without drawing or losing life"
+      ]
+    },
+    {
+      "id": "no_tapped_replacement",
+      "requirements": [
+        "DF15"
+      ],
+      "edits": [
+        {
+          "before": "    replacementEffect(EntersTapped(payLifeCost = 3))",
+          "after": "    // Isolated mutant: no enters-tapped replacement."
+        }
+      ],
+      "source_sha256": "81ce124842884df7b7988d0683c83e7b1d2d0f842a5d388d1fc5d0ae0c973f00",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF15 Garden declines any offered payment and ends tapped",
+          "line": 936,
+          "assertion": "d.isTapped(id) shouldBe true"
+        }
+      ],
+      "unaffected_controls": [
+        "DF01 sacrifice gives exactly five life and five cards",
+        "DF02 decline preserves the creature life and hand",
+        "DF06 power 0 sacrifices without drawing or losing life"
+      ]
+    },
+    {
+      "id": "life_cost_one",
+      "requirements": [
+        "DF16"
+      ],
+      "edits": [
+        {
+          "before": "EntersTapped(payLifeCost = 3)",
+          "after": "EntersTapped(payLifeCost = 1)"
+        }
+      ],
+      "source_sha256": "7d57520ac907a2990e760946196069995cb9af0d67cb6abdb0ef6a8b2a8eb758",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF16 Garden at two life cannot buy an untapped final state",
+          "line": 951,
+          "assertion": "d.isTapped(id) shouldBe true"
+        }
+      ],
+      "unaffected_controls": [
+        "DF01 sacrifice gives exactly five life and five cards",
+        "DF02 decline preserves the creature life and hand",
+        "DF06 power 0 sacrifices without drawing or losing life"
+      ]
+    },
+    {
+      "id": "white_mana",
+      "requirements": [
+        "DF17"
+      ],
+      "edits": [
+        {
+          "before": "Effects.AddMana(Color.GREEN, 1)",
+          "after": "Effects.AddMana(Color.WHITE, 1)"
+        }
+      ],
+      "source_sha256": "ffc091fac73345fd95222152eef29f1d2dd46f375a2133c9f9bbf1d5e894a8ac",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF17 Garden activation produces exactly one green and no other mana",
+          "line": 371,
+          "assertion": "pool.green shouldBe 1"
+        }
+      ],
+      "unaffected_controls": [
+        "DF01 sacrifice gives exactly five life and five cards",
+        "DF02 decline preserves the creature life and hand",
+        "DF06 power 0 sacrifices without drawing or losing life"
+      ]
+    },
+    {
+      "id": "back_cost_six",
+      "requirements": [
+        "DF18"
+      ],
+      "edits": [
+        {
+          "before": "    typeLine = \"Land\"",
+          "after": "    typeLine = \"Land\"\n    manaCost = \"{3}{G}{G}{G}\""
+        }
+      ],
+      "source_sha256": "5f33dc67a8406cde6ef0b6cb7979af64a9831b030cd4d3ff80d042a77387eb0c",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF18 Garden battlefield uses land characteristics and mana value zero",
+          "line": 408,
+          "assertion": "component.manaCost.cmc shouldBe 0"
+        }
+      ],
+      "unaffected_controls": [
+        "DF01 sacrifice gives exactly five life and five cards",
+        "DF02 decline preserves the creature life and hand",
+        "DF06 power 0 sacrifices without drawing or losing life"
+      ]
+    },
+    {
+      "id": "canonical_land",
+      "requirements": [
+        "DF20"
+      ],
+      "edits": [
+        {
+          "before": "}.copy(layout = CardLayout.MODAL_DFC, backFace = gardenOfFreyaliseDefinition())",
+          "after": "}.copy(layout = CardLayout.MODAL_DFC, backFace = gardenOfFreyaliseDefinition()).let { front -> front.backFace!!.copy(name = front.name, metadata = front.metadata, layout = front.layout, backFace = front.backFace) }"
+        }
+      ],
+      "source_sha256": "64ee9492b4bd0fb5cea1f4c944e3e1ed82ff91de688545a4042510b2d74517e4",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF20 noncast entry uses the front creature and creates exactly one trigger",
+          "line": 995,
+          "assertion": "d.getCreatures(me).contains(id) shouldBe true"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    },
+    {
+      "id": "wrong_back_collector",
+      "requirements": [
+        "DF22"
+      ],
+      "edits": [
+        {
+          "before": "package com.wingedsheep.mtg.sets.definitions.mh3.cards\n\nimport com.wingedsheep.sdk.core.Color\nimport com.wingedsheep.sdk.dsl.Effects\nimport com.wingedsheep.sdk.dsl.Triggers\nimport com.wingedsheep.sdk.dsl.card\nimport com.wingedsheep.sdk.model.CardDefinition\nimport com.wingedsheep.sdk.model.CardLayout\nimport com.wingedsheep.sdk.model.Rarity\nimport com.wingedsheep.sdk.scripting.EntersTapped\nimport com.wingedsheep.sdk.scripting.GameObjectFilter\nimport com.wingedsheep.sdk.scripting.effects.CardSource\nimport com.wingedsheep.sdk.scripting.effects.GatherCardsEffect\nimport com.wingedsheep.sdk.scripting.effects.SelectionMode\nimport com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect\nimport com.wingedsheep.sdk.scripting.references.Player\nimport com.wingedsheep.sdk.scripting.TimingRule\nimport com.wingedsheep.sdk.scripting.effects.MayEffect\nimport com.wingedsheep.sdk.scripting.effects.SuccessCriterion\nimport com.wingedsheep.sdk.scripting.targets.EffectTarget\nimport com.wingedsheep.sdk.scripting.values.DynamicAmount\nimport com.wingedsheep.sdk.scripting.values.EntityReference\nimport com.wingedsheep.sdk.scripting.values.EntityNumericProperty\n\n// Research draft only: not compiled, tested, registered, or admitted.\n// Existing data composition; no new SDK, engine, payment, or UI boundary.\nprivate fun gardenOfFreyaliseDefinition(): CardDefinition = card(\"Garden of Freyalise\") {\n    flags(com.wingedsheep.sdk.core.AbilityFlag.CANT_TRANSFORM)\n    typeLine = \"Land\"\n    colorIdentity = \"G\"\n    oracleText = \"As this land enters, you may pay 3 life. If you don't, it enters tapped.\\n{T}: Add {G}.\"\n    replacementEffect(EntersTapped(payLifeCost = 3))\n    activatedAbility {\n        cost = com.wingedsheep.sdk.dsl.Costs.Tap\n        effect = Effects.AddMana(Color.GREEN, 1)\n        manaAbility = true\n        timing = TimingRule.ManaAbility\n    }\n    metadata {\n        rarity = Rarity.UNCOMMON\n        collectorNumber = \"250\"\n        artist = \"Valera Lutfullina\"\n        flavorText = \"The Juniper Order safeguards secret places that still thrum with traces of Freyalise's life-giving magic.\"\n        imageUri = \"https://cards.scryfall.io/normal/back/a/8/a8e9ea5a-5e10-4b77-baef-0352ff035483.jpg?1783911228\"\n        ruling(\"2024-06-07\", \"Use the power of the sacrificed creature as it last existed on the battlefield to determine the value of X.\")\n        ruling(\"2024-06-07\", \"To determine whether it is legal to play a modal double-faced card, consider only the characteristics of the face you're playing and ignore the other face's characteristics. For example, if an effect stops you from casting creature spells, you can't cast Disciple of Freyalise, but you can still play Garden of Freyalise.\")\n        ruling(\"2024-06-07\", \"If an effect allows you to play a specific modal double-faced card, you may cast it as a spell or play it as a land, as determined by which face you choose to play. If an effect allows you to cast (rather than \\\"play\\\") a specific modal double-faced card, you can't play it as a land.\")\n        ruling(\"2024-06-07\", \"If an effect allows you to play a land or cast a spell from among a group of cards, you may play or cast a modal double-faced card with any face that fits the criteria of that effect. For example, if an effect allows you to play lands from your graveyard, you can play Garden of Freyalise, but you can't cast Disciple of Freyalise.\")\n        ruling(\"2024-06-07\", \"If an effect allows you to put a card with particular characteristics onto the battlefield without instructing you to play or cast it, you consider only the characteristics of a modal double-faced card's front face to see if that card qualifies. If it does, it enters the battlefield with its front face up. For example, if an effect allows you to put a creature card from your graveyard onto the battlefield, you can put Disciple of Freyalise onto the battlefield. However, an effect that lets you return a land card from your graveyard to your hand won't let you return Garden of Freyalise to your hand, as that card has only its front face's characteristics while in the graveyard.\")\n        ruling(\"2024-06-07\", \"The mana value of a modal double-faced card is based on the characteristics of the face that's being considered. On the stack or the battlefield, consider whichever face is up. In all other zones, consider only the front face. This is different than how the mana value of a transforming double-faced card is determined.\")\n        ruling(\"2024-06-07\", \"A modal double-faced card can't be transformed or be put onto the battlefield transformed. Ignore any instruction to transform a modal double-faced card or to put one onto the battlefield transformed.\")\n    }\n}\n\n",
+          "after": "package com.wingedsheep.mtg.sets.definitions.mh3.cards\n\nimport com.wingedsheep.sdk.core.Color\nimport com.wingedsheep.sdk.dsl.Effects\nimport com.wingedsheep.sdk.dsl.Triggers\nimport com.wingedsheep.sdk.dsl.card\nimport com.wingedsheep.sdk.model.CardDefinition\nimport com.wingedsheep.sdk.model.CardLayout\nimport com.wingedsheep.sdk.model.Rarity\nimport com.wingedsheep.sdk.scripting.EntersTapped\nimport com.wingedsheep.sdk.scripting.GameObjectFilter\nimport com.wingedsheep.sdk.scripting.effects.CardSource\nimport com.wingedsheep.sdk.scripting.effects.GatherCardsEffect\nimport com.wingedsheep.sdk.scripting.effects.SelectionMode\nimport com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect\nimport com.wingedsheep.sdk.scripting.references.Player\nimport com.wingedsheep.sdk.scripting.TimingRule\nimport com.wingedsheep.sdk.scripting.effects.MayEffect\nimport com.wingedsheep.sdk.scripting.effects.SuccessCriterion\nimport com.wingedsheep.sdk.scripting.targets.EffectTarget\nimport com.wingedsheep.sdk.scripting.values.DynamicAmount\nimport com.wingedsheep.sdk.scripting.values.EntityReference\nimport com.wingedsheep.sdk.scripting.values.EntityNumericProperty\n\n// Research draft only: not compiled, tested, registered, or admitted.\n// Existing data composition; no new SDK, engine, payment, or UI boundary.\nprivate fun gardenOfFreyaliseDefinition(): CardDefinition = card(\"Garden of Freyalise\") {\n    flags(com.wingedsheep.sdk.core.AbilityFlag.CANT_TRANSFORM)\n    typeLine = \"Land\"\n    colorIdentity = \"G\"\n    oracleText = \"As this land enters, you may pay 3 life. If you don't, it enters tapped.\\n{T}: Add {G}.\"\n    replacementEffect(EntersTapped(payLifeCost = 3))\n    activatedAbility {\n        cost = com.wingedsheep.sdk.dsl.Costs.Tap\n        effect = Effects.AddMana(Color.GREEN, 1)\n        manaAbility = true\n        timing = TimingRule.ManaAbility\n    }\n    metadata {\n        rarity = Rarity.UNCOMMON\n        collectorNumber = \"251\"\n        artist = \"Valera Lutfullina\"\n        flavorText = \"The Juniper Order safeguards secret places that still thrum with traces of Freyalise's life-giving magic.\"\n        imageUri = \"https://cards.scryfall.io/normal/back/a/8/a8e9ea5a-5e10-4b77-baef-0352ff035483.jpg?1783911228\"\n        ruling(\"2024-06-07\", \"Use the power of the sacrificed creature as it last existed on the battlefield to determine the value of X.\")\n        ruling(\"2024-06-07\", \"To determine whether it is legal to play a modal double-faced card, consider only the characteristics of the face you're playing and ignore the other face's characteristics. For example, if an effect stops you from casting creature spells, you can't cast Disciple of Freyalise, but you can still play Garden of Freyalise.\")\n        ruling(\"2024-06-07\", \"If an effect allows you to play a specific modal double-faced card, you may cast it as a spell or play it as a land, as determined by which face you choose to play. If an effect allows you to cast (rather than \\\"play\\\") a specific modal double-faced card, you can't play it as a land.\")\n        ruling(\"2024-06-07\", \"If an effect allows you to play a land or cast a spell from among a group of cards, you may play or cast a modal double-faced card with any face that fits the criteria of that effect. For example, if an effect allows you to play lands from your graveyard, you can play Garden of Freyalise, but you can't cast Disciple of Freyalise.\")\n        ruling(\"2024-06-07\", \"If an effect allows you to put a card with particular characteristics onto the battlefield without instructing you to play or cast it, you consider only the characteristics of a modal double-faced card's front face to see if that card qualifies. If it does, it enters the battlefield with its front face up. For example, if an effect allows you to put a creature card from your graveyard onto the battlefield, you can put Disciple of Freyalise onto the battlefield. However, an effect that lets you return a land card from your graveyard to your hand won't let you return Garden of Freyalise to your hand, as that card has only its front face's characteristics while in the graveyard.\")\n        ruling(\"2024-06-07\", \"The mana value of a modal double-faced card is based on the characteristics of the face that's being considered. On the stack or the battlefield, consider whichever face is up. In all other zones, consider only the front face. This is different than how the mana value of a transforming double-faced card is determined.\")\n        ruling(\"2024-06-07\", \"A modal double-faced card can't be transformed or be put onto the battlefield transformed. Ignore any instruction to transform a modal double-faced card or to put one onto the battlefield transformed.\")\n    }\n}\n\n"
+        }
+      ],
+      "source_sha256": "b9fd8cde2e3761fcd947fc9cbf533feee0dd326783a5d45ec81d6d66ed6fe768",
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "witnesses": [
+        {
+          "case": "DF22 both card faces and metadata survive polymorphic JSON roundtrip",
+          "line": 423,
+          "assertion": "decoded.backFace!!.metadata.collectorNumber shouldBe \"250\""
+        }
+      ],
+      "unaffected_controls": [
+        "DF01 sacrifice gives exactly five life and five cards",
+        "DF02 decline preserves the creature life and hand",
+        "DF06 power 0 sacrifices without drawing or losing life"
+      ]
+    },
+    {
+      "id": "targeting_choice_regression",
+      "requirements": [
+        "DF12"
+      ],
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt",
+      "edits": [
+        {
+          "before": "            GatherCardsEffect(\n                source = CardSource.BattlefieldMatching(\n                    filter = GameObjectFilter.Creature,\n                    player = Player.You,\n                    excludeSelf = true\n                ),\n                storeAs = \"discipleEligibleSacrifices\"\n            ),\n            SelectFromCollectionEffect(\n                from = \"discipleEligibleSacrifices\",\n                selection = SelectionMode.ChooseExactly(DynamicAmount.Fixed(1)),\n                storeSelected = \"discipleSacrifice\",\n                prompt = \"Choose another creature you control to sacrifice\",\n                useTargetingUI = true\n            ),\n",
+          "after": "            Effects.SelectTarget(\n                com.wingedsheep.sdk.scripting.targets.TargetObject(filter = com.wingedsheep.sdk.scripting.filters.unified.TargetFilter.CreatureYouControl.other()),\n                storeAs = \"discipleSacrifice\"\n            ),\n"
+        }
+      ],
+      "source_sha256": "8dfb2f9ac8e9fa335fec43932238cff4390fd6c961e333f2c43fe172247ec44a",
+      "witnesses": [
+        {
+          "case": "DF12 shroud hexproof ward fodder sacrifices without tax or intermediate priority",
+          "line": 1055,
+          "assertion": "d.getLifeTotal(me) shouldBe 25"
+        }
+      ],
+      "unaffected_controls": [
+        "DF14 Garden pays exactly three life to enter untapped",
+        "DF15 declined Garden payment keeps life and enters tapped",
+        "DF17 Garden activation produces exactly one green and no other mana"
+      ]
+    }
+  ],
+  "required_negative_assertion_witnesses": 24,
+  "required_unaffected_controls": 57,
+  "negative_evidence": "Actual declared AssertionFailedError with exact name and line; compiler errors, missing reports, unrelated failures and exceptions are not behavioral evidence. Rebind each witness to immutable successor. Old targeted-trigger response stays intact to exercise its zero-event witness.",
+  "new_control": "targeting_choice_regression restores the original SelectTarget composition and must reproduce the archived DF12 line1055 expected25/actual20 failure; full source restored and rebound afterward.",
+  "early_reuse": "Reuse received runtime R2 receipt43e383148f0a09a715f3ae67e8ce4dcecf61f698 for exact unchanged runtime source. R1 card compilation is not successor compile evidence. No accepted qualification reruns.",
+  "full_gates": {
+    "ordinary_rows_derived": 19212,
+    "historical_exact_skips": 43,
+    "card_rows_derived": 396,
+    "client_rows": 64,
+    "derived_counts_not_observed": true,
+    "required": [
+      "Fresh same-source normal/full compile",
+      "Required affected focused regressions",
+      "All ordinary rows and exact identities/multiplicities/skips",
+      "Card regressions and six registration checks",
+      "64 client cases and typecheck",
+      "metadata/printing/discovery/lint",
+      "original MH3 snapshot differential preserving every existing byte and entry",
+      "Assay classification with no semantic passes inferred from grammar declines",
+      "Original artifact verification with immutable source/tree/validation/workflow/run/job/attempt/artifact pins, bytes/hash/manifest/raw XML, executable witnesses/source restoration/protected bytes"
+    ]
+  },
+  "remaining_admission": "All ungranted cards and multiplayer/pilot/hidden-information/telemetry/replay/frozen-input requirements remain unadmitted. No official games/seeds."
+}
