@@ -3,14 +3,15 @@
   "updated_date": "2026-11-02",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "RUNNING",
-  "owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+    "state": "RELEASED",
+    "owner": null,
+    "last_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
     "run_id": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
-    "claimed_utc": "2026-11-02T04:43:23.959Z",
-    "expires_utc": "2026-11-02T05:28:23.959Z"
+    "released_utc": "2026-11-02T05:01:36.180Z",
+    "reason": "External dependency pending: single frozen preservation diagnostic41391313899/job125103117038 is in_progress. Original/draft source forms, unchanged eight diagnostic identities and two new departure-power assertions are frozen. Exact original-artifact receiver and isolated alternative-design review are saved and immutable-readback verified at9cf46552079c902a8ec8353dd8b5a49454481040. No source change or acceptance follows from static review. Further bounded correction/full qualification requires original diagnostic evidence; no useful safely independent authorized receiving preparation or source-review work remains. Ownership released; no continuous execution implied."
   },
   "last_qualified": {
     "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
@@ -30,7 +31,17 @@
   },
   "next": {
     "dependency": "Original-vs-draft departure-characteristic preservation diagnostic",
-    "pending_runs": [],
+    "pending_runs": [
+      {
+        "id": 41391313899,
+        "job": 125103117038,
+        "status": "in_progress",
+        "validation": "0307d51371b685fa7302cd7b1c3fae3f61144e06",
+        "source": "ad55ea9f4dec72123d033bc6c73414319616d2b6",
+        "attempt": 1,
+        "event": "push"
+      }
+    ],
     "source_candidate": "ad55ea9f4dec72123d033bc6c73414319616d2b6",
     "latest_receiving": {
       "commit": "3b3bf30d728c52e61534ce4292e4e2db623556d5",
@@ -49,7 +60,7 @@
       ],
       "implemented": false
     },
-    "next_executable_action": "Dispatch frozen preservation diagnostic validation0307d51371b685fa7302cd7b1c3fae3f61144e06 once on recorded branch after fresh shared-owner/activity reconciliation. Compile original/draft forms before ten-case observation. Existing8 diagnostic identities and new two exact departure-power checks unchanged; no acceptance. Prepare original-artifact receiver and isolated preservation-design review; receive once at terminal, reject compiler/missing-report/unrelated failures as behavioral evidence. Do not change ZoneTransitionService or other ungranted boundary."
+    "next_executable_action": "Reconcile live CURRENT, exact released owner and sole Work run state, newer receipts/successors and all-event active workflows. Do not duplicate/cancel active41391313899. When terminal and unreceived, claim fresh-blob CAS and receive original run41391313899/job125103117038/attempt1 artifacts once using9cf46552079c902a8ec8353dd8b5a49454481040 receiving prep. Verify immutable pins, archive bytes/digest/manifest, both compile-first forms, 10 exact rows per form, raw counts/multiplicities/skips, exact assertion witnesses, protected bytes and restoration/rebinding. Existing R2/paid-choice/Disciple and earlier accepted receipts are reused. Diagnose actual preservation outcome; compiler/missing-report/unrelated failures are not behavioral evidence. If early snapshot causes stale departure characteristics, reject draft and evaluate authorized-three-section correction; any required additional boundary needs a concrete separate proposal. Otherwise continue all original proposal normal/mutant and same-source full gates before acceptance. Do not infer acceptance from green workflow."
   },
   "completion_contract": {
     "engineering": "All frozen Manual/opponent card semantics, exact four-player runtime, executable pilots, hidden information, telemetry, source-bound deterministic replay and production admission qualified.",
@@ -1246,24 +1257,43 @@
       }
     },
     "latest": {
-      "utc": "2026-11-02T00:47:19.675Z",
-      "status": "READY_FOR_NEXT_ITERATION",
+      "utc": "2026-11-02T05:01:36.180Z",
+      "status": "WAITING_EXTERNAL",
       "owner": null,
-      "last_execution_owner": "manual-work-9ecd760f-ff7c-8332-bed5-02ae4c9dee60-paid-choice-full-receiving",
-      "automation_run": "9ecd760f-ff7c-8332-bed5-02ae4c9dee60",
-      "active_relevant_runs": [],
-      "ignored_only": 34749202144,
-      "all_event_statuses": [
+      "last_execution_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+      "automation_run": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
+      "automation_recorded_status": "in_progress",
+      "claim": {
+        "commit_sha": "b63bdcf4420faca4e5cb5a1e16eea4d7ed22cad9",
+        "content_sha": "ac3dc5d2ab31f4eb92239badb1dd91b17b717fc5"
+      },
+      "checkpoint": {
+        "commit_sha": "2b236c4fd38b748db70e231651bd50946ef61580",
+        "content_sha": "3a948903d0de802a2071dc4f1e905ef09397717e"
+      },
+      "activity": [
         {
           "status": "in_progress",
-          "total": 0,
-          "runs": []
+          "total": 1,
+          "runs": [
+            {
+              "id": 41391313899,
+              "sha": "0307d51371b685fa7302cd7b1c3fae3f61144e06",
+              "status": "in_progress",
+              "event": "push"
+            }
+          ]
         },
         {
           "status": "queued",
           "total": 1,
           "runs": [
-            34749202144
+            {
+              "id": 34749202144,
+              "sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042",
+              "status": "queued",
+              "event": "pull_request"
+            }
           ]
         },
         {
@@ -1282,28 +1312,59 @@
           "runs": []
         }
       ],
-      "receipt": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
-      "newer_successors": false
+      "ignored_only": 34749202144,
+      "newer_receipt_or_successor": false,
+      "workflow": 41391313899,
+      "job": 125103117038,
+      "receiver": {
+        "commit": "9cf46552079c902a8ec8353dd8b5a49454481040",
+        "path": "experiments/manual-transmission/research/source-departure-preservation-receiving-prep-r1-20261102",
+        "readback_verified": true
+      },
+      "schedule_unchanged": true,
+      "accepted_evidence_reaudited": false,
+      "qualification_duplicated": false,
+      "reason": "External dependency pending: single frozen preservation diagnostic41391313899/job125103117038 is in_progress. Original/draft source forms, unchanged eight diagnostic identities and two new departure-power assertions are frozen. Exact original-artifact receiver and isolated alternative-design review are saved and immutable-readback verified at9cf46552079c902a8ec8353dd8b5a49454481040. No source change or acceptance follows from static review. Further bounded correction/full qualification requires original diagnostic evidence; no useful safely independent authorized receiving preparation or source-review work remains. Ownership released; no continuous execution implied.",
+      "guidance": "summary and next.next_executable_action"
     },
     "last_release": {
-      "utc": "2026-11-02T00:47:19.675Z",
-      "status": "READY_FOR_NEXT_ITERATION",
+      "utc": "2026-11-02T05:01:36.180Z",
+      "status": "WAITING_EXTERNAL",
       "owner": null,
-      "last_execution_owner": "manual-work-9ecd760f-ff7c-8332-bed5-02ae4c9dee60-paid-choice-full-receiving",
-      "automation_run": "9ecd760f-ff7c-8332-bed5-02ae4c9dee60",
-      "active_relevant_runs": [],
-      "ignored_only": 34749202144,
-      "all_event_statuses": [
+      "last_execution_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+      "automation_run": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
+      "automation_recorded_status": "in_progress",
+      "claim": {
+        "commit_sha": "b63bdcf4420faca4e5cb5a1e16eea4d7ed22cad9",
+        "content_sha": "ac3dc5d2ab31f4eb92239badb1dd91b17b717fc5"
+      },
+      "checkpoint": {
+        "commit_sha": "2b236c4fd38b748db70e231651bd50946ef61580",
+        "content_sha": "3a948903d0de802a2071dc4f1e905ef09397717e"
+      },
+      "activity": [
         {
           "status": "in_progress",
-          "total": 0,
-          "runs": []
+          "total": 1,
+          "runs": [
+            {
+              "id": 41391313899,
+              "sha": "0307d51371b685fa7302cd7b1c3fae3f61144e06",
+              "status": "in_progress",
+              "event": "push"
+            }
+          ]
         },
         {
           "status": "queued",
           "total": 1,
           "runs": [
-            34749202144
+            {
+              "id": 34749202144,
+              "sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042",
+              "status": "queued",
+              "event": "pull_request"
+            }
           ]
         },
         {
@@ -1322,10 +1383,23 @@
           "runs": []
         }
       ],
-      "receipt": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
-      "newer_successors": false
+      "ignored_only": 34749202144,
+      "newer_receipt_or_successor": false,
+      "workflow": 41391313899,
+      "job": 125103117038,
+      "receiver": {
+        "commit": "9cf46552079c902a8ec8353dd8b5a49454481040",
+        "path": "experiments/manual-transmission/research/source-departure-preservation-receiving-prep-r1-20261102",
+        "readback_verified": true
+      },
+      "schedule_unchanged": true,
+      "accepted_evidence_reaudited": false,
+      "qualification_duplicated": false,
+      "reason": "External dependency pending: single frozen preservation diagnostic41391313899/job125103117038 is in_progress. Original/draft source forms, unchanged eight diagnostic identities and two new departure-power assertions are frozen. Exact original-artifact receiver and isolated alternative-design review are saved and immutable-readback verified at9cf46552079c902a8ec8353dd8b5a49454481040. No source change or acceptance follows from static review. Further bounded correction/full qualification requires original diagnostic evidence; no useful safely independent authorized receiving preparation or source-review work remains. Ownership released; no continuous execution implied."
     },
-    "active_relevant_runs": [],
+    "active_relevant_runs": [
+      41391313899
+    ],
     "owner_run": null,
     "spellskite_ordinary_handoff": {
       "utc": "2026-10-28T14:57:48Z",
@@ -1349,9 +1423,11 @@
       "completed_stages_repeated": false
     },
     "current_work_invocation": {
-      "run": "9ecd760f-ff7c-8332-bed5-02ae4c9dee60",
+      "run": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
       "state": "RELEASED",
-      "owner": null
+      "owner": null,
+      "last_execution_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+      "released_utc": "2026-11-02T05:01:36.180Z"
     },
     "historical_before_ordinary_receiving": {
       "latest": {
@@ -2011,6 +2087,163 @@
       "relevant_active_workflows": [],
       "ignored_only": 34749202144,
       "newer_receipts_or_successors": false
+    },
+    "historical_before_preservation_handoff": {
+      "latest": {
+        "utc": "2026-11-02T00:47:19.675Z",
+        "status": "READY_FOR_NEXT_ITERATION",
+        "owner": null,
+        "last_execution_owner": "manual-work-9ecd760f-ff7c-8332-bed5-02ae4c9dee60-paid-choice-full-receiving",
+        "automation_run": "9ecd760f-ff7c-8332-bed5-02ae4c9dee60",
+        "active_relevant_runs": [],
+        "ignored_only": 34749202144,
+        "all_event_statuses": [
+          {
+            "status": "in_progress",
+            "total": 0,
+            "runs": []
+          },
+          {
+            "status": "queued",
+            "total": 1,
+            "runs": [
+              34749202144
+            ]
+          },
+          {
+            "status": "waiting",
+            "total": 0,
+            "runs": []
+          },
+          {
+            "status": "requested",
+            "total": 0,
+            "runs": []
+          },
+          {
+            "status": "pending",
+            "total": 0,
+            "runs": []
+          }
+        ],
+        "receipt": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
+        "newer_successors": false
+      },
+      "last_release": {
+        "utc": "2026-11-02T00:47:19.675Z",
+        "status": "READY_FOR_NEXT_ITERATION",
+        "owner": null,
+        "last_execution_owner": "manual-work-9ecd760f-ff7c-8332-bed5-02ae4c9dee60-paid-choice-full-receiving",
+        "automation_run": "9ecd760f-ff7c-8332-bed5-02ae4c9dee60",
+        "active_relevant_runs": [],
+        "ignored_only": 34749202144,
+        "all_event_statuses": [
+          {
+            "status": "in_progress",
+            "total": 0,
+            "runs": []
+          },
+          {
+            "status": "queued",
+            "total": 1,
+            "runs": [
+              34749202144
+            ]
+          },
+          {
+            "status": "waiting",
+            "total": 0,
+            "runs": []
+          },
+          {
+            "status": "requested",
+            "total": 0,
+            "runs": []
+          },
+          {
+            "status": "pending",
+            "total": 0,
+            "runs": []
+          }
+        ],
+        "receipt": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
+        "newer_successors": false
+      },
+      "current_work_invocation": {
+        "run": "9ecd760f-ff7c-8332-bed5-02ae4c9dee60",
+        "state": "RELEASED",
+        "owner": null
+      }
+    },
+    "source_departure_preservation_handoff": {
+      "utc": "2026-11-02T05:01:36.180Z",
+      "status": "WAITING_EXTERNAL",
+      "owner": null,
+      "last_execution_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+      "automation_run": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
+      "automation_recorded_status": "in_progress",
+      "claim": {
+        "commit_sha": "b63bdcf4420faca4e5cb5a1e16eea4d7ed22cad9",
+        "content_sha": "ac3dc5d2ab31f4eb92239badb1dd91b17b717fc5"
+      },
+      "checkpoint": {
+        "commit_sha": "2b236c4fd38b748db70e231651bd50946ef61580",
+        "content_sha": "3a948903d0de802a2071dc4f1e905ef09397717e"
+      },
+      "activity": [
+        {
+          "status": "in_progress",
+          "total": 1,
+          "runs": [
+            {
+              "id": 41391313899,
+              "sha": "0307d51371b685fa7302cd7b1c3fae3f61144e06",
+              "status": "in_progress",
+              "event": "push"
+            }
+          ]
+        },
+        {
+          "status": "queued",
+          "total": 1,
+          "runs": [
+            {
+              "id": 34749202144,
+              "sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042",
+              "status": "queued",
+              "event": "pull_request"
+            }
+          ]
+        },
+        {
+          "status": "waiting",
+          "total": 0,
+          "runs": []
+        },
+        {
+          "status": "requested",
+          "total": 0,
+          "runs": []
+        },
+        {
+          "status": "pending",
+          "total": 0,
+          "runs": []
+        }
+      ],
+      "ignored_only": 34749202144,
+      "newer_receipt_or_successor": false,
+      "workflow": 41391313899,
+      "job": 125103117038,
+      "receiver": {
+        "commit": "9cf46552079c902a8ec8353dd8b5a49454481040",
+        "path": "experiments/manual-transmission/research/source-departure-preservation-receiving-prep-r1-20261102",
+        "readback_verified": true
+      },
+      "schedule_unchanged": true,
+      "accepted_evidence_reaudited": false,
+      "qualification_duplicated": false,
+      "reason": "External dependency pending: single frozen preservation diagnostic41391313899/job125103117038 is in_progress. Original/draft source forms, unchanged eight diagnostic identities and two new departure-power assertions are frozen. Exact original-artifact receiver and isolated alternative-design review are saved and immutable-readback verified at9cf46552079c902a8ec8353dd8b5a49454481040. No source change or acceptance follows from static review. Further bounded correction/full qualification requires original diagnostic evidence; no useful safely independent authorized receiving preparation or source-review work remains. Ownership released; no continuous execution implied."
     }
   },
   "automation": {
@@ -2103,7 +2336,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
     "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
-    "next_authorized_action": "Follow live CURRENT.summary and next.next_executable_action; historical run references are archival.",
+    "next_authorized_action": "Follow live summary and next.next_executable_action; preserve sole existing executor and schedule.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2337,13 +2570,13 @@
     "primary": "Work execution conversation",
     "session": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
     "automation_run": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
-    "work_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
-    "last_execution_owner": "manual-work-e0cbaa88-bd98-832b-801d-5cb888e627fe-departure-r2",
+    "work_owner": null,
+    "last_execution_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
     "scheduled_executor": "ENABLED",
-    "activity": "RUNNING",
-    "automation_reconciliation": "Exact Work run494f8acf active, sole enabled executor and original schedule preserved; five workflow statuses clear except unrelated ancient Pest34749202144; canonical head b63bdcf no newer receipt or successor."
+    "activity": "WAITING_EXTERNAL",
+    "automation_reconciliation": "Sole enabled Work494f8acf invocation released; original hourly schedule unchanged. Only relevant active workflow41391313899; Discussion/Watch read-only. No new workers."
   },
   "blockers": [],
   "qualified_components": {
@@ -3034,7 +3267,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "Explicit grant recorded; transferring runnable bounded implementation to the sole existing Work executor after verified resume. No foreground execution lease held.",
+  "actual_stopping_reason": "External dependency pending: single frozen preservation diagnostic41391313899/job125103117038 is in_progress. Original/draft source forms, unchanged eight diagnostic identities and two new departure-power assertions are frozen. Exact original-artifact receiver and isolated alternative-design review are saved and immutable-readback verified at9cf46552079c902a8ec8353dd8b5a49454481040. No source change or acceptance follows from static review. Further bounded correction/full qualification requires original diagnostic evidence; no useful safely independent authorized receiving preparation or source-review work remains. Ownership released; no continuous execution implied.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -3059,7 +3292,7 @@
     ],
     "pending_evidence": [
       {
-        "state": "FROZEN_DISPATCH_PENDING",
+        "state": "WAITING_EXTERNAL_NOT_ACCEPTED",
         "source": "ad55ea9f4dec72123d033bc6c73414319616d2b6",
         "source_tree": "f3ecab2f6f75bfe5373e60a538d2a5a5a645c9f2",
         "validation": "0307d51371b685fa7302cd7b1c3fae3f61144e06",
@@ -3070,7 +3303,18 @@
         "source_review": "experiments/manual-transmission/research/source-departure-preservation-diagnostic-r1-20261102/SOURCE_REVIEW.json",
         "original_production_unchanged": true,
         "all_11_source_files_and_workflow_readback_verified": true,
-        "accepted": false
+        "accepted": false,
+        "run": 41391313899,
+        "job": 125103117038,
+        "attempt": 1,
+        "event": "push",
+        "observed_status": "in_progress",
+        "receiver": {
+          "commit": "9cf46552079c902a8ec8353dd8b5a49454481040",
+          "path": "experiments/manual-transmission/research/source-departure-preservation-receiving-prep-r1-20261102",
+          "readback_verified": true
+        },
+        "dispatch_count": 1
       }
     ],
     "source_protocol": {
@@ -3089,20 +3333,21 @@
       "readback_verified": true,
       "original_archive_parts": 87
     },
-    "concrete_blocker_removed": "Explicit bounded three-file source-departure repair authority recorded at66f478c5747120e222a431d27d55f6f96c03bfab; implementation and qualification remain pending.",
-    "continuation_state": "RUNNING",
-    "actual_stopping_reason": null,
+    "concrete_blocker_removed": "Source-departure authority already granted. Added a concrete departure-time power preservation diagnostic and original-artifact receiver; no behavioral blocker is declared removed before original receiving.",
+    "continuation_state": "WAITING_EXTERNAL",
+    "actual_stopping_reason": "External dependency pending: single frozen preservation diagnostic41391313899/job125103117038 is in_progress. Original/draft source forms, unchanged eight diagnostic identities and two new departure-power assertions are frozen. Exact original-artifact receiver and isolated alternative-design review are saved and immutable-readback verified at9cf46552079c902a8ec8353dd8b5a49454481040. No source change or acceptance follows from static review. Further bounded correction/full qualification requires original diagnostic evidence; no useful safely independent authorized receiving preparation or source-review work remains. Ownership released; no continuous execution implied.",
     "ownership": {
-      "state": "ACTIVE",
-      "owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+      "state": "RELEASED",
+      "owner": null,
+      "last_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
       "run_id": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
-      "claimed_utc": "2026-11-02T04:43:23.959Z",
-      "expires_utc": "2026-11-02T05:28:23.959Z"
+      "released_utc": "2026-11-02T05:01:36.180Z",
+      "reason": "External dependency pending: single frozen preservation diagnostic41391313899/job125103117038 is in_progress. Original/draft source forms, unchanged eight diagnostic identities and two new departure-power assertions are frozen. Exact original-artifact receiver and isolated alternative-design review are saved and immutable-readback verified at9cf46552079c902a8ec8353dd8b5a49454481040. No source change or acceptance follows from static review. Further bounded correction/full qualification requires original diagnostic evidence; no useful safely independent authorized receiving preparation or source-review work remains. Ownership released; no continuous execution implied."
     },
-    "next_executable_action": "Dispatch frozen preservation diagnostic validation0307d51371b685fa7302cd7b1c3fae3f61144e06 once on recorded branch after fresh shared-owner/activity reconciliation. Compile original/draft forms before ten-case observation. Existing8 diagnostic identities and new two exact departure-power checks unchanged; no acceptance. Prepare original-artifact receiver and isolated preservation-design review; receive once at terminal, reject compiler/missing-report/unrelated failures as behavioral evidence. Do not change ZoneTransitionService or other ungranted boundary.",
+    "next_executable_action": "Reconcile live CURRENT, exact released owner and sole Work run state, newer receipts/successors and all-event active workflows. Do not duplicate/cancel active41391313899. When terminal and unreceived, claim fresh-blob CAS and receive original run41391313899/job125103117038/attempt1 artifacts once using9cf46552079c902a8ec8353dd8b5a49454481040 receiving prep. Verify immutable pins, archive bytes/digest/manifest, both compile-first forms, 10 exact rows per form, raw counts/multiplicities/skips, exact assertion witnesses, protected bytes and restoration/rebinding. Existing R2/paid-choice/Disciple and earlier accepted receipts are reused. Diagnose actual preservation outcome; compiler/missing-report/unrelated failures are not behavioral evidence. If early snapshot causes stale departure characteristics, reject draft and evaluate authorized-three-section correction; any required additional boundary needs a concrete separate proposal. Otherwise continue all original proposal normal/mutant and same-source full gates before acceptance. Do not infer acceptance from green workflow.",
     "receiving_preparation": {
-      "commit": "e0b8282bb352d4cfc78b210759607cf252bed561",
-      "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r2-20261102",
+      "commit": "9cf46552079c902a8ec8353dd8b5a49454481040",
+      "path": "experiments/manual-transmission/research/source-departure-preservation-receiving-prep-r1-20261102",
       "readback_verified": true
     },
     "automation_state": "ENABLED_AUTHORIZED_EXECUTION",
@@ -3183,7 +3428,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-02T04:57:54.180Z",
+  "updated_utc": "2026-11-02T05:01:36.180Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -4685,7 +4930,7 @@
     "artifact_sha256": "sha256:879f74749b54f7d636f848c6981bf45470a392a8d40023008af219d1ab79908b",
     "manifest_entries": 259
   },
-  "last_execution_owner": "manual-work-e0cbaa88-bd98-832b-801d-5cb888e627fe-departure-r2",
+  "last_execution_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
   "spellskite_behavior_r1": {
     "state": "ORIGINAL_BEHAVIORAL_FAILURE_RECEIVED",
     "source": "f58a64db3a133d86090dddf9776e622c981298cc",
@@ -27331,7 +27576,7 @@
     "schedule_preserved": true
   },
   "source_departure_preservation_diagnostic": {
-    "state": "FROZEN_DISPATCH_PENDING",
+    "state": "WAITING_EXTERNAL_NOT_ACCEPTED",
     "source": "ad55ea9f4dec72123d033bc6c73414319616d2b6",
     "source_tree": "f3ecab2f6f75bfe5373e60a538d2a5a5a645c9f2",
     "validation": "0307d51371b685fa7302cd7b1c3fae3f61144e06",
@@ -27342,6 +27587,24 @@
     "source_review": "experiments/manual-transmission/research/source-departure-preservation-diagnostic-r1-20261102/SOURCE_REVIEW.json",
     "original_production_unchanged": true,
     "all_11_source_files_and_workflow_readback_verified": true,
-    "accepted": false
+    "accepted": false,
+    "run": 41391313899,
+    "job": 125103117038,
+    "attempt": 1,
+    "event": "push",
+    "observed_status": "in_progress",
+    "receiver": {
+      "commit": "9cf46552079c902a8ec8353dd8b5a49454481040",
+      "path": "experiments/manual-transmission/research/source-departure-preservation-receiving-prep-r1-20261102",
+      "readback_verified": true
+    },
+    "dispatch_count": 1
+  },
+  "previous_source_departure_repair_active_lease": {
+    "state": "ACTIVE",
+    "owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+    "run_id": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
+    "claimed_utc": "2026-11-02T04:43:23.959Z",
+    "expires_utc": "2026-11-02T05:28:23.959Z"
   }
 }
