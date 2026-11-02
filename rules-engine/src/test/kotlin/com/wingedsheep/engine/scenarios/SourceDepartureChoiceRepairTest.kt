@@ -246,7 +246,7 @@ class SourceDepartureChoiceRepairTest : ScenarioTestBase() {
     private fun pending(game: TestGame, id: EntityId, controller: EntityId, targeted: Boolean = false): PendingTrigger {
         val origin = game.state.objectRef(id)!!
         return PendingTrigger(
-            ability = TriggeredAbility.create(trigger = Triggers.EntersBattlefield, effect = Effects.GainLife(3),
+            ability = TriggeredAbility.create(trigger = Triggers.EntersBattlefield.event, effect = Effects.GainLife(3),
                 interveningIf = CastChoiceMade(ChoiceSlot.SELF_ALTERNATIVE),
                 targetRequirement = if (targeted) TargetCreature() else null),
             sourceId = id, sourceName = "Transport Probe", controllerId = controller,

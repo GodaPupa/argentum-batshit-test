@@ -65,7 +65,7 @@ class DepartureTimeChoiceCaptureTest : ScenarioTestBase() {
                 val prior = if (mode == "genuine") EntitySnapshot.fromProjection(source, game.state)
                     .copy(power = 71, colors = setOf("BLUE"), castChoices = if (paid) emptyMap() else selected) else null
                 val trigger = PendingTrigger(
-                    ability = TriggeredAbility.create(trigger = Triggers.EntersBattlefield, effect = Effects.GainLife(3)),
+                    ability = TriggeredAbility.create(trigger = Triggers.EntersBattlefield.event, effect = Effects.GainLife(3)),
                     sourceId = source, sourceName = "Departure transport", controllerId = game.player1Id,
                     sourceBattlefieldTimestamp = 191L, objectReferences = refs, triggerContext = TriggerContext(),
                     placementOrderChosen = true, opponentTargetChooserId = game.player2Id,

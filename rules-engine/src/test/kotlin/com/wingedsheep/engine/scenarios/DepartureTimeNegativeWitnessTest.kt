@@ -25,7 +25,7 @@ class DepartureTimeContinuationNegativeWitnessTest : ScenarioTestBase() {
             val choices = mapOf(ChoiceSlot.SELF_ALTERNATIVE to ChoiceValue.Flag)
             game.state = game.state.updateEntity(source) { it.with(CastChoicesComponent(chosen = choices)) }
             val origin = game.state.objectRef(source)!!
-            val trigger = PendingTrigger(TriggeredAbility.create(trigger = Triggers.EntersBattlefield, effect = Effects.GainLife(3)),
+            val trigger = PendingTrigger(TriggeredAbility.create(trigger = Triggers.EntersBattlefield.event, effect = Effects.GainLife(3)),
                 source, "probe", controllerId = game.player1Id, triggerContext = TriggerContext(),
                 objectReferences = ObjectReferenceEnvironment(captured = true, origin = origin, source = origin))
             game.state = game.state.copy(continuationStack = listOf(PendingTriggersContinuation(listOf(trigger))))
@@ -47,7 +47,7 @@ class DepartureTimeExistingLkiNegativeWitnessTest : ScenarioTestBase() {
             val source = game.findPermanent("Grizzly Bears")!!
             val origin = game.state.objectRef(source)!!
             val genuine = EntitySnapshot.fromProjection(source, game.state).copy(power = 71, colors = setOf("BLUE"))
-            val trigger = PendingTrigger(TriggeredAbility.create(trigger = Triggers.EntersBattlefield, effect = Effects.GainLife(3)),
+            val trigger = PendingTrigger(TriggeredAbility.create(trigger = Triggers.EntersBattlefield.event, effect = Effects.GainLife(3)),
                 source, "probe", controllerId = game.player1Id, triggerContext = TriggerContext(),
                 objectReferences = ObjectReferenceEnvironment(captured = true, origin = origin, source = origin),
                 lastKnownSourceSnapshot = genuine)
