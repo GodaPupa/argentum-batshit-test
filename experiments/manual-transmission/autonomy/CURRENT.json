@@ -30,22 +30,13 @@
   },
   "next": {
     "dependency": "Authorized departure-time choice capture and continuation stamping implementation",
-    "pending_runs": [
-      41407760140
-    ],
+    "pending_runs": [],
     "source_candidate": "9606d9df53c3325ef73cd04c096e65f5705d9b17",
     "latest_receiving": {
-      "commit": "9388f1996c49f0c434c124585ff666a64fe3fe4b",
-      "path": "experiments/manual-transmission/research/departure-time-choice-received-r1-20261102/RECEIPT.json",
-      "artifact": 13122841743,
-      "bytes": 4207373,
-      "sha256": "b50793576456b84651a440c3eee7e966f3e46b76981f18f10fc35b122ac018c9",
-      "manifest_entries": 621,
-      "source_bindings": 303,
-      "protected_original_bindings": 296,
-      "archive_parts": 81,
-      "readback_files": 97,
-      "immutable_readback_verified": true
+      "commit": "1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1",
+      "path": "experiments/manual-transmission/research/departure-time-choice-received-r2-20261102/RECEIPT.json",
+      "readback_files": 109,
+      "verified": true
     },
     "next_admission": {
       "commit": "adcf13a37a95c1c69f1c2301eecf46135d4f1a5d",
@@ -3537,8 +3528,7 @@
       "Four-file departure-time repair remains frozen and unqualified; four fixture compile errors corrected on R2 without production/assertion changes."
     ],
     "pending_evidence": [
-      "Sole active R2 run41407760140 original compile-first/positive-negative/restoration evidence.",
-      "Subsequent same-source full compatibility and original artifact receiving."
+      "Full same-source compatibility and original receiving remain pending."
     ],
     "source_protocol": {
       "commit": "9606d9df53c3325ef73cd04c096e65f5705d9b17",
@@ -3547,17 +3537,10 @@
       "readback_verified": true
     },
     "latest_receiving": {
-      "commit": "9388f1996c49f0c434c124585ff666a64fe3fe4b",
-      "path": "experiments/manual-transmission/research/departure-time-choice-received-r1-20261102/RECEIPT.json",
-      "artifact": 13122841743,
-      "bytes": 4207373,
-      "sha256": "b50793576456b84651a440c3eee7e966f3e46b76981f18f10fc35b122ac018c9",
-      "manifest_entries": 621,
-      "source_bindings": 303,
-      "protected_original_bindings": 296,
-      "archive_parts": 81,
-      "readback_files": 97,
-      "immutable_readback_verified": true
+      "commit": "1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1",
+      "path": "experiments/manual-transmission/research/departure-time-choice-received-r2-20261102/RECEIPT.json",
+      "readback_files": 109,
+      "verified": true
     },
     "admission": {
       "commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
@@ -28119,7 +28102,7 @@
     "cause": "Four focused fixture factory arguments use TriggerSpec where TriggeredAbility.create requires EventPattern. Production compilation passed; no behavior ran."
   },
   "departure_time_choice_qualification_r2": {
-    "state": "ACTIVE_COMPILE_FIRST_QUALIFICATION",
+    "state": "ORIGINAL_TARGETED_GATES_RECEIVED_FULL_PENDING",
     "source": "9606d9df53c3325ef73cd04c096e65f5705d9b17",
     "tree": "867f0584bbe6107c8722341694aea3807651b50e",
     "base": "09be265845acc297d4d38f1993426a38a4d3337c",
@@ -28219,7 +28202,18 @@
     "job": 125153574490,
     "attempt": 1,
     "event": "push",
-    "status": "in_progress"
+    "status": "completed",
+    "conclusion": "success",
+    "receipt": {
+      "commit": "1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1",
+      "path": "experiments/manual-transmission/research/departure-time-choice-received-r2-20261102/RECEIPT.json",
+      "readback_files": 109,
+      "verified": true
+    },
+    "compiled_forms": 6,
+    "normal": 83,
+    "restored": 83,
+    "negative_witnesses": 7
   },
   "previous_departure_time_active_lease": {
     "state": "ACTIVE",
