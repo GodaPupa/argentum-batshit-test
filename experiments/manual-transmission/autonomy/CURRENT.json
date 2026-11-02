@@ -2083,7 +2083,7 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "PAUSED_PENDING_SEPARATE_AUTHORITY",
+    "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
     "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
     "next_authorized_action": "Follow live CURRENT.summary and next.next_executable_action; historical run references are archival.",
     "execution_efficiency_policy": {
@@ -2163,7 +2163,7 @@
       "prompt_readback_verified": true
     },
     "previous_execution_schedule": "Existing single hourly Work executor enabled; original schedule preserved; explicit bounded generator calibration repair authorized.",
-    "is_enabled": false,
+    "is_enabled": true,
     "resume_requested": false,
     "previous_pause": {
       "utc": "2026-10-28T16:47:53Z",
@@ -2290,6 +2290,13 @@
       "prompt_preserved": true,
       "readback_verified": true,
       "reason": "Fully blocked pending separate source-departure repair authority; experiment not completed."
+    },
+    "source_departure_authority_resume": {
+      "grant": "66f478c5747120e222a431d27d55f6f96c03bfab",
+      "enabled": true,
+      "schedule_preserved": true,
+      "prompt_grant_added": true,
+      "readback_verified": true
     }
   },
   "previous_qualified": {
@@ -2316,9 +2323,9 @@
     "last_execution_owner": "manual-work-e0cbaa88-bd98-832b-801d-5cb888e627fe-departure-r2",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
-    "scheduled_executor": "PAUSED",
-    "activity": "BLOCKED",
-    "automation_reconciliation": "Exact sole Work paused pending new protected-boundary authority; original schedule/prompt preserved. No active relevant workflow. Discussion and Watch remain read-only."
+    "scheduled_executor": "ENABLED",
+    "activity": "READY_FOR_NEXT_ITERATION",
+    "automation_reconciliation": "Exact bounded grant recorded; sole Work resumed with original schedule and prompt preserved plus grant. No active foreground lease or workflow."
   },
   "blockers": [],
   "qualified_components": {
@@ -3066,7 +3073,7 @@
       "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r2-20261102",
       "readback_verified": true
     },
-    "automation_state": "RESUME_AUTHORIZED",
+    "automation_state": "ENABLED_AUTHORIZED_EXECUTION",
     "latest_diagnostic_receiving": {
       "commit": "3b3bf30d728c52e61534ce4292e4e2db623556d5",
       "path": "experiments/manual-transmission/research/source-departure-choice-received-r2-20261102/RECEIPT.json"
