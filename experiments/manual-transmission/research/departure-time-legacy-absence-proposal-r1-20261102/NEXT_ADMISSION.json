@@ -1,0 +1,51 @@
+{
+  "state": "PROPOSED_EXACT_CAPTURE_CONDITION_REVISION_REQUIRES_AUTHORIZATION_NOT_APPLIED",
+  "title": "Preserve absent departure choice data in legacy traces without weakening assertions",
+  "base_source": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
+  "base_tree": "6241d00ce0dbd7d8679ed60088f1df5d3685be2d",
+  "existing_grants_remain_valid": [
+    "66f478c5747120e222a431d27d55f6f96c03bfab",
+    "fc4febc0e94c9efcc4d8cbd0ca7f2fcd41a81af4"
+  ],
+  "failure_run": 41418326149,
+  "failure_artifact": 13129449849,
+  "blocked_condition": {
+    "proposal_commit": "adcf13a37a95c1c69f1c2301eecf46135d4f1a5d",
+    "path": "experiments/manual-transmission/research/source-departure-departure-time-choice-proposal-r1-20261102/NEXT_ADMISSION.json",
+    "section": "exact_sections[0]",
+    "text": "Existing lastKnownSnapshot constructor at first battlefield departure: add immutable castChoices map from departing container's CastChoicesComponent chosen.toMap or emptyMap. No inference from payment/eligibility.",
+    "conflict": "The mandated absent-component emptyMap fallback changes the preserved free-cast-target trace from null to an empty map. Preserving fixtures/assertions and this exact capture condition simultaneously failed on original run41418326149."
+  },
+  "requested_revision": {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+    "section": "Only existing lastKnownSnapshot constructor castChoices assignment (line450 in frozen source).",
+    "before": "castChoices = container.get<CastChoicesComponent>()?.chosen?.toMap() ?: emptyMap(),",
+    "after": "castChoices = container.get<CastChoicesComponent>()?.chosen?.toMap(),",
+    "semantics": "When CastChoicesComponent is absent, preserve null (unknown/no captured choice data). When the component is present, copy its chosen map unchanged, including an explicitly empty map. Preserve selected SELF_ALTERNATIVE and unrelated recorded choices. Never infer selection or borrow any later generation.",
+    "base_sha256": "3271862f12796c0a8d5e003b4e705a09547f14994bf096d8b1c0523ad8f911a3",
+    "proposed_sha256": "4af1fca3ef37d4b6da44c98221e78bcd5ddcd16f933ff83f11ab09221f6c8973",
+    "patch": "departure-absence.patch"
+  },
+  "supporting_scope": [
+    "Add narrowly focused regression and executable negative tests for absent versus present-empty versus selected departure data, serialization and later-generation isolation.",
+    "Rebind normal/mutant/source/protocol evidence on a new immutable successor; preserve all existing tests and their assertions unchanged."
+  ],
+  "must_preserve": [
+    "All83 existing targeted identities/assertions including8originaldiagnostics and both25life preservation cases.",
+    "Both failing legacy/current trace identities and assertions, all82legacyfixtures and everygolden unchanged; no normalization, expectation changes or skip.",
+    "EntitySnapshot state-aware factory known-empty behavior and nullable map serialization unchanged; TriggerProcessor and ConditionEvaluator unchanged.",
+    "Genuine nonnull LKI, departure-time characteristics, exact ObjectRef identity, all continuation question/routing/order fields, targets/sources/groups/divisions/modal/splice.",
+    "Manualv0.7, statisticaldesign,budgets,2reservedPrecision,soleexecutor/schedule."
+  ],
+  "exclusions": [
+    "No other production path or section, no general serializer/cleanup/test-helper changes.",
+    "No payment/eligibility/Surge/teammates/cards/snapshot-goldens/multiplayer/officialgames/seeds/spending/newworkers."
+  ],
+  "gates": [
+    "Normal and all6 declared mutant forms compile before behavior. Existing5mutants plus restore absent-to-empty fallback negative control; no compilation failure treated as behavior.",
+    "All83 unchanged targeted cases, both original failing trace cases and required additive matrix rows; exact behavioral assertion witnesses, no unrelated failures/errors/skips, restoration/rebinding.",
+    "Full same-source396cards,19239ordinarybaseline+83existingadditions+newadditions with exact43historicalskips,64client/typecheck; metadata/Assay/protected bindings where exact evidence permits.",
+    "Original artifacts/source/tree/workflow/run/job/attempt/bytes/hash/manifest/raw identity multiplicities/skips/negative witnesses before bounded acceptance."
+  ],
+  "stop_rule": "Do not apply this proposed capture-condition revision or dispatch it until explicitly authorized. Existing grants remain valid and accepted evidence remains reusable by exact binding."
+}

@@ -1,0 +1,148 @@
+{
+  "state": "ORIGINAL_FULL_FAILURE_RECEIVED_NOT_ACCEPTED",
+  "source": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
+  "run": 41418326149,
+  "artifact": 13129449849,
+  "sha256": "5beb75a0eb27f786b299a8a3f3e1ca07bfcc9ce2b785a9410567fd420d0ff8e2",
+  "bytes": 7846665,
+  "manifest_entries": 1871,
+  "accepted": false,
+  "validation": "6b8e7485e0b7a998712a0f464d1cbd0e5aead82f",
+  "tree": "6241d00ce0dbd7d8679ed60088f1df5d3685be2d",
+  "validation_tree": "1b3a935450c188e982fe433619fd60c249e82ad3",
+  "workflow": ".github/workflows/manual-departure-time-choice-full-r1-20261102.yml",
+  "workflow_blob": "02c3df5fef5436b3527c93466001259584253d2d",
+  "job": 125187526227,
+  "attempt": 1,
+  "bindings": 303,
+  "git_bindings": 27,
+  "unchanged_trees": 15,
+  "unexecuted_client": 64,
+  "targeted_receipt_reused": "1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1",
+  "raw_receiving_report": {
+    "path": "receiving-report/INDEX.json",
+    "decoded_bytes": 3234134,
+    "decoded_sha256": "66a1d54b8a466b1a41c14fb0fcbb6d246136dfd5f4ef77484ca516400d8f2af6",
+    "encoding": "ordered base64 parts of gzip(UTF-8 JSON)"
+  },
+  "gates": {
+    "compile": {
+      "compiled": true
+    },
+    "focused": {
+      "rows": 247,
+      "passed": 247,
+      "skips": 0
+    },
+    "cards": {
+      "rows": 396,
+      "passed": 396,
+      "skips": 0
+    },
+    "ordinary": {
+      "rows": 8417,
+      "passed": 8372,
+      "errors": 0,
+      "skips": 43,
+      "missing_rows": 10905,
+      "by_module": {
+        "ai": {
+          "rows": 746,
+          "failures": 0,
+          "skips": 1
+        },
+        "game-server": {
+          "rows": 565,
+          "failures": 0,
+          "skips": 4
+        },
+        "gym-server": {
+          "rows": 11,
+          "failures": 0,
+          "skips": 0
+        },
+        "gym-trainer": {
+          "rows": 23,
+          "failures": 0,
+          "skips": 0
+        },
+        "gym": {
+          "rows": 535,
+          "failures": 0,
+          "skips": 35
+        },
+        "mtg-sdk": {
+          "rows": 529,
+          "failures": 0,
+          "skips": 0
+        },
+        "mtg-search": {
+          "rows": 163,
+          "failures": 0,
+          "skips": 0
+        },
+        "mtg-sets": {
+          "rows": 396,
+          "failures": 0,
+          "skips": 0
+        },
+        "mtgish-tooling": {
+          "rows": 204,
+          "failures": 0,
+          "skips": 3
+        },
+        "oracle-assay": {
+          "rows": 568,
+          "failures": 0,
+          "skips": 0
+        },
+        "rules-engine": {
+          "rows": 4677,
+          "failures": 2,
+          "skips": 0
+        }
+      },
+      "complete": false,
+      "failures": [
+        {
+          "identity": "rules-engine\tcom.wingedsheep.engine.state.LegacySuspensionMigrationTest\tlegacy free-cast-target loads without allocation and resumes the captured response trace",
+          "report": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.state.LegacySuspensionMigrationTest.xml",
+          "type": "org.opentest4j.AssertionFailedError",
+          "exact_difference": {
+            "field": "entities.card-1002.LastKnownPermanentComponent.snapshot.castChoices",
+            "expected": null,
+            "actual": []
+          }
+        },
+        {
+          "identity": "rules-engine\tcom.wingedsheep.engine.state.SuspensionTraceTest\tcurrent free-cast-target suspension reproduces the captured parent response trace",
+          "report": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.state.SuspensionTraceTest.xml",
+          "type": "org.opentest4j.AssertionFailedError",
+          "exact_difference": {
+            "field": "entities.card-1002.LastKnownPermanentComponent.snapshot.castChoices",
+            "expected": null,
+            "actual": []
+          }
+        }
+      ]
+    },
+    "client": {
+      "state": "NOT_REACHED",
+      "required": 64
+    }
+  },
+  "strict_success_receiver": {
+    "path": "receive_full.py",
+    "result": "REJECTED_ORIGINAL_TERMINAL_FAILURE_AT_SUCCESS_CONCLUSION_ASSERTION",
+    "modified": false
+  },
+  "failure_receiver": {
+    "path": "receive_failure.py",
+    "result": "VERIFIED_FAILURE_ONLY",
+    "synthetic_controls": "SYNTHETIC.json",
+    "claims_acceptance": false
+  },
+  "diagnosis": "Both preserved free-cast-target traces differ only at departed Sol Ring LastKnownPermanentComponent.snapshot.castChoices: expected null, actual empty map. ZTS line450 creates emptyMap when CastChoicesComponent is absent; legacy receiving snapshot leaves new nullable field at null. Full ordinary gate fails; 10905 ordinary rows and all64client rows were not reached.",
+  "cause": "New departure-time capture fallback in authorized candidate; not an unrelated pre-existing failure. No assertion, fixture or snapshot-golden normalization is permitted.",
+  "reuse": "Original targeted six-form83normal83restored7negative receipt1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1 remains received. This full failure is not bounded acceptance and never replaces earlier accepted capabilities."
+}

@@ -1,0 +1,81 @@
+{
+  "state": "PROPOSED_NOT_EXECUTED",
+  "compile_forms": [
+    "normal",
+    "drop-departure-choice",
+    "borrow-later-generation",
+    "omit-paused-stamping",
+    "early-full-snapshot",
+    "overwrite-genuine-lki",
+    "restore-absent-to-empty-fallback"
+  ],
+  "unchanged_required": [
+    "All83 targeted identities/assertions from9606d9df53c3325ef73cd04c096e65f5705d9b17.",
+    "All original LegacySuspensionMigrationTest and SuspensionTraceTest identities/assertions, not only the two failures."
+  ],
+  "additive_scenarios": [
+    {
+      "id": "LA01",
+      "component": "absent",
+      "serialized": false,
+      "expected_departure_castChoices": null
+    },
+    {
+      "id": "LA02",
+      "component": "absent",
+      "serialized": true,
+      "expected_departure_castChoices": null
+    },
+    {
+      "id": "LA03",
+      "component": "present-empty",
+      "serialized": false,
+      "expected_departure_castChoices": {}
+    },
+    {
+      "id": "LA04",
+      "component": "present-empty",
+      "serialized": true,
+      "expected_departure_castChoices": {}
+    },
+    {
+      "id": "LA05",
+      "component": "selected",
+      "serialized": false,
+      "expected_departure_castChoices": {
+        "SELF_ALTERNATIVE": "Flag"
+      }
+    },
+    {
+      "id": "LA06",
+      "component": "selected",
+      "serialized": true,
+      "expected_departure_castChoices": {
+        "SELF_ALTERNATIVE": "Flag"
+      }
+    },
+    {
+      "id": "LA07",
+      "scenario": "Absent-component departed original followed by same-entity selected new generation evaluates original SELF_ALTERNATIVE false; serialize pending source context first."
+    },
+    {
+      "id": "LA08",
+      "scenario": "Explicit-empty original followed by selected new generation remains known-empty and evaluates false; serialize pending source context first."
+    }
+  ],
+  "additional_negative": "Restore only ?: emptyMap() at ZTS capture; require exact original two trace failures null versus empty plus additive absent-map assertions, with no unrelated failures/errors/skips. Freeze exact identity/file/line/expected/actual contract before dispatch.",
+  "compatibility_floor": {
+    "baseline": 19239,
+    "existing_additions": 83,
+    "planned_new_additions": 8,
+    "planned_ordinary_total": 19330,
+    "historical_skips": 43,
+    "cards": 396,
+    "client": 64
+  },
+  "requirements": [
+    "Compile normal/allmutants first.",
+    "Keep all5originalmutant witnesses and source restoration; rebind exact source forms rather than rerun accepted earlier qualifications blindly.",
+    "Exact raw report inventories and declared gates; original receiving before any acceptance."
+  ]
+}

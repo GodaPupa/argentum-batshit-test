@@ -1,0 +1,43 @@
+{
+  "state": "ISOLATED_SOURCE_REVIEW_NOT_IMPLEMENTED_NOT_BEHAVIORAL_PROOF",
+  "base": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
+  "source_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+  "base_sha256": "3271862f12796c0a8d5e003b4e705a09547f14994bf096d8b1c0523ad8f911a3",
+  "draft_sha256": "4af1fca3ef37d4b6da44c98221e78bcd5ddcd16f933ff83f11ab09221f6c8973",
+  "delta": "One expression removes absence-to-empty fallback only from departure constructor. No source file changed in repository.",
+  "observed_failure": [
+    {
+      "identity": "rules-engine\tcom.wingedsheep.engine.state.LegacySuspensionMigrationTest\tlegacy free-cast-target loads without allocation and resumes the captured response trace",
+      "report": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.state.LegacySuspensionMigrationTest.xml",
+      "type": "org.opentest4j.AssertionFailedError",
+      "exact_difference": {
+        "field": "entities.card-1002.LastKnownPermanentComponent.snapshot.castChoices",
+        "expected": null,
+        "actual": []
+      }
+    },
+    {
+      "identity": "rules-engine\tcom.wingedsheep.engine.state.SuspensionTraceTest\tcurrent free-cast-target suspension reproduces the captured parent response trace",
+      "report": "ordinary/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.state.SuspensionTraceTest.xml",
+      "type": "org.opentest4j.AssertionFailedError",
+      "exact_difference": {
+        "field": "entities.card-1002.LastKnownPermanentComponent.snapshot.castChoices",
+        "expected": null,
+        "actual": []
+      }
+    }
+  ],
+  "reasoning": [
+    "Current ConditionEvaluator lines636-649 requires exact original ObjectRef. A matching snapshot with null choices falls back only while original is current; a departed source or later generation cannot be borrowed. No evaluator change proposed.",
+    "Present CastChoicesComponent(chosen=emptyMap()) still copies emptyMap; existing continuation tests explicitly install this component for selected=false.",
+    "EntitySnapshot.fromProjection and captureEntitySnapshots state-aware known-empty assertions stay unchanged because their factories are outside this one-line draft.",
+    "Both original free-cast-target failures compare expected null to actual empty map in departed Sol Ring LKI; exact diff verifier confirms no other mismatch in their full state payloads."
+  ],
+  "proof_limit": "One-line candidate is source-reviewed only; compilation/behavior/fullcompatibility remain mandatory after explicit revision grant.",
+  "rejected_alternatives": [
+    "No fixture reblessing, comparator normalization or expected-value relaxation.",
+    "Do not collapse null versus known-empty globally or alter serializers/defaults.",
+    "Do not change later-generation guards or remove choice data from present components."
+  ],
+  "boundary_reason": "No additional protected path is requested; authorization is requested only to revise an exact semantic condition in the already-authorized departure constructor."
+}
