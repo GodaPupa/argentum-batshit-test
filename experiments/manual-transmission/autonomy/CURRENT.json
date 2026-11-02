@@ -2457,7 +2457,7 @@
   "automation": {
     "execution_task": "Manual Work Continuation",
     "execution_task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_schedule": "Sole Work executor enabled; original schedule preserved.",
+    "execution_schedule": "Sole existing executor paused for exact authority blocker; original schedule preserved.",
     "intervention_watch": {
       "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
       "enabled": false,
@@ -2542,7 +2542,7 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "ENABLED",
+    "execution_enabled_state": "PAUSED_AUTHORITY_BLOCKER",
     "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
     "next_authorized_action": "Read compact summary and exact proposal 097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9/experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/NEXT_ADMISSION.json, TEST_MATRIX.json, SOURCE_REVIEW.json and departure-absence.patch. Original full failure is received exactly once at 097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9/experiments/manual-transmission/research/departure-time-choice-full-received-r1-20261102/RECEIPT.json with120 original ZIP parts and8 full-report parts; do not re-receive or rerun unchanged failure. Await explicit authorization only to revise ZTS departure constructor absent-component emptyMap fallback to null as proposed; existing source-departure grants remain valid. If granted, reconcile fresh CURRENT/sole Work exact run/commits/newer receipts/all-event active statuses, claim fresh-blob CAS, apply exact one-line bounded successor plus additive tests, normal/all6mutants compile first, preserve all83targeted identities/8diagnostics/2power cases and both failing trace assertions, then full396cards19239baseline+83existing+8plannedadditions exact43skips64client and original receiving before acceptance. Reuse exact-bound accepted and targeted evidence. No changed fixtures/assertions/serializer/factory/generation guards/other paths/cards/multiplayer/games/seeds/spending/workers. Keep sole executor and original schedule; no continuous execution implied.",
     "execution_efficiency_policy": {
@@ -2806,9 +2806,9 @@
     "last_execution_owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
-    "scheduled_executor": "ENABLED",
+    "scheduled_executor": "PAUSED_AUTHORITY_BLOCKER",
     "activity": "BLOCKED",
-    "automation_reconciliation": "Sole Work enabled with unchanged original schedule; current run reconciled. No relevant active workflows. Original failure received; ownership released pending exact capture-condition revision."
+    "automation_reconciliation": "Fresh live CURRENT unchanged; no new revision authorization or successor. No relevant active workflow. Original failure/evidence reused without repeated receiving. Existing executor paused while fully blocked; original prompt and schedule verified unchanged."
   },
   "blockers": [
     {
@@ -3605,7 +3605,7 @@
       "readback_files": 10,
       "verified": true
     },
-    "automation_state": "ENABLED_ORIGINAL_SCHEDULE_PRESERVED",
+    "automation_state": "PAUSED_AUTHORITY_BLOCKER_ORIGINAL_SCHEDULE_PRESERVED",
     "latest_diagnostic_receiving": {
       "commit": "adcf13a37a95c1c69f1c2301eecf46135d4f1a5d",
       "path": "experiments/manual-transmission/research/source-departure-preservation-received-r1-20261102/RECEIPT.json",
@@ -3690,7 +3690,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-02T10:04:05.302Z",
+  "updated_utc": "2026-11-02T10:44:51.523Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -28262,25 +28262,26 @@
     "expires_utc": "2026-11-02T07:32:42.906Z"
   },
   "reconcile_latest": {
-    "utc": "2026-11-02T10:04:05.302Z",
-    "predecessor_blob": "f1390317532a3e943e3b9c740de2114dd795fe2a",
+    "utc": "2026-11-02T10:44:51.523Z",
+    "predecessor_blob": "cfa6a3cce8414a58e9571c4dd5fc7d4d641f7bf8",
     "task": "6adbe33033e481918659ce578f64f31e",
     "run": {
-      "id": "d729c832-8580-8331-a930-210fc1312173",
+      "id": "1413ce63-ba5c-832a-8506-7fb94bd24660",
       "recorded_status": "in_progress",
-      "scheduled_for": "2026-11-02T09:44:00Z",
-      "started_at": "2026-11-02T09:45:12.689466Z",
+      "scheduled_for": "2026-11-02T10:44:00Z",
+      "started_at": "2026-11-02T10:43:32.016994Z",
       "completed_at": null,
       "chat_ref": null
     },
-    "enabled": true,
+    "enabled": false,
     "schedule_unchanged": true,
+    "prompt_unchanged": true,
     "active_relevant_runs": [],
     "ignored_only": 34749202144,
     "owner": null,
-    "new_receipt": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
-    "receipt_readback_files": 146,
-    "reason": "Exact capture-condition revision required: pinned proposal adcf13a37a95c1c69f1c2301eecf46135d4f1a5d NEXT_ADMISSION.exact_sections[0] mandates absent CastChoicesComponent -> emptyMap. Original full run41418326149 now received: two unchanged free-cast-target trace assertions require null, actual empty map. Proposed one-line ZTS revision preserves null only when the component is absent, keeps explicitly empty/present choices, all existing assertions/fixtures/factories/generation guards unchanged. Existing four-file grants remain valid; this exact semantic condition revision is not yet granted. No active relevant workflow; all safe independent receiving and source review completed."
+    "newer_receipts_or_successors": false,
+    "authorization_changed": false,
+    "reason": "Fully blocked on explicit revision of departure constructor absent-component emptyMap condition; original failure receiving and isolated source review already complete. No relevant active workflow or safely independent authorized work remains."
   },
   "previous_r2_release": {
     "state": "RELEASED",
@@ -28978,5 +28979,16 @@
     "patch": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/departure-absence.patch",
     "state": "EXACT_CAPTURE_CONDITION_REVISION_AWAITING_AUTHORIZATION",
     "readback_verified": true
+  },
+  "departure_absence_authority_pause": {
+    "utc": "2026-11-02T10:44:51.523Z",
+    "task": "6adbe33033e481918659ce578f64f31e",
+    "is_enabled": false,
+    "schedule_preserved": true,
+    "prompt_preserved": true,
+    "readback_verified": true,
+    "proposal": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+    "reason": "Fully blocked on explicit revision of departure constructor absent-component emptyMap condition; original failure receiving and isolated source review already complete. No relevant active workflow or safely independent authorized work remains.",
+    "resume": "After exact revision authorization, resume this same sole executor with original schedule; never create another."
   }
 }
