@@ -447,7 +447,7 @@ object ZoneTransitionService {
                 damageDealtByPlayers = lastKnownDamageDealtByPlayers,
                 damageSources = lastKnownDamageSources,
                 wasFaceDown = lastKnownWasFaceDown,
-                castChoices = container.get<CastChoicesComponent>()?.chosen?.toMap() ?: emptyMap(),
+                castChoices = container.get<CastChoicesComponent>()?.chosen?.toMap(),
             )
         } else null
 
