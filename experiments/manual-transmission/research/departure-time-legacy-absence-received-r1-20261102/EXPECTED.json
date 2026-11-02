@@ -1,0 +1,232 @@
+{
+  "source": "6a74ce45479dcdc3bc72e71f089aebb155a74cc0",
+  "tree": "85df35c9402eb878190abf135e2957568a40750d",
+  "parent": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
+  "validation": "a45c770ff451c4783105fdd3804f5a0144892607",
+  "validation_tree": "f798605898851053b9dfd54337c631fe86deff5b",
+  "workflow": ".github/workflows/manual-departure-time-legacy-absence-r1-20261102.yml",
+  "workflow_blob": "b2ec6b0df51e18048f596e7aadad09a573c70e54",
+  "run": 41448145265,
+  "job": 125286322093,
+  "artifact": 13143306617,
+  "artifact_name": "manual-departure-time-legacy-absence-r1-41448145265",
+  "artifact_bytes": 4236058,
+  "artifact_sha256": "60eed458b7782c8923446348dafec977e31994988d568ddbc6542578d6f0ebba",
+  "source_files": {
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/PROTOCOL.json": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/SOURCE_REVIEW.json": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/authorized-source.patch": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/borrow-later-generation/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/drop-departure-choice/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/early-full-snapshot/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/omit-paused-stamping/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/overwrite-genuine-lki/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/restore-absent-to-empty-fallback/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/run.py": "added",
+    "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/validation.just": "added",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "modified",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LegacyAbsenceChoiceCaptureTest.kt": "added"
+  },
+  "frozen_protocol_files": {
+    "authorized-source.patch": "dca2fd6fe479c6bf2098f37269a7a2cd5a89284510357d53e275f60930881ac7",
+    "SOURCE_REVIEW.json": "69eb912fc097c73a307bce88d7546b2e968db4604c014143abc6942049aadd68",
+    "PROTOCOL.json": "b130c2014b870bad52d6ab2a1083f50703e6c8cf038f4f1d57df29ffb864b0c9",
+    "run.py": "134029531061fed8d5df9551af5e3971dc678780996aea6c6dfa30153f761bc2",
+    "validation.just": "de1be644a1be4d1305effa6dadf456f078ac33cf67cbf0beb9f299b478123ee3",
+    "forms/overwrite-genuine-lki/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "49c9944c046c5237f45d2be3c19e08bf907063d046bbb6a0e5769d52f332c1f4",
+    "forms/borrow-later-generation/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt": "1cf18e676aca55f642c6dda8a9df0c93b4769c36249ff0fe06f2c957d4eb8997",
+    "forms/restore-absent-to-empty-fallback/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "3271862f12796c0a8d5e003b4e705a09547f14994bf096d8b1c0523ad8f911a3",
+    "forms/early-full-snapshot/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": "0dcc7cd78aa47663dac4b50cb7df4fc5fa5735c5494f9efac8a2787a043891de",
+    "forms/omit-paused-stamping/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "36f36fad563492ab28ebf8fadb27080cd0bafe1ca758ec92cfa9c6a2de33670b",
+    "forms/drop-departure-choice/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "20a625c51c9fe9bf771169ff2d29589dd6907e80559c2cdb2e8b5f45e7e60e4e"
+  },
+  "negative_contracts": {
+    "drop-departure-choice": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/drop-departure-choice/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "20a625c51c9fe9bf771169ff2d29589dd6907e80559c2cdb2e8b5f45e7e60e4e",
+      "test_class": "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest",
+      "failures": [
+        "SD selected=true departed=true serialized=false",
+        "SD selected=true departed=true serialized=true"
+      ],
+      "expected": "23",
+      "actual": "20",
+      "assertion_file": "SourceDeparturePaidChoiceDiagnosticTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest",
+          "SD selected=true departed=true serialized=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest",
+          "SD selected=true departed=true serialized=true"
+        ]
+      ],
+      "assertion_line": 86
+    },
+    "borrow-later-generation": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/borrow-later-generation/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "sha256": "1cf18e676aca55f642c6dda8a9df0c93b4769c36249ff0fe06f2c957d4eb8997",
+      "test_class": "com.wingedsheep.engine.scenarios.SourceDepartureChoiceNegativeWitnessTest",
+      "failures": [
+        "SD09 later generation selected choice is not the original choice"
+      ],
+      "expected": "false",
+      "actual": "true",
+      "assertion_file": "SourceDepartureChoiceNegativeWitnessTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.SourceDepartureChoiceNegativeWitnessTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.SourceDepartureChoiceNegativeWitnessTest",
+          "SD09 later generation selected choice is not the original choice"
+        ]
+      ],
+      "assertion_line": 32
+    },
+    "omit-paused-stamping": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/omit-paused-stamping/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "36f36fad563492ab28ebf8fadb27080cd0bafe1ca758ec92cfa9c6a2de33670b",
+      "test_class": "com.wingedsheep.engine.scenarios.DepartureTimeContinuationNegativeWitnessTest",
+      "failures": [
+        "DT negative pending queue retains original selected choice"
+      ],
+      "expected": "true",
+      "actual": "null",
+      "assertion_file": "DepartureTimeNegativeWitnessTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.DepartureTimeContinuationNegativeWitnessTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.DepartureTimeContinuationNegativeWitnessTest",
+          "DT negative pending queue retains original selected choice"
+        ]
+      ],
+      "assertion_line": 36
+    },
+    "early-full-snapshot": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/early-full-snapshot/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "sha256": "0dcc7cd78aa47663dac4b50cb7df4fc5fa5735c5494f9efac8a2787a043891de",
+      "test_class": "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest",
+      "failures": [
+        "SD preservation departure power after growth gated=false",
+        "SD preservation departure power after growth gated=true"
+      ],
+      "expected": "25",
+      "actual": "22",
+      "assertion_file": "SourceDepartureCharacteristicPreservationTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest",
+          "SD preservation departure power after growth gated=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest",
+          "SD preservation departure power after growth gated=true"
+        ]
+      ],
+      "assertion_line": 73
+    },
+    "overwrite-genuine-lki": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/overwrite-genuine-lki/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "49c9944c046c5237f45d2be3c19e08bf907063d046bbb6a0e5769d52f332c1f4",
+      "test_class": "com.wingedsheep.engine.scenarios.DepartureTimeExistingLkiNegativeWitnessTest",
+      "failures": [
+        "DT negative genuine LKI is never overwritten"
+      ],
+      "expected": "71",
+      "actual": "2",
+      "assertion_file": "DepartureTimeNegativeWitnessTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.DepartureTimeExistingLkiNegativeWitnessTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.DepartureTimeExistingLkiNegativeWitnessTest",
+          "DT negative genuine LKI is never overwritten"
+        ]
+      ],
+      "assertion_line": 59
+    },
+    "restore-absent-to-empty-fallback": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/restore-absent-to-empty-fallback/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "3271862f12796c0a8d5e003b4e705a09547f14994bf096d8b1c0523ad8f911a3",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest",
+        "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+        "com.wingedsheep.engine.state.SuspensionTraceTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest",
+          "LA01 departure component=absent serialized=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest",
+          "LA02 departure component=absent serialized=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest",
+          "LA07 serialized original component=absent cannot borrow selected later generation"
+        ],
+        [
+          "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+          "legacy free-cast-target loads without allocation and resumes the captured response trace"
+        ],
+        [
+          "com.wingedsheep.engine.state.SuspensionTraceTest",
+          "current free-cast-target suspension reproduces the captured parent response trace"
+        ]
+      ],
+      "witnesses": {
+        "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest\tLA01 departure component=absent serialized=false": {
+          "kind": "boolean",
+          "expected": "true",
+          "actual": "false",
+          "file": "LegacyAbsenceChoiceCaptureTest.kt",
+          "line": 50
+        },
+        "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest\tLA02 departure component=absent serialized=true": {
+          "kind": "boolean",
+          "expected": "true",
+          "actual": "false",
+          "file": "LegacyAbsenceChoiceCaptureTest.kt",
+          "line": 50
+        },
+        "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest\tLA07 serialized original component=absent cannot borrow selected later generation": {
+          "kind": "boolean",
+          "expected": "true",
+          "actual": "false",
+          "file": "LegacyAbsenceChoiceCaptureTest.kt",
+          "line": 80
+        },
+        "com.wingedsheep.engine.state.LegacySuspensionMigrationTest\tlegacy free-cast-target loads without allocation and resumes the captured response trace": {
+          "kind": "trace-null-empty",
+          "file": "LegacySuspensionMigrationTest.kt",
+          "line": 65,
+          "field": "entities.card-1002.LastKnownPermanentComponent.snapshot.castChoices"
+        },
+        "com.wingedsheep.engine.state.SuspensionTraceTest\tcurrent free-cast-target suspension reproduces the captured parent response trace": {
+          "kind": "trace-null-empty",
+          "file": "SuspensionTraceTest.kt",
+          "line": 53,
+          "field": "entities.card-1002.LastKnownPermanentComponent.snapshot.castChoices"
+        }
+      }
+    }
+  }
+}
