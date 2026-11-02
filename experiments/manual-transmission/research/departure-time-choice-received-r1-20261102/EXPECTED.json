@@ -1,0 +1,118 @@
+{
+  "source": "09be265845acc297d4d38f1993426a38a4d3337c",
+  "tree": "5168a3f0483bfb2a386548c6230b55e54e9f648f",
+  "parent": "ad55ea9f4dec72123d033bc6c73414319616d2b6",
+  "validation": "dad9c7f8aa0646afdaaac21b0dbde0e6945a4669",
+  "validation_tree": "8b15be9c6d661c248e588e695f9c518d88be1182",
+  "workflow": ".github/workflows/manual-departure-time-choice-qualification-r1-20261102.yml",
+  "workflow_blob": "78df9dc2a082c4a702d8895dcf6d3bb22c75ddeb",
+  "run": 41404033605,
+  "job": 125141911547,
+  "artifact": 13122841743,
+  "artifact_name": "manual-departure-time-choice-r1-41404033605",
+  "artifact_bytes": 4207373,
+  "artifact_sha256": "b50793576456b84651a440c3eee7e966f3e46b76981f18f10fc35b122ac018c9",
+  "source_files": {
+    "docs/card-sdk-language-reference.md": "modified",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/PROTOCOL.json": "added",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/SOURCE_REVIEW.json": "added",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/authorized-source.patch": "added",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/borrow-later-generation/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt": "added",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/drop-departure-choice/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "added",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/early-full-snapshot/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": "added",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/omit-paused-stamping/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "added",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/overwrite-genuine-lki/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "added",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/run.py": "added",
+    "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/validation.just": "added",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": "modified",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt": "modified",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "modified",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt": "modified",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeChoiceCaptureTest.kt": "added",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeNegativeWitnessTest.kt": "added",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureChoiceNegativeWitnessTest.kt": "added",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureChoiceRepairTest.kt": "added"
+  },
+  "frozen_protocol_files": {
+    "authorized-source.patch": "be006cb2e4ec97b58cc42776876979c14676943ebbb7c7ef3a74ca16c882c090",
+    "SOURCE_REVIEW.json": "a0d4233c6aa6341deae1f4a3df665f7bfff4fefedaca4cde8d5e70b470f6e667",
+    "PROTOCOL.json": "19c1ba2e87da764ffd2c5ec1cf0829eb364caf5fcb6a291f3fb9c701b4d00ffc",
+    "run.py": "7814393c8f0cb37003b885478a59dd77d41e3de1d6ef3050ad3bf71878646249",
+    "validation.just": "bb54ca4aef4e11864756264bbf796400f8cdeac76e84f7cb254e6b6fc7966b84",
+    "forms/overwrite-genuine-lki/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "29a28acc992e891164bc5863c75d96106abf9a1503b44c56a1bdcc7cc4141f97",
+    "forms/borrow-later-generation/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt": "1cf18e676aca55f642c6dda8a9df0c93b4769c36249ff0fe06f2c957d4eb8997",
+    "forms/early-full-snapshot/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": "0dcc7cd78aa47663dac4b50cb7df4fc5fa5735c5494f9efac8a2787a043891de",
+    "forms/omit-paused-stamping/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "5b8dd0986582eaa1f87dce26ca88d595ac2256c39e9a24d5b3775919439f2e77",
+    "forms/drop-departure-choice/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "20a625c51c9fe9bf771169ff2d29589dd6907e80559c2cdb2e8b5f45e7e60e4e"
+  },
+  "negative_contracts": {
+    "drop-departure-choice": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/drop-departure-choice/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "20a625c51c9fe9bf771169ff2d29589dd6907e80559c2cdb2e8b5f45e7e60e4e",
+      "test_class": "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest",
+      "failures": [
+        "SD selected=true departed=true serialized=false",
+        "SD selected=true departed=true serialized=true"
+      ],
+      "expected": "23",
+      "actual": "20",
+      "assertion_file": "SourceDeparturePaidChoiceDiagnosticTest.kt",
+      "assertion_line": 86
+    },
+    "borrow-later-generation": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/borrow-later-generation/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "sha256": "1cf18e676aca55f642c6dda8a9df0c93b4769c36249ff0fe06f2c957d4eb8997",
+      "test_class": "com.wingedsheep.engine.scenarios.SourceDepartureChoiceNegativeWitnessTest",
+      "failures": [
+        "SD09 later generation selected choice is not the original choice"
+      ],
+      "expected": "false",
+      "actual": "true",
+      "assertion_file": "SourceDepartureChoiceNegativeWitnessTest.kt",
+      "assertion_line": 32
+    },
+    "omit-paused-stamping": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/omit-paused-stamping/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "5b8dd0986582eaa1f87dce26ca88d595ac2256c39e9a24d5b3775919439f2e77",
+      "test_class": "com.wingedsheep.engine.scenarios.DepartureTimeContinuationNegativeWitnessTest",
+      "failures": [
+        "DT negative pending queue retains original selected choice"
+      ],
+      "expected": "true",
+      "actual": "null",
+      "assertion_file": "DepartureTimeNegativeWitnessTest.kt",
+      "assertion_line": 36
+    },
+    "early-full-snapshot": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/early-full-snapshot/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "sha256": "0dcc7cd78aa47663dac4b50cb7df4fc5fa5735c5494f9efac8a2787a043891de",
+      "test_class": "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest",
+      "failures": [
+        "SD preservation departure power after growth gated=false",
+        "SD preservation departure power after growth gated=true"
+      ],
+      "expected": "25",
+      "actual": "22",
+      "assertion_file": "SourceDepartureCharacteristicPreservationTest.kt",
+      "assertion_line": 73
+    },
+    "overwrite-genuine-lki": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-choice-qualification-r1-20261102/forms/overwrite-genuine-lki/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "29a28acc992e891164bc5863c75d96106abf9a1503b44c56a1bdcc7cc4141f97",
+      "test_class": "com.wingedsheep.engine.scenarios.DepartureTimeExistingLkiNegativeWitnessTest",
+      "failures": [
+        "DT negative genuine LKI is never overwritten"
+      ],
+      "expected": "71",
+      "actual": "2",
+      "assertion_file": "DepartureTimeNegativeWitnessTest.kt",
+      "assertion_line": 59
+    }
+  },
+  "state": "PREPARED_ARTIFACT_METADATA_MUST_BE_PINNED_AT_TERMINAL_NOT_RECEIVED"
+}

@@ -1,0 +1,39 @@
+{
+  "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED_NOT_BEHAVIORAL_EVIDENCE",
+  "source": "09be265845acc297d4d38f1993426a38a4d3337c",
+  "tree": "5168a3f0483bfb2a386548c6230b55e54e9f648f",
+  "validation": "dad9c7f8aa0646afdaaac21b0dbde0e6945a4669",
+  "run": 41404033605,
+  "job": 125141911547,
+  "attempt": 1,
+  "artifact": 13122841743,
+  "bytes": 4207373,
+  "sha256": "b50793576456b84651a440c3eee7e966f3e46b76981f18f10fc35b122ac018c9",
+  "manifest_entries": 621,
+  "initial_bindings": 303,
+  "protected_original_bindings": 296,
+  "normal_source_forms_verified": 4,
+  "production_compilation": "passed",
+  "normal_test_compilation": "failed",
+  "behavioral_rows": 0,
+  "negative_witnesses": 0,
+  "restoration": "normal restored; clean tracked diff",
+  "compiler_errors": [
+    "DepartureTimeChoiceCaptureTest.kt:68:65 Argument type mismatch: actual type is 'TriggerSpec', but 'EventPattern' was expected.",
+    "DepartureTimeNegativeWitnessTest.kt:28:76 Argument type mismatch: actual type is 'TriggerSpec', but 'EventPattern' was expected.",
+    "DepartureTimeNegativeWitnessTest.kt:50:76 Argument type mismatch: actual type is 'TriggerSpec', but 'EventPattern' was expected.",
+    "SourceDepartureChoiceRepairTest.kt:249:57 Argument type mismatch: actual type is 'TriggerSpec', but 'EventPattern' was expected."
+  ],
+  "cause": "Four focused test factories passed TriggerSpec to TriggeredAbility.create(EventPattern). TriggerSpec.event is the required existing event value; default SELF binding equals Triggers.EntersBattlefield.binding.",
+  "bounded_next": "Correct exactly four fixture factory arguments to Triggers.EntersBattlefield.event. Preserve every assertion/identity and all production bytes. Freeze new immutable source and compile all six forms before behavior; no unchanged rerun.",
+  "remaining_gates": [
+    "all normal/mutant compilation",
+    "83normal/restored and five exact negative forms",
+    "original early receiving",
+    "full same-source compatibility and original receiving"
+  ],
+  "accepted": false,
+  "archive": "archive/INDEX.json",
+  "archive_parts": 81,
+  "preserved_original_archive": true
+}
