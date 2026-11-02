@@ -147,9 +147,14 @@ section; do not let SDK additions land without a corresponding doc update.
 - `selfAlternativeCost: SelfAlternativeCost?` — generic alternative-cost slot.
   An explicitly selected `AlternativeCostType.SELF_ALTERNATIVE` is retained on the resulting
   permanent as `ChoiceSlot.SELF_ALTERNATIVE` with `ChoiceValue.Flag`, readable through
-  `CastChoiceMade(ChoiceSlot.SELF_ALTERNATIVE)` while that source exists. Eligibility, reductions
-  and mana spent do not imply the choice. Existing entry choices are merged. This transport
-  does not implement Surge, teammate eligibility or source-departure trigger semantics.
+  `CastChoiceMade(ChoiceSlot.SELF_ALTERNATIVE)`. Pending triggers retain the original object's
+  explicitly selected choice in an identity-bound `EntitySnapshot`, including through departure and
+  serialization. First-departure capture preserves departure-time characteristics; named trigger
+  queues and suspensions carry that snapshot without overwriting genuine prior LKI or altering
+  questions, routing or order. A later generation cannot supply missing choices. A null captured
+  map means unknown legacy data; an empty map means known no choices. Eligibility, reductions and
+  mana spent do not imply the choice. Existing entry choices are merged. This transport does not
+  implement Surge or teammate eligibility.
 - `castTimeCreatureTypeChoice: CastTimeCreatureTypeSource?` — forces a creature-type choice at cast time.
 - `cantBeCountered: Boolean` — spell is uncounterable.
 - `cantBeCopied: Boolean` — spell can't be copied (CR 707.10); copy effects that name it create no copy (Display of Power).

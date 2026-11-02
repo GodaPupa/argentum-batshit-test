@@ -625,12 +625,23 @@ class TriggerProcessor(
     private fun sourceSnapshotForTrigger(
         state: GameState,
         trigger: PendingTrigger,
-    ): com.wingedsheep.engine.state.components.stack.EntitySnapshot? = listOfNotNull(
-        trigger.lastKnownSourceSnapshot,
-        trigger.triggerContext.triggeringSnapshot,
-        state.getEntity(trigger.sourceId)
-            ?.get<com.wingedsheep.engine.state.components.battlefield.LastKnownPermanentComponent>()?.snapshot
-    ).firstOrNull { it.objectRef != null && it.objectRef == trigger.objectReferences.origin }
+    ): com.wingedsheep.engine.state.components.stack.EntitySnapshot? {
+        val origin = trigger.objectReferences.origin ?: return null
+        if (origin.entityId != trigger.sourceId) return null
+        val snapshot = listOfNotNull(
+            trigger.lastKnownSourceSnapshot,
+            trigger.triggerContext.triggeringSnapshot,
+            state.getEntity(trigger.sourceId)
+                ?.get<com.wingedsheep.engine.state.components.battlefield.LastKnownPermanentComponent>()?.snapshot
+        ).firstOrNull { it.entityId == trigger.sourceId && it.objectRef == origin }
+        // Absence is not a placement-time snapshot: departure owns characteristic capture.
+        if (snapshot == null || !state.isCurrentObject(origin)) return snapshot
+        // Entry snapshots can precede durable casting-choice transfer. Enrich only this exact visit.
+        val captured = com.wingedsheep.engine.state.components.stack.EntitySnapshot.fromProjection(
+            trigger.sourceId, state
+        )
+        return snapshot.copy(castChoices = captured.castChoices)
+    }
 
     /**
      * Put a triggered ability directly on the stack (no targets required).
