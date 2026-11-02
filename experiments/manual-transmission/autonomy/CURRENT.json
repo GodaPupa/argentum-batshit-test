@@ -3,15 +3,14 @@
   "updated_date": "2026-11-02",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "READY_FOR_NEXT_ITERATION",
-  "owner": null,
+  "status": "RUNNING",
+  "owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "last_owner": "manual-work-e0cbaa88-bd98-832b-801d-5cb888e627fe-departure-r2",
-    "run_id": "e0cbaa88-bd98-832b-801d-5cb888e627fe",
-    "released_utc": "2026-11-02T03:54:53.020Z",
-    "expires_utc": null
+    "state": "ACTIVE",
+    "owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+    "run_id": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
+    "claimed_utc": "2026-11-02T04:43:23.959Z",
+    "expires_utc": "2026-11-02T05:28:23.959Z"
   },
   "last_qualified": {
     "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
@@ -38,7 +37,7 @@
       "path": "experiments/manual-transmission/research/source-departure-choice-received-r2-20261102/RECEIPT.json"
     },
     "next_admission": {
-      "state": "AWAITING_EXPLICIT_BOUNDED_AUTHORIZATION",
+      "state": "EXPLICIT_USER_GRANTED_IMPLEMENTATION_PENDING",
       "commit": "3b3bf30d728c52e61534ce4292e4e2db623556d5",
       "path": "experiments/manual-transmission/research/source-departure-choice-repair-proposal-r1-20261102/NEXT_ADMISSION.json",
       "matrix": "experiments/manual-transmission/research/source-departure-choice-repair-proposal-r1-20261102/TEST_MATRIX.json",
@@ -1993,6 +1992,25 @@
       "receipt": "3b3bf30d728c52e61534ce4292e4e2db623556d5",
       "original_received_once": true,
       "archive_parts_readback_verified": 81
+    },
+    "source_departure_repair_claim": {
+      "utc": "2026-11-02T04:43:23.959Z",
+      "predecessor": "419210e094efa89c2d1f1c3de752d1f4ea1e7ca4",
+      "predecessor_blob": "7159afa68ca362f5c21333c98e052e943f786fed",
+      "prior_owner_released": true,
+      "prior_run_completed": "e0cbaa88-bd98-832b-801d-5cb888e627fe",
+      "current_run": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
+      "automation_status": "in_progress",
+      "statuses_checked": [
+        "in_progress",
+        "queued",
+        "waiting",
+        "requested",
+        "pending"
+      ],
+      "relevant_active_workflows": [],
+      "ignored_only": 34749202144,
+      "newer_receipts_or_successors": false
     }
   },
   "automation": {
@@ -2318,13 +2336,13 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
-    "automation_run": "e0cbaa88-bd98-832b-801d-5cb888e627fe",
-    "work_owner": null,
+    "automation_run": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
+    "work_owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
     "last_execution_owner": "manual-work-e0cbaa88-bd98-832b-801d-5cb888e627fe-departure-r2",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
     "scheduled_executor": "ENABLED",
-    "activity": "READY_FOR_NEXT_ITERATION",
+    "activity": "RUNNING",
     "automation_reconciliation": "Exact bounded grant recorded; sole Work resumed with original schedule and prompt preserved plus grant. No active foreground lease or workflow."
   },
   "blockers": [],
@@ -3056,16 +3074,15 @@
       "readback_verified": true,
       "original_archive_parts": 87
     },
-    "concrete_blocker_removed": "Original diagnostic uncertainty removed: compile and all8rawreports verified,6controlspass,2exactfinalassertionfailures,noerrors/skips,608manifest,296initial/finalbindings; original3974846byteZIP preserved81parts. Repair authority remains missing.",
-    "continuation_state": "READY_FOR_NEXT_ITERATION",
-    "actual_stopping_reason": "Explicit grant recorded; transferring runnable bounded implementation to the sole existing Work executor after verified resume. No foreground execution lease held.",
+    "concrete_blocker_removed": "Explicit bounded three-file source-departure repair authority recorded at66f478c5747120e222a431d27d55f6f96c03bfab; implementation and qualification remain pending.",
+    "continuation_state": "RUNNING",
+    "actual_stopping_reason": null,
     "ownership": {
-      "state": "RELEASED",
-      "owner": null,
-      "last_owner": "manual-work-e0cbaa88-bd98-832b-801d-5cb888e627fe-departure-r2",
-      "run_id": "e0cbaa88-bd98-832b-801d-5cb888e627fe",
-      "released_utc": "2026-11-02T03:54:53.020Z",
-      "expires_utc": null
+      "state": "ACTIVE",
+      "owner": "manual-work-494f8acf-b7e4-8322-a31e-a89b8cd74e49-source-departure",
+      "run_id": "494f8acf-b7e4-8322-a31e-a89b8cd74e49",
+      "claimed_utc": "2026-11-02T04:43:23.959Z",
+      "expires_utc": "2026-11-02T05:28:23.959Z"
     },
     "next_executable_action": "Explicit source-departure repair authority is now granted, not missing. Read source_departure_self_alternative_repair_authorization and exact proposal3b3bf30d728c52e61534ce4292e4e2db623556d5 NEXT_ADMISSION.json/TEST_MATRIX.json; reuse receivedR2 and accepted earlier evidence. Reconcile freshCURRENT/ownership/soleWork/all-eventworkflows/newerreceipts, claimCAS, read applicableAGENTS/repositoryskills, then implement only three named sections and focused tests/docs/qualification infrastructure. Preserve all8identities/everyassertion. Freeze exact normal/mutant forms and executablewitness inventory; compile all forms first, then all declared targeted and same-source full compatibility/originalreceiving gates. No routine Proceed needed; another boundary requires separateproposal.",
     "receiving_preparation": {
@@ -3079,7 +3096,7 @@
       "path": "experiments/manual-transmission/research/source-departure-choice-received-r2-20261102/RECEIPT.json"
     },
     "next_admission": {
-      "state": "AWAITING_EXPLICIT_BOUNDED_AUTHORIZATION",
+      "state": "EXPLICIT_USER_GRANTED_IMPLEMENTATION_PENDING",
       "commit": "3b3bf30d728c52e61534ce4292e4e2db623556d5",
       "path": "experiments/manual-transmission/research/source-departure-choice-repair-proposal-r1-20261102/NEXT_ADMISSION.json",
       "matrix": "experiments/manual-transmission/research/source-departure-choice-repair-proposal-r1-20261102/TEST_MATRIX.json",
