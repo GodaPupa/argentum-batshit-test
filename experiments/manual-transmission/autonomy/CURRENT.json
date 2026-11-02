@@ -3,14 +3,15 @@
   "updated_date": "2026-11-02",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WORKING",
-  "owner": "manual-work-612efed0-049c-8320-808c-77635c7691e2-departure-receiving",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-612efed0-049c-8320-808c-77635c7691e2-departure-receiving",
+    "state": "RELEASED",
+    "owner": null,
+    "last_owner": "manual-work-612efed0-049c-8320-808c-77635c7691e2-departure-receiving",
     "run_id": "612efed0-049c-8320-808c-77635c7691e2",
-    "claimed_utc": "2026-11-02T02:46:30.771Z",
-    "expires_utc": "2026-11-02T03:46:30.771Z"
+    "released_utc": "2026-11-02T02:51:05.657Z",
+    "expires_utc": null
   },
   "last_qualified": {
     "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
@@ -31,22 +32,27 @@
   "next": {
     "dependency": "Original source-departure CastChoiceMade diagnostic receiving",
     "pending_runs": [
-      41373969898
+      41379783905
     ],
-    "source_candidate": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
+    "source_candidate": "738694cb2ff9f83df71855a3249a67df9d8e2e6a",
     "source_protocol": {
-      "commit": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
-      "path": "experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json"
+      "commit": "738694cb2ff9f83df71855a3249a67df9d8e2e6a",
+      "path": "experiments/manual-transmission/research/source-departure-choice-diagnostic-r2-20261102/PROTOCOL.json"
     },
     "latest_receiving": {
       "commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
       "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-received-r1-20261102/RECEIPT.json"
     },
     "receiving_preparation": {
-      "commit": "9aaece7e3cffd6539a6c95be3d605bfa70eefbfe",
-      "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r1-20261102"
+      "commit": "e0b8282bb352d4cfc78b210759607cf252bed561",
+      "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r2-20261102",
+      "readback_verified": true
     },
-    "next_executable_action": "Read CURRENT.summary and source-departure diagnostic protocol at d8b3cd4214dc028a92d5c068e570c9daf1f6b844/experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json; receiving preparation 9aaece7e3cffd6539a6c95be3d605bfa70eefbfe/experiments/manual-transmission/research/source-departure-choice-receiving-prep-r1-20261102/EXPECTED.json and SOURCE_REVIEW.json. Reconcile fresh CURRENT, sole Work automation, exact run41373969898 and all-event active statuses, newer receipts/successors before claim. If active, do not duplicate/cancel/poll tightly. Once terminal, fetch original run/job/attempt/artifact/source/tree/validation metadata and original ZIP exactly once; execute prepared receive.py and inspect all8 raw identities, exact failure locations, no errors/skips, compile-before-observe, manifest, bytes/digest and initial/final protected bindings. Preserve compiler/setup failures as such; no behavioral inference from missing reports. If source-departure failure is reproduced, prepare a concrete separate protected-boundary proposal; source-departure repair is explicitly excluded from existing paid-choice grant. Never rerun accepted41363538430/41359309233 or earlier accepted evidence."
+    "next_executable_action": "Read R1 receipt 2605d82c6aa70d39d83ad3cb781895405882db8c/experiments/manual-transmission/research/source-departure-choice-received-r1-20261102/RECEIPT.json, R2 protocol 738694cb2ff9f83df71855a3249a67df9d8e2e6a/experiments/manual-transmission/research/source-departure-choice-diagnostic-r2-20261102/PROTOCOL.json and receiving e0b8282bb352d4cfc78b210759607cf252bed561/experiments/manual-transmission/research/source-departure-choice-receiving-prep-r2-20261102/EXPECTED.json plus NEXT_ACTION.json. Reconcile fresh CURRENT/owner/sole Work automation/all-event statuses/newer receipts. Do not duplicate active run41379783905. When terminal receive original artifact exactly once using referenced receive.py and R2 EXPECTED pins; verify bytes/hash/manifest/source/tree/validation/run/job/attempt, compile-first,8rawidentities/multiplicities/skips/exactfailurelocations and initial/final296bindings. Compiler/setup errors or missing reports are not behavioral evidence. Preserve original failure; repair only bounded demonstrated test/infrastructure cause. If source-departure semantics fail, prepare separate concrete protected-boundary proposal before any production repair. Reuse accepted paid-choice/Disciple/prior evidence without rerunning.",
+    "latest_diagnostic_receiving": {
+      "commit": "2605d82c6aa70d39d83ad3cb781895405882db8c",
+      "path": "experiments/manual-transmission/research/source-departure-choice-received-r1-20261102/RECEIPT.json"
+    }
   },
   "completion_contract": {
     "engineering": "All frozen Manual/opponent card semantics, exact four-player runtime, executable pilots, hidden information, telemetry, source-bound deterministic replay and production admission qualified.",
@@ -1918,6 +1924,61 @@
       "preparation": "9aaece7e3cffd6539a6c95be3d605bfa70eefbfe",
       "production_unchanged": true,
       "original_receiving_performed": false
+    },
+    "source_departure_r2_handoff": {
+      "utc": "2026-11-02T02:51:05.657Z",
+      "claim": {
+        "commit_sha": "21e1407eb8510fae34cf5275a0c3ea54f80a7396",
+        "content_sha": "b2798f37852d253ce17aba950448d69bf204ce5e"
+      },
+      "owner_released": "manual-work-612efed0-049c-8320-808c-77635c7691e2-departure-receiving",
+      "run_id": "612efed0-049c-8320-808c-77635c7691e2",
+      "activity": [
+        {
+          "status": "in_progress",
+          "total": 1,
+          "runs": [
+            {
+              "id": 41379783905,
+              "sha": "9b1530e8776ec0da9f3285fdbfdabc90eea01449",
+              "status": "in_progress",
+              "event": "push"
+            }
+          ]
+        },
+        {
+          "status": "queued",
+          "total": 1,
+          "runs": [
+            {
+              "id": 34749202144,
+              "sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042",
+              "status": "queued",
+              "event": "pull_request"
+            }
+          ]
+        },
+        {
+          "status": "waiting",
+          "total": 0,
+          "runs": []
+        },
+        {
+          "status": "requested",
+          "total": 0,
+          "runs": []
+        },
+        {
+          "status": "pending",
+          "total": 0,
+          "runs": []
+        }
+      ],
+      "ignored_only": 34749202144,
+      "newer_receipt_or_successor": false,
+      "original_r1_received_once": true,
+      "original_archive_immutable_parts": 41,
+      "unchanged_schedule": true
     }
   },
   "automation": {
@@ -2228,14 +2289,14 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
-    "automation_run": "2e1c25ff-a32c-8329-87db-36c7dca2d14b",
+    "automation_run": "612efed0-049c-8320-808c-77635c7691e2",
     "work_owner": null,
-    "last_execution_owner": "manual-work-2e1c25ff-a32c-8329-87db-36c7dca2d14b-choice-departure",
+    "last_execution_owner": "manual-work-612efed0-049c-8320-808c-77635c7691e2-departure-receiving",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
     "scheduled_executor": "ENABLED",
     "activity": "WAITING_EXTERNAL",
-    "automation_reconciliation": "Sole existing Work remains enabled with unchanged hourly schedule; exact current invocation released. One diagnostic workflow active; Discussion/Watch read-only."
+    "automation_reconciliation": "Sole Work enabled; original schedule unchanged; exact invocation released. R2 is the sole active relevant workflow."
   },
   "blockers": [],
   "qualified_components": {
@@ -2926,7 +2987,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "External dependency pending: the single frozen test-only source-departure diagnostic run41373969898/job125050137599 is active. Exact original-artifact receiving preparation and isolated source trace are immutable/readback verified at9aaece7e3cffd6539a6c95be3d605bfa70eefbfe. Further diagnosis and any separate repair proposal depend on original results; no useful safely independent authorized preparation remains. Ownership released; no continuous execution implied.",
+  "actual_stopping_reason": "External dependency pending: corrected test-only diagnostic run41379783905/job125067832577 is active. Original R1 compiler failure and 1,997,561-byte ZIP are preserved and verified at2605d82c6aa70d39d83ad3cb781895405882db8c; no behavioral cases ran. R2 exact receiver expectations and unchanged-production source review are saved/readback verified. Further diagnosis depends on original results; no useful safely independent authorized preparation remains.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -2947,20 +3008,20 @@
       "SELF_ALTERNATIVE explicit selected-choice transport accepted at1a559395de4f7ca24b270ecddf45b88c60d72af8 on54d58d643fce107aa635b3385675e9d4b9311f52: full164focused396cards19239ordinary43historicalskips64client; targeted4compiledforms27normal27restored29negativewitnesses52controls reused fromabc37c545987f81aba5cc2a974e8f9de945103d1."
     ],
     "unfinished_implementation": [
-      "Source-departure CastChoiceMade semantics remain unqualified; bounded8case test-only original diagnostic dispatched. No production repair authorized or implemented.",
-      "Surge/payment/eligibility/teammates, further card registrations, multiplayer and official games remain outside this admission."
+      "Source-departure CastChoiceMade semantics remain unqualified. Original R1 stopped at two new test import errors; corrected R2 retains all8case identities and everyassertion. No production repair authorized or implemented.",
+      "Surge/payment/eligibility/teammates/further cards/multiplayer/officialgames remain outside this admission."
     ],
     "pending_evidence": [
       {
-        "run": 41373969898,
-        "job": 125050137599,
+        "run": 41379783905,
+        "job": 125067832577,
         "status": "in_progress",
-        "scope": "8 original diagnostic cases; compile-first and original artifact receiving required; workflow success is not acceptance"
+        "scope": "Compile-first8case diagnostic; original receiving required."
       }
     ],
     "source_protocol": {
-      "commit": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
-      "path": "experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json"
+      "commit": "738694cb2ff9f83df71855a3249a67df9d8e2e6a",
+      "path": "experiments/manual-transmission/research/source-departure-choice-diagnostic-r2-20261102/PROTOCOL.json"
     },
     "latest_receiving": {
       "commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
@@ -2974,23 +3035,28 @@
       "readback_verified": true,
       "original_archive_parts": 87
     },
-    "concrete_blocker_removed": "Source trace and test-only reproduction preparation completed; missing original executable evidence remains pending, not removed.",
+    "concrete_blocker_removed": "The diagnosed test import errors were corrected on immutable successor source; compilation and behavior remain pending.",
     "continuation_state": "WAITING_EXTERNAL",
-    "actual_stopping_reason": "External dependency pending: the single frozen test-only source-departure diagnostic run41373969898/job125050137599 is active. Exact original-artifact receiving preparation and isolated source trace are immutable/readback verified at9aaece7e3cffd6539a6c95be3d605bfa70eefbfe. Further diagnosis and any separate repair proposal depend on original results; no useful safely independent authorized preparation remains. Ownership released; no continuous execution implied.",
+    "actual_stopping_reason": "External dependency pending: corrected test-only diagnostic run41379783905/job125067832577 is active. Original R1 compiler failure and 1,997,561-byte ZIP are preserved and verified at2605d82c6aa70d39d83ad3cb781895405882db8c; no behavioral cases ran. R2 exact receiver expectations and unchanged-production source review are saved/readback verified. Further diagnosis depends on original results; no useful safely independent authorized preparation remains.",
     "ownership": {
       "state": "RELEASED",
       "owner": null,
-      "last_owner": "manual-work-2e1c25ff-a32c-8329-87db-36c7dca2d14b-choice-departure",
-      "run_id": "2e1c25ff-a32c-8329-87db-36c7dca2d14b",
-      "released_utc": "2026-11-02T01:47:45.769Z",
+      "last_owner": "manual-work-612efed0-049c-8320-808c-77635c7691e2-departure-receiving",
+      "run_id": "612efed0-049c-8320-808c-77635c7691e2",
+      "released_utc": "2026-11-02T02:51:05.657Z",
       "expires_utc": null
     },
-    "next_executable_action": "Read CURRENT.summary and source-departure diagnostic protocol at d8b3cd4214dc028a92d5c068e570c9daf1f6b844/experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json; receiving preparation 9aaece7e3cffd6539a6c95be3d605bfa70eefbfe/experiments/manual-transmission/research/source-departure-choice-receiving-prep-r1-20261102/EXPECTED.json and SOURCE_REVIEW.json. Reconcile fresh CURRENT, sole Work automation, exact run41373969898 and all-event active statuses, newer receipts/successors before claim. If active, do not duplicate/cancel/poll tightly. Once terminal, fetch original run/job/attempt/artifact/source/tree/validation metadata and original ZIP exactly once; execute prepared receive.py and inspect all8 raw identities, exact failure locations, no errors/skips, compile-before-observe, manifest, bytes/digest and initial/final protected bindings. Preserve compiler/setup failures as such; no behavioral inference from missing reports. If source-departure failure is reproduced, prepare a concrete separate protected-boundary proposal; source-departure repair is explicitly excluded from existing paid-choice grant. Never rerun accepted41363538430/41359309233 or earlier accepted evidence.",
+    "next_executable_action": "Read R1 receipt 2605d82c6aa70d39d83ad3cb781895405882db8c/experiments/manual-transmission/research/source-departure-choice-received-r1-20261102/RECEIPT.json, R2 protocol 738694cb2ff9f83df71855a3249a67df9d8e2e6a/experiments/manual-transmission/research/source-departure-choice-diagnostic-r2-20261102/PROTOCOL.json and receiving e0b8282bb352d4cfc78b210759607cf252bed561/experiments/manual-transmission/research/source-departure-choice-receiving-prep-r2-20261102/EXPECTED.json plus NEXT_ACTION.json. Reconcile fresh CURRENT/owner/sole Work automation/all-event statuses/newer receipts. Do not duplicate active run41379783905. When terminal receive original artifact exactly once using referenced receive.py and R2 EXPECTED pins; verify bytes/hash/manifest/source/tree/validation/run/job/attempt, compile-first,8rawidentities/multiplicities/skips/exactfailurelocations and initial/final296bindings. Compiler/setup errors or missing reports are not behavioral evidence. Preserve original failure; repair only bounded demonstrated test/infrastructure cause. If source-departure semantics fail, prepare separate concrete protected-boundary proposal before any production repair. Reuse accepted paid-choice/Disciple/prior evidence without rerunning.",
     "receiving_preparation": {
-      "commit": "9aaece7e3cffd6539a6c95be3d605bfa70eefbfe",
-      "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r1-20261102"
+      "commit": "e0b8282bb352d4cfc78b210759607cf252bed561",
+      "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r2-20261102",
+      "readback_verified": true
     },
-    "automation_state": "ENABLED_AUTHORIZED_EXECUTION"
+    "automation_state": "ENABLED_AUTHORIZED_EXECUTION",
+    "latest_diagnostic_receiving": {
+      "commit": "2605d82c6aa70d39d83ad3cb781895405882db8c",
+      "path": "experiments/manual-transmission/research/source-departure-choice-received-r1-20261102/RECEIPT.json"
+    }
   },
   "generator_calibration_repair_authorization": {
     "state": "AUTHORIZED",
@@ -3051,7 +3117,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-02T02:46:30.771Z",
+  "updated_utc": "2026-11-02T02:51:05.657Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -4553,7 +4619,7 @@
     "artifact_sha256": "sha256:879f74749b54f7d636f848c6981bf45470a392a8d40023008af219d1ab79908b",
     "manifest_entries": 259
   },
-  "last_execution_owner": "manual-work-2e1c25ff-a32c-8329-87db-36c7dca2d14b-choice-departure",
+  "last_execution_owner": "manual-work-612efed0-049c-8320-808c-77635c7691e2-departure-receiving",
   "spellskite_behavior_r1": {
     "state": "ORIGINAL_BEHAVIORAL_FAILURE_RECEIVED",
     "source": "f58a64db3a133d86090dddf9776e622c981298cc",
@@ -26747,7 +26813,7 @@
     }
   },
   "source_departure_choice_diagnostic_r1": {
-    "state": "DISPATCHED_ORIGINAL_TEST_ONLY_DIAGNOSTIC_NOT_ACCEPTED",
+    "state": "ORIGINAL_COMPILER_FAILURE_RECEIVED",
     "source": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
     "source_tree": "16494594d58c481556d4dd5b6ebf57351acfdcb0",
     "accepted_base": "54d58d643fce107aa635b3385675e9d4b9311f52",
@@ -26761,7 +26827,7 @@
     "attempt": 1,
     "run_number": 1,
     "event": "push",
-    "status": "in_progress",
+    "status": "completed",
     "protocol": {
       "commit": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
       "path": "experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json",
@@ -26785,6 +26851,160 @@
     "accepted_evidence_reused": true,
     "qualification_duplicated": false,
     "source_departure_repair_authorized": false,
-    "observed_utc": "2026-11-02T01:47:45.769Z"
+    "observed_utc": "2026-11-02T01:47:45.769Z",
+    "conclusion": "failure",
+    "receipt": {
+      "commit": "2605d82c6aa70d39d83ad3cb781895405882db8c",
+      "path": "experiments/manual-transmission/research/source-departure-choice-received-r1-20261102/RECEIPT.json"
+    },
+    "behavioral_evidence": false
+  },
+  "history_before_source_departure_r2_20261102": {
+    "summary": {
+      "accepted_capabilities": [
+        "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
+        "Spellskite behavior/registration accepted atcdb1bc6c; combined Bolt Bend/Fblthp admission at2d4a2fbac7910b180a7a9b1778f81cbae6a3d230; Opal Palace rider/C13 admission at2320eb33. Original compatibility and executable-negative evidence reused.",
+        "Disciple MH3#250 bounded card admission accepted ata115b7555d2f4272062010b03332260de8d5a303: compile137focused396cards19212ordinary43historicalskips64client; original artifact and all protected entries preserved.",
+        "SELF_ALTERNATIVE explicit selected-choice transport accepted at1a559395de4f7ca24b270ecddf45b88c60d72af8 on54d58d643fce107aa635b3385675e9d4b9311f52: full164focused396cards19239ordinary43historicalskips64client; targeted4compiledforms27normal27restored29negativewitnesses52controls reused fromabc37c545987f81aba5cc2a974e8f9de945103d1."
+      ],
+      "unfinished_implementation": [
+        "Source-departure CastChoiceMade semantics remain unqualified; bounded8case test-only original diagnostic dispatched. No production repair authorized or implemented.",
+        "Surge/payment/eligibility/teammates, further card registrations, multiplayer and official games remain outside this admission."
+      ],
+      "pending_evidence": [
+        {
+          "run": 41373969898,
+          "job": 125050137599,
+          "status": "in_progress",
+          "scope": "8 original diagnostic cases; compile-first and original artifact receiving required; workflow success is not acceptance"
+        }
+      ],
+      "source_protocol": {
+        "commit": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
+        "path": "experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json"
+      },
+      "latest_receiving": {
+        "commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-received-r1-20261102/RECEIPT.json"
+      },
+      "admission": {
+        "commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-received-r1-20261102/ADMISSION.json",
+        "source": "54d58d643fce107aa635b3385675e9d4b9311f52",
+        "state": "BOUNDED_SELF_ALTERNATIVE_PAID_CHOICE_ADMITTED",
+        "readback_verified": true,
+        "original_archive_parts": 87
+      },
+      "concrete_blocker_removed": "Source trace and test-only reproduction preparation completed; missing original executable evidence remains pending, not removed.",
+      "continuation_state": "WAITING_EXTERNAL",
+      "actual_stopping_reason": "External dependency pending: the single frozen test-only source-departure diagnostic run41373969898/job125050137599 is active. Exact original-artifact receiving preparation and isolated source trace are immutable/readback verified at9aaece7e3cffd6539a6c95be3d605bfa70eefbfe. Further diagnosis and any separate repair proposal depend on original results; no useful safely independent authorized preparation remains. Ownership released; no continuous execution implied.",
+      "ownership": {
+        "state": "RELEASED",
+        "owner": null,
+        "last_owner": "manual-work-2e1c25ff-a32c-8329-87db-36c7dca2d14b-choice-departure",
+        "run_id": "2e1c25ff-a32c-8329-87db-36c7dca2d14b",
+        "released_utc": "2026-11-02T01:47:45.769Z",
+        "expires_utc": null
+      },
+      "next_executable_action": "Read CURRENT.summary and source-departure diagnostic protocol at d8b3cd4214dc028a92d5c068e570c9daf1f6b844/experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json; receiving preparation 9aaece7e3cffd6539a6c95be3d605bfa70eefbfe/experiments/manual-transmission/research/source-departure-choice-receiving-prep-r1-20261102/EXPECTED.json and SOURCE_REVIEW.json. Reconcile fresh CURRENT, sole Work automation, exact run41373969898 and all-event active statuses, newer receipts/successors before claim. If active, do not duplicate/cancel/poll tightly. Once terminal, fetch original run/job/attempt/artifact/source/tree/validation metadata and original ZIP exactly once; execute prepared receive.py and inspect all8 raw identities, exact failure locations, no errors/skips, compile-before-observe, manifest, bytes/digest and initial/final protected bindings. Preserve compiler/setup failures as such; no behavioral inference from missing reports. If source-departure failure is reproduced, prepare a concrete separate protected-boundary proposal; source-departure repair is explicitly excluded from existing paid-choice grant. Never rerun accepted41363538430/41359309233 or earlier accepted evidence.",
+      "receiving_preparation": {
+        "commit": "9aaece7e3cffd6539a6c95be3d605bfa70eefbfe",
+        "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r1-20261102"
+      },
+      "automation_state": "ENABLED_AUTHORIZED_EXECUTION"
+    },
+    "next": {
+      "dependency": "Original source-departure CastChoiceMade diagnostic receiving",
+      "pending_runs": [
+        41373969898
+      ],
+      "source_candidate": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
+      "source_protocol": {
+        "commit": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
+        "path": "experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json"
+      },
+      "latest_receiving": {
+        "commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-received-r1-20261102/RECEIPT.json"
+      },
+      "receiving_preparation": {
+        "commit": "9aaece7e3cffd6539a6c95be3d605bfa70eefbfe",
+        "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r1-20261102"
+      },
+      "next_executable_action": "Read CURRENT.summary and source-departure diagnostic protocol at d8b3cd4214dc028a92d5c068e570c9daf1f6b844/experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json; receiving preparation 9aaece7e3cffd6539a6c95be3d605bfa70eefbfe/experiments/manual-transmission/research/source-departure-choice-receiving-prep-r1-20261102/EXPECTED.json and SOURCE_REVIEW.json. Reconcile fresh CURRENT, sole Work automation, exact run41373969898 and all-event active statuses, newer receipts/successors before claim. If active, do not duplicate/cancel/poll tightly. Once terminal, fetch original run/job/attempt/artifact/source/tree/validation metadata and original ZIP exactly once; execute prepared receive.py and inspect all8 raw identities, exact failure locations, no errors/skips, compile-before-observe, manifest, bytes/digest and initial/final protected bindings. Preserve compiler/setup failures as such; no behavioral inference from missing reports. If source-departure failure is reproduced, prepare a concrete separate protected-boundary proposal; source-departure repair is explicitly excluded from existing paid-choice grant. Never rerun accepted41363538430/41359309233 or earlier accepted evidence."
+    },
+    "diagnostic": {
+      "state": "DISPATCHED_ORIGINAL_TEST_ONLY_DIAGNOSTIC_NOT_ACCEPTED",
+      "source": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
+      "source_tree": "16494594d58c481556d4dd5b6ebf57351acfdcb0",
+      "accepted_base": "54d58d643fce107aa635b3385675e9d4b9311f52",
+      "validation": "a561b5fc0fb4b3352bbbf6b6d3a1ecf973848473",
+      "validation_tree": "211c1691a014fc659fab5e8305badd7431afefd5",
+      "workflow": ".github/workflows/manual-source-departure-choice-diagnostic-r1-20261102.yml",
+      "workflow_blob": "e15e42a7fb0f932123e6f412915866cf1c6d46f6",
+      "branch": "validation/manual-source-departure-choice-diagnostic-r1-20261102",
+      "run": 41373969898,
+      "job": 125050137599,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "status": "in_progress",
+      "protocol": {
+        "commit": "d8b3cd4214dc028a92d5c068e570c9daf1f6b844",
+        "path": "experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json",
+        "sha256": "0b8af7adbde37fda70e383ad31fd23146f2921700d7e00177ff3e85a14333a04"
+      },
+      "source_delta": [
+        "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDeparturePaidChoiceDiagnosticTest.kt",
+        "experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/PROTOCOL.json",
+        "experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/run.py",
+        "experiments/manual-transmission/research/source-departure-choice-diagnostic-r1-20261102/validation.just"
+      ],
+      "production_changes": 0,
+      "existing_test_changes": 0,
+      "cases": 8,
+      "receiving": {
+        "commit": "9aaece7e3cffd6539a6c95be3d605bfa70eefbfe",
+        "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r1-20261102",
+        "immutable_readbacks_verified": true,
+        "original_artifacts_received": false
+      },
+      "accepted_evidence_reused": true,
+      "qualification_duplicated": false,
+      "source_departure_repair_authorized": false,
+      "observed_utc": "2026-11-02T01:47:45.769Z"
+    },
+    "lease": {
+      "state": "ACTIVE",
+      "owner": "manual-work-612efed0-049c-8320-808c-77635c7691e2-departure-receiving",
+      "run_id": "612efed0-049c-8320-808c-77635c7691e2",
+      "claimed_utc": "2026-11-02T02:46:30.771Z",
+      "expires_utc": "2026-11-02T03:46:30.771Z"
+    }
+  },
+  "source_departure_choice_diagnostic_r2": {
+    "state": "TEST_ONLY_IMPORT_REPAIR_DISPATCHED_NOT_ACCEPTED",
+    "source": "738694cb2ff9f83df71855a3249a67df9d8e2e6a",
+    "tree": "55b13fa8aacc7edfc2200caa11a05f0c848358a2",
+    "validation": "9b1530e8776ec0da9f3285fdbfdabc90eea01449",
+    "validation_tree": "46508ecc7e3666173195f67dfc056fa09c70308a",
+    "workflow": ".github/workflows/manual-source-departure-choice-diagnostic-r2-20261102.yml",
+    "workflow_blob": "e6d4d4c269b267cc68d99f85d450e6626e5d064b",
+    "run": 41379783905,
+    "job": 125067832577,
+    "attempt": 1,
+    "status": "in_progress",
+    "protocol": {
+      "commit": "738694cb2ff9f83df71855a3249a67df9d8e2e6a",
+      "path": "experiments/manual-transmission/research/source-departure-choice-diagnostic-r2-20261102/PROTOCOL.json"
+    },
+    "receiving": {
+      "commit": "e0b8282bb352d4cfc78b210759607cf252bed561",
+      "path": "experiments/manual-transmission/research/source-departure-choice-receiving-prep-r2-20261102",
+      "readback_verified": true
+    },
+    "change": "Exactly two test import corrections; all8 cases/everyassertion and all production source unchanged.",
+    "source_readbacks_verified": true,
+    "accepted": false
   }
 }
