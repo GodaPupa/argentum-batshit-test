@@ -3,16 +3,16 @@
   "updated_date": "2026-11-02",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "EXECUTING",
-  "owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
+  "status": "BLOCKED",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
+    "state": "RELEASED",
+    "owner": null,
+    "last_owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
     "run_id": "d729c832-8580-8331-a930-210fc1312173",
-    "acquired_utc": "2026-11-02T09:50:18.419Z",
-    "renewed_utc": "2026-11-02T09:50:18.419Z",
-    "expires_utc": "2026-11-02T10:35:18.419Z",
-    "purpose": "Receive failed original full run41418326149 and diagnose exact failed gate; no blind rerun."
+    "released_utc": "2026-11-02T10:04:05.302Z",
+    "expires_utc": null,
+    "reason": "Exact capture-condition revision required: pinned proposal adcf13a37a95c1c69f1c2301eecf46135d4f1a5d NEXT_ADMISSION.exact_sections[0] mandates absent CastChoicesComponent -> emptyMap. Original full run41418326149 now received: two unchanged free-cast-target trace assertions require null, actual empty map. Proposed one-line ZTS revision preserves null only when the component is absent, keeps explicitly empty/present choices, all existing assertions/fixtures/factories/generation guards unchanged. Existing four-file grants remain valid; this exact semantic condition revision is not yet granted. No active relevant workflow; all safe independent receiving and source review completed."
   },
   "last_qualified": {
     "source": "d5f258de423503e7054528bb3f6a7a71c5314057",
@@ -31,29 +31,35 @@
     "positive_artifact": 13027944981
   },
   "next": {
-    "dependency": "Departure-time choice full same-source compatibility and original receiving",
+    "dependency": "Exact departure-time absent-choice capture condition revision",
     "source_candidate": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
     "source_tree": "6241d00ce0dbd7d8679ed60088f1df5d3685be2d",
-    "validation": "6b8e7485e0b7a998712a0f464d1cbd0e5aead82f",
-    "validation_branch": "validation/manual-departure-time-choice-full-r1-20261102",
-    "workflow": ".github/workflows/manual-departure-time-choice-full-r1-20261102.yml",
-    "protocol": "experiments/manual-transmission/research/departure-time-choice-full-r1-20261102/PROTOCOL.json",
-    "pending_runs": [
-      41418326149
-    ],
+    "pending_runs": [],
     "latest_receiving": {
-      "commit": "1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1",
-      "path": "experiments/manual-transmission/research/departure-time-choice-received-r2-20261102/RECEIPT.json",
-      "readback_files": 109,
-      "verified": true
+      "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+      "path": "experiments/manual-transmission/research/departure-time-choice-full-received-r1-20261102/RECEIPT.json",
+      "state": "ORIGINAL_FULL_FAILURE_RECEIVED_NOT_ACCEPTED",
+      "run": 41418326149,
+      "job": 125187526227,
+      "artifact": 13129449849,
+      "attempt": 1,
+      "bytes": 7846665,
+      "sha256": "5beb75a0eb27f786b299a8a3f3e1ca07bfcc9ce2b785a9410567fd420d0ff8e2",
+      "readback_verified": true,
+      "all_files_verified": 146,
+      "archive_parts": 120,
+      "report_parts": 8
     },
-    "receiving_preparation": {
-      "commit": "c67da6f7ad3d1b5a4a0971794f7108a499106f79",
-      "path": "experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102/",
-      "readback_files": 10,
-      "verified": true
+    "next_admission": {
+      "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+      "path": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/NEXT_ADMISSION.json",
+      "matrix": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/TEST_MATRIX.json",
+      "source_review": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/SOURCE_REVIEW.json",
+      "patch": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/departure-absence.patch",
+      "state": "EXACT_CAPTURE_CONDITION_REVISION_AWAITING_AUTHORIZATION",
+      "readback_verified": true
     },
-    "next_executable_action": "Reconcile live CURRENT owner/sole Work exact run/recent commits/newer receipts and all-event active statuses. Never duplicate/cancel full run41418326149 job125187526227 attempt1 validation6b8e7485e0b7a998712a0f464d1cbd0e5aead82f source7f0529b055b3b3432947d7a03e05c1d6804fdc36. If terminal and no newer receiver, fresh-blob CAS claim and receive original artifact with c67da6f7ad3d1b5a4a0971794f7108a499106f79/experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102: refresh terminal API, pin sole artifact ID/bytes/hash, run receive_full.py, verify exact source/tree/workflow/job/attempt/manifest303bindings27gitbindings15trees/frozen8protocolfiles/earlyreceipt/freshcompile247focused396cards19322ordinaryexact43historicalskips64client. Archive originals and raw reports, diagnose actual failures without weakening or blind rerun. Targeted original receipt1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1 already fully received six forms83normal83restored7negative; reuse and do not rerun. After verified full receipt reconcile every exact proposal/grant requirement and unchanged metadata/card/Assay evidence before bounded admission; then resume next authorized dependency source review, no automatic cards/multiplayer/games/seeds. Preserve all originals and sole executor/schedule."
+    "next_executable_action": "Read compact summary and exact proposal 097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9/experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/NEXT_ADMISSION.json, TEST_MATRIX.json, SOURCE_REVIEW.json and departure-absence.patch. Original full failure is received exactly once at 097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9/experiments/manual-transmission/research/departure-time-choice-full-received-r1-20261102/RECEIPT.json with120 original ZIP parts and8 full-report parts; do not re-receive or rerun unchanged failure. Await explicit authorization only to revise ZTS departure constructor absent-component emptyMap fallback to null as proposed; existing source-departure grants remain valid. If granted, reconcile fresh CURRENT/sole Work exact run/commits/newer receipts/all-event active statuses, claim fresh-blob CAS, apply exact one-line bounded successor plus additive tests, normal/all6mutants compile first, preserve all83targeted identities/8diagnostics/2power cases and both failing trace assertions, then full396cards19239baseline+83existing+8plannedadditions exact43skips64client and original receiving before acceptance. Reuse exact-bound accepted and targeted evidence. No changed fixtures/assertions/serializer/factory/generation guards/other paths/cards/multiplayer/games/seeds/spending/workers. Keep sole executor and original schedule; no continuous execution implied."
   },
   "completion_contract": {
     "engineering": "All frozen Manual/opponent card semantics, exact four-player runtime, executable pilots, hidden information, telemetry, source-bound deterministic replay and production admission qualified.",
@@ -2461,7 +2467,7 @@
       "expectations": "STRICTLY_READ_ONLY. Read live CURRENT.summary and next.next_executable_action; historical run references are not current guidance. Do not execute, receive, claim, dispatch or change Work.",
       "previous_expectations_before_opal_20261030": "Strictly read-only; follow current Work WAITING_EXTERNAL ownership and single public target-group run40098055404. Accepted activation40091111694 remains accepted. No action for healthy waiting; receive original evidence before bounded acceptance. Watch enabled state unchanged."
     },
-    "handoff": "Read CURRENT.summary and next.next_executable_action; expand exact referenced source/protocol/receipt/next-action sections, history only as needed for inconsistencies or governing requirements.",
+    "handoff": "Read CURRENT.summary and next.next_executable_action, then exact immutable references. Historical runs are not current guidance.",
     "execution_admitted": true,
     "former_discussion_executor": {
       "id": "6adbad91b90881918859ad0cba22b881",
@@ -2538,7 +2544,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED",
     "last_verified_enabled_utc": "2026-10-30T21:18:51.573Z",
-    "next_authorized_action": "Reconcile live CURRENT owner/sole Work exact run/recent commits/newer receipts and all-event active statuses. Never duplicate/cancel full run41418326149 job125187526227 attempt1 validation6b8e7485e0b7a998712a0f464d1cbd0e5aead82f source7f0529b055b3b3432947d7a03e05c1d6804fdc36. If terminal and no newer receiver, fresh-blob CAS claim and receive original artifact with c67da6f7ad3d1b5a4a0971794f7108a499106f79/experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102: refresh terminal API, pin sole artifact ID/bytes/hash, run receive_full.py, verify exact source/tree/workflow/job/attempt/manifest303bindings27gitbindings15trees/frozen8protocolfiles/earlyreceipt/freshcompile247focused396cards19322ordinaryexact43historicalskips64client. Archive originals and raw reports, diagnose actual failures without weakening or blind rerun. Targeted original receipt1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1 already fully received six forms83normal83restored7negative; reuse and do not rerun. After verified full receipt reconcile every exact proposal/grant requirement and unchanged metadata/card/Assay evidence before bounded admission; then resume next authorized dependency source review, no automatic cards/multiplayer/games/seeds. Preserve all originals and sole executor/schedule.",
+    "next_authorized_action": "Read compact summary and exact proposal 097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9/experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/NEXT_ADMISSION.json, TEST_MATRIX.json, SOURCE_REVIEW.json and departure-absence.patch. Original full failure is received exactly once at 097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9/experiments/manual-transmission/research/departure-time-choice-full-received-r1-20261102/RECEIPT.json with120 original ZIP parts and8 full-report parts; do not re-receive or rerun unchanged failure. Await explicit authorization only to revise ZTS departure constructor absent-component emptyMap fallback to null as proposed; existing source-departure grants remain valid. If granted, reconcile fresh CURRENT/sole Work exact run/commits/newer receipts/all-event active statuses, claim fresh-blob CAS, apply exact one-line bounded successor plus additive tests, normal/all6mutants compile first, preserve all83targeted identities/8diagnostics/2power cases and both failing trace assertions, then full396cards19239baseline+83existing+8plannedadditions exact43skips64client and original receiving before acceptance. Reuse exact-bound accepted and targeted evidence. No changed fixtures/assertions/serializer/factory/generation guards/other paths/cards/multiplayer/games/seeds/spending/workers. Keep sole executor and original schedule; no continuous execution implied.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2796,15 +2802,47 @@
     "primary": "Work execution conversation",
     "session": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
     "automation_run": "d729c832-8580-8331-a930-210fc1312173",
-    "work_owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
-    "last_execution_owner": "manual-work-7b433069-af7c-8324-b0ab-ba351ff0da4c-departure-time",
+    "work_owner": null,
+    "last_execution_owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
     "discussion": "READ_ONLY",
     "intervention_watch": "READ_ONLY",
     "scheduled_executor": "ENABLED",
-    "activity": "RECEIVING_ORIGINAL_FAILURE",
-    "automation_reconciliation": "Sole live Work run reconciled; prior owner released; no relevant active qualification."
+    "activity": "BLOCKED",
+    "automation_reconciliation": "Sole Work enabled with unchanged original schedule; current run reconciled. No relevant active workflows. Original failure received; ownership released pending exact capture-condition revision."
   },
-  "blockers": [],
+  "blockers": [
+    {
+      "kind": "EXACT_AUTHORIZED_CAPTURE_CONDITION_CONFLICT",
+      "reason": "Exact capture-condition revision required: pinned proposal adcf13a37a95c1c69f1c2301eecf46135d4f1a5d NEXT_ADMISSION.exact_sections[0] mandates absent CastChoicesComponent -> emptyMap. Original full run41418326149 now received: two unchanged free-cast-target trace assertions require null, actual empty map. Proposed one-line ZTS revision preserves null only when the component is absent, keeps explicitly empty/present choices, all existing assertions/fixtures/factories/generation guards unchanged. Existing four-file grants remain valid; this exact semantic condition revision is not yet granted. No active relevant workflow; all safe independent receiving and source review completed.",
+      "receipt": {
+        "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+        "path": "experiments/manual-transmission/research/departure-time-choice-full-received-r1-20261102/RECEIPT.json",
+        "state": "ORIGINAL_FULL_FAILURE_RECEIVED_NOT_ACCEPTED",
+        "run": 41418326149,
+        "job": 125187526227,
+        "artifact": 13129449849,
+        "attempt": 1,
+        "bytes": 7846665,
+        "sha256": "5beb75a0eb27f786b299a8a3f3e1ca07bfcc9ce2b785a9410567fd420d0ff8e2",
+        "readback_verified": true,
+        "all_files_verified": 146,
+        "archive_parts": 120,
+        "report_parts": 8
+      },
+      "proposal": {
+        "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+        "path": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/NEXT_ADMISSION.json",
+        "matrix": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/TEST_MATRIX.json",
+        "source_review": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/SOURCE_REVIEW.json",
+        "patch": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/departure-absence.patch",
+        "state": "EXACT_CAPTURE_CONDITION_REVISION_AWAITING_AUTHORIZATION",
+        "readback_verified": true
+      },
+      "existing_authority_revoked": false,
+      "additional_production_paths_requested": [],
+      "new_qualification_authorized": false
+    }
+  ],
   "qualified_components": {
     "structural_target_slot": {
       "source": "5bc1b733d3e19fee4da7e33174bf4a480bd92812",
@@ -3493,7 +3531,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": null,
+  "actual_stopping_reason": "Exact capture-condition revision required: pinned proposal adcf13a37a95c1c69f1c2301eecf46135d4f1a5d NEXT_ADMISSION.exact_sections[0] mandates absent CastChoicesComponent -> emptyMap. Original full run41418326149 now received: two unchanged free-cast-target trace assertions require null, actual empty map. Proposed one-line ZTS revision preserves null only when the component is absent, keeps explicitly empty/present choices, all existing assertions/fixtures/factories/generation guards unchanged. Existing four-file grants remain valid; this exact semantic condition revision is not yet granted. No active relevant workflow; all safe independent receiving and source review completed.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
@@ -3514,10 +3552,10 @@
       "SELF_ALTERNATIVE explicit selected-choice transport accepted at1a559395de4f7ca24b270ecddf45b88c60d72af8 on54d58d643fce107aa635b3385675e9d4b9311f52: full164focused396cards19239ordinary43historicalskips64client; targeted4compiledforms27normal27restored29negativewitnesses52controls reused fromabc37c545987f81aba5cc2a974e8f9de945103d1."
     ],
     "unfinished_implementation": [
-      "Four-file departure-time repair passed original targeted gates; full same-source compatibility remains unreceived, bounded admission pending."
+      "Departure-time repair targeted proof remains received; full acceptance withheld after two preserved legacy/current trace failures. One-line absence-capture condition revision is proposed, not implemented."
     ],
     "pending_evidence": [
-      "Active full run41418326149 and original artifact receiving; all proposal conditions before bounded acceptance."
+      "Explicit authorization of exact revised absence-capture condition, then compile-first targeted/negative and full same-source compatibility/original receiving on bounded successor."
     ],
     "source_protocol": {
       "commit": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
@@ -3526,10 +3564,19 @@
       "readback_verified": true
     },
     "latest_receiving": {
-      "commit": "1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1",
-      "path": "experiments/manual-transmission/research/departure-time-choice-received-r2-20261102/RECEIPT.json",
-      "readback_files": 109,
-      "verified": true
+      "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+      "path": "experiments/manual-transmission/research/departure-time-choice-full-received-r1-20261102/RECEIPT.json",
+      "state": "ORIGINAL_FULL_FAILURE_RECEIVED_NOT_ACCEPTED",
+      "run": 41418326149,
+      "job": 125187526227,
+      "artifact": 13129449849,
+      "attempt": 1,
+      "bytes": 7846665,
+      "sha256": "5beb75a0eb27f786b299a8a3f3e1ca07bfcc9ce2b785a9410567fd420d0ff8e2",
+      "readback_verified": true,
+      "all_files_verified": 146,
+      "archive_parts": 120,
+      "report_parts": 8
     },
     "admission": {
       "commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
@@ -3539,19 +3586,19 @@
       "readback_verified": true,
       "original_archive_parts": 87
     },
-    "concrete_blocker_removed": "Original six-form compilation,83normal/restored and7exactnegative witnesses verify departure-time explicit choice preservation, original-generation isolation and both25life power cases. Full acceptance withheld.",
-    "continuation_state": "EXECUTING",
-    "actual_stopping_reason": null,
+    "concrete_blocker_removed": "Original full failure is now received and archived with all bindings verified; exact cause isolated to absent-component emptyMap fallback. No behavioral admission blocker claimed removed.",
+    "continuation_state": "BLOCKED",
+    "actual_stopping_reason": "Exact capture-condition revision required: pinned proposal adcf13a37a95c1c69f1c2301eecf46135d4f1a5d NEXT_ADMISSION.exact_sections[0] mandates absent CastChoicesComponent -> emptyMap. Original full run41418326149 now received: two unchanged free-cast-target trace assertions require null, actual empty map. Proposed one-line ZTS revision preserves null only when the component is absent, keeps explicitly empty/present choices, all existing assertions/fixtures/factories/generation guards unchanged. Existing four-file grants remain valid; this exact semantic condition revision is not yet granted. No active relevant workflow; all safe independent receiving and source review completed.",
     "ownership": {
-      "state": "ACTIVE",
-      "owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
+      "state": "RELEASED",
+      "owner": null,
+      "last_owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
       "run_id": "d729c832-8580-8331-a930-210fc1312173",
-      "acquired_utc": "2026-11-02T09:50:18.419Z",
-      "renewed_utc": "2026-11-02T09:50:18.419Z",
-      "expires_utc": "2026-11-02T10:35:18.419Z",
-      "purpose": "Receive failed original full run41418326149 and diagnose exact failed gate; no blind rerun."
+      "released_utc": "2026-11-02T10:04:05.302Z",
+      "expires_utc": null,
+      "reason": "Exact capture-condition revision required: pinned proposal adcf13a37a95c1c69f1c2301eecf46135d4f1a5d NEXT_ADMISSION.exact_sections[0] mandates absent CastChoicesComponent -> emptyMap. Original full run41418326149 now received: two unchanged free-cast-target trace assertions require null, actual empty map. Proposed one-line ZTS revision preserves null only when the component is absent, keeps explicitly empty/present choices, all existing assertions/fixtures/factories/generation guards unchanged. Existing four-file grants remain valid; this exact semantic condition revision is not yet granted. No active relevant workflow; all safe independent receiving and source review completed."
     },
-    "next_executable_action": "Reconcile live CURRENT owner/sole Work exact run/recent commits/newer receipts and all-event active statuses. Never duplicate/cancel full run41418326149 job125187526227 attempt1 validation6b8e7485e0b7a998712a0f464d1cbd0e5aead82f source7f0529b055b3b3432947d7a03e05c1d6804fdc36. If terminal and no newer receiver, fresh-blob CAS claim and receive original artifact with c67da6f7ad3d1b5a4a0971794f7108a499106f79/experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102: refresh terminal API, pin sole artifact ID/bytes/hash, run receive_full.py, verify exact source/tree/workflow/job/attempt/manifest303bindings27gitbindings15trees/frozen8protocolfiles/earlyreceipt/freshcompile247focused396cards19322ordinaryexact43historicalskips64client. Archive originals and raw reports, diagnose actual failures without weakening or blind rerun. Targeted original receipt1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1 already fully received six forms83normal83restored7negative; reuse and do not rerun. After verified full receipt reconcile every exact proposal/grant requirement and unchanged metadata/card/Assay evidence before bounded admission; then resume next authorized dependency source review, no automatic cards/multiplayer/games/seeds. Preserve all originals and sole executor/schedule.",
+    "next_executable_action": "Read compact summary and exact proposal 097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9/experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/NEXT_ADMISSION.json, TEST_MATRIX.json, SOURCE_REVIEW.json and departure-absence.patch. Original full failure is received exactly once at 097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9/experiments/manual-transmission/research/departure-time-choice-full-received-r1-20261102/RECEIPT.json with120 original ZIP parts and8 full-report parts; do not re-receive or rerun unchanged failure. Await explicit authorization only to revise ZTS departure constructor absent-component emptyMap fallback to null as proposed; existing source-departure grants remain valid. If granted, reconcile fresh CURRENT/sole Work exact run/commits/newer receipts/all-event active statuses, claim fresh-blob CAS, apply exact one-line bounded successor plus additive tests, normal/all6mutants compile first, preserve all83targeted identities/8diagnostics/2power cases and both failing trace assertions, then full396cards19239baseline+83existing+8plannedadditions exact43skips64client and original receiving before acceptance. Reuse exact-bound accepted and targeted evidence. No changed fixtures/assertions/serializer/factory/generation guards/other paths/cards/multiplayer/games/seeds/spending/workers. Keep sole executor and original schedule; no continuous execution implied.",
     "receiving_preparation": {
       "commit": "c67da6f7ad3d1b5a4a0971794f7108a499106f79",
       "path": "experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102/",
@@ -3568,11 +3615,12 @@
       "all_files_verified": 92
     },
     "next_admission": {
-      "commit": "adcf13a37a95c1c69f1c2301eecf46135d4f1a5d",
-      "path": "experiments/manual-transmission/research/source-departure-departure-time-choice-proposal-r1-20261102/NEXT_ADMISSION.json",
-      "matrix": "experiments/manual-transmission/research/source-departure-departure-time-choice-proposal-r1-20261102/TEST_MATRIX.json",
-      "state": "EXPLICIT_USER_GRANTED_IMPLEMENTATION_PENDING",
-      "additional_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+      "path": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/NEXT_ADMISSION.json",
+      "matrix": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/TEST_MATRIX.json",
+      "source_review": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/SOURCE_REVIEW.json",
+      "patch": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/departure-absence.patch",
+      "state": "EXACT_CAPTURE_CONDITION_REVISION_AWAITING_AUTHORIZATION",
       "readback_verified": true
     },
     "conditional_full_preparation": {
@@ -3642,7 +3690,7 @@
       "resolved_by": "isd_generator_calibration_repair_authorization"
     }
   ],
-  "updated_utc": "2026-11-02T09:50:18.419Z",
+  "updated_utc": "2026-11-02T10:04:05.302Z",
   "isd_generator_calibration_repair_qualification": {
     "state": "RECEIVED_EARLY_ISD_REPAIR_ONLY_FULL_COMPATIBILITY_PENDING",
     "source": "4c33c028fdf661b228dc0204ba1b07846486896a",
@@ -28214,8 +28262,8 @@
     "expires_utc": "2026-11-02T07:32:42.906Z"
   },
   "reconcile_latest": {
-    "utc": "2026-11-02T09:50:18.419Z",
-    "predecessor_blob": "488193c1d0fb2d32e19ddaa0d1d807543c1ef835",
+    "utc": "2026-11-02T10:04:05.302Z",
+    "predecessor_blob": "f1390317532a3e943e3b9c740de2114dd795fe2a",
     "task": "6adbe33033e481918659ce578f64f31e",
     "run": {
       "id": "d729c832-8580-8331-a930-210fc1312173",
@@ -28229,9 +28277,10 @@
     "schedule_unchanged": true,
     "active_relevant_runs": [],
     "ignored_only": 34749202144,
-    "newer_receipts_or_successors": false,
-    "terminal_run": 41418326149,
-    "conclusion": "failure"
+    "owner": null,
+    "new_receipt": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+    "receipt_readback_files": 146,
+    "reason": "Exact capture-condition revision required: pinned proposal adcf13a37a95c1c69f1c2301eecf46135d4f1a5d NEXT_ADMISSION.exact_sections[0] mandates absent CastChoicesComponent -> emptyMap. Original full run41418326149 now received: two unchanged free-cast-target trace assertions require null, actual empty map. Proposed one-line ZTS revision preserves null only when the component is absent, keeps explicitly empty/present choices, all existing assertions/fixtures/factories/generation guards unchanged. Existing four-file grants remain valid; this exact semantic condition revision is not yet granted. No active relevant workflow; all safe independent receiving and source review completed."
   },
   "previous_r2_release": {
     "state": "RELEASED",
@@ -28509,7 +28558,7 @@
     }
   },
   "departure_time_choice_full_r1": {
-    "state": "ACTIVE_FULL_COMPATIBILITY",
+    "state": "ORIGINAL_FAILURE_RECEIVED",
     "source": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
     "tree": "6241d00ce0dbd7d8679ed60088f1df5d3685be2d",
     "validation": "6b8e7485e0b7a998712a0f464d1cbd0e5aead82f",
@@ -28529,7 +28578,35 @@
       "path": "experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102/",
       "readback_files": 10,
       "verified": true
-    }
+    },
+    "conclusion": "failure",
+    "receipt": {
+      "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+      "path": "experiments/manual-transmission/research/departure-time-choice-full-received-r1-20261102/RECEIPT.json",
+      "state": "ORIGINAL_FULL_FAILURE_RECEIVED_NOT_ACCEPTED",
+      "run": 41418326149,
+      "job": 125187526227,
+      "artifact": 13129449849,
+      "attempt": 1,
+      "bytes": 7846665,
+      "sha256": "5beb75a0eb27f786b299a8a3f3e1ca07bfcc9ce2b785a9410567fd420d0ff8e2",
+      "readback_verified": true,
+      "all_files_verified": 146,
+      "archive_parts": 120,
+      "report_parts": 8
+    },
+    "compile": 0,
+    "focused": 247,
+    "cards": 396,
+    "ordinary": {
+      "rows": 8417,
+      "passed": 8372,
+      "failures": 2,
+      "errors": 0,
+      "skips": 43,
+      "missing": 10905
+    },
+    "client": "NOT_REACHED"
   },
   "history_before_full_wait_20261102": {
     "summary": {
@@ -28766,5 +28843,140 @@
       "reason": "External dependency pending: full same-source run41418326149 remains active. Original targeted evidence is received and archived; strict full receiver with10 synthetic rejection checks and15 independently verified unchanged trees is saved/readback verified. Remaining bounded admission/next dependency conclusions require original full results; no useful safely independent authorized receiving/source-review work remains. Ownership released; no continuous execution implied."
     },
     "status": "WAITING_EXTERNAL"
+  },
+  "history_before_full_failure_release_20261102": {
+    "lease": {
+      "state": "ACTIVE",
+      "owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
+      "run_id": "d729c832-8580-8331-a930-210fc1312173",
+      "acquired_utc": "2026-11-02T09:50:18.419Z",
+      "renewed_utc": "2026-11-02T09:50:18.419Z",
+      "expires_utc": "2026-11-02T10:35:18.419Z",
+      "purpose": "Receive failed original full run41418326149 and diagnose exact failed gate; no blind rerun."
+    },
+    "execution_channel": {
+      "primary": "Work execution conversation",
+      "session": "e92e8ff0-ff3c-832a-a287-0349052fba2f",
+      "automation_run": "d729c832-8580-8331-a930-210fc1312173",
+      "work_owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
+      "last_execution_owner": "manual-work-7b433069-af7c-8324-b0ab-ba351ff0da4c-departure-time",
+      "discussion": "READ_ONLY",
+      "intervention_watch": "READ_ONLY",
+      "scheduled_executor": "ENABLED",
+      "activity": "RECEIVING_ORIGINAL_FAILURE",
+      "automation_reconciliation": "Sole live Work run reconciled; prior owner released; no relevant active qualification."
+    },
+    "blockers": [],
+    "summary": {
+      "accepted_capabilities": [
+        "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
+        "Spellskite behavior/registration accepted atcdb1bc6c; combined Bolt Bend/Fblthp admission at2d4a2fbac7910b180a7a9b1778f81cbae6a3d230; Opal Palace rider/C13 admission at2320eb33. Original compatibility and executable-negative evidence reused.",
+        "Disciple MH3#250 bounded card admission accepted ata115b7555d2f4272062010b03332260de8d5a303: compile137focused396cards19212ordinary43historicalskips64client; original artifact and all protected entries preserved.",
+        "SELF_ALTERNATIVE explicit selected-choice transport accepted at1a559395de4f7ca24b270ecddf45b88c60d72af8 on54d58d643fce107aa635b3385675e9d4b9311f52: full164focused396cards19239ordinary43historicalskips64client; targeted4compiledforms27normal27restored29negativewitnesses52controls reused fromabc37c545987f81aba5cc2a974e8f9de945103d1."
+      ],
+      "unfinished_implementation": [
+        "Four-file departure-time repair passed original targeted gates; full same-source compatibility remains unreceived, bounded admission pending."
+      ],
+      "pending_evidence": [
+        "Active full run41418326149 and original artifact receiving; all proposal conditions before bounded acceptance."
+      ],
+      "source_protocol": {
+        "commit": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
+        "tree": "6241d00ce0dbd7d8679ed60088f1df5d3685be2d",
+        "path": "experiments/manual-transmission/research/departure-time-choice-full-r1-20261102/PROTOCOL.json",
+        "readback_verified": true
+      },
+      "latest_receiving": {
+        "commit": "1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1",
+        "path": "experiments/manual-transmission/research/departure-time-choice-received-r2-20261102/RECEIPT.json",
+        "readback_files": 109,
+        "verified": true
+      },
+      "admission": {
+        "commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
+        "path": "experiments/manual-transmission/research/self-alternative-paid-choice-full-received-r1-20261102/ADMISSION.json",
+        "source": "54d58d643fce107aa635b3385675e9d4b9311f52",
+        "state": "BOUNDED_SELF_ALTERNATIVE_PAID_CHOICE_ADMITTED",
+        "readback_verified": true,
+        "original_archive_parts": 87
+      },
+      "concrete_blocker_removed": "Original six-form compilation,83normal/restored and7exactnegative witnesses verify departure-time explicit choice preservation, original-generation isolation and both25life power cases. Full acceptance withheld.",
+      "continuation_state": "EXECUTING",
+      "actual_stopping_reason": null,
+      "ownership": {
+        "state": "ACTIVE",
+        "owner": "manual-work-d729c832-8580-8331-a930-210fc1312173-receive-full-r1",
+        "run_id": "d729c832-8580-8331-a930-210fc1312173",
+        "acquired_utc": "2026-11-02T09:50:18.419Z",
+        "renewed_utc": "2026-11-02T09:50:18.419Z",
+        "expires_utc": "2026-11-02T10:35:18.419Z",
+        "purpose": "Receive failed original full run41418326149 and diagnose exact failed gate; no blind rerun."
+      },
+      "next_executable_action": "Reconcile live CURRENT owner/sole Work exact run/recent commits/newer receipts and all-event active statuses. Never duplicate/cancel full run41418326149 job125187526227 attempt1 validation6b8e7485e0b7a998712a0f464d1cbd0e5aead82f source7f0529b055b3b3432947d7a03e05c1d6804fdc36. If terminal and no newer receiver, fresh-blob CAS claim and receive original artifact with c67da6f7ad3d1b5a4a0971794f7108a499106f79/experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102: refresh terminal API, pin sole artifact ID/bytes/hash, run receive_full.py, verify exact source/tree/workflow/job/attempt/manifest303bindings27gitbindings15trees/frozen8protocolfiles/earlyreceipt/freshcompile247focused396cards19322ordinaryexact43historicalskips64client. Archive originals and raw reports, diagnose actual failures without weakening or blind rerun. Targeted original receipt1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1 already fully received six forms83normal83restored7negative; reuse and do not rerun. After verified full receipt reconcile every exact proposal/grant requirement and unchanged metadata/card/Assay evidence before bounded admission; then resume next authorized dependency source review, no automatic cards/multiplayer/games/seeds. Preserve all originals and sole executor/schedule.",
+      "receiving_preparation": {
+        "commit": "c67da6f7ad3d1b5a4a0971794f7108a499106f79",
+        "path": "experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102/",
+        "readback_files": 10,
+        "verified": true
+      },
+      "automation_state": "ENABLED_ORIGINAL_SCHEDULE_PRESERVED",
+      "latest_diagnostic_receiving": {
+        "commit": "adcf13a37a95c1c69f1c2301eecf46135d4f1a5d",
+        "path": "experiments/manual-transmission/research/source-departure-preservation-received-r1-20261102/RECEIPT.json",
+        "state": "ORIGINAL_DIAGNOSTIC_RECEIVED_DRAFT_REJECTED",
+        "readback_verified": true,
+        "archive_parts": 84,
+        "all_files_verified": 92
+      },
+      "next_admission": {
+        "commit": "adcf13a37a95c1c69f1c2301eecf46135d4f1a5d",
+        "path": "experiments/manual-transmission/research/source-departure-departure-time-choice-proposal-r1-20261102/NEXT_ADMISSION.json",
+        "matrix": "experiments/manual-transmission/research/source-departure-departure-time-choice-proposal-r1-20261102/TEST_MATRIX.json",
+        "state": "EXPLICIT_USER_GRANTED_IMPLEMENTATION_PENDING",
+        "additional_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+        "readback_verified": true
+      },
+      "conditional_full_preparation": {
+        "commit": "e011a8bf2d9b78dc4d23d957bc1c2fa034179c34",
+        "path": "experiments/manual-transmission/research/departure-time-choice-full-preparation-r2-20261102",
+        "readback_files": 7,
+        "verified": true,
+        "dispatched": false
+      }
+    },
+    "next": {
+      "dependency": "Departure-time choice full same-source compatibility and original receiving",
+      "source_candidate": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
+      "source_tree": "6241d00ce0dbd7d8679ed60088f1df5d3685be2d",
+      "validation": "6b8e7485e0b7a998712a0f464d1cbd0e5aead82f",
+      "validation_branch": "validation/manual-departure-time-choice-full-r1-20261102",
+      "workflow": ".github/workflows/manual-departure-time-choice-full-r1-20261102.yml",
+      "protocol": "experiments/manual-transmission/research/departure-time-choice-full-r1-20261102/PROTOCOL.json",
+      "pending_runs": [
+        41418326149
+      ],
+      "latest_receiving": {
+        "commit": "1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1",
+        "path": "experiments/manual-transmission/research/departure-time-choice-received-r2-20261102/RECEIPT.json",
+        "readback_files": 109,
+        "verified": true
+      },
+      "receiving_preparation": {
+        "commit": "c67da6f7ad3d1b5a4a0971794f7108a499106f79",
+        "path": "experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102/",
+        "readback_files": 10,
+        "verified": true
+      },
+      "next_executable_action": "Reconcile live CURRENT owner/sole Work exact run/recent commits/newer receipts and all-event active statuses. Never duplicate/cancel full run41418326149 job125187526227 attempt1 validation6b8e7485e0b7a998712a0f464d1cbd0e5aead82f source7f0529b055b3b3432947d7a03e05c1d6804fdc36. If terminal and no newer receiver, fresh-blob CAS claim and receive original artifact with c67da6f7ad3d1b5a4a0971794f7108a499106f79/experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102: refresh terminal API, pin sole artifact ID/bytes/hash, run receive_full.py, verify exact source/tree/workflow/job/attempt/manifest303bindings27gitbindings15trees/frozen8protocolfiles/earlyreceipt/freshcompile247focused396cards19322ordinaryexact43historicalskips64client. Archive originals and raw reports, diagnose actual failures without weakening or blind rerun. Targeted original receipt1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1 already fully received six forms83normal83restored7negative; reuse and do not rerun. After verified full receipt reconcile every exact proposal/grant requirement and unchanged metadata/card/Assay evidence before bounded admission; then resume next authorized dependency source review, no automatic cards/multiplayer/games/seeds. Preserve all originals and sole executor/schedule."
+    }
+  },
+  "departure_time_legacy_absence_proposal": {
+    "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+    "path": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/NEXT_ADMISSION.json",
+    "matrix": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/TEST_MATRIX.json",
+    "source_review": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/SOURCE_REVIEW.json",
+    "patch": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/departure-absence.patch",
+    "state": "EXACT_CAPTURE_CONDITION_REVISION_AWAITING_AUTHORIZATION",
+    "readback_verified": true
   }
 }
