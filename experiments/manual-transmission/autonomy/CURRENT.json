@@ -28,9 +28,14 @@
     "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
     "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json"
   },
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
-  "lease": null,
+  "status": "ACTIVE",
+  "owner": "e99d98c4-2894-8331-9194-eeec90269c11",
+  "lease": {
+    "owner": "e99d98c4-2894-8331-9194-eeec90269c11",
+    "task_id": "6adbe33033e481918659ce578f64f31e",
+    "claimed_utc": "2026-11-06T21:47:57.623Z",
+    "expires_utc": "2026-11-06T22:47:57.624Z"
+  },
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -45,8 +50,8 @@
     "pending_evidence": [
       "Original full compatibility evidence"
     ],
-    "ownership": "Recovery lease released. The isolated GitHub job is active.",
-    "actual_stopping_reason": "Full same-source execution is active and original full receiving is prepared. Acceptance depends on terminal original evidence.",
+    "ownership": "Sole recovery executor receiving original full run.",
+    "actual_stopping_reason": null,
     "implementation": "The original early qualification passed and is archived. The full run uses a research-only child of that exact R2 source; all 15 declared subtrees match."
   },
   "next": {
