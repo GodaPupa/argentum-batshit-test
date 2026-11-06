@@ -28,9 +28,24 @@
     "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
     "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json"
   },
-  "status": "READY_FOR_NEXT_ITERATION",
-  "owner": null,
-  "lease": null,
+  "status": "ACTIVE",
+  "owner": "manual-recovery-inline-d5830da1122a-1793994282153",
+  "lease": {
+    "epoch": "manual-quarantine-20261106-01",
+    "owner": "manual-recovery-inline-d5830da1122a-1793994282153",
+    "task_id": "6adbe33033e481918659ce578f64f31e",
+    "execution_context": "current inline delivery of existing Manual Work Continuation",
+    "observed_automation_run": {
+      "id": "3ad55e2a-723c-832d-aac6-6cff3eef8bf5",
+      "recorded_status": "in_progress",
+      "scheduled_for": "2026-11-06T19:44:00Z",
+      "started_at": "2026-11-06T19:43:42.382712Z",
+      "completed_at": null,
+      "chat_ref": null
+    },
+    "claimed_utc": "2026-11-06T19:44:42.153Z",
+    "expires_utc": "2026-11-06T20:44:42.153Z"
+  },
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -44,8 +59,8 @@
     "pending_evidence": [
       "Seven compile forms, 115/115 normal and restored rows, 12 executable negatives, original receiving, full same-source compatibility and original full receiving."
     ],
-    "ownership": "Recovery epoch has no owner. Canonical owner remains unresolved.",
-    "actual_stopping_reason": "Setup complete; released for sole executor after immutable/live proof readback."
+    "ownership": "Sole Work executor holds this recovery-epoch CAS claim.",
+    "actual_stopping_reason": null
   },
   "next": {
     "source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
@@ -72,5 +87,6 @@
     "external_independent_review": false,
     "no_successful_workflow_rerun": true,
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
-  }
+  },
+  "previous_checkpoint": "d5830da1122a11e489645f2556afec2c1d2e4dba"
 }
