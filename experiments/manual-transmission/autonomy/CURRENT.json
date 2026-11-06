@@ -66,7 +66,7 @@
       "commit": "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
       "blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9"
     },
-    "next_executable_action": "Check original full run 42291240756, job 128144908581, attempt 1. If active keep WAITING_EXTERNAL. At terminal reconcile newer receipts first and claim via recovery CURRENT CAS. Pin original artifact list, bytes/digest/ID; archive once and verify using experiments/manual-transmission/research/quarantine-full-r2-receiving-prep-20261106/receive_full.py with the actual terminal API records, immutable API and filled EXPECTED.json. Retain original failures. Require 279 focused,396 cards,19330 ordinary (43 exact skips),64 client/typecheck, metadata and Assay exact-bound reuse review before bounded marker. Reuse early receipt 9671880dcfa5720145b5aa3940b9a6c98b39df2d; no multiplayer/games/seeds."
+    "next_executable_action": "Complete immutable archive readback, verify metadata/Assay reuse by exact source tree and record bounded admission and next dependency."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -94,7 +94,7 @@
     "validation_tree": "bbc2bb76aa159c18088522f0d1fffcdb7ccf3d0e",
     "workflow": ".github/workflows/manual-quarantine-legacy-absence-full-r2.yml",
     "workflow_blob": "dd0d8cccdbf93beba0971faa0f38cae0e0900088",
-    "state": "WAITING_ORIGINAL_FULL_WORKFLOW",
+    "state": "ORIGINAL_FULL_RECEIVED_PENDING_ADMISSION_REVIEW",
     "early_receipt": "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
     "early_receipt_blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9",
     "event": "f49d76803e5282eed26e3eceb91159b59bcf87b7",
@@ -104,7 +104,7 @@
     "run": 42291240756,
     "job": 128144908581,
     "attempt": 1,
-    "artifact": null
+    "artifact": 13542141661
   },
   "previous_recovery_lease": {
     "owner": "1cb867f5-6f98-8326-a135-41d59d44b141",
@@ -184,6 +184,7 @@
       "r": "experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102",
       "s": "c67da6f7ad3d1b5a4a0971794f7108a499106f79"
     },
-    "synthetic_envelope_rejections": 27
+    "synthetic_envelope_rejections": 27,
+    "artifact_received": true
   }
 }
