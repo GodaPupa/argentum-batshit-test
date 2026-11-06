@@ -71,7 +71,7 @@
       "path": "experiments/manual-transmission/research/departure-time-legacy-absence-received-r1-20261102/RECEIPT.json",
       "blob": "7f2e468ba7371812502724882a15f61e025f6191"
     },
-    "next_executable_action": "Reconcile fresh owner, run statuses and receipts. Publish exactly the frozen two-parent event once on this recovery ref. Bind run and job. Prepare original R2 receiving with separate event and validation pins. Preserve R1."
+    "next_executable_action": "Prepare original recovery-envelope receiver while run 42282738984 executes. For terminal run, reconcile newer receipts then receive original once. Separate event SHA from detached validation. Withhold behavioral/full acceptance until corresponding gates pass."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -90,7 +90,7 @@
   },
   "previous_checkpoint": "d5830da1122a11e489645f2556afec2c1d2e4dba",
   "qualification": {
-    "state": "FROZEN_VALIDATION_REVIEWED_UNDISPATCHED",
+    "state": "DISPATCHED_ORIGINAL_R2",
     "source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
     "source_tree": "2f14fe196fe361ad7c3374a5da681646bc38aba7",
     "source_parent": "6a74ce45479dcdc3bc72e71f089aebb155a74cc0",
@@ -105,6 +105,14 @@
     "retarget_proof": "d5830da1122a11e489645f2556afec2c1d2e4dba",
     "qualification_scope": "early only, 7 compiles before 115 normal/115 restored/12 negative witnesses and original receiving",
     "dispatch_contract": "This freeze shall be the first parent of an event whose only first-parent delta is the reviewed workflow. Validation is second parent and is run detached; no auxiliary ref.",
-    "original_receipt": "421ee6e44398fddbe8093f550dc6bcb5cd0129f6"
+    "original_receipt": "421ee6e44398fddbe8093f550dc6bcb5cd0129f6",
+    "event": "abdbd2282adf092ac5225604e0edcaf8ff4efd68",
+    "event_tree": "65fbb5bebb3b0e4648c89368296fd58284cba300",
+    "first_parent": "b466e314c05afa48d72779d593f6583b850d8636",
+    "first_tree": "46c124866765996ac1f0711967fbcd2b82cbe9eb",
+    "run": 42282738984,
+    "job": 128115638410,
+    "attempt": 1,
+    "artifact": null
   }
 }
