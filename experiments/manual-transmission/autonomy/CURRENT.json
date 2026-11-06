@@ -55,15 +55,18 @@
     "implementation": "Corrected R2 source is frozen and dispatched once on the recovery ref. R1 compilation failure was reused from its canonical archive."
   },
   "next": {
-    "source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
-    "source_tree": "2f14fe196fe361ad7c3374a5da681646bc38aba7",
-    "protocol": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/PROTOCOL.json",
+    "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
+    "source_tree": "f7217ca9a729a6e447b23526c3131fed7b1624f9",
+    "protocol": "experiments/manual-transmission/research/quarantine-legacy-absence-full-r2-20261106/PROTOCOL.json",
     "receipt": {
-      "commit": "421ee6e44398fddbe8093f550dc6bcb5cd0129f6",
-      "path": "experiments/manual-transmission/research/departure-time-legacy-absence-received-r1-20261102/RECEIPT.json",
-      "blob": "7f2e468ba7371812502724882a15f61e025f6191"
+      "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-received-20261106/RECEIPT.json",
+      "run": 42282738984,
+      "artifact": 13536758698,
+      "sha256": "7c23ae994a625b19576d6ae9a166448cc5528e72d67d397d1f07529621a77cea",
+      "commit": "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
+      "blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9"
     },
-    "next_executable_action": "Freeze the prepared full research-only successor of R2, bind this early receipt and dispatch once after reconciliation."
+    "next_executable_action": "Verify frozen qualification and current ownership; dispatch only this original full run on this recovery ref."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -82,6 +85,44 @@
   },
   "previous_checkpoint": "d5830da1122a11e489645f2556afec2c1d2e4dba",
   "qualification": {
+    "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
+    "source_tree": "f7217ca9a729a6e447b23526c3131fed7b1624f9",
+    "source_parent": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
+    "protocol_path": "experiments/manual-transmission/research/quarantine-legacy-absence-full-r2-20261106/PROTOCOL.json",
+    "protocol_blob": "cdafb8f322144fe953df7026798b5d3e834fbc69",
+    "validation": "93f9056d4886bcdac05cda5536524a0c4885429d",
+    "validation_tree": "bbc2bb76aa159c18088522f0d1fffcdb7ccf3d0e",
+    "workflow": ".github/workflows/manual-quarantine-legacy-absence-full-r2.yml",
+    "workflow_blob": "dd0d8cccdbf93beba0971faa0f38cae0e0900088",
+    "state": "FROZEN_VALIDATION_REVIEWED_UNDISPATCHED",
+    "early_receipt": "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
+    "early_receipt_blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9"
+  },
+  "previous_recovery_lease": {
+    "epoch": "manual-quarantine-20261106-01",
+    "owner": "manual-recovery-inline-d5830da1122a-1793994282153",
+    "task_id": "6adbe33033e481918659ce578f64f31e",
+    "execution_context": "current inline delivery of existing Manual Work Continuation",
+    "observed_automation_run": {
+      "id": "3ad55e2a-723c-832d-aac6-6cff3eef8bf5",
+      "recorded_status": "in_progress",
+      "scheduled_for": "2026-11-06T19:44:00Z",
+      "started_at": "2026-11-06T19:43:42.382712Z",
+      "completed_at": null,
+      "chat_ref": null
+    },
+    "claimed_utc": "2026-11-06T19:44:42.153Z",
+    "expires_utc": "2026-11-06T20:44:42.153Z"
+  },
+  "early_receipt": {
+    "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-received-20261106/RECEIPT.json",
+    "run": 42282738984,
+    "artifact": 13536758698,
+    "sha256": "7c23ae994a625b19576d6ae9a166448cc5528e72d67d397d1f07529621a77cea",
+    "commit": "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
+    "blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9"
+  },
+  "early_qualification": {
     "state": "ORIGINAL_EARLY_RECEIVED",
     "source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
     "source_tree": "2f14fe196fe361ad7c3374a5da681646bc38aba7",
@@ -113,7 +154,7 @@
       "attempt": 1
     }
   },
-  "receiving_preparation": {
+  "early_receiving_preparation": {
     "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-receiving-prep-20261106",
     "artifact_received": true,
     "source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
@@ -137,27 +178,5 @@
     "commit": "303afdaf554a7b8f89c19c49aed66e1186c9c4f8",
     "tree": "ecbcad50aab399524e64fd0b3bc7e3d2fd2729b8",
     "immutable_live_files_verified": 15
-  },
-  "previous_recovery_lease": {
-    "epoch": "manual-quarantine-20261106-01",
-    "owner": "manual-recovery-inline-d5830da1122a-1793994282153",
-    "task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_context": "current inline delivery of existing Manual Work Continuation",
-    "observed_automation_run": {
-      "id": "3ad55e2a-723c-832d-aac6-6cff3eef8bf5",
-      "recorded_status": "in_progress",
-      "scheduled_for": "2026-11-06T19:44:00Z",
-      "started_at": "2026-11-06T19:43:42.382712Z",
-      "completed_at": null,
-      "chat_ref": null
-    },
-    "claimed_utc": "2026-11-06T19:44:42.153Z",
-    "expires_utc": "2026-11-06T20:44:42.153Z"
-  },
-  "early_receipt": {
-    "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-received-20261106/RECEIPT.json",
-    "run": 42282738984,
-    "artifact": 13536758698,
-    "sha256": "7c23ae994a625b19576d6ae9a166448cc5528e72d67d397d1f07529621a77cea"
   }
 }
