@@ -28,14 +28,9 @@
     "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
     "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json"
   },
-  "status": "ACTIVE",
-  "owner": "1cb867f5-6f98-8326-a135-41d59d44b141",
-  "lease": {
-    "owner": "1cb867f5-6f98-8326-a135-41d59d44b141",
-    "task_id": "6adbe33033e481918659ce578f64f31e",
-    "claimed_utc": "2026-11-06T20:42:20.267Z",
-    "expires_utc": "2026-11-06T21:42:20.267Z"
-  },
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
+  "lease": null,
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -50,9 +45,9 @@
     "pending_evidence": [
       "Original full compatibility evidence"
     ],
-    "ownership": "Sole recovery owner receiving terminal original R2.",
-    "actual_stopping_reason": null,
-    "implementation": "Corrected R2 source is frozen and dispatched once on the recovery ref. R1 compilation failure was reused from its canonical archive."
+    "ownership": "Recovery lease released. The isolated GitHub job is active.",
+    "actual_stopping_reason": "Full same-source execution is active and original full receiving is prepared. Acceptance depends on terminal original evidence.",
+    "implementation": "The original early qualification passed and is archived. The full run uses a research-only child of that exact R2 source; all 15 declared subtrees match."
   },
   "next": {
     "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
@@ -66,7 +61,7 @@
       "commit": "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
       "blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9"
     },
-    "next_executable_action": "Verify frozen qualification and current ownership; dispatch only this original full run on this recovery ref."
+    "next_executable_action": "Check original full run 42291240756, job 128144908581, attempt 1. If active keep WAITING_EXTERNAL. At terminal reconcile newer receipts first and claim via recovery CURRENT CAS. Pin original artifact list, bytes/digest/ID; archive once and verify using experiments/manual-transmission/research/quarantine-full-r2-receiving-prep-20261106/receive_full.py with the actual terminal API records, immutable API and filled EXPECTED.json. Retain original failures. Require 279 focused,396 cards,19330 ordinary (43 exact skips),64 client/typecheck, metadata and Assay exact-bound reuse review before bounded marker. Reuse early receipt 9671880dcfa5720145b5aa3940b9a6c98b39df2d; no multiplayer/games/seeds."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -94,25 +89,23 @@
     "validation_tree": "bbc2bb76aa159c18088522f0d1fffcdb7ccf3d0e",
     "workflow": ".github/workflows/manual-quarantine-legacy-absence-full-r2.yml",
     "workflow_blob": "dd0d8cccdbf93beba0971faa0f38cae0e0900088",
-    "state": "FROZEN_VALIDATION_REVIEWED_UNDISPATCHED",
+    "state": "WAITING_ORIGINAL_FULL_WORKFLOW",
     "early_receipt": "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
-    "early_receipt_blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9"
+    "early_receipt_blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9",
+    "event": "f49d76803e5282eed26e3eceb91159b59bcf87b7",
+    "event_tree": "21299d1c717ff74c6cd5c706c3498a19c50b611d",
+    "first_parent": "fd0e226d054ec0364973fb9a1854a829676e08eb",
+    "first_tree": "197b9dab3f547ba8447f2de38c3a4d6af2bb366c",
+    "run": 42291240756,
+    "job": 128144908581,
+    "attempt": 1,
+    "artifact": null
   },
   "previous_recovery_lease": {
-    "epoch": "manual-quarantine-20261106-01",
-    "owner": "manual-recovery-inline-d5830da1122a-1793994282153",
+    "owner": "1cb867f5-6f98-8326-a135-41d59d44b141",
     "task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_context": "current inline delivery of existing Manual Work Continuation",
-    "observed_automation_run": {
-      "id": "3ad55e2a-723c-832d-aac6-6cff3eef8bf5",
-      "recorded_status": "in_progress",
-      "scheduled_for": "2026-11-06T19:44:00Z",
-      "started_at": "2026-11-06T19:43:42.382712Z",
-      "completed_at": null,
-      "chat_ref": null
-    },
-    "claimed_utc": "2026-11-06T19:44:42.153Z",
-    "expires_utc": "2026-11-06T20:44:42.153Z"
+    "claimed_utc": "2026-11-06T20:42:20.267Z",
+    "expires_utc": "2026-11-06T21:42:20.267Z"
   },
   "early_receipt": {
     "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-received-20261106/RECEIPT.json",
@@ -178,5 +171,14 @@
     "commit": "303afdaf554a7b8f89c19c49aed66e1186c9c4f8",
     "tree": "ecbcad50aab399524e64fd0b3bc7e3d2fd2729b8",
     "immutable_live_files_verified": 15
+  },
+  "receiving_preparation": {
+    "path": "experiments/manual-transmission/research/quarantine-full-r2-receiving-prep-20261106",
+    "state": "PREPARED_NOT_RECEIVED",
+    "prior_receiver": {
+      "r": "experiments/manual-transmission/research/departure-time-choice-full-receiving-prep-r1-20261102",
+      "s": "c67da6f7ad3d1b5a4a0971794f7108a499106f79"
+    },
+    "synthetic_envelope_rejections": 27
   }
 }
