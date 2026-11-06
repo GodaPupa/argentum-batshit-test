@@ -1,0 +1,26 @@
+{
+  "state": "PREPARED_NOT_RECEIVED",
+  "epoch": "manual-quarantine-20261106-01",
+  "reuses": {
+    "commit": "b6a0d2d7310cbd3fa0be59f196927fbf1ebc4f8d",
+    "tree": "11c7e4969d18abbe362a8159005e1a770eaf82aa",
+    "parents": [
+      "6a74ce45479dcdc3bc72e71f089aebb155a74cc0"
+    ],
+    "path": "experiments/manual-transmission/research/departure-time-legacy-absence-receiving-prep-r1-20261102",
+    "conditional_full_tree": "91060e1b3d98cfcf98ce45910ff5276944996c8d"
+  },
+  "source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
+  "validation": "7fb6a8510f072b69093696e66cca0f7ca9371349",
+  "event": "abdbd2282adf092ac5225604e0edcaf8ff4efd68",
+  "run": 42282738984,
+  "job": 128115638410,
+  "attempt": 1,
+  "pending": [
+    "terminal run/job conclusions",
+    "complete original artifact list, ID, bytes and digest",
+    "receiving of original R2 archive"
+  ],
+  "receiving": "Check newer recovery receipts and successors. Fetch original R2 archive once. Preserve byte-identical ZIP, SHA-256-pinned chunks and manifest on this recovery branch. Combine terminal API records with API_IMMUTABLE.json and fill EXPECTED.json artifact ID/bytes/digest from the complete original attempt list; verify independently. For success: receive.py <ZIP> <merged-api.json> <filled-expected.json> <out.json>. For failure, retain the entire original, both manifests, all stage logs/exit statuses, exact compiler diagnostics and raw reports, including missing gates. Do not repeat R1.",
+  "conditional_full": "Wait for original early evidence before freezing or dispatching. The conditional protocol binds the corrected additive-test hash, all 279 focused, 396 cards, 19,330 ordinary rows, 43 exact skips and 64 client cases. After original early gates pass, pin the actual receipt/commit/blob and stage only eight declared record files on a research-only child of exact R2. Verify the 15 unchanged trees. Only the recovery branch may publish or dispatch. No acceptance or dispatch is implied."
+}

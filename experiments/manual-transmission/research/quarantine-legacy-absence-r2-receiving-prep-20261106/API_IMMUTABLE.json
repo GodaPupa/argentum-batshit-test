@@ -1,0 +1,115 @@
+{
+  "source_commit": {
+    "sha": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
+    "tree": {
+      "sha": "2f14fe196fe361ad7c3374a5da681646bc38aba7"
+    },
+    "parents": [
+      {
+        "sha": "6a74ce45479dcdc3bc72e71f089aebb155a74cc0"
+      }
+    ]
+  },
+  "validation_commit": {
+    "sha": "7fb6a8510f072b69093696e66cca0f7ca9371349",
+    "tree": {
+      "sha": "5c156bbf5bd6d517499f0c437650aeb5d59fc45b"
+    },
+    "parents": [
+      {
+        "sha": "e87e662378a58265af4aa092bd24d8dfc6cb763b"
+      }
+    ]
+  },
+  "event_commit": {
+    "sha": "abdbd2282adf092ac5225604e0edcaf8ff4efd68",
+    "tree": {
+      "sha": "65fbb5bebb3b0e4648c89368296fd58284cba300"
+    },
+    "parents": [
+      {
+        "sha": "b466e314c05afa48d72779d593f6583b850d8636"
+      },
+      {
+        "sha": "7fb6a8510f072b69093696e66cca0f7ca9371349"
+      }
+    ]
+  },
+  "first_commit": {
+    "sha": "b466e314c05afa48d72779d593f6583b850d8636",
+    "tree": {
+      "sha": "46c124866765996ac1f0711967fbcd2b82cbe9eb"
+    },
+    "parents": [
+      {
+        "sha": "9ef6ecaa9b17424769106163be45221aec0fbc43"
+      }
+    ]
+  },
+  "source_compare": {
+    "status": "ahead",
+    "ahead_by": 1,
+    "merge_base": "6a74ce45479dcdc3bc72e71f089aebb155a74cc0",
+    "files": [
+      {
+        "filename": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/FAILURE_RECEIPT.json",
+        "status": "added",
+        "sha": "7f2e468ba7371812502724882a15f61e025f6191"
+      },
+      {
+        "filename": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/PROTOCOL.json",
+        "status": "added",
+        "sha": "5e3f392fe35f5b7bf8d6d9df517380126222e896"
+      },
+      {
+        "filename": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/SOURCE_REVIEW.json",
+        "status": "added",
+        "sha": "6e1205813fe535ad1438c98ac88ff1ceeae17162"
+      },
+      {
+        "filename": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/run.py",
+        "status": "added",
+        "sha": "0bbd1ddcd5c147423857171eb910cc94f3549960"
+      },
+      {
+        "filename": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/test-api-repair.patch",
+        "status": "added",
+        "sha": "9aca7f6d6c079d471ecbb834284b6f3e9ea1b1e8"
+      },
+      {
+        "filename": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/validation.just",
+        "status": "added",
+        "sha": "9d844741fed8360f573b14dde907326189bc0a14"
+      },
+      {
+        "filename": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LegacyAbsenceChoiceCaptureTest.kt",
+        "status": "modified",
+        "sha": "f6615de80743928d88020582417dd124b11b4e00"
+      }
+    ]
+  },
+  "validation_compare": {
+    "status": "ahead",
+    "ahead_by": 1,
+    "merge_base": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
+    "files": [
+      {
+        "filename": ".github/workflows/manual-quarantine-legacy-absence-r2.yml",
+        "status": "added",
+        "sha": "798888374d0c56567915b2d05ff994066eadbfdf"
+      }
+    ]
+  },
+  "event_first_compare": {
+    "status": "ahead",
+    "ahead_by": 3,
+    "merge_base": "b466e314c05afa48d72779d593f6583b850d8636",
+    "files": [
+      {
+        "filename": ".github/workflows/manual-quarantine-legacy-absence-r2.yml",
+        "status": "added",
+        "sha": "798888374d0c56567915b2d05ff994066eadbfdf"
+      }
+    ]
+  }
+}
