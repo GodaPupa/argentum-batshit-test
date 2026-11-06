@@ -1,0 +1,18 @@
+{
+  "state": "FROZEN_COMPILE_REPAIR_NO_BEHAVIORAL_CLAIM",
+  "base": "6a74ce45479dcdc3bc72e71f089aebb155a74cc0",
+  "received_failure": {
+    "commit": "421ee6e44398fddbe8093f550dc6bcb5cd0129f6",
+    "path": "experiments/manual-transmission/research/departure-time-legacy-absence-received-r1-20261102/RECEIPT.json",
+    "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED_NOT_BEHAVIORAL_EVIDENCE"
+  },
+  "cause": "ZoneTransitionResult has no error field. Only three invalid checks in the newly added LA tests are corrected to no-redirect plus exact actual destination. All original83cases and all capture/generation/serialization assertions remain byte-for-byte unchanged.",
+  "production_delta": null,
+  "eight_additive_identities_unchanged": true,
+  "assertion_count_change": 3,
+  "normal_rows": 115,
+  "compiled_forms": 7,
+  "negative_witnesses": 12,
+  "existing_forms_reused_by_exact_hash": true,
+  "scope": "New test compilation repair only; no production/serializer/factory/fixtures/payment/cards changes."
+}

@@ -1,0 +1,32 @@
+--- a/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LegacyAbsenceChoiceCaptureTest.kt
++++ b/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LegacyAbsenceChoiceCaptureTest.kt
+@@ -43,7 +43,8 @@
+                     game.state = game.state.copy(continuationStack = listOf(PendingTriggersContinuation(listOf(trigger))))
+                     if (serialized) roundTrip(game)
+                     val result = ZoneTransitionService.moveToZone(game.state, source, Zone.HAND)
+-                    result.error shouldBe null
++                    result.redirectResult?.destinationZone shouldBe Zone.HAND
++                    result.actualDestination shouldBe Zone.HAND
+                     game.state = result.state
+                     if (serialized) roundTrip(game)
+                     val captured = game.state.getEntity(source)!!.get<LastKnownPermanentComponent>()!!.snapshot
+@@ -72,7 +73,8 @@
+                     objectReferences = ObjectReferenceEnvironment(captured = true, origin = origin, source = origin))
+                 game.state = game.state.copy(continuationStack = listOf(PendingTriggersContinuation(listOf(trigger))))
+                 val departure = ZoneTransitionService.moveToZone(game.state, source, Zone.HAND)
+-                departure.error shouldBe null
++                departure.redirectResult?.destinationZone shouldBe Zone.HAND
++                departure.actualDestination shouldBe Zone.HAND
+                 game.state = departure.state
+                 roundTrip(game)
+                 val stored = (game.state.continuationStack.single() as PendingTriggersContinuation).remainingTriggers.single()
+@@ -80,7 +82,8 @@
+                 if (mode == "absent") (stored.lastKnownSourceSnapshot!!.castChoices == null) shouldBe true
+                 else stored.lastKnownSourceSnapshot!!.castChoices shouldBe emptyMap()
+                 val returned = ZoneTransitionService.moveToZone(game.state, source, Zone.BATTLEFIELD)
+-                returned.error shouldBe null
++                returned.redirectResult?.destinationZone shouldBe Zone.BATTLEFIELD
++                returned.actualDestination shouldBe Zone.BATTLEFIELD
+                 game.state = returned.state.updateEntity(source) { it.with(CastChoicesComponent(chosen = selected)) }
+                 roundTrip(game)
+                 game.state.objectRef(source) shouldNotBe origin
