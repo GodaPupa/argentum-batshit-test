@@ -28,14 +28,9 @@
     "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
     "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json"
   },
-  "status": "ACTIVE",
-  "owner": "e99d98c4-2894-8331-9194-eeec90269c11",
-  "lease": {
-    "owner": "e99d98c4-2894-8331-9194-eeec90269c11",
-    "task_id": "6adbe33033e481918659ce578f64f31e",
-    "claimed_utc": "2026-11-06T21:47:57.623Z",
-    "expires_utc": "2026-11-06T22:47:57.624Z"
-  },
+  "status": "BLOCKED",
+  "owner": null,
+  "lease": null,
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -49,23 +44,35 @@
       "Reckless Bushwhacker prior-spell eligibility and card behavior remain outside this bounded admission."
     ],
     "pending_evidence": [],
-    "ownership": "Sole recovery executor receiving original full run.",
-    "actual_stopping_reason": null,
+    "ownership": "Recovery lease released; historical canonical owner remains unresolved.",
+    "actual_stopping_reason": "The authorized source-departure work is admitted. The next test-only prior-spell eligibility diagnostic requires explicit scope expansion.",
     "implementation": "Full original evidence received and exact-bound Assay classification reviewed."
   },
   "next": {
     "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
     "source_tree": "f7217ca9a729a6e447b23526c3131fed7b1624f9",
-    "protocol": "experiments/manual-transmission/research/quarantine-legacy-absence-full-r2-20261106/PROTOCOL.json",
     "receipt": {
-      "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-received-20261106/RECEIPT.json",
-      "run": 42282738984,
-      "artifact": 13536758698,
-      "sha256": "7c23ae994a625b19576d6ae9a166448cc5528e72d67d397d1f07529621a77cea",
-      "commit": "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
-      "blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9"
+      "commit": "15bbe68ce4d9a1aee5684d0a6f131194ea0f9dc6",
+      "blob": "166d183afdb5c245a4d720a95e1f32a5693c556c",
+      "path": "experiments/manual-transmission/research/quarantine-legacy-absence-full-received-r2-20261106/RECEIPT.json",
+      "run": 42291240756,
+      "job": 128144908581,
+      "attempt": 1,
+      "artifact": 13542141661,
+      "bytes": 11873011,
+      "sha256": "e3da4cb66c42569a0bc494a66d12acda20db75804162c85401328d139b09237a",
+      "manifest_entries": 5518,
+      "immutable_archive_parts": 61
     },
-    "next_executable_action": "Rebind saved Reckless source review to admitted source, distinguish accepted transport from missing prior-spell eligibility evidence, and prepare the narrow next-authority decision."
+    "admission": {
+      "path": "experiments/manual-transmission/research/quarantine-legacy-absence-full-received-r2-20261106/ADMISSION.json",
+      "state": "BOUNDED_SOURCE_DEPARTURE_SELF_ALTERNATIVE_ADMITTED",
+      "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
+      "commit": "a6f99b0400f83e33081b4f63de77bc17e597e15d",
+      "blob": "aae5bdd0b8ab29b0e1260dadee26c5471b967761"
+    },
+    "proposal": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/NEXT_ADMISSION.json",
+    "next_executable_action": "Await explicit grant for the proposed two-player own-prior-spell eligibility diagnostic. After grant, reconcile exact recovery ref and sole executor, record grant by fresh CURRENT CAS, prepare named synthetic test and compile-first controls. Do not repeat source-departure qualification or register a card."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -106,10 +113,10 @@
     "artifact": 13542141661
   },
   "previous_recovery_lease": {
-    "owner": "1cb867f5-6f98-8326-a135-41d59d44b141",
+    "owner": "e99d98c4-2894-8331-9194-eeec90269c11",
     "task_id": "6adbe33033e481918659ce578f64f31e",
-    "claimed_utc": "2026-11-06T20:42:20.267Z",
-    "expires_utc": "2026-11-06T21:42:20.267Z"
+    "claimed_utc": "2026-11-06T21:47:57.623Z",
+    "expires_utc": "2026-11-06T22:47:57.624Z"
   },
   "early_receipt": {
     "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-received-20261106/RECEIPT.json",
@@ -202,6 +209,8 @@
   "bounded_admission": {
     "path": "experiments/manual-transmission/research/quarantine-legacy-absence-full-received-r2-20261106/ADMISSION.json",
     "state": "BOUNDED_SOURCE_DEPARTURE_SELF_ALTERNATIVE_ADMITTED",
-    "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38"
+    "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
+    "commit": "a6f99b0400f83e33081b4f63de77bc17e597e15d",
+    "blob": "aae5bdd0b8ab29b0e1260dadee26c5471b967761"
   }
 }

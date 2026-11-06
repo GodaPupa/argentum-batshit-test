@@ -1,0 +1,42 @@
+{
+  "state": "PROPOSED_NOT_EXECUTED",
+  "fixture": "Test-only flash creature with an affordable printed cost and a distinct affordable self-alternative conditioned on PlayerCastSpellsThisTurn(Player.You, atLeast=1). Flash keeps timing legal for the pending-spell case. Keep priority, mana and unrelated permissions matched across normal/alternative arms.",
+  "histories": [
+    [
+      "H0",
+      "no earlier spell",
+      false
+    ],
+    [
+      "H1",
+      "own spell resolved this turn",
+      true
+    ],
+    [
+      "H2",
+      "own spell countered this turn",
+      true
+    ],
+    [
+      "H3",
+      "own earlier spell still on stack",
+      true
+    ],
+    [
+      "H4",
+      "opponent-only cast this turn",
+      false
+    ],
+    [
+      "H5",
+      "own earlier spell on prior turn only",
+      false
+    ]
+  ],
+  "assertions": [
+    "Construct histories through normal casting/priority/turn APIs. Check option enumeration separately from a directly submitted explicit alternative action on an identical state. In ineligible rows require original rejection, no spend and no stack object; in eligible rows require success at alternate price. In every row verify normal-price option stays legal and unmarked. Use the real chosen alternative from the accepted transport, never infer choice from cost or eligibility.",
+    "Repeat H2 and H4 through whole-state serialization before the decision. Verify legal outcomes and the captured original controller/history survive.",
+    "Frozen isolated mutant controls: remove only the enumeration condition; remove only authorization condition; substitute stack-only history; conflate opponent and controller history. Require normal and all controls to compile first; freeze exact test identities, lines, expected/actual values and ensure each altered form has a matching executable assertion before dispatch.",
+    "Receive original artifact and verify same-source input/restoration, raw identities, manifest/bytes/digest and exact failures. Diagnostic result only. Any defect requires a separate bounded production proposal."
+  ]
+}

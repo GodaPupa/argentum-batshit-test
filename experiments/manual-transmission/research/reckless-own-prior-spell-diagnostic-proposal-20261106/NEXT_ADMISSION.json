@@ -1,0 +1,13 @@
+{
+  "state": "EXPLICIT_AUTHORITY_REQUIRED",
+  "title": "Two-player own-prior-spell eligibility diagnostic for the Reckless Bushwhacker prerequisite",
+  "based_on_admission": "a6f99b0400f83e33081b4f63de77bc17e597e15d",
+  "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
+  "scope": "One new synthetic rules-engine scenario test and bounded test-only qualification/receiving infrastructure on the existing quarantine lineage. Use existing production APIs without modification.",
+  "production_paths": [],
+  "proposed_test": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+  "matrix": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/TEST_MATRIX.json",
+  "source_review": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/SOURCE_REVIEW.json",
+  "decision": "Authorize the two-player test-only eligibility diagnostic. The current grants explicitly exclude eligibility/Surge and the current bounded acceptance is complete.",
+  "exclusions": "No shipping production or SDK changes, team model, Surge implementation, OGW registration, card snapshots, multiplayer, games/seeds, extra spending or additional worker. No existing test/assertion changes. Reuse prior evidence without requalification."
+}

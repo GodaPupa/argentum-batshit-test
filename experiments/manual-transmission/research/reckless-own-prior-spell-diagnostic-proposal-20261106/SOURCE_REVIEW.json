@@ -1,0 +1,73 @@
+{
+  "state": "READ_ONLY_REBOUND_SOURCE_REVIEW",
+  "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
+  "source_tree": "f7217ca9a729a6e447b23526c3131fed7b1624f9",
+  "admission_commit": "a6f99b0400f83e33081b4f63de77bc17e597e15d",
+  "admission_blob": "aae5bdd0b8ab29b0e1260dadee26c5471b967761",
+  "prior_source_review": {
+    "commit": "5c5c043a41eea064b76e6231d8679f3efad9a4e7",
+    "blob": "b990becf9f2e48e02de76da59ac94790ff7c9f5e"
+  },
+  "original_card_classification": {
+    "card": "Reckless Bushwhacker",
+    "canonical": "OGW116",
+    "assay": "Haste ROUND_TRIP; Surge and surge-paid intervening condition LINE_DECLINED.",
+    "ir": "SCAFFOLD; Surge structure unwired. Emit exit0 is not acceptance.",
+    "next_source_contract": "Alternative-cost eligibility from another spell cast by self or teammate; preserve historical cast records after resolve/counter; immutable paid-surge fact through entry and copying; other-creature pump/haste; no mana-value change. Generic SelfAlternativeCost alone does not establish paid-choice transport."
+  },
+  "source_files": [
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt",
+      "sha": "878e82fd92b42b597a24b763f3389e064da78f8b"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/SelfAlternativeCost.kt",
+      "sha": "d3c0f98adb4c813994d91d23857341c5fe3e1863"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/conditions/SourceConditions.kt",
+      "sha": "796e551e0fa21273911e96f253e8c7f90b591c5a"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/conditions/TurnConditions.kt",
+      "sha": "6d4ba469b64602df4afb47b452f5660709bcc5d2"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/references/Player.kt",
+      "sha": "10a72167c06a51eba1ea76449c8375a069144c62"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "sha": "3db053d81c30eb294d93371dcac5d2df60736324"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastPaymentProcessor.kt",
+      "sha": "24afa8dc691755cc010a6d03e15160f6ccffea51"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+      "sha": "e6216b851da7a1fbcfcfab7746d65f4cae6277ac"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "sha": "385d927f4066a4597133377d86090d1e37232b34"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/battlefield/CastChoicesComponent.kt",
+      "sha": "add67a553eedd391e35fe5832dfec4ba35b13afa"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+      "sha": "6b3cf0ad94061464d76c87564b44bc2ef200704b"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePaidChoiceScenarioTest.kt",
+      "sha": "eec3c854611788f6bc44d917be4902d5e4fdc158"
+    }
+  ],
+  "findings": [
+    "SelfAlternativePaidChoiceScenarioTest sets an unconditional zero-mana alternative. Its accepted transport tests establish explicit choice and rejection of inference, but do not distinguish prior-spell histories.",
+    "SelfAlternativeCost.condition and PlayerCastSpellsThisTurn(Player.You, atLeast=1) can express a candidate own-prior-spell predicate. CastSpellEnumerator and CastSpellHandler independently evaluate the alternative condition. ConditionEvaluator looks up the resolved player's turn records, rather than enumerating live stack objects.",
+    "The original source-departure prerequisite is now satisfied. Self-only eligibility, teammate eligibility, and Bushwhacker registration/payoff are separate questions. The recorded OGW116 diagnostic classified haste as round-trip and the Surge lines as declined; no change in that classification is claimed."
+  ]
+}
