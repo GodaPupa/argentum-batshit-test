@@ -1,0 +1,35 @@
+{
+  "state": "R2_BOUNDED_TEST_FACTORY_COMPILE_REPAIR_NOT_YET_QUALIFIED",
+  "authorizations": [
+    "66f478c5747120e222a431d27d55f6f96c03bfab",
+    "fc4febc0e94c9efcc4d8cbd0ca7f2fcd41a81af4"
+  ],
+  "production_scope": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt"
+  ],
+  "design": "No fabricated full placement snapshot; existing matching snapshot may enrich choices only while exact original is current. First departure captures immutable explicit choices and characteristics. Named continuation copies preserve complete question/order/routing and genuine LKI. Current resolution cannot borrow a later generation.",
+  "preservation": "All eight diagnostic and both25life source bytes unchanged. Saved additional draft assertion lines preserved; only its departure fixture now invokes actual ZoneTransitionService. Existing evidence retained.",
+  "normal_rows": 83,
+  "mutants": [
+    "drop-departure-choice",
+    "borrow-later-generation",
+    "omit-paused-stamping",
+    "early-full-snapshot",
+    "overwrite-genuine-lki"
+  ],
+  "normal_and_all_mutants_compile_before_behavior": true,
+  "acceptance": "pending original artifacts and full same-source gates",
+  "production_changes_from_r1": 0,
+  "changed_fixture_arguments": 4,
+  "assertions_changed": 0,
+  "test_identities_changed": 0,
+  "cause": "R1 original compile failure: TriggerSpec passed to EventPattern factory. Exact existing .event projection; default SELF binding unchanged.",
+  "original_receipt": {
+    "commit": "9388f1996c49f0c434c124585ff666a64fe3fe4b",
+    "path": "experiments/manual-transmission/research/departure-time-choice-received-r1-20261102/RECEIPT.json",
+    "sha256": "c93b3b91a9066c122eda566e324fb6ce8f1e0396a1b7da82ae72b921ba48c778"
+  }
+}

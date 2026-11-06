@@ -447,6 +447,7 @@ object ZoneTransitionService {
                 damageDealtByPlayers = lastKnownDamageDealtByPlayers,
                 damageSources = lastKnownDamageSources,
                 wasFaceDown = lastKnownWasFaceDown,
+                castChoices = container.get<CastChoicesComponent>()?.chosen?.toMap(),
             )
         } else null
 
@@ -473,6 +474,9 @@ object ZoneTransitionService {
                         pending.lastKnownSourceSnapshot == null
                     ) pending.copy(lastKnownSourceSnapshot = sourceSnapshot) else pending
                 })
+            })
+            newState = newState.copy(continuationStack = newState.continuationStack.map { frame ->
+                stampPendingTriggerDeparture(frame, sourceSnapshot)
             })
             for ((stackId, stackEntity) in state.entities) {
                 val activated = stackEntity.get<ActivatedAbilityOnStackComponent>()
@@ -1395,6 +1399,53 @@ object ZoneTransitionService {
     }
 
     // ── Private helpers ──
+
+    /**
+     * Carry the first departure of the exact source visit through the named trigger queues.
+     * Copies change only missing source LKI; a suspension's question and every routing/order
+     * field remain intact. Existing LKI and unrelated continuations are returned unchanged.
+     */
+    private fun stampPendingTriggerDeparture(
+        frame: com.wingedsheep.engine.core.ContinuationFrame,
+        snapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot,
+    ): com.wingedsheep.engine.core.ContinuationFrame {
+        fun stamp(trigger: com.wingedsheep.engine.event.PendingTrigger) =
+            if (trigger.sourceId == snapshot.entityId &&
+                trigger.objectReferences.origin == snapshot.objectRef &&
+                trigger.lastKnownSourceSnapshot == null
+            ) trigger.copy(lastKnownSourceSnapshot = snapshot) else trigger
+
+        return when (frame) {
+            is com.wingedsheep.engine.core.PendingTriggersContinuation ->
+                frame.copy(remainingTriggers = frame.remainingTriggers.map(::stamp))
+            is com.wingedsheep.engine.core.Suspension -> {
+                val answer = frame.answer
+                val stamped = when (answer) {
+                    is com.wingedsheep.engine.core.TriggeredAbilityContinuation ->
+                        if (answer.sourceId == snapshot.entityId &&
+                            answer.objectReferences.origin == snapshot.objectRef &&
+                            answer.lastKnownSourceSnapshot == null
+                        ) answer.copy(lastKnownSourceSnapshot = snapshot) else answer
+                    is com.wingedsheep.engine.core.TriggerDamageDistributionContinuation ->
+                        if (answer.sourceId == snapshot.entityId &&
+                            answer.objectReferences.origin == snapshot.objectRef &&
+                            answer.lastKnownSourceSnapshot == null
+                        ) answer.copy(lastKnownSourceSnapshot = snapshot) else answer
+                    is com.wingedsheep.engine.core.MayTriggerContinuation ->
+                        answer.copy(trigger = stamp(answer.trigger))
+                    is com.wingedsheep.engine.core.TriggerOpponentChooserContinuation ->
+                        answer.copy(trigger = stamp(answer.trigger))
+                    is com.wingedsheep.engine.core.BatchMayTriggerContinuation ->
+                        answer.copy(triggers = answer.triggers.map(::stamp))
+                    is com.wingedsheep.engine.core.TriggerOrderingContinuation ->
+                        answer.copy(chosen = answer.chosen.map(::stamp), remaining = answer.remaining.map(::stamp))
+                    else -> answer
+                }
+                frame.copy(answer = stamped)
+            }
+            else -> frame
+        }
+    }
 
     /**
      * Apply battlefield entry components to an entity.

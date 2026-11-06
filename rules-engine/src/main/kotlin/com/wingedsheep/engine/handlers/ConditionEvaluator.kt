@@ -633,6 +633,21 @@ class ConditionEvaluator(
                 val declaredThisCast = (ctx as? Resolution)?.effectContext?.declaredCostSlot
                 if (declaredThisCast == condition.slot) {
                     true
+                } else if (condition.slot == ChoiceSlot.SELF_ALTERNATIVE && ctx is Resolution &&
+                    (ctx.effectContext.objectReferences.captured || ctx.effectContext.objectReferences.origin != null)) {
+                    val origin = ctx.effectContext.objectReferences.origin
+                    val snapshot = ctx.effectContext.lastKnownSourceSnapshot
+                        ?.takeIf { origin != null && it.objectRef == origin && it.entityId == sourceId }
+                    // Original-object information never follows a permitted move into a later visit.
+                    if (origin == null || origin.entityId != sourceId) {
+                        false
+                    } else if (snapshot?.castChoices != null) {
+                        snapshot.castChoices.containsKey(condition.slot)
+                    } else {
+                        state.isCurrentObject(origin) &&
+                            state.getEntity(origin.entityId)?.get<CastChoicesComponent>()
+                                ?.chosen?.containsKey(condition.slot) == true
+                    }
                 } else {
                     sourceId != null &&
                         state.getEntity(sourceId)?.get<CastChoicesComponent>()

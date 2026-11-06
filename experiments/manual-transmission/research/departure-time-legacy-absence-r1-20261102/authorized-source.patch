@@ -1,0 +1,11 @@
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt
+@@ -447,7 +447,7 @@
+                 damageDealtByPlayers = lastKnownDamageDealtByPlayers,
+                 damageSources = lastKnownDamageSources,
+                 wasFaceDown = lastKnownWasFaceDown,
+-                castChoices = container.get<CastChoicesComponent>()?.chosen?.toMap() ?: emptyMap(),
++                castChoices = container.get<CastChoicesComponent>()?.chosen?.toMap(),
+             )
+         } else null
+ 

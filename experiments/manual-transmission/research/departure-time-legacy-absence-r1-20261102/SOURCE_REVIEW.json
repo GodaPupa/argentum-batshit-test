@@ -1,0 +1,313 @@
+{
+  "state": "FROZEN_SOURCE_REVIEW_NOT_BEHAVIORAL_ACCEPTANCE",
+  "base": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
+  "proposal": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+  "grant": "b401a1ec78b7ed3e7d47a28b23411d23b7e8a1d2",
+  "production_delta": "Exact one-line absence fallback removal; every other production byte inherited unchanged.",
+  "original_targeted_cases_preserved": {
+    "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest": [
+      "SD selected=false departed=false serialized=false",
+      "SD selected=false departed=false serialized=true",
+      "SD selected=false departed=true serialized=false",
+      "SD selected=false departed=true serialized=true",
+      "SD selected=true departed=false serialized=false",
+      "SD selected=true departed=false serialized=true",
+      "SD selected=true departed=true serialized=false",
+      "SD selected=true departed=true serialized=true"
+    ],
+    "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest": [
+      "SD preservation departure power after growth gated=false",
+      "SD preservation departure power after growth gated=true"
+    ],
+    "com.wingedsheep.engine.scenarios.SourceDepartureChoiceRepairTest": [
+      "SD02 selected old source returns normally serialized=false",
+      "SD02 selected old source returns normally serialized=true",
+      "SD03 original capture=selected cannot borrow a selected new generation",
+      "SD03 original capture=empty cannot borrow a selected new generation",
+      "SD03 original capture=unknown cannot borrow a selected new generation",
+      "SD03 original capture=missing cannot borrow a selected new generation",
+      "SD03 original capture=mismatched cannot borrow a selected new generation",
+      "SD05 target pause departedBefore=false serialized=false selected=false",
+      "SD05 target pause departedBefore=false serialized=false selected=true",
+      "SD05 target pause departedBefore=false serialized=true selected=false",
+      "SD05 target pause departedBefore=false serialized=true selected=true",
+      "SD05 target pause departedBefore=true serialized=false selected=false",
+      "SD05 target pause departedBefore=true serialized=false selected=true",
+      "SD05 target pause departedBefore=true serialized=true selected=false",
+      "SD05 target pause departedBefore=true serialized=true selected=true",
+      "SD04 opposite instances retain controller and APNAP order reverseInput=false",
+      "SD04 opposite instances retain controller and APNAP order reverseInput=true",
+      "SD06 legacy unknown and known empty snapshots stay distinct",
+      "SD06 current original capture=selected respects known versus unknown",
+      "SD06 current original capture=empty respects known versus unknown",
+      "SD06 current original capture=unknown respects known versus unknown",
+      "SD06 current original capture=missing respects known versus unknown",
+      "SD08 legacy declaration projection and unrelated slots preserve their readers",
+      "SD08 current capture enriches choices without replacing prior source fields"
+    ],
+    "com.wingedsheep.engine.scenarios.SourceDepartureChoiceNegativeWitnessTest": [
+      "SD09 later generation selected choice is not the original choice",
+      "SD09 known empty original choice does not become selected"
+    ],
+    "com.wingedsheep.engine.scenarios.DepartureTimeChoiceCaptureTest": [
+      "DT departure characteristics include colors types subtypes and counters",
+      "DT continuation=queue selected=false capture=missing",
+      "DT continuation=queue selected=false capture=genuine",
+      "DT continuation=queue selected=false capture=stale",
+      "DT continuation=queue selected=true capture=missing",
+      "DT continuation=queue selected=true capture=genuine",
+      "DT continuation=queue selected=true capture=stale",
+      "DT continuation=target selected=false capture=missing",
+      "DT continuation=target selected=false capture=genuine",
+      "DT continuation=target selected=false capture=stale",
+      "DT continuation=target selected=true capture=missing",
+      "DT continuation=target selected=true capture=genuine",
+      "DT continuation=target selected=true capture=stale",
+      "DT continuation=distribution selected=false capture=missing",
+      "DT continuation=distribution selected=false capture=genuine",
+      "DT continuation=distribution selected=false capture=stale",
+      "DT continuation=distribution selected=true capture=missing",
+      "DT continuation=distribution selected=true capture=genuine",
+      "DT continuation=distribution selected=true capture=stale",
+      "DT continuation=may selected=false capture=missing",
+      "DT continuation=may selected=false capture=genuine",
+      "DT continuation=may selected=false capture=stale",
+      "DT continuation=may selected=true capture=missing",
+      "DT continuation=may selected=true capture=genuine",
+      "DT continuation=may selected=true capture=stale",
+      "DT continuation=opponent selected=false capture=missing",
+      "DT continuation=opponent selected=false capture=genuine",
+      "DT continuation=opponent selected=false capture=stale",
+      "DT continuation=opponent selected=true capture=missing",
+      "DT continuation=opponent selected=true capture=genuine",
+      "DT continuation=opponent selected=true capture=stale",
+      "DT continuation=batch selected=false capture=missing",
+      "DT continuation=batch selected=false capture=genuine",
+      "DT continuation=batch selected=false capture=stale",
+      "DT continuation=batch selected=true capture=missing",
+      "DT continuation=batch selected=true capture=genuine",
+      "DT continuation=batch selected=true capture=stale",
+      "DT continuation=order selected=false capture=missing",
+      "DT continuation=order selected=false capture=genuine",
+      "DT continuation=order selected=false capture=stale",
+      "DT continuation=order selected=true capture=missing",
+      "DT continuation=order selected=true capture=genuine",
+      "DT continuation=order selected=true capture=stale",
+      "DT distribution resumes after serialized departure selected=false",
+      "DT distribution resumes after serialized departure selected=true"
+    ],
+    "com.wingedsheep.engine.scenarios.DepartureTimeContinuationNegativeWitnessTest": [
+      "DT negative pending queue retains original selected choice"
+    ],
+    "com.wingedsheep.engine.scenarios.DepartureTimeExistingLkiNegativeWitnessTest": [
+      "DT negative genuine LKI is never overwritten"
+    ]
+  },
+  "new_tests": [
+    "LA01 departure component=absent serialized=false",
+    "LA02 departure component=absent serialized=true",
+    "LA03 departure component=present-empty serialized=false",
+    "LA04 departure component=present-empty serialized=true",
+    "LA05 departure component=selected serialized=false",
+    "LA06 departure component=selected serialized=true",
+    "LA07 serialized original component=absent cannot borrow selected later generation",
+    "LA08 serialized original component=present-empty cannot borrow selected later generation"
+  ],
+  "normal_rows_including_complete_trace_suites": 115,
+  "scope": "Internal capture-condition only; no SDK vocabulary, serializer, factory, UI, payment or eligibility changes. No new MTG semantic claim or rule citation.",
+  "negative_controls": {
+    "drop-departure-choice": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/drop-departure-choice/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "20a625c51c9fe9bf771169ff2d29589dd6907e80559c2cdb2e8b5f45e7e60e4e",
+      "test_class": "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest",
+      "failures": [
+        "SD selected=true departed=true serialized=false",
+        "SD selected=true departed=true serialized=true"
+      ],
+      "expected": "23",
+      "actual": "20",
+      "assertion_file": "SourceDeparturePaidChoiceDiagnosticTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest",
+          "SD selected=true departed=true serialized=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.SourceDeparturePaidChoiceDiagnosticTest",
+          "SD selected=true departed=true serialized=true"
+        ]
+      ],
+      "assertion_line": 86
+    },
+    "borrow-later-generation": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/borrow-later-generation/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "sha256": "1cf18e676aca55f642c6dda8a9df0c93b4769c36249ff0fe06f2c957d4eb8997",
+      "test_class": "com.wingedsheep.engine.scenarios.SourceDepartureChoiceNegativeWitnessTest",
+      "failures": [
+        "SD09 later generation selected choice is not the original choice"
+      ],
+      "expected": "false",
+      "actual": "true",
+      "assertion_file": "SourceDepartureChoiceNegativeWitnessTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.SourceDepartureChoiceNegativeWitnessTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.SourceDepartureChoiceNegativeWitnessTest",
+          "SD09 later generation selected choice is not the original choice"
+        ]
+      ],
+      "assertion_line": 32
+    },
+    "omit-paused-stamping": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/omit-paused-stamping/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "36f36fad563492ab28ebf8fadb27080cd0bafe1ca758ec92cfa9c6a2de33670b",
+      "test_class": "com.wingedsheep.engine.scenarios.DepartureTimeContinuationNegativeWitnessTest",
+      "failures": [
+        "DT negative pending queue retains original selected choice"
+      ],
+      "expected": "true",
+      "actual": "null",
+      "assertion_file": "DepartureTimeNegativeWitnessTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.DepartureTimeContinuationNegativeWitnessTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.DepartureTimeContinuationNegativeWitnessTest",
+          "DT negative pending queue retains original selected choice"
+        ]
+      ],
+      "assertion_line": 36
+    },
+    "early-full-snapshot": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/early-full-snapshot/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "sha256": "0dcc7cd78aa47663dac4b50cb7df4fc5fa5735c5494f9efac8a2787a043891de",
+      "test_class": "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest",
+      "failures": [
+        "SD preservation departure power after growth gated=false",
+        "SD preservation departure power after growth gated=true"
+      ],
+      "expected": "25",
+      "actual": "22",
+      "assertion_file": "SourceDepartureCharacteristicPreservationTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest",
+          "SD preservation departure power after growth gated=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.SourceDepartureCharacteristicPreservationTest",
+          "SD preservation departure power after growth gated=true"
+        ]
+      ],
+      "assertion_line": 73
+    },
+    "overwrite-genuine-lki": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/overwrite-genuine-lki/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "49c9944c046c5237f45d2be3c19e08bf907063d046bbb6a0e5769d52f332c1f4",
+      "test_class": "com.wingedsheep.engine.scenarios.DepartureTimeExistingLkiNegativeWitnessTest",
+      "failures": [
+        "DT negative genuine LKI is never overwritten"
+      ],
+      "expected": "71",
+      "actual": "2",
+      "assertion_file": "DepartureTimeNegativeWitnessTest.kt",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.DepartureTimeExistingLkiNegativeWitnessTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.DepartureTimeExistingLkiNegativeWitnessTest",
+          "DT negative genuine LKI is never overwritten"
+        ]
+      ],
+      "assertion_line": 59
+    },
+    "restore-absent-to-empty-fallback": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "form_path": "experiments/manual-transmission/research/departure-time-legacy-absence-r1-20261102/forms/restore-absent-to-empty-fallback/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "sha256": "3271862f12796c0a8d5e003b4e705a09547f14994bf096d8b1c0523ad8f911a3",
+      "test_classes": [
+        "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest",
+        "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+        "com.wingedsheep.engine.state.SuspensionTraceTest"
+      ],
+      "failed_identities": [
+        [
+          "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest",
+          "LA01 departure component=absent serialized=false"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest",
+          "LA02 departure component=absent serialized=true"
+        ],
+        [
+          "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest",
+          "LA07 serialized original component=absent cannot borrow selected later generation"
+        ],
+        [
+          "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+          "legacy free-cast-target loads without allocation and resumes the captured response trace"
+        ],
+        [
+          "com.wingedsheep.engine.state.SuspensionTraceTest",
+          "current free-cast-target suspension reproduces the captured parent response trace"
+        ]
+      ],
+      "witnesses": {
+        "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest\tLA01 departure component=absent serialized=false": {
+          "kind": "boolean",
+          "expected": "true",
+          "actual": "false",
+          "file": "LegacyAbsenceChoiceCaptureTest.kt",
+          "line": 50
+        },
+        "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest\tLA02 departure component=absent serialized=true": {
+          "kind": "boolean",
+          "expected": "true",
+          "actual": "false",
+          "file": "LegacyAbsenceChoiceCaptureTest.kt",
+          "line": 50
+        },
+        "com.wingedsheep.engine.scenarios.LegacyAbsenceChoiceCaptureTest\tLA07 serialized original component=absent cannot borrow selected later generation": {
+          "kind": "boolean",
+          "expected": "true",
+          "actual": "false",
+          "file": "LegacyAbsenceChoiceCaptureTest.kt",
+          "line": 80
+        },
+        "com.wingedsheep.engine.state.LegacySuspensionMigrationTest\tlegacy free-cast-target loads without allocation and resumes the captured response trace": {
+          "kind": "trace-null-empty",
+          "file": "LegacySuspensionMigrationTest.kt",
+          "line": 65,
+          "field": "entities.card-1002.LastKnownPermanentComponent.snapshot.castChoices"
+        },
+        "com.wingedsheep.engine.state.SuspensionTraceTest\tcurrent free-cast-target suspension reproduces the captured parent response trace": {
+          "kind": "trace-null-empty",
+          "file": "SuspensionTraceTest.kt",
+          "line": 53,
+          "field": "entities.card-1002.LastKnownPermanentComponent.snapshot.castChoices"
+        }
+      }
+    }
+  },
+  "remaining_gates": [
+    "original early artifact receiving",
+    "same-source full compatibility: 396 cards, 19239 original ordinary rows and exact 43 historical skips plus additive rows, 64 client; original required metadata/Assay classification",
+    "original full artifact receiving; no multiplayer/game admission"
+  ],
+  "protected_originals_unchanged": true
+}

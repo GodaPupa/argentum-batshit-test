@@ -1,0 +1,320 @@
+{
+  "schema": "manual-transmission/quarantine-charter/v1",
+  "epoch": "manual-quarantine-20261106-01",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+  "authorized_by": "Explicit user recovery-protocol grant, 2026-11-06",
+  "purpose": "Isolate new writes from the unresolved historical owner. The sole allowed write ref is this recovery branch until explicit reconciliation authorization.",
+  "canonical": {
+    "branch": "manual-transmission/autonomous-execution",
+    "commit": "2f6961f79bafd0136a02492c0d5c1eac4f7daa64",
+    "tree": "167733cd493917a0447b621efbf6420f60c7ab4c",
+    "parents": [
+      "3d6ed1516d14c3b83b52b265c1eb2d1103454ae3"
+    ],
+    "current_path": "experiments/manual-transmission/autonomy/CURRENT.json",
+    "current_blob": "3bd43a7ceae4dd3701398e862209fd85600f51ad",
+    "historical_run": "9985f57b-1cdc-832c-92e8-585d65b7cc12",
+    "owner": "manual-work-9985f57b-1cdc-832c-92e8-585d65b7cc12-legacy-absence",
+    "status": "UNRESOLVED",
+    "access": "READ_ONLY",
+    "termination_attested": false,
+    "release_attested": false
+  },
+  "ref_policy": {
+    "allow": [
+      "manual-transmission/quarantine-recovery-20261106"
+    ],
+    "forbid": [
+      "writes to canonical or any other ref",
+      "separate qualification or receiving branches",
+      "force pushes, merge-back and deletion",
+      "ownership release or reinterpretation of historical lease",
+      "new executors and schedule changes"
+    ]
+  },
+  "provenance": {
+    "accepted_source": {
+      "commit": "54d58d643fce107aa635b3385675e9d4b9311f52",
+      "tree": "00a9a4a54549685905f5514ecd02582d9eb51b4a",
+      "parents": [
+        "0ed5abb8ed8df8446c2460d4a64be38038a3ed6d"
+      ]
+    },
+    "accepted_checkpoint": {
+      "commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
+      "tree": "5ba1139225e5b78b2800cfa91c19b7b45ebfdf7c",
+      "parents": [
+        "8329b0161d1406e41d82ce65fe3f8db984cb3d2c"
+      ],
+      "admission": "experiments/manual-transmission/research/self-alternative-paid-choice-full-received-r1-20261102/ADMISSION.json",
+      "blob": "e9895b394138b237dd30900303e3f33845093b33",
+      "sha256": "c12e5eb8b911d0e68001556b1ed5a9d4e3ee98cfbac137af855502fdd72da1a6",
+      "full": {
+        "state": "ORIGINAL_FULL_COMPATIBILITY_VERIFIED",
+        "accepted": true,
+        "source": "54d58d643fce107aa635b3385675e9d4b9311f52",
+        "validation": "64db4b62eb0f29052149ec6c17a5a4a3097bb6c6",
+        "run": 41363538430,
+        "job": 125018816463,
+        "artifact": 13106919316,
+        "archive_bytes": 11351539,
+        "archive_sha256": "c07f50d17f5e342343ee0258ffb22fb81f91cce5a5601d2e45912ff6cc57aa98",
+        "manifest_entries": 5484,
+        "source_bindings": 296,
+        "git_bindings": 27,
+        "focused": 164,
+        "cards": 396,
+        "ordinary": 19239,
+        "historical_skips": 43,
+        "client": 64,
+        "remaining": "Verify complete artifact list, immutable/live source and receipt readback, reused unchanged card/metadata evidence and all declared proposal gates before bounded marker admission. No card/multiplayer/game admission.",
+        "complete_artifact_list_verified": true,
+        "original_attempt_verified": true,
+        "source_tree_proof": "9b3437628c05f26c5ebe7ea89761a4f0e5501897",
+        "archive_manifest": "ARCHIVE.json",
+        "archive_parts": 87
+      }
+    },
+    "prior_early_only": {
+      "commit": "1f5f82dd9628339ec2c699dd8691c0ba2dc2b9d1",
+      "tree": "e1f8c2a631315deda93c40a9ad3e1605112ee5c1",
+      "parents": [
+        "9606d9df53c3325ef73cd04c096e65f5705d9b17"
+      ],
+      "receipt_blob": "8e7681d1d426511027696fa119c0caaf2ce96053",
+      "source": {
+        "commit": "9606d9df53c3325ef73cd04c096e65f5705d9b17",
+        "tree": "867f0584bbe6107c8722341694aea3807651b50e",
+        "parents": [
+          "09be265845acc297d4d38f1993426a38a4d3337c"
+        ]
+      },
+      "archive_sha256": "b8c1a5da9a5869fa620649eb51772a9100d46a7fcee6edd4e887f1ab4b511dd2",
+      "scope": "Six compile forms; 83 normal/restored; seven witnesses. No full admission."
+    },
+    "legacy_revision_base": {
+      "commit": "7f0529b055b3b3432947d7a03e05c1d6804fdc36",
+      "tree": "6241d00ce0dbd7d8679ed60088f1df5d3685be2d",
+      "parents": [
+        "9606d9df53c3325ef73cd04c096e65f5705d9b17"
+      ]
+    },
+    "failed_source": {
+      "commit": "6a74ce45479dcdc3bc72e71f089aebb155a74cc0",
+      "tree": "85df35c9402eb878190abf135e2957568a40750d",
+      "parents": [
+        "7f0529b055b3b3432947d7a03e05c1d6804fdc36"
+      ]
+    },
+    "failed_validation": {
+      "commit": "a45c770ff451c4783105fdd3804f5a0144892607",
+      "tree": "f798605898851053b9dfd54337c631fe86deff5b",
+      "parents": [
+        "6a74ce45479dcdc3bc72e71f089aebb155a74cc0"
+      ],
+      "workflow_blob": "b2ec6b0df51e18048f596e7aadad09a573c70e54"
+    },
+    "canonical_failed_receiving": {
+      "commit": "421ee6e44398fddbe8093f550dc6bcb5cd0129f6",
+      "tree": "073f10da4abcc731266415f3a75dc89fb92b5b24",
+      "parents": [
+        "6a74ce45479dcdc3bc72e71f089aebb155a74cc0"
+      ],
+      "path": "experiments/manual-transmission/research/departure-time-legacy-absence-received-r1-20261102/RECEIPT.json",
+      "blob": "7f2e468ba7371812502724882a15f61e025f6191",
+      "sha256": "b61b420be1ab610ce8384886f9d5f68a4c42bda72940f0a725d2f1a8f74d540b",
+      "run": 41448145265,
+      "job": 125286322093,
+      "attempt": 1,
+      "artifact": 13143306617,
+      "archive_bytes": 4236058,
+      "archive_sha256": "60eed458b7782c8923446348dafec977e31994988d568ddbc6542578d6f0ebba",
+      "manifest_entries": 623,
+      "accepted_for": "Original compile-failure receiving only; archived once",
+      "compiler_errors": [
+        "LegacyAbsenceChoiceCaptureTest.kt:46:28 Unresolved reference 'error'.",
+        "LegacyAbsenceChoiceCaptureTest.kt:75:27 Unresolved reference 'error'.",
+        "LegacyAbsenceChoiceCaptureTest.kt:83:26 Unresolved reference 'error'."
+      ],
+      "production_compilation": "passed",
+      "behavioral_rows": 0,
+      "negative_witnesses": 0
+    },
+    "corrected_candidate": {
+      "commit": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
+      "tree": "2f14fe196fe361ad7c3374a5da681646bc38aba7",
+      "parents": [
+        "6a74ce45479dcdc3bc72e71f089aebb155a74cc0"
+      ],
+      "record": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102",
+      "state": "FROZEN_UNQUALIFIED",
+      "protocol": {
+        "blob": "5e3f392fe35f5b7bf8d6d9df517380126222e896",
+        "sha256": "7c6f14258f6a285c0b479ad843acb0d503a9bcd76ea6db08dcb7256b1ebff624"
+      },
+      "source_review": {
+        "blob": "6e1205813fe535ad1438c98ac88ff1ceeae17162",
+        "sha256": "93a139118a7bb95cd494e50e9b1f6d13457437ccd4f852c958ce285b25c576ea"
+      },
+      "changed_test": {
+        "blob": "f6615de80743928d88020582417dd124b11b4e00",
+        "sha256": "f681d419bb72cbae27c47e013a41eae1e17c4671849bf9a2d4c03cbc79ef9722"
+      },
+      "production_blob": "10fa13bd9425750e0e816b7ba0177da86b40f824",
+      "production_sha256": "4af1fca3ef37d4b6da44c98221e78bcd5ddcd16f933ff83f11ab09221f6c8973",
+      "original_test": {
+        "blob": "e86c018a5dba9cfbce03d00fcb60fdc588135003",
+        "sha256": "bd97b9b1c43b8b61fef768a1c50dd60d4e00c732b5ed374a0f26141daecd3fbe"
+      },
+      "patch": {
+        "blob": "9aca7f6d6c079d471ecbb834284b6f3e9ea1b1e8",
+        "sha256": "36203bfdd7df4d28ce5e9a8281e4e881d00661b2739f605f2b9fea7e11daeba0"
+      },
+      "locked_commands": {
+        "blob": "9d844741fed8360f573b14dde907326189bc0a14",
+        "sha256": "de1be644a1be4d1305effa6dadf456f078ac33cf67cbf0beb9f299b478123ee3"
+      },
+      "runner": {
+        "blob": "0bbd1ddcd5c147423857171eb910cc94f3549960",
+        "sha256": "134029531061fed8d5df9551af5e3971dc678780996aea6c6dfa30153f761bc2"
+      },
+      "delta": [
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/FAILURE_RECEIPT.json",
+          "blob": "7f2e468ba7371812502724882a15f61e025f6191"
+        },
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/PROTOCOL.json",
+          "blob": "5e3f392fe35f5b7bf8d6d9df517380126222e896"
+        },
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/SOURCE_REVIEW.json",
+          "blob": "6e1205813fe535ad1438c98ac88ff1ceeae17162"
+        },
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/run.py",
+          "blob": "0bbd1ddcd5c147423857171eb910cc94f3549960"
+        },
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/test-api-repair.patch",
+          "blob": "9aca7f6d6c079d471ecbb834284b6f3e9ea1b1e8"
+        },
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-r2-20261102/validation.just",
+          "blob": "9d844741fed8360f573b14dde907326189bc0a14"
+        },
+        {
+          "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LegacyAbsenceChoiceCaptureTest.kt",
+          "blob": "f6615de80743928d88020582417dd124b11b4e00"
+        }
+      ],
+      "binding_check": "304 R2 bindings. 303 identical to the R1 manifest with unchanged paths in the source diff. Verified remaining additive test by SHA-256. All 296 protected-original bindings match the canonical failure protocol; all four normal production sources have the original received bindings."
+    },
+    "receiving_preparation": {
+      "commit": "b6a0d2d7310cbd3fa0be59f196927fbf1ebc4f8d",
+      "tree": "11c7e4969d18abbe362a8159005e1a770eaf82aa",
+      "parents": [
+        "6a74ce45479dcdc3bc72e71f089aebb155a74cc0"
+      ],
+      "path": "experiments/manual-transmission/research/departure-time-legacy-absence-receiving-prep-r1-20261102",
+      "conditional_full_tree": "91060e1b3d98cfcf98ce45910ff5276944996c8d"
+    },
+    "read_only_historical_grants": {
+      "canonical_current": {
+        "commit": "2f6961f79bafd0136a02492c0d5c1eac4f7daa64",
+        "blob": "3bd43a7ceae4dd3701398e862209fd85600f51ad",
+        "path": "experiments/manual-transmission/autonomy/CURRENT.json"
+      },
+      "legacy_absence": [
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/NEXT_ADMISSION.json",
+          "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+          "blob": "2251e722b64d8a56596a3322643833223c1bc4e2",
+          "sha256": "f9b9d18255773d25a03b9679be4c4956be6e08bc20576f381d9922dd1813b297"
+        },
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/TEST_MATRIX.json",
+          "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+          "blob": "47ea2a1dfb553d4bc91fbd85c24c6ae1c296f46b",
+          "sha256": "f107dd929adff5ffb794ac9fac48bc9146a2bcf188c82f65535bcaf90022d1ca"
+        },
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/SOURCE_REVIEW.json",
+          "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+          "blob": "93c96ecff3925a7904216ffb9ac1a5e682fe8e18",
+          "sha256": "5d5b047c1617fd87eb65c9950b05bb6cd7cc6b7d111395960f11db171b631ed9"
+        },
+        {
+          "path": "experiments/manual-transmission/research/departure-time-legacy-absence-proposal-r1-20261102/departure-absence.patch",
+          "commit": "097d5e08c88c0e9ca293dd7cf82c28bd35e63ea9",
+          "blob": "ce7d8c141a6ec1e73f42b2fae2e111302d85053d",
+          "sha256": "dca2fd6fe479c6bf2098f37269a7a2cd5a89284510357d53e275f60930881ac7"
+        }
+      ],
+      "previous_bindings_retained": true
+    }
+  },
+  "parentage": "First parent is the last fully admitted source. Second parent is its descendant, the verified receipt for the failed R1 qualification. Initial recovery tree derives from the receipt tree, adding only this charter and the new recovery CURRENT.",
+  "executor": {
+    "id": "6adbe33033e481918659ce578f64f31e",
+    "title": "Manual Work Continuation",
+    "schedule": "BEGIN:VEVENT\nDTSTART:20261023T224400Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+    "schedule_timezone": "America/Los_Angeles",
+    "before_setup_enabled": false,
+    "prior_prompt_sha256": "1d61389470b7e9774bdd5d2b6630c0bcc42007911539a6856de627afa033f563",
+    "manual_inventory_before": [
+      {
+        "id": "6ac1b22692ec8191b56c6cbd619b43c8",
+        "title": "Manual 100/100 Watch",
+        "enabled": false
+      },
+      {
+        "id": "6adbad91b90881918859ad0cba22b881",
+        "title": "Manual Execution Continuation",
+        "enabled": false
+      },
+      {
+        "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
+        "title": "Manual Intervention Watch",
+        "enabled": false
+      },
+      {
+        "id": "6adbe33033e481918659ce578f64f31e",
+        "title": "Manual Work Continuation",
+        "enabled": false
+      }
+    ],
+    "latest_visible_run": {
+      "id": "14d13c70-0e34-8332-85c7-cace691ff936",
+      "recorded_status": "completed",
+      "scheduled_for": "2026-11-04T08:44:00Z",
+      "started_at": "2026-11-04T08:44:04.798886Z",
+      "completed_at": "2026-11-04T08:45:19.341033Z",
+      "chat_ref": {
+        "type": "chatgpt",
+        "id": "6adce45b-d444-83e8-b69b-ed044642bb80"
+      }
+    },
+    "role": "Work only. Discussion and Intervention Watch strictly read-only. Historical invocation state unresolved."
+  },
+  "safeguards": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "frozen_deck_sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
+    "protected_goldens": 23,
+    "protected_bindings": 144,
+    "legacy_saved_states": 82,
+    "phase2_games": 0,
+    "phase2_seeds": 0,
+    "precision_reserved": 2,
+    "main_merge": false,
+    "external_independent_review": false,
+    "no_successful_workflow_rerun": true,
+    "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
+  },
+  "acceptance": {
+    "early": "Compile normal and all six mutants first; 115 normal/restored cases including all 83 prior, 24 traces and 8 additive; exact 12 executable negative assertion witnesses; restore and rebind; verify original artifacts.",
+    "full": "Same source: 396 cards, exact 19,239 ordinary baseline +83+8 =19,330 and exact 43 historical skips; 64-client, dependent/metadata/Assay gates and original full artifact receiving before acceptance."
+  }
+}

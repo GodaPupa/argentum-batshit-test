@@ -6,6 +6,8 @@ import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ObjectRef
 import com.wingedsheep.engine.state.nameVisibleToAll
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
+import com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent
+import com.wingedsheep.engine.state.components.battlefield.ChoiceValue
 import com.wingedsheep.engine.state.components.battlefield.DamageSourceLki
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.FaceDownComponent
@@ -15,6 +17,7 @@ import com.wingedsheep.sdk.core.Subtype
 import com.wingedsheep.sdk.core.TypeLine
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.StaticAbility
+import com.wingedsheep.sdk.scripting.ChoiceSlot
 import kotlinx.serialization.Serializable
 
 /**
@@ -201,6 +204,8 @@ data class EntitySnapshot(
     val ownerId: EntityId? = null,
     /** Granted source abilities that must remain available for a departed damage source. */
     val grantedStaticAbilities: List<StaticAbility> = emptyList(),
+    /** Explicit choices of [objectRef]. Null is unknown legacy capture; empty is known no choices. */
+    val castChoices: Map<ChoiceSlot, ChoiceValue>? = null,
 ) : EntityView {
     companion object {
         /**
@@ -228,6 +233,7 @@ data class EntitySnapshot(
                 wasFaceDown = state.getEntity(entityId)?.has<FaceDownComponent>() == true,
                 wasToken = state.getEntity(entityId)?.has<TokenComponent>() == true,
                 objectRef = state.objectRef(entityId),
+                castChoices = state.getEntity(entityId)?.get<CastChoicesComponent>()?.chosen?.toMap() ?: emptyMap(),
                 colors = projected.getColors(entityId),
                 ownerId = state.getEntity(entityId)?.get<CardComponent>()?.ownerId,
                 typeLine = projectedTypeLine(state, entityId),
@@ -289,6 +295,7 @@ fun captureEntitySnapshots(
         name = container?.get<CardComponent>()?.name?.let { nameVisibleToAll(state, snapshot.entityId, it) },
         wasFaceDown = container?.has<FaceDownComponent>() == true,
         objectRef = state.objectRef(snapshot.entityId),
+        castChoices = container?.get<CastChoicesComponent>()?.chosen?.toMap() ?: emptyMap(),
         ownerId = container?.get<CardComponent>()?.ownerId,
         typeLine = projectedTypeLine(state, snapshot.entityId),
         grantedStaticAbilities = state.grantedStaticAbilities

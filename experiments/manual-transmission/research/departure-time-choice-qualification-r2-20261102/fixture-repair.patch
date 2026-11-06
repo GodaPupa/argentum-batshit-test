@@ -1,0 +1,42 @@
+--- a/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureChoiceRepairTest.kt
++++ b/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureChoiceRepairTest.kt
+@@ -246,7 +246,7 @@
+     private fun pending(game: TestGame, id: EntityId, controller: EntityId, targeted: Boolean = false): PendingTrigger {
+         val origin = game.state.objectRef(id)!!
+         return PendingTrigger(
+-            ability = TriggeredAbility.create(trigger = Triggers.EntersBattlefield, effect = Effects.GainLife(3),
++            ability = TriggeredAbility.create(trigger = Triggers.EntersBattlefield.event, effect = Effects.GainLife(3),
+                 interveningIf = CastChoiceMade(ChoiceSlot.SELF_ALTERNATIVE),
+                 targetRequirement = if (targeted) TargetCreature() else null),
+             sourceId = id, sourceName = "Transport Probe", controllerId = controller,
+--- a/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeChoiceCaptureTest.kt
++++ b/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeChoiceCaptureTest.kt
+@@ -65,7 +65,7 @@
+                 val prior = if (mode == "genuine") EntitySnapshot.fromProjection(source, game.state)
+                     .copy(power = 71, colors = setOf("BLUE"), castChoices = if (paid) emptyMap() else selected) else null
+                 val trigger = PendingTrigger(
+-                    ability = TriggeredAbility.create(trigger = Triggers.EntersBattlefield, effect = Effects.GainLife(3)),
++                    ability = TriggeredAbility.create(trigger = Triggers.EntersBattlefield.event, effect = Effects.GainLife(3)),
+                     sourceId = source, sourceName = "Departure transport", controllerId = game.player1Id,
+                     sourceBattlefieldTimestamp = 191L, objectReferences = refs, triggerContext = TriggerContext(),
+                     placementOrderChosen = true, opponentTargetChooserId = game.player2Id,
+--- a/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeNegativeWitnessTest.kt
++++ b/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeNegativeWitnessTest.kt
+@@ -25,7 +25,7 @@
+             val choices = mapOf(ChoiceSlot.SELF_ALTERNATIVE to ChoiceValue.Flag)
+             game.state = game.state.updateEntity(source) { it.with(CastChoicesComponent(chosen = choices)) }
+             val origin = game.state.objectRef(source)!!
+-            val trigger = PendingTrigger(TriggeredAbility.create(trigger = Triggers.EntersBattlefield, effect = Effects.GainLife(3)),
++            val trigger = PendingTrigger(TriggeredAbility.create(trigger = Triggers.EntersBattlefield.event, effect = Effects.GainLife(3)),
+                 source, "probe", controllerId = game.player1Id, triggerContext = TriggerContext(),
+                 objectReferences = ObjectReferenceEnvironment(captured = true, origin = origin, source = origin))
+             game.state = game.state.copy(continuationStack = listOf(PendingTriggersContinuation(listOf(trigger))))
+@@ -47,7 +47,7 @@
+             val source = game.findPermanent("Grizzly Bears")!!
+             val origin = game.state.objectRef(source)!!
+             val genuine = EntitySnapshot.fromProjection(source, game.state).copy(power = 71, colors = setOf("BLUE"))
+-            val trigger = PendingTrigger(TriggeredAbility.create(trigger = Triggers.EntersBattlefield, effect = Effects.GainLife(3)),
++            val trigger = PendingTrigger(TriggeredAbility.create(trigger = Triggers.EntersBattlefield.event, effect = Effects.GainLife(3)),
+                 source, "probe", controllerId = game.player1Id, triggerContext = TriggerContext(),
+                 objectReferences = ObjectReferenceEnvironment(captured = true, origin = origin, source = origin),
+                 lastKnownSourceSnapshot = genuine)
