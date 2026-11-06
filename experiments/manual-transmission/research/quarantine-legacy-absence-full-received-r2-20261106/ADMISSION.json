@@ -1,0 +1,106 @@
+{
+  "state": "BOUNDED_SOURCE_DEPARTURE_SELF_ALTERNATIVE_ADMITTED",
+  "scope": "Explicit original-object SELF_ALTERNATIVE choice survives first departure, pending-trigger continuation and serialization with generation isolation, genuine LKI and departure characteristics preserved; absent component stays null, present empty stays explicitly empty and selected maps stay selected.",
+  "epoch": "manual-quarantine-20261106-01",
+  "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
+  "source_tree": "f7217ca9a729a6e447b23526c3131fed7b1624f9",
+  "targeted_source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
+  "targeted_receipt": {
+    "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-received-20261106/RECEIPT.json",
+    "run": 42282738984,
+    "artifact": 13536758698,
+    "sha256": "7c23ae994a625b19576d6ae9a166448cc5528e72d67d397d1f07529621a77cea",
+    "commit": "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
+    "blob": "28cf99c4a7bf23544f4851e39a8f1f70ed3781c9"
+  },
+  "full_receipt": {
+    "commit": "15bbe68ce4d9a1aee5684d0a6f131194ea0f9dc6",
+    "blob": "166d183afdb5c245a4d720a95e1f32a5693c556c",
+    "path": "experiments/manual-transmission/research/quarantine-legacy-absence-full-received-r2-20261106/RECEIPT.json",
+    "run": 42291240756,
+    "job": 128144908581,
+    "attempt": 1,
+    "artifact": 13542141661,
+    "bytes": 11873011,
+    "sha256": "e3da4cb66c42569a0bc494a66d12acda20db75804162c85401328d139b09237a",
+    "manifest_entries": 5518,
+    "immutable_archive_parts": 61
+  },
+  "controls": {
+    "compiled_forms": 7,
+    "normal": 115,
+    "restored": 115,
+    "exact_negative_assertions": 12,
+    "protected_originals": 296,
+    "full_compile": true,
+    "focused": 279,
+    "cards": 396,
+    "ordinary": {
+      "original": 19239,
+      "prior_additions": 83,
+      "new_additions": 8,
+      "total": 19330,
+      "passed": 19287,
+      "exact_historical_skips": 43,
+      "identity_and_skip_inventory_sha256": "5c7aea5383605cc432361d0f592268839786d6ada9278e5338c561e096f0b310"
+    },
+    "client_typecheck": true,
+    "client_passed": 64,
+    "same_source_tree_count": 15,
+    "sha256_source_bindings": 304,
+    "git_bindings": 27
+  },
+  "metadata_assay_reuse": {
+    "accepted_receipt": "a115b7555d2f4272062010b03332260de8d5a303",
+    "receipt_blob": "64b83844d4b68b7e9e007b7796d71f48d97a162f",
+    "original_metadata_receipt": "d0ada58b64cbd6bde866c89f91b8ce81eca6a068",
+    "matching_subtrees": {
+      "mtg-sets": "8db06fd3ef737f656eb439b6139f7f452c10ce14",
+      "oracle-assay": "8b5c8411b4d6066ef7bf93e84d881ea4e717b0fe",
+      "mtgish-tooling": "42bd09972f9b7d4c9d79ad8df1e000ed140a61a3",
+      "scripts": "c7f233c36a522c778c1a3239b7e686fdb43b6638",
+      "web-client": "0ce36368d74a34f392e85b261771863a2a9d004c",
+      "game-server": "88b7cb3260dee8b710d5278361dbcb57962f3ab4"
+    },
+    "classification": {
+      "state": "ORIGINAL_ASSAY_AND_PRINTING_CLASSIFIED",
+      "original": {
+        "cards": 24,
+        "compared": 7,
+        "confirmed": 7,
+        "not_covered": 14,
+        "script_not_modelled": 2,
+        "oracle_text_differs": 1,
+        "multi_face": 0,
+        "divergent": 0,
+        "undecodable": 0
+      },
+      "candidate": {
+        "cards": 25,
+        "compared": 7,
+        "confirmed": 7,
+        "not_covered": 14,
+        "script_not_modelled": 2,
+        "oracle_text_differs": 1,
+        "multi_face": 1,
+        "divergent": 0,
+        "undecodable": 0
+      },
+      "finding": "Exactly one added multi-face exclusion is Disciple. Original24 entries recovered byte-for-byte; all original report categories unchanged. Fourteen grammar declines,two unmodelled script slots and one pre-existing Oracle-text difference remain limitations, not semantic passes or repaired cards. Seven compared models agree; no divergences or undecodable goldens.",
+      "text_review": "Original corpus versus golden literals include Arena of Glory 'that mana' versus 'any of that mana', Unfathomable Truths reminder text, and Writhing Chrysalis 'this creature' versus 'this token'. No normalization or golden change was made. Existing Assay reports one Oracle-text difference in both observations; it remains classified as a pre-existing wording mismatch, not a new Disciple defect.",
+      "printing": "Original check-card-printing exits0; canonical MH3#250 earliest real printing2024-06-14; one printing, no missing scaffolded reprints.",
+      "snapshot": {
+        "original_bytes": 67843,
+        "original_entries": 24,
+        "added_entries": 1,
+        "original_bytes_restored": true,
+        "sha256": "be0fc81423d4e857bd5eefc2fd73d781da71eacad363f586b916dd37632bf7f2"
+      },
+      "semantic_pass_inferred_from_decline": false
+    },
+    "policy": "No card registration/snapshot/Assay changes. Reuse accepted Disciple metadata/printing/discovery/differential classification under unchanged card, snapshot and Assay source bindings; full ordinary Assay tests and full card snapshot/lint suite execute freshly. No new semantic pass inferred."
+  },
+  "earlier_evidence": "Reuse exact-bound card and paid-choice receipts from recovery charter. Preserve both prior trace failures and R1 compile failure under original receipts.",
+  "removed_blocker": "The two legacy traces again preserve the absence of cast-choice data, while actual empty and selected maps retain their separate meanings on departure.",
+  "limits": "Source-departure repair only. No card registration, Surge/eligibility/teams, multiplayer, gameplay or seeds. Preserve v0.7, all budgets and both reserved Precision games."
+}
