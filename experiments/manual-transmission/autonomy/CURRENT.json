@@ -28,24 +28,9 @@
     "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
     "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json"
   },
-  "status": "ACTIVE",
-  "owner": "manual-recovery-inline-d5830da1122a-1793994282153",
-  "lease": {
-    "epoch": "manual-quarantine-20261106-01",
-    "owner": "manual-recovery-inline-d5830da1122a-1793994282153",
-    "task_id": "6adbe33033e481918659ce578f64f31e",
-    "execution_context": "current inline delivery of existing Manual Work Continuation",
-    "observed_automation_run": {
-      "id": "3ad55e2a-723c-832d-aac6-6cff3eef8bf5",
-      "recorded_status": "in_progress",
-      "scheduled_for": "2026-11-06T19:44:00Z",
-      "started_at": "2026-11-06T19:43:42.382712Z",
-      "completed_at": null,
-      "chat_ref": null
-    },
-    "claimed_utc": "2026-11-06T19:44:42.153Z",
-    "expires_utc": "2026-11-06T20:44:42.153Z"
-  },
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
+  "lease": null,
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -59,8 +44,9 @@
     "pending_evidence": [
       "Seven compile forms, 115/115 normal and restored rows, 12 executable negatives, original receiving, full same-source compatibility and original full receiving."
     ],
-    "ownership": "Sole Work executor holds this recovery-epoch CAS claim.",
-    "actual_stopping_reason": null
+    "ownership": "Recovery lease released. The GitHub Actions qualification owns only its isolated job.",
+    "actual_stopping_reason": "Original R2 run 42282738984 is active. The R2 receiver and conditional full draft have been verified; early and full acceptance depend on original evidence.",
+    "implementation": "Corrected R2 source is frozen and dispatched once on the recovery ref. R1 compilation failure was reused from its canonical archive."
   },
   "next": {
     "source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
@@ -71,7 +57,7 @@
       "path": "experiments/manual-transmission/research/departure-time-legacy-absence-received-r1-20261102/RECEIPT.json",
       "blob": "7f2e468ba7371812502724882a15f61e025f6191"
     },
-    "next_executable_action": "Prepare original recovery-envelope receiver while run 42282738984 executes. For terminal run, reconcile newer receipts then receive original once. Separate event SHA from detached validation. Withhold behavioral/full acceptance until corresponding gates pass."
+    "next_executable_action": "Check whether original recovery R2 run 42282738984 (event abdbd2282adf092ac5225604e0edcaf8ff4efd68, detached validation 7fb6a8510f072b69093696e66cca0f7ca9371349, job 128115638410, attempt 1) is terminal. While active, keep WAITING_EXTERNAL. If terminal, check for a newer receipt first, then claim by fresh recovery CURRENT CAS, bind original artifact list/ID/bytes/digest and verify/archive exactly once using preparation 303afdaf554a7b8f89c19c49aed66e1186c9c4f8. Preserve failures. Only after original early gates pass freeze the conditional same-source full protocol and dispatch once on this ref. R1 receipt 421ee6e44398fddbe8093f550dc6bcb5cd0129f6 is already canonical."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -90,7 +76,7 @@
   },
   "previous_checkpoint": "d5830da1122a11e489645f2556afec2c1d2e4dba",
   "qualification": {
-    "state": "DISPATCHED_ORIGINAL_R2",
+    "state": "WAITING_ORIGINAL_EARLY_WORKFLOW",
     "source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
     "source_tree": "2f14fe196fe361ad7c3374a5da681646bc38aba7",
     "source_parent": "6a74ce45479dcdc3bc72e71f089aebb155a74cc0",
@@ -113,7 +99,13 @@
     "run": 42282738984,
     "job": 128115638410,
     "attempt": 1,
-    "artifact": null
+    "artifact": null,
+    "last_workflow_observation": {
+      "utc": "2026-11-06T19:53:23.781Z",
+      "status": "in_progress",
+      "job_status": "in_progress",
+      "attempt": 1
+    }
   },
   "receiving_preparation": {
     "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-receiving-prep-20261106",
@@ -135,6 +127,25 @@
       "ordinary_inventory_sha256": "5c7aea5383605cc432361d0f592268839786d6ada9278e5338c561e096f0b310",
       "accepted": false,
       "dispatched": false
-    }
+    },
+    "commit": "303afdaf554a7b8f89c19c49aed66e1186c9c4f8",
+    "tree": "ecbcad50aab399524e64fd0b3bc7e3d2fd2729b8",
+    "immutable_live_files_verified": 15
+  },
+  "previous_recovery_lease": {
+    "epoch": "manual-quarantine-20261106-01",
+    "owner": "manual-recovery-inline-d5830da1122a-1793994282153",
+    "task_id": "6adbe33033e481918659ce578f64f31e",
+    "execution_context": "current inline delivery of existing Manual Work Continuation",
+    "observed_automation_run": {
+      "id": "3ad55e2a-723c-832d-aac6-6cff3eef8bf5",
+      "recorded_status": "in_progress",
+      "scheduled_for": "2026-11-06T19:44:00Z",
+      "started_at": "2026-11-06T19:43:42.382712Z",
+      "completed_at": null,
+      "chat_ref": null
+    },
+    "claimed_utc": "2026-11-06T19:44:42.153Z",
+    "expires_utc": "2026-11-06T20:44:42.153Z"
   }
 }
