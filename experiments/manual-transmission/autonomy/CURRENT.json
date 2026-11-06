@@ -28,9 +28,14 @@
     "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
     "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json"
   },
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
-  "lease": null,
+  "status": "ACTIVE",
+  "owner": "1cb867f5-6f98-8326-a135-41d59d44b141",
+  "lease": {
+    "owner": "1cb867f5-6f98-8326-a135-41d59d44b141",
+    "task_id": "6adbe33033e481918659ce578f64f31e",
+    "claimed_utc": "2026-11-06T20:42:20.267Z",
+    "expires_utc": "2026-11-06T21:42:20.267Z"
+  },
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -44,8 +49,8 @@
     "pending_evidence": [
       "Seven compile forms, 115/115 normal and restored rows, 12 executable negatives, original receiving, full same-source compatibility and original full receiving."
     ],
-    "ownership": "Recovery lease released. The GitHub Actions qualification owns only its isolated job.",
-    "actual_stopping_reason": "Original R2 run 42282738984 is active. The R2 receiver and conditional full draft have been verified; early and full acceptance depend on original evidence.",
+    "ownership": "Sole recovery owner receiving terminal original R2.",
+    "actual_stopping_reason": null,
     "implementation": "Corrected R2 source is frozen and dispatched once on the recovery ref. R1 compilation failure was reused from its canonical archive."
   },
   "next": {
