@@ -25,9 +25,10 @@
     "execution_task_id": "6adbe33033e481918659ce578f64f31e",
     "execution_admitted": true,
     "schedule": "BEGIN:VEVENT\nDTSTART:20261023T224400Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
-    "retarget_status": "PENDING_VERIFIED_RETARGET"
+    "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
+    "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json"
   },
-  "status": "BLOCKED",
+  "status": "READY_FOR_NEXT_ITERATION",
   "owner": null,
   "lease": null,
   "summary": {
@@ -44,7 +45,7 @@
       "Seven compile forms, 115/115 normal and restored rows, 12 executable negatives, original receiving, full same-source compatibility and original full receiving."
     ],
     "ownership": "Recovery epoch has no owner. Canonical owner remains unresolved.",
-    "actual_stopping_reason": "Setup interlock: verify the same paused executor's exclusive retarget and checkpoint/read back proof before engineering."
+    "actual_stopping_reason": "Setup complete; released for sole executor after immutable/live proof readback."
   },
   "next": {
     "source": "e87e662378a58265af4aa092bd24d8dfc6cb763b",
@@ -55,7 +56,7 @@
       "path": "experiments/manual-transmission/research/departure-time-legacy-absence-received-r1-20261102/RECEIPT.json",
       "blob": "7f2e468ba7371812502724882a15f61e025f6191"
     },
-    "next_executable_action": "Recovery setup only. Retarget the existing paused executor exclusively to this branch; checkpoint and read back proof before enabling or executing."
+    "next_executable_action": "Claim in this recovery epoch after workflow/owner/successor reconciliation. Reuse frozen corrected R2 source e87e662378a58265af4aa092bd24d8dfc6cb763b and its exact protocol, review and locked recipes. Stage one recovery-branch-only qualification with a workflow-only validation object directly parented by that source, and recovery event commit retaining charter/CURRENT/receipt ancestry. Bind both trees and identical workflow bytes. Run normal and six mutant compiles before any behavior, receive its original artifact once, and conditionally run all remaining same-source gates. Preserve original R1 receipt and do not repeat it."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
