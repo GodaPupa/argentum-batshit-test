@@ -28,7 +28,7 @@
     "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
     "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json"
   },
-  "status": "BLOCKED",
+  "status": "READY_FOR_NEXT_ITERATION",
   "owner": null,
   "lease": null,
   "summary": {
@@ -41,11 +41,13 @@
       "Explicit original-object SELF_ALTERNATIVE choice survives first departure, pending-trigger continuation and serialization with generation isolation, genuine LKI and departure characteristics preserved; absent component stays null, present empty stays explicitly empty and selected maps stay selected."
     ],
     "unfinished_implementation": [
-      "Reckless Bushwhacker prior-spell eligibility and card behavior remain outside this bounded admission."
+      "Authorized test-only own-prior-spell eligibility diagnostic not yet implemented or executed. Reckless Bushwhacker production/card behavior remains unauthorized."
     ],
-    "pending_evidence": [],
-    "ownership": "Recovery lease released; historical canonical owner remains unresolved.",
-    "actual_stopping_reason": "The authorized source-departure work is admitted. The next test-only prior-spell eligibility diagnostic requires explicit scope expansion.",
+    "pending_evidence": [
+      "Normal and all declared mutant compilation, H0-H5 and serialized H2/H4 behavior, exact negative witnesses/restoration, original-artifact receiving."
+    ],
+    "ownership": "No recovery worker claimed by this administrative grant checkpoint; owner and lease remain null. Historical canonical owner remains unresolved.",
+    "actual_stopping_reason": "Authority blocker resolved by explicit user grant; administrative handoff to the sole existing Work executor, pending resume verification.",
     "implementation": "Full original evidence received and exact-bound Assay classification reviewed."
   },
   "next": {
@@ -72,7 +74,8 @@
       "blob": "aae5bdd0b8ab29b0e1260dadee26c5471b967761"
     },
     "proposal": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/NEXT_ADMISSION.json",
-    "next_executable_action": "Await explicit grant for the proposed two-player own-prior-spell eligibility diagnostic. After grant, reconcile exact recovery ref and sole executor, record grant by fresh CURRENT CAS, prepare named synthetic test and compile-first controls. Do not repeat source-departure qualification or register a card."
+    "next_executable_action": "Under the existing sole executor, reconcile recovery owners/automation/workflows and fresh-blob CURRENT CAS-claim this epoch. Read the exact authorized proposal and repository guidance; implement only SelfAlternativePriorSpellEligibilityDiagnosticTest.kt plus bounded qualification/receiving infrastructure in the proposal directory using existing production APIs. Cover H0-H5, serialized H2/H4, normal-price availability, explicit alternative submission and all declared compile-first mutants. Freeze source/protocol/exact witnesses and receive original artifacts once. Do not repeat accepted source-departure work; any engine defect needs a separate production proposal.",
+    "authorization_path": "experiments/manual-transmission/autonomy/CURRENT.json#reckless_own_prior_spell_diagnostic_authorization"
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -89,7 +92,7 @@
     "no_successful_workflow_rerun": true,
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
-  "previous_checkpoint": "d5830da1122a11e489645f2556afec2c1d2e4dba",
+  "previous_checkpoint": "fb155f5dbd519e7857db74dca5233e21d83b840d",
   "qualification": {
     "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
     "source_tree": "f7217ca9a729a6e447b23526c3131fed7b1624f9",
@@ -212,5 +215,97 @@
     "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
     "commit": "a6f99b0400f83e33081b4f63de77bc17e597e15d",
     "blob": "aae5bdd0b8ab29b0e1260dadee26c5471b967761"
+  },
+  "reckless_own_prior_spell_diagnostic_authorization": {
+    "state": "EXPLICIT_USER_GRANT_RECORDED",
+    "recorded_utc": "2026-11-07T10:05:12.198Z",
+    "proposal_commit": "fb155f5dbd519e7857db74dca5233e21d83b840d",
+    "proposal_path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/NEXT_ADMISSION.json",
+    "proposal_blob": "3c0ce0cc98a287b4284d3936d7b021e230f0ae00",
+    "matrix_path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/TEST_MATRIX.json",
+    "matrix_blob": "1e4a1dd397fe6bb1077d92866a725e4896c161a1",
+    "epoch": "manual-quarantine-20261106-01",
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+    "executor_id": "6adbe33033e481918659ce578f64f31e",
+    "scope": {
+      "test": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+      "infrastructure": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/",
+      "shipping_production_paths": [],
+      "sdk_changes": false
+    },
+    "required_histories": [
+      [
+        "H0",
+        "no earlier spell",
+        false
+      ],
+      [
+        "H1",
+        "own spell resolved this turn",
+        true
+      ],
+      [
+        "H2",
+        "own spell countered this turn",
+        true
+      ],
+      [
+        "H3",
+        "own earlier spell still on stack",
+        true
+      ],
+      [
+        "H4",
+        "opponent-only cast this turn",
+        false
+      ],
+      [
+        "H5",
+        "own earlier spell on prior turn only",
+        false
+      ]
+    ],
+    "requirements": [
+      "Use existing production APIs only; preserve every existing test and assertion unchanged.",
+      "Construct real casting/priority/turn histories H0-H5; test enumeration separately from explicit alternative-action submission on identical states.",
+      "Ineligible alternative rejects without mana spending or new stack object; eligible alternative uses its recorded selected choice; normal-price availability remains legal and unmarked in every history. Never infer choice from mana cost alone.",
+      "Serialize H2 own-countered and H4 opponent-only histories before decision and verify controller/history semantics.",
+      "Compile normal plus every declared isolated mutant before any behavior: enumeration-condition removal, authorization-condition removal, stack-only history, opponent/controller conflation.",
+      "Freeze exact identities, negative assertion witnesses, source forms, expected/actual values, restoration/rebinding and original-artifact receiving contract before one justified qualification.",
+      "Diagnostic evidence only; any engine defect requires a separate bounded production proposal before repair.",
+      "Reuse accepted exact-bound evidence without repeated qualification or receiving."
+    ],
+    "exclusions": [
+      "No shipping production or SDK changes",
+      "No Surge implementation",
+      "No Reckless Bushwhacker registration or OGW snapshot changes",
+      "No teammate model",
+      "No multiplayer admission, official games or seeds",
+      "No extra spending, new worker, additional production path or schedule change"
+    ],
+    "preserved": "Frozen Manual v0.7, protected originals, goldens, all fixtures/assertions, accepted and failed evidence, statistical design, budgets and both reserved Precision games.",
+    "canonical": "Historical canonical branch remains quarantined and read-only; owner 9985f57b-1cdc-832c-92e8-585d65b7cc12 unresolved, no release/termination attestation.",
+    "reconciliation": {
+      "head": "fb155f5dbd519e7857db74dca5233e21d83b840d",
+      "current_blob": "4cab313542fc4d77bfca1c236e9bc04b4d9ab036",
+      "owner": null,
+      "lease": null,
+      "sole_executor_enabled": false,
+      "last_run": {
+        "id": "e99d98c4-2894-8331-9194-eeec90269c11",
+        "recorded_status": "completed",
+        "scheduled_for": "2026-11-06T21:44:00Z",
+        "started_at": "2026-11-06T21:46:54.165020Z",
+        "completed_at": "2026-11-06T21:54:39.326912Z",
+        "chat_ref": {
+          "type": "chatgpt",
+          "id": "6adce45b-d444-83e8-b69b-ed044642bb80"
+        }
+      },
+      "relevant_active_workflows": [],
+      "ignored_unrelated_workflow": 34749202144,
+      "latest_receipt": "15bbe68ce4d9a1aee5684d0a6f131194ea0f9dc6",
+      "latest_admission": "a6f99b0400f83e33081b4f63de77bc17e597e15d"
+    }
   }
 }
