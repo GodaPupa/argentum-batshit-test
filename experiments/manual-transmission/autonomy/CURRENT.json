@@ -26,7 +26,9 @@
     "execution_admitted": true,
     "schedule": "BEGIN:VEVENT\nDTSTART:20261023T224400Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
     "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
-    "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json"
+    "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json",
+    "enabled_at_latest_readback": true,
+    "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
   "status": "READY_FOR_NEXT_ITERATION",
   "owner": null,
@@ -46,8 +48,8 @@
     "pending_evidence": [
       "Normal and all declared mutant compilation, H0-H5 and serialized H2/H4 behavior, exact negative witnesses/restoration, original-artifact receiving."
     ],
-    "ownership": "No recovery worker claimed by this administrative grant checkpoint; owner and lease remain null. Historical canonical owner remains unresolved.",
-    "actual_stopping_reason": "Authority blocker resolved by explicit user grant; administrative handoff to the sole existing Work executor, pending resume verification.",
+    "ownership": "Recovery owner and lease remain null; sole existing executor enabled with preserved schedule. Historical canonical owner remains unresolved.",
+    "actual_stopping_reason": "Administrative grant and sole-executor resume verified; handoff to existing hosted Work executor. No claim of an active invocation or continuous execution.",
     "implementation": "Full original evidence received and exact-bound Assay classification reviewed."
   },
   "next": {
@@ -92,7 +94,7 @@
     "no_successful_workflow_rerun": true,
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
-  "previous_checkpoint": "fb155f5dbd519e7857db74dca5233e21d83b840d",
+  "previous_checkpoint": "5376351f947b31d7004796e2fab4cbd535dc5956",
   "qualification": {
     "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
     "source_tree": "f7217ca9a729a6e447b23526c3131fed7b1624f9",
