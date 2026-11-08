@@ -30,21 +30,9 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "WORKING",
-  "owner": "manual-foreground-r2-20261108-2373a83b-0132-4d47-be18-6e0e7193aa12",
-  "lease": {
-    "owner": "manual-foreground-r2-20261108-2373a83b-0132-4d47-be18-6e0e7193aa12",
-    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
-    "claimed_utc": "2026-11-08T16:29:29.022Z",
-    "expires_utc": "2026-11-08T17:29:29.022Z",
-    "scheduled_automation_identity_asserted": false,
-    "scheduled_executor_enabled": false,
-    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
-    "exclusive_writer": "Only this explicitly user-authorized foreground Work session may write during this lease.",
-    "session_id": null,
-    "session_identity_limitation": "No stable current conversation identifier exposed; unique foreground UUID label used.",
-    "canonical": "READ_ONLY_QUARANTINED_UNRESOLVED"
-  },
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
+  "lease": null,
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -55,13 +43,13 @@
       "Explicit original-object SELF_ALTERNATIVE choice survives first departure, pending-trigger continuation and serialization with generation isolation, genuine LKI and departure characteristics preserved; absent component stays null, present empty stays explicitly empty and selected maps stay selected."
     ],
     "unfinished_implementation": [
-      "Exact R2 workflow authorization received. Corrected source remains frozen and unqualified; no production changes."
+      "Exact R2 workflow activated once. Corrected source qualification in progress; no production/SDK/test assertion changes or acceptance."
     ],
     "pending_evidence": [
-      "Corrected source still requires all five compile forms, 24 normal and 24 restored cases, 18 exact negative witnesses, and original artifact receiving after a separately authorized new R2 workflow activation."
+      "R2 all five compiled forms; 24 normal and 24 restored identities; 18 exact negative witnesses; original R2 artifact receiving. No results claimed yet."
     ],
-    "ownership": "Foreground R2 activation lease claimed; scheduled executor disabled, prompt/schedule unchanged; canonical read-only unresolved.",
-    "actual_stopping_reason": null,
+    "ownership": "Foreground lease released with one original R2 qualification active; owner and lease null. Scheduled executor remains disabled, prompt/schedule unchanged. Canonical remains read-only unresolved.",
+    "actual_stopping_reason": "Original corrected-source R2 qualification run42500269970/job128791300748/attempt1 is active. Receiver source bindings verified; no useful independent authorized preparation remains.",
     "implementation": "Original R1 is a test-only authorization-mutant compiler failure, not a normal H0 behavior failure. Two forms compiled; third failed at CastSpellHandler.kt:641/645; last two unattempted. Zero normal cases/JUnit rows/behavioral negative witnesses. Finally reports restored normal bytes and clean tracked tree; final rebinding was not reached."
   },
   "next": {
@@ -93,7 +81,7 @@
     "proposal": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/R1_RECEIVED_20261108/R2_NEXT_ACTIVATION.json",
     "workflow_draft": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/R1_RECEIVED_20261108/R2_ACTIVATION_WORKFLOW.yml",
     "workflow_blob": "a7b856779c6f28725c5b4fe89ad6f87fa9c7c49b",
-    "next_executable_action": "Fresh final reconciliation and immutable/live readback; push exactly one R2 qualification event with recovery freeze first parent and workflow-only validation second parent.",
+    "next_executable_action": "On original R2 run42500269970 attempt1 terminal, reconcile live CURRENT/owners/workflows/newer receipts/successors and disabled executor; claim fresh foreground lease; receive R2 original artifact once and verify exact pins/raw reports/source forms/restoration. Never duplicate/cancel/rerun active R2 or re-receive R1 artifact13623397089. No production repair without separate authority.",
     "source_parent": "ecfe5f6c7e5222124d98bfd1c48455ad00968ee4",
     "workflow_sha256": "0bee95bee259e479e1a35a78c29c2bfe54324bb80610862970e78773eb1921c9",
     "workflow_path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r2.yml"
@@ -114,11 +102,11 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "0dc6c8e8c65bbf84f7c8108816d27b2901300cdb",
-    "current_blob": "f85c9284768996f257a9b393ccee0a541f590ddd"
+    "commit": "cdf7181813d04ed9042f73b1d4efd5c7d5cc5949",
+    "current_blob": "b74abe9443d66c57b746ef3ee1835250338aeac9"
   },
   "qualification": {
-    "state": "R2_FROZEN_NOT_DISPATCHED",
+    "state": "R2_ORIGINAL_QUALIFICATION_ACTIVE",
     "epoch": "manual-quarantine-20261106-01",
     "branch": "manual-transmission/quarantine-recovery-20261106",
     "source": "1b9f25e3d3c6c9b0686a9e7cf12d60043a888f99",
@@ -329,13 +317,24 @@
     "dispatch_contract": "This freeze is first parent; validation is second parent. First-parent delta exactly the new R2 workflow. No auxiliary ref. Push once on recovery; ledger-only pushes do not retrigger.",
     "charter_blob": "d77eca4b30458128468ae48b3d5b02c465bd3987",
     "retarget_blob": "e64cfb1da2ece524e45c93437849136035be5260",
-    "run": null,
-    "job": null,
-    "attempt": null,
+    "run": 42500269970,
+    "job": 128791300748,
+    "attempt": 1,
     "artifact": null,
     "prior_r1_run": 42495425777,
     "prior_r1_artifact": 13623397089,
-    "prior_r1_receipt_reused_not_repeated": true
+    "prior_r1_receipt_reused_not_repeated": true,
+    "event": "cdf7181813d04ed9042f73b1d4efd5c7d5cc5949",
+    "event_tree": "eb65a655002a305170f76a3fb16111a3eb64059a",
+    "first_parent": "5b3a1c23c8a0a951b700f712f91378d829f77eaf",
+    "first_tree": "8ca321a2ccc8cc849f6f0fd98f2633f887f56b84",
+    "run_number": 1,
+    "last_workflow_observation": {
+      "utc": "2026-11-08T16:31:30.633Z",
+      "status": "in_progress",
+      "job_status": "in_progress",
+      "attempt": 1
+    }
   },
   "previous_recovery_lease": {
     "owner": "e99d98c4-2894-8331-9194-eeec90269c11",
@@ -721,20 +720,20 @@
     "production_defect_action": "Receive and preserve original evidence, prepare smallest bounded production proposal, then stop for separate explicit authorization."
   },
   "previous_foreground_lease": {
-    "owner": "manual-foreground-receive-20261108-f045018e-1b4f-4822-98fc-b4f028ccf38a",
+    "owner": "manual-foreground-r2-20261108-2373a83b-0132-4d47-be18-6e0e7193aa12",
     "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
-    "claimed_utc": "2026-11-08T16:09:46.312Z",
-    "expires_utc": "2026-11-08T17:09:46.312Z",
+    "claimed_utc": "2026-11-08T16:29:29.022Z",
+    "expires_utc": "2026-11-08T17:29:29.022Z",
     "scheduled_automation_identity_asserted": false,
     "scheduled_executor_enabled": false,
     "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
-    "exclusive_writer": "Only this foreground Work session may write during the lease.",
+    "exclusive_writer": "Only this explicitly user-authorized foreground Work session may write during this lease.",
     "session_id": null,
-    "session_identity_limitation": "No stable current conversation identifier exposed; unique foreground UUID owner label used.",
+    "session_identity_limitation": "No stable current conversation identifier exposed; unique foreground UUID label used.",
     "canonical": "READ_ONLY_QUARANTINED_UNRESOLVED"
   },
   "diagnostic_receiving_preparation": {
-    "state": "R2_SOURCE_BOUND_RECEIVER_PREPARED_NOT_RECEIVED",
+    "state": "R2_SOURCE_BOUND_RECEIVER_VERIFIED_NOT_RECEIVED",
     "path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106",
     "source": "1b9f25e3d3c6c9b0686a9e7cf12d60043a888f99",
     "protocol_blob": "0c06b04af55aad59785edaafa0e23c769bd2a095",
@@ -743,7 +742,12 @@
     "contract_blob": "4c25ad219c2a384ae1048ea3e7ce2571d331b78c",
     "original_downloads": 0,
     "artifact_received": false,
-    "expected_attempt": 1
+    "expected_attempt": 1,
+    "expected_run": 42500269970,
+    "expected_job": 128791300748,
+    "event": "cdf7181813d04ed9042f73b1d4efd5c7d5cc5949",
+    "validation": "54b9b296f094f09931cc9bdc8e4235317627de48",
+    "receiver_and_parser_unchanged_verified": true
   },
   "diagnostic_receipt": {
     "state": "ORIGINAL_FAILURE_RECEIVED_AND_ARCHIVED_ONCE",
@@ -792,7 +796,7 @@
     "production_admitted": false
   },
   "corrected_diagnostic_successor": {
-    "state": "FROZEN_TEST_ONLY_NOT_COMPILED_NOT_DISPATCHED",
+    "state": "FROZEN_R2_QUALIFICATION_ACTIVE",
     "source": "1b9f25e3d3c6c9b0686a9e7cf12d60043a888f99",
     "tree": "f0a526f6d99c18e11f741e8dfee408680cd4f00d",
     "source_parent": "ecfe5f6c7e5222124d98bfd1c48455ad00968ee4",
