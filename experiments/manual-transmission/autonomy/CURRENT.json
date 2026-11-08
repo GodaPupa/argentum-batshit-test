@@ -93,7 +93,7 @@
     "proposal": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/R1_RECEIVED_20261108/R2_NEXT_ACTIVATION.json",
     "workflow_draft": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/R1_RECEIVED_20261108/R2_ACTIVATION_WORKFLOW.yml",
     "workflow_blob": "a7b856779c6f28725c5b4fe89ad6f87fa9c7c49b",
-    "next_executable_action": "Create exact workflow-only R2 validation object parented to corrected source; freeze/read back pins and dispatch one qualification on recovery after fresh reconciliation. Never rerun or re-receive R1.",
+    "next_executable_action": "Fresh final reconciliation and immutable/live readback; push exactly one R2 qualification event with recovery freeze first parent and workflow-only validation second parent.",
     "source_parent": "ecfe5f6c7e5222124d98bfd1c48455ad00968ee4",
     "workflow_sha256": "0bee95bee259e479e1a35a78c29c2bfe54324bb80610862970e78773eb1921c9",
     "workflow_path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r2.yml"
@@ -114,30 +114,30 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "1a102d5ee9c0aa896725f1f8c5fd01febecf8bf4",
-    "current_blob": "dc8247666abc837597e8d7e0258eedfc33df02f6"
+    "commit": "0dc6c8e8c65bbf84f7c8108816d27b2901300cdb",
+    "current_blob": "f85c9284768996f257a9b393ccee0a541f590ddd"
   },
   "qualification": {
-    "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED",
+    "state": "R2_FROZEN_NOT_DISPATCHED",
     "epoch": "manual-quarantine-20261106-01",
     "branch": "manual-transmission/quarantine-recovery-20261106",
-    "source": "9fa2745bf73c648868e662ee64ac7a3e8351052c",
-    "source_tree": "3e6b3bc7c4ba053cde91134ca83b467dbf860e70",
+    "source": "1b9f25e3d3c6c9b0686a9e7cf12d60043a888f99",
+    "source_tree": "f0a526f6d99c18e11f741e8dfee408680cd4f00d",
     "source_parent": "ecfe5f6c7e5222124d98bfd1c48455ad00968ee4",
     "protocol_path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/PROTOCOL.json",
-    "protocol_blob": "e5cb500bb419587f219c999ff133a40af8dd68fe",
-    "validation": "745f86737e64c6d96feb3f4d7ba658316f9fa646",
-    "validation_tree": "ff91cc45e5b528a46cf09450635c954c6b1a11b5",
-    "validation_parent": "9fa2745bf73c648868e662ee64ac7a3e8351052c",
-    "workflow": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r1.yml",
-    "workflow_path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r1.yml",
-    "workflow_draft": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/ACTIVATION_WORKFLOW.yml",
-    "workflow_blob": "c0a1e4a351bb94d5ad27da8ab935c7979ba8f2f0",
-    "workflow_sha256": "33203eca066aa8a15f30097d94390392acd8eefc2f90bbb7f5838111afe85b1a",
+    "protocol_blob": "0c06b04af55aad59785edaafa0e23c769bd2a095",
+    "validation": "54b9b296f094f09931cc9bdc8e4235317627de48",
+    "validation_tree": "057fd73997311dbc8aa1e8910847ff70076c6c1d",
+    "validation_parent": "1b9f25e3d3c6c9b0686a9e7cf12d60043a888f99",
+    "workflow": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r2.yml",
+    "workflow_path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r2.yml",
+    "workflow_draft": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/R1_RECEIVED_20261108/R2_ACTIVATION_WORKFLOW.yml",
+    "workflow_blob": "a7b856779c6f28725c5b4fe89ad6f87fa9c7c49b",
+    "workflow_sha256": "0bee95bee259e479e1a35a78c29c2bfe54324bb80610862970e78773eb1921c9",
     "trigger": {
       "event": "push",
       "branch": "manual-transmission/quarantine-recovery-20261106",
-      "path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r1.yml"
+      "path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r2.yml"
     },
     "expected_run_number": 1,
     "expected_attempt": 1,
@@ -322,35 +322,20 @@
     "receiving_contract": {
       "path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/RECEIVING_CONTRACT.json",
       "blob": "4c25ad219c2a384ae1048ea3e7ce2571d331b78c",
+      "scope_binding": "Original receiving rules apply to exact R2 source/validation/event/workflow/run/job/attempt/artifact pins, under explicit R2 path authorization.",
       "original_artifact_once": true,
-      "original_zip_and_raw_reports_required": true,
       "green_workflow_is_not_acceptance": true
     },
-    "dispatch_contract": "This freeze is first parent; validation is second parent. First-parent tree delta exactly the new workflow. No auxiliary ref; push once on recovery. Ledger-only pushes do not retrigger.",
+    "dispatch_contract": "This freeze is first parent; validation is second parent. First-parent delta exactly the new R2 workflow. No auxiliary ref. Push once on recovery; ledger-only pushes do not retrigger.",
     "charter_blob": "d77eca4b30458128468ae48b3d5b02c465bd3987",
     "retarget_blob": "e64cfb1da2ece524e45c93437849136035be5260",
-    "run": 42495425777,
-    "job": 128776615050,
-    "attempt": 1,
-    "artifact": 13623397089,
-    "event": "f57acf02f21ed386a2a410abb69e648d9b40c049",
-    "event_tree": "fdef440d73436c478f883adbc242fd4299db496a",
-    "first_parent": "88d90ad208c0694a915316226b14a066294458d7",
-    "first_tree": "dc07de3eb6677686bf1edc46a879f36b9f637e0d",
-    "run_number": 1,
-    "last_workflow_observation": {
-      "utc": "2026-11-08T16:09:46.312Z",
-      "status": "completed",
-      "conclusion": "failure",
-      "job_status": "completed",
-      "job_conclusion": "failure",
-      "attempt": 1
-    },
-    "receipt": {
-      "commit": "a5a3f2644725d886962aeb11d526e797d86c9324",
-      "path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/R1_RECEIVED_20261108/RECEIPT.json",
-      "blob": "70a191b2320ef7beaf0d0db9a66e79b5814b045f"
-    }
+    "run": null,
+    "job": null,
+    "attempt": null,
+    "artifact": null,
+    "prior_r1_run": 42495425777,
+    "prior_r1_artifact": 13623397089,
+    "prior_r1_receipt_reused_not_repeated": true
   },
   "previous_recovery_lease": {
     "owner": "e99d98c4-2894-8331-9194-eeec90269c11",
@@ -749,22 +734,16 @@
     "canonical": "READ_ONLY_QUARANTINED_UNRESOLVED"
   },
   "diagnostic_receiving_preparation": {
-    "state": "ORIGINAL_FAILURE_RECEIVED_DO_NOT_REPEAT",
+    "state": "R2_SOURCE_BOUND_RECEIVER_PREPARED_NOT_RECEIVED",
     "path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106",
+    "source": "1b9f25e3d3c6c9b0686a9e7cf12d60043a888f99",
+    "protocol_blob": "0c06b04af55aad59785edaafa0e23c769bd2a095",
     "receiver_blob": "faee7408527e774218981ed59294ab07eb54a12d",
     "report_audit_blob": "e099666d1583406735d41225d7adf1b93f61fd50",
     "contract_blob": "4c25ad219c2a384ae1048ea3e7ce2571d331b78c",
-    "original_downloads": 1,
-    "artifact_received": true,
-    "expected_run": 42495425777,
-    "expected_job": 128776615050,
-    "expected_attempt": 1,
-    "expected_artifact": 13623397089,
-    "expected_bytes": 2827007,
-    "user_supplied_sha256": "571feb5c8453ba1bbcb0304b1081069128c96b7c0e80580ace7db94b253dc2ea",
-    "github_metadata_sha256": "571feb5c6b3749231678a7d57fd869fde17b4eda702aa29349f7a6ef0060f902",
-    "digest_discrepancy": "User supplied SHA-256 differs from GitHub metadata. Preserve both; independently hash original download; no integrity acceptance until resolved.",
-    "receipt": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/R1_RECEIVED_20261108/RECEIPT.json"
+    "original_downloads": 0,
+    "artifact_received": false,
+    "expected_attempt": 1
   },
   "diagnostic_receipt": {
     "state": "ORIGINAL_FAILURE_RECEIVED_AND_ARCHIVED_ONCE",
@@ -853,5 +832,262 @@
     "production_or_sdk_changes": false,
     "scheduled_executor_must_remain_disabled": true,
     "canonical_read_only": true
-  }
+  },
+  "prior_diagnostic_qualifications": [
+    {
+      "state": "ORIGINAL_COMPILE_FAILURE_RECEIVED",
+      "epoch": "manual-quarantine-20261106-01",
+      "branch": "manual-transmission/quarantine-recovery-20261106",
+      "source": "9fa2745bf73c648868e662ee64ac7a3e8351052c",
+      "source_tree": "3e6b3bc7c4ba053cde91134ca83b467dbf860e70",
+      "source_parent": "ecfe5f6c7e5222124d98bfd1c48455ad00968ee4",
+      "protocol_path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/PROTOCOL.json",
+      "protocol_blob": "e5cb500bb419587f219c999ff133a40af8dd68fe",
+      "validation": "745f86737e64c6d96feb3f4d7ba658316f9fa646",
+      "validation_tree": "ff91cc45e5b528a46cf09450635c954c6b1a11b5",
+      "validation_parent": "9fa2745bf73c648868e662ee64ac7a3e8351052c",
+      "workflow": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r1.yml",
+      "workflow_path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r1.yml",
+      "workflow_draft": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/ACTIVATION_WORKFLOW.yml",
+      "workflow_blob": "c0a1e4a351bb94d5ad27da8ab935c7979ba8f2f0",
+      "workflow_sha256": "33203eca066aa8a15f30097d94390392acd8eefc2f90bbb7f5838111afe85b1a",
+      "trigger": {
+        "event": "push",
+        "branch": "manual-transmission/quarantine-recovery-20261106",
+        "path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r1.yml"
+      },
+      "expected_run_number": 1,
+      "expected_attempt": 1,
+      "compiled_forms": [
+        "normal",
+        "enumeration-condition-removal",
+        "authorization-condition-removal",
+        "stack-only-history",
+        "opponent-controller-conflation"
+      ],
+      "test_identities": [
+        "PS H0 serialized=false enumeration",
+        "PS H0 serialized=false normal",
+        "PS H0 serialized=false direct",
+        "PS H1 serialized=false enumeration",
+        "PS H1 serialized=false normal",
+        "PS H1 serialized=false direct",
+        "PS H2 serialized=false enumeration",
+        "PS H2 serialized=false normal",
+        "PS H2 serialized=false direct",
+        "PS H3 serialized=false enumeration",
+        "PS H3 serialized=false normal",
+        "PS H3 serialized=false direct",
+        "PS H4 serialized=false enumeration",
+        "PS H4 serialized=false normal",
+        "PS H4 serialized=false direct",
+        "PS H5 serialized=false enumeration",
+        "PS H5 serialized=false normal",
+        "PS H5 serialized=false direct",
+        "PS H2 serialized=true enumeration",
+        "PS H2 serialized=true normal",
+        "PS H2 serialized=true direct",
+        "PS H4 serialized=true enumeration",
+        "PS H4 serialized=true normal",
+        "PS H4 serialized=true direct"
+      ],
+      "expected_normal_rows": 24,
+      "expected_restored_rows": 24,
+      "expected_negative_witnesses": 18,
+      "mutant_failure_counts": {
+        "enumeration-condition-removal": 4,
+        "authorization-condition-removal": 4,
+        "stack-only-history": 6,
+        "opponent-controller-conflation": 4
+      },
+      "witness_inventory": {
+        "enumeration-condition-removal": {
+          "PS H0 serialized=false enumeration": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 61,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H4 serialized=false enumeration": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 61,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H5 serialized=false enumeration": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 61,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H4 serialized=true enumeration": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 61,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          }
+        },
+        "authorization-condition-removal": {
+          "PS H0 serialized=false direct": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 94,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H4 serialized=false direct": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 94,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H5 serialized=false direct": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 94,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H4 serialized=true direct": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 94,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          }
+        },
+        "stack-only-history": {
+          "PS H1 serialized=false enumeration": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 61,
+            "expected": "true",
+            "actual": "false",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H1 serialized=false direct": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 94,
+            "expected": "true",
+            "actual": "false",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H2 serialized=false enumeration": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 61,
+            "expected": "true",
+            "actual": "false",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H2 serialized=false direct": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 94,
+            "expected": "true",
+            "actual": "false",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H2 serialized=true enumeration": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 61,
+            "expected": "true",
+            "actual": "false",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H2 serialized=true direct": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 94,
+            "expected": "true",
+            "actual": "false",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          }
+        },
+        "opponent-controller-conflation": {
+          "PS H4 serialized=false enumeration": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 61,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H4 serialized=false direct": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 94,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H4 serialized=true enumeration": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 61,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          },
+          "PS H4 serialized=true direct": {
+            "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+            "line": 94,
+            "expected": "false",
+            "actual": "true",
+            "assertion_type": "org.opentest4j.AssertionFailedError"
+          }
+        }
+      },
+      "receiving_contract": {
+        "path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/RECEIVING_CONTRACT.json",
+        "blob": "4c25ad219c2a384ae1048ea3e7ce2571d331b78c",
+        "original_artifact_once": true,
+        "original_zip_and_raw_reports_required": true,
+        "green_workflow_is_not_acceptance": true
+      },
+      "dispatch_contract": "This freeze is first parent; validation is second parent. First-parent tree delta exactly the new workflow. No auxiliary ref; push once on recovery. Ledger-only pushes do not retrigger.",
+      "charter_blob": "d77eca4b30458128468ae48b3d5b02c465bd3987",
+      "retarget_blob": "e64cfb1da2ece524e45c93437849136035be5260",
+      "run": 42495425777,
+      "job": 128776615050,
+      "attempt": 1,
+      "artifact": 13623397089,
+      "event": "f57acf02f21ed386a2a410abb69e648d9b40c049",
+      "event_tree": "fdef440d73436c478f883adbc242fd4299db496a",
+      "first_parent": "88d90ad208c0694a915316226b14a066294458d7",
+      "first_tree": "dc07de3eb6677686bf1edc46a879f36b9f637e0d",
+      "run_number": 1,
+      "last_workflow_observation": {
+        "utc": "2026-11-08T16:09:46.312Z",
+        "status": "completed",
+        "conclusion": "failure",
+        "job_status": "completed",
+        "job_conclusion": "failure",
+        "attempt": 1
+      },
+      "receipt": {
+        "commit": "a5a3f2644725d886962aeb11d526e797d86c9324",
+        "path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/R1_RECEIVED_20261108/RECEIPT.json",
+        "blob": "70a191b2320ef7beaf0d0db9a66e79b5814b045f"
+      }
+    }
+  ],
+  "prior_diagnostic_receiving_preparations": [
+    {
+      "state": "ORIGINAL_FAILURE_RECEIVED_DO_NOT_REPEAT",
+      "path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106",
+      "receiver_blob": "faee7408527e774218981ed59294ab07eb54a12d",
+      "report_audit_blob": "e099666d1583406735d41225d7adf1b93f61fd50",
+      "contract_blob": "4c25ad219c2a384ae1048ea3e7ce2571d331b78c",
+      "original_downloads": 1,
+      "artifact_received": true,
+      "expected_run": 42495425777,
+      "expected_job": 128776615050,
+      "expected_attempt": 1,
+      "expected_artifact": 13623397089,
+      "expected_bytes": 2827007,
+      "user_supplied_sha256": "571feb5c8453ba1bbcb0304b1081069128c96b7c0e80580ace7db94b253dc2ea",
+      "github_metadata_sha256": "571feb5c6b3749231678a7d57fd869fde17b4eda702aa29349f7a6ef0060f902",
+      "digest_discrepancy": "User supplied SHA-256 differs from GitHub metadata. Preserve both; independently hash original download; no integrity acceptance until resolved.",
+      "receipt": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/R1_RECEIVED_20261108/RECEIPT.json"
+    }
+  ]
 }
