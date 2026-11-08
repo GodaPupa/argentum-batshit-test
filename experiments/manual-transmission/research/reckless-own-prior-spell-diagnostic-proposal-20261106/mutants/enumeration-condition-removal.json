@@ -1,0 +1,8 @@
+{
+  "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+  "before": "alt.condition == null || context.conditionEvaluator.evaluate(\n                        state,\n                        alt.condition!!,\n                        com.wingedsheep.engine.handlers.EffectContext(\n                            sourceId = cardId,\n                            controllerId = playerId\n                        )\n                    )",
+  "after": "true",
+  "normal_blob": "6b3cf0ad94061464d76c87564b44bc2ef200704b",
+  "normal_sha256": "ace1583a401b0f1875d499670e51e4ac10c48b0096155c01102be704a0205c52",
+  "mutant_sha256": "6b023aca9afd0818f9a266cab5670d78a4bc03471ac31a6083f1b1f2eb81de52"
+}
