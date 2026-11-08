@@ -30,9 +30,21 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
-  "lease": null,
+  "status": "WORKING",
+  "owner": "manual-foreground-receive-20261108-f045018e-1b4f-4822-98fc-b4f028ccf38a",
+  "lease": {
+    "owner": "manual-foreground-receive-20261108-f045018e-1b4f-4822-98fc-b4f028ccf38a",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "claimed_utc": "2026-11-08T16:09:46.312Z",
+    "expires_utc": "2026-11-08T17:09:46.312Z",
+    "scheduled_automation_identity_asserted": false,
+    "scheduled_executor_enabled": false,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+    "exclusive_writer": "Only this foreground Work session may write during the lease.",
+    "session_id": null,
+    "session_identity_limitation": "No stable current conversation identifier exposed; unique foreground UUID owner label used.",
+    "canonical": "READ_ONLY_QUARANTINED_UNRESOLVED"
+  },
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -48,8 +60,8 @@
     "pending_evidence": [
       "All five compilation forms, 24 normal identities, 24 restored identities, 18 exact negative witnesses and original artifact receiving. No qualification dispatched yet."
     ],
-    "ownership": "Foreground lease released with original qualification active. Scheduled executor disabled; prompt/schedule unchanged. Canonical lineage remains read-only unresolved.",
-    "actual_stopping_reason": "Original diagnostic qualification run 42495425777 job 128776615050 attempt 1 is active; no duplicate or rerun authorized.",
+    "ownership": "Foreground recovery receiving lease held; scheduled executor remains disabled and canonical read-only.",
+    "actual_stopping_reason": null,
     "implementation": "Prepared 24 diagnostic cases using identical pre-decision states; frozen four isolated mutations and 18 assertion witnesses, compile-first runner, raw-report receiver and pinned workflow draft. Static infrastructure checks passed; no compilation/behavior/receiving/acceptance claimed."
   },
   "next": {
@@ -81,7 +93,7 @@
     "proposal": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/NEXT_ACTIVATION.json",
     "workflow_draft": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/ACTIVATION_WORKFLOW.yml",
     "workflow_blob": "c0a1e4a351bb94d5ad27da8ab935c7979ba8f2f0",
-    "next_executable_action": "Wait for original run 42495425777 attempt 1 to become terminal without duplicate/cancel/rerun. Reconcile successor/receipt and disabled executor, claim a fresh foreground recovery lease, receive the original artifact once under frozen RECEIVING_CONTRACT. Preserve failures; propose separately for any demonstrated production defect."
+    "next_executable_action": "Receive original artifact 13623397089 once, verify immutable pins/raw evidence, preserve digest discrepancy, diagnose normal-price submission failure without production/assertion changes."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -99,11 +111,11 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "f57acf02f21ed386a2a410abb69e648d9b40c049",
-    "current_blob": "f000ec227eb7434d3a08085d6ebbdb2eb3c3aea4"
+    "commit": "1976f822f1d7e8c7e70920a71c5d3dae6f952b06",
+    "current_blob": "594c36335b41392fbfecb3cc0c9743f111892f31"
   },
   "qualification": {
-    "state": "ORIGINAL_QUALIFICATION_ACTIVE",
+    "state": "TERMINAL_FAILURE_ORIGINAL_RECEIVING_IN_PROGRESS",
     "epoch": "manual-quarantine-20261106-01",
     "branch": "manual-transmission/quarantine-recovery-20261106",
     "source": "9fa2745bf73c648868e662ee64ac7a3e8351052c",
@@ -317,16 +329,18 @@
     "run": 42495425777,
     "job": 128776615050,
     "attempt": 1,
-    "artifact": null,
+    "artifact": 13623397089,
     "event": "f57acf02f21ed386a2a410abb69e648d9b40c049",
     "event_tree": "fdef440d73436c478f883adbc242fd4299db496a",
     "first_parent": "88d90ad208c0694a915316226b14a066294458d7",
     "first_tree": "dc07de3eb6677686bf1edc46a879f36b9f637e0d",
     "run_number": 1,
     "last_workflow_observation": {
-      "utc": "2026-11-08T15:34:14.127Z",
-      "status": "in_progress",
-      "job_status": "in_progress",
+      "utc": "2026-11-08T16:09:46.312Z",
+      "status": "completed",
+      "conclusion": "failure",
+      "job_status": "completed",
+      "job_conclusion": "failure",
       "attempt": 1
     }
   },
@@ -531,80 +545,26 @@
     "scheduled_executor_must_remain_disabled": true
   },
   "foreground_reconciliation": {
-    "checked_utc": "2026-11-08T15:32:07.013Z",
-    "head": "5d7adeaa7934e9952dbe8c3c139106b5f1315379",
-    "current_blob": "009b179c9db538f83b621722b48b4a3f0271fbac",
+    "checked_utc": "2026-11-08T16:09:46.312Z",
+    "head": "1976f822f1d7e8c7e70920a71c5d3dae6f952b06",
+    "current_blob": "594c36335b41392fbfecb3cc0c9743f111892f31",
     "owner_before": null,
     "lease_before": null,
     "no_newer_owner_or_receipt_or_successor": true,
-    "scheduled_executor": {
-      "id": "6adbe33033e481918659ce578f64f31e",
-      "enabled": false,
-      "last_run": {
-        "id": "0d96edbf-1004-832b-98e0-0c805c3a6c94",
-        "recorded_status": "completed",
-        "scheduled_for": "2026-11-07T11:44:00Z",
-        "started_at": "2026-11-07T11:44:48.569763Z",
-        "completed_at": "2026-11-07T11:45:52.738833Z",
-        "chat_ref": {
-          "type": "chatgpt",
-          "id": "6adce45b-d444-83e8-b69b-ed044642bb80"
-        }
-      }
-    },
-    "other_manual_automations": [
-      {
-        "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
-        "enabled": false,
-        "last_run": {
-          "id": "66fa9220-3fb8-832e-952c-6eebba09912b",
-          "recorded_status": "completed",
-          "scheduled_for": "2026-10-23T22:06:44Z",
-          "started_at": "2026-10-23T22:01:57.330412Z",
-          "completed_at": "2026-10-23T22:02:34.866938Z",
-          "chat_ref": {
-            "type": "chatgpt",
-            "id": "6adbd980-57b0-83e8-986f-d7a646c8d5cf"
-          }
-        }
-      },
-      {
-        "id": "6adbad91b90881918859ad0cba22b881",
-        "enabled": false,
-        "last_run": {
-          "id": "741e3792-3a3c-8331-9aef-05b07e50dc2f",
-          "recorded_status": "completed",
-          "scheduled_for": "2026-10-23T18:56:13Z",
-          "started_at": "2026-10-23T19:25:33.612894Z",
-          "completed_at": "2026-10-23T19:28:07.241968Z",
-          "chat_ref": {
-            "type": "chatgpt",
-            "id": "6adbb549-0728-83e8-a2eb-9841e98c2432"
-          }
-        }
-      },
-      {
-        "id": "6ac1b22692ec8191b56c6cbd619b43c8",
-        "enabled": false,
-        "last_run": {
-          "id": "199851ee-72ac-8320-b598-7c892e445b5c",
-          "recorded_status": "no_update",
-          "scheduled_for": "2026-10-04T01:56:50Z",
-          "started_at": "2026-10-04T01:56:13.973766Z",
-          "completed_at": "2026-10-04T01:56:31.080015Z",
-          "chat_ref": null
-        }
-      }
-    ],
-    "workflow_counts": {
-      "in_progress": 0,
-      "queued": 1,
-      "waiting": 0,
-      "requested": 0,
-      "pending": 0
-    },
+    "relevant_active_workflows": [],
     "ignored_unrelated_run": 34749202144,
-    "conclusion": "No observed active recovery worker or relevant Manual workflow. Explicitly authorized foreground claim; no inference about quarantined canonical invocation."
+    "all_manual_automations_disabled": true,
+    "scheduled_executor_last_run": {
+      "id": "0d96edbf-1004-832b-98e0-0c805c3a6c94",
+      "recorded_status": "completed",
+      "scheduled_for": "2026-11-07T11:44:00Z",
+      "started_at": "2026-11-07T11:44:48.569763Z",
+      "completed_at": "2026-11-07T11:45:52.738833Z",
+      "chat_ref": {
+        "type": "chatgpt",
+        "id": "6adce45b-d444-83e8-b69b-ed044642bb80"
+      }
+    }
   },
   "foreground_lease_history": [
     {
@@ -763,7 +723,7 @@
     "canonical": "READ_ONLY_QUARANTINED_UNRESOLVED"
   },
   "diagnostic_receiving_preparation": {
-    "state": "SOURCE_BOUND_RECEIVER_PREPARED_NOT_RECEIVED",
+    "state": "CLAIMED_ORIGINAL_RECEIVING_NOT_DOWNLOADED",
     "path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106",
     "receiver_blob": "faee7408527e774218981ed59294ab07eb54a12d",
     "report_audit_blob": "e099666d1583406735d41225d7adf1b93f61fd50",
@@ -772,6 +732,11 @@
     "artifact_received": false,
     "expected_run": 42495425777,
     "expected_job": 128776615050,
-    "expected_attempt": 1
+    "expected_attempt": 1,
+    "expected_artifact": 13623397089,
+    "expected_bytes": 2827007,
+    "user_supplied_sha256": "571feb5c8453ba1bbcb0304b1081069128c96b7c0e80580ace7db94b253dc2ea",
+    "github_metadata_sha256": "571feb5c6b3749231678a7d57fd869fde17b4eda702aa29349f7a6ef0060f902",
+    "digest_discrepancy": "User supplied SHA-256 differs from GitHub metadata. Preserve both; independently hash original download; no integrity acceptance until resolved."
   }
 }
