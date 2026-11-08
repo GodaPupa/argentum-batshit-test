@@ -27,12 +27,26 @@
     "schedule": "BEGIN:VEVENT\nDTSTART:20261023T224400Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
     "retarget_status": "VERIFIED_EXCLUSIVE_RECOVERY_REF",
     "proof": "experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json",
-    "enabled_at_latest_readback": true,
+    "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "READY_FOR_NEXT_ITERATION",
-  "owner": null,
-  "lease": null,
+  "status": "WORKING",
+  "owner": "foreground-manual-20261108145836120-qddqo7ndyl",
+  "lease": {
+    "owner": "foreground-manual-20261108145836120-qddqo7ndyl",
+    "epoch": "manual-quarantine-20261106-01",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "claimed_utc": "2026-11-08T14:58:36.120Z",
+    "expires_utc": "2026-11-08T16:28:36.121Z",
+    "conversation_session_id": null,
+    "identity_limitation": "No stable current foreground conversation/session identifier is exposed by this execution environment. Unique foreground owner label is bound to this existing Work session; no scheduled invocation identity is asserted.",
+    "authorization": "Explicit user foreground authorization in this conversation, 2026-11-08.",
+    "scheduled_automation_identity_asserted": false,
+    "scheduled_executor_id": "6adbe33033e481918659ce578f64f31e",
+    "scheduled_executor_enabled": false,
+    "exclusive_writer": "Only this foreground Work session may write during this lease.",
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106"
+  },
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -48,8 +62,8 @@
     "pending_evidence": [
       "Normal and all declared mutant compilation, H0-H5 and serialized H2/H4 behavior, exact negative witnesses/restoration, original-artifact receiving."
     ],
-    "ownership": "Recovery owner and lease remain null; sole existing executor enabled with preserved schedule. Historical canonical owner remains unresolved.",
-    "actual_stopping_reason": "Administrative grant and sole-executor resume verified; handoff to existing hosted Work executor. No claim of an active invocation or continuous execution.",
+    "ownership": "Explicitly user-authorized foreground Work owns this recovery lease; scheduled executor disabled. Historical canonical owner unresolved and quarantined.",
+    "actual_stopping_reason": null,
     "implementation": "Full original evidence received and exact-bound Assay classification reviewed."
   },
   "next": {
@@ -94,7 +108,10 @@
     "no_successful_workflow_rerun": true,
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
-  "previous_checkpoint": "5376351f947b31d7004796e2fab4cbd535dc5956",
+  "previous_checkpoint": {
+    "commit": "28e92f62e7f9807dd6bb9a65b97fb06c20f2ed3a",
+    "current_blob": "fb9ab5bac5209e15110d59e7983a4adede7654db"
+  },
   "qualification": {
     "source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
     "source_tree": "f7217ca9a729a6e447b23526c3131fed7b1624f9",
@@ -309,5 +326,86 @@
       "latest_receipt": "15bbe68ce4d9a1aee5684d0a6f131194ea0f9dc6",
       "latest_admission": "a6f99b0400f83e33081b4f63de77bc17e597e15d"
     }
+  },
+  "foreground_authorization": {
+    "authorized": true,
+    "scheduled_self_ownership_required": false,
+    "canonical_owner_unresolved": true,
+    "canonical_release_or_termination_claimed": false,
+    "scheduled_executor_must_remain_disabled": true
+  },
+  "foreground_reconciliation": {
+    "checked_utc": "2026-11-08T14:58:36.120Z",
+    "head": "28e92f62e7f9807dd6bb9a65b97fb06c20f2ed3a",
+    "current_blob": "fb9ab5bac5209e15110d59e7983a4adede7654db",
+    "no_newer_owner_or_successor": true,
+    "other_manual_automations": [
+      {
+        "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
+        "enabled": false,
+        "run": {
+          "id": "66fa9220-3fb8-832e-952c-6eebba09912b",
+          "recorded_status": "completed",
+          "scheduled_for": "2026-10-23T22:06:44Z",
+          "started_at": "2026-10-23T22:01:57.330412Z",
+          "completed_at": "2026-10-23T22:02:34.866938Z",
+          "chat_ref": {
+            "type": "chatgpt",
+            "id": "6adbd980-57b0-83e8-986f-d7a646c8d5cf"
+          }
+        }
+      },
+      {
+        "id": "6adbad91b90881918859ad0cba22b881",
+        "enabled": false,
+        "run": {
+          "id": "741e3792-3a3c-8331-9aef-05b07e50dc2f",
+          "recorded_status": "completed",
+          "scheduled_for": "2026-10-23T18:56:13Z",
+          "started_at": "2026-10-23T19:25:33.612894Z",
+          "completed_at": "2026-10-23T19:28:07.241968Z",
+          "chat_ref": {
+            "type": "chatgpt",
+            "id": "6adbb549-0728-83e8-a2eb-9841e98c2432"
+          }
+        }
+      },
+      {
+        "id": "6ac1b22692ec8191b56c6cbd619b43c8",
+        "enabled": false,
+        "run": {
+          "id": "199851ee-72ac-8320-b598-7c892e445b5c",
+          "recorded_status": "no_update",
+          "scheduled_for": "2026-10-04T01:56:50Z",
+          "started_at": "2026-10-04T01:56:13.973766Z",
+          "completed_at": "2026-10-04T01:56:31.080015Z",
+          "chat_ref": null
+        }
+      }
+    ],
+    "scheduled_executor": {
+      "id": "6adbe33033e481918659ce578f64f31e",
+      "enabled": false,
+      "last_run": {
+        "id": "0d96edbf-1004-832b-98e0-0c805c3a6c94",
+        "recorded_status": "completed",
+        "scheduled_for": "2026-11-07T11:44:00Z",
+        "started_at": "2026-11-07T11:44:48.569763Z",
+        "completed_at": "2026-11-07T11:45:52.738833Z",
+        "chat_ref": {
+          "type": "chatgpt",
+          "id": "6adce45b-d444-83e8-b69b-ed044642bb80"
+        }
+      }
+    },
+    "workflow_counts": {
+      "in_progress": 0,
+      "queued": 1,
+      "waiting": 0,
+      "pending": 0,
+      "requested": 0
+    },
+    "ignored_unrelated_run": 34749202144,
+    "conclusion": "No observed active recovery worker or relevant Manual workflow; free epoch explicitly claimed. No inference about quarantined canonical invocation."
   }
 }
