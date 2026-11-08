@@ -1,0 +1,103 @@
+{
+  "state": "BOUNDED_OWN_PRIOR_SPELL_DIAGNOSTIC_VERIFIED",
+  "epoch": "manual-quarantine-20261106-01",
+  "branch": "manual-transmission/quarantine-recovery-20261106",
+  "source": "1b9f25e3d3c6c9b0686a9e7cf12d60043a888f99",
+  "source_tree": "f0a526f6d99c18e11f741e8dfee408680cd4f00d",
+  "source_parent": "ecfe5f6c7e5222124d98bfd1c48455ad00968ee4",
+  "protocol_path": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/PROTOCOL.json",
+  "protocol_blob": "0c06b04af55aad59785edaafa0e23c769bd2a095",
+  "validation": "54b9b296f094f09931cc9bdc8e4235317627de48",
+  "validation_tree": "057fd73997311dbc8aa1e8910847ff70076c6c1d",
+  "validation_parent": "1b9f25e3d3c6c9b0686a9e7cf12d60043a888f99",
+  "workflow": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r2.yml",
+  "workflow_blob": "a7b856779c6f28725c5b4fe89ad6f87fa9c7c49b",
+  "workflow_sha256": "0bee95bee259e479e1a35a78c29c2bfe54324bb80610862970e78773eb1921c9",
+  "event": "cdf7181813d04ed9042f73b1d4efd5c7d5cc5949",
+  "event_tree": "eb65a655002a305170f76a3fb16111a3eb64059a",
+  "event_parents": [
+    "5b3a1c23c8a0a951b700f712f91378d829f77eaf",
+    "54b9b296f094f09931cc9bdc8e4235317627de48"
+  ],
+  "run": 42500269970,
+  "job": 128791300748,
+  "attempt": 1,
+  "artifact": 13625059402,
+  "original_sha256": "58b19f596215695d5d477b1bee67b850e21f9df99666cbe8d3a58379c886f026",
+  "original_bytes": 5525129,
+  "receipt": {
+    "path": "RECEIPT.json",
+    "blob": "221c31493c9836c243bae1c41f69d6b349a8f912"
+  },
+  "supplemental_audit": {
+    "path": "SUPPLEMENTAL_AUDIT.json",
+    "blob": "60eaa9259445c681f4dca32a838ab37c0b3cde54"
+  },
+  "compiled_forms": 5,
+  "compile_first": true,
+  "normal_identities": 24,
+  "restored_identities": 24,
+  "negative_witnesses": 18,
+  "mutant_failure_counts": {
+    "enumeration-condition-removal": 4,
+    "authorization-condition-removal": 4,
+    "stack-only-history": 6,
+    "opponent-controller-conflation": 4
+  },
+  "unexpected_failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "restoration_between_every_form_verified": true,
+  "final_source_rebinding_verified": true,
+  "supported_histories": [
+    {
+      "history": "H0",
+      "earlier_spell": "none this turn",
+      "alternative_eligible": false
+    },
+    {
+      "history": "H1",
+      "earlier_spell": "own resolved this turn",
+      "alternative_eligible": true
+    },
+    {
+      "history": "H2",
+      "earlier_spell": "own countered this turn",
+      "alternative_eligible": true,
+      "whole_state_serialization_also_verified": true
+    },
+    {
+      "history": "H3",
+      "earlier_spell": "own still on stack this turn",
+      "alternative_eligible": true
+    },
+    {
+      "history": "H4",
+      "earlier_spell": "opponent only this turn",
+      "alternative_eligible": false,
+      "whole_state_serialization_also_verified": true
+    },
+    {
+      "history": "H5",
+      "earlier_spell": "own only on prior turn; real turn advancement resets history",
+      "alternative_eligible": false
+    }
+  ],
+  "common_arms": [
+    "Enumeration and explicit normal/alternative submissions fork identical immutable pre-decision state.",
+    "Normal-price casting succeeds in every history at three generic mana and remains unmarked as SELF_ALTERNATIVE.",
+    "Eligible explicitly selected alternative succeeds at one generic mana, with selected-choice transport to battlefield.",
+    "Ineligible explicitly selected alternative rejects with unchanged state: no mana spent, no new stack object, original card still in hand.",
+    "Eligibility and price alone do not select SELF_ALTERNATIVE. Histories verify controller-indexed records and actual stack/battlefield/graveyard and turn facts."
+  ],
+  "exclusions": [
+    "No Surge implementation or keyword admission",
+    "No Reckless Bushwhacker registration or card admission",
+    "No teammate/team model coverage",
+    "No multiplayer admission",
+    "No production or SDK change",
+    "No official gameplay evidence"
+  ],
+  "reuse": "Previously accepted source-departure and selected-choice evidence preserved under its existing bindings; no rerun, receiving or re-audit of those qualifications.",
+  "publication_rule": "This bounded record must be used with READBACK_VERIFICATION.json and the released recovery CURRENT; raw receipt alone does not assert repository archive publication."
+}

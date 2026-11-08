@@ -1,0 +1,67 @@
+{
+  "state": "ORIGINAL_DIAGNOSTIC_RECEIVED",
+  "diagnostic_gates_verified": true,
+  "production_admitted": false,
+  "source": "1b9f25e3d3c6c9b0686a9e7cf12d60043a888f99",
+  "source_tree": "f0a526f6d99c18e11f741e8dfee408680cd4f00d",
+  "validation": "54b9b296f094f09931cc9bdc8e4235317627de48",
+  "event": "cdf7181813d04ed9042f73b1d4efd5c7d5cc5949",
+  "run": 42500269970,
+  "job": 128791300748,
+  "attempt": 1,
+  "artifact": 13625059402,
+  "bytes": 5525129,
+  "sha256": "58b19f596215695d5d477b1bee67b850e21f9df99666cbe8d3a58379c886f026",
+  "pins_sha256": "5841e6e7327ade1c64325d5e23212e224e84082045b4229388fe35cbf05ffd91",
+  "manifest_entries": 97,
+  "qualification_manifest_entries": 95,
+  "checks": {
+    "compile-normal": true,
+    "compile-enumeration-condition-removal": true,
+    "compile-authorization-condition-removal": true,
+    "compile-stack-only-history": true,
+    "compile-opponent-controller-conflation": true,
+    "compile-first": true,
+    "normal": {
+      "rows": 24,
+      "failures": 0,
+      "skips": 0,
+      "verified": true
+    },
+    "negative-enumeration-condition-removal": {
+      "rows": 24,
+      "failures": 4,
+      "skips": 0,
+      "verified": true
+    },
+    "negative-authorization-condition-removal": {
+      "rows": 24,
+      "failures": 4,
+      "skips": 0,
+      "verified": true
+    },
+    "negative-stack-only-history": {
+      "rows": 24,
+      "failures": 6,
+      "skips": 0,
+      "verified": true
+    },
+    "negative-opponent-controller-conflation": {
+      "rows": 24,
+      "failures": 4,
+      "skips": 0,
+      "verified": true
+    },
+    "restored-normal": {
+      "rows": 24,
+      "failures": 0,
+      "skips": 0,
+      "verified": true
+    },
+    "restored-bytes": true,
+    "final-rebinding": true
+  },
+  "audit_failures": {},
+  "original_failure_text": null,
+  "disposition": "Diagnostic evidence only; no production or card admission."
+}
