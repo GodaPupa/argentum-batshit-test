@@ -1,0 +1,122 @@
+name: Manual quarantine own-prior-spell diagnostic R1
+on:
+  push:
+    branches: [manual-transmission/quarantine-recovery-20261106]
+    paths: ['.github/workflows/manual-quarantine-prior-spell-diagnostic-r1.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: __SOURCE__
+  SOURCE_TREE: __SOURCE_TREE__
+  WORKFLOW: .github/workflows/manual-quarantine-prior-spell-diagnostic-r1.yml
+  RECORD: experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106
+  PYTHONDONTWRITEBYTECODE: '1'
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - name: Bind recovery event and detach exact validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, subprocess
+          from pathlib import Path
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          event = os.environ["GITHUB_SHA"]
+          workflow = os.environ["WORKFLOW"]
+          assert os.environ["GITHUB_REF"] == "refs/heads/manual-transmission/quarantine-recovery-20261106"
+          assert os.environ["GITHUB_EVENT_NAME"] == "push"
+          assert os.environ["GITHUB_RUN_ATTEMPT"] == os.environ["GITHUB_RUN_NUMBER"] == "1"
+          assert git("rev-parse", "HEAD") == event
+          first, validation = git("show", "-s", "--format=%P", event).split()
+          assert git("diff", "--name-only", first, event) == workflow
+          ledger_path = "experiments/manual-transmission/autonomy/CURRENT.json"
+          ledger = json.loads(git("show", first + ":" + ledger_path))
+          assert ledger["epoch"] == "manual-quarantine-20261106-01"
+          assert ledger["branch"] == "manual-transmission/quarantine-recovery-20261106"
+          assert ledger["automation"]["execution_task_id"] == "6adbe33033e481918659ce578f64f31e"
+          assert ledger["automation"]["execution_admitted"] is True
+          assert ledger["automation"]["retarget_status"] == "VERIFIED_EXCLUSIVE_RECOVERY_REF"
+          assert ledger["status"] == "WORKING" and ledger["owner"] == ledger["lease"]["owner"]
+          assert git("rev-parse", first + ":experiments/manual-transmission/autonomy/QUARANTINE_RECOVERY_20261106.json") == "d77eca4b30458128468ae48b3d5b02c465bd3987"
+          assert git("rev-parse", first + ":experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json") == "e64cfb1da2ece524e45c93437849136035be5260"
+          assert ledger["lease"]["kind"] == "USER_AUTHORIZED_FOREGROUND_WORK"
+          assert ledger["lease"]["scheduled_automation_identity_asserted"] is False
+          assert ledger["lease"]["scheduled_executor_enabled"] is False
+          assert ledger["automation"]["enabled_at_latest_readback"] is False
+          assert ledger["lease"]["writable_ref"] == os.environ["GITHUB_REF"]
+          assert ledger["foreground_authorization"]["scheduled_executor_must_remain_disabled"] is True
+          frozen = ledger["qualification"]
+          source = os.environ["SOURCE"]
+          assert frozen["validation"] == validation and frozen["source"] == source
+          assert git("show", "-s", "--format=%P", validation) == source
+          assert git("diff", "--name-only", source, validation) == workflow
+          assert git("rev-parse", source + "^{tree}") == os.environ["SOURCE_TREE"] == frozen["source_tree"]
+          validation_tree = git("rev-parse", validation + "^{tree}")
+          assert validation_tree == frozen["validation_tree"]
+          event_blob = git("rev-parse", event + ":" + workflow)
+          validation_blob = git("rev-parse", validation + ":" + workflow)
+          assert event_blob == validation_blob == frozen["workflow_blob"]
+          protocol = git("rev-parse", source + ":" + os.environ["RECORD"] + "/PROTOCOL.json")
+          assert protocol == frozen["protocol_blob"] == "__PROTOCOL_BLOB__"
+          record = dict(epoch=ledger["epoch"], branch=ledger["branch"], event=event,
+                        event_tree=git("rev-parse", event + "^{tree}"), first_parent=first,
+                        first_tree=git("rev-parse", first + "^{tree}"), validation=validation,
+                        validation_tree=validation_tree, source=source, source_tree=frozen["source_tree"],
+                        event_workflow_blob=event_blob, validation_workflow_blob=validation_blob,
+                        workflow=workflow, protocol_blob=protocol, run=int(os.environ["GITHUB_RUN_ID"]),
+                        run_number=1, attempt=1)
+          Path(os.environ["RUNNER_TEMP"], "RECOVERY_EVENT.json").write_text(json.dumps(record, indent=2) + "\n")
+          subprocess.run(["git", "checkout", "--detach", validation], check=True)
+          assert git("rev-parse", "HEAD") == validation
+          PY
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install approved locked recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum"
+      - name: Compile all forms then require positive negative and restoration witnesses
+        run: flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" python3 "$RECORD/run.py"
+      - name: Preserve the original qualification evidence and event binding
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, shutil
+          from pathlib import Path
+          output = Path("manual-prior-spell-diagnostic-archive")
+          output.mkdir()
+          evidence = Path("manual-prior-spell-diagnostic-evidence")
+          if evidence.is_dir():
+              shutil.move(str(evidence), output / "qualification")
+          envelope = Path(os.environ["RUNNER_TEMP"], "RECOVERY_EVENT.json")
+          if envelope.is_file():
+              shutil.copyfile(envelope, output / envelope.name)
+          files = {p.relative_to(output).as_posix(): hashlib.sha256(p.read_bytes()).hexdigest()
+                   for p in sorted(output.rglob("*")) if p.is_file()}
+          (output / "MANIFEST.json").write_text(json.dumps(files, indent=2) + "\n")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-quarantine-prior-spell-diagnostic-r1-${{ github.run_id }}
+          path: manual-prior-spell-diagnostic-archive/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+

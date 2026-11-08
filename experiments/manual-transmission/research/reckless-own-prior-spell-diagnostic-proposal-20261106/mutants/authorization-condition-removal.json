@@ -1,0 +1,8 @@
+{
+  "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+  "before": "            val selfAltCondition = selfAltCost?.condition\n            if (selfAltCondition != null && !conditionEvaluator.evaluate(\n                    state,\n                    selfAltCondition,\n                    EffectContext(sourceId = action.cardId, controllerId = action.playerId)\n                )\n            ) {\n                return \"Alternative cost is not available: ${selfAltCondition.description}\"\n            }\n",
+  "after": "            // Diagnostic-only mutant: omit the self-alternative eligibility authorization gate.\n",
+  "normal_blob": "e6216b851da7a1fbcfcfab7746d65f4cae6277ac",
+  "normal_sha256": "9148bf731484bccd7112a27bb3ca1df27d5fa36fba6dc864bb6a05677d87145f",
+  "mutant_sha256": "2d5bef88d7066b2c1f146214f791a21c9b9591f7c9f992c8a3863b5fa7f378a4"
+}

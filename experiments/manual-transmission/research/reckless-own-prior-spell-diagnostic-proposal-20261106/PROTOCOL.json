@@ -1,0 +1,324 @@
+{
+  "schema": "manual-prior-spell-diagnostic/v1",
+  "state": "FROZEN_TEST_ONLY_SOURCE_NOT_EXECUTED",
+  "epoch": "manual-quarantine-20261106-01",
+  "branch": "manual-transmission/quarantine-recovery-20261106",
+  "base": "ecfe5f6c7e5222124d98bfd1c48455ad00968ee4",
+  "accepted_runtime_source": "7221ce7e51c0d78df0b55c6d4d588f2611fafd38",
+  "accepted_admission": "a6f99b0400f83e33081b4f63de77bc17e597e15d",
+  "grant": "5376351f947b31d7004796e2fab4cbd535dc5956",
+  "proposal": "fb155f5dbd519e7857db74dca5233e21d83b840d",
+  "test": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+  "class": "com.wingedsheep.engine.scenarios.SelfAlternativePriorSpellEligibilityDiagnosticTest",
+  "cases": [
+    "PS H0 serialized=false enumeration",
+    "PS H0 serialized=false normal",
+    "PS H0 serialized=false direct",
+    "PS H1 serialized=false enumeration",
+    "PS H1 serialized=false normal",
+    "PS H1 serialized=false direct",
+    "PS H2 serialized=false enumeration",
+    "PS H2 serialized=false normal",
+    "PS H2 serialized=false direct",
+    "PS H3 serialized=false enumeration",
+    "PS H3 serialized=false normal",
+    "PS H3 serialized=false direct",
+    "PS H4 serialized=false enumeration",
+    "PS H4 serialized=false normal",
+    "PS H4 serialized=false direct",
+    "PS H5 serialized=false enumeration",
+    "PS H5 serialized=false normal",
+    "PS H5 serialized=false direct",
+    "PS H2 serialized=true enumeration",
+    "PS H2 serialized=true normal",
+    "PS H2 serialized=true direct",
+    "PS H4 serialized=true enumeration",
+    "PS H4 serialized=true normal",
+    "PS H4 serialized=true direct"
+  ],
+  "expected_normal_rows": 24,
+  "expected_negative_rows": 18,
+  "histories": [
+    {
+      "history": "H0",
+      "eligible": false,
+      "serialized": false
+    },
+    {
+      "history": "H1",
+      "eligible": true,
+      "serialized": false
+    },
+    {
+      "history": "H2",
+      "eligible": true,
+      "serialized": false
+    },
+    {
+      "history": "H3",
+      "eligible": true,
+      "serialized": false
+    },
+    {
+      "history": "H4",
+      "eligible": false,
+      "serialized": false
+    },
+    {
+      "history": "H5",
+      "eligible": false,
+      "serialized": false
+    },
+    {
+      "history": "H2",
+      "eligible": true,
+      "serialized": true
+    },
+    {
+      "history": "H4",
+      "eligible": false,
+      "serialized": true
+    }
+  ],
+  "arms": "Enumeration, normal and explicit direct alternative use forks of one immutable pre-decision state; direct arm never enumerates. Normal and alternative prices are 3 and 1 generic mana, with six matching Mountains available. Check discriminator and durable choice independently of payment.",
+  "normal_forms": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt"
+  ],
+  "mutants": {
+    "enumeration-condition-removal": {
+      "patch": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/mutants/enumeration-condition-removal.json",
+      "patch_sha256": "91c8b6f81e40166df97dadd5230b210aa4779c78be11a244f9cb06d8b5b936ff",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+      "normal_blob": "6b3cf0ad94061464d76c87564b44bc2ef200704b",
+      "normal_sha256": "ace1583a401b0f1875d499670e51e4ac10c48b0096155c01102be704a0205c52",
+      "sha256": "6b023aca9afd0818f9a266cab5670d78a4bc03471ac31a6083f1b1f2eb81de52",
+      "failed_identities": [
+        "PS H0 serialized=false enumeration",
+        "PS H4 serialized=false enumeration",
+        "PS H5 serialized=false enumeration",
+        "PS H4 serialized=true enumeration"
+      ],
+      "witnesses": {
+        "PS H0 serialized=false enumeration": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 61,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H4 serialized=false enumeration": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 61,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H5 serialized=false enumeration": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 61,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H4 serialized=true enumeration": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 61,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        }
+      }
+    },
+    "authorization-condition-removal": {
+      "patch": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/mutants/authorization-condition-removal.json",
+      "patch_sha256": "fef5da8ea5d7071a0ecbb88c51be793ee84bb3b78045368cf3f1edd8c7fb95d5",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+      "normal_blob": "e6216b851da7a1fbcfcfab7746d65f4cae6277ac",
+      "normal_sha256": "9148bf731484bccd7112a27bb3ca1df27d5fa36fba6dc864bb6a05677d87145f",
+      "sha256": "2d5bef88d7066b2c1f146214f791a21c9b9591f7c9f992c8a3863b5fa7f378a4",
+      "failed_identities": [
+        "PS H0 serialized=false direct",
+        "PS H4 serialized=false direct",
+        "PS H5 serialized=false direct",
+        "PS H4 serialized=true direct"
+      ],
+      "witnesses": {
+        "PS H0 serialized=false direct": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 94,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H4 serialized=false direct": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 94,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H5 serialized=false direct": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 94,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H4 serialized=true direct": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 94,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        }
+      }
+    },
+    "stack-only-history": {
+      "patch": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/mutants/stack-only-history.json",
+      "patch_sha256": "3473933bf6f7db307a8fc3368569802f1dea22bb93103ea37140c825a0b17e40",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "normal_blob": "3db053d81c30eb294d93371dcac5d2df60736324",
+      "normal_sha256": "7dfa3a1c87caa77156d63694c3a1d811ec8aacc3cff7aac399a89248ec431919",
+      "sha256": "5da2658ab337bbfec254e77dc6fc6694a46c28872d243dfec582f735c729b15a",
+      "failed_identities": [
+        "PS H1 serialized=false enumeration",
+        "PS H1 serialized=false direct",
+        "PS H2 serialized=false enumeration",
+        "PS H2 serialized=false direct",
+        "PS H2 serialized=true enumeration",
+        "PS H2 serialized=true direct"
+      ],
+      "witnesses": {
+        "PS H1 serialized=false enumeration": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 61,
+          "expected": "true",
+          "actual": "false",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H1 serialized=false direct": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 94,
+          "expected": "true",
+          "actual": "false",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H2 serialized=false enumeration": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 61,
+          "expected": "true",
+          "actual": "false",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H2 serialized=false direct": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 94,
+          "expected": "true",
+          "actual": "false",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H2 serialized=true enumeration": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 61,
+          "expected": "true",
+          "actual": "false",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H2 serialized=true direct": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 94,
+          "expected": "true",
+          "actual": "false",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        }
+      }
+    },
+    "opponent-controller-conflation": {
+      "patch": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/mutants/opponent-controller-conflation.json",
+      "patch_sha256": "8fe93956cf2b64203778a686b7f62f1a53fe2de81fcaeaa1f34d8a75262063c9",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "normal_blob": "3db053d81c30eb294d93371dcac5d2df60736324",
+      "normal_sha256": "7dfa3a1c87caa77156d63694c3a1d811ec8aacc3cff7aac399a89248ec431919",
+      "sha256": "3d7842afe4347256a67fbe9ff7b239ad880c40ea2714406e42b55a773e476116",
+      "failed_identities": [
+        "PS H4 serialized=false enumeration",
+        "PS H4 serialized=false direct",
+        "PS H4 serialized=true enumeration",
+        "PS H4 serialized=true direct"
+      ],
+      "witnesses": {
+        "PS H4 serialized=false enumeration": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 61,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H4 serialized=false direct": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 94,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H4 serialized=true enumeration": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 61,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        },
+        "PS H4 serialized=true direct": {
+          "file": "SelfAlternativePriorSpellEligibilityDiagnosticTest.kt",
+          "line": 94,
+          "expected": "false",
+          "actual": "true",
+          "assertion_type": "org.opentest4j.AssertionFailedError"
+        }
+      }
+    }
+  },
+  "bindings": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePriorSpellEligibilityDiagnosticTest.kt": "018e4c1456e047a2d953853cd5082aa61bc16a1c34b57a191a9733d05c6122ab",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt": "ace1583a401b0f1875d499670e51e4ac10c48b0096155c01102be704a0205c52",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt": "9148bf731484bccd7112a27bb3ca1df27d5fa36fba6dc864bb6a05677d87145f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt": "7dfa3a1c87caa77156d63694c3a1d811ec8aacc3cff7aac399a89248ec431919"
+  },
+  "source_delta": [
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/PROTOCOL.json",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/RECEIVING_CONTRACT.json",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/STATIC_REVIEW_20261108.json",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/mutants/authorization-condition-removal.json",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/mutants/enumeration-condition-removal.json",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/mutants/opponent-controller-conflation.json",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/mutants/stack-only-history.json",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/receive.py",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/report_audit.py",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/run.py",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/validation.just",
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/workflow.yml.in",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePriorSpellEligibilityDiagnosticTest.kt"
+  ],
+  "evidence": "manual-prior-spell-diagnostic-evidence",
+  "shipping_production_changes": [],
+  "acceptance_scope": "Synthetic own-prior-spell diagnostic only; no Surge/teammates/card registration/multiplayer/game admission. Any production defect requires a separate authorized proposal.",
+  "execution_order": [
+    "source and protected tree bindings",
+    "compile normal and all four isolated mutants before any behavior",
+    "24 normal identities",
+    "four isolated controls with all 18 exact assertion witnesses and no other failures",
+    "restore and recompile through restored normal behavior, 24 identities",
+    "original artifact receive and independent audit"
+  ],
+  "accepted_evidence_reused": [
+    "a6f99b0400f83e33081b4f63de77bc17e597e15d",
+    "15bbe68ce4d9a1aee5684d0a6f131194ea0f9dc6",
+    "9671880dcfa5720145b5aa3940b9a6c98b39df2d",
+    "421ee6e44398fddbe8093f550dc6bcb5cd0129f6"
+  ],
+  "no_qualification_or_receiving_repeated": true,
+  "base_tree": "980c2306cb4a6d7ce3aa69f1fdb8878e8ebcc9a5",
+  "record": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106"
+}

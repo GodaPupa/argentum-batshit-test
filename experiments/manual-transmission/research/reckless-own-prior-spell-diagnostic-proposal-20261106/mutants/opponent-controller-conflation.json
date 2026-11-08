@@ -1,0 +1,8 @@
+{
+  "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+  "before": "val records = state.spellsCastThisTurnByPlayer[playerId] ?: return 0",
+  "after": "val records = state.spellsCastThisTurnByPlayer.values.flatten()",
+  "normal_blob": "3db053d81c30eb294d93371dcac5d2df60736324",
+  "normal_sha256": "7dfa3a1c87caa77156d63694c3a1d811ec8aacc3cff7aac399a89248ec431919",
+  "mutant_sha256": "3d7842afe4347256a67fbe9ff7b239ad880c40ea2714406e42b55a773e476116"
+}

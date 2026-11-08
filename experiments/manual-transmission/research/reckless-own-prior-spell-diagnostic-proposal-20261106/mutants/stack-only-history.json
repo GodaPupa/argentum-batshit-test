@@ -1,0 +1,8 @@
+{
+  "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+  "before": "condition.atLeast <= 0 ||\n            countCastSpellsThisTurnCtx(state, condition, ctx, cap = condition.atLeast) >= condition.atLeast",
+  "after": "state.stack.count { id ->\n            state.getEntity(id)?.get<com.wingedsheep.engine.state.components.stack.SpellOnStackComponent>()?.casterId == resolvePlayer(state, condition.player, ctx)\n        } >= condition.atLeast",
+  "normal_blob": "3db053d81c30eb294d93371dcac5d2df60736324",
+  "normal_sha256": "7dfa3a1c87caa77156d63694c3a1d811ec8aacc3cff7aac399a89248ec431919",
+  "mutant_sha256": "5da2658ab337bbfec254e77dc6fc6694a46c28872d243dfec582f735c729b15a"
+}
