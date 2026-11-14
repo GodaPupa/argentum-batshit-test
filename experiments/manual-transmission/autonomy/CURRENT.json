@@ -30,9 +30,18 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "READY_FOR_NEXT_ITERATION",
-  "owner": null,
-  "lease": null,
+  "status": "WORKING",
+  "owner": "manual-foreground-surge-proposal-20261114-mwgxbjep-89e62f76",
+  "lease": {
+    "owner": "manual-foreground-surge-proposal-20261114-mwgxbjep-89e62f76",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "claimed_utc": "2026-11-14T21:34:29.377Z",
+    "expires_utc": "2026-11-14T22:34:29.377Z",
+    "scheduled_automation_identity_asserted": false,
+    "scheduled_executor_enabled": false,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+    "exclusive_writer": "This foreground invocation only; source review and consolidated proposal; no production changes."
+  },
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -46,7 +55,7 @@
       "Consolidated generic Surge (own-player scope) and Reckless Bushwhacker source-bound proposal required; production/card implementation not yet authorized."
     ],
     "pending_evidence": [],
-    "ownership": "Completed R2 receiver released under explicit user authority; owner/lease null; scheduled executor disabled; canonical read-only unresolved.",
+    "ownership": "Sole authorized foreground source-review/proposal lease; scheduled executor disabled.",
     "actual_stopping_reason": null,
     "implementation": "R2 complete: 5 compiled forms; 24 normal/24 restored; 18 exact witnesses 4/4/6/4; zero unexpected failures/errors/skips; restoration and rebinding passed; artifact received exactly once; 113 archived parts read back. Production/card admission false."
   },
@@ -100,8 +109,8 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "315478175c798bb41217858a8142672235febb74",
-    "current_blob": "986d079d24da348847e17f556c6e5a97389563e7"
+    "commit": "60ea0af32b7ea24d9a5ccd8efe1f747c274c9f9b",
+    "current_blob": "0486b6f6a5304c5aa7d64fe20f5b42f08bdfb2ba"
   },
   "qualification": {
     "state": "BOUNDED_OWN_PRIOR_SPELL_DIAGNOSTIC_VERIFIED",
@@ -539,27 +548,17 @@
     "scheduled_executor_must_remain_disabled": true
   },
   "foreground_reconciliation": {
-    "checked_utc": "2026-11-08T21:52:58.448Z",
-    "head": "02eb86cbef1c1b89dafe57812ef6bbad9ca41f07",
-    "current_blob": "d5901f586fe089330b3d5c181a2e6a1335a56cd9",
+    "utc": "2026-11-14T21:34:29.377Z",
+    "recovery_head": "60ea0af32b7ea24d9a5ccd8efe1f747c274c9f9b",
+    "current_blob": "0486b6f6a5304c5aa7d64fe20f5b42f08bdfb2ba",
     "owner_before": null,
     "lease_before": null,
-    "no_newer_owner_receipt_or_successor": true,
     "relevant_active_workflows": [],
-    "ignored_unrelated_run": 34749202144,
-    "all_manual_automations_disabled": true,
-    "scheduled_executor_last_run": {
-      "id": "0d96edbf-1004-832b-98e0-0c805c3a6c94",
-      "recorded_status": "completed",
-      "scheduled_for": "2026-11-07T11:44:00Z",
-      "started_at": "2026-11-07T11:44:48.569763Z",
-      "completed_at": "2026-11-07T11:45:52.738833Z",
-      "chat_ref": {
-        "type": "chatgpt",
-        "id": "6adce45b-d444-83e8-b69b-ed044642bb80"
-      }
-    },
-    "canonical_invocation_termination_inferred": false
+    "ignored_unrelated_workflow": 34749202144,
+    "scheduled_executor_enabled": false,
+    "last_scheduled_run": "0d96edbf-1004-832b-98e0-0c805c3a6c94",
+    "last_scheduled_run_status": "completed",
+    "stale_closeout_immutable_and_live_readback": true
   },
   "foreground_lease_history": [
     {
