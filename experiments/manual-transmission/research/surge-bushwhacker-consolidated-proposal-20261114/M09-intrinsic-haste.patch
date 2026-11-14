@@ -1,0 +1,10 @@
+--- a/mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt
++++ b/mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt
+@@ -23,7 +23,6 @@
+     toughness = 1
+     oracleText = "Surge {1}{R} (You may cast this spell for its surge cost if you or a teammate has cast another spell this turn.)\n" +
+         "Haste\nWhen this creature enters, if its surge cost was paid, other creatures you control get +1/+0 and gain haste until end of turn."
+-    keywords(Keyword.HASTE)
+     selfAlternativeCost = SelfAlternativeCost(
+         ManaCost.parse("{1}{R}"), condition = Conditions.YouCastSpellsThisTurn(1)
+     )

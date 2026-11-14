@@ -1,0 +1,19 @@
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ForEachExecutor.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ForEachExecutor.kt
+@@ -287,15 +287,7 @@
+             return emptyList()
+         }
+ 
+-        // "Other" refers to the original source object, not a later visit by the same card.
+-        // A permitted move or an iteration's Self binding must not replace that identity.
+-        val excludeSelfId = if (filter.excludeSelf) {
+-            if (context.objectReferences.captured) {
+-                context.objectReferences.origin?.takeIf { state.isCurrentObject(it) }?.entityId
+-            } else {
+-                context.sourceId
+-            }
+-        } else null
++        val excludeSelfId = if (filter.excludeSelf) context.sourceId else null
+         // excludeTarget removes the spell/ability's first chosen target — used for "each other X
+         // with the same controller" relative to a targeted permanent (Fear, Fire, Foes!).
+         val excludeTargetId = if (filter.excludeTarget) {

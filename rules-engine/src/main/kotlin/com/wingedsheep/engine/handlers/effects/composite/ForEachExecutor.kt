@@ -287,7 +287,15 @@ class ForEachExecutor(
             return emptyList()
         }
 
-        val excludeSelfId = if (filter.excludeSelf) context.sourceId else null
+        // "Other" refers to the original source object, not a later visit by the same card.
+        // A permitted move or an iteration's Self binding must not replace that identity.
+        val excludeSelfId = if (filter.excludeSelf) {
+            if (context.objectReferences.captured) {
+                context.objectReferences.origin?.takeIf { state.isCurrentObject(it) }?.entityId
+            } else {
+                context.sourceId
+            }
+        } else null
         // excludeTarget removes the spell/ability's first chosen target — used for "each other X
         // with the same controller" relative to a targeted permanent (Fear, Fire, Foes!).
         val excludeTargetId = if (filter.excludeTarget) {

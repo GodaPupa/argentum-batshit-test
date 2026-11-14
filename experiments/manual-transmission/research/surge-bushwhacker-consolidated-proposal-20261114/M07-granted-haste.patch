@@ -1,0 +1,10 @@
+--- a/mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt
++++ b/mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt
+@@ -34,7 +34,6 @@
+             GroupFilter(GameObjectFilter.Creature.youControl()).other(),
+             Effects.Composite(
+                 Effects.ModifyStats(1, 0, EffectTarget.Self, Duration.EndOfTurn),
+-                Effects.GrantKeyword(Keyword.HASTE, EffectTarget.Self, Duration.EndOfTurn)
+             )
+         )
+     }

@@ -1,0 +1,10 @@
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+@@ -850,6 +850,7 @@
+         // overridden explicitly. Payment events (ManaSpentEvent, SpellCastEvent) are
+         // deliberately not re-emitted — a copy isn't cast (707.10).
+         val copiedSpellComp = sourceSpell.copy(
++            alternativeCost = null,
+             casterId = copyController,
+             chosenModes = effectiveModes,
+             modeTargetsOrdered = effectiveModeTargets,

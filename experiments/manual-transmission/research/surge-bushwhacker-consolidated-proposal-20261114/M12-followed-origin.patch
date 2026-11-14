@@ -1,0 +1,11 @@
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ForEachExecutor.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ForEachExecutor.kt
+@@ -291,7 +291,7 @@
+         // A permitted move or an iteration's Self binding must not replace that identity.
+         val excludeSelfId = if (filter.excludeSelf) {
+             if (context.objectReferences.captured) {
+-                context.objectReferences.origin?.takeIf { state.isCurrentObject(it) }?.entityId
++                context.objectReferences.origin?.takeIf { state.isCurrentObject(context.objectReferences.followed(it)) }?.entityId
+             } else {
+                 context.sourceId
+             }

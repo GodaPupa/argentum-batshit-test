@@ -13555,3 +13555,12 @@ resolution executor is introduced. The existing Yes/No decision belongs to the
 drawing player, and its source identifies the public graveyard card. The client
 keyword label is `DREDGE`. The mtgish emitter preserves the numeric argument through
 `KeywordAbility.dredge(N)`; unsupported numeric shapes remain scaffolded.
+
+
+### Bounded own-player Surge composition and original-source groups
+
+The Manual Transmission two-player Surge composition uses `SelfAlternativeCost` with an exact mana cost and `Conditions.YouCastSpellsThisTurn(1)`. Select it explicitly with `SELF_ALTERNATIVE`; reductions or equal prices do not imply that choice. The existing own-controller history accepts earlier resolved, countered and still-pending casts in the same turn, subject to ordinary spell timing. Teammate eligibility is outside this bounded capability.
+
+Reckless Bushwhacker uses `Conditions.CastChoiceMade(ChoiceSlot.SELF_ALTERNATIVE)` as an intervening condition on its entry trigger. Compose `Effects.ForEachInGroup(GroupFilter(GameObjectFilter.Creature.youControl()).other(), ...)` with `ModifyStats(1, 0, Self, EndOfTurn)` and `GrantKeyword(HASTE, Self, EndOfTurn)`. Group recipients are captured at resolution; later entrants do not join the resolved effect, and cleanup expires both temporary grants.
+
+For a captured effect context, a group's `other()` excludes the **original object generation**, only while that original object is current. A source that leaves and returns is another object and can receive its earlier trigger's payoff. Permitted zone-following and a nested iteration's `Self` binding do not replace the original source for this exclusion. A captured missing origin must never be recaptured from a current entity. Legacy uncaptured contexts retain their established entity-ID fallback. Other filter branches remain unchanged.

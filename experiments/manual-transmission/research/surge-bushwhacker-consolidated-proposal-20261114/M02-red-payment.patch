@@ -1,0 +1,11 @@
+--- a/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SurgeCostCompositionTest.kt
++++ b/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SurgeCostCompositionTest.kt
+@@ -20,7 +20,7 @@
+     private val json=Json { serializersModule=engineSerializersModule; allowStructuredMapKeys=true }
+     init {
+         for ((name,flash,price) in listOf(Triple("Surge Probe",false,"{1}{R}"),
+-            Triple("Flash Surge Probe",true,"{1}{R}"),Triple("Red Payment Probe",false,"{1}{R}"))) {
++            Triple("Flash Surge Probe",true,"{1}{R}"),Triple("Red Payment Probe",false,"{2}"))) {
+             cardRegistry.register(card(name) {
+                 manaCost="{2}{R}";typeLine="Creature — Construct";power=2;toughness=1
+                 if (flash) keywords(Keyword.FLASH)

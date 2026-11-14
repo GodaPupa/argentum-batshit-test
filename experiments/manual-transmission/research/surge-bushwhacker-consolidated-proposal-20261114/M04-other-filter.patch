@@ -1,0 +1,11 @@
+--- a/mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt
++++ b/mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt
+@@ -31,7 +31,7 @@
+         trigger = Triggers.EntersBattlefield
+         interveningIf = Conditions.CastChoiceMade(ChoiceSlot.SELF_ALTERNATIVE)
+         effect = Effects.ForEachInGroup(
+-            GroupFilter(GameObjectFilter.Creature.youControl()).other(),
++            GroupFilter(GameObjectFilter.Creature.youControl()),
+             Effects.Composite(
+                 Effects.ModifyStats(1, 0, EffectTarget.Self, Duration.EndOfTurn),
+                 Effects.GrantKeyword(Keyword.HASTE, EffectTarget.Self, Duration.EndOfTurn)
