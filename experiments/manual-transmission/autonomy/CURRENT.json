@@ -63,7 +63,7 @@
     "implementation": "Two authorized production paths, append-only documentation, five new test files and one OGW snapshot entry implemented. Preparation compilation PASS; receiver18 synthetic controls PASS. No card or production admission."
   },
   "next": {
-    "state": "CANDIDATE01_SOURCE_FREEZE",
+    "state": "CANDIDATE01_FROZEN_LOCAL_QUALIFICATION_READY",
     "proposal_id": "MT-SURGE-BW-20261114",
     "proposal_commit": "888ad9f24b0a6f9dc84376f0204ee24bf9538838",
     "proposal_path": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/PROTOCOL.json",
@@ -1267,5 +1267,20 @@
     "ci_activations": 0,
     "production_admitted": false,
     "card_admitted": false
+  },
+  "surge_bushwhacker_qualification": {
+    "candidate_index": "01",
+    "state": "SOURCE_VALIDATION_FROZEN_LOCAL_GATES_PENDING",
+    "source": "2b195520143045981fe4fdb64a16169473f0dbde",
+    "source_tree": "28b7889953683bd3dad04bfd34d482ce2d214c1b",
+    "validation": "94025a17b5a0ded2b6d522c63e53b59397059e90",
+    "validation_tree": "e911ff568cf11e2947157a1038ff59a225d24baa",
+    "workflow_path": ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-01.yml",
+    "workflow_blob": "ee9996d4d2dec55c342c3152267b04b170b0e5b3",
+    "workflow_sha256": "af0bdc423db90a50b01c076943788720366a9d6ae5db6f5a862141d08c13c5bf",
+    "candidate_pins_blob": "f0439953b2077aee4be59ac0fb51ce98d65c0b00",
+    "local_gates": "NOT_STARTED",
+    "ci_activations": 0,
+    "original_received": false
   }
 }
