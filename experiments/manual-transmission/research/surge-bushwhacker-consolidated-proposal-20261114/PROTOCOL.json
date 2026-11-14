@@ -1,0 +1,141 @@
+{
+  "schema": "manual-transmission/surge-bushwhacker-proposal/v1",
+  "state": "FROZEN_AWAITING_ONE_PRODUCTION_AUTHORIZATION",
+  "proposal_id": "MT-SURGE-BW-20261114",
+  "source_parent": "b50fcd351d78a9375646b72e0ffea3ba77334fd6",
+  "source_parent_tree": "7e5ac46f14dd199f6cf48838959512069010559f",
+  "source_parent_role": "Exact reviewed recovery source after R2 closeout and foreground claim. Future candidate must descend on same branch; production subtrees remain these until implementation. Proposal/bookkeeping-only commits may intervene.",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "branch": "manual-transmission/quarantine-recovery-20261106",
+  "epoch": "manual-quarantine-20261106-01",
+  "shipping_production_paths": [
+    {
+      "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt",
+      "change": "Add OGW116 card using existing conditional SelfAlternativeCost, intrinsic HASTE, paid-choice intervening ETB and temporary other-creature payoff."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ForEachExecutor.kt",
+      "change": "Narrow origin-generation-aware excludeSelf handling in resolveGroup; preserve all other iteration/filter behavior."
+    }
+  ],
+  "documentation": [
+    {
+      "path": "docs/card-sdk-language-reference.md",
+      "change": "Append bounded own-player Surge composition and other-source-identity note; preserve original prefix."
+    }
+  ],
+  "test_paths": [
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SurgeCostCompositionTest.kt",
+      "new_only": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceIdentityGroupExclusionTest.kt",
+      "new_only": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt",
+      "new_only": true
+    },
+    {
+      "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/RecklessBushwhackerRegistrationTest.kt",
+      "new_only": true
+    },
+    {
+      "path": "web-client/src/utils/surgeActionTransport.test.ts",
+      "new_only": true
+    }
+  ],
+  "snapshot_path": "mtg-sets/src/test/resources/snapshots/cards/OGW.json",
+  "registry_files_reused_without_edit": [
+    "mtg-sets/core/src/main/kotlin/com/wingedsheep/mtg/sets/discovery/CardDiscovery.kt",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/OathOfTheGatewatchSet.kt"
+  ],
+  "sdk_changes": [],
+  "client_production_changes": [],
+  "workflow_paths": [
+    ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-01.yml",
+    ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-02.yml"
+  ],
+  "infrastructure_directory": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114",
+  "infrastructure_exact_files": [
+    "PROTOCOL.json",
+    "TEST_MATRIX.json",
+    "SOURCE_REVIEW.json",
+    "GATES.json",
+    "PROTECTED_BINDINGS.json",
+    "CARD_SOURCE.json",
+    "ACCEPTED_INVENTORY.json.gz.b64",
+    "RECEIVING_CONTRACT.json",
+    "ACTIVATION_CANDIDATE_01.yml",
+    "ACTIVATION_CANDIDATE_02.yml",
+    "validation.just",
+    "verify_dispatch.py",
+    "qualify.py",
+    "audit_reports.py",
+    "receive.py",
+    "test_receiver.py",
+    "CANDIDATE_PINS.json",
+    "COMPILE_WITNESSES.json",
+    "README.md",
+    "MANIFEST.json",
+    "M01-surge-price.patch",
+    "M02-red-payment.patch",
+    "M03-paid-guard.patch",
+    "M04-other-filter.patch",
+    "M05-controller-filter.patch",
+    "M06-toughness.patch",
+    "M07-granted-haste.patch",
+    "M08-duration.patch",
+    "M09-intrinsic-haste.patch",
+    "M10-entity-only-exclusion.patch",
+    "M11-exclude-none.patch",
+    "M12-followed-origin.patch",
+    "M13-missing-choice.patch",
+    "M14-copy-choice.patch",
+    "ogw-reckless-bushwhacker.json",
+    "ogw-reckless-bushwhacker-rulings.json",
+    "ogw-reckless-bushwhacker-printings-0.json"
+  ],
+  "receipt_output_contract": "RECEIVED_CANDIDATE_01/ or RECEIVED_CANDIDATE_02/ beneath infrastructure directory: exact original archive parts with indexed path/size/hash, raw reports, pins, RECEIPT.json, READBACK_VERIFICATION.json and ADMISSION.json; preserve failures. These are mechanical evidence outputs, not new production scope.",
+  "mutation_sandbox": "M13/M14 temporarily alter StackResolver only in isolated uncommitted mutant forms and MUST restore; not shipping authority for StackResolver. M02 changes only synthetic fixture cost, never assertions. All mutant paths and targeted selections frozen in TEST_MATRIX.",
+  "qualification_limit": {
+    "max_candidates": 2,
+    "runs_per_candidate": 1,
+    "attempt": 1,
+    "second_candidate_only": "A new source correction within these exact boundaries after preserving failed first original; no unchanged rerun, no acceptance threshold changes, no new cards or paths. If candidate01 passes, candidate02 is prohibited."
+  },
+  "pin_binding": "Candidate source/tree/test/harness/patch bytes are necessarily not yet produced. After grant, freeze them prospectively in CANDIDATE_PINS and CURRENT before compile/behavior/dispatch. Workflow bytes and allowed paths are frozen now. This proposal does not invent future source hashes or claim executable tests already exist.",
+  "accepted_evidence_reused": [
+    {
+      "receipt_commit": "315478175c798bb41217858a8142672235febb74",
+      "receipt_blob": "221c31493c9836c243bae1c41f69d6b349a8f912",
+      "scope": "R2 five forms,24 normal,24 restored,18 witnesses 4/4/6/4, restoration/rebinding, original received once; never rerun/re-receive."
+    },
+    {
+      "admission_commit": "a6f99b0400f83e33081b4f63de77bc17e597e15d",
+      "scope": "Bounded original-source departure SELF_ALTERNATIVE, legacy absence/empty distinction and serialization; no rerun of accepted original qualification."
+    },
+    {
+      "admission_commit": "1a559395de4f7ca24b270ecddf45b88c60d72af8",
+      "scope": "Explicit SELF_ALTERNATIVE transport; no mana-spend inference. Rebind source hashes, not original receiving."
+    }
+  ],
+  "authorization_requested": "Implement the two shipping production paths, append the documentation, add the five test files and one OGW snapshot entry; prepare the exact listed test/receiving infrastructure; freeze at most two source-corrected candidates; activate only their exact frozen new workflows once each; perform all targeted, compatibility, metadata, original receiving and bounded two-player own-history Surge/Bushwhacker admission gates. No additional per-file approvals within this package.",
+  "exclusions": [
+    "No teammate/team implementation or multiplayer admission; own-player two-player scope only.",
+    "No other production/SDK/server/client files, other cards or registry additions.",
+    "No change to existing tests/assertions/skips/goldens outside the sole new OGW entry.",
+    "No R1/R2 rerun or re-receiving; preserve all failures.",
+    "No official Phase2 seeds/games, simulation campaign, pilot/deck change, budget extension or extra spending.",
+    "No main/canonical/other-ref writes, canonical owner release, force-push, branch creation, extra writer/executor/automation or enabling scheduled executor."
+  ],
+  "admission_condition": "All frozen gates and independent original raw-evidence audits PASS, original artifact retained/read back exactly, source restored and rebound; record bounded card and own-history capability only. Any unlisted production seam is a new authorization boundary; any source integrity conflict is BLOCKED.",
+  "counters": {
+    "official_phase2_games": 0,
+    "official_phase2_seeds": 0,
+    "reserved_precision_games": 2,
+    "production_admitted_now": false,
+    "card_admitted_now": false
+  }
+}

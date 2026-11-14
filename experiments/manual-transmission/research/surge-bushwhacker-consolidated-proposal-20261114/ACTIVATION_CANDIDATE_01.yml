@@ -1,0 +1,105 @@
+name: Manual quarantine Surge Bushwhacker candidate 01
+on:
+  push:
+    branches: [manual-transmission/quarantine-recovery-20261106]
+    paths: ['.github/workflows/manual-quarantine-surge-bushwhacker-candidate-01.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  RECORD: experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114
+  WORKFLOW: .github/workflows/manual-quarantine-surge-bushwhacker-candidate-01.yml
+  CANDIDATE_INDEX: '01'
+  PYTHONDONTWRITEBYTECODE: '1'
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - name: Authenticate recovery envelope and exact candidate before executing candidate code
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,json,hashlib,subprocess
+          from pathlib import Path
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          event=os.environ['GITHUB_SHA']; record=os.environ['RECORD']; wf=os.environ['WORKFLOW']
+          assert os.environ['GITHUB_REF']=='refs/heads/manual-transmission/quarantine-recovery-20261106'
+          assert os.environ['GITHUB_EVENT_NAME']=='push'
+          assert os.environ['GITHUB_RUN_ATTEMPT']==os.environ['GITHUB_RUN_NUMBER']=='1'
+          assert git('rev-parse','HEAD')==event
+          first,validation=git('show','-s','--format=%P',event).split()
+          assert git('diff','--name-only',first,event)==wf
+          c=json.loads(git('show',first+':experiments/manual-transmission/autonomy/CURRENT.json'))
+          assert c['epoch']=='manual-quarantine-20261106-01'
+          assert c['branch']=='manual-transmission/quarantine-recovery-20261106'
+          assert c['status']=='WORKING' and c['owner']==c['lease']['owner']
+          assert c['lease']['kind']=='USER_AUTHORIZED_FOREGROUND_WORK'
+          assert c['automation']['enabled_at_latest_readback'] is False
+          assert c['lease']['scheduled_executor_enabled'] is False
+          assert c['lease']['writable_ref']==os.environ['GITHUB_REF']
+          assert c['safeguards']['phase2_games']==c['safeguards']['phase2_seeds']==0
+          assert git('rev-parse',first+':experiments/manual-transmission/autonomy/QUARANTINE_RECOVERY_20261106.json')=='d77eca4b30458128468ae48b3d5b02c465bd3987'
+          assert git('rev-parse',first+':experiments/manual-transmission/autonomy/EXECUTOR_RETARGET_20261106.json')=='e64cfb1da2ece524e45c93437849136035be5260'
+          q=c['surge_bushwhacker_qualification']; grant=c['surge_bushwhacker_production_authorization']
+          assert grant['explicit_user_grant'] is True and grant['proposal_id']=='MT-SURGE-BW-20261114'
+          assert q['candidate_index']==os.environ['CANDIDATE_INDEX'] and q['validation']==validation
+          source=q['source']; assert git('show','-s','--format=%P',validation)==source
+          assert git('diff','--name-only',source,validation)==wf
+          assert git('rev-parse',source+'^{tree}')==q['source_tree']
+          assert git('rev-parse',validation+'^{tree}')==q['validation_tree']
+          assert git('rev-parse',event+':'+wf)==git('rev-parse',validation+':'+wf)==q['workflow_blob']
+          assert hashlib.sha256(Path(wf).read_bytes()).hexdigest()==q['workflow_sha256']
+          proposal=grant['proposal_commit']
+          assert git('show',proposal+':'+record+'/ACTIVATION_CANDIDATE_'+os.environ['CANDIDATE_INDEX']+'.yml')==Path(wf).read_text().strip()
+          assert git('rev-parse',proposal+':'+record+'/PROTOCOL.json')==grant['protocol_blob']
+          assert git('rev-parse',source+':'+record+'/PROTOCOL.json')==grant['protocol_blob']
+          assert git('rev-parse',source+':'+record+'/CANDIDATE_PINS.json')==q['candidate_pins_blob']
+          envelope=dict(event=event,first_parent=first,validation=validation,source=source,qualification=q,grant=grant,run=os.environ['GITHUB_RUN_ID'],attempt=1)
+          Path(os.environ['RUNNER_TEMP'],'RECOVERY_EVENT.json').write_text(json.dumps(envelope,indent=2)+'\n')
+          subprocess.run(['git','checkout','--detach',validation],check=True)
+          PY
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install locked recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum"
+      - name: Verify source bindings and execute frozen qualification
+        run: |
+          python3 "$RECORD/verify_dispatch.py"
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" python3 "$RECORD/qualify.py"
+      - name: Preserve original evidence even on failure
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import pathlib,os,shutil,json,hashlib
+          out=pathlib.Path('manual-surge-bushwhacker-archive');out.mkdir(exist_ok=True)
+          evidence=pathlib.Path('manual-surge-bushwhacker-evidence')
+          if evidence.is_dir(): shutil.copytree(evidence,out/'qualification',dirs_exist_ok=True)
+          env=pathlib.Path(os.environ['RUNNER_TEMP'],'RECOVERY_EVENT.json')
+          if env.is_file(): shutil.copyfile(env,out/'RECOVERY_EVENT.json')
+          files={p.relative_to(out).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.rglob('*')) if p.is_file()}
+          (out/'MANIFEST.json').write_text(json.dumps(files,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-surge-bushwhacker-candidate-01-${{ github.run_id }}
+          path: manual-surge-bushwhacker-archive/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90

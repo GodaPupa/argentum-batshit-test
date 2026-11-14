@@ -1,0 +1,266 @@
+{
+  "state": "READ_ONLY_SOURCE_BOUND_DESIGN",
+  "parent": "b50fcd351d78a9375646b72e0ffea3ba77334fd6",
+  "tree": "7e5ac46f14dd199f6cf48838959512069010559f",
+  "findings": [
+    {
+      "boundary": "alternative representation",
+      "files": [
+        "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/SelfAlternativeCost.kt",
+        "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt",
+        "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Conditions.kt"
+      ],
+      "finding": "Existing serializable conditional SelfAlternativeCost plus explicit SELF_ALTERNATIVE is sufficient for own-player Surge composition. No new enum, keyword, serializer or team model is required for this bounded grant."
+    },
+    {
+      "boundary": "enumeration and authorization",
+      "files": [
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastPaymentProcessor.kt"
+      ],
+      "finding": "Enumerator gates selfAlternativeCost.condition and prices alternative base; handler independently rechecks condition and uses exact declared base in validation and execution. Selection discriminator is explicit. Qualify {1}{R}, red failure, reduction/tax, equal cost and competing GRANTED paths; do not infer choice from spend."
+    },
+    {
+      "boundary": "cast history and reset",
+      "files": [
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TurnManager.kt"
+      ],
+      "finding": "PlayerCastSpellsThisTurn reads spellsCastThisTurnByPlayer, not live stack. Cast handler appends history on commit; TurnManager resets both trackers. R2 H0-H5/serialized H2,H4 evidence is reused unchanged."
+    },
+    {
+      "boundary": "stack persistence copying and source identity",
+      "files": [
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ObjectReferenceEnvironment.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneMovementUtils.kt"
+      ],
+      "finding": "putSpellCopy uses sourceSpell.copy, preserving alternativeCost. Permanent resolution transfers explicit choice to durable bag. Paid-choice evaluator uses original captured source/LKI; departure strips new-object choices. Existing original-source proof is reused. New printed-card copy and blink integrations still need qualification."
+    },
+    {
+      "boundary": "entry and intervening condition",
+      "files": [
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+        "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/CardBuilder.kt"
+      ],
+      "finding": "Use triggeredAbility with Triggers.EntersBattlefield and interveningIf Conditions.CastChoiceMade(SELF_ALTERNATIVE), not unconditional trigger + incidental mana test. Detection and StackResolver recheck condition. Opponents may respond or counter the ability."
+    },
+    {
+      "boundary": "recipient set and minimal engine seam",
+      "files": [
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ForEachExecutor.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/BattlefieldFilterUtils.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt"
+      ],
+      "finding": "ForEach snapshots projected recipients; inner Self binds iteration entity. Static source review finds excludeSelfId=context.sourceId ignores original object generation. Narrow proposed correction: for captured/origin-bound contexts exclude original origin only if state.isCurrentObject(origin); never follow permitted moves or substitute selfBinding/new generation. Preserve unbound legacy source-ID fallback; no changes to excludeTarget/chosenSubtype/controller/type logic. GX01-GX10 and BW15/BW17 verify this seam. This is source analysis, not a claimed executed failure."
+    },
+    {
+      "boundary": "temporary stats haste cleanup",
+      "files": [
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/stats/ModifyStatsExecutor.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/abilities/GrantKeywordExecutor.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CleanupPhaseManager.kt"
+      ],
+      "finding": "Compose ForEachInGroup(GroupFilter(Creature.youControl()).other(), Composite(ModifyStats(1,0,Self,EndOfTurn), GrantKeyword(HASTE,Self,EndOfTurn))). Snapshot membership at resolution; intrinsic Haste stays on source. Existing effects emit events and store floating effects; cleanup removes EndOfTurn. Test departed source, projected creatures, end-step/cleanup and later entrants."
+    },
+    {
+      "boundary": "registration printing snapshot",
+      "files": [
+        "mtg-sets/core/src/main/kotlin/com/wingedsheep/mtg/sets/discovery/CardDiscovery.kt",
+        "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/OathOfTheGatewatchSet.kt",
+        "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/CardDefinitionSnapshotTest.kt",
+        "mtg-sets/src/test/resources/snapshots/cards/OGW.json"
+      ],
+      "finding": "OGW already scaffolded/discovered. Add one top-level card in OGW cards package; no registry list edit. One OGW snapshot entry only. Original source intake confirms OGW116 earliest expansion; no PIO/PLST scaffold found in current tree. Card printing gate must confirm no missing scaffolded reprints before admission."
+    },
+    {
+      "boundary": "client transport",
+      "files": [
+        "web-client/src/types/actions.ts",
+        "web-client/src/utils/actionOptions.ts",
+        "web-client/src/store/slices/ui/pipelinePhases.ts"
+      ],
+      "finding": "Multiple server actions are kept as distinct menu options; generic alternative-only branch keeps server description/cost; SELF_ALTERNATIVE string travels with original CastSpell action. No client rules or production edits expected. Add six transport/menu tests; full existing64 contract and typecheck required."
+    }
+  ],
+  "bindings": [
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/CardBuilder.kt",
+      "blob": "40c05dfb0e1f5c4b588f7230f45adce349803da6",
+      "sha256": "48ef231d35bad25b3508fc1ec5a57e3c69d83c051e2a88b578188ae1193747c6"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Conditions.kt",
+      "blob": "63a70b2d28ad649a78979a955cd9dc1efa074204",
+      "sha256": "41e30388c2ea18e8f1015800f167aaa00e871a37bca5a9be3cafa56b3cef88cd"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt",
+      "blob": "878e82fd92b42b597a24b763f3389e064da78f8b",
+      "sha256": "ab4d6a9f06ad862127947f2a9c6ed90484a86de53bd6c7090a338781c54e2094"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/SelfAlternativeCost.kt",
+      "blob": "d3c0f98adb4c813994d91d23857341c5fe3e1863",
+      "sha256": "6e63849a0e860dc11795d65b8337514ff9cea1a961591eb0bded19aabdeaf85c"
+    },
+    {
+      "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/OathOfTheGatewatchSet.kt",
+      "blob": "bfce1e86c87e4e66367b9a846b345d735eeb6cca",
+      "sha256": "0dc5d2ac1f70cacf7135a0667682a5b0aca8066c9fa292e83a1580397fe6c6d6"
+    },
+    {
+      "path": "mtg-sets/core/src/main/kotlin/com/wingedsheep/mtg/sets/discovery/CardDiscovery.kt",
+      "blob": "ab49248aece2ad07d594e9796410d0608a01182b",
+      "sha256": "67ba20956952ba4e5586fd13bb06af4931169403345ca6816992308427819de4"
+    },
+    {
+      "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/CardDefinitionSnapshotTest.kt",
+      "blob": "c6bc66985b709b2da320ac596269d5fb459f7abe",
+      "sha256": "2709c70e39c66ca4c937b7110381450e3cb1f168e20855b78502dd6f9a2c9923"
+    },
+    {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/OGW.json",
+      "blob": "115d8a0ae2dc53a0cb5fec46e29e59d7d685b9ca",
+      "sha256": "0b4900db42ff6f4e8f94ebdca3b1b8d59c96ac6e877743b4ba825f93f2558ae3"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CleanupPhaseManager.kt",
+      "blob": "d779c54c47c71e44526ec6584cf92a3bbddcf0e8",
+      "sha256": "296b288e078f4b58b0d8e7ddfe2a54981ec2c030d0c4e1a55639f26e8d0f3830"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TurnManager.kt",
+      "blob": "58331ae5fa84dc1404e3a598ced0adc3274aa11a",
+      "sha256": "de82b9887060e04de903c6fbefdbd9b3b04fb8946ae3419946c400fbad1309f0"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+      "blob": "ad94208bf4984c94343daa421c3a31d08d3ef6cf",
+      "sha256": "c07ff267fdf2b3820a5ca7b2a99d124c2c01c8f13a1c5bb42e39f2dd2a631496"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+      "blob": "676d8c924b518d37f770c157b5a0955a7d23f62c",
+      "sha256": "9aa2ceb8fda3d22d7dfb0bfda1ce16a8a631640002cb408be642c2b8a25c572a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "blob": "61d62328d3422b6912b186b5292befc371130830",
+      "sha256": "3b4130a9d55a290b1aea25ccd86a751a8f3dc2b4f6050af4e8ca3fb7539acffb"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "blob": "3db053d81c30eb294d93371dcac5d2df60736324",
+      "sha256": "7dfa3a1c87caa77156d63694c3a1d811ec8aacc3cff7aac399a89248ec431919"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+      "blob": "b59be237690f09d7851d58bdd2f56d356b22b942",
+      "sha256": "eacdce2350d5c6fc7e08b7ce1063d5f959ca42aca25549b8599ad13af1102b65"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ObjectReferenceEnvironment.kt",
+      "blob": "93b9dcc0bcb6415aeeca8590f4d5788f04e75f30",
+      "sha256": "06433f5ab70350b9d7b30c0e29f84c7f434ea595d52cb9ede573c8fce606b693"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastPaymentProcessor.kt",
+      "blob": "24afa8dc691755cc010a6d03e15160f6ccffea51",
+      "sha256": "2870b7e6c1db4ecb19d8b855848a1dbebe353e57526458d1c0bf84a5e798f2ff"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+      "blob": "e6216b851da7a1fbcfcfab7746d65f4cae6277ac",
+      "sha256": "9148bf731484bccd7112a27bb3ca1df27d5fa36fba6dc864bb6a05677d87145f"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/BattlefieldFilterUtils.kt",
+      "blob": "406cf7f147bbc3b241d54516bc212c81d60ac8b2",
+      "sha256": "d400542a96cb530bf4d433d590e56500604576cfbcf1ab9524658bca1580cfa6"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt",
+      "blob": "b9e4e5e565f970fefed98bf9257d899896098226",
+      "sha256": "452df9d5c7ba2578e59066e0e503b5d18ea4f2202c1724e1d9f73130f0b86000"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneMovementUtils.kt",
+      "blob": "92eb202bcc00e89e4f6ece2209c20e8a490aa21c",
+      "sha256": "1a3a3b17c63d0c6ca553e4141b99b63b34476b2a36ca8eaef77f5a8d5977c4a9"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ForEachExecutor.kt",
+      "blob": "6d5bf4b8dcb328a5a1202e8378b082cf1429e66a",
+      "sha256": "e6b01e5cf5469dac0c3abf32eab365b944d314999d530dacb9838fc3f28d1bc0"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/abilities/GrantKeywordExecutor.kt",
+      "blob": "ff4f600919682f0177e46ada2f808e1b5f4bef49",
+      "sha256": "0e07ad8d42d1492652ba23d6ce4abd5bff4276b7a5c7687e959192f494438d9f"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/stats/ModifyStatsExecutor.kt",
+      "blob": "8a09e8c9719c631770ee3f4a78767379c62ca5f3",
+      "sha256": "544a8664ac2397ed06a6bcf21fb2cda68a537f32d1159059e00850b04242ab8f"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+      "blob": "6b3cf0ad94061464d76c87564b44bc2ef200704b",
+      "sha256": "ace1583a401b0f1875d499670e51e4ac10c48b0096155c01102be704a0205c52"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+      "blob": "46e9d25121bdd50c8babc048ad3c4fbb04e0e286",
+      "sha256": "0720af3cf7d8bb8977421902a1c6f195155c78acdbfe75c9db947dc26e02ee5e"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "blob": "385d927f4066a4597133377d86090d1e37232b34",
+      "sha256": "56ab70cadce1de3114673b8fe9ba68870662699619ecd082d6ae5b365ba38b73"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+      "blob": "cc74a8d50060d85608e1cbcd83583f71be98891f",
+      "sha256": "56a68883a54a3accef7da0066c3148aa0fc5795174383418922481a4a62c71e2"
+    },
+    {
+      "path": "web-client/src/store/slices/ui/pipelinePhases.ts",
+      "blob": "3a37f666afb94e20592853cb40001040c1538ac2",
+      "sha256": "7a2f5294822f795d7db348de614da93b9598e1bb2083999fcdd4e3f9de2bd6bb"
+    },
+    {
+      "path": "web-client/src/types/actions.ts",
+      "blob": "59dc9a5ad8f8bb57ef8b156affff4c32aec07c4f",
+      "sha256": "968862fb69837213d0786c4ab48da653108b10638bf47ad2eb81233deaa9ad68"
+    },
+    {
+      "path": "web-client/src/utils/actionOptions.ts",
+      "blob": "cdf967af408a51aa1fb7d2e7e02698855ac73202",
+      "sha256": "c61a3b1ca0aa62c405fc22d8785d23a1bf9361ed1f1c0365af1e0413c54d066e"
+    }
+  ],
+  "team_limit": "Own-player, two-player admission only. Current rules include teammates; this proposal does not claim full multiplayer/teammate Surge. No teammate model change.",
+  "rules_sources": [
+    {
+      "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020261106.txt",
+      "effective": "2026-11-06",
+      "checked": [
+        "702.117a",
+        "611.2c",
+        "707.2"
+      ],
+      "notes": "Surge alternative eligibility includes self or teammate; recipient set fixed at resolution; copied spells retain cast choices. Historical 2016 release-note copy wording is superseded; use current rules plus archived WotC-origin rulings."
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/feature/oath-gatewatch-release-notes-2016-01-13",
+      "use": "Printed card stats, costs, own-history cases only; do not import obsolete copy ruling."
+    }
+  ]
+}

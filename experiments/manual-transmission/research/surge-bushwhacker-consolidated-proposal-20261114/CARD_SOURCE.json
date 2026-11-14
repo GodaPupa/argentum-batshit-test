@@ -1,0 +1,57 @@
+{
+  "original_archive": {
+    "path": "experiments/manual-transmission/research/entry-snapshots-received-r2-20261022/ARTIFACT.json",
+    "blob": "bca705e0f6e216431473c4ac879720ce6b07e818",
+    "sha256": "aa9974452e7e2aa91004d5aa7f49f85fe7d585ea44f21da6c6d89aaae9b1f843"
+  },
+  "intake": {
+    "path": "experiments/manual-transmission/research/entry-snapshots-received-r2-20261022/SOURCE_INTAKE.json",
+    "blob": "a22baa5ff9fd8733890bea1fbba14242a75dac79",
+    "sha256": "eebc91d8d109786e5f805ad3e2e4c20e7dffb00529dde8fdf26fef8e9b7a7348"
+  },
+  "card": {
+    "name": "Reckless Bushwhacker",
+    "requested_set": "ogw",
+    "status": "PRIMARY_JSON_RECEIVED_REQUIRES_HUMAN_MODEL_REVIEW",
+    "files": [
+      {
+        "url": "https://api.scryfall.com/cards/named?exact=Reckless+Bushwhacker&set=ogw",
+        "file": "ogw-reckless-bushwhacker.json",
+        "bytes": 5180,
+        "sha256": "57650bfa24520c7132c58ad84515116c618bfb23fc0636289ba0cd8b88638a10",
+        "http_status": 200
+      },
+      {
+        "url": "https://api.scryfall.com/cards/0405b1b9-976a-4aaf-bec6-fa006decea74/rulings",
+        "file": "ogw-reckless-bushwhacker-rulings.json",
+        "bytes": 1178,
+        "sha256": "a0082fa85af7278f75739097e8a26a59231c0a646be3ed95c24317b1e4f8e489",
+        "http_status": 200
+      },
+      {
+        "url": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A4fb83127-00cf-4ce7-aedf-cb0b2740c66f&unique=prints",
+        "file": "ogw-reckless-bushwhacker-printings-0.json",
+        "bytes": 14793,
+        "sha256": "f4478e061d99bb837e51ec28f191112f3b944cf40da036665732d9954eb9a40c",
+        "http_status": 200
+      }
+    ],
+    "id": "0405b1b9-976a-4aaf-bec6-fa006decea74",
+    "oracle_id": "4fb83127-00cf-4ce7-aedf-cb0b2740c66f",
+    "collector_number": "116",
+    "earliest_nonexcluded_printing": {
+      "name": "Reckless Bushwhacker",
+      "id": "0405b1b9-976a-4aaf-bec6-fa006decea74",
+      "set": "ogw",
+      "set_name": "Oath of the Gatewatch",
+      "set_type": "expansion",
+      "released_at": "2016-01-22",
+      "collector_number": "116"
+    },
+    "image_head": {
+      "url": "https://cards.scryfall.io/normal/front/0/4/0405b1b9-976a-4aaf-bec6-fa006decea74.jpg?1783937905",
+      "status": 200
+    }
+  },
+  "reuse": "Read verified published source-intake bytes; no original artifact download or re-receiving. Live Scryfall request returned HTTP400; archived source remains pinned, with current official rules independently checked. Before card admission recheck printing and image availability through existing gate; failure is metadata/access BLOCKED, not invented success."
+}

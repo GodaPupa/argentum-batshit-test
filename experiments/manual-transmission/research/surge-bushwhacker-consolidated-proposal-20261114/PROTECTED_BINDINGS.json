@@ -1,0 +1,1270 @@
+{
+  "source": {
+    "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-receiving-prep-20261106/conditional-full/PROTOCOL.json",
+    "blob": "e7bd097999661b233225f6a282e7902acb3fb9cf",
+    "sha256": "36be5aa9412f3528bbf4b806b3bacfb04d2ea3e438f91e7c5f165f740fb4a2a6"
+  },
+  "bindings": {
+    "docs/card-sdk-language-reference.md": {
+      "sha256": "a8370469e0e6474a264a327ace0e25b6b562c603447bbc041a2bb47ea23a036b",
+      "blob": "bfe4770c7ea2e801e56018ac9540c51a32e1ce61"
+    },
+    "web-client/vite.config.ts": {
+      "sha256": "cb298fcb474c5555d313f34c60d93b18fb4a7a9b1b95837eb606f4401171c221",
+      "blob": "15202dec5965a04fc3aadba94b3d23f2a711053b"
+    },
+    "e2e-scenarios/manual-occurrence.config.ts": {
+      "sha256": "869b64cb6683b0d49b274936e812cbc78420d795d2313f89e57748bc62e4bb04",
+      "blob": "553bb40ff3c1ffb00f9ff4910a2546102e3691f2"
+    },
+    "e2e-scenarios/manual-payment.config.ts": {
+      "sha256": "44933cd3712b630566aa679b12a7f40b491e9ae5495f5e97cfc496e2badec781",
+      "blob": "bb2c1501717d3ba2653e06b714dc919faef253f4"
+    },
+    "e2e-scenarios/manual-occurrence.tsconfig.json": {
+      "sha256": "5218aca8e8eda939868f75358cdc1ae04331e1343d811399d65af3c8c2bfbec0",
+      "blob": "86b894646abce444fe7d92e0ef3e1212bcefd852"
+    },
+    "e2e-scenarios/manual-payment.tsconfig.json": {
+      "sha256": "7a86c50bc7c1dad60502e8b5878ca1cebe7ba9b7694fb735d1c9d5b0077bc6c1",
+      "blob": "b208a8817fe86763cd809d3017ba07af7c56e32d"
+    },
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/DamageLifeAndCards.kt": {
+      "sha256": "5b6541bf2789bc7d85ac8d594e30347cac7d8374b6f5fe885616d52156ce6a9e",
+      "blob": "8de474851c12b9639c3a00048c7835c0913f1e9b"
+    },
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/ZoneHandlers.kt": {
+      "sha256": "74938eacb2f6f6b606d369ef809e6d787255db0fa59f95d82bec57d4f4a536d0",
+      "blob": "8b8e6b2ce89d068ae9654b81bac4f52a09132051"
+    },
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/SpellShortcuts.kt": {
+      "sha256": "32336d6da51c13651854cb532349477700ec6ef61f62053955856f2334b84cc9",
+      "blob": "3e5d17c041c674384c6055e0817f7d9f9a39fad4"
+    },
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/TokenHandlers.kt": {
+      "sha256": "23ce19b0939969b0cc2b6c4f70d58330903bd94b4f5e467831d6eab6549f9602",
+      "blob": "b510ba55e4daaa6ee4007394ecd846f602156d2a"
+    },
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/StaticAbilities.kt": {
+      "sha256": "5b3a93eb93d2aeea3f6cd621e5cf1c23473e00ac817465f56e2407c385ccaa32",
+      "blob": "f0f8f864f745802164518850dbbb16e9b918a884"
+    },
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/CardStructure.kt": {
+      "sha256": "3504875553db6611fe2efa122b6d9ab027030acffe3837fcf3cd31780ffc9de0",
+      "blob": "dd63dfc791c3441631dae00633d025ef875ad51d"
+    },
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeFilters.kt": {
+      "sha256": "f5a1342c67bae355c38f8ab923596b4ef4352f8adb40aa164e25a6811cc81ebc",
+      "blob": "a46bcb1ce57f83519fa769a494a7ab46ab80ee89"
+    },
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/DamageDrawLifeHandlers.kt": {
+      "sha256": "2fcafae7ef1badb8d54fc04ab759f1225e3f7333d02359abc1bb61b178f852d6",
+      "blob": "4fcc29018babfa860757bbc6761113d33232e22a"
+    },
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeCalibrationRepairTest.kt": {
+      "sha256": "ed1e04e6e3dba71fbaad3e44689b9e38a74f03ac16b715edd33163936e20853f",
+      "blob": "45ef854d94ac4a4e661e91d9275cb851dc7e4498"
+    },
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/FixedRecipientRetargetEmitterTest.kt": {
+      "sha256": "e9f1b7a03266b2f02fe8f3854afd13a69000820a389064fc31d49eeb7c606ccd",
+      "blob": "8c1f768af0b3ac595857f728aaf2d82e0c076aa0"
+    },
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/GeneratorCalibrationRepairTest.kt": {
+      "sha256": "ece197cfaf0eb1cb9df795e5b603ad9b6134b0d1c32493d4161d7ec72b69d128",
+      "blob": "8bb036d8f0d29d21e8bf32d07f889742f1b9b1de"
+    },
+    "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/IsdGeneratorCalibrationRepairTest.kt": {
+      "sha256": "fd3a45ee63ca48476353ae288802b245c294a5f953060009ad5260490e733e18",
+      "blob": "559b716b71503a419c2d5699e002b6290f44aa25"
+    },
+    "mtgish-tooling/src/test/resources/human-filter-repair/current-ir.json": {
+      "sha256": "f1ac422ccacdcbaf885ea5abb73b2e37f1e92e45a53557e0c1d6f8e0b2d9b484",
+      "blob": "ae8305b739a8bd8e86f2215ed27c5a8b31a6f00c"
+    },
+    "mtgish-tooling/src/test/resources/isd-calibration-repair/current-ir.json": {
+      "sha256": "2221529e4c0fcf4e3e004b5a1c9ceda6b4ca49442d699164949657248e0e150d",
+      "blob": "888bb1ca74dfe7cc6bde69acc4b5f5f69fc8f68b"
+    },
+    "mtgish-tooling/src/test/resources/calibration-repair/current-ir.json": {
+      "sha256": "cf93ca420a62df0009038fbded67e4658eb8aaabb7f7327023478c0221a39cc1",
+      "blob": "3c267e81d92ac516c50f420dc7ff7b4780b59015"
+    },
+    "mtgish-tooling/src/test/resources/fixed-recipient/spellskite-ir.json": {
+      "sha256": "c0c87bb7af59fe6dde05327c911ecc13a6eb0d832b2f45b2e0971f068280ea6d",
+      "blob": "4a991a4f5a797d3b03c8dcbac47838461fa9b22a"
+    },
+    ".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml": {
+      "sha256": "6f37cdb939ab310655f78d82ffd711c9f0f389b51e8bd6f6f1a84eb732b9fa3f",
+      "blob": "6ac5a9e7822bec4c2fe9965d815e1bca6dfb8ae4"
+    },
+    ".github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml": {
+      "sha256": "412a771569f7a3bad4e4e41a037953140b39fa8a5d3c71870dc21776fd01cccb",
+      "blob": "0b49353de002afba7cd35f2bff34400b2d071dcd"
+    },
+    ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml": {
+      "sha256": "814cf66d558fa38eec5cac53458588824a8268419339b3b0f7391e6e97f244fb",
+      "blob": "9b8d92cd27af4e39377c2ebe4914d8212b778264"
+    },
+    "manual-scenarios/cards/p/phyrexian-metamorph-life-payment.json": {
+      "sha256": "e4d0303ce2ff68fe34947226f65fb9a3bc7a462551c5ef23f4d9a7bb50238574",
+      "blob": "d69e0e194f1268384dc4f567d2997fb08235c3c2"
+    },
+    "manual-scenarios/cards/p/phyrexian-metamorph-copy-and-decline.json": {
+      "sha256": "a74b756ab17f336a123a4d1891fe6e2fcee013e66691638b282614c916e8cea3",
+      "blob": "0eccaf5538c4a516a9e55de3d4344d8ee217f1de"
+    },
+    "manual-scenarios/cards/f/fblthp-the-lost.json": {
+      "sha256": "f1aee1f968ea4205d5b4237e43d86e19916e9c0aa547cda4e43615dfbde0298b",
+      "blob": "0982de7cd4d7abed88ae692da4140fd1f46ef2f7"
+    },
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": {
+      "sha256": "49e7770f7b55b24fb4a265ddf84afd86c51c1d6e1d467ed051b8334c60c45b86",
+      "blob": "f5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4"
+    },
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt": {
+      "sha256": "d6f56f310595a378e0a5a50a3e1b72b74efe3175480beeacab0ed6c3dc261414",
+      "blob": "b83b6f9e2e578bb2c346e47cf580870c8aaed001"
+    },
+    "gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt": {
+      "sha256": "17291977a00ff344b738f82830d9d11a1e230fc90d766836b26a60ad748c6a2e",
+      "blob": "28a52995671550d87fba5f35d6b100a31fa23848"
+    },
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt": {
+      "sha256": "828f8b7b149227878901a62a26e08306a5bf2a36a60dc2323653868e7616ed3c",
+      "blob": "9eae23a9820db3e7af21ad3fdd5b619c31510964"
+    },
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronR1SurfacePinTest.kt": {
+      "sha256": "a2fd1bae29c246c472aab10436e13d86347b12357c87e6ddc159b4c3e0236457",
+      "blob": "d4b95267191402591eb8afb94fc4b69d90f12538"
+    },
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/scenario/ScenarioSessionFactory.kt": {
+      "sha256": "b811641e3d262b53dd728643e96d3be6c63ecfe2e33e93c553a4d4832cd5b832",
+      "blob": "9d0d9d6563595b20ea84fae81369f3cba8deac3c"
+    },
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/PendingDecisionRouting.kt": {
+      "sha256": "e9a4531cd69e1904f799fa8d1cf507d0dbe6946cf9b5456b534c7ab2840d7f3e",
+      "blob": "081c74fd31391bc40e944ea9f0d69a8306627234"
+    },
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/controller/ScenarioController.kt": {
+      "sha256": "1fd401f38a218ded035b263ac57ea6962e12cbf65525a085a35f291bbf9b8927",
+      "blob": "ca010c36d96ac11f5caaeab04681e6b2de19ccfa"
+    },
+    "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/FixedRecipientChoiceTransportTest.kt": {
+      "sha256": "2a70c15c443415ddb1fc06602289ddf6e77b32f88aca75cbfb769713337de783",
+      "blob": "ba8ec93da4ebd9eee7891bc6034a1c275efd288c"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": {
+      "sha256": "0a5f08b5167f1c29a7c8d76f49a25a16b2b463304024ec1ec7e426d06226f3f8",
+      "blob": "d3c405bf92f6d41bb8cfb9dc68efa89291769d5d"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/FixedRecipientChoiceContinuation.kt": {
+      "sha256": "e07cf94c752629a5ea1df498e3045277dd6cfe073abdaf69a6fdceaad47750f6",
+      "blob": "552fc020a31a349e7d8526b48fae1e5249812832"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": {
+      "sha256": "a1cb811b21bef008cbea02bd7ad64ceeb1b576a66d00127defc64b56b7c97056",
+      "blob": "5bf13bd7724e63122c1e3030766f3c5454cd35f2"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CardSpecificContinuations.kt": {
+      "sha256": "5f00c9d386adcddf1dbaa73dffb68e307fa4a4be14f674293fe6e9ee0b077738",
+      "blob": "c3ef32bd4c256f861f5b830357851291a21d2474"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt": {
+      "sha256": "de2d0ae7bb8035da7fd70baf2fd89cfe5e897cdb18c6761eca1dd35d72ad6750",
+      "blob": "0cd7916ffef6b369020fbc4328d82b1aa369fdc6"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt": {
+      "sha256": "17993f805921b1494913404f6c59f610ab1243106fd1eed24f2343acdfc1032f",
+      "blob": "a9a95a7142c5ed3e60add623cfb0ac9986540045"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt": {
+      "sha256": "7dfa3a1c87caa77156d63694c3a1d811ec8aacc3cff7aac399a89248ec431919",
+      "blob": "3db053d81c30eb294d93371dcac5d2df60736324"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt": {
+      "sha256": "eacdce2350d5c6fc7e08b7ce1063d5f959ca42aca25549b8599ad13af1102b65",
+      "blob": "b59be237690f09d7851d58bdd2f56d356b22b942"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt": {
+      "sha256": "4332fa35b5cb92292cdf66ab967e187b64cc81c7ae53545d2eda8b81a3d84e86",
+      "blob": "97fe6f40bad0a21b5e4cee49e0182c300c6bc995"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/EntryOrigin.kt": {
+      "sha256": "2ba38689b15ae9ffb8c3ed336429c8ab6c216bcab7689e912558201fc2667a79",
+      "blob": "7d88cbdbecfc6edb8c96ad2a67e2ac7d40efbef5"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt": {
+      "sha256": "9aa2ceb8fda3d22d7dfb0bfda1ce16a8a631640002cb408be642c2b8a25c572a",
+      "blob": "676d8c924b518d37f770c157b5a0955a7d23f62c"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerContext.kt": {
+      "sha256": "151408c69151b793f3f70d644b37c287acfe2f4b09055e227c0ef5fd3ae4a626",
+      "blob": "29731392d49568a597e9a7c305ba6e8824b31eac"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": {
+      "sha256": "3b4130a9d55a290b1aea25ccd86a751a8f3dc2b4f6050af4e8ca3fb7539acffb",
+      "blob": "61d62328d3422b6912b186b5292befc371130830"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "sha256": "56ab70cadce1de3114673b8fe9ba68870662699619ecd082d6ae5b365ba38b73",
+      "blob": "385d927f4066a4597133377d86090d1e37232b34"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/FixedRecipientChoice.kt": {
+      "sha256": "1d94e4b6f98c62cbaa78890794918c38fe332189069ad06382462fa084fb90f5",
+      "blob": "03355d435e56eb68617a767577a4f4f8071042bf"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt": {
+      "sha256": "561f2f25a6cfa18763591bc5fa91b738392744e0c487955deea62e1b5b5f7381",
+      "blob": "4b862eb5569142a06edc63213ea64ec878182ddb"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetSlotPlan.kt": {
+      "sha256": "596b05a98191f056359b59c86e81871990c4ad995064b9bfab98a3cbc755c1c1",
+      "blob": "e804a908af74268631875f94fe7239bd96bf951d"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/GenericRetargeting.kt": {
+      "sha256": "73f9d96c1079e10428b5bac2d0bca2d2439a013ce47a70a44a98953890042be6",
+      "blob": "0ade8a5a66ab743ac4fd2b91f35f408249e4e168"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/CurrentTargetPlan.kt": {
+      "sha256": "d35e9a3775c61cb356cf387c197f18ca0cc5a103e3af17c87b1d347e5fb02333",
+      "blob": "05e58033ceef0dea50904068072aaff164ec4662"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/FixedRecipientRetargeting.kt": {
+      "sha256": "198539f8c045d873a525f0661b23cc91a85b2148791c19d676e0b50814db3a5c",
+      "blob": "46c9e045fc2bed25e52f566ef0fabf4626ee3b20"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": {
+      "sha256": "45a7e1cc0bfaf0b03cfb079d624ba7c12cd71641dedbf3c725b7fb7672ee6e83",
+      "blob": "f88855a8d70a7c2c7449c46c228269bb0aa1b60d"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt": {
+      "sha256": "623b02e16b541dbaee67c40466adbb948935c346f53787cad5e1b29a8c42e1c9",
+      "blob": "b0e5748fa333805cc4275a2311045be4c94f2a38"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt": {
+      "sha256": "1e4e18cb374193d3ba56161017ed9a8d372aeb8331dd4fb09136694940a4ab79",
+      "blob": "cb7019d8aa97bb82317636f3011e048f71aa04a3"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": {
+      "sha256": "c0f75fa35bdf74ea367204ad41116c1daca798fb5ed078e421ecfa8e1e4f3cb6",
+      "blob": "4dcdd4a78f5a17ccb7dafe32c4d39e4acfe5b03d"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CardSpecificContinuationResumer.kt": {
+      "sha256": "beff0be2490afc6ace890a9d90931b8dfe3818606db69263883fc9b4227f8408",
+      "blob": "f7529bfd7aec25b59435a84d0736fbaec4419db5"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ReplacementEffectUtils.kt": {
+      "sha256": "e973ebb94095d2ae0c3fa2046d1941fdff68a8c99fe8faba010db5cd13d0474b",
+      "blob": "f0734aa0666675827c7762b379caa690a27f55df"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": {
+      "sha256": "5fe904dcbffc79e6b3e943d88f83f9b0bc17f667eb449d01aac7cea9b07f6cc0",
+      "blob": "319016aa06c252e00eb46df08a6270d0c091c9c2"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeSpellTargetExecutor.kt": {
+      "sha256": "ad74fab74685ff0f6f32766ee28ba5a7b6f8a980b25411a6cb1428f29593b4a5",
+      "blob": "6179cf35e840c127af161d3c8770b2c550a0bd47"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeTargetToExecutor.kt": {
+      "sha256": "7fd51f3aae66e6f14a9981c937e0286afc02950b6c70b8052bcd46f8116992d8",
+      "blob": "1b0d0716fab244a1f1e1159cbc81069635a79b7c"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/StackExecutors.kt": {
+      "sha256": "b3ce3b313b47df5a6381d4fe1b4abf77cf480ead7702d99074db5b2a1459a468",
+      "blob": "bdcbdee0cada68817012a9dbff99c6328059640d"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeTargetExecutor.kt": {
+      "sha256": "31083c95fa909bdd0e44bcc9119b1b3ddfce7d64984639477fcbcb4efb921bcd",
+      "blob": "7dea03dfcf26de6400121b5090a0f3ba7c54bdc8"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ModalEffectExecutor.kt": {
+      "sha256": "96c016aa29d65914e99cccffe1eae406f6713d20c78bfe7d79c1b83c0158467a",
+      "blob": "546a7a2a4292da2b6e2e5a5789c14965110e070f"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ReflexiveTriggerEffectExecutor.kt": {
+      "sha256": "d5218f6cca04cbd49121079cb2ae72948cff2f921b6f85119c83d896c2bf9f7c",
+      "blob": "346e3b234c1a799bc86c7a40a3004afa4df0e411"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ChooseActionEffectExecutor.kt": {
+      "sha256": "50bc17a9ab63361315d7fcec77d30b2d0b9c1c7854a1a28f691e26332a5fad79",
+      "blob": "ac7a42f10b12e74b1261f730da448fd0580fcd10"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": {
+      "sha256": "b5c612a5c403451916362078423792cb4f9de8eb47c84b975cfb619227667b79",
+      "blob": "eaca4090e8fe6d46826cb202628338f27cf722af"
+    },
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt": {
+      "sha256": "c7aba22d7937c395075c00f8710cb072a0ec1e3932a5fe55b441c9b1a7da0f71",
+      "blob": "4516ca436797f9107774d671f0b93378d7b44b79"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ForEachCopyEntryBatchScenarioTest.kt": {
+      "sha256": "ab121b3c43906f8c616c873d6c0a413c34c03ed5513b1e90ff56d091abebca3e",
+      "blob": "bd4e8a3e769ca83048343594d9a51ffa76e71836"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PhyrexianMetamorphScenarioTest.kt": {
+      "sha256": "17a207d908a91036b3b9c96022fb6cb12bf52dc09906b88ef996527f1072e745",
+      "blob": "1075f22c9c9639c49f7d78dc0b5dcc37e26df365"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FaceDownEntryCounterScenarioTest.kt": {
+      "sha256": "2400867078401a51908bc3645e4429b63ae9785fde3b8f6dc0cfff5f71001a99",
+      "blob": "1e2212617964b8656fa1034bdd741f2b2f7e1a61"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EnterCounterObjectIdentityTest.kt": {
+      "sha256": "d5e0b4d8e8da2fa73e7398daebd40f36a8a5b300899a6da455224dc2997f39fd",
+      "blob": "f50e915966347aef2ca1100cae5b07e9a25e9398"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntersAsCopyExceptionsScenarioTest.kt": {
+      "sha256": "6386e50e4ebdb18f06878a80c97de0147fcc709162ac97c7ce0e3f3326fcc632",
+      "blob": "d35b6b89bb2e2abf9baab2a9edc585f581ce8cb3"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceMatrixTest.kt": {
+      "sha256": "c8aeff070da52a4f40a99d3d17bd19eb29d4247e916b31934bda9ff1c8869a7a",
+      "blob": "284c6003b16678e1f912cba0817ff949bd7da71a"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackResolutionPriorityTest.kt": {
+      "sha256": "515a2da89211cb1cad0278bcd7c8c365cc611ab9e643d1fa05fcec670060ad63",
+      "blob": "091e326dff38fbc21cecfa113f9378c65b4f13d3"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingCopyEntryScenarioTest.kt": {
+      "sha256": "b0acaa3edb30d44eb698518fcd76ce579c269103bbabcf3c5629078f1910a514",
+      "blob": "49241800215238036e602f532acb33803b8e1b60"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiedAsEntersChoiceScenarioTest.kt": {
+      "sha256": "6b43b58b5a3f52405746be330dc5e885666227dadd1f3c46c9844645076b0a59",
+      "blob": "a1d7941b8808d784e6053c0d898e13d6f6faff5c"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterModifierSourceScenarioTest.kt": {
+      "sha256": "76a4ab181241eb106ba562e2cab4af7b475ff6cf400fdd62bdb096c9b8a29c54",
+      "blob": "4cbc70456f589700342f4a20b053a97454c3d5c6"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt": {
+      "sha256": "d6aa57d16e82da6dbfc1ab7e1ab39b93225f7014fc1922c738b31b82f7ca1c38",
+      "blob": "166e5a4e2c5abed99c9cb13e0d861c53a608b5a5"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt": {
+      "sha256": "9d44ddce1bd1e9b5d3baaf44b28df9ee427f61e039485f98eda88cbb71caf154",
+      "blob": "25ee93595c45718683cef81f9eca9b2ad037b61c"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryOriginRuntimeTest.kt": {
+      "sha256": "ee7a6d940586d274cc22b65a3aed3dbc03971ef0e0a4015837582be7c2c7c3cf",
+      "blob": "d5757670cec43f73a6328e7bde97d2330740c384"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianPaymentBoundaryTest.kt": {
+      "sha256": "7184a166d551d53f8410b2a5affbb313d1ceda3a0960d9bf642046cd0066dcc0",
+      "blob": "177b122f80abd681b8894f9eb7cc04997388f733"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryEventTimeScenarioTest.kt": {
+      "sha256": "837b319a8c3b00aaaf4aa19e767c74237b20c37c1f6033d11856e7939ab702cf",
+      "blob": "9f894778c3abd1f1ef17dd5c265542a5c9e9b5eb"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObservationLifetimeScenarioTest.kt": {
+      "sha256": "64288546f967a9407b8b8dee45060d972c8d0f3bc9b4a15c3c26e3fa18234552",
+      "blob": "26b3f57cbca96355ba162398b9094d403d1fb2ff"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientChoiceTest.kt": {
+      "sha256": "cd9e1e94cb218cb127776f2a22754b85fd5dce1e4305333ba97d69ab43a8405c",
+      "blob": "4a29fc58467822dbc731b77774a10f6f3281dfa7"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingEntryObserverScenarioTest.kt": {
+      "sha256": "23179ac70a32b9feeedf8683de85b2af99f5875ec9ba9a101906448767551552",
+      "blob": "05e52bc99cde4e4838302f0636d594bbaca119fc"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianPaymentControlTest.kt": {
+      "sha256": "7c7cb52b8437d166b62e43b9d934fecea2882d3b43e195ba48f1c271132cb69e",
+      "blob": "2d04c9d0e19b70ef8476274563cc6110601d6d6b"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientRetargetingTest.kt": {
+      "sha256": "842087bb15985fe51d2f0d27314611ea79c793a9dbd0bf692d7b607367abf810",
+      "blob": "5498852715c67acfd61ca4593876c6f622b4acdc"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientPlayerRelationTest.kt": {
+      "sha256": "6d664efb0683c35342e2a109ebd2da22e9d6ad0ec20b1d09bc4a9b40f08ebd68",
+      "blob": "3d1e1c8cdef626fa4955aaffecc9a79dba39baec"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableFaceDownWardScenarioTest.kt": {
+      "sha256": "c6286ae3ec9980464ee975d7f58f6b1b2c390f38b02fffc713837fb1bd85354a",
+      "blob": "c5816b5b00cf87e004de51698eba5c712b1af8fe"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingEntryReferenceScenarioTest.kt": {
+      "sha256": "844487e43a4654b86c9d77882f6495f22977db65e92f3ac92fcd73c89ef6c8fd",
+      "blob": "7d0322f1b06832fe16970c61707d31c5c3336ae6"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GenericRetargetContinuationTest.kt": {
+      "sha256": "7077c2578745594bee829811a8eee358143e63c64bb8a82929f844ac53c9f6dd",
+      "blob": "6e16dbbc2e046bc0576ebf1d08b3d568f5114cb6"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellskiteScenarioTest.kt": {
+      "sha256": "0bfd6033d1875e64cc6b1a001c3c27ddfaf3a7d96eadf1266eca37653f042b56",
+      "blob": "5708aad902f3fa19ed746e22dd526bfec30677b6"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianPaymentDiagnosticTest.kt": {
+      "sha256": "250564a8e7c43dae1d363f20c1c63256159fed23a067deeb641c9ffbf0baeb4d",
+      "blob": "bf424cfb5f57c0eb4ebc3b4d8d8d147323dfa51c"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianBrowserFixtureTest.kt": {
+      "sha256": "1de88b7706ddbd7b6170b34dddce215a93ebbbbfb8ad606f138ce579aad92cfd",
+      "blob": "c335bcb4a12a569669489dafed536a67083d95fb"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObserverBoundaryScenarioTest.kt": {
+      "sha256": "e3bbb873e1d97bdba3e00a204bab8ef4a72da51e411e07a6f30adc7872c072d2",
+      "blob": "29081986a3c32b8d8e39b0d8e00e46d46cfc62ce"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableEntryValueScenarioTest.kt": {
+      "sha256": "e9b026e24f2c28304a25d6d7ca3778338f8d5b6ff291cf6f2dce5ce8ed4bc43b",
+      "blob": "21de080d539ad33b201521c28f1ad7bdd0b758c6"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PhyrexianMetamorphEntryScenarioTest.kt": {
+      "sha256": "10c5efbc582329f4cd5be55195d2d8d3214e89df286dfa2df0df8ed2123ee73d",
+      "blob": "129988f18a59143b6172658d7c4933b85530033f"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedSpellTriggerFinalizationTest.kt": {
+      "sha256": "127b7f57a8a4b2f323d32c6dc2998226bdde94bd29ab45408f4e0f122c9c30d1",
+      "blob": "c570ec24dd7a7e4170f64ab84e5c5e4dab3ec764"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GrantCounterPlacementModifierTest.kt": {
+      "sha256": "21b3aab896905813a1461f2fc328ece6a2cc8c32749ee468c9a43e4f3ddff160",
+      "blob": "6d735e8cc32ec77a17e5715509ca30e850b6a50f"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterBoundaryScenarioTest.kt": {
+      "sha256": "a49156237003b9aacb2fde7e589748e8687abad0a735e50593eebe5f161cd08f",
+      "blob": "f4dcae1e7f6a03796647f0d1a69cd6fa04d43c80"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingScenarioTest.kt": {
+      "sha256": "e4d8ce58696a968126bb17d0e9403ff59ff99ce51e1efdba05a3c0ec846bfee5",
+      "blob": "244bd141c6578fddeb3b0f7631b46c4aa5154fff"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DoubleCountersTest.kt": {
+      "sha256": "287f68904f3dd1947ca69e0a5dd3c81e09900150d7495a42c0515cfaae3fd64f",
+      "blob": "e8e3568115030239d5f4907a62a40369bcbe666b"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientSourceContextTest.kt": {
+      "sha256": "ebf9a4801751fb223f6e7608f78438499194f7836a6adfff5265491afa303cbd",
+      "blob": "ae4f51dbee2bf421fbec59ff103fa44153111479"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CurrentTargetResolutionTest.kt": {
+      "sha256": "3be86f6ae1d06d04907b032382523c7da22da85461cfcd043eac3240bfd254fd",
+      "blob": "a30fdd042acf76efaf8442b69d6f8bea8fbdc68c"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/LegacySuspensionMigrationTest.kt": {
+      "sha256": "142aa11bcc0d4d8b2673e62b09c776bd43d1bd1403a898a01e98c19666de7269",
+      "blob": "cdc9fcbc7dbd5dc74fe70f1f1b9b51f575229b2c"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/SuspensionTraceTest.kt": {
+      "sha256": "a3537c53372b08ba9e9d472b07f969f74e7e38f3e25c8fedd7e69c322c00dbd1",
+      "blob": "d70c2e748373adf73ee0198850a75c45cd25e0ce"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt": {
+      "sha256": "6bf8d0991d5a1e3f1c0b387e555a23485959ab056fc7533bc296d7ca09000d23",
+      "blob": "aa68d3d384edee9bbebb755b2630dc66d93c8df3"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/layers/BattlefieldEntryProjectionTest.kt": {
+      "sha256": "621a7cf11307c7019c5a82496e5431a8cb0efe82b35a07c16f2ef49f31f1d9c9",
+      "blob": "b226ff6ca8bc669f97fbf2b3377ad86045c0ff2d"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/continuations/ModalTargetForcednessTest.kt": {
+      "sha256": "1b4e25786065f9a29fc2d686b1a673055837fc773d4e0afa7f96b5630ac02548",
+      "blob": "a8ed4271b96382ca89666e6cefebeb5d05352894"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt": {
+      "sha256": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee",
+      "blob": "81d2ec00484429e88bb4b2b77fd36ae5c154290e"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/README.md": {
+      "sha256": "4170739f52315073e916501712c83461a9a8ba135069f86469b073e5780d08d9",
+      "blob": "1080e5670b3ba13e7cfe37d12bcd44ff81ff3701"
+    },
+    "rules-engine/src/test/resources/suspension-traces/README.md": {
+      "sha256": "df29d9ca5c55362a67c4741fd681f187b29a73c3bf96fb2936c3325e56070eba",
+      "blob": "c4a6ab09e52714a69c9329ea08bd1158e5ef0d5c"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/actions.json": {
+      "sha256": "d6bbbf30f9b4a0767f2aa07cda358fc97a28c6416b3f5e005bcd4e6f829d802c",
+      "blob": "23f3c4cfdc37a35e6a79ef8f27530cee6178c3f6"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/state.json": {
+      "sha256": "9e993d4468183f5f9021e1b680be78fe2dcb46f4ce32c5e29cd43e6b3ca52891",
+      "blob": "260befa7098e0b597798720125ba11407a43d594"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/events-1.json": {
+      "sha256": "cffd6b016389d255e1a329b1cb50f1c4c62e76217c038c90de8c07eb2dd18ce4",
+      "blob": "a36a99b023873e7158164314efb0f435a1b7ca0c"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/events-2.json": {
+      "sha256": "7a383c5193f6462f36d0d5d27a66f7833644c6392e3fed40af523ca19d732090",
+      "blob": "bab126ce6255a6b0de131c3bb1b96086476fd877"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/creation-events.json": {
+      "sha256": "548f346cd656a27685e87a5e9e0e38a534b125f7f237d1392659f48aeb916790",
+      "blob": "572b2a00f1d7d23bf72cca0595baf998fa97e08a"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/after-2.json": {
+      "sha256": "115017459f09a675a3369834dc6eeb9d00d42358b42ae6b5fb8f4f98dd08bd83",
+      "blob": "98432f2cbff931a3a9373e906c10fb7f384fe745"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/manifest.json": {
+      "sha256": "1d4e6bc0d7935047e65096b3f4b967d890f34039af42c7829210b3bc21b83868",
+      "blob": "73cb8691acda06079f7a456164144e166a192cc2"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/after-1.json": {
+      "sha256": "4520ff201102a6eba80a7e328d8abc6a6dd00770b98d868aeec70f8a2b2f2bfc",
+      "blob": "6c60cbc0efd5861b402898117bb68c79b339fc6c"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/actions.json": {
+      "sha256": "d0ce4b42a040dcef4a714abf00f6d8047be8417baaa04f550a8325e0fb222ea9",
+      "blob": "50ea6b2ea9d11b01e1b8d046acc6b61ceb3b3f18"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/state.json": {
+      "sha256": "b2451003316d4f15e2e1e24e5bed0229b9029ea6ef3b134f7974688333441c33",
+      "blob": "c874d97fe88de1beabecd1721e9e5dd10d557c75"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/events-1.json": {
+      "sha256": "c85bb5a3218279be0ef4e22410747c43193724eec103ecfb95979f0eb94d426e",
+      "blob": "f5ce98d9ed7c23287449db062eb08f5bfa67b709"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/creation-events.json": {
+      "sha256": "dfd938e9b9fa80676c40f45a807a0ec9e6f18e478583f64743ea959de8d1b1d5",
+      "blob": "117b3153c9b6e2f8481cccfd2d675349d722976d"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/manifest.json": {
+      "sha256": "f2596a75117d1233f157bdf0d8430f438c9a092a89212fef0baf3512dd9235b9",
+      "blob": "bf6d24633c578c5729df731519dbbf2bc5c92894"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/after-1.json": {
+      "sha256": "346ea03c14f1a63d91756f7a82eed68c2e8ecb83115dd0b81a2dc9e14221c69f",
+      "blob": "160f60200f0b0c0c6d72ee7f753790895746b438"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/actions.json": {
+      "sha256": "e8b3e39fbad309d9d7980599dd95b6529daa9c58df58e1df4b63d9f3acc74670",
+      "blob": "9bd16fab323c848191211c78cf3fb26549d50d06"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/state.json": {
+      "sha256": "b7b697d3f16d2f77e8129667a427bfcaa127e9d4b609d80e646836e7849643f0",
+      "blob": "3b40b1ff616ee66eb423ae04df20c6a9e155f09b"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/events-1.json": {
+      "sha256": "842e5a79b28db029d1dd22dd9053b151cb3c99152bb284b4c86a09768eda188f",
+      "blob": "6a41867729ee0e35fb8d2b0b065f8e321a2c0eb8"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/after-3.json": {
+      "sha256": "bd1f4671c7db217ad4209d93f51f12b0483749cfdea095e745589d5468059d5c",
+      "blob": "b74cff1c6690ece2131e24292bafe6a40064d319"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/events-3.json": {
+      "sha256": "99373e339c021db47f9c7b34b724c35b021053b69f94d5c7abb2d8116b2519d9",
+      "blob": "3e5b6f4cd66eca1ce8266edd20291545d3f483dc"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/events-2.json": {
+      "sha256": "3e6467b41d2d28e02746e1b32b26af7e268d14ff4dce8149fc1214dfba66c5fa",
+      "blob": "a88e3dd6dd9fd3c2de1348695f26a3f446f63d49"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/creation-events.json": {
+      "sha256": "a7d071a3c2b0c8af3ca5867ae76c973467a782d05857075a84c465f37fe087d1",
+      "blob": "98a0e7f35c5a0d375eb4c4d8df273809ca69e8fa"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/after-2.json": {
+      "sha256": "5b634610782c6f01d0ce8355a86bd62510e758331d2744ef3a3dbda627b6b51a",
+      "blob": "90b7e4917b38b08baf6a20711206da5941219ee2"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/manifest.json": {
+      "sha256": "b9daf3456e033d348a22e93e56ef481582291f9ff129711da5a9701c5544c5aa",
+      "blob": "0697de191a1f4860d45e4baea92da7d6feb8a0b5"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/after-1.json": {
+      "sha256": "0b9cc4e9eaf0b2cbf81f25f9b77115386f1c8a66a2f12e34dd6a60778adb71df",
+      "blob": "9a82c51d3e39c048cc46de60db6ff708311bdb72"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/actions.json": {
+      "sha256": "a42edc8c7ef8049f3ccedc6425c1959ac9f35cd1048cf8aaa334cbbea0fb0f3f",
+      "blob": "dcc5ea0fef346d4d0225d1937dd24b09c1844abf"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/state.json": {
+      "sha256": "29bbdca79a50e55d84133a40cc68ab4556b6d51ce4b7a336e5103a1bc78fcac0",
+      "blob": "68ebc48ee7fbb4fbe97e3a7b9505beb8d9b1d685"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/events-1.json": {
+      "sha256": "53fb80ed304d3247013c90391562d364103ab2e3d971d3ed06b9e405927d2b17",
+      "blob": "d5e6052a4bd498bcf3c4afcdd014d146261a4fd7"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/events-2.json": {
+      "sha256": "18b6133ed9f52fceb5d55ddeac6fb375dce5a62500bef84b66b75ddbb348a9ee",
+      "blob": "ecb74a08f393580c09efe1344219f03e21839afc"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/creation-events.json": {
+      "sha256": "ad98cd194edf0bc856568960fa786b62c3e182ce994947eaf5374160b95e18bf",
+      "blob": "f0430217128989b9b5b799ec1b0e3f1c566ee97d"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/after-2.json": {
+      "sha256": "20217cf5e56ce3b2acfcd8aac1e6f7b9ac5e0bd7034c1509b1c6e8f886a5799b",
+      "blob": "63c71f25e6e584db12519941642876280ce1c9e1"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/manifest.json": {
+      "sha256": "0b04e7ca9bd01ae9b287e4933711d535c0888e07e8f095b792748036c3adc2fa",
+      "blob": "443c399198994465f999d2ddb076d95df26ffe25"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/after-1.json": {
+      "sha256": "d03884ac276e497d7c604bf8ea26a05761213f72b217cefd2502bca13cdcb0c4",
+      "blob": "85c39b28f8ce6e004dd062227368da41a813b903"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/actions.json": {
+      "sha256": "56681c993f36979331d2b6abef5dddb6b52561270c576093651c2a08ff89f713",
+      "blob": "b265481b521419b8fec0572730c6f598df4c3a88"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/state.json": {
+      "sha256": "c39f22dea5c330089e87f9927d03778a4ef586841759e0499d41a9397a2d8467",
+      "blob": "e47febe52297daedf36fdf0daace950cce7e087f"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/events-1.json": {
+      "sha256": "08786cb3ea201e008fe06da8681e69b9fafba78fd50f8359f38bdde01cf99fa4",
+      "blob": "d46355fce272997b390e70f3adfa5b4252babefd"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/events-2.json": {
+      "sha256": "d0dff41a3914cb8f2dbcdda78284d11d6cabd2aea7b36e5a34815363545ff3c8",
+      "blob": "dfb2893c027628a0ab12678f83e2aee22f6566d0"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/creation-events.json": {
+      "sha256": "b6b157d910fdd98eb29cb2a2f178dd537d42002dd431325cd1d3fa0e5135fea0",
+      "blob": "12546a5e2964e7851ab81cf80df3475292735f81"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/after-2.json": {
+      "sha256": "9c7837e79e279bdc9f6fa516c604cd3aa03c550c9e0d82319b36597af5366402",
+      "blob": "85bafdbff2584e1ad14a5f0d26a5b24f15a2601c"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/manifest.json": {
+      "sha256": "63d680ce4454553805f9ae1c19cec2556cc726c1080ce239c0afe08ef76eb0d5",
+      "blob": "1e9e416b9a615aa06c69908da5afa38e915ceea3"
+    },
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/after-1.json": {
+      "sha256": "0b6769d45b523b78916058e0ce795a2cabfad96d29d81e8cc25a54ab66138262",
+      "blob": "7f6f94630d35c25bd1a60c0e3db66b0e24bbd8d7"
+    },
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/actions.json": {
+      "sha256": "d6bbbf30f9b4a0767f2aa07cda358fc97a28c6416b3f5e005bcd4e6f829d802c",
+      "blob": "23f3c4cfdc37a35e6a79ef8f27530cee6178c3f6"
+    },
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/state.json": {
+      "sha256": "c2671964ac8cd0e904f5d87344ba0ebf95d333ee5c6bff6b97c3e30fa922474f",
+      "blob": "1b9bdd8d81b2464d00bf81f2374150c22fc27f1c"
+    },
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/events-1.json": {
+      "sha256": "cffd6b016389d255e1a329b1cb50f1c4c62e76217c038c90de8c07eb2dd18ce4",
+      "blob": "a36a99b023873e7158164314efb0f435a1b7ca0c"
+    },
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/events-2.json": {
+      "sha256": "7a383c5193f6462f36d0d5d27a66f7833644c6392e3fed40af523ca19d732090",
+      "blob": "bab126ce6255a6b0de131c3bb1b96086476fd877"
+    },
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/creation-events.json": {
+      "sha256": "548f346cd656a27685e87a5e9e0e38a534b125f7f237d1392659f48aeb916790",
+      "blob": "572b2a00f1d7d23bf72cca0595baf998fa97e08a"
+    },
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/after-2.json": {
+      "sha256": "98f8b9cbebc3cc09077379f79bb5b92a9ab29cd8b59a44340a68dd8975a775ba",
+      "blob": "ef757f1a53bbdfcc788081c428d1cfc12611f51f"
+    },
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/manifest.json": {
+      "sha256": "0a914e60ccc5afc0808d38b7bfb4b798a4326c18dbe683259af02eb585a76a39",
+      "blob": "cf10ce63b7d328efca7c4729c33ca77726b2cabf"
+    },
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/after-1.json": {
+      "sha256": "6b397ba4daeb71a3cf5a75c8ac3b49832c8ce3f35bd289cd56019e8565d94bdd",
+      "blob": "11fc4d25689ee67d385c0b772c0123533fdde929"
+    },
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/actions.json": {
+      "sha256": "d0ce4b42a040dcef4a714abf00f6d8047be8417baaa04f550a8325e0fb222ea9",
+      "blob": "50ea6b2ea9d11b01e1b8d046acc6b61ceb3b3f18"
+    },
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/state.json": {
+      "sha256": "ae28e0981b9834ab4988bb251d1f8401af03bc1789b9abe0812354e3b0d0995d",
+      "blob": "4fb8207e1832cc54876231cd9aaffc7f0175c8f0"
+    },
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/events-1.json": {
+      "sha256": "c85bb5a3218279be0ef4e22410747c43193724eec103ecfb95979f0eb94d426e",
+      "blob": "f5ce98d9ed7c23287449db062eb08f5bfa67b709"
+    },
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/creation-events.json": {
+      "sha256": "dfd938e9b9fa80676c40f45a807a0ec9e6f18e478583f64743ea959de8d1b1d5",
+      "blob": "117b3153c9b6e2f8481cccfd2d675349d722976d"
+    },
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/manifest.json": {
+      "sha256": "55ca60cf5df3ea436fee1b69f80351995222eeae66cfe9a96379a837bf713433",
+      "blob": "14ec4db1f9a12cceab899ade91f641864cb41553"
+    },
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/after-1.json": {
+      "sha256": "fdcfe3467f7ea1df913e9d3c81b74ab6ac021f38ebf0ce59c8b6a5c405e75a20",
+      "blob": "e63d82b97352e9283dfacaac38f58c70c8674bed"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/actions.json": {
+      "sha256": "e8b3e39fbad309d9d7980599dd95b6529daa9c58df58e1df4b63d9f3acc74670",
+      "blob": "9bd16fab323c848191211c78cf3fb26549d50d06"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/state.json": {
+      "sha256": "6b51f8d7b00d6773864bef00a0bd0520a048d0e476b275b9068e49479aa53834",
+      "blob": "b92ff65cab9b65576660ff188720903c3244dd96"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/events-1.json": {
+      "sha256": "842e5a79b28db029d1dd22dd9053b151cb3c99152bb284b4c86a09768eda188f",
+      "blob": "6a41867729ee0e35fb8d2b0b065f8e321a2c0eb8"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/after-3.json": {
+      "sha256": "ab9a44cad0b1a58c65fbf1058b4b8315df277d75115ff92fbdf374b1d40dc16e",
+      "blob": "2a5012cc056793956bc8fabed6d4d27e26cd181b"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/events-3.json": {
+      "sha256": "99373e339c021db47f9c7b34b724c35b021053b69f94d5c7abb2d8116b2519d9",
+      "blob": "3e5b6f4cd66eca1ce8266edd20291545d3f483dc"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/events-2.json": {
+      "sha256": "3e6467b41d2d28e02746e1b32b26af7e268d14ff4dce8149fc1214dfba66c5fa",
+      "blob": "a88e3dd6dd9fd3c2de1348695f26a3f446f63d49"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/creation-events.json": {
+      "sha256": "a7d071a3c2b0c8af3ca5867ae76c973467a782d05857075a84c465f37fe087d1",
+      "blob": "98a0e7f35c5a0d375eb4c4d8df273809ca69e8fa"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/after-2.json": {
+      "sha256": "5e607495e770a6ff6c86e8053e0cad43b841b037a14901668755de41822f1547",
+      "blob": "a3d8c68f567018e5045d5f701faa7c89b7d152e7"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/manifest.json": {
+      "sha256": "2f21bafb20caca144eb7ba16ce20e850ac7f114aea1e8921a7d175a3ec572c18",
+      "blob": "4bc7059d6b17b284d2bffe3bdada4f85eee75152"
+    },
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/after-1.json": {
+      "sha256": "108de802faf42302c19ed304b4479154cfdf8c52dee3b7554c82d31cf272e384",
+      "blob": "f792bf9dea81129a3486ff5ca3a06a591f663ff6"
+    },
+    "rules-engine/src/test/resources/suspension-traces/nested-may/actions.json": {
+      "sha256": "a42edc8c7ef8049f3ccedc6425c1959ac9f35cd1048cf8aaa334cbbea0fb0f3f",
+      "blob": "dcc5ea0fef346d4d0225d1937dd24b09c1844abf"
+    },
+    "rules-engine/src/test/resources/suspension-traces/nested-may/state.json": {
+      "sha256": "ae638fb26065f17658d3ea14c9d8404cf3b1c0143181be2642597d51a2c884e4",
+      "blob": "862667e37abc92e80d507d46d610185d5271c4f2"
+    },
+    "rules-engine/src/test/resources/suspension-traces/nested-may/events-1.json": {
+      "sha256": "53fb80ed304d3247013c90391562d364103ab2e3d971d3ed06b9e405927d2b17",
+      "blob": "d5e6052a4bd498bcf3c4afcdd014d146261a4fd7"
+    },
+    "rules-engine/src/test/resources/suspension-traces/nested-may/events-2.json": {
+      "sha256": "18b6133ed9f52fceb5d55ddeac6fb375dce5a62500bef84b66b75ddbb348a9ee",
+      "blob": "ecb74a08f393580c09efe1344219f03e21839afc"
+    },
+    "rules-engine/src/test/resources/suspension-traces/nested-may/creation-events.json": {
+      "sha256": "ad98cd194edf0bc856568960fa786b62c3e182ce994947eaf5374160b95e18bf",
+      "blob": "f0430217128989b9b5b799ec1b0e3f1c566ee97d"
+    },
+    "rules-engine/src/test/resources/suspension-traces/nested-may/after-2.json": {
+      "sha256": "a865de864a987659863c6f84b8cfa14ccf85770f4dec42a51d13ebbcca000ef6",
+      "blob": "8ccbf888ee1895c7c4b2b44a570668f33b4e2103"
+    },
+    "rules-engine/src/test/resources/suspension-traces/nested-may/manifest.json": {
+      "sha256": "687136588849b116ccd0491ee15d8296d9681d3acd12c0b9a667c98cefd229fc",
+      "blob": "2839bbe541253136d53e56e73c7f468069e3fbbb"
+    },
+    "rules-engine/src/test/resources/suspension-traces/nested-may/after-1.json": {
+      "sha256": "7f8bbcdd5e20a57948921b7d698a2f0ce62e46f6f5ae49bf5f12cd71f9612fda",
+      "blob": "ed59862eda3927f9e6b767add211c5d739f2ec24"
+    },
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/actions.json": {
+      "sha256": "56681c993f36979331d2b6abef5dddb6b52561270c576093651c2a08ff89f713",
+      "blob": "b265481b521419b8fec0572730c6f598df4c3a88"
+    },
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/state.json": {
+      "sha256": "d1be0484e5c8b083ea727a1bc9ba8facc19963b7f91b40255fea19528b09287b",
+      "blob": "bdb43ac23685abe6dae012fecbbb5a0e3a64dd27"
+    },
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/events-1.json": {
+      "sha256": "08786cb3ea201e008fe06da8681e69b9fafba78fd50f8359f38bdde01cf99fa4",
+      "blob": "d46355fce272997b390e70f3adfa5b4252babefd"
+    },
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/events-2.json": {
+      "sha256": "d0dff41a3914cb8f2dbcdda78284d11d6cabd2aea7b36e5a34815363545ff3c8",
+      "blob": "dfb2893c027628a0ab12678f83e2aee22f6566d0"
+    },
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/creation-events.json": {
+      "sha256": "b6b157d910fdd98eb29cb2a2f178dd537d42002dd431325cd1d3fa0e5135fea0",
+      "blob": "12546a5e2964e7851ab81cf80df3475292735f81"
+    },
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/after-2.json": {
+      "sha256": "a90dc4c9552c9d1c8f3ad2618bf8ab253d6b8e3a1358f904aed6b87c097a3570",
+      "blob": "7ad1d4d499e40dbc2fe1fe0fb93be87b99b8ebab"
+    },
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/manifest.json": {
+      "sha256": "93930dccd945e3e445520b4de8e6a19fc84e0efac6833d4dc841553bcb2835e4",
+      "blob": "17c9d9c4dcc135d6a15536f1635311f5808ef552"
+    },
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/after-1.json": {
+      "sha256": "324a6fdf7e88697a3f28aef414a3d93e035fb606d862fdc8e59bdb695e2dacf2",
+      "blob": "2c09924abffb0ad71d79ab4f5ce3400c90d5f5c4"
+    },
+    "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/SpellskiteRegistrationTest.kt": {
+      "sha256": "65cdcff2afe3d4caa2be670f208b027e63932add2daef6b7907675b8e3b997ab",
+      "blob": "b80c008d7cce8126ecd615a1769b9789b36f3cbf"
+    },
+    "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/FblthpSnapshotExportTest.kt": {
+      "sha256": "299164a63e96eeec8db07ccf1e1913afae91fb6c96105fd76714388e2bd18e14",
+      "blob": "f37808f971a42c44cbeb900ac26f629c76544f6c"
+    },
+    "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/FacadeBoundaryTest.kt": {
+      "sha256": "2883e1fa0a9ac1bc08d5304d5bd7957d6c5d569b29512864ce15a559dde07178",
+      "blob": "57375e6def9996c31c31025d678566799952c88b"
+    },
+    "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/SpellskiteSnapshotExportTest.kt": {
+      "sha256": "7201496895e25590ed1d7d734d5d63e462b4d49ed985572d6b2e6a41ded8d90b",
+      "blob": "304c515f19343380e690fcffa2d37db4f0a8b4ab"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/FUT.json": {
+      "sha256": "5a332c063abf9b6982afae1f84ab783aac8b7ff8fae7ea325dcf25acee83f0e7",
+      "blob": "242070eb3bc10ba3bd0ade94d000441e260d7b8e"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/THS.json": {
+      "sha256": "6550dde9214da4c5a7c3de232acad2fb6db8b289e7e9cbccff50cefd2e398e2a",
+      "blob": "b744d4aec95369e0a78d9482a5bd06d009dedf29"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/DTK.json": {
+      "sha256": "294f1e358afb56f70d575eec9337ab346a8b875d8fced63acf4baad034389fa2",
+      "blob": "9dacef913cf687916614353abb8c0c2adf36e542"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/CLB.json": {
+      "sha256": "bfa57f17dbb6bd134d7b510419bfb8c748932a85b9e999a9da63b9bbc9bd877b",
+      "blob": "ca1d77af8c1807e9da4737b63b59a46336b4e791"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/BFZ.json": {
+      "sha256": "a811c918d83dc5af4f3e376ba50cce88229e4a88feb701a47a634446cbe0519f",
+      "blob": "07c2fc1fcc899877becb90e7f9e2516db2514ae4"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/BRO.json": {
+      "sha256": "129b83cd9bfe378ae62ced662d2f59cb812a95ea54baf361a4cba0720701d02e",
+      "blob": "8193b21715cd933cd3fcf7bed9ee3ce5976e055b"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/WWK.json": {
+      "sha256": "685aa03d147cd3e4c385277c858863c4464fa7f86626213439ff9f8c6272f2db",
+      "blob": "8da3107b532a9ef22c1ec47d53db8fa5abbe9d4a"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/MID.json": {
+      "sha256": "4c467aa53bf15494af96812b81154a9b00772396e2bba6a16d78aa3e7a29ad9e",
+      "blob": "103564dfe351a22ec9e0fade685793f949f92510"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/DMU.json": {
+      "sha256": "541eeb8d9cb051923d12914f7fb2d853ab95b668110ab49a23b71421e7d87704",
+      "blob": "c0095a9f14d565a9a833db2ab31b772a94d507b9"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/WAR.json": {
+      "sha256": "9564b58258f712f3d36bf11fab8c7c1f72157d97a07f33f93a41df4063c58c49",
+      "blob": "43addfbf859fd00f8500c4db4be5f12c07d1760f"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/CMD.json": {
+      "sha256": "ce85f3c61f7dd246f18ab4fb5874a9bbf64914170266cf9a6800078903d29efa",
+      "blob": "6fa9b99da840933ff25c2e7f1fb8454a048207a6"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/GTC.json": {
+      "sha256": "f7dc28b24222ed7cdb5e842c38b0cf0ee382993685d3edca50a651b5f019bc81",
+      "blob": "36414459455281b6f5b56ee1de70f949d9ff9196"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/C13.json": {
+      "sha256": "068f044d60583fdb99d16d8ec39ecd9591f64cfdaf1dc33330180284027328af",
+      "blob": "bbc429217032589fd8e17a6bf2f92ea98b4a6935"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/PLC.json": {
+      "sha256": "6c254396dca8ee6f4a4fe22dda27e0d506c9be9467c901329fa551b8a17f66fc",
+      "blob": "faec29fe3d1311f4ab61d6303de381af7a8fdedd"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/OGW.json": {
+      "sha256": "0b4900db42ff6f4e8f94ebdca3b1b8d59c96ac6e877743b4ba825f93f2558ae3",
+      "blob": "115d8a0ae2dc53a0cb5fec46e29e59d7d685b9ca"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/BBD.json": {
+      "sha256": "9af62e2cc278388d184ffeef518f0379de04d7d14aa6cc89587f2a6ce5f8e86a",
+      "blob": "7f7167a89260db3528158d2b6970bbebc917d955"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/NPH.json": {
+      "sha256": "9763d5f078c46ec32b7184aa7ccf0b5c68580934d2d80f11f30f0f14611db3d1",
+      "blob": "8848ad3f335ae5222a0c98c9d5bcd8500a10c63e"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/MH3.json": {
+      "sha256": "be0fc81423d4e857bd5eefc2fd73d781da71eacad363f586b916dd37632bf7f2",
+      "blob": "ddbbb91e38da9380e9d79b03e3dd20bb576ac356"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/FRF.json": {
+      "sha256": "aaee05172b523b41782b6660449ae9dff58f789b730b603950d67108b19771c8",
+      "blob": "eef769cd76e32d9254650fa3d2986ce508f1a518"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/ROE.json": {
+      "sha256": "6d0b2087dfdffc2a9bd1ee01234e488b17b096cd3ff4d2ded04773ec565026c7",
+      "blob": "9894040338c81fec22b851831a748238d5392c86"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/AER.json": {
+      "sha256": "27117af7e19b672e2c3c5c5085ad5a5ff7181e0a0041201fbbeb335efd6158ba",
+      "blob": "95035018d6e32709c240d60ca81ea4bf9d5668cd"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/LEA.json": {
+      "sha256": "9f18538dbf454ac507494077f9bc81c407d5a3c922a5c33592e90297e68858cf",
+      "blob": "d7ed7a7f03f3548d258dfa645cf399954a922c2e"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/EVE.json": {
+      "sha256": "692be2a085d8e437171461c33d479ebb83bc7382a482e569e5a82335e8dd6516",
+      "blob": "ccef3a9262261f089272971db20345e22a84ebff"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/DIS.json": {
+      "sha256": "d3149e13d32964bdfcf9bde50f5af8363ab8cc4372a2072877c67c9f0103139f",
+      "blob": "7ac76b296b1c36cf0e038bb2811288fccc761d10"
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/CMR.json": {
+      "sha256": "dfec4002fd39a31fc047ecabfc410f18111f6971deb7bdf1de0d245fada4575c",
+      "blob": "59d5c3f889c5ab543577733f9eb33d1892d4563b"
+    },
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MeathookMassacreIIScenarioTest.kt": {
+      "sha256": "534454beeee4f7bda852d1232b405003f360595049139b627c568032176a0740",
+      "blob": "dc66474b917a183b647305da843ba9b59595b60c"
+    },
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KambalProfiteeringMayorScenarioTest.kt": {
+      "sha256": "1247b9d9d96d5b0228719a150e634f8fe79072f03b13cf9603078bc6a7220fb1",
+      "blob": "28c4f48b6b9d8c1d329035c27149fc49e8f85f04"
+    },
+    "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpelunkingScenarioTest.kt": {
+      "sha256": "e31771be2fbb22030c7d8812e47bec68f34a9d401e717696f5e3a26919261530",
+      "blob": "19e8e588b6611b5ea64c67a2cca6954bd7787478"
+    },
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ZodiarkUmbralGodScenarioTest.kt": {
+      "sha256": "82c5348242a5434c2c514f0fa1764a6679523b621e0a9301aa78ebea54953cb7",
+      "blob": "48a4c2bde37c52180d66c4930f8590525f63efda"
+    },
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/cards/SpellskiteReprint.kt": {
+      "sha256": "5b3b864609c1d9afc9fcbbc138edd8f4e855a05b55d67e40c7449dfd6ba43c6a",
+      "blob": "a05b1c96a084ca1d19a53d887892609cfd924dc3"
+    },
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/war/cards/FblthpTheLost.kt": {
+      "sha256": "9e9d0c90eff055ec5b44723307f9fa7b523592348459c46d2746415d6da3745f",
+      "blob": "04ddbfaf29eb615f26b3f59e5c5d2bf7f15197f2"
+    },
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FblthpTheLostScenarioTest.kt": {
+      "sha256": "94b86f63cec54a3bdbb8aa38b90a168ff6c80e8705f53def995dbb345e9a4226",
+      "blob": "5613f014ee3aaefaabca7158b5bfe9546d122111"
+    },
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Spellskite.kt": {
+      "sha256": "81a5d3a29d4d2516e50b492ab403cc15c4f8850862f9674bee93dd1d5d528aa5",
+      "blob": "49e7dbd8123aaa9a4f4e96885bf89328075143da"
+    },
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/PhyrexianMetamorph.kt": {
+      "sha256": "3b3abb2bf971d01067b23e891393588ae93b64a1a3e45a9cc6103377a5366c05",
+      "blob": "42035a34f14eee6fd28792118c8d027d5412c5df"
+    },
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt": {
+      "sha256": "067c92b5a6064abdb62d535fa5eaf0bcd17eb5766cbdb19c4677091a92c01248",
+      "blob": "a89b0abf6eabfec11008608efacc57644c57b210"
+    },
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt": {
+      "sha256": "52c38678adf07562eac22f5bf6f3b705a100eef38dfc6417d6f5b2a8bbd49d0c",
+      "blob": "3d559542025a5415a2b0aebf7a4c5f39870278de"
+    },
+    "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt": {
+      "sha256": "79cce73283256e40f9bc0925e3fe058c7b4678d0b47ba7e64cec142579c409ee",
+      "blob": "688b7ff7f8b336493da46ca65ef95f9f20e01db8"
+    },
+    "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationUnpaidScenarioTest.kt": {
+      "sha256": "8681ac15edd1d32b3556c74defd9e6f235c0db79ffc21c64b337cda264977bcd",
+      "blob": "4f546f0c30fbff1d4548ffcd39b23c5a5530d7cd"
+    },
+    "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationScenarioTest.kt": {
+      "sha256": "c5cc70b2d5c5933ffa908b855713dc37423a3429a84fcbfcf41be78b6e5ba565",
+      "blob": "04a2ae1c6301f21b3ba5a77151bff3c339ed2cbb"
+    },
+    "oracle-assay/src/main/kotlin/com/wingedsheep/assay/grammar/Library.kt": {
+      "sha256": "b613b4f958b1b6e1bd3e0ee482e6f9ac0f621b906e3299b46c482011ce46d6f3",
+      "blob": "921a2804efda347e2dc1c7f237b2f27d878bfa3a"
+    },
+    "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/SubtypesTest.kt": {
+      "sha256": "f9099d9710a455743865928b87246e75a6febc89e7298704bea20ee25161bf69",
+      "blob": "8a936ec9f27e9442942519f3ef250c166d50f05f"
+    },
+    "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/ManaValuesTest.kt": {
+      "sha256": "ba4bf382b993989e57e2d29d0bf0abe884281c6136769148723ae3cc2fc9b111",
+      "blob": "c0efe06f759f5259d58bee67d54246cca41e2227"
+    },
+    "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/LibrarySearchTest.kt": {
+      "sha256": "83a17f53903dcd7f7f7da56fdec55e5d9f67170908b892f7aac8de8031d54d30",
+      "blob": "37a9b4db72ed1ac571738cf02f8de5bfe10a4b9a"
+    },
+    "experiments/manual-transmission-phase2/opponent-admission-r1.json": {
+      "sha256": "5d1813c6b47496f1dac8218a2067703fc72a4a624b76d6e377b35542f2d1b946",
+      "blob": "4ec806565081f7570e8cff0c92569b8a7fd788e5"
+    },
+    "experiments/manual-transmission-phase2/audit_composed_registry_gate.py": {
+      "sha256": "7c7c746f7b16b6e1b7db45b12ffb70d9fc375e5c9e848c2867b7003372ec9f14",
+      "blob": "5b782cca1312744005889d2ed86084ac353e9d6c"
+    },
+    "experiments/manual-transmission-phase2/protocol-r1.json": {
+      "sha256": "4cd733c6e472322493cef4f90e157f427dcc2d82346e2f6fac5cf20a9beeb607",
+      "blob": "f605dc2ce4273a26a6e2387a2c6e4048e4012a79"
+    },
+    "experiments/manual-transmission/control/v0.7.decklist.txt": {
+      "sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
+      "blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+    },
+    "experiments/manual-transmission/research/phase2-current-main-20261021/COMPOSED_ROSTER_R1_PROTOCOL.json": {
+      "sha256": "9c8afc2675bc278de81645e75ab57e8ff3dca062b9ceb51fff5eebbb21237de7",
+      "blob": "4ffdef726a85bc8591190031a4fe03d5da0c44af"
+    },
+    "experiments/manual-transmission/research/public-occurrence-flow-early-r1-20261026/PROTOCOL.json": {
+      "sha256": "23e7cc0752ae6138ad0c475ff4c0fbaab989eef7a90b5d24dd9956a2e2fe088f",
+      "blob": "fec38a96b0c6a8ed35acb0c03407aa4709a4a255"
+    },
+    "experiments/manual-transmission/research/public-occurrence-flow-early-r1-20261026/gate.py": {
+      "sha256": "1c9631ad30451d455db17783e9b15f34e11e5b3e15ed91b14b4d2a24c9c415f2",
+      "blob": "d5d684afa45241e96a8e8d8c1df412e8d84814ae"
+    },
+    "experiments/manual-transmission/research/public-occurrence-flow-early-r1-20261026/DESIGN.md": {
+      "sha256": "21923c4e7821846c988bb82a62175d3cb94c25e58f78a7374f0869d0d23ab78b",
+      "blob": "5ccf625585ae6a7a8465e57ad881bceb984519bb"
+    },
+    "experiments/manual-transmission/research/public-occurrence-flow-draft-r1-20261026/SOURCE_FILTER_REVIEW.json": {
+      "sha256": "41f8da9d2cd465f2ff2ef092b407af2eab65d98391a1bbc644b4b2d9ba7e20e5",
+      "blob": "e42c1201bd0994bc4b85cfc8edbdd8a70d48f81a"
+    },
+    "experiments/manual-transmission/research/public-occurrence-flow-draft-r1-20261026/DRAFT.json": {
+      "sha256": "46f35174793c5d1749ea5894bc1c6ff5c8283d863f9def720b10571f4ca0fa9e",
+      "blob": "ff7eb32311818dce010f482ec9f43feabf4c991a"
+    },
+    "web-client/src/store/gameStore.ts": {
+      "sha256": "db2d72ad82137968c67bc9ca9bbc4ec21f78a2567be735c359baa2a18ecbdd62",
+      "blob": "3de0913f9ae0fa42870f4243e8d69e4f66446d4b"
+    },
+    "web-client/src/store/slices/gameplaySlice.ts": {
+      "sha256": "84149363cc1ff311e7df0392c4fe7c0e3acaa7bead3f5d9e1e48f94535de3973",
+      "blob": "848d0067c882a36c07347238c0fece1da7cb360f"
+    },
+    "web-client/src/store/slices/liveInteraction.test.ts": {
+      "sha256": "8b0aafac27c88f7d5aee7e7e959fedf474a1ddbfa4c521d03a061b3892b9cbad",
+      "blob": "6b6e996ae4eea12eb874915581905c4c11a31ffe"
+    },
+    "web-client/src/store/slices/ui/pipelinePhases.ts": {
+      "sha256": "7a2f5294822f795d7db348de614da93b9598e1bb2083999fcdd4e3f9de2bd6bb",
+      "blob": "3a37f666afb94e20592853cb40001040c1538ac2"
+    },
+    "web-client/src/store/slices/ui/selectionSlice.ts": {
+      "sha256": "02400a8ce7e585ef600ec48a301ae1719c1111a6a813b51c62f8a4e6695e043b",
+      "blob": "7d5a1b014d41d65cc86ccbe48b0b58372b7ede20"
+    },
+    "web-client/src/store/slices/ui/pipelineSlice.ts": {
+      "sha256": "20302ff105d30f2e9a7399b3c65aff697b6e246fbcd6113d8676209b5da37384",
+      "blob": "5015821f6bd0701ea3b28e9e382a9a13c90fc228"
+    },
+    "web-client/src/store/slices/ui/targetingSlice.ts": {
+      "sha256": "6d4b246e35ce3c829028833d1419ebd8a8838b55388132b2798112e5422a5953",
+      "blob": "21eca96cbf63120961e961e4a0c9a7e0aeb2d08f"
+    },
+    "web-client/src/store/slices/ui/publicTargetGroups.test.ts": {
+      "sha256": "d55dc6eddf716a7f17193d0c67fb404afb41217c7147b336891afabed5c92f90",
+      "blob": "93008826626168a558dedd49ac0db1e142aa1b33"
+    },
+    "web-client/src/store/slices/handlers/gameplayHandlers.ts": {
+      "sha256": "04c4dbe3549c8945f885840e8ae3e9b4081761e94c97118cc2c64bd3cba48c74",
+      "blob": "089c41201446a907957905b57dd927de47ae3791"
+    },
+    "web-client/src/components/game/GameBoard.tsx": {
+      "sha256": "cfd6df99adbfd6231e55e2322d0c155f16620a7553ca4bb77c28ddd6bcd5e43b",
+      "blob": "6f0d987372c91c672fb0a44c5dab9b60f6caeaa2"
+    },
+    "web-client/src/components/decisions/ChooseOptionDecisionUI.tsx": {
+      "sha256": "5de7b94ffc7487a02712e7daef19bb6ba7ad96e08c827ac5d0e09faaed73d237",
+      "blob": "31aac1ee9c69038c7ed0e3c39dfc7888b29011a8"
+    },
+    "web-client/src/components/decisions/DecisionUI.tsx": {
+      "sha256": "6f36736d7edca487daa12ec1e81654b009b65572246d9971ef22cc82dd2a69d2",
+      "blob": "2b111bca348235f31e1e8064d6dda56b2e2cea20"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Targets.kt": {
+      "sha256": "0c4a00c7b94e2db1296584272c548fc95b9445fe481959a83e576183e19d611b",
+      "blob": "8dc2f2db24ad65fdb2a3d86cae1b8c522a6aa388"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Conditions.kt": {
+      "sha256": "41e30388c2ea18e8f1015800f167aaa00e871a37bca5a9be3cafa56b3cef88cd",
+      "blob": "63a70b2d28ad649a78979a955cd9dc1efa074204"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt": {
+      "sha256": "e3f8ade5320750ca4aa32b12c4e1450ecfcda85757587e10fa16e63654ede514",
+      "blob": "2cf9c51f497797e654ce399a5343c55527006565"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/conditions/EntryOriginConditions.kt": {
+      "sha256": "5b0672401bb7db26c707a8506d2672ce5fab88ed4e9b3fb03b12be222c56892d",
+      "blob": "75458b56186e74d5fdc04bb08e3a8358d1414e1b"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ChangeTargetToEffect.kt": {
+      "sha256": "cc46322f855f4637bd6a22cee226ae9c752036d630b096e6546e715c275e59d3",
+      "blob": "77b57419245d673e3c72dc89f3a85cb1667a692b"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/filters/unified/ObjectFilter.kt": {
+      "sha256": "d1bcb5712dc49a4ba1f23e063e6218072e96f4ece020b0b8a44bac9bacf59758",
+      "blob": "3c3793b2f27022f4c0a3c2693c44baa7a176f6a0"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/filters/unified/TargetFilter.kt": {
+      "sha256": "a2bd3fc86adfd349aaddf17477e98f7cc91cc629947a7c74366381d4c50fb5d4",
+      "blob": "0d0a1fd4b8975bac4d05b7a44883eef376ffb4a3"
+    },
+    "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/EntersAsCopyExceptionsSerializationTest.kt": {
+      "sha256": "bf8cede04fe4645ec8156565b526c6e1730fd5999f7f24c818146e25f3f128e6",
+      "blob": "c4c2b6eb7ae9e848c528d8827558d153eceada85"
+    },
+    "e2e-scenarios/tests/general/payment.spec.ts": {
+      "sha256": "01ca809943f2507b5e90b0a36f4149d811925e0f792af001cea661a8e7bf0354",
+      "blob": "d12f3ae9d8c5b41afc7bbe1023d222325b0c9769"
+    },
+    "e2e-scenarios/tests/general/public-occurrence.spec.ts": {
+      "sha256": "ed1eb55998b5accc1c0da4686c6350d0b4264e7ca1b5fad64b515d082ca9779a",
+      "blob": "abcde56dbc849378f35fe5c6a459be265e9f623a"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/triggers/BecomesTargetPlayerAndAbilityAxesTest.kt": {
+      "sha256": "c8f6cac1fb574e10818d9e8de33af042bb12d9c6d6a6d7e8f07f395d359b97c0",
+      "blob": "00fc747b12b6914fc2fb9e97e5455660672ec734"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mana/BoltBendCostPredicateTest.kt": {
+      "sha256": "19c30c95a657252a77c37a7a3122d30a0bc5b9a939efa927f4bee42ffe88145a",
+      "blob": "ec830478d66622a735e21c0a3f275886c19f5f40"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/CommanderManaEntryCountersComponent.kt": {
+      "sha256": "e566fa1ba844f12a618e72368fd5ecb8f4aa3b9b5107ff470c6aea291a8d8cc6",
+      "blob": "265067ccfb94c4bb9067fb9b56bdc89ff2715a18"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": {
+      "sha256": "4af1fca3ef37d4b6da44c98221e78bcd5ddcd16f933ff83f11ab09221f6c8973",
+      "blob": "10fa13bd9425750e0e816b7ba0177da86b40f824"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt": {
+      "sha256": "9148bf731484bccd7112a27bb3ca1df27d5fa36fba6dc864bb6a05677d87145f",
+      "blob": "e6216b851da7a1fbcfcfab7746d65f4cae6277ac"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt": {
+      "sha256": "d807d9567981660ec38917730a816dfb012af4ce1458f1e22e019f9656f1e072",
+      "blob": "8e5b5294783cc59f09c01089fd752d0edc91b0f8"
+    },
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CommanderManaRiderWitnessTest.kt": {
+      "sha256": "1a395925b3422f4d51d36a0aa15a8b3e0a48e5c6ebef567816d5dbff6b3a77f4",
+      "blob": "b3ecd1eb50b76db626384ef3bc66fb2eadff631d"
+    },
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt": {
+      "sha256": "55820e9843618ae78f075e3aa195d018fd6a5f9e19596da20f668b5d36f73bde",
+      "blob": "5b1be3a666cc615d8a274419479f1a885df9968c"
+    },
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt": {
+      "sha256": "db45d1b8e965b1d899941c9a2c13f0386df2736e0f658bcbedde184654ce6a8c",
+      "blob": "5aae96c0f7b2fefd44160011064f2972ba9fe88d"
+    },
+    "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/OpalPalaceSnapshotExportTest.kt": {
+      "sha256": "db5bb247d0eb7426f140723cb0aee8706c0f6be5a9455ad16b09b3f1ea884eff",
+      "blob": "7c47a96d55fc0c74b2f6ad50bb7da5feff0ac725"
+    },
+    "mtg-sets/2008-2016/tests/build.gradle.kts": {
+      "sha256": "4ce4a3e83c462b54256c7dca22adff8ca61eb0f114b2950e804a02e6aa992026",
+      "blob": "9d1c29fbc8242aa8d8a135eaa061364ad69adf69"
+    },
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CommanderManaRiderAdditionalTest.kt": {
+      "sha256": "d1426b57abe4303f303faa7e6234185f6c6cff5be94d7974804334a64da3e31d",
+      "blob": "90c110ee874ade6c4e866f16461017828c68ac90"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt": {
+      "sha256": "609f0bb05e1b343a24a0dbf795ca1e90573bf56d009152d101ac04f614a925c6",
+      "blob": "c6cdd3682ddf70190718077e02fc7d15c2500840"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt": {
+      "sha256": "7752a9a5610ccc2d731b32ae011cf154c1fefcc487af80cdc008fdc52fa4a794",
+      "blob": "2145cae496683983b94722aa24080daec8dca63b"
+    },
+    "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt": {
+      "sha256": "f659920fc36d1737f22dd3679fcb6a62d0799767f66aec3770530f02db88381c",
+      "blob": "69ae2777e9b96313e708affa1836fca933a1f3a0"
+    },
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt": {
+      "sha256": "cd76d90cddd88ed3d8df810f7c85707b5b030fca981233f95fe4a98e040394a8",
+      "blob": "2daeeede385111682fd4a399a002f609aa720ab7"
+    },
+    "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/DiscipleOfFreyaliseRegistrationTest.kt": {
+      "sha256": "6ae195f9fa372876c892e467d1ba3718a24f8c84867cdc6818bc9d98478aa217",
+      "blob": "37fb6b51ff23479ab9dee06e89c9ba65cf52e4c0"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt": {
+      "sha256": "ab4d6a9f06ad862127947f2a9c6ed90484a86de53bd6c7090a338781c54e2094",
+      "blob": "878e82fd92b42b597a24b763f3389e064da78f8b"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePaidChoiceScenarioTest.kt": {
+      "sha256": "811ce5c3882245fcd7e4c0792daabae8e51beb74adf0860f1ac5d4c9cbbf31fa",
+      "blob": "eec3c854611788f6bc44d917be4902d5e4fdc158"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt": {
+      "sha256": "017116b63427513a1bd3f3c033e97c6077e1b82f6718ffe1935cad822103242b",
+      "blob": "5e9083030743af5ca99d4e1514d3c0880fde7a10"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureChoiceRepairTest.kt": {
+      "sha256": "afa112b2ad53fb0f97e47ce3b29238f98cf244c4e1abb9fd93a78c4c0beb3fb9",
+      "blob": "1812b94f8fbf1ad4d508513ba70bee7c70c5e84c"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureChoiceNegativeWitnessTest.kt": {
+      "sha256": "8feda12a28fe03fd54dd539dc822191e7bab69f09c32ff6d07985a09f54cd32a",
+      "blob": "f7bf59bf48904183e8c7ce90b51c5018fe6ceeba"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeChoiceCaptureTest.kt": {
+      "sha256": "61b6ce64d54752a3988c79e01cbe2ee3097be60bd0befd7aae19e6455b01d5ed",
+      "blob": "9b0279d6b3bc9e21677f404382cbd337acbab041"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeNegativeWitnessTest.kt": {
+      "sha256": "75c4ebf4ea78ebe131da1a62f2849e38854695cbc2b8d2c738c4d4491b806a88",
+      "blob": "8d5f596a5d109fa13e153663263ce73ff9dd6fd7"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDeparturePaidChoiceDiagnosticTest.kt": {
+      "sha256": "38b8b90aace611743195fd37b6affcfed31afcdb49f18dd799eae091b31fa149",
+      "blob": "e00607448a5e5f503e18ca52d508fd8eb6221a1e"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureCharacteristicPreservationTest.kt": {
+      "sha256": "175a66763139b5c1db44448e53bf64725efdcaa0b9b0bbb9945fc8702ea4bc46",
+      "blob": "74dbe6d0adb0c749848ad1e81e744935238e2508"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LegacyAbsenceChoiceCaptureTest.kt": {
+      "sha256": "f681d419bb72cbae27c47e013a41eae1e17c4671849bf9a2d4c03cbc79ef9722",
+      "blob": "f6615de80743928d88020582417dd124b11b4e00"
+    }
+  },
+  "git_bindings": {
+    "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part0.b64": "bb861106950b862649d5693c9d9a1fa9c07c33e7",
+    "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part1.b64": "a7d1828a5241098682e4ddadbe120741744af601",
+    "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part2.b64": "30a4504d78c09b4d834f4dda65e3e9ee9ca5be17",
+    "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part3.b64": "aadc196a39acf71fb3f5592eeda0ee70c1f82641",
+    "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part4.b64": "1d996f77e7051f965a85da0e4915d56ddfa774e2",
+    "experiments/manual-transmission/research/spellskite-ordinary-r1-20261028/derive_successor_inventory.py": "e731250c3ae667c12d6f9b7c0c94e2a2c4921a5d",
+    "experiments/manual-transmission/research/spellskite-ordinary-r1-20261028/FULL_COMPATIBILITY_CONTRACT.json": "34a310b79c5d8ba85161447ab859a185d6a93958",
+    "experiments/manual-transmission/research/spellskite-ordinary-r1-20261028/ADDED_CASES.json": "143beb3bfb57fd2ce9b25f9fcb44947f6feb8546",
+    "experiments/manual-transmission/research/spellskite-ordinary-r1-20261028/UI_ADDED_CASES.json": "97dbedf9cf746f20d57722265a1b35f7e07460d4",
+    "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/derive_inventory.py": "5a3fdea63c04215d5919ee9f645c06b93f7065fe",
+    "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/ADDED_CARD_CASES.json": "0a477c0f375875bcedd918449be2086412b46b97",
+    "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/CARD_GATE_IDENTITIES.json": "52a1d0a32d10502cc486fd4829407421777f5072",
+    "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/derive_inventory.py": "e789519b5c8f451e0895bb3eb2e5c6058e280497",
+    "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/ADDITIONS.json": "1241bb50836f8eb0e2a751eb587979e4ab0d6ab0",
+    "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/CLIENT64_CONTRACT.json": "cc710313ca994088495d713567df0300479c5316",
+    "scripts/check-card-printing.py": "279639367a3f518b3f95a4c5b10e18f8dd0c81c4",
+    "justfile": "8e3c25afce213f719e7b9d9ac723e33b288b06a9",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Support.kt": "b16d49ca25c68370d775db68dca26d8d974f2239",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Mtgish.kt": "9d15321b78ab6329dfcc3dd23a0540bb9794a348",
+    "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Fidelity.kt": "6b76c004dee3482591fcbdc67872cf1bd4b28946",
+    ".agents/skills/add-card/SKILL.md": "ee2c25e41f4454ea8ad80ff63def6e019ccf5b8c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt": "46e9d25121bdd50c8babc048ad3c4fbb04e0e286",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/war/cards/BoltBend.kt": "954987a400ab6ce10436ca116b1b15c8d9655984",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mana/BoltBendCostPredicateTest.kt": "ec830478d66622a735e21c0a3f275886c19f5f40",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mana/BoltBendCostProjectionTest.kt": "0ab034cbe48f4e2097a277168c8a0536e86cf726",
+    "experiments/manual-transmission/research/fblthp-one-test-exception-r1-20261029/derive_inventory.py": "f0eaf9d34cd56ae811bd47d575504aa83f9ed7e9",
+    "experiments/manual-transmission/research/fblthp-one-test-exception-r1-20261029/IDENTITY_REPLACEMENT.json": "7ad84102fa00e75a3d67f01574a925f190de314f"
+  },
+  "exception": {
+    "path": "docs/card-sdk-language-reference.md",
+    "operation": "Append-only documentation recipe; preserve all existing bytes as prefix."
+  },
+  "snapshot_exception": {
+    "path": "mtg-sets/src/test/resources/snapshots/cards/OGW.json",
+    "operation": "One added Reckless Bushwhacker compiled tree; all existing entries unchanged."
+  },
+  "all_existing_tests": "No existing test file is writable, including every accepted and failed R1/R2 fixture, legacy fixture and skip. New tests only.",
+  "protected_goldens": 23,
+  "legacy_saved_states": 82,
+  "frozen_deck": {
+    "path": "experiments/manual-transmission/control/v0.7.decklist.txt",
+    "blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1"
+  }
+}

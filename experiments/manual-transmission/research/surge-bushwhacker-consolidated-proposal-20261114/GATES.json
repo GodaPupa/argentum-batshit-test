@@ -1,0 +1,76 @@
+{
+  "state": "PROSPECTIVE_FROZEN",
+  "compile": {
+    "forms": 15,
+    "order": "Compile normal and each of 14 independent mutant forms before any behavioral run; compilation error is not a negative witness. Compile all dependent modules with locked Gradle."
+  },
+  "focused": {
+    "normal": 67,
+    "restored": 67,
+    "negative_witnesses": 14,
+    "unchanged_positive_controls": 14,
+    "errors": 0,
+    "skips": 0,
+    "exact_identity_source": "TEST_MATRIX.json"
+  },
+  "card_registry": {
+    "baseline": 396,
+    "new": 5,
+    "total": 401,
+    "baseline_inventory": "ACCEPTED_INVENTORY.json.gz.b64",
+    "snapshot": "Exactly one OGW card addition; all original entries preserved; no global rebless."
+  },
+  "ordinary": {
+    "baseline": 19330,
+    "diagnostic_added_since_baseline": 24,
+    "new_kotlin": 67,
+    "total": 19421,
+    "passed": 19378,
+    "historical_skips": 43,
+    "identity_rule": "Exact accepted ordinary multiset plus the 24 R2 normal identity strings from immutable PROTOCOL plus 67 named Kotlin rows in TEST_MATRIX. No extra/missing identities, multiplicity drift or skip changes. Existing diagnostic normal tests appear only as ordinary compatibility; no R2 qualification/controls/artifact receiving is repeated.",
+    "baseline_raw_sha256": "a4697c02185253f524cb71a760bcb0cfaa395c78ada227f41177008fcd76d25e"
+  },
+  "client": {
+    "existing": 64,
+    "new": 6,
+    "total": 70,
+    "typecheck": true,
+    "existing_contract": {
+      "path": "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/CLIENT64_CONTRACT.json",
+      "blob": "cc710313ca994088495d713567df0300479c5316",
+      "sha256": "1a89fdb2d7e0580153bfb93e7e1babb99d64e8a1f87e53431724e2ee36dfff7f"
+    },
+    "new_file": "web-client/src/utils/surgeActionTransport.test.ts",
+    "full_suite": "Run full unchanged client test suite in addition to exact70 focused floor; no new failures/errors/skips or changed existing assertions.",
+    "total_role": "Exact focused compatibility count, not the entire client test suite count."
+  },
+  "metadata": [
+    "just check-card-printing \"Reckless Bushwhacker\"",
+    "just assay-differential --set OGW",
+    "Compare archived primary printing/rulings/fields and validate image; archive originals of these reports. Classify declines explicitly; do not call them semantic passes. Preserve old OGW report rows; only the new card may add classified rows."
+  ],
+  "order": [
+    "source/protocol/protected-byte preflight",
+    "compile all15 forms",
+    "normal67",
+    "14 isolated exact witnesses plus14 unchanged positive controls",
+    "restore original bytes and rerun67",
+    "source rebinding",
+    "Verify inherited279 focused identities unchanged inside full ordinary raw reports; no independent rerun of old qualification.",
+    "card401 and full ordinary19421",
+    "client70 + typecheck; can run alongside ordinary on isolated read-only checkout",
+    "printing/Assay classification",
+    "final restoration/source rebinding",
+    "receive original artifact once, independent raw audit, bounded admission"
+  ],
+  "parallelism": "After targeted gates pass, client and ordinary may run concurrently in isolated work directories against the identical frozen commit. At most two locked Gradle build slots; no shared mutable worktree/build/test reports. One source writer throughout. Retain all failed evidence. No agent/executor/automation creation.",
+  "old_focused": {
+    "count": 279,
+    "identity_contract": {
+      "path": "experiments/manual-transmission/research/quarantine-legacy-absence-r2-receiving-prep-20261106/conditional-full/PROTOCOL.json",
+      "blob": "e7bd097999661b233225f6a282e7902acb3fb9cf",
+      "sha256": "36be5aa9412f3528bbf4b806b3bacfb04d2ea3e438f91e7c5f165f740fb4a2a6"
+    },
+    "reuse_policy": "Preserve this identity set inside full ordinary; independent duplicate run is unnecessary if raw ordinary reports establish all279 exact rows. Historical accepted receipt remains accepted, not reassessed."
+  }
+}
