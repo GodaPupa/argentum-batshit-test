@@ -56,11 +56,11 @@
       "Candidate01 source/test/harness package prepared and prospectively frozen; qualification and original receiving still required."
     ],
     "pending_evidence": [
-      "No CI dispatch/receiving/admission. Await exact bounded source-correction authority; missing32 normal rows, mutant behavioral witnesses, restored67 and compatibility remain unexecuted."
+      "Candidate02 complete local gates from beginning; one original CI run and independent receiving only after full local PASS."
     ],
     "ownership": "One explicitly user-authorized foreground Candidate02 recovery owner; scheduled executor remains disabled.",
     "actual_stopping_reason": null,
-    "implementation": "Environment-only recovery completed; all15 compile forms PASS; local normal run35 cases,28pass/7fail. Frozen source restored and376 bindings verified. No admission."
+    "implementation": "Candidate02 bounded correction source frozen before all qualification: three source paths plus verifier/pins only; Candidate01 preserved, never dispatch."
   },
   "next": {
     "state": "CANDIDATE02_BOUNDED_CORRECTION_AUTHORIZED",
@@ -72,7 +72,7 @@
     "manifest_blob": "2f3f147464774b94e2e0f84e855e8d049e3005b7",
     "source_parent": "b50fcd351d78a9375646b72e0ffea3ba77334fd6",
     "source_tree": "7e5ac46f14dd199f6cf48838959512069010559f",
-    "next_executable_action": "Implement only three bounded corrections; freeze Candidate02 exact source/tree/tests/mutations/validation/workflow before full local qualification. Only on complete local PASS activate Candidate02 once, receive original once, independently audit before bounded admission. Candidate01 never rerun or dispatched.",
+    "next_executable_action": "Run complete frozen Candidate02 local qualification from first compile; no behavioral outcome adjustments. If PASS fresh-reconcile and activate exact Candidate02 workflow once. Candidate01 must never dispatch.",
     "no_repeat": [
       "R1 qualification",
       "R1 receiving",
@@ -97,8 +97,8 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "804487eae0c2b3ae5cbe4519b6727031cfc9c6f6",
-    "current_blob": "29412bc55fc0ad4908861d04b8784ac629fe0995"
+    "commit": "87f2824f6f44ca29492ba498e831b4d5e07954bf",
+    "current_blob": "fca91023dc9b1cdb285e2ab636496d0f4d5b7fc7"
   },
   "qualification": {
     "state": "BOUNDED_OWN_PRIOR_SPELL_DIAGNOSTIC_VERIFIED",
@@ -1265,30 +1265,33 @@
     "scheduled_executor_must_remain_disabled": true
   },
   "surge_bushwhacker_implementation": {
-    "candidate_index": "01",
-    "candidate_pins_blob": "f0439953b2077aee4be59ac0fb51ce98d65c0b00",
-    "state": "SOURCE_PREPARED_PROSPECTIVELY_PINNED",
-    "source_tree_binding": "Successor CURRENT binds this source commit/tree before qualification.",
-    "shipping_paths": 2,
-    "new_test_files": 5,
+    "candidate_index": "02",
+    "state": "SOURCE_FROZEN",
+    "source_delta_paths": [
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/RecklessBushwhackerRegistrationTest.kt",
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceIdentityGroupExclusionTest.kt"
+    ],
+    "bindings": 376,
+    "compile_forms": 15,
     "mutation_forms": 14,
-    "behavioral_tests_executed": 35,
+    "behavioral_tests_executed": 0,
     "ci_activations": 0,
     "production_admitted": false,
     "card_admitted": false
   },
   "surge_bushwhacker_qualification": {
-    "candidate_index": "01",
-    "state": "LOCAL_SOURCE_FAILURE_PRESERVED_READBACK_PASS_NO_CI_ACTIVATION",
-    "source": "2b195520143045981fe4fdb64a16169473f0dbde",
-    "source_tree": "28b7889953683bd3dad04bfd34d482ce2d214c1b",
-    "validation": "94025a17b5a0ded2b6d522c63e53b59397059e90",
-    "validation_tree": "e911ff568cf11e2947157a1038ff59a225d24baa",
-    "workflow_path": ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-01.yml",
-    "workflow_blob": "ee9996d4d2dec55c342c3152267b04b170b0e5b3",
-    "workflow_sha256": "af0bdc423db90a50b01c076943788720366a9d6ae5db6f5a862141d08c13c5bf",
-    "candidate_pins_blob": "f0439953b2077aee4be59ac0fb51ce98d65c0b00",
-    "local_gates": "FAIL_15_COMPILES_PASS_NORMAL_35_EXECUTED_7_ASSERTION_FAILURES",
+    "candidate_index": "02",
+    "state": "SOURCE_FROZEN_BEFORE_LOCAL_QUALIFICATION",
+    "source": "87f2824f6f44ca29492ba498e831b4d5e07954bf",
+    "source_tree": "dc8b8455438c497829bada74b39ab498a9ab5f6f",
+    "validation": "ce95aca634e071c8750adfe233ee39c6f7fae3b0",
+    "validation_tree": "574d6fb84bc7fe2685a6699e5013356f0e048654",
+    "workflow_path": ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-02.yml",
+    "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
+    "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
+    "candidate_pins_blob": "e77211e40cb120b4e22df9b380ddd6856593441f",
+    "local_gates": "NOT_RUN",
     "ci_activations": 0,
     "original_received": false
   },
@@ -1493,5 +1496,33 @@
     "candidate_cap": 2,
     "no_candidate03": true,
     "thresholds_unchanged": true
+  },
+  "surge_bushwhacker_candidate01_qualification": {
+    "candidate_index": "01",
+    "state": "LOCAL_SOURCE_FAILURE_PRESERVED_READBACK_PASS_NO_CI_ACTIVATION",
+    "source": "2b195520143045981fe4fdb64a16169473f0dbde",
+    "source_tree": "28b7889953683bd3dad04bfd34d482ce2d214c1b",
+    "validation": "94025a17b5a0ded2b6d522c63e53b59397059e90",
+    "validation_tree": "e911ff568cf11e2947157a1038ff59a225d24baa",
+    "workflow_path": ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-01.yml",
+    "workflow_blob": "ee9996d4d2dec55c342c3152267b04b170b0e5b3",
+    "workflow_sha256": "af0bdc423db90a50b01c076943788720366a9d6ae5db6f5a862141d08c13c5bf",
+    "candidate_pins_blob": "f0439953b2077aee4be59ac0fb51ce98d65c0b00",
+    "local_gates": "FAIL_15_COMPILES_PASS_NORMAL_35_EXECUTED_7_ASSERTION_FAILURES",
+    "ci_activations": 0,
+    "original_received": false
+  },
+  "surge_bushwhacker_candidate01_implementation": {
+    "candidate_index": "01",
+    "candidate_pins_blob": "f0439953b2077aee4be59ac0fb51ce98d65c0b00",
+    "state": "SOURCE_PREPARED_PROSPECTIVELY_PINNED",
+    "source_tree_binding": "Successor CURRENT binds this source commit/tree before qualification.",
+    "shipping_paths": 2,
+    "new_test_files": 5,
+    "mutation_forms": 14,
+    "behavioral_tests_executed": 35,
+    "ci_activations": 0,
+    "production_admitted": false,
+    "card_admitted": false
   }
 }
