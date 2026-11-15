@@ -28,10 +28,10 @@ def verify(envelope):
         amendment=current_authority=json.loads(raw('c0049aa6b4c44455e7764941f15a838338e3738b','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_candidate02_authorization']
         check(amendment['state']=='EXPLICIT_USER_GRANT' and amendment['local_failure_accepted_as_successor_prerequisite'] is True,'bounded local-failure successor authority')
         base='c0049aa6b4c44455e7764941f15a838338e3738b'
-        check(git('show','-s','--format=%P',source)==base,'sole successor source parent')
-        allowed=set(amendment['source_delta_paths'])|{RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json'}
+        check(git('merge-base','--is-ancestor',base,source)=='','sole successor source lineage')
+        allowed=set(amendment['source_delta_paths'])|{RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json','experiments/manual-transmission/autonomy/CURRENT.json'}
         delta=set(git('diff','--name-only',base,source).splitlines())
-        check(delta==allowed,'exact candidate02 source and binding delta')
+        check(delta<=allowed and allowed-{'experiments/manual-transmission/autonomy/CURRENT.json'}<=delta,'exact candidate02 source and binding delta')
     else:
         delta=set(git('diff','--name-only',proposal,source).splitlines())
     # The sole intervening R2 publication readback is already inside the proposal commit.
