@@ -57,7 +57,7 @@
       "Candidate01 source/test/harness package prepared and prospectively frozen; qualification and original receiving still required."
     ],
     "pending_evidence": [
-      "Exact frozen Candidate01 local gates executing; original CI activation and receiving remain pending."
+      "Normal full compilation PASS; remaining14 frozen mutation compiles, normal/mutant/restored behavior, compatibility/metadata, one CI activation and original receiving pending."
     ],
     "ownership": "Sole user-authorized foreground Candidate01 host recovery lease; scheduled executor disabled.",
     "actual_stopping_reason": null,
@@ -98,8 +98,8 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "5f02ca4a6c676d7e4c27a6f21e3cfd8ab67bcc5e",
-    "current_blob": "53819070f0d9854281f14a887c905f427374afaa"
+    "commit": "a243e860bc3dfda45a687255d2a0b0c07ae19cc8",
+    "current_blob": "1d7a0cd1cda5c1c5d9291eca4288d46c2cc4e1c8"
   },
   "qualification": {
     "state": "BOUNDED_OWN_PRIOR_SPELL_DIAGNOSTIC_VERIFIED",
@@ -1251,7 +1251,7 @@
     "manifest_blob": "2f3f147464774b94e2e0f84e855e8d049e3005b7",
     "source_parent": "b50fcd351d78a9375646b72e0ffea3ba77334fd6",
     "source_tree": "7e5ac46f14dd199f6cf48838959512069010559f",
-    "user_authorization": "Attached MANUAL TRANSMISSION \u2014 EXPLICIT PRODUCTION AUTHORIZATION MT-SURGE-BW-20261114; complete exact package, maximum two source-corrected candidates, original attempts only; no scope extensions.",
+    "user_authorization": "Attached MANUAL TRANSMISSION — EXPLICIT PRODUCTION AUTHORIZATION MT-SURGE-BW-20261114; complete exact package, maximum two source-corrected candidates, original attempts only; no scope extensions.",
     "candidate01_authorized": true,
     "candidate02_only_after_preserved_candidate01_source_failure": true,
     "scheduled_executor_must_remain_disabled": true
@@ -1280,7 +1280,7 @@
     "workflow_blob": "ee9996d4d2dec55c342c3152267b04b170b0e5b3",
     "workflow_sha256": "af0bdc423db90a50b01c076943788720366a9d6ae5db6f5a862141d08c13c5bf",
     "candidate_pins_blob": "f0439953b2077aee4be59ac0fb51ce98d65c0b00",
-    "local_gates": "NOT_STARTED",
+    "local_gates": "COMPILE_FIRST_IN_PROGRESS_NORMAL_PASS",
     "ci_activations": 0,
     "original_received": false
   },
@@ -1330,7 +1330,7 @@
     "reason": "Specific user-authorized closeout after complete fresh reconciliation; lease expiry alone not used."
   },
   "surge_candidate01_host_recovery": {
-    "state": "FROZEN_LOCAL_QUALIFICATION_RUNNING",
+    "state": "NORMAL_FULL_COMPILE_PASS_MUTANT_COMPILE_FIRST_RUNNING",
     "authority": "Explicit user hard-resume handoff; immutable Candidate01; no self-owned automation requirement",
     "candidate02_consumed": false,
     "behavioral_runs": 0,
@@ -1352,6 +1352,17 @@
         "behavioral_runs": 0
       }
     ],
-    "host_launcher_scope": "Temporary same-invocation proxy/trust properties; child JAVA_HOME/PATH selects checksum-verified JDK21; host-only in-process Kotlin compiler and bounded 4GiB Gradle heap. Restore original user properties on exit. No source modifications."
+    "host_launcher_scope": "Temporary same-invocation proxy/trust properties; child JAVA_HOME/PATH selects checksum-verified JDK21; host-only in-process Kotlin compiler and bounded 4GiB Gradle heap. Restore original user properties on exit. No source modifications.",
+    "compiled_forms_verified": 1,
+    "host_repair": {
+      "proxy": "same invocation inherited endpoint injected into temporary user Gradle properties and child JVM settings",
+      "trust": "host-only truststore with existing system trust plus supplied CA certificates",
+      "jdk": "Temurin21.0.13+9; publisher SHA-256 verified",
+      "heap": "temporary org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=768m -XX:+UseSerialGC; kotlin.compiler.execution.strategy=in-process",
+      "normal_compile": "PASS exit 0, 7m43s",
+      "behavioral_runs": 0,
+      "ci_activations": 0,
+      "source_changes": "Only preregistered temporary mutant forms during frozen runner; no candidate source/validation/workflow changes"
+    }
   }
 }
