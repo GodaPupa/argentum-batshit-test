@@ -1,0 +1,478 @@
+{
+  "schema": "manual-transmission/local-candidate-failure/v1",
+  "state": "BLOCKED_LOCAL_SOURCE_FAILURE_OUTSIDE_FROZEN_SCOPE",
+  "kind": "LOCAL_QUALIFICATION_NOT_GITHUB_ARTIFACT",
+  "source": "2b195520143045981fe4fdb64a16169473f0dbde",
+  "source_tree": "28b7889953683bd3dad04bfd34d482ce2d214c1b",
+  "validation": "94025a17b5a0ded2b6d522c63e53b59397059e90",
+  "validation_tree": "e911ff568cf11e2947157a1038ff59a225d24baa",
+  "workflow_sha256": "af0bdc423db90a50b01c076943788720366a9d6ae5db6f5a862141d08c13c5bf",
+  "compile_forms_pass": 15,
+  "behavioral_invocations": 1,
+  "normal_rows_executed": 35,
+  "normal_passed": 28,
+  "normal_failed": 7,
+  "normal_unexecuted": 32,
+  "errors": 0,
+  "skips": 0,
+  "mutant_behavioral_controls_executed": 0,
+  "restored_behavioral_rows_executed": 0,
+  "ci_activations": 0,
+  "original_github_downloads": 0,
+  "candidate02_consumed": false,
+  "production_admitted": false,
+  "card_admitted": false,
+  "official_phase2_seeds": 0,
+  "official_phase2_games": 0,
+  "source_restored_and_rebound": true,
+  "source_bindings_verified": 376,
+  "host_properties_restored": true,
+  "raw_manifest_entries_verified": 492,
+  "suite_counts": [
+    {
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest.xml",
+      "tests": 5,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml",
+      "tests": 10,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml",
+      "tests": 20,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "failures": [
+    {
+      "identity": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG02 printed fields match pinned source",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<Fixed(value=2)>",
+      "raw_xml": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest.xml",
+      "source_frames": [
+        "at com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest$1$2.invokeSuspend(RecklessBushwhackerRegistrationTest.kt:34)",
+        "at com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest$1$2.invoke(RecklessBushwhackerRegistrationTest.kt)",
+        "at com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest$1$2.invoke(RecklessBushwhackerRegistrationTest.kt)"
+      ]
+    },
+    {
+      "identity": "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX02 returned source generation is included",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "raw_xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml",
+      "source_frames": [
+        "at com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest$2.invokeSuspend(SourceIdentityGroupExclusionTest.kt:40)",
+        "at com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest$2.invoke(SourceIdentityGroupExclusionTest.kt)",
+        "at com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest$2.invoke(SourceIdentityGroupExclusionTest.kt)"
+      ]
+    },
+    {
+      "identity": "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX06 captured missing origin never recaptures current source",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: expected:<[card-1001, card-1002]> but was:<[card-1002]>",
+      "raw_xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml",
+      "source_frames": [
+        "at com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest$6.invokeSuspend(SourceIdentityGroupExclusionTest.kt:58)",
+        "at com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest$6.invoke(SourceIdentityGroupExclusionTest.kt)",
+        "at com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest$6.invoke(SourceIdentityGroupExclusionTest.kt)"
+      ]
+    },
+    {
+      "identity": "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX09 permitted move does not redefine original other",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "raw_xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml",
+      "source_frames": [
+        "at com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest$9.invokeSuspend(SourceIdentityGroupExclusionTest.kt:84)",
+        "at com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest$9.invoke(SourceIdentityGroupExclusionTest.kt)",
+        "at com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest$9.invoke(SourceIdentityGroupExclusionTest.kt)"
+      ]
+    },
+    {
+      "identity": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP05 generic reduction preserves red and explicit choice",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Not enough mana to cast this spell\"",
+      "raw_xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml",
+      "source_frames": [
+        "at com.wingedsheep.engine.scenarios.SurgeCostCompositionTest$10.invokeSuspend(SurgeCostCompositionTest.kt:70)",
+        "at com.wingedsheep.engine.scenarios.SurgeCostCompositionTest$10.invoke(SurgeCostCompositionTest.kt)",
+        "at com.wingedsheep.engine.scenarios.SurgeCostCompositionTest$10.invoke(SurgeCostCompositionTest.kt)"
+      ]
+    },
+    {
+      "identity": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP06 equal effective prices do not imply selected alternative",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Not enough mana to cast this spell\"",
+      "raw_xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml",
+      "source_frames": [
+        "at com.wingedsheep.engine.scenarios.SurgeCostCompositionTest$11.invokeSuspend(SurgeCostCompositionTest.kt:77)",
+        "at com.wingedsheep.engine.scenarios.SurgeCostCompositionTest$11.invoke(SurgeCostCompositionTest.kt)",
+        "at com.wingedsheep.engine.scenarios.SurgeCostCompositionTest$11.invoke(SurgeCostCompositionTest.kt)"
+      ]
+    },
+    {
+      "identity": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP07 generic tax applies after alternative base",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: data class diff for com.wingedsheep.engine.state.components.player.ManaPoolComponent\n\u2514 colorless: expected:<0> but was:<1>\n\nexpected:<ManaPoolComponent(white=0, blue=0, black=0, red=0, green=0, colorless=0, restrictedMana=[], manaBySubtype={}, manaBySource={})> but was:<ManaPoolComponent(white=0, blue=0, black=0, red=0, green=0, colorless=1, restrictedMana=[], manaBySubtype={}, manaBySource={})>",
+      "raw_xml": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml",
+      "source_frames": [
+        "org.opentest4j.AssertionFailedError: data class diff for com.wingedsheep.engine.state.components.player.ManaPoolComponent",
+        "at com.wingedsheep.engine.scenarios.SurgeCostCompositionTest$12.invokeSuspend(SurgeCostCompositionTest.kt:86)",
+        "at com.wingedsheep.engine.scenarios.SurgeCostCompositionTest$12.invoke(SurgeCostCompositionTest.kt)"
+      ]
+    }
+  ],
+  "missing_identities": {
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW03 opponent creatures are unaffected": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW04 noncreature permanents are unaffected": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW05 put onto battlefield does not trigger surge payoff": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW06 normal cast at same price as surge stays unmarked": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW07 surge with own countered prior spell": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW08 opponent only history cannot enable card": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW09 previous turn own history cannot enable card": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW10 surge never bypasses creature timing": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW11 trigger waits on stack before granting": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW12 countered entry trigger gives no boost": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW13 countered creature produces no entry trigger": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW14 source dies before trigger resolves": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW15 source blinks before trigger resolves": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW16 serialized departed trigger retains paid fact": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW17 serialized blinked trigger keeps original identity": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW18 new creature before trigger resolves is included": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW19 new creature after trigger resolves is excluded": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW20 temporary grants survive end step and end at cleanup": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW21 existing intrinsic haste remains after cleanup": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW22 multiple paid triggers stack power only": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW23 projected creature receives boost": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW24 controller at resolution determines recipient set": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW25 source control change does not transfer trigger": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW26 zero other creatures resolves successfully": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW27 copied permanent spell retains paid choice": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW28 copy of permanent does not copy cast choice": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW29 serialized normal and surge card definitions preserve behavior": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW30 literal replay reproduces full cast trigger cleanup": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW31 granted alternative cannot activate card payoff": 1,
+    "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW32 normal and surge printed characteristics remain identical": 1
+  },
+  "raw_commands": [
+    {
+      "name": "compile-normal",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M01-surge-price",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M02-red-payment",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M03-paid-guard",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M04-other-filter",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M05-controller-filter",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M06-toughness",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M07-granted-haste",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M08-duration",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M09-intrinsic-haste",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M10-entity-only-exclusion",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M11-exclude-none",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M12-followed-origin",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M13-missing-choice",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M14-copy-choice",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "normal",
+      "argv": [
+        "scripts/gradle-locked",
+        ":rules-engine:cleanTest",
+        ":mtg-sets:2008-2016:tests:cleanTest",
+        ":mtg-sets:cleanTest",
+        ":rules-engine:test",
+        "--tests",
+        "com.wingedsheep.engine.scenarios.SurgeCostCompositionTest",
+        "--tests",
+        "com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest",
+        ":mtg-sets:2008-2016:tests:test",
+        "--tests",
+        "com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest",
+        ":mtg-sets:test",
+        "--tests",
+        "com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/ff31e7f1fc09/manual-transmission",
+      "returncode": 1
+    }
+  ],
+  "diagnosis": {
+    "state": "READ_ONLY_DIAGNOSIS_NO_CORRECTION_AUTHORIZED",
+    "confirmed_out_of_scope_production_gap": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+      "method": "calculateEffectiveCostWithAlternativeBase",
+      "line": 1848,
+      "evidence": "The method selects battlefield SpellCostTarget.AnyCaster increases, skips YouCast modifiers, and omits generic reductions; SP05/SP06 reject the discounted alternative and SP07 leaves one colorless unspent on the alternative branch.",
+      "failing_cases": [
+        "SP05",
+        "SP06",
+        "SP07"
+      ],
+      "allowed_shipping_paths_in_current_protocol": 2,
+      "path_is_authorized": false
+    },
+    "confirmed_test_representation_mismatch": {
+      "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/RecklessBushwhackerRegistrationTest.kt",
+      "line": 34,
+      "case": "RG02",
+      "expected": "2",
+      "actual": "Fixed(value=2)",
+      "interpretation": "The assertion compares a structured power value directly with an integer; this is not evidence that printed power is wrong. Frozen assertion left untouched."
+    },
+    "source_return_fixture_suspect": {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceIdentityGroupExclusionTest.kt",
+      "cases": [
+        "GX02",
+        "GX06",
+        "GX09"
+      ],
+      "observation": "blink uses full ZoneTransitionService for exile but low-level GameState.moveToZone for return. Low-level move only changes zone membership; it bypasses battlefield entry setup after exit cleanup.",
+      "classification": "Static source inference requiring future authorized fixture review; no repaired fixture or behavioral rerun performed."
+    },
+    "authorization_boundary": [
+      "Candidate01 source/tests/assertions/workflow/pins are frozen and cannot be edited.",
+      "Local gates failed, so Candidate01 CI dispatch is prohibited.",
+      "CostCalculator.kt is outside the exact current shipping production allowlist.",
+      "No original Candidate01 GitHub artifact exists; do not fabricate original receiving or treat this local archive as a GitHub artifact to unlock Candidate02."
+    ],
+    "next_required_decision": "A new bounded source-correction authorization/proposal must explicitly address CostCalculator.kt, the frozen test representation/fixture issues, and eligibility of a successor after this pre-dispatch local behavioral failure. Preserve all original assertions and evidence; no implementation or Candidate02 consumption under the present grant."
+  }
+}

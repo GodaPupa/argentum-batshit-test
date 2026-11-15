@@ -1,0 +1,41 @@
+{
+  "state": "READ_ONLY_DIAGNOSIS_NO_CORRECTION_AUTHORIZED",
+  "confirmed_out_of_scope_production_gap": {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+    "method": "calculateEffectiveCostWithAlternativeBase",
+    "line": 1848,
+    "evidence": "The method selects battlefield SpellCostTarget.AnyCaster increases, skips YouCast modifiers, and omits generic reductions; SP05/SP06 reject the discounted alternative and SP07 leaves one colorless unspent on the alternative branch.",
+    "failing_cases": [
+      "SP05",
+      "SP06",
+      "SP07"
+    ],
+    "allowed_shipping_paths_in_current_protocol": 2,
+    "path_is_authorized": false
+  },
+  "confirmed_test_representation_mismatch": {
+    "path": "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/RecklessBushwhackerRegistrationTest.kt",
+    "line": 34,
+    "case": "RG02",
+    "expected": "2",
+    "actual": "Fixed(value=2)",
+    "interpretation": "The assertion compares a structured power value directly with an integer; this is not evidence that printed power is wrong. Frozen assertion left untouched."
+  },
+  "source_return_fixture_suspect": {
+    "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceIdentityGroupExclusionTest.kt",
+    "cases": [
+      "GX02",
+      "GX06",
+      "GX09"
+    ],
+    "observation": "blink uses full ZoneTransitionService for exile but low-level GameState.moveToZone for return. Low-level move only changes zone membership; it bypasses battlefield entry setup after exit cleanup.",
+    "classification": "Static source inference requiring future authorized fixture review; no repaired fixture or behavioral rerun performed."
+  },
+  "authorization_boundary": [
+    "Candidate01 source/tests/assertions/workflow/pins are frozen and cannot be edited.",
+    "Local gates failed, so Candidate01 CI dispatch is prohibited.",
+    "CostCalculator.kt is outside the exact current shipping production allowlist.",
+    "No original Candidate01 GitHub artifact exists; do not fabricate original receiving or treat this local archive as a GitHub artifact to unlock Candidate02."
+  ],
+  "next_required_decision": "A new bounded source-correction authorization/proposal must explicitly address CostCalculator.kt, the frozen test representation/fixture issues, and eligibility of a successor after this pre-dispatch local behavioral failure. Preserve all original assertions and evidence; no implementation or Candidate02 consumption under the present grant."
+}
