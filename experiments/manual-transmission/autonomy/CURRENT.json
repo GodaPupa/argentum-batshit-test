@@ -30,19 +30,9 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "WORKING",
-  "owner": "manual-foreground-surge-implementation-20261114-mwgzlsub-89e62f76",
-  "lease": {
-    "owner": "manual-foreground-surge-implementation-20261114-mwgzlsub-89e62f76",
-    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
-    "claimed_utc": "2026-11-14T22:38:27.395Z",
-    "expires_utc": "2026-11-15T00:08:10.842Z",
-    "scheduled_executor_enabled": false,
-    "scheduled_automation_identity_asserted": false,
-    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
-    "exclusive_writer": "Only this foreground invocation, implementing and qualifying exact MT-SURGE-BW-20261114 package.",
-    "renewed_utc": "2026-11-14T23:08:10.842Z"
-  },
+  "status": "READY_FOR_NEXT_ITERATION",
+  "owner": null,
+  "lease": null,
   "summary": {
     "accepted_capabilities": [
       "Authoritative occurrence/group/current-target/original-source semantics, calibrated generator, public occurrence UI/matrix and activated Phyrexian payment remain accepted under their preserved exact-bound receipts.",
@@ -58,7 +48,7 @@
     "pending_evidence": [
       "Local compile-first15, normal67, mutants14, restored67, all compatibility/metadata, one CI activation and original receiving."
     ],
-    "ownership": "Sole authorized foreground Candidate01 implementation lease; scheduled executor disabled.",
+    "ownership": "Named stale Candidate01 foreground ownership closed under explicit user authority; ready for one fresh foreground CAS claim.",
     "actual_stopping_reason": null,
     "implementation": "Two authorized production paths, append-only documentation, five new test files and one OGW snapshot entry implemented. Preparation compilation PASS; receiver18 synthetic controls PASS. No card or production admission."
   },
@@ -97,8 +87,8 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "37f3bcdb9783cde2925048d5e5a747f051e25bec",
-    "current_blob": "0c811783682a0b1b70e47422e434a00a1353fecd"
+    "commit": "803f0aa3c4f97b1563d843f7661f847ea02d8450",
+    "current_blob": "2910e8654a6da3b805cca415bd0f47e24b6a0c33"
   },
   "qualification": {
     "state": "BOUNDED_OWN_PRIOR_SPELL_DIAGNOSTIC_VERIFIED",
@@ -1282,5 +1272,50 @@
     "local_gates": "NOT_STARTED",
     "ci_activations": 0,
     "original_received": false
+  },
+  "surge_candidate01_stale_foreground_closeout": {
+    "authority": "Explicit user MANUAL TRANSMISSION CANDIDATE 01 HARD RESUME Phase 2, 2026-11-14 Pacific",
+    "closed_owner": "manual-foreground-surge-implementation-20261114-mwgzlsub-89e62f76",
+    "closed_lease": {
+      "owner": "manual-foreground-surge-implementation-20261114-mwgzlsub-89e62f76",
+      "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+      "claimed_utc": "2026-11-14T22:38:27.395Z",
+      "expires_utc": "2026-11-15T00:08:10.842Z",
+      "scheduled_executor_enabled": false,
+      "scheduled_automation_identity_asserted": false,
+      "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+      "exclusive_writer": "Only this foreground invocation, implementing and qualifying exact MT-SURGE-BW-20261114 package.",
+      "renewed_utc": "2026-11-14T23:08:10.842Z"
+    },
+    "closed_utc": "2026-11-15T07:03:45.487Z",
+    "observed_head": "803f0aa3c4f97b1563d843f7661f847ea02d8450",
+    "conditions": {
+      "no_relevant_manual_workflow_active": true,
+      "no_newer_legitimate_foreground_worker_record": true,
+      "no_newer_transfer": true,
+      "candidate01_activations": 0,
+      "no_newer_source_receipt_successor": true,
+      "activity_stopped_at_preserved_environment_boundary": true,
+      "scheduled_executor_disabled": true
+    },
+    "verification": {
+      "statuses": [
+        "in_progress",
+        "queued",
+        "waiting",
+        "pending",
+        "requested"
+      ],
+      "ignored_only_run": 34749202144,
+      "recovery_workflow_runs_total": 4,
+      "candidate_source": "2b195520143045981fe4fdb64a16169473f0dbde",
+      "candidate_source_tree": "28b7889953683bd3dad04bfd34d482ce2d214c1b",
+      "validation": "94025a17b5a0ded2b6d522c63e53b59397059e90",
+      "validation_tree": "e911ff568cf11e2947157a1038ff59a225d24baa",
+      "source_binding_check": "PASS_376_BINDINGS_AND_PROTECTED_ORIGINALS",
+      "workflow_sha256": "af0bdc423db90a50b01c076943788720366a9d6ae5db6f5a862141d08c13c5bf"
+    },
+    "canonical_owner_unchanged": true,
+    "reason": "Specific user-authorized closeout after complete fresh reconciliation; lease expiry alone not used."
   }
 }
