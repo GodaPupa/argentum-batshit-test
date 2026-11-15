@@ -1838,12 +1838,9 @@ class CostCalculator(
 
     /**
      * Calculate the effective cost of casting a spell using an alternative base cost.
-     * Applies cost increases (tax effects) to the alternative cost.
-     * Per Rule 118.9a, cost reductions and increases apply to alternative costs.
-     *
-     * Note: Self-reduction (`SpellCostTarget.SelfCast`) and Affinity are NOT applied to
-     * alternative costs, since those modify the card's own mana cost. Only
-     * battlefield-sourced AnyCaster increases apply.
+     * Applies applicable battlefield generic increases and reductions to that base,
+     * preserving its colored requirements. Caster-aware modifiers use the same target
+     * and gating checks as normal spell costs. Stack-source taxes retain their existing path.
      */
     fun calculateEffectiveCostWithAlternativeBase(
         state: GameState,
@@ -1853,10 +1850,16 @@ class CostCalculator(
         chosenTargets: List<EntityId> = emptyList(),
     ): ManaCost {
         var totalIncrease = 0
+        var totalReduction = 0
         for ((sourceId, ability) in scanBattlefieldModifySpellCost(state)) {
-            val target = ability.target
-            if (target !is SpellCostTarget.AnyCaster) continue
-            if (!matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)) continue
+            if (casterId != null) {
+                if (!targetMatchesSpell(ability.target, cardDef, casterId, sourceId, state, chosenTargets)) continue
+                if (!gatingApplies(state, casterId, cardDef, ability)) continue
+            } else {
+                // Legacy callers without a caster retain their existing global-tax behavior.
+                val target = ability.target as? SpellCostTarget.AnyCaster ?: continue
+                if (!matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)) continue
+            }
             when (val mod = ability.modification) {
                 is CostModification.IncreaseGeneric -> totalIncrease += mod.amount
                 is CostModification.IncreaseGenericBy -> {
@@ -1872,7 +1875,17 @@ class CostCalculator(
                         totalIncrease += spellsCast * mod.amountPerSpell
                     }
                 }
-                else -> { /* AnyCaster reductions don't apply to alternative casting costs. */ }
+                is CostModification.ReduceGeneric -> {
+                    if (casterId != null) totalReduction += mod.amount
+                }
+                is CostModification.ReduceGenericBy -> {
+                    if (casterId != null) {
+                        totalReduction += evaluateReduction(
+                            state, mod.source, casterId, chosenTargets, sourceId, cardDef
+                        )
+                    }
+                }
+                else -> { /* This path composes generic battlefield modifiers only. */ }
             }
         }
         // Stack-native targeting taxes also apply to alternative/free base costs.
@@ -1891,7 +1904,7 @@ class CostCalculator(
                 }
             }
         }
-        return increaseGenericCost(alternativeCost, totalIncrease)
+        return reduceGenericCost(increaseGenericCost(alternativeCost, totalIncrease), totalReduction)
     }
 
     /**

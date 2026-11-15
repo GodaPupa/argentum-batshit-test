@@ -24,7 +24,16 @@ def verify(envelope):
     allowed={x['path'] for x in proto['shipping_production_paths']+proto['documentation']+proto['test_paths']}
     allowed.add(proto['snapshot_path']);allowed.add('experiments/manual-transmission/autonomy/CURRENT.json')
     allowed.update(RECORD+'/'+n for n in proto['infrastructure_exact_files'])
-    delta=set(git('diff','--name-only',proposal,source).splitlines())
+    if q['candidate_index']=='02':
+        amendment=current_authority=json.loads(raw('c0049aa6b4c44455e7764941f15a838338e3738b','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_candidate02_authorization']
+        check(amendment['state']=='EXPLICIT_USER_GRANT' and amendment['local_failure_accepted_as_successor_prerequisite'] is True,'bounded local-failure successor authority')
+        base='c0049aa6b4c44455e7764941f15a838338e3738b'
+        check(git('show','-s','--format=%P',source)==base,'sole successor source parent')
+        allowed=set(amendment['source_delta_paths'])|{RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json'}
+        delta=set(git('diff','--name-only',base,source).splitlines())
+        check(delta==allowed,'exact candidate02 source and binding delta')
+    else:
+        delta=set(git('diff','--name-only',proposal,source).splitlines())
     # The sole intervening R2 publication readback is already inside the proposal commit.
     check(delta<=allowed,'unlisted source changes '+str(delta-allowed))
     check(not any(p.startswith('.github/workflows/') for p in delta),'workflow in source rather than validation')
@@ -40,6 +49,7 @@ def verify(envelope):
     reviewed=proto['source_parent']
     changes=set(git('diff','--name-only',reviewed,source).splitlines())
     exceptions={docs,proto['snapshot_path'],proto['shipping_production_paths'][1]['path']}
+    if q['candidate_index']=='02':exceptions.add('rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt')
     for path,pin in protected['bindings'].items():
         if path not in exceptions:check(raw(source,path)==raw(reviewed,path),'protected original '+path)
     current=json.loads(raw(envelope['first_parent'],'experiments/manual-transmission/autonomy/CURRENT.json'))
@@ -47,8 +57,14 @@ def verify(envelope):
     check(current['status']=='WORKING' and current['automation']['enabled_at_latest_readback'] is False,'execution state')
     check(current['safeguards']['phase2_games']==current['safeguards']['phase2_seeds']==0,'official counters')
     if q['candidate_index']=='02':
-        prior=current['surge_bushwhacker_candidate01_receipt']
-        check(prior['original_received_once'] is True and prior['admitted'] is False and prior['source_defect_within_scope'] is True,'candidate02 bounded prerequisite')
+        check(current['surge_bushwhacker_candidate02_authorization']==current_authority,'successor grant changed')
+        prior=current['surge_candidate01_host_recovery']
+        check(prior['local_failure_evidence_commit']=='b9286f63c0c92f78604d1582904810f6229dbfc0','prior local failure')
+        check(prior['local_readback']['commit']=='7da5143ba620c8258fda09b42bd1c618299e4453' and prior['local_readback']['state']=='PASS','prior exact readback')
+        check(prior['source_unchanged'] is True and prior['compiled_forms_verified']==15,'prior restored compile evidence')
+        check(prior['ci_activations']==prior['original_github_downloads']==0,'candidate01 never activated or received')
+        check(pins['predecessor']['source']=='2b195520143045981fe4fdb64a16169473f0dbde','predecessor identity')
+        check(pins['predecessor']['archive_sha256']==prior['local_archive']['sha256'],'predecessor archive pin')
     else:check(q['candidate_index']=='01','candidate cap')
     return pins
 if __name__=='__main__':

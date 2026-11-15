@@ -7,7 +7,6 @@ import com.wingedsheep.engine.handlers.effects.ZoneTransitionService
 import com.wingedsheep.engine.handlers.effects.composite.ForEachExecutor
 import com.wingedsheep.engine.mechanics.layers.*
 import com.wingedsheep.engine.state.GameState
-import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.engine.support.SerializationTestSupport
@@ -109,8 +108,7 @@ class SourceIdentityGroupExclusionTest : ScenarioTestBase() {
     }
     private fun blink(g:TestGame,id:EntityId) {
         g.state=ZoneTransitionService.moveToZone(g.state,id,Zone.EXILE).state
-        val from=g.state.logicalZone(id)!!
-        g.state=g.state.moveToZone(id,from,ZoneKey(from.ownerId,Zone.BATTLEFIELD))
+        g.state=ZoneTransitionService.moveToZone(g.state,id,Zone.BATTLEFIELD).state
     }
     private fun recipients(state:GameState,context:EffectContext,filter:GroupFilter=other):List<EntityId> {
         val seen=mutableListOf<EntityId>()

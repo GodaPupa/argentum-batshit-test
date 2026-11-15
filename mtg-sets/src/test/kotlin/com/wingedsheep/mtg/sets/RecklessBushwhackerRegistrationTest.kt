@@ -31,7 +31,8 @@ class RecklessBushwhackerRegistrationTest : FunSpec({
     test("RG02 printed fields match pinned source") {
         card.name shouldBe "Reckless Bushwhacker";card.manaCost shouldBe ManaCost.parse("{2}{R}")
         card.typeLine.toString() shouldBe "Creature — Goblin Warrior Ally"
-        card.creatureStats?.power shouldBe 2;card.creatureStats?.toughness shouldBe 1
+        card.creatureStats?.power shouldBe com.wingedsheep.sdk.model.CharacteristicValue.Fixed(2)
+        card.creatureStats?.toughness shouldBe com.wingedsheep.sdk.model.CharacteristicValue.Fixed(1)
         card.colors shouldBe setOf(Color.RED);card.metadata.rarity shouldBe Rarity.UNCOMMON
         card.metadata.collectorNumber shouldBe "116";card.metadata.artist shouldBe "Kieran Yanner"
         card.metadata.imageUri shouldBe "https://cards.scryfall.io/normal/front/0/4/0405b1b9-976a-4aaf-bec6-fa006decea74.jpg?1783937905"
