@@ -1,0 +1,59 @@
+{
+  "authorization_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
+  "authorization_blob": "090c49dadbd9741afefa4f7e8064269cb14c5ed4",
+  "claim_commit": "75061b34160439e68dc7f508d51d04c6439cf67a",
+  "label": "Candidate02 \u2014 fixture-corrected final requalification",
+  "prior_candidate02": {
+    "source": "c4fc84437dd53a8d22d5f14e657178d0b492c7b0",
+    "tree": "06de2901214b5c1078b1f8210c799afe4b566dbf",
+    "validation": "c6476e4f17ad52253857c4e9d152dc4dbe880484",
+    "validation_tree": "306dd4164e671596ea71e42ed16b7aee5826bdc5",
+    "pins_blob": "376c8becec05996ee1dbad3204a6c9a590ee1ff9",
+    "failure_evidence_commit": "252ed0b155cec4a1673933a8afcf3b9ed5d36fc4",
+    "readback_commit": "2503bfbb2e868e5d0e8237fb31c6a11c42324cd2",
+    "archive_sha256": "1c739e1444c54f7ed2d8185fc416a1e29cf8e21846cf81007e4b55896773b56f"
+  },
+  "fixture_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt",
+  "original_blob": "b40b06db9449197af0a49cd73fba1b13f7236e57",
+  "original_sha256": "7a522a9844a61ca8315e54f6764defa93f35824e0e24a932ec09d2527b35fa18",
+  "corrected_blob": "9e3efeb2d06919fbf3fd5ee2205ec63c9e4feb05",
+  "corrected_sha256": "3ded56b6af1f09c0f191193036b7a156c2dfc03a997af10fe68b76dd8ce4eba7",
+  "diff": "--- a/mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt\n+++ b/mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt\n@@ -263,6 +263,7 @@\n         }\n     }\n     private fun board(history:String=\"resolved\",extra:String?=null,allies:Boolean=true,smallHand:Boolean=false):TestGame {\n+        cardRegistry.register(requireNotNull(cardRegistry.getCard(\"Doom Blade#M10-93\")))\n         var b=scenario().withPlayers().withCardsInHand(1,name,2).withCardInHand(1,\"Bushwhacker Prior\")\n             .withCardInHand(2,\"Bushwhacker Prior\").withCardInHand(2,\"Counterspell\")\n             .withCardOnBattlefield(1,\"Forest\").withCardOnBattlefield(2,\"Bushwhacker Opponent\")\n",
+  "old_resolution": "ScenarioTestBase registers TestCards.all; TestCards.DoomBlade is CardDefinition.sorcery, registered after canonical catalog cards, and CardRegistry.register overwrites cardsByName. Bare-name hand creation and later spell lookup resolve to test sorcery, correctly rejected while entry trigger is pending.",
+  "new_fixture": {
+    "exact_registry_key": "Doom Blade#M10-93",
+    "name": "Doom Blade",
+    "set": "M10",
+    "collector_number": "93",
+    "type": "Instant",
+    "mana_cost": "{1}{B}",
+    "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m10/cards/DoomBlade.kt",
+    "mechanism": "Test-local board setup re-registers existing exact canonical definition before creating hand entities. This ensures both initial CardComponent and subsequent bare-name lookups use the existing instant. Only BW14/BW16 cast Doom Blade in this test class."
+  },
+  "semantic_assertions_byte_identical": true,
+  "all_frozen_witness_source_lines_unchanged": true,
+  "all_prior_candidate02_corrections_byte_identical": true,
+  "production_files_byte_identical_to_prior_candidate02": true,
+  "workflow_mutation_protocol_thresholds_byte_identical": true,
+  "behavioral_runs_before_freeze": 0,
+  "ci_activations": 0,
+  "candidate03_prohibited": true,
+  "causal_sources": {
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m10/cards/DoomBlade.kt": {
+      "blob": "c7e5ab8a4c2dd40cbc9c8175d37c91cc3041515b",
+      "sha256": "396a30042d991dec91363a651a7b82653c1db81fac20d292d2b73551250e41f9"
+    },
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TestCards.kt": {
+      "blob": "c572f9e536f39e822a917501a4d755a62a77c6f6",
+      "sha256": "516036fb18d2683140aa183540c4436c5c064e6bb957c238b2f372b9d0f248a6"
+    },
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": {
+      "blob": "25c4e0fc143ad8b4d2bb5a29aeb7d67fcf023ece",
+      "sha256": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/registry/CardRegistry.kt": {
+      "blob": "3615fbd2dd27f6121d7f7b50d0298bf48f930a93",
+      "sha256": "026f8cc625790db6b3bec32c48d2ed4d9b0ac27823969a650871a69b9969bd07"
+    }
+  }
+}
