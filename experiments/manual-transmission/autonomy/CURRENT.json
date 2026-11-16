@@ -36,12 +36,14 @@
     "owner": "manual-foreground-fixture-requalification-20261116-mwjjvkkd-aa177d29",
     "claimed_utc": "2026-11-16T17:41:27.901Z",
     "expires_utc": "2026-11-16T19:41:27.901Z",
-    "kind": "EXPLICIT_USER_FOREGROUND",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
     "sole_source_writer": true,
     "scheduled_executor_disabled": true,
-    "authority_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b"
+    "authority_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
+    "scheduled_executor_enabled": false,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106"
   },
-  "summary": "Sole foreground executing explicit fixture-only Candidate02 final requalification; no behavior/CI activation yet.",
+  "summary": "Fixture-corrected Candidate02 frozen; production unchanged; one complete fresh local qualification authorized; no CI activation.",
   "next": {
     "state": "AUTHORIZED_FINAL_CANDIDATE02_FIXTURE_REQUALIFICATION",
     "proposal_id": "MT-SURGE-BW-20261114",
@@ -77,8 +79,8 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
-    "current_blob": "090c49dadbd9741afefa4f7e8064269cb14c5ed4"
+    "commit": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
+    "current_blob": "5183fd5653656f372f37bb2b0a92cb976eed8d0d"
   },
   "qualification": {
     "state": "BOUNDED_OWN_PRIOR_SPELL_DIAGNOSTIC_VERIFIED",
@@ -1263,47 +1265,21 @@
   },
   "surge_bushwhacker_qualification": {
     "candidate_index": "02",
-    "state": "FINAL_LOCAL_FAILURE_PRESERVED_READBACK_PASS_NO_CI_ACTIVATION",
-    "source": "c4fc84437dd53a8d22d5f14e657178d0b492c7b0",
-    "source_tree": "06de2901214b5c1078b1f8210c799afe4b566dbf",
-    "validation": "c6476e4f17ad52253857c4e9d152dc4dbe880484",
-    "validation_tree": "306dd4164e671596ea71e42ed16b7aee5826bdc5",
+    "label": "Candidate02 — fixture-corrected final requalification",
+    "state": "SOURCE_FROZEN_COMPLETE_LOCAL_QUALIFICATION_AUTHORIZED",
+    "source": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
+    "source_tree": "4e880aa8287ae2b3b5611da62bdcc3ed81de27b7",
+    "validation": "2c29ed523b1ae2c5c8446c367a88c7bd2f3cc007",
+    "validation_tree": "69dd91b66f3eadb9541eef9e787b0c5ba4c3821c",
     "workflow_path": ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-02.yml",
     "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
     "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
-    "candidate_pins_blob": "376c8becec05996ee1dbad3204a6c9a590ee1ff9",
-    "local_gates": "FAIL_15_COMPILES_PASS_NORMAL67_EXECUTED_65PASS_2FIXTURE_FAILURES",
+    "candidate_pins_blob": "42b39cb8de8b63a036fb80b6a4e30f35ea13ebb0",
+    "local_gates": "NOT_STARTED",
     "ci_activations": 0,
     "original_received": false,
-    "pre_behavior_binding_review": "Original unused import retained to preserve all14 frozen source-line witnesses; compiler-only interruption preserved; 0 behavioral runs, no outcome adjustments.",
-    "local_progress": {
-      "compiled_forms": 15,
-      "normal_rows": 67,
-      "normal_passed": 65,
-      "normal_failed": 2,
-      "normal_errors": 0,
-      "normal_skips": 0,
-      "mutant_behavioral_controls": 0,
-      "restored_rows": 0,
-      "compatibility_executed": false,
-      "behavioral_runs": 1,
-      "ci_activations": 0
-    },
-    "prebehavior_preparation_archive": {
-      "commit": "415f1dc5f298114c03b6f006fa77369ddf737be1",
-      "readback_commit": "20712ceb17cb21a08ca9f3eff6cab7247da6100b",
-      "bytes": 3736699,
-      "sha256": "e46ea1cecdba4b082e30e5023d06d2079e962cec20beb7a5c609936c8b0f770c",
-      "behavioral_runs": 0,
-      "source_restored": true,
-      "host_properties_restored": true
-    },
-    "local_failure_receipt": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/LOCAL_QUALIFICATION_FAILURE_01/LOCAL_RECEIPT.json",
-    "local_failure_evidence_commit": "252ed0b155cec4a1673933a8afcf3b9ed5d36fc4",
-    "local_readback_commit": "2503bfbb2e868e5d0e8237fb31c6a11c42324cd2",
-    "source_restored": true,
-    "source_rebound": true,
-    "host_properties_restored": true
+    "local_qualification_budget": 1,
+    "fixture_authorization_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b"
   },
   "surge_candidate01_stale_foreground_closeout": {
     "authority": "Explicit user MANUAL TRANSMISSION CANDIDATE 01 HARD RESUME Phase 2, 2026-11-14 Pacific",
@@ -1713,7 +1689,7 @@
     }
   },
   "surge_bushwhacker_candidate02_fixture_requalification": {
-    "state": "FIXTURE_PREPARATION",
+    "state": "SOURCE_FROZEN",
     "authorization_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
     "authorization_blob": "090c49dadbd9741afefa4f7e8064269cb14c5ed4",
     "local_qualification_starts": 0,
@@ -1721,6 +1697,52 @@
     "original_github_downloads": 0,
     "candidate03_prohibited": true,
     "phase2_seeds": 0,
-    "phase2_games": 0
+    "phase2_games": 0,
+    "source": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
+    "validation": "2c29ed523b1ae2c5c8446c367a88c7bd2f3cc007"
+  },
+  "surge_bushwhacker_candidate02_fixture_previous_qualification": {
+    "candidate_index": "02",
+    "state": "FINAL_LOCAL_FAILURE_PRESERVED_READBACK_PASS_NO_CI_ACTIVATION",
+    "source": "c4fc84437dd53a8d22d5f14e657178d0b492c7b0",
+    "source_tree": "06de2901214b5c1078b1f8210c799afe4b566dbf",
+    "validation": "c6476e4f17ad52253857c4e9d152dc4dbe880484",
+    "validation_tree": "306dd4164e671596ea71e42ed16b7aee5826bdc5",
+    "workflow_path": ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-02.yml",
+    "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
+    "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
+    "candidate_pins_blob": "376c8becec05996ee1dbad3204a6c9a590ee1ff9",
+    "local_gates": "FAIL_15_COMPILES_PASS_NORMAL67_EXECUTED_65PASS_2FIXTURE_FAILURES",
+    "ci_activations": 0,
+    "original_received": false,
+    "pre_behavior_binding_review": "Original unused import retained to preserve all14 frozen source-line witnesses; compiler-only interruption preserved; 0 behavioral runs, no outcome adjustments.",
+    "local_progress": {
+      "compiled_forms": 15,
+      "normal_rows": 67,
+      "normal_passed": 65,
+      "normal_failed": 2,
+      "normal_errors": 0,
+      "normal_skips": 0,
+      "mutant_behavioral_controls": 0,
+      "restored_rows": 0,
+      "compatibility_executed": false,
+      "behavioral_runs": 1,
+      "ci_activations": 0
+    },
+    "prebehavior_preparation_archive": {
+      "commit": "415f1dc5f298114c03b6f006fa77369ddf737be1",
+      "readback_commit": "20712ceb17cb21a08ca9f3eff6cab7247da6100b",
+      "bytes": 3736699,
+      "sha256": "e46ea1cecdba4b082e30e5023d06d2079e962cec20beb7a5c609936c8b0f770c",
+      "behavioral_runs": 0,
+      "source_restored": true,
+      "host_properties_restored": true
+    },
+    "local_failure_receipt": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/LOCAL_QUALIFICATION_FAILURE_01/LOCAL_RECEIPT.json",
+    "local_failure_evidence_commit": "252ed0b155cec4a1673933a8afcf3b9ed5d36fc4",
+    "local_readback_commit": "2503bfbb2e868e5d0e8237fb31c6a11c42324cd2",
+    "source_restored": true,
+    "source_rebound": true,
+    "host_properties_restored": true
   }
 }
