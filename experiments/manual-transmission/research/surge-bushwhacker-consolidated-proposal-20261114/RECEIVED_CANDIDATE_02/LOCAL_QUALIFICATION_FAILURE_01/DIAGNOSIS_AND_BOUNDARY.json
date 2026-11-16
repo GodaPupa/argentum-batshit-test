@@ -1,0 +1,77 @@
+{
+  "state": "FINAL_CANDIDATE_LOCAL_QUALIFICATION_FAILED",
+  "classification": "TEST_FIXTURE_SOURCE_FAILURE_NOT_ENVIRONMENT",
+  "failed_cases": [
+    "BW14 source dies before trigger resolves",
+    "BW16 serialized departed trigger retains paid fact"
+  ],
+  "common_assertion": "RecklessBushwhackerScenarioTest.kt:289 depart(): cast Doom Blade while Bushwhacker entry trigger is on stack expects error null",
+  "actual": "You can only cast sorcery-speed spells during your main phase with an empty stack",
+  "read_only_source_proof": {
+    "scenario": {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt",
+      "blob": "b40b06db9449197af0a49cd73fba1b13f7236e57",
+      "sha256": "7a522a9844a61ca8315e54f6764defa93f35824e0e24a932ec09d2527b35fa18",
+      "unchanged_from_candidate01": true
+    },
+    "test_cards": {
+      "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TestCards.kt",
+      "blob": "c572f9e536f39e822a917501a4d755a62a77c6f6",
+      "sha256": "516036fb18d2683140aa183540c4436c5c064e6bb957c238b2f372b9d0f248a6",
+      "unchanged_from_candidate01": true
+    },
+    "base": {
+      "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt",
+      "blob": "25c4e0fc143ad8b4d2bb5a29aeb7d67fcf023ece",
+      "sha256": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
+      "unchanged_from_candidate01": true
+    },
+    "registry": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/registry/CardRegistry.kt",
+      "blob": "3615fbd2dd27f6121d7f7b50d0298bf48f930a93",
+      "sha256": "026f8cc625790db6b3bec32c48d2ed4d9b0ac27823969a650871a69b9969bd07",
+      "unchanged_from_candidate01": true
+    },
+    "canonical_doom_blade": {
+      "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m10/cards/DoomBlade.kt",
+      "blob": "c7e5ab8a4c2dd40cbc9c8175d37c91cc3041515b",
+      "sha256": "396a30042d991dec91363a651a7b82653c1db81fac20d292d2b73551250e41f9",
+      "unchanged_from_candidate01": true
+    },
+    "timing": {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+      "blob": "e6216b851da7a1fbcfcfab7746d65f4cae6277ac",
+      "sha256": "9148bf731484bccd7112a27bb3ca1df27d5fa36fba6dc864bb6a05677d87145f",
+      "unchanged_from_candidate01": true
+    }
+  },
+  "static_causal_chain": [
+    "TestCards.DoomBlade is defined using CardDefinition.sorcery at TestCards.kt:321.",
+    "TestCards.all appends testOnlyCards after MtgSetCatalog cards; DoomBlade appears in testOnlyCards.",
+    "ScenarioTestBase registers TestCards.all; CardRegistry.register overwrites cardsByName with each later card.",
+    "The scenario adds Doom Blade and the depart helper casts it by bare name, selecting the test sorcery definition rather than the canonical M10 Instant.",
+    "CastSpellHandler rejects the resulting sorcery-speed cast while the entry trigger remains on the stack. Both cases fail in setup before the intended departed-trigger assertion."
+  ],
+  "limits": "Static source tracing plus preserved exact assertion evidence; no diagnostic rerun, no fixture or timing changes made. This failure does not demonstrate a defect in Surge production behavior.",
+  "authorization_boundary": "RecklessBushwhackerScenarioTest.kt is not one of the three newly authorized Candidate02 correction paths. Candidate02 is the final authorized candidate. No Candidate03, no dispatch after failed local gates, no further correction/rerun.",
+  "candidate01_failed_cases_now_pass": [
+    "SP05",
+    "SP06",
+    "SP07",
+    "RG02",
+    "GX02",
+    "GX06",
+    "GX09"
+  ],
+  "unexecuted": [
+    "14 mutant behavioral witness/control pairs",
+    "67 restored behavioral rows",
+    "401 registry compatibility",
+    "19421 ordinary compatibility",
+    "client70/full/typecheck",
+    "metadata gates"
+  ],
+  "ci_activations": 0,
+  "github_original_downloads": 0,
+  "admission": false
+}
