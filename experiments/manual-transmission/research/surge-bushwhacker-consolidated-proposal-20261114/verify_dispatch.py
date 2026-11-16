@@ -27,11 +27,25 @@ def verify(envelope):
     if q['candidate_index']=='02':
         amendment=current_authority=json.loads(raw('c0049aa6b4c44455e7764941f15a838338e3738b','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_candidate02_authorization']
         check(amendment['state']=='EXPLICIT_USER_GRANT' and amendment['local_failure_accepted_as_successor_prerequisite'] is True,'bounded local-failure successor authority')
-        base='c0049aa6b4c44455e7764941f15a838338e3738b'
-        check(git('merge-base','--is-ancestor',base,source)=='','sole successor source lineage')
-        allowed=set(amendment['source_delta_paths'])|{RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json','experiments/manual-transmission/autonomy/CURRENT.json'}
+        fixture_grant=json.loads(raw('a6fe1e604ed884413a147fba69653bc87a803c4b','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_candidate02_fixture_exception']
+        check(fixture_grant['state']=='EXPLICIT_SUPERSEDING_USER_GRANT','fixture-only user authority')
+        base='75061b34160439e68dc7f508d51d04c6439cf67a'
+        prior_source=fixture_grant['base_candidate02']['source']
+        check(prior_source=='c4fc84437dd53a8d22d5f14e657178d0b492c7b0','prior candidate02 source')
+        check(git('merge-base','--is-ancestor',base,source)=='','fixture successor source lineage')
+        fixture_path='mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt'
+        check(fixture_grant['source_delta_paths']==[fixture_path],'one fixture path authority')
+        allowed={fixture_path,RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json'}
         delta=set(git('diff','--name-only',base,source).splitlines())
-        check(delta<=allowed and allowed-{'experiments/manual-transmission/autonomy/CURRENT.json'}<=delta,'exact candidate02 source and binding delta')
+        check(delta==allowed,'exact fixture and mechanical binding delta')
+        previous_pins=json.loads(raw(prior_source,RECORD+'/CANDIDATE_PINS.json'))
+        for path,pin in previous_pins['bindings'].items():
+            check(digest(raw(base,path))==pin['sha256'],'prior candidate02 correction preserved '+path)
+            if path not in allowed:check(raw(source,path)==raw(prior_source,path),'unchanged candidate02 source '+path)
+        old_fixture=raw(prior_source,fixture_path)
+        marker=b'        var b=scenario().withPlayers().withCardsInHand(1,name,2).withCardInHand(1,"Bushwhacker Prior")'
+        insertion=b'        cardRegistry.register(requireNotNull(cardRegistry.getCard("Doom Blade#M10-93")))\n'
+        check(old_fixture.count(marker)==1 and raw(source,fixture_path)==old_fixture.replace(marker,insertion+marker),'fixture-only insertion; assertions unchanged')
     else:
         delta=set(git('diff','--name-only',proposal,source).splitlines())
     # The sole intervening R2 publication readback is already inside the proposal commit.
@@ -58,6 +72,18 @@ def verify(envelope):
     check(current['safeguards']['phase2_games']==current['safeguards']['phase2_seeds']==0,'official counters')
     if q['candidate_index']=='02':
         check(current['surge_bushwhacker_candidate02_authorization']==current_authority,'successor grant changed')
+        check(current['surge_bushwhacker_candidate02_fixture_exception']==fixture_grant,'fixture-only grant changed')
+        fixture_prior=fixture_grant['base_candidate02']
+        check(pins['fixture_exception']['authorization_commit']=='a6fe1e604ed884413a147fba69653bc87a803c4b','fixture authorization pin')
+        check(pins['fixture_exception']['prior_candidate02']==fixture_prior,'prior candidate02 evidence pins')
+        failure_path=RECORD+'/RECEIVED_CANDIDATE_02/LOCAL_QUALIFICATION_FAILURE_01/'
+        previous_readback=json.loads(raw(fixture_prior['readback_commit'],failure_path+'READBACK_VERIFICATION.json'))
+        check(previous_readback['state']=='PASS' and previous_readback['archive_sha256']==fixture_prior['archive_sha256'],'prior candidate02 exact readback')
+        check(previous_readback['normal_pass']==65 and previous_readback['normal_fail']==2 and previous_readback['compile_forms']==15,'prior fixture-failure counts')
+        check(previous_readback['source_restored_rebound'] and previous_readback['ci_activations']==previous_readback['new_github_downloads']==0,'prior candidate02 restored and undispatched')
+        for name in ['ARCHIVE_PARTS.json','LOCAL_RECEIPT.json','DIAGNOSIS_AND_BOUNDARY.json','SOURCE_REBINDING.json']:
+            check(raw(source,failure_path+name)==raw(fixture_prior['failure_evidence_commit'],failure_path+name),'preserved prior fixture failure '+name)
+        check(raw(source,failure_path+'READBACK_VERIFICATION.json')==raw(fixture_prior['readback_commit'],failure_path+'READBACK_VERIFICATION.json'),'preserved prior fixture readback')
         prior=current['surge_candidate01_host_recovery']
         check(prior['local_failure_evidence_commit']=='b9286f63c0c92f78604d1582904810f6229dbfc0','prior local failure')
         check(prior['local_readback']['commit']=='7da5143ba620c8258fda09b42bd1c618299e4453' and prior['local_readback']['state']=='PASS','prior exact readback')
