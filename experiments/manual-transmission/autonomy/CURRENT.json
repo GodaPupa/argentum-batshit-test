@@ -79,8 +79,8 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
-    "current_blob": "5183fd5653656f372f37bb2b0a92cb976eed8d0d"
+    "commit": "180878d3a7e1825f0e4b933f3e026bb5ff60a73b",
+    "current_blob": "57d45ae0c28fbe4bc4a69fe83e69f28d4056c810"
   },
   "qualification": {
     "state": "BOUNDED_OWN_PRIOR_SPELL_DIAGNOSTIC_VERIFIED",
@@ -1266,7 +1266,7 @@
   "surge_bushwhacker_qualification": {
     "candidate_index": "02",
     "label": "Candidate02 — fixture-corrected final requalification",
-    "state": "SOURCE_FROZEN_COMPLETE_LOCAL_QUALIFICATION_AUTHORIZED",
+    "state": "COMPLETE_LOCAL_QUALIFICATION_IN_PROGRESS",
     "source": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
     "source_tree": "4e880aa8287ae2b3b5611da62bdcc3ed81de27b7",
     "validation": "2c29ed523b1ae2c5c8446c367a88c7bd2f3cc007",
@@ -1275,7 +1275,7 @@
     "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
     "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
     "candidate_pins_blob": "42b39cb8de8b63a036fb80b6a4e30f35ea13ebb0",
-    "local_gates": "NOT_STARTED",
+    "local_gates": "IN_PROGRESS_FROM_ZERO",
     "ci_activations": 0,
     "original_received": false,
     "local_qualification_budget": 1,
@@ -1689,17 +1689,18 @@
     }
   },
   "surge_bushwhacker_candidate02_fixture_requalification": {
-    "state": "SOURCE_FROZEN",
+    "state": "COMPLETE_LOCAL_QUALIFICATION_IN_PROGRESS",
     "authorization_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
     "authorization_blob": "090c49dadbd9741afefa4f7e8064269cb14c5ed4",
-    "local_qualification_starts": 0,
+    "local_qualification_starts": 1,
     "ci_activations": 0,
     "original_github_downloads": 0,
     "candidate03_prohibited": true,
     "phase2_seeds": 0,
     "phase2_games": 0,
     "source": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
-    "validation": "2c29ed523b1ae2c5c8446c367a88c7bd2f3cc007"
+    "validation": "2c29ed523b1ae2c5c8446c367a88c7bd2f3cc007",
+    "started_utc": "2026-11-16T17:45:07.467Z"
   },
   "surge_bushwhacker_candidate02_fixture_previous_qualification": {
     "candidate_index": "02",
