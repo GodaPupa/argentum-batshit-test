@@ -30,10 +30,18 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "AUTHORIZED_FINAL_CANDIDATE02_FIXTURE_REQUALIFICATION",
-  "owner": null,
-  "lease": null,
-  "summary": "Explicit user fixture-only exception recorded; ownership remains released pending immutable readback and fresh reconciliation.",
+  "status": "WORKING",
+  "owner": "manual-foreground-fixture-requalification-20261116-mwjjvkkd-aa177d29",
+  "lease": {
+    "owner": "manual-foreground-fixture-requalification-20261116-mwjjvkkd-aa177d29",
+    "claimed_utc": "2026-11-16T17:41:27.901Z",
+    "expires_utc": "2026-11-16T19:41:27.901Z",
+    "kind": "EXPLICIT_USER_FOREGROUND",
+    "sole_source_writer": true,
+    "scheduled_executor_disabled": true,
+    "authority_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b"
+  },
+  "summary": "Sole foreground executing explicit fixture-only Candidate02 final requalification; no behavior/CI activation yet.",
   "next": {
     "state": "AUTHORIZED_FINAL_CANDIDATE02_FIXTURE_REQUALIFICATION",
     "proposal_id": "MT-SURGE-BW-20261114",
@@ -69,8 +77,8 @@
     "scope": "All existing grants, exclusions, statistical design, budgets, scientific gates, failed and accepted evidence and exact protected exceptions continue by immutable canonical CURRENT. No extra spending, additional cards/production paths, multiplayer admission or official games/seeds."
   },
   "previous_checkpoint": {
-    "commit": "e60c2d8ae5b7568ece2208ddd60554c4525609eb",
-    "current_blob": "75871b67c1f90159a93e66508be66e8cf9b5fd33"
+    "commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
+    "current_blob": "090c49dadbd9741afefa4f7e8064269cb14c5ed4"
   },
   "qualification": {
     "state": "BOUNDED_OWN_PRIOR_SPELL_DIAGNOSTIC_VERIFIED",
@@ -508,18 +516,17 @@
     "scheduled_executor_must_remain_disabled": true
   },
   "foreground_reconciliation": {
-    "utc": "2026-11-15T23:44:45.646Z",
-    "head": "804487eae0c2b3ae5cbe4519b6727031cfc9c6f6",
-    "owner_lease_null": true,
-    "relevant_active_manual_workflows": 0,
-    "ignored_only_run": 34749202144,
+    "at": "2026-11-16T17:41:27.901Z",
+    "base": "a6fe1e604ed884413a147fba69653bc87a803c4b",
+    "owner_was_null": true,
+    "lease_was_null": true,
+    "active_manual_workflows": 0,
     "candidate01_activations": 0,
     "candidate02_activations": 0,
-    "recovery_runs_total": 4,
-    "scheduled_executor_disabled": true,
-    "candidate01_bindings": 376,
-    "archive_bytes": 4709385,
-    "immutable_archive_readback": "PASS"
+    "candidate03_exists": false,
+    "scheduled_executor_enabled": false,
+    "ignored_only_ancient_pest_run": 34749202144,
+    "authority_exact_readback": true
   },
   "foreground_lease_history": [
     {
@@ -1704,5 +1711,16 @@
       "phase2_seeds": 0,
       "phase2_games": 0
     }
+  },
+  "surge_bushwhacker_candidate02_fixture_requalification": {
+    "state": "FIXTURE_PREPARATION",
+    "authorization_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
+    "authorization_blob": "090c49dadbd9741afefa4f7e8064269cb14c5ed4",
+    "local_qualification_starts": 0,
+    "ci_activations": 0,
+    "original_github_downloads": 0,
+    "candidate03_prohibited": true,
+    "phase2_seeds": 0,
+    "phase2_games": 0
   }
 }
