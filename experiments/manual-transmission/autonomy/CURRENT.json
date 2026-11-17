@@ -44,7 +44,7 @@
     "authority_commit": "f169ad059e59582ff279fba371323dbe2baaecc8",
     "scheduled_automation_identity_asserted": false
   },
-  "summary": "Sole foreground claimed for one complete replacement fixture-corrected Candidate02 qualification from zero; exact source and validation unchanged; no CI activation.",
+  "summary": "One authorized complete replacement Candidate02 qualification starting from zero on exact frozen source; host and source preflight PASS; prior external interruption retained without failure verdict.",
   "next": {
     "state": "FIXTURE_CORRECTED_CANDIDATE02_REPLACEMENT_REQUALIFICATION_AUTHORIZED",
     "proposal_id": "MT-SURGE-BW-20261114",
@@ -1267,7 +1267,7 @@
   "surge_bushwhacker_qualification": {
     "candidate_index": "02",
     "label": "Candidate02 — fixture-corrected final requalification",
-    "state": "COMPLETE_LOCAL_QUALIFICATION_IN_PROGRESS",
+    "state": "COMPLETE_REPLACEMENT_LOCAL_QUALIFICATION_IN_PROGRESS",
     "source": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
     "source_tree": "4e880aa8287ae2b3b5611da62bdcc3ed81de27b7",
     "validation": "2c29ed523b1ae2c5c8446c367a88c7bd2f3cc007",
@@ -1276,7 +1276,7 @@
     "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
     "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
     "candidate_pins_blob": "42b39cb8de8b63a036fb80b6a4e30f35ea13ebb0",
-    "local_gates": "IN_PROGRESS_FROM_ZERO",
+    "local_gates": "REPLACEMENT_FROM_ZERO_IN_PROGRESS",
     "ci_activations": 0,
     "original_received": false,
     "local_qualification_budget": 1,
@@ -1808,7 +1808,7 @@
       ]
     },
     "replacement_qualification_budget": 1,
-    "qualification_starts": 0,
+    "qualification_starts": 1,
     "candidate03_prohibited": true,
     "stale_owner_closure_authority": {
       "owner": "manual-foreground-fixture-requalification-20261116-mwjjvkkd-aa177d29",
@@ -1867,5 +1867,37 @@
       "scheduled_executor_disabled": true,
       "executor_task_id": "6adbe33033e481918659ce578f64f31e"
     }
+  },
+  "surge_bushwhacker_candidate02_replacement_qualification": {
+    "state": "COMPLETE_REPLACEMENT_LOCAL_QUALIFICATION_IN_PROGRESS",
+    "started_utc": "2026-11-17T16:06:33.782Z",
+    "authority_commit": "f169ad059e59582ff279fba371323dbe2baaecc8",
+    "lease_commit": "f25dbda2d4b4788609825a72c3f491a2492d0b1a",
+    "source": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
+    "validation": "2c29ed523b1ae2c5c8446c367a88c7bd2f3cc007",
+    "qualification_starts": 1,
+    "replacement_budget": 1,
+    "resume_from_M13": false,
+    "compile_forms_required": 15,
+    "normal_rows_required": 67,
+    "mutant_controls_required": 14,
+    "restored_rows_required": 67,
+    "preflight": {
+      "source_bindings": 376,
+      "source_binding_verifier": "PASS",
+      "source_validation_pins_workflow": "EXACT_PASS",
+      "protected_originals": "PASS",
+      "fixture_only_insertion_and_semantic_assertions": "PASS",
+      "tracked_index_clean": true,
+      "host_property_residue": false,
+      "jdk": "Temurin21.0.13+9",
+      "node": "22.16.0",
+      "gradle": "9.6.1"
+    },
+    "ci_activations": 0,
+    "original_github_downloads": 0,
+    "candidate03_prohibited": true,
+    "phase2_seeds": 0,
+    "phase2_games": 0
   }
 }
