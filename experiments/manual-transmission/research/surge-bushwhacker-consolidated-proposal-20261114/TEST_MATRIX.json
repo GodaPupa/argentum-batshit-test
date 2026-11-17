@@ -890,15 +890,15 @@
       "id": "M01-surge-price",
       "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt",
       "mutation": "Replace alternative ManaCost {1}{R} by {2}{R}.",
-      "witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
-      "assertion": "successful selected-surge cast with exactly {1}{R}",
+      "witness": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG04 serialized script matches exact surge composition",
+      "assertion": "restored.script.selfAlternativeCost == SelfAlternativeCost(ManaCost.parse(\"{1}{R}\"), condition=Conditions.YouCastSpellsThisTurn(1))",
       "normal_expected": true,
       "mutant_expected": false,
       "expected_exception": "org.opentest4j.AssertionFailedError",
       "exact_failures": 1,
       "expected_errors": 0,
       "expected_skips": 0,
-      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump",
+      "positive_control": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG02 printed fields match pinned source",
       "selection": "Only designated witness and positive-control identities, each multiplicity one. Compile first. Freeze exact patch bytes and source-line witness map before running behavior; no selecting controls from observed outcomes."
     },
     {
