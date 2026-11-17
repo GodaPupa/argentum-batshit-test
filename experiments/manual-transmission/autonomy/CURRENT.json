@@ -2273,5 +2273,55 @@
       "scheduled_executor_enabled": false,
       "tracked_index_clean": true
     }
+  },
+  "surge_bushwhacker_m01_mapping_binding_exception": {
+    "state": "CANDIDATE02_M01_MAPPING_AND_PREDECESSOR_BINDING_EXCEPTION_AUTHORIZED",
+    "explicit_user_grant": true,
+    "parent_authorization_commit": "3182f3b649f5221f62166e728bcce0115ff4ab7f",
+    "parent_authorization_key": "surge_bushwhacker_m01_witness_contract_authorization",
+    "prior_source": "708c82cf2147526d7f50424f49887982293da296",
+    "source_delta_base": "e24f71840d0144a781032b1c37ba988f1b6ca9d9",
+    "mapping_directory": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114",
+    "mapping_pins": {
+      "TEST_MATRIX.json": {
+        "old_sha256": "3ad251e3347add06691628738056972ccf5cffe2488143fd33bcb55147c1ddcc",
+        "new_sha256": "79389b761cd97a238d20c5d524a2083d16b9a325067772a85224c057b97e0494",
+        "updates": {
+          "witness": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG04 serialized script matches exact surge composition",
+          "positive_control": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG02 printed fields match pinned source",
+          "assertion": "restored.script.selfAlternativeCost == SelfAlternativeCost(ManaCost.parse(\"{1}{R}\"), condition=Conditions.YouCastSpellsThisTurn(1))"
+        }
+      },
+      "COMPILE_WITNESSES.json": {
+        "old_sha256": "254b1a8e4f2e9861eb6ecd3f3feb36a8ca0bc976f0de9f542260feab68873446",
+        "new_sha256": "1a1833d56f44ff5fb6d0be6a97bf1ae42a9b68dfa5138bee5f927a24cd0cbd90",
+        "updates": {
+          "witness": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG04 serialized script matches exact surge composition",
+          "positive_control": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG02 printed fields match pinned source",
+          "source_file": "RecklessBushwhackerRegistrationTest.kt",
+          "source_line": 49
+        }
+      }
+    },
+    "old_witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
+    "old_positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump",
+    "RG04_source_line": 49,
+    "exact_delta_paths": [
+      "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt",
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py",
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/CANDIDATE_PINS.json",
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/TEST_MATRIX.json",
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/COMPILE_WITNESSES.json"
+    ],
+    "verifier_exceptions": "Exact five-path equality; only two mapping files exempt predecessor equality and original proposal current-byte binding; instead require immutable old/proposal bytes, exact amended hashes and exact M01 field-only parsed differences. All other checks retained.",
+    "original_MANIFEST_immutable": true,
+    "M02_M14_unchanged": true,
+    "production_tests_patches_unchanged": true,
+    "thresholds_cardinalities_unchanged": true,
+    "candidate03_prohibited": true,
+    "qualification_budget": 1,
+    "ci_budget_after_all_local_gates_pass": 1,
+    "original_receiving_budget": 1,
+    "recorded_utc": "2026-11-17T20:53:17.560Z"
   }
 }
