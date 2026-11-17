@@ -30,20 +30,10 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "WORKING",
-  "owner": "manual-foreground-fixture-requalification-20261116-mwjjvkkd-aa177d29",
-  "lease": {
-    "owner": "manual-foreground-fixture-requalification-20261116-mwjjvkkd-aa177d29",
-    "claimed_utc": "2026-11-16T17:41:27.901Z",
-    "expires_utc": "2026-11-16T19:41:27.901Z",
-    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
-    "sole_source_writer": true,
-    "scheduled_executor_disabled": true,
-    "authority_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
-    "scheduled_executor_enabled": false,
-    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106"
-  },
-  "summary": "Replacement fixture-corrected Candidate02 qualification authorized from zero on exact unchanged source after preserved external pre-behavior interruption; fresh-reconciled closure of only the named stale foreground owner authorized. CI remains undispatched.",
+  "status": "READY_FOR_NEXT_ITERATION",
+  "owner": null,
+  "lease": null,
+  "summary": "Specific interrupted foreground owner closed by fresh reconciliation and explicit replacement authority; exact Candidate02 awaits sole replacement foreground claim. Historical canonical owner unchanged.",
   "next": {
     "state": "FIXTURE_CORRECTED_CANDIDATE02_REPLACEMENT_REQUALIFICATION_AUTHORIZED",
     "proposal_id": "MT-SURGE-BW-20261114",
@@ -1538,6 +1528,28 @@
       "original_github_downloads": 0,
       "source_restored": true,
       "host_properties_restored": true
+    },
+    {
+      "owner": "manual-foreground-fixture-requalification-20261116-mwjjvkkd-aa177d29",
+      "lease": {
+        "owner": "manual-foreground-fixture-requalification-20261116-mwjjvkkd-aa177d29",
+        "claimed_utc": "2026-11-16T17:41:27.901Z",
+        "expires_utc": "2026-11-16T19:41:27.901Z",
+        "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+        "sole_source_writer": true,
+        "scheduled_executor_disabled": true,
+        "authority_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
+        "scheduled_executor_enabled": false,
+        "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106"
+      },
+      "released_utc": "2026-11-17T16:04:12.748Z",
+      "state": "EXTERNALLY_INTERRUPTED_FOREGROUND_CLOSED_BY_EXPLICIT_USER_AUTHORIZATION",
+      "authority_commit": "f169ad059e59582ff279fba371323dbe2baaecc8",
+      "reason": "Fresh reconciliation proves no active relevant Manual workflow, newer writer/transfer/source/receipt/successor, Candidate01/02 activations, or Candidate02 artifact; scheduled executor disabled; preserved interruption boundary exact. Closure is based on this fresh reconciliation plus explicit user authorization, not lease expiry alone.",
+      "interruption_commit": "33467cb0d277b0231b6264b60940bf7ab6f7c193",
+      "verdict": null,
+      "canonical_owner_unchanged": true,
+      "scheduled_executor_disabled": true
     }
   ],
   "surge_bushwhacker_candidate02_result": {
