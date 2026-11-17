@@ -1,0 +1,313 @@
+{
+  "schema": "manual-transmission/replacement-local-qualification/v1",
+  "state": "LOCAL_GATE_FAILED_STOP_NO_RETRY",
+  "kind": "LOCAL_REPLACEMENT_QUALIFICATION_NOT_GITHUB_ARTIFACT",
+  "candidate_index": "02",
+  "source": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
+  "validation": "2c29ed523b1ae2c5c8446c367a88c7bd2f3cc007",
+  "authority_commit": "f169ad059e59582ff279fba371323dbe2baaecc8",
+  "start_commit": "17c7381f261958bc8dc9e9e997df67867f020abf",
+  "replacement_qualification_budget": 1,
+  "replacement_qualification_starts": 1,
+  "returncode": 1,
+  "compile_forms_pass": 15,
+  "normal": {
+    "executed": 67,
+    "failed": 32,
+    "errors": 0,
+    "skips": 0,
+    "passed": 35
+  },
+  "restored": {
+    "executed": 0,
+    "failed": 0,
+    "errors": 0,
+    "skips": 0,
+    "passed": 0
+  },
+  "mutant_behavioral_controls_completed": 0,
+  "commands": [
+    {
+      "name": "compile-normal",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M01-surge-price",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M02-red-payment",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M03-paid-guard",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M04-other-filter",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M05-controller-filter",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M06-toughness",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M07-granted-haste",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M08-duration",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M09-intrinsic-haste",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M10-entity-only-exclusion",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M11-exclude-none",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M12-followed-origin",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M13-missing-choice",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "compile-M14-copy-choice",
+      "argv": [
+        "scripts/gradle-locked",
+        "compileTestKotlin",
+        ":oracle-assay:installDist",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 0
+    },
+    {
+      "name": "normal",
+      "argv": [
+        "scripts/gradle-locked",
+        ":rules-engine:cleanTest",
+        ":mtg-sets:2008-2016:tests:cleanTest",
+        ":mtg-sets:cleanTest",
+        ":rules-engine:test",
+        "--tests",
+        "com.wingedsheep.engine.scenarios.SurgeCostCompositionTest",
+        "--tests",
+        "com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest",
+        ":mtg-sets:2008-2016:tests:test",
+        "--tests",
+        "com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest",
+        ":mtg-sets:test",
+        "--tests",
+        "com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+      "returncode": 1
+    }
+  ],
+  "failure": "Traceback (most recent call last):\n  File \"/workspace/scratch/216c90c67ba3/manual-transmission/experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/qualify.py\", line 109, in <module>\n    form();targeted('normal')\n           ^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/216c90c67ba3/manual-transmission/experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/qualify.py\", line 66, in targeted\n    require(gradle(name,recipe('targeted'),True)==0,'targeted failed '+name);check_rows(E/name,expected)\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/216c90c67ba3/manual-transmission/experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py\", line 8, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: targeted failed normal\n",
+  "source_restored_rebound": true,
+  "bindings": 376,
+  "host_properties_restored": true,
+  "ci_activations": 0,
+  "original_github_downloads": 0,
+  "admitted": false,
+  "candidate03_prohibited": true,
+  "phase2_seeds": 0,
+  "phase2_games": 0,
+  "prior_interruption_preserved_without_failure_verdict": true,
+  "archive_bytes": 4758956,
+  "archive_sha256": "a71797772f238c632adf28b5cf513f55255f3c647d43060950b13a2f8e29f733",
+  "recorded_utc": "2026-11-17T16:35:56.523845+00:00"
+}

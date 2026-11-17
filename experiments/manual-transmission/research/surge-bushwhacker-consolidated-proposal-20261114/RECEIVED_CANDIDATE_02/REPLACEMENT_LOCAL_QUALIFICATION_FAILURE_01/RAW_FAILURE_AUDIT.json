@@ -1,0 +1,281 @@
+{
+  "state": "FAILURE_EVIDENCE_AUDIT_PASS",
+  "candidate_verdict": "FAILED_NORMAL_GATE_FIXTURE_LOOKUP_NULL",
+  "compile_forms_pass": 15,
+  "normal": {
+    "executed": 67,
+    "passed": 35,
+    "failed": 32,
+    "junit_errors": 0,
+    "skips": 0
+  },
+  "normal_identity_multiplicity_exact": true,
+  "raw_stdout_junit_exact": true,
+  "all_32_failures_same_fixture_setup_exception": true,
+  "failure_identities": [
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW03 opponent creatures are unaffected",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW04 noncreature permanents are unaffected",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW05 put onto battlefield does not trigger surge payoff",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW06 normal cast at same price as surge stays unmarked",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW07 surge with own countered prior spell",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW08 opponent only history cannot enable card",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW09 previous turn own history cannot enable card",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW10 surge never bypasses creature timing",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW11 trigger waits on stack before granting",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW12 countered entry trigger gives no boost",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW13 countered creature produces no entry trigger",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW14 source dies before trigger resolves",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW15 source blinks before trigger resolves",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW16 serialized departed trigger retains paid fact",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW17 serialized blinked trigger keeps original identity",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW18 new creature before trigger resolves is included",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW19 new creature after trigger resolves is excluded",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW20 temporary grants survive end step and end at cleanup",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW21 existing intrinsic haste remains after cleanup",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW22 multiple paid triggers stack power only",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW23 projected creature receives boost",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW24 controller at resolution determines recipient set",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW25 source control change does not transfer trigger",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW26 zero other creatures resolves successfully",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW27 copied permanent spell retains paid choice",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW28 copy of permanent does not copy cast choice",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW29 serialized normal and surge card definitions preserve behavior",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW30 literal replay reproduces full cast trigger cleanup",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW31 granted alternative cannot activate card payoff",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    },
+    {
+      "identity": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW32 normal and surge printed characteristics remain identical",
+      "exception": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null.",
+      "source_line": 266,
+      "raw_junit": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+      "trace_excerpt": "java.lang.IllegalArgumentException: Required value was null.\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board(RecklessBushwhackerScenarioTest.kt:266)\n\tat com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.board$default(RecklessBushwhackerScenarioTest.kt:265)"
+    }
+  ],
+  "manifest_entries": 493,
+  "manifest_exact": true,
+  "mutant_behavioral_controls": 0,
+  "restored_rows": 0,
+  "compatibility_client_metadata_typecheck_executed": false,
+  "source_restoration": "PASS",
+  "ci_activations": 0,
+  "original_github_downloads": 0
+}

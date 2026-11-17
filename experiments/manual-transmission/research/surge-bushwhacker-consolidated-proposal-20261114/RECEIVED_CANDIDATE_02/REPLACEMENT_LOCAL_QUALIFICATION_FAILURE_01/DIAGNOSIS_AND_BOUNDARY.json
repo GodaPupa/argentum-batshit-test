@@ -1,0 +1,44 @@
+{
+  "state": "STOP_REQUIRED_REAL_NORMAL_GATE_FAILURE",
+  "classification": "TEST_FIXTURE_LOOKUP_FAILURE_NOT_EXTERNAL_INTERRUPTION",
+  "observed_failure": "All 32 RecklessBushwhackerScenarioTest rows throw java.lang.IllegalArgumentException: Required value was null at board() line 266, the exact frozen requireNotNull(cardRegistry.getCard(\"Doom Blade#M10-93\")) insertion.",
+  "normal": {
+    "executed": 67,
+    "passed": 35,
+    "failed": 32,
+    "junit_errors": 0,
+    "skips": 0
+  },
+  "compile_forms_pass": 15,
+  "source_level_explanation": "Registry forms a Name#SetCode-CollectorNumber key only when CardDefinition.setCode is non-null. Otherwise it forms Name#CollectorNumber. The frozen DoomBlade definition has collectorNumber 93 but no setCode assignment; the frozen card builder omits setCode and CardDefinition defaults it to null. This explains the absent requested set-qualified key. No diagnostic execution or candidate source change was performed.",
+  "departure_behavior_verdict": "NOT_REACHED; BW14 and BW16 abort in shared fixture setup before their semantic assertions.",
+  "failed_candidate_source": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
+  "validation": "2c29ed523b1ae2c5c8446c367a88c7bd2f3cc007",
+  "no_retry": true,
+  "no_source_change": true,
+  "no_candidate03": true,
+  "ci_activation_prohibited": true,
+  "prior_interruption_classification_unchanged": "INTERRUPTED_PREBEHAVIOR_NOT_A_SOURCE_FAILURE",
+  "source_files": {
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt": {
+      "blob": "9e3efeb2d06919fbf3fd5ee2205ec63c9e4feb05",
+      "sha256": "3ded56b6af1f09c0f191193036b7a156c2dfc03a997af10fe68b76dd8ce4eba7"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/registry/CardRegistry.kt": {
+      "blob": "3615fbd2dd27f6121d7f7b50d0298bf48f930a93",
+      "sha256": "026f8cc625790db6b3bec32c48d2ed4d9b0ac27823969a650871a69b9969bd07"
+    },
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m10/cards/DoomBlade.kt": {
+      "blob": "c7e5ab8a4c2dd40cbc9c8175d37c91cc3041515b",
+      "sha256": "396a30042d991dec91363a651a7b82653c1db81fac20d292d2b73551250e41f9"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/CardDefinition.kt": {
+      "blob": "816017d3170edb203e1c0838dd28f63d8bc9d8c4",
+      "sha256": "23650ba95233d819841dadab8a70fd8e9ef624efa1d4c44afbe624379838d63a"
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/CardBuilder.kt": {
+      "blob": "40c05dfb0e1f5c4b588f7230f45adce349803da6",
+      "sha256": "48ef231d35bad25b3508fc1ec5a57e3c69d83c051e2a88b578188ae1193747c6"
+    }
+  }
+}
