@@ -19,8 +19,28 @@ def verify(envelope):
     check(git('merge-base','--is-ancestor','b50fcd351d78a9375646b72e0ffea3ba77334fd6',source)=='','source lineage')
     proto=json.loads(raw(proposal,RECORD+'/PROTOCOL.json'))
     manifest=json.loads(raw(proposal,RECORD+'/MANIFEST.json'))
+    mapping_grant=None
+    if q['candidate_index']=='02':
+        mapping_grant=json.loads(raw('d40a8d79323de63de67b3dc190d3d69b98981c2b','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_m01_mapping_binding_exception']
+        check(mapping_grant['explicit_user_grant'] is True and mapping_grant['prior_source']=='708c82cf2147526d7f50424f49887982293da296','M01 mapping authority')
+        check(set(mapping_grant['mapping_pins'])=={'TEST_MATRIX.json','COMPILE_WITNESSES.json'},'exact mapping exception names')
+        for name,mpin in mapping_grant['mapping_pins'].items():
+            previous=raw(mapping_grant['prior_source'],RECORD+'/'+name)
+            amended=raw(source,RECORD+'/'+name)
+            check(digest(previous)==mpin['old_sha256'],'M01 predecessor bytes '+name)
+            check(digest(amended)==mpin['new_sha256'],'M01 exact amended bytes '+name)
+            expected=json.loads(previous);actual=json.loads(amended)
+            check(len(expected['mutants'])==len(actual['mutants'])==14,'M01 mutant cardinality')
+            check(expected['mutants'][0]['id']==actual['mutants'][0]['id']=='M01-surge-price','M01 identity')
+            fields={'witness','positive_control','assertion'} if name=='TEST_MATRIX.json' else {'witness','source_file','source_line','positive_control'}
+            check(set(mpin['updates'])==fields,'M01 exact permitted fields '+name)
+            expected['mutants'][0].update(mpin['updates'])
+            check(actual==expected,'M01 only authorized parsed differences '+name)
     for name,pin in manifest['files'].items():
-        check(digest(raw(source,RECORD+'/'+name))==pin['sha256'],'immutable proposal changed '+name)
+        check(digest(raw(proposal,RECORD+'/'+name))==pin['sha256'],'immutable proposal history '+name)
+        if mapping_grant is not None and name in mapping_grant['mapping_pins']:
+            check(digest(raw(source,RECORD+'/'+name))==mapping_grant['mapping_pins'][name]['new_sha256'],'amended proposal binding '+name)
+        else:check(digest(raw(source,RECORD+'/'+name))==pin['sha256'],'immutable proposal changed '+name)
     allowed={x['path'] for x in proto['shipping_production_paths']+proto['documentation']+proto['test_paths']}
     allowed.add(proto['snapshot_path']);allowed.add('experiments/manual-transmission/autonomy/CURRENT.json')
     allowed.update(RECORD+'/'+n for n in proto['infrastructure_exact_files'])
@@ -35,7 +55,8 @@ def verify(envelope):
         check(git('merge-base','--is-ancestor',base,source)=='','fixture successor source lineage')
         fixture_path='mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt'
         check(fixture_grant['source_delta_paths']==[fixture_path],'one fixture path authority')
-        allowed={fixture_path,RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json'}
+        allowed={fixture_path,RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json',RECORD+'/TEST_MATRIX.json',RECORD+'/COMPILE_WITNESSES.json'}
+        check(allowed==set(mapping_grant['exact_delta_paths']),'exact authorized five paths')
         delta=set(git('diff','--name-only',base,source).splitlines())
         check(delta==allowed,'exact fixture and mechanical binding delta')
         second_grant=json.loads(raw('7cd66adaa102d3f6aca33bbf238d86493a0bce9a','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_second_fixture_binding_authorization']
@@ -77,6 +98,7 @@ def verify(envelope):
         check(current['surge_bushwhacker_candidate02_authorization']==current_authority,'successor grant changed')
         check(current['surge_bushwhacker_candidate02_fixture_exception']==fixture_grant,'fixture-only grant changed')
         check(current['surge_bushwhacker_second_fixture_binding_authorization']==second_grant,'second fixture grant changed')
+        check(current['surge_bushwhacker_m01_mapping_binding_exception']==mapping_grant,'M01 mapping grant changed')
         fixture_prior=fixture_grant['base_candidate02']
         check(pins['fixture_exception']['authorization_commit']=='a6fe1e604ed884413a147fba69653bc87a803c4b','fixture authorization pin')
         check(pins['fixture_exception']['prior_candidate02']==fixture_prior,'prior candidate02 evidence pins')

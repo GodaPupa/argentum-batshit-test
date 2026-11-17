@@ -9,13 +9,13 @@
       "mutant_sha256": "c9dd983daad16d9c6bba303d4a745019fec99264679c0372f6a3ee7bbabbd7c5",
       "patch": "M01-surge-price.patch",
       "patch_sha256": "f2392179b4bd231d9c51a2bedf598fa2b2663047d5e07df77e4f7c783809ecba",
-      "witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
-      "source_file": "RecklessBushwhackerScenarioTest.kt",
-      "source_line": 58,
+      "witness": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG04 serialized script matches exact surge composition",
+      "source_file": "RecklessBushwhackerRegistrationTest.kt",
+      "source_line": 49,
       "normal_expected": true,
       "mutant_expected": false,
       "expected_exception": "org.opentest4j.AssertionFailedError",
-      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump"
+      "positive_control": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG02 printed fields match pinned source"
     },
     {
       "id": "M02-red-payment",
