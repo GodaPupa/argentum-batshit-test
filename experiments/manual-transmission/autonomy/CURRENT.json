@@ -35,7 +35,7 @@
   "lease": null,
   "summary": "Replacement fixture-corrected Candidate02 stopped on a real normal-gate fixture lookup failure:15/15 compiles PASS;67 rows=35PASS+32FAIL,0errors/0skips. All BW cases hit null Doom Blade#M10-93 at board line266. Exact archive/readback PASS;376 bindings and host settings restored. Foreground released;CI0;no retry/source change/Candidate03/admission. Prior external interruption retains no failure verdict.",
   "next": {
-    "state": "STOP_REPLACEMENT_CANDIDATE02_GATE_FAILED",
+    "state": "CANDIDATE02_SECOND_FIXTURE_VERIFY_DISPATCH_BINDING_EXCEPTION_AUTHORIZED",
     "proposal_id": "MT-SURGE-BW-20261114",
     "proposal_commit": "888ad9f24b0a6f9dc84376f0204ee24bf9538838",
     "proposal_path": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/PROTOCOL.json",
@@ -44,7 +44,7 @@
     "manifest_blob": "2f3f147464774b94e2e0f84e855e8d049e3005b7",
     "source_parent": "b50fcd351d78a9375646b72e0ffea3ba77334fd6",
     "source_tree": "7e5ac46f14dd199f6cf48838959512069010559f",
-    "next_executable_action": "STOP. Authorized replacement budget consumed by real normal gate failure. Preserve exact evidence and frozen Candidate02; do not rerun, modify source, create Candidate03, dispatch CI, receive an original artifact, admit production/card, or proceed to another milestone under this authorization.",
+    "next_executable_action": "Claim sole foreground, apply exact canonical fixture and mechanical verifier binding, prove fail-closed controls, freeze, run one full qualification; CI/receiving/admission only after all required gates pass.",
     "no_repeat": [
       "R1 qualification",
       "R1 receiving",
@@ -2075,5 +2075,37 @@
     "phase2_seeds": 0,
     "phase2_games": 0,
     "finished_utc": "2026-11-17T16:41:08.387Z"
+  },
+  "surge_bushwhacker_second_fixture_binding_authorization": {
+    "state": "CANDIDATE02_SECOND_FIXTURE_VERIFY_DISPATCH_BINDING_EXCEPTION_AUTHORIZED",
+    "explicit_user_grant": true,
+    "recorded_utc": "2026-11-17T17:55:53.760Z",
+    "prior_source": "6161f59565d51b7aff933a8af9f3c07f00da7e65",
+    "failure_commit": "8a09fa801a2271810dbe5f0fbbf39d459b80e5a2",
+    "readback_commit": "7f6feb510db95a4dfe13ffcda4160809a57110a5",
+    "failure_classification": "FIXTURE_SETUP_LOOKUP_FAILURE",
+    "semantic_assertions_reached": false,
+    "fixture_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt",
+    "verifier_path": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py",
+    "exact_registration": "cardRegistry.register(com.wingedsheep.mtg.sets.definitions.m10.cards.DoomBlade)",
+    "mechanical_pins_validation_rebinding": true,
+    "production_changes_authorized": 0,
+    "local_qualification_budget": 1,
+    "qualification_starts": 0,
+    "ci_activations": 0,
+    "ci_budget_after_all_local_gates_pass": 1,
+    "original_receiving_budget": 1,
+    "candidate03_prohibited": true,
+    "required_verifier_controls": [
+      "corrected accepts",
+      "old fixture rejects",
+      "alternate fixture rejects",
+      "production change rejects",
+      "assertion change rejects",
+      "mutation change rejects",
+      "threshold change rejects"
+    ],
+    "stop_on_any_real_gate_failure": true,
+    "no_retry_after_external_interruption": true
   }
 }
