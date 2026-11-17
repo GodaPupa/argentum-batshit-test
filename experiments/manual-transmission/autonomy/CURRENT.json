@@ -30,10 +30,21 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "READY_FOR_NEXT_ITERATION",
-  "owner": null,
-  "lease": null,
-  "summary": "Specific interrupted foreground owner closed by fresh reconciliation and explicit replacement authority; exact Candidate02 awaits sole replacement foreground claim. Historical canonical owner unchanged.",
+  "status": "WORKING",
+  "owner": "manual-foreground-candidate02-replacement-20261117-216c90c67ba3-3d63fda8",
+  "lease": {
+    "owner": "manual-foreground-candidate02-replacement-20261117-216c90c67ba3-3d63fda8",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "claimed_utc": "2026-11-17T16:04:26.468Z",
+    "expires_utc": "2026-11-17T18:04:26.468Z",
+    "sole_source_writer": true,
+    "scheduled_executor_disabled": true,
+    "scheduled_executor_enabled": false,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+    "authority_commit": "f169ad059e59582ff279fba371323dbe2baaecc8",
+    "scheduled_automation_identity_asserted": false
+  },
+  "summary": "Sole foreground claimed for one complete replacement fixture-corrected Candidate02 qualification from zero; exact source and validation unchanged; no CI activation.",
   "next": {
     "state": "FIXTURE_CORRECTED_CANDIDATE02_REPLACEMENT_REQUALIFICATION_AUTHORIZED",
     "proposal_id": "MT-SURGE-BW-20261114",
