@@ -1,0 +1,78 @@
+{
+  "state": "REAL_MUTATION_GATE_FAILURE_STOP_NO_RETRY",
+  "exact_gate": "mutant did not fail M01-surge-price",
+  "compile_forms": 15,
+  "normal": {
+    "rows": 67,
+    "passed": 67,
+    "failed": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "BW14_BW16": "PASS",
+  "mutant": {
+    "id": "M01-surge-price",
+    "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt",
+    "normal_sha256": "faf1e6697fac57805b89e6cb6bbf7b9b59f088f21e6932d1e5d8450eae3d7fcd",
+    "mutant_sha256": "c9dd983daad16d9c6bba303d4a745019fec99264679c0372f6a3ee7bbabbd7c5",
+    "patch": "M01-surge-price.patch",
+    "patch_sha256": "f2392179b4bd231d9c51a2bedf598fa2b2663047d5e07df77e4f7c783809ecba",
+    "witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
+    "source_file": "RecklessBushwhackerScenarioTest.kt",
+    "source_line": 58,
+    "normal_expected": true,
+    "mutant_expected": false,
+    "expected_exception": "org.opentest4j.AssertionFailedError",
+    "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump"
+  },
+  "mutant_report_rows": 32,
+  "mutant_report_skips": 30,
+  "mutant_report_failures": 0,
+  "mutant_report_errors": 0,
+  "mutant_executed_passes": [
+    {
+      "name": "BW01 normal cast has intrinsic haste without pump",
+      "classname": "com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest",
+      "time": "0.122"
+    },
+    {
+      "name": "BW02 surge cast pumps other creatures only",
+      "classname": "com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest",
+      "time": "0.06"
+    }
+  ],
+  "mutant_gate_passes": 0,
+  "remaining_mutants_executed": 0,
+  "restored_rows": 0,
+  "later_gates_executed": false,
+  "source_restoration": true,
+  "final_rebinding": true,
+  "bindings": 376,
+  "ci_activations": 0,
+  "original_github_downloads": 0,
+  "admitted": false,
+  "candidate03_created": false,
+  "classification": "Mutation survived: BW02 negative witness and BW01 positive control both passed; targeted Gradle report includes 30 filtered skips. Exact required negative witness not established. No production semantic failure inferred.",
+  "qualification_manifest_entries": 496,
+  "mutant_source_hash_verified": true,
+  "mutation_command": {
+    "name": "M01-surge-price",
+    "argv": [
+      "scripts/gradle-locked",
+      ":mtg-sets:2008-2016:tests:cleanTest",
+      ":mtg-sets:2008-2016:tests:test",
+      "--tests",
+      "com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.BW02 surge cast pumps other creatures only",
+      "--tests",
+      "com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.BW01 normal cast has intrinsic haste without pump",
+      "--no-build-cache",
+      "--no-daemon",
+      "--console=plain",
+      "--stacktrace",
+      "--max-workers=2",
+      "-PkotlinCompileParallelism=1"
+    ],
+    "cwd": "/workspace/scratch/216c90c67ba3/manual-transmission",
+    "returncode": 0
+  }
+}

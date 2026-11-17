@@ -1,0 +1,41 @@
+{
+  "state": "PASS",
+  "method": "In-memory source byte fault injection through actual frozen verifier; no behavioral execution",
+  "results": [
+    {
+      "control": "corrected",
+      "state": "PASS"
+    },
+    {
+      "control": "old_fixture",
+      "state": "REJECTED",
+      "reason": "exact second fixture replacement; assertions unchanged"
+    },
+    {
+      "control": "alternate_fixture",
+      "state": "REJECTED",
+      "reason": "exact second fixture replacement; assertions unchanged"
+    },
+    {
+      "control": "production",
+      "state": "REJECTED",
+      "reason": "unchanged candidate02 source rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt"
+    },
+    {
+      "control": "assertion",
+      "state": "REJECTED",
+      "reason": "exact second fixture replacement; assertions unchanged",
+      "change": "W_BW01_HASTE expected true changed to false"
+    },
+    {
+      "control": "mutation",
+      "state": "REJECTED",
+      "reason": "unchanged candidate02 source experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M01-surge-price.patch"
+    },
+    {
+      "control": "threshold",
+      "state": "REJECTED",
+      "reason": "immutable proposal changed GATES.json"
+    }
+  ]
+}

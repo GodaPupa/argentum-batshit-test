@@ -1,0 +1,11 @@
+{
+  "state": "REAL_MUTATION_GATE_FAILURE_STOP_NO_RETRY",
+  "exact_blocker": "mutant did not fail M01-surge-price",
+  "diagnosis": "M01 changes Surge cost from {1}{R} to {2}{R}. Frozen BW02 witness returned PASS, as did BW01 positive control; command returncode zero. Mutation sensitivity gate failed after legal fixture setup. No rerun or correction authorized.",
+  "semantic_normal_rows": "67/67 PASS including BW14/BW16",
+  "action": "Preserve evidence, restore/rebind, release foreground, stop; no CI or admission",
+  "production_changes": 0,
+  "assertion_changes": 0,
+  "threshold_changes": 0,
+  "mutation_changes": 0
+}
