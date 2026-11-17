@@ -30,10 +30,20 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "BLOCKED_SECOND_FIXTURE_CANDIDATE02_MUTATION_GATE_FAILURE",
-  "owner": null,
-  "lease": null,
-  "summary": "Stopped: second fixture Candidate02 compiles15/15 and normal67/67 PASS including BW14/BW16; M01 negative mutation witness unexpectedly passed. Evidence/readback preserved; 376 bindings and host restored; foreground released; CI0; no admission.",
+  "status": "WORKING",
+  "owner": "manual-m01-amendment-20261117-216c90c67ba3-1794948811832",
+  "lease": {
+    "owner": "manual-m01-amendment-20261117-216c90c67ba3-1794948811832",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "claimed_utc": "2026-11-17T20:53:31.832Z",
+    "expires_utc": "2026-11-18T00:53:31.832Z",
+    "sole_source_writer": true,
+    "scheduled_executor_enabled": false,
+    "scheduled_executor_disabled": true,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+    "authority_commit": "d40a8d79323de63de67b3dc190d3d69b98981c2b"
+  },
+  "summary": "Sole foreground claimed for exact authorized M01 RG04/RG02 mapping and fail-closed binding amendment; no qualification started.",
   "next": "STOP. No rerun, further source change, CI activation, or admission authorized after this real mutation gate failure.",
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
