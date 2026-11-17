@@ -30,9 +30,19 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "BLOCKED",
-  "owner": null,
-  "lease": null,
+  "status": "WORKING",
+  "owner": "manual-second-fixture-20261117-216c90c67ba3-1794938166337",
+  "lease": {
+    "owner": "manual-second-fixture-20261117-216c90c67ba3-1794938166337",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "claimed_utc": "2026-11-17T17:56:06.337Z",
+    "expires_utc": "2026-11-17T19:56:06.337Z",
+    "sole_source_writer": true,
+    "scheduled_executor_enabled": false,
+    "scheduled_executor_disabled": true,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+    "authority_commit": "7cd66adaa102d3f6aca33bbf238d86493a0bce9a"
+  },
   "summary": "Replacement fixture-corrected Candidate02 stopped on a real normal-gate fixture lookup failure:15/15 compiles PASS;67 rows=35PASS+32FAIL,0errors/0skips. All BW cases hit null Doom Blade#M10-93 at board line266. Exact archive/readback PASS;376 bindings and host settings restored. Foreground released;CI0;no retry/source change/Candidate03/admission. Prior external interruption retains no failure verdict.",
   "next": {
     "state": "CANDIDATE02_SECOND_FIXTURE_VERIFY_DISPATCH_BINDING_EXCEPTION_AUTHORIZED",
