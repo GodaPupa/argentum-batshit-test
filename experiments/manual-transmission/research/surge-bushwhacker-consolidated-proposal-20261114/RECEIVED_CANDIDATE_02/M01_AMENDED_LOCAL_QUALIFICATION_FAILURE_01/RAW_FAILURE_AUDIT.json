@@ -1,0 +1,49 @@
+{
+  "state": "M01_REPORT_IDENTITY_MULTIPLICITY_GATE_FAILURE",
+  "exact_failure": "Traceback (most recent call last):\n  File \"/workspace/scratch/216c90c67ba3/manual-transmission/experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/qualify.py\", line 110, in <module>\n    for m in mutants:form(m);targeted(m['id'],m)\n                             ^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/216c90c67ba3/manual-transmission/experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/qualify.py\", line 64, in targeted\n    check_rows(E/name,{m['witness']:1,m['positive_control']:1},negative=m)\n  File \"/workspace/scratch/216c90c67ba3/manual-transmission/experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py\", line 29, in check_rows\n    require(actual==Counter(expected),f'identity/multiplicity mismatch in {directory}: missing={Counter(expected)-actual}; extra={actual-Counter(expected)}')\n  File \"/workspace/scratch/216c90c67ba3/manual-transmission/experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py\", line 8, in require\n    if not ok:raise ValueError(message)\n              ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: identity/multiplicity mismatch in /workspace/scratch/216c90c67ba3/manual-transmission/manual-surge-bushwhacker-evidence/M01-surge-price: missing=Counter(); extra=Counter({'mtg-sets\\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\\tRG01 OGW116 canonical discovery exactly once': 1, 'mtg-sets\\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\\tRG03 snapshot preserves all existing OGW entries': 1, 'mtg-sets\\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\\tRG05 Manual registry resolves new card without official games': 1})\n",
+  "compile_forms": 15,
+  "normal": {
+    "rows": 67,
+    "passed": 67,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "BW14_BW16": "PASS",
+  "M01": {
+    "negative_witness": "RG04",
+    "failure_type": "org.opentest4j.AssertionFailedError",
+    "source_line": 49,
+    "expected": "{1}{R}",
+    "actual": "{2}{R}",
+    "positive_control": "RG02 PASS",
+    "reported_rows": 5,
+    "negative_failures": 1,
+    "errors": 0,
+    "skips": 3,
+    "extra_skipped_rows": [
+      "RG01 OGW116 canonical discovery exactly once",
+      "RG03 snapshot preserves all existing OGW entries",
+      "RG05 Manual registry resolves new card without official games"
+    ],
+    "mutant_hash_verified": true,
+    "gate_pass": false
+  },
+  "remaining_mutants_executed": 0,
+  "restored_rows": 0,
+  "later_gates_executed": false,
+  "source_restored_rebound": true,
+  "bindings": 376,
+  "host_properties_restored": true,
+  "ci_activations": 0,
+  "original_github_downloads": 0,
+  "admitted": false,
+  "qualification_manifest_entries": 496,
+  "additional_read_only_audit_observation": {
+    "reached_during_qualification": false,
+    "description": "After identity rejection, later audit value checks were not reached. Frozen audit also expects literal expected true / actual false from retained normal_expected/mutant_expected booleans; the actual RG04 assertion reports SelfAlternativeCost objects.",
+    "expected_true_pattern_present": false,
+    "actual_false_pattern_present": false,
+    "no_rerun_or_audit_change": true
+  }
+}

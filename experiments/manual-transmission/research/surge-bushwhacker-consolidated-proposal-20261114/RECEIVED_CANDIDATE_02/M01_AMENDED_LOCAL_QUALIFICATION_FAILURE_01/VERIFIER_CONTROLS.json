@@ -1,0 +1,61 @@
+{
+  "state": "PASS",
+  "method": "Actual frozen verifier; in-memory source-byte and exact changed-path fault injection; no behavioral execution",
+  "source": "640b5bf917c84e0acffb186333ebd3f4c71145cd",
+  "results": [
+    {
+      "control": "exact_amended_source",
+      "state": "PASS"
+    },
+    {
+      "control": "old_BW02_BW01_mapping",
+      "state": "REJECTED",
+      "reason": "M01 exact amended bytes TEST_MATRIX.json"
+    },
+    {
+      "control": "M02_mapping",
+      "state": "REJECTED",
+      "reason": "M01 exact amended bytes COMPILE_WITNESSES.json"
+    },
+    {
+      "control": "M01_patch",
+      "state": "REJECTED",
+      "reason": "unchanged candidate02 source experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M01-surge-price.patch"
+    },
+    {
+      "control": "RG04_assertion",
+      "state": "REJECTED",
+      "reason": "unchanged candidate02 source mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/RecklessBushwhackerRegistrationTest.kt"
+    },
+    {
+      "control": "RG02_assertion",
+      "state": "REJECTED",
+      "reason": "unchanged candidate02 source mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/RecklessBushwhackerRegistrationTest.kt"
+    },
+    {
+      "control": "normal_restored_counts",
+      "state": "REJECTED",
+      "reason": "M01 exact amended bytes TEST_MATRIX.json"
+    },
+    {
+      "control": "mutant_count",
+      "state": "REJECTED",
+      "reason": "M01 exact amended bytes COMPILE_WITNESSES.json"
+    },
+    {
+      "control": "sixth_changed_path",
+      "state": "REJECTED",
+      "reason": "exact fixture and mechanical binding delta"
+    },
+    {
+      "control": "revert_matrix_only",
+      "state": "REJECTED",
+      "reason": "M01 exact amended bytes TEST_MATRIX.json"
+    },
+    {
+      "control": "revert_compile_only",
+      "state": "REJECTED",
+      "reason": "M01 exact amended bytes COMPILE_WITNESSES.json"
+    }
+  ]
+}
