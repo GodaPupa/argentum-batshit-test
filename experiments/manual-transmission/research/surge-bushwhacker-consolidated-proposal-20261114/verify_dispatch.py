@@ -29,7 +29,7 @@ def verify(envelope):
         check(amendment['state']=='EXPLICIT_USER_GRANT' and amendment['local_failure_accepted_as_successor_prerequisite'] is True,'bounded local-failure successor authority')
         fixture_grant=json.loads(raw('a6fe1e604ed884413a147fba69653bc87a803c4b','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_candidate02_fixture_exception']
         check(fixture_grant['state']=='EXPLICIT_SUPERSEDING_USER_GRANT','fixture-only user authority')
-        base='75061b34160439e68dc7f508d51d04c6439cf67a'
+        base='e24f71840d0144a781032b1c37ba988f1b6ca9d9'
         prior_source=fixture_grant['base_candidate02']['source']
         check(prior_source=='c4fc84437dd53a8d22d5f14e657178d0b492c7b0','prior candidate02 source')
         check(git('merge-base','--is-ancestor',base,source)=='','fixture successor source lineage')
@@ -38,14 +38,17 @@ def verify(envelope):
         allowed={fixture_path,RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json'}
         delta=set(git('diff','--name-only',base,source).splitlines())
         check(delta==allowed,'exact fixture and mechanical binding delta')
-        previous_pins=json.loads(raw(prior_source,RECORD+'/CANDIDATE_PINS.json'))
+        second_grant=json.loads(raw('7cd66adaa102d3f6aca33bbf238d86493a0bce9a','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_second_fixture_binding_authorization']
+        check(second_grant['explicit_user_grant'] is True and second_grant['exact_registration']=='cardRegistry.register(com.wingedsheep.mtg.sets.definitions.m10.cards.DoomBlade)','second fixture authority')
+        predecessor='6161f59565d51b7aff933a8af9f3c07f00da7e65'
+        previous_pins=json.loads(raw(predecessor,RECORD+'/CANDIDATE_PINS.json'))
         for path,pin in previous_pins['bindings'].items():
             check(digest(raw(base,path))==pin['sha256'],'prior candidate02 correction preserved '+path)
-            if path not in allowed:check(raw(source,path)==raw(prior_source,path),'unchanged candidate02 source '+path)
-        old_fixture=raw(prior_source,fixture_path)
-        marker=b'        var b=scenario().withPlayers().withCardsInHand(1,name,2).withCardInHand(1,"Bushwhacker Prior")'
-        insertion=b'        cardRegistry.register(requireNotNull(cardRegistry.getCard("Doom Blade#M10-93")))\n'
-        check(old_fixture.count(marker)==1 and raw(source,fixture_path)==old_fixture.replace(marker,insertion+marker),'fixture-only insertion; assertions unchanged')
+            if path not in allowed:check(raw(source,path)==raw(predecessor,path),'unchanged candidate02 source '+path)
+        old_fixture=raw(predecessor,fixture_path)
+        old_line=b'        cardRegistry.register(requireNotNull(cardRegistry.getCard("Doom Blade#M10-93")))\n'
+        new_line=b'        cardRegistry.register(com.wingedsheep.mtg.sets.definitions.m10.cards.DoomBlade)\n'
+        check(old_fixture.count(old_line)==1 and raw(source,fixture_path)==old_fixture.replace(old_line,new_line),'exact second fixture replacement; assertions unchanged')
     else:
         delta=set(git('diff','--name-only',proposal,source).splitlines())
     # The sole intervening R2 publication readback is already inside the proposal commit.
@@ -73,6 +76,7 @@ def verify(envelope):
     if q['candidate_index']=='02':
         check(current['surge_bushwhacker_candidate02_authorization']==current_authority,'successor grant changed')
         check(current['surge_bushwhacker_candidate02_fixture_exception']==fixture_grant,'fixture-only grant changed')
+        check(current['surge_bushwhacker_second_fixture_binding_authorization']==second_grant,'second fixture grant changed')
         fixture_prior=fixture_grant['base_candidate02']
         check(pins['fixture_exception']['authorization_commit']=='a6fe1e604ed884413a147fba69653bc87a803c4b','fixture authorization pin')
         check(pins['fixture_exception']['prior_candidate02']==fixture_prior,'prior candidate02 evidence pins')

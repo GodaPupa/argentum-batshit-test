@@ -263,7 +263,7 @@ class RecklessBushwhackerScenarioTest : ScenarioTestBase() {
         }
     }
     private fun board(history:String="resolved",extra:String?=null,allies:Boolean=true,smallHand:Boolean=false):TestGame {
-        cardRegistry.register(requireNotNull(cardRegistry.getCard("Doom Blade#M10-93")))
+        cardRegistry.register(com.wingedsheep.mtg.sets.definitions.m10.cards.DoomBlade)
         var b=scenario().withPlayers().withCardsInHand(1,name,2).withCardInHand(1,"Bushwhacker Prior")
             .withCardInHand(2,"Bushwhacker Prior").withCardInHand(2,"Counterspell")
             .withCardOnBattlefield(1,"Forest").withCardOnBattlefield(2,"Bushwhacker Opponent")
