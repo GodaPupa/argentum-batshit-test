@@ -30,21 +30,11 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "WORKING",
-  "owner": "manual-m01-replacement-20261118-fa63fb5ba8be-1795024664088",
-  "lease": {
-    "owner": "manual-m01-replacement-20261118-fa63fb5ba8be-1795024664088",
-    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
-    "claimed_utc": "2026-11-18T17:57:44.088Z",
-    "expires_utc": "2026-11-18T21:57:44.088Z",
-    "sole_source_writer": true,
-    "scheduled_executor_enabled": false,
-    "scheduled_executor_disabled": true,
-    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
-    "authority_commit": "89072adf4f0cc6c76676290af39df2a89e3fdb93"
-  },
-  "summary": "Exact frozen source verification PASS (376 bindings), verifier PASS, archived controls15/15 integrity PASS. One complete replacement qualification starts from zero.",
-  "next": "Run unchanged qualification once; archive terminal evidence and restore/rebind; no rerun or source changes. CI only after every local gate passes.",
+  "status": "BLOCKED_M01_AUDIT_REPLACEMENT_JAVA21_COMPILER_TOOLCHAIN_UNAVAILABLE",
+  "owner": null,
+  "lease": null,
+  "summary": "One replacement qualification consumed and stopped at compile-normal: Java21 compiler toolchain unavailable (javac absent). No behavioral rows ran and no Candidate02 source defect established. Exact archive/readback and 376 bindings PASS; host restored; foreground released; CI0; admission false.",
+  "next": "STOP. No further qualification or CI under the exhausted one-replacement authority. Any future attempt needs a separately authorized host JDK/toolchain recovery and new explicit qualification budget; preserve all source/tests/audit/mapping/patch bytes.",
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
     "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
@@ -656,15 +646,15 @@
     "production_defect_action": "Receive and preserve original evidence, prepare smallest bounded production proposal, then stop for separate explicit authorization."
   },
   "previous_foreground_lease": {
-    "owner": "manual-m01-amendment-20261117-216c90c67ba3-1794948811832",
+    "owner": "manual-m01-replacement-20261118-fa63fb5ba8be-1795024664088",
     "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
-    "claimed_utc": "2026-11-17T20:53:31.832Z",
-    "expires_utc": "2026-11-18T00:53:31.832Z",
+    "claimed_utc": "2026-11-18T17:57:44.088Z",
+    "expires_utc": "2026-11-18T21:57:44.088Z",
     "sole_source_writer": true,
     "scheduled_executor_enabled": false,
     "scheduled_executor_disabled": true,
     "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
-    "authority_commit": "d40a8d79323de63de67b3dc190d3d69b98981c2b"
+    "authority_commit": "89072adf4f0cc6c76676290af39df2a89e3fdb93"
   },
   "diagnostic_receiving_preparation": {
     "state": "ORIGINAL_RECEIVED_ONCE_ARCHIVE_PUBLISHED_READBACK_VERIFIED",
@@ -1178,20 +1168,20 @@
     "card_admitted": false
   },
   "foreground_release": {
-    "owner": "manual-m01-amendment-20261117-216c90c67ba3-1794948811832",
+    "owner": "manual-m01-replacement-20261118-fa63fb5ba8be-1795024664088",
     "lease": {
-      "owner": "manual-m01-amendment-20261117-216c90c67ba3-1794948811832",
+      "owner": "manual-m01-replacement-20261118-fa63fb5ba8be-1795024664088",
       "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
-      "claimed_utc": "2026-11-17T20:53:31.832Z",
-      "expires_utc": "2026-11-18T00:53:31.832Z",
+      "claimed_utc": "2026-11-18T17:57:44.088Z",
+      "expires_utc": "2026-11-18T21:57:44.088Z",
       "sole_source_writer": true,
       "scheduled_executor_enabled": false,
       "scheduled_executor_disabled": true,
       "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
-      "authority_commit": "d40a8d79323de63de67b3dc190d3d69b98981c2b"
+      "authority_commit": "89072adf4f0cc6c76676290af39df2a89e3fdb93"
     },
-    "released_utc": "2026-11-17T21:08:14.833Z",
-    "reason": "Frozen M01 raw-report identity/multiplicity gate failed. Exact archive preserved, independently reconstructed and read back. Source/376 bindings/host restored. No rerun or CI.",
+    "released_utc": "2026-11-18T18:05:37.286Z",
+    "reason": "Replacement stopped at first compile gate due to unavailable Java21 compiler toolchain. Exact evidence and immutable remote readback PASS. All 376 source bindings and host properties restored. No rerun, CI or admission.",
     "historical_canonical_owner_unchanged": true
   },
   "surge_bushwhacker_production_authorization": {
@@ -1231,7 +1221,7 @@
   "surge_bushwhacker_qualification": {
     "candidate_index": "02",
     "label": "Candidate02 — M01 audit-contract final requalification",
-    "state": "M01_AUDIT_LOCAL_QUALIFICATION_STARTED_ONCE",
+    "state": "BLOCKED_M01_AUDIT_REPLACEMENT_JAVA21_COMPILER_TOOLCHAIN_UNAVAILABLE",
     "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
     "source_tree": "5e58df58826cfa24ab5dd967b1cea45778050a0f",
     "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
@@ -1240,7 +1230,7 @@
     "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
     "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
     "candidate_pins_blob": "d1897e2ce1023ed5178dbc64a88c3158ee723c72",
-    "local_gates": "PENDING",
+    "local_gates": "STOP_COMPILE_NORMAL_ENVIRONMENT_FAILURE",
     "ci_activations": 0,
     "original_received": false,
     "local_qualification_budget": 1,
@@ -1252,9 +1242,9 @@
       "restored_rows": 0,
       "ci_activations": 0
     },
-    "local_failure_receipt": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/M01_AMENDED_LOCAL_QUALIFICATION_FAILURE_01/LOCAL_RECEIPT.json",
-    "local_failure_evidence_commit": "3a75d8294ea9131546d6b5d550dfe669cf7b0bed",
-    "local_readback_commit": "c260e2dac93aadfe310f624fe308a637b846b114",
+    "local_failure_receipt": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/M01_AUDIT_REPLACEMENT_QUALIFICATION_FAILURE_01/LOCAL_RECEIPT.json",
+    "local_failure_evidence_commit": "3fa65b611c70526042329521bc3c41e8d214c8e3",
+    "local_readback_commit": "fc0f7bacae33c4e53d7d9d5ff0f2d2efb290a96b",
     "source_restored": true,
     "source_rebound": true,
     "host_properties_restored": true,
@@ -1600,6 +1590,23 @@
       },
       "released_utc": "2026-11-17T21:08:14.833Z",
       "reason": "Frozen M01 raw-report identity/multiplicity gate failed. Exact archive preserved, independently reconstructed and read back. Source/376 bindings/host restored. No rerun or CI.",
+      "historical_canonical_owner_unchanged": true
+    },
+    {
+      "owner": "manual-m01-replacement-20261118-fa63fb5ba8be-1795024664088",
+      "lease": {
+        "owner": "manual-m01-replacement-20261118-fa63fb5ba8be-1795024664088",
+        "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+        "claimed_utc": "2026-11-18T17:57:44.088Z",
+        "expires_utc": "2026-11-18T21:57:44.088Z",
+        "sole_source_writer": true,
+        "scheduled_executor_enabled": false,
+        "scheduled_executor_disabled": true,
+        "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+        "authority_commit": "89072adf4f0cc6c76676290af39df2a89e3fdb93"
+      },
+      "released_utc": "2026-11-18T18:05:37.286Z",
+      "reason": "Replacement stopped at first compile gate due to unavailable Java21 compiler toolchain. Exact evidence and immutable remote readback PASS. All 376 source bindings and host properties restored. No rerun, CI or admission.",
       "historical_canonical_owner_unchanged": true
     }
   ],
@@ -2744,7 +2751,7 @@
     "scope": "Only this exact stalled/no-verdict execution consumes the superseded start; all prior failed evidence and original audit contract remain intact."
   },
   "surge_bushwhacker_m01_audit_replacement_qualification": {
-    "state": "REPLACEMENT_LOCAL_QUALIFICATION_STARTED_ONCE",
+    "state": "BLOCKED_M01_AUDIT_REPLACEMENT_JAVA21_COMPILER_TOOLCHAIN_UNAVAILABLE",
     "qualification_starts": 1,
     "budget": 1,
     "started_utc": "2026-11-18T17:59:37.972Z",
@@ -2765,8 +2772,82 @@
       "gradle": "9.6.1",
       "java": "21.0.13"
     },
-    "verdict": null,
+    "verdict": "LOCAL_COMPILE_GATE_ENVIRONMENT_FAILURE_NO_BEHAVIORAL_VERDICT",
     "ci_activations": 0,
-    "original_downloads": 0
+    "original_downloads": 0,
+    "result": {
+      "state": "BLOCKED_M01_AUDIT_REPLACEMENT_JAVA21_COMPILER_TOOLCHAIN_UNAVAILABLE",
+      "classification": "LOCAL_COMPILE_GATE_ENVIRONMENT_FAILURE_NO_BEHAVIORAL_VERDICT",
+      "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
+      "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
+      "qualification_starts": 1,
+      "budget": 1,
+      "runner_exit": 1,
+      "failed_gate": "compile-normal",
+      "cause": "Gradle cannot find a Java 21 compiler toolchain for :buildSrc:compileJava. Java runtime 21.0.13 is present but javac is absent; toolchain download repositories are not configured.",
+      "source_defect_established": false,
+      "compile_forms_passed": 0,
+      "normal_rows": 0,
+      "negative_witnesses": 0,
+      "positive_controls": 0,
+      "restored_rows": 0,
+      "later_gates_executed": false,
+      "verifier": "SOURCE_BINDING_PASS",
+      "prequalification_controls": "15/15 PASS preserved/hash verified",
+      "source_restored": true,
+      "source_rebound": true,
+      "bound_files": 376,
+      "tracked_index_clean": true,
+      "host_properties_restored": true,
+      "ci_activations": 0,
+      "original_github_downloads": 0,
+      "admitted": false,
+      "candidate03_prohibited": true,
+      "reruns": 0,
+      "evidence_commit": "3fa65b611c70526042329521bc3c41e8d214c8e3",
+      "readback_commit": "fc0f7bacae33c4e53d7d9d5ff0f2d2efb290a96b",
+      "receipt": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/M01_AUDIT_REPLACEMENT_QUALIFICATION_FAILURE_01/LOCAL_RECEIPT.json",
+      "readback": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/M01_AUDIT_REPLACEMENT_QUALIFICATION_FAILURE_01/READBACK_VERIFICATION.json",
+      "archive_bytes": 3750938,
+      "archive_sha256": "021432bd68c4ddd9717c8aac810b1cedba591a8021ed333b1c40f46ffe69fe44",
+      "recorded_utc": "2026-11-18T18:05:37.286Z"
+    }
+  },
+  "surge_bushwhacker_m01_audit_replacement_result": {
+    "state": "BLOCKED_M01_AUDIT_REPLACEMENT_JAVA21_COMPILER_TOOLCHAIN_UNAVAILABLE",
+    "classification": "LOCAL_COMPILE_GATE_ENVIRONMENT_FAILURE_NO_BEHAVIORAL_VERDICT",
+    "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
+    "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
+    "qualification_starts": 1,
+    "budget": 1,
+    "runner_exit": 1,
+    "failed_gate": "compile-normal",
+    "cause": "Gradle cannot find a Java 21 compiler toolchain for :buildSrc:compileJava. Java runtime 21.0.13 is present but javac is absent; toolchain download repositories are not configured.",
+    "source_defect_established": false,
+    "compile_forms_passed": 0,
+    "normal_rows": 0,
+    "negative_witnesses": 0,
+    "positive_controls": 0,
+    "restored_rows": 0,
+    "later_gates_executed": false,
+    "verifier": "SOURCE_BINDING_PASS",
+    "prequalification_controls": "15/15 PASS preserved/hash verified",
+    "source_restored": true,
+    "source_rebound": true,
+    "bound_files": 376,
+    "tracked_index_clean": true,
+    "host_properties_restored": true,
+    "ci_activations": 0,
+    "original_github_downloads": 0,
+    "admitted": false,
+    "candidate03_prohibited": true,
+    "reruns": 0,
+    "evidence_commit": "3fa65b611c70526042329521bc3c41e8d214c8e3",
+    "readback_commit": "fc0f7bacae33c4e53d7d9d5ff0f2d2efb290a96b",
+    "receipt": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/M01_AUDIT_REPLACEMENT_QUALIFICATION_FAILURE_01/LOCAL_RECEIPT.json",
+    "readback": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/M01_AUDIT_REPLACEMENT_QUALIFICATION_FAILURE_01/READBACK_VERIFICATION.json",
+    "archive_bytes": 3750938,
+    "archive_sha256": "021432bd68c4ddd9717c8aac810b1cedba591a8021ed333b1c40f46ffe69fe44",
+    "recorded_utc": "2026-11-18T18:05:37.286Z"
   }
 }
