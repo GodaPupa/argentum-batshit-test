@@ -30,10 +30,20 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "BLOCKED_M01_AMENDED_REPORT_IDENTITY_MULTIPLICITY_GATE_FAILURE",
-  "owner": null,
-  "lease": null,
-  "summary": "Stopped after M01 amended qualification: compiles15/15 and normal67/67 PASS; RG04 exact expected assertion failure and RG02 PASS observed, but raw report includes three extra skipped rows. Failed gate preserved; exact readback PASS; source/376 bindings/host restored; foreground released; CI0; no admission.",
+  "status": "WORKING",
+  "owner": "manual-m01-audit-20261118-216c90c67ba3-1794967671461",
+  "lease": {
+    "owner": "manual-m01-audit-20261118-216c90c67ba3-1794967671461",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "claimed_utc": "2026-11-18T02:07:51.461Z",
+    "expires_utc": "2026-11-18T06:07:51.461Z",
+    "sole_source_writer": true,
+    "scheduled_executor_enabled": false,
+    "scheduled_executor_disabled": true,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+    "authority_commit": "2d57983ddd0e78c1dc2e986d7df8f52ba83085b4"
+  },
+  "summary": "Sole foreground claimed after immutable audit-authority readback and fresh reconciliation; no qualification started.",
   "next": "STOP. No further qualification, rerun, source/test/contract/audit change, CI activation or admission under this exhausted execution authority.",
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
