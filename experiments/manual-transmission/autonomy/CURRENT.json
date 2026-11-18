@@ -30,11 +30,11 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "BLOCKED_M01_AUDIT_REPLACEMENT_JAVA21_COMPILER_TOOLCHAIN_UNAVAILABLE",
+  "status": "CANDIDATE02_M01_AUDIT_JAVA21_HOST_RECOVERY_AUTHORIZED",
   "owner": null,
   "lease": null,
-  "summary": "One replacement qualification consumed and stopped at compile-normal: Java21 compiler toolchain unavailable (javac absent). No behavioral rows ran and no Candidate02 source defect established. Exact archive/readback and 376 bindings PASS; host restored; foreground released; CI0; admission false.",
-  "next": "STOP. No further qualification or CI under the exhausted one-replacement authority. Any future attempt needs a separately authorized host JDK/toolchain recovery and new explicit qualification budget; preserve all source/tests/audit/mapping/patch bytes.",
+  "summary": "Host-only Java21 compiler recovery authorized after exact source/376-binding/prior-archive reconciliation. Qualification starts remain zero until compiler preflight and immutable host evidence readback PASS.",
+  "next": "Read back host-recovery authority; reconcile; claim sole foreground; inspect/recover one coherent full Java21 JDK; compiler preflight before qualification.",
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
     "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
@@ -2849,5 +2849,40 @@
     "archive_bytes": 3750938,
     "archive_sha256": "021432bd68c4ddd9717c8aac810b1cedba591a8021ed333b1c40f46ffe69fe44",
     "recorded_utc": "2026-11-18T18:05:37.286Z"
+  },
+  "surge_bushwhacker_java21_host_recovery_authorization": {
+    "state": "CANDIDATE02_M01_AUDIT_JAVA21_HOST_RECOVERY_AUTHORIZED",
+    "classification": "HOST_TOOLCHAIN_RECOVERY_ONLY_NO_SOURCE_CHANGE",
+    "explicit_user_grant": true,
+    "recorded_utc": "2026-11-18T19:52:50.348Z",
+    "prior_stop": "a9e896a3293e354ac34b0f23e184366ec07d857e",
+    "prior_failure_evidence": "3fa65b611c70526042329521bc3c41e8d214c8e3",
+    "prior_readback": "fc0f7bacae33c4e53d7d9d5ff0f2d2efb290a96b",
+    "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
+    "source_tree": "5e58df58826cfa24ab5dd967b1cea45778050a0f",
+    "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
+    "validation_tree": "2ac3224b56c6d1bcc7b4d40c419ab4ca67e5c0b0",
+    "controls_commit": "2237eef535ec3979e5e7216f7eb51587c57a9f5c",
+    "controls_archive_sha256": "893a407ffc27d1ce6e8165bb5276079b6be0977f721cc7833162cce693501d8e",
+    "freeze_commit": "7e4ecd8e1f633f705e9e3c5efb890b6081b1400a",
+    "permitted_recovery": "Host only: existing full Java21 JDK, then existing cached JDK, then one provisioned JDK, preferably Temurin21.0.13+9. Session-local selection, outside repository; no repository source/configuration change.",
+    "repository_source_changes": 0,
+    "qualification_budget_after_host_preflight_pass": 1,
+    "qualification_starts": 0,
+    "host_preflight_requires": [
+      "java21 and javac21 from same JDK root",
+      "Gradle Java21 compiler discovery",
+      "buildSrc compileJava PASS",
+      "376 bindings PASS",
+      "tracked/index clean",
+      "immutable host evidence readback"
+    ],
+    "ci_activation_budget_after_all_local_gates_pass": 1,
+    "original_receiving_budget_if_ci_runs": 1,
+    "candidate03_prohibited": true,
+    "scheduled_executor_disabled": true,
+    "source_tests_audit_verifier_qualify_mappings_patches_thresholds_frozen": true,
+    "host_preflight_failure_action": "Preserve host evidence, restore settings, release foreground, STOP without consuming qualification budget.",
+    "qualification_failure_action": "Preserve exact evidence, restore/rebind, release foreground, STOP; no opportunistic rerun or another toolchain."
   }
 }
