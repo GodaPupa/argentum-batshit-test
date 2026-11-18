@@ -30,10 +30,17 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "CANDIDATE02_M02_M14_TARGETED_REPORT_NORMALIZATION_AUTHORIZED",
-  "owner": null,
-  "lease": null,
-  "summary": "Authorized bounded M02–M14 targeted JUnit report normalization; prior M02 stop preserved. Qualification budget unconsumed.",
+  "status": "WORKING",
+  "owner": "manual-m02-m14-normalization-20261118-1795037127242",
+  "lease": {
+    "owner": "manual-m02-m14-normalization-20261118-1795037127242",
+    "claimed_utc": "2026-11-18T21:25:27.242Z",
+    "expires_utc": "2026-11-19T01:25:27.242Z",
+    "mode": "explicit_user_authorized_foreground",
+    "authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
+    "sole_source_writer": true
+  },
+  "summary": "Sole foreground claimed for bounded M02–M14 audit normalization; host preflight and controls precede qualification.",
   "next": {
     "next_executable_action": "Immutable authority readback; fresh reconcile; sole foreground; pinned Java preflight; normalize only audit/verifier/pins; controls; freeze; one complete qualification."
   },
@@ -492,17 +499,14 @@
     "scheduled_executor_must_remain_disabled": true
   },
   "foreground_reconciliation": {
-    "at": "2026-11-16T17:41:27.901Z",
-    "base": "a6fe1e604ed884413a147fba69653bc87a803c4b",
-    "owner_was_null": true,
-    "lease_was_null": true,
+    "utc": "2026-11-18T21:25:27.242Z",
+    "head": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
+    "authority_readback": "PASS",
+    "no_competing_writer": true,
     "active_manual_workflows": 0,
     "candidate01_activations": 0,
     "candidate02_activations": 0,
-    "candidate03_exists": false,
-    "scheduled_executor_enabled": false,
-    "ignored_only_ancient_pest_run": 34749202144,
-    "authority_exact_readback": true
+    "scheduled_executor_enabled": false
   },
   "foreground_lease_history": [
     {
