@@ -40,9 +40,9 @@
     "authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
     "sole_source_writer": true
   },
-  "summary": "Sole foreground claimed for bounded M02–M14 audit normalization; host preflight and controls precede qualification.",
+  "summary": "Exact normalized Candidate02 frozen; pinned Java preflight PASS; 84 controls PASS and immutable readback PASS. One full qualification not yet started.",
   "next": {
-    "next_executable_action": "Immutable authority readback; fresh reconcile; sole foreground; pinned Java preflight; normalize only audit/verifier/pins; controls; freeze; one complete qualification."
+    "next_executable_action": "Read back freeze; fresh reconcile; record exactly one complete qualification start from zero."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -1226,41 +1226,24 @@
   },
   "surge_bushwhacker_qualification": {
     "candidate_index": "02",
-    "label": "Candidate02 — M01 audit-contract final requalification",
-    "state": "BLOCKED_POST_JDK_M02_REPORT_IDENTITY_MULTIPLICITY_GATE_FAILURE",
-    "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
-    "source_tree": "5e58df58826cfa24ab5dd967b1cea45778050a0f",
-    "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
-    "validation_tree": "2ac3224b56c6d1bcc7b4d40c419ab4ca67e5c0b0",
+    "label": "Candidate02 M02–M14 targeted report normalization",
+    "state": "FROZEN_CONTROLS_PASS_BEFORE_ONE_COMPLETE_QUALIFICATION",
+    "source": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
+    "source_tree": "4fd6a9d3bed8f853c9373c613fc4e333a7b8b3b6",
+    "validation": "e90d46482a996fbf6e9f49246f3f07eccb8d5e2c",
+    "validation_tree": "79d7695dcd76a30ae3222286d022c0432b09cc1e",
     "workflow_path": ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-02.yml",
     "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
     "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
-    "candidate_pins_blob": "d1897e2ce1023ed5178dbc64a88c3158ee723c72",
-    "local_gates": "FAIL_M02_RAW_REPORT_IDENTITY_MULTIPLICITY",
+    "candidate_pins_blob": "2233f823b2dcdda060b9efe55948625bb93b0b7d",
+    "local_gates": "NOT_STARTED",
     "ci_activations": 0,
     "original_received": false,
     "local_qualification_budget": 1,
-    "fixture_authorization_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
-    "local_progress": {
-      "compiled_forms": 15,
-      "normal_rows": 67,
-      "normal_passed": 67,
-      "normal_failed": 0,
-      "normal_errors": 0,
-      "normal_skips": 0,
-      "mutant_controls_executed": 2,
-      "mutant_gate_passes": 1,
-      "restored_rows": 0,
-      "later_gates_executed": false,
-      "ci_activations": 0
-    },
-    "local_failure_receipt": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/POST_JDK_M02_LOCAL_QUALIFICATION_FAILURE_01/LOCAL_RECEIPT.json",
-    "local_failure_evidence_commit": "1305bd2b55c0836f55f0c3f1ea02209528c553a4",
-    "local_readback_commit": "a4d8d45cd99d1fc7f853bb92dcd2e91b924d8682",
-    "source_restored": true,
-    "source_rebound": true,
-    "host_properties_restored": true,
-    "second_fixture_authorization_commit": "7cd66adaa102d3f6aca33bbf238d86493a0bce9a"
+    "local_qualification_starts": 0,
+    "normalization_authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
+    "controls_commit": "de96f63a2f7d23d12ea5f2f8bdf57c4a9afb7812",
+    "controls_readback_commit": "095e402cdc328e159246ef45176869311e516215"
   },
   "surge_candidate01_stale_foreground_closeout": {
     "authority": "Explicit user MANUAL TRANSMISSION CANDIDATE 01 HARD RESUME Phase 2, 2026-11-14 Pacific",
@@ -3251,5 +3234,1677 @@
     },
     "failure_rule": "Preserve behavioral/value/compatibility or host failure, restore/rebind, release and STOP; no opportunistic rerun or further audit adjustment.",
     "canonical_owner_unchanged": true
+  },
+  "surge_bushwhacker_targeted_report_previous_qualification": {
+    "candidate_index": "02",
+    "label": "Candidate02 — M01 audit-contract final requalification",
+    "state": "BLOCKED_POST_JDK_M02_REPORT_IDENTITY_MULTIPLICITY_GATE_FAILURE",
+    "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
+    "source_tree": "5e58df58826cfa24ab5dd967b1cea45778050a0f",
+    "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
+    "validation_tree": "2ac3224b56c6d1bcc7b4d40c419ab4ca67e5c0b0",
+    "workflow_path": ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-02.yml",
+    "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
+    "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
+    "candidate_pins_blob": "d1897e2ce1023ed5178dbc64a88c3158ee723c72",
+    "local_gates": "FAIL_M02_RAW_REPORT_IDENTITY_MULTIPLICITY",
+    "ci_activations": 0,
+    "original_received": false,
+    "local_qualification_budget": 1,
+    "fixture_authorization_commit": "a6fe1e604ed884413a147fba69653bc87a803c4b",
+    "local_progress": {
+      "compiled_forms": 15,
+      "normal_rows": 67,
+      "normal_passed": 67,
+      "normal_failed": 0,
+      "normal_errors": 0,
+      "normal_skips": 0,
+      "mutant_controls_executed": 2,
+      "mutant_gate_passes": 1,
+      "restored_rows": 0,
+      "later_gates_executed": false,
+      "ci_activations": 0
+    },
+    "local_failure_receipt": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/POST_JDK_M02_LOCAL_QUALIFICATION_FAILURE_01/LOCAL_RECEIPT.json",
+    "local_failure_evidence_commit": "1305bd2b55c0836f55f0c3f1ea02209528c553a4",
+    "local_readback_commit": "a4d8d45cd99d1fc7f853bb92dcd2e91b924d8682",
+    "source_restored": true,
+    "source_rebound": true,
+    "host_properties_restored": true,
+    "second_fixture_authorization_commit": "7cd66adaa102d3f6aca33bbf238d86493a0bce9a"
+  },
+  "surge_bushwhacker_targeted_report_normalization_freeze": {
+    "state": "FROZEN_BEFORE_BEHAVIOR",
+    "source": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
+    "source_tree": "4fd6a9d3bed8f853c9373c613fc4e333a7b8b3b6",
+    "validation": "e90d46482a996fbf6e9f49246f3f07eccb8d5e2c",
+    "validation_tree": "79d7695dcd76a30ae3222286d022c0432b09cc1e",
+    "files": {
+      "audit_reports.py": {
+        "blob": "ea5471f06956912fb453c62aab185e6d1d1a7fed",
+        "sha256": "ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d",
+        "bytes": 15250
+      },
+      "verify_dispatch.py": {
+        "blob": "704a409f450dfbee1541f20401369b03b67a5a10",
+        "sha256": "51565cf93af3a2b784abcf67b4db2e4b59cddd9416c12ed7f355a5d0f3d33125",
+        "bytes": 16835
+      },
+      "CANDIDATE_PINS.json": {
+        "blob": "2233f823b2dcdda060b9efe55948625bb93b0b7d",
+        "sha256": "3be216c668d38adf64ea94103321f8bbf65b8b9f168a5f3630ca4903e17848b6",
+        "bytes": 123851
+      },
+      "TEST_MATRIX.json": {
+        "blob": "fdf6986b134af8a849b5d3f9a4ddf6c91d7ed691",
+        "sha256": "79389b761cd97a238d20c5d524a2083d16b9a325067772a85224c057b97e0494",
+        "bytes": 66624
+      },
+      "COMPILE_WITNESSES.json": {
+        "blob": "af53be2ee07bae95b76b4b63d424ee41a764e578",
+        "sha256": "1a1833d56f44ff5fb6d0be6a97bf1ae42a9b68dfa5138bee5f927a24cd0cbd90",
+        "bytes": 14045
+      },
+      "qualify.py": {
+        "blob": "4054b572034c4c9e1ca33b32fe7c80c510501d8f",
+        "sha256": "ac04c813d78d83c0b1e7f4b1d48adac960cca1b7dcef01f62370e84e3bc812a4",
+        "bytes": 9041
+      },
+      "M01-surge-price.patch": {
+        "blob": "816df6ffcead182d2190731cd175ecc0b5c5b3c4",
+        "sha256": "f2392179b4bd231d9c51a2bedf598fa2b2663047d5e07df77e4f7c783809ecba",
+        "bytes": 705
+      },
+      "M02-red-payment.patch": {
+        "blob": "a910214a4fb0558e1444a94e0fb143d752e1b178",
+        "sha256": "90bad08fefba8665526b5a54ac38cef9972e7a344cb5b3f2cd1538bc38ddc492",
+        "bytes": 795
+      },
+      "M03-paid-guard.patch": {
+        "blob": "60f9a32e0c8970c7f406e813fe2c841f0f93860d",
+        "sha256": "13cb8a329904e7243e8833560cd113af51796ab89f544e17d5bae71610abc2fc",
+        "bytes": 545
+      },
+      "M04-other-filter.patch": {
+        "blob": "264dd08c0e5ce019bcbf662c0745e0ff07ab902e",
+        "sha256": "c3ce2d4e766468a1e990934e9f11e7a66be94cae6b4a4cb2e9bc5d606bbe0631",
+        "bytes": 755
+      },
+      "M05-controller-filter.patch": {
+        "blob": "e9cc0b51ab9402db861f098bcf2c4a7a46173374",
+        "sha256": "f48c7852cc394842ca65c46d7e00aedef0adf4430a1625beb1a90d5fb811b4ef",
+        "bytes": 750
+      },
+      "M06-toughness.patch": {
+        "blob": "07b2d4a332fbbfeac39abfcd91cee914de6fb38b",
+        "sha256": "0221eab8eca3f3de7a7e1991252c6e9893cd098ab4e47b1a7acc6ddb97796da9",
+        "bytes": 672
+      },
+      "M07-granted-haste.patch": {
+        "blob": "f9da63ccd31550f8bbb0b412ce30973cce4219f9",
+        "sha256": "1f7f3cea1e49ecd13f00a34f2a76ca510b7993dc03f0d8a0d20040fb0242ec09",
+        "bytes": 554
+      },
+      "M08-duration.patch": {
+        "blob": "ad16ab13df91a3f074c881561f5d263d0d9b5a87",
+        "sha256": "3a68744b61fb0e039e0c33790bcd6e2d79ba35bb850dccfb0faa9c5f7a8936fb",
+        "bytes": 672
+      },
+      "M09-intrinsic-haste.patch": {
+        "blob": "bdd121ac1b4e43c10ea3dec41600d8d1fb17bddd",
+        "sha256": "7911da3e65e60b5d91090319ee601abdaf92c35b85b7617df21187a8d9d1d847",
+        "bytes": 708
+      },
+      "M10-entity-only-exclusion.patch": {
+        "blob": "84bb912f7b4bf526b09fbb091ca1175fceb4ba8f",
+        "sha256": "f7d58101c57eeeb64d5426b78c54b20768e09d9fc10ead7313aa16d916bd046e",
+        "bytes": 1090
+      },
+      "M11-exclude-none.patch": {
+        "blob": "e97392d519dca1fc41f6e0ad7f295a2e165a01a5",
+        "sha256": "ce60c03231796668c85aa812a049d28468c43d5b9e21624c31a473c117bc8a3b",
+        "bytes": 1055
+      },
+      "M12-followed-origin.patch": {
+        "blob": "69cad3dee492e0c0309866ec036649c7c653af59",
+        "sha256": "628cc8c39cc3197ecf9759b44b1e294da91863421810f51d4b556026610d6512",
+        "bytes": 729
+      },
+      "M13-missing-choice.patch": {
+        "blob": "f900bf7b603148b2d66a6e639395e0e4a3fd6c6a",
+        "sha256": "1a21dab3b3402739c19fcc1a9ba42e9922fc7c84aeab693ca77785f34c773b51",
+        "bytes": 1179
+      },
+      "M14-copy-choice.patch": {
+        "blob": "2ad665edc1746ad4ca995ddcfa5436b840ec5c3d",
+        "sha256": "3aac605d0747e8796399f532408888a35665487eaa1d5c6b434514e891d3ab22",
+        "bytes": 586
+      }
+    },
+    "workflow": {
+      "path": ".github/workflows/manual-quarantine-surge-bushwhacker-candidate-02.yml",
+      "blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
+      "sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff"
+    },
+    "binding_count": 376,
+    "bindings": {
+      ".agents/skills/add-card/SKILL.md": {
+        "sha256": "550c0f9ad4c868d62c01aa57799d2264f237881fadcad9e06e068f53ce728b8d",
+        "bytes": 20305
+      },
+      ".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml": {
+        "sha256": "6f37cdb939ab310655f78d82ffd711c9f0f389b51e8bd6f6f1a84eb732b9fa3f",
+        "bytes": 9775
+      },
+      ".github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml": {
+        "sha256": "412a771569f7a3bad4e4e41a037953140b39fa8a5d3c71870dc21776fd01cccb",
+        "bytes": 4454
+      },
+      ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml": {
+        "sha256": "814cf66d558fa38eec5cac53458588824a8268419339b3b0f7391e6e97f244fb",
+        "bytes": 10257
+      },
+      "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": {
+        "sha256": "49e7770f7b55b24fb4a265ddf84afd86c51c1d6e1d467ed051b8334c60c45b86",
+        "bytes": 8131
+      },
+      "docs/card-sdk-language-reference.md": {
+        "sha256": "8623b9f69fb0e78383826ab2ac41079135f71262f6a61a7f6f21d9e36e516518",
+        "bytes": 1340194
+      },
+      "e2e-scenarios/manual-occurrence.config.ts": {
+        "sha256": "869b64cb6683b0d49b274936e812cbc78420d795d2313f89e57748bc62e4bb04",
+        "bytes": 556
+      },
+      "e2e-scenarios/manual-occurrence.tsconfig.json": {
+        "sha256": "5218aca8e8eda939868f75358cdc1ae04331e1343d811399d65af3c8c2bfbec0",
+        "bytes": 124
+      },
+      "e2e-scenarios/manual-payment.config.ts": {
+        "sha256": "44933cd3712b630566aa679b12a7f40b491e9ae5495f5e97cfc496e2badec781",
+        "bytes": 546
+      },
+      "e2e-scenarios/manual-payment.tsconfig.json": {
+        "sha256": "7a86c50bc7c1dad60502e8b5878ca1cebe7ba9b7694fb735d1c9d5b0077bc6c1",
+        "bytes": 111
+      },
+      "e2e-scenarios/tests/general/payment.spec.ts": {
+        "sha256": "01ca809943f2507b5e90b0a36f4149d811925e0f792af001cea661a8e7bf0354",
+        "bytes": 9104
+      },
+      "e2e-scenarios/tests/general/public-occurrence.spec.ts": {
+        "sha256": "ed1eb55998b5accc1c0da4686c6350d0b4264e7ca1b5fad64b515d082ca9779a",
+        "bytes": 9614
+      },
+      "experiments/manual-transmission-phase2/audit_composed_registry_gate.py": {
+        "sha256": "7c7c746f7b16b6e1b7db45b12ffb70d9fc375e5c9e848c2867b7003372ec9f14",
+        "bytes": 11211
+      },
+      "experiments/manual-transmission-phase2/opponent-admission-r1.json": {
+        "sha256": "5d1813c6b47496f1dac8218a2067703fc72a4a624b76d6e377b35542f2d1b946",
+        "bytes": 3537
+      },
+      "experiments/manual-transmission-phase2/protocol-r1.json": {
+        "sha256": "4cd733c6e472322493cef4f90e157f427dcc2d82346e2f6fac5cf20a9beeb607",
+        "bytes": 6414
+      },
+      "experiments/manual-transmission/control/v0.7.decklist.txt": {
+        "sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
+        "bytes": 2016
+      },
+      "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/ADDITIONS.json": {
+        "sha256": "1bc81dbf55c640b777541deab037cfc72effa14781dd71aecff9f940da20afcf",
+        "bytes": 6989
+      },
+      "experiments/manual-transmission/research/fblthp-dependent-r1-20261029/derive_inventory.py": {
+        "sha256": "cc640b47ac2193916088d40a3a3393b34a7de1fc234051c50e91ad3b4f6ec8f0",
+        "bytes": 880
+      },
+      "experiments/manual-transmission/research/fblthp-one-test-exception-r1-20261029/IDENTITY_REPLACEMENT.json": {
+        "sha256": "f86148f0a973ddfefdfa618f5cec00398cd5fbacb7ff0f6ad98e3b0c9a27f6ba",
+        "bytes": 641
+      },
+      "experiments/manual-transmission/research/fblthp-one-test-exception-r1-20261029/derive_inventory.py": {
+        "sha256": "8aa4651217e175bcf5cce8cbb9a6bbf71ff9c249ce4846e06445a4379b402e77",
+        "bytes": 953
+      },
+      "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/CLIENT64_CONTRACT.json": {
+        "sha256": "1a89fdb2d7e0580153bfb93e7e1babb99d64e8a1f87e53431724e2ee36dfff7f",
+        "bytes": 7346
+      },
+      "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part0.b64": {
+        "sha256": "b4b85484161862ca07c309051e0bb60329e4a60eb6e369bb20229fc26f349ee7",
+        "bytes": 250000
+      },
+      "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part1.b64": {
+        "sha256": "bcd84ee3e4f1da58694892d6429e7640d31efd6f5e2bc784a2ff94d85f1bc22d",
+        "bytes": 250000
+      },
+      "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part2.b64": {
+        "sha256": "c8eaf891619e9104603b539a96b009e74a192278b6785f6113c91d255a230a0a",
+        "bytes": 250000
+      },
+      "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part3.b64": {
+        "sha256": "a0a1fb0d8aed539954e737607e9f9952ce579c43a5421127f55bbd51636d4196",
+        "bytes": 250000
+      },
+      "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/INVENTORIES.part4.b64": {
+        "sha256": "c382bb74d337ba7de82dcbe21e54f9bf0e9835ab28bf14068b1a4aa58ab7db28",
+        "bytes": 175513
+      },
+      "experiments/manual-transmission/research/phase2-current-main-20261021/COMPOSED_ROSTER_R1_PROTOCOL.json": {
+        "sha256": "9c8afc2675bc278de81645e75ab57e8ff3dca062b9ceb51fff5eebbb21237de7",
+        "bytes": 5759
+      },
+      "experiments/manual-transmission/research/public-occurrence-flow-draft-r1-20261026/DRAFT.json": {
+        "sha256": "46f35174793c5d1749ea5894bc1c6ff5c8283d863f9def720b10571f4ca0fa9e",
+        "bytes": 5493
+      },
+      "experiments/manual-transmission/research/public-occurrence-flow-draft-r1-20261026/SOURCE_FILTER_REVIEW.json": {
+        "sha256": "41f8da9d2cd465f2ff2ef092b407af2eab65d98391a1bbc644b4b2d9ba7e20e5",
+        "bytes": 1689
+      },
+      "experiments/manual-transmission/research/public-occurrence-flow-early-r1-20261026/DESIGN.md": {
+        "sha256": "21923c4e7821846c988bb82a62175d3cb94c25e58f78a7374f0869d0d23ab78b",
+        "bytes": 1714
+      },
+      "experiments/manual-transmission/research/public-occurrence-flow-early-r1-20261026/PROTOCOL.json": {
+        "sha256": "23e7cc0752ae6138ad0c475ff4c0fbaab989eef7a90b5d24dd9956a2e2fe088f",
+        "bytes": 30848
+      },
+      "experiments/manual-transmission/research/public-occurrence-flow-early-r1-20261026/gate.py": {
+        "sha256": "1c9631ad30451d455db17783e9b15f34e11e5b3e15ed91b14b4d2a24c9c415f2",
+        "bytes": 9174
+      },
+      "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/ADDED_CARD_CASES.json": {
+        "sha256": "ad95073cff4c79d40c54374ff9a74897277602bf86046018c37378b86cc4c2e6",
+        "bytes": 1009
+      },
+      "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/CARD_GATE_IDENTITIES.json": {
+        "sha256": "8d56cf46c7b856f1a33913fc1df9d96186601147d5c2702a65bbf453f1e77d08",
+        "bytes": 48705
+      },
+      "experiments/manual-transmission/research/spellskite-card-dependent-r1-20261029/derive_inventory.py": {
+        "sha256": "0404c6916384a0054c4c600b2d0524a06db6a254c77071cc4edc14f7455e348d",
+        "bytes": 1307
+      },
+      "experiments/manual-transmission/research/spellskite-ordinary-r1-20261028/ADDED_CASES.json": {
+        "sha256": "61e9a191b497249356eef6d0cf04a6eed43736b650aff136dbc9477b96360b6f",
+        "bytes": 12310
+      },
+      "experiments/manual-transmission/research/spellskite-ordinary-r1-20261028/FULL_COMPATIBILITY_CONTRACT.json": {
+        "sha256": "4b3219151e467dab40ee2ae6e49b4bec7cefca758cda087e85743e200606b4ef",
+        "bytes": 4335
+      },
+      "experiments/manual-transmission/research/spellskite-ordinary-r1-20261028/UI_ADDED_CASES.json": {
+        "sha256": "b6d60865c9fcc0fa60cdb7f834dbae7590b53f086a6b0df343a7f2ae1808456a",
+        "bytes": 609
+      },
+      "experiments/manual-transmission/research/spellskite-ordinary-r1-20261028/derive_successor_inventory.py": {
+        "sha256": "2558bdbb07bcb382d4e5225a631cd47f8dad47341de404071372afd3b5eaa183",
+        "bytes": 1960
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ACCEPTED_INVENTORY.json.gz.b64": {
+        "sha256": "e5d75cfdede337d11316546d3b733f42d427f6ff36c6c739e42be11a98d13499",
+        "bytes": 648641
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ACTIVATION_CANDIDATE_01.yml": {
+        "sha256": "af0bdc423db90a50b01c076943788720366a9d6ae5db6f5a862141d08c13c5bf",
+        "bytes": 6166
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ACTIVATION_CANDIDATE_02.yml": {
+        "sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
+        "bytes": 6166
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/CARD_SOURCE.json": {
+        "sha256": "42bf66a6825176013fc41d8e142c72a1b989374d2d0ce2192935bcd9997be0a0",
+        "bytes": 2623
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/COMPILE_WITNESSES.json": {
+        "sha256": "1a1833d56f44ff5fb6d0be6a97bf1ae42a9b68dfa5138bee5f927a24cd0cbd90",
+        "bytes": 14045
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/GATES.json": {
+        "sha256": "8f6248c9d7b8c6d6c713375409f293056983ea946b6897d8c71d51faacf9273e",
+        "bytes": 4007
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M01-surge-price.patch": {
+        "sha256": "f2392179b4bd231d9c51a2bedf598fa2b2663047d5e07df77e4f7c783809ecba",
+        "bytes": 705
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M02-red-payment.patch": {
+        "sha256": "90bad08fefba8665526b5a54ac38cef9972e7a344cb5b3f2cd1538bc38ddc492",
+        "bytes": 795
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M03-paid-guard.patch": {
+        "sha256": "13cb8a329904e7243e8833560cd113af51796ab89f544e17d5bae71610abc2fc",
+        "bytes": 545
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M04-other-filter.patch": {
+        "sha256": "c3ce2d4e766468a1e990934e9f11e7a66be94cae6b4a4cb2e9bc5d606bbe0631",
+        "bytes": 755
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M05-controller-filter.patch": {
+        "sha256": "f48c7852cc394842ca65c46d7e00aedef0adf4430a1625beb1a90d5fb811b4ef",
+        "bytes": 750
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M06-toughness.patch": {
+        "sha256": "0221eab8eca3f3de7a7e1991252c6e9893cd098ab4e47b1a7acc6ddb97796da9",
+        "bytes": 672
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M07-granted-haste.patch": {
+        "sha256": "1f7f3cea1e49ecd13f00a34f2a76ca510b7993dc03f0d8a0d20040fb0242ec09",
+        "bytes": 554
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M08-duration.patch": {
+        "sha256": "3a68744b61fb0e039e0c33790bcd6e2d79ba35bb850dccfb0faa9c5f7a8936fb",
+        "bytes": 672
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M09-intrinsic-haste.patch": {
+        "sha256": "7911da3e65e60b5d91090319ee601abdaf92c35b85b7617df21187a8d9d1d847",
+        "bytes": 708
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M10-entity-only-exclusion.patch": {
+        "sha256": "f7d58101c57eeeb64d5426b78c54b20768e09d9fc10ead7313aa16d916bd046e",
+        "bytes": 1090
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M11-exclude-none.patch": {
+        "sha256": "ce60c03231796668c85aa812a049d28468c43d5b9e21624c31a473c117bc8a3b",
+        "bytes": 1055
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M12-followed-origin.patch": {
+        "sha256": "628cc8c39cc3197ecf9759b44b1e294da91863421810f51d4b556026610d6512",
+        "bytes": 729
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M13-missing-choice.patch": {
+        "sha256": "1a21dab3b3402739c19fcc1a9ba42e9922fc7c84aeab693ca77785f34c773b51",
+        "bytes": 1179
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/M14-copy-choice.patch": {
+        "sha256": "3aac605d0747e8796399f532408888a35665487eaa1d5c6b434514e891d3ab22",
+        "bytes": 586
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/MANIFEST.json": {
+        "sha256": "b19ed3c0a5e053fa79e10bc960435ce1caacd8b90ca17be31bae39b1164083c9",
+        "bytes": 3455
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/PROTECTED_BINDINGS.json": {
+        "sha256": "25a53917b6d17ec7959873171581921d050975ed3419b33a720efac359d30206",
+        "bytes": 77645
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/PROTOCOL.json": {
+        "sha256": "4a15471944432ec241941ca2c5c2b69421ce095527b6554d440148a201cf63d4",
+        "bytes": 7802
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/README.md": {
+        "sha256": "2749bb6ad713d081253aa58fb864c01c6bd03cecfb3aadfdbb7be4f19512f389",
+        "bytes": 6108
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVING_CONTRACT.json": {
+        "sha256": "1c5842656dd05c199b66a0b717535e8c7c24f351efae9db0d1c2acd33d80b881",
+        "bytes": 3201
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/SOURCE_REVIEW.json": {
+        "sha256": "f95a825eacf2eb92871f226ef4caf3c7c8fb719d36222ef9d66f752e8801b966",
+        "bytes": 15572
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/TEST_MATRIX.json": {
+        "sha256": "79389b761cd97a238d20c5d524a2083d16b9a325067772a85224c057b97e0494",
+        "bytes": 66624
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py": {
+        "sha256": "ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d",
+        "bytes": 15250
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ogw-reckless-bushwhacker-printings-0.json": {
+        "sha256": "f4478e061d99bb837e51ec28f191112f3b944cf40da036665732d9954eb9a40c",
+        "bytes": 14793
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ogw-reckless-bushwhacker-rulings.json": {
+        "sha256": "a0082fa85af7278f75739097e8a26a59231c0a646be3ed95c24317b1e4f8e489",
+        "bytes": 1178
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ogw-reckless-bushwhacker.json": {
+        "sha256": "57650bfa24520c7132c58ad84515116c618bfb23fc0636289ba0cd8b88638a10",
+        "bytes": 5180
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/qualify.py": {
+        "sha256": "ac04c813d78d83c0b1e7f4b1d48adac960cca1b7dcef01f62370e84e3bc812a4",
+        "bytes": 9041
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/receive.py": {
+        "sha256": "00be55d69206bae346f602c3a633a2056fe77de59c3e0691e689001bc101fbd6",
+        "bytes": 5692
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/test_receiver.py": {
+        "sha256": "f58ad2df857f6cfb62fc93089ee4c1a735c78d6d938ca1c8910bce2752db46dd",
+        "bytes": 4102
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/validation.just": {
+        "sha256": "9fc21ed21ee33cb22fc9dacdfc0d738e27e389933f62180437dd1b4a30120e15",
+        "bytes": 1438
+      },
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py": {
+        "sha256": "51565cf93af3a2b784abcf67b4db2e4b59cddd9416c12ed7f355a5d0f3d33125",
+        "bytes": 16835
+      },
+      "game-server/src/main/kotlin/com/wingedsheep/gameserver/controller/ScenarioController.kt": {
+        "sha256": "1fd401f38a218ded035b263ac57ea6962e12cbf65525a085a35f291bbf9b8927",
+        "bytes": 8670
+      },
+      "game-server/src/main/kotlin/com/wingedsheep/gameserver/scenario/ScenarioSessionFactory.kt": {
+        "sha256": "b811641e3d262b53dd728643e96d3be6c63ecfe2e33e93c553a4d4832cd5b832",
+        "bytes": 12623
+      },
+      "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/PendingDecisionRouting.kt": {
+        "sha256": "e9a4531cd69e1904f799fa8d1cf507d0dbe6946cf9b5456b534c7ab2840d7f3e",
+        "bytes": 1117
+      },
+      "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/FixedRecipientChoiceTransportTest.kt": {
+        "sha256": "2a70c15c443415ddb1fc06602289ddf6e77b32f88aca75cbfb769713337de783",
+        "bytes": 10058
+      },
+      "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt": {
+        "sha256": "d6f56f310595a378e0a5a50a3e1b72b74efe3175480beeacab0ed6c3dc261414",
+        "bytes": 5437
+      },
+      "gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt": {
+        "sha256": "17291977a00ff344b738f82830d9d11a1e230fc90d766836b26a60ad748c6a2e",
+        "bytes": 4550
+      },
+      "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronR1SurfacePinTest.kt": {
+        "sha256": "a2fd1bae29c246c472aab10436e13d86347b12357c87e6ddc159b4c3e0236457",
+        "bytes": 5044
+      },
+      "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt": {
+        "sha256": "828f8b7b149227878901a62a26e08306a5bf2a36a60dc2323653868e7616ed3c",
+        "bytes": 9468
+      },
+      "justfile": {
+        "sha256": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
+        "bytes": 32114
+      },
+      "manual-scenarios/cards/f/fblthp-the-lost.json": {
+        "sha256": "f1aee1f968ea4205d5b4237e43d86e19916e9c0aa547cda4e43615dfbde0298b",
+        "bytes": 610
+      },
+      "manual-scenarios/cards/p/phyrexian-metamorph-copy-and-decline.json": {
+        "sha256": "a74b756ab17f336a123a4d1891fe6e2fcee013e66691638b282614c916e8cea3",
+        "bytes": 1267
+      },
+      "manual-scenarios/cards/p/phyrexian-metamorph-life-payment.json": {
+        "sha256": "e4d0303ce2ff68fe34947226f65fb9a3bc7a462551c5ef23f4d9a7bb50238574",
+        "bytes": 894
+      },
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Conditions.kt": {
+        "sha256": "41e30388c2ea18e8f1015800f167aaa00e871a37bca5a9be3cafa56b3cef88cd",
+        "bytes": 117786
+      },
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt": {
+        "sha256": "e3f8ade5320750ca4aa32b12c4e1450ecfcda85757587e10fa16e63654ede514",
+        "bytes": 284011
+      },
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Targets.kt": {
+        "sha256": "0c4a00c7b94e2db1296584272c548fc95b9445fe481959a83e576183e19d611b",
+        "bytes": 21692
+      },
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt": {
+        "sha256": "ab4d6a9f06ad862127947f2a9c6ed90484a86de53bd6c7090a338781c54e2094",
+        "bytes": 10300
+      },
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/conditions/EntryOriginConditions.kt": {
+        "sha256": "5b0672401bb7db26c707a8506d2672ce5fab88ed4e9b3fb03b12be222c56892d",
+        "bytes": 618
+      },
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ChangeTargetToEffect.kt": {
+        "sha256": "cc46322f855f4637bd6a22cee226ae9c752036d630b096e6546e715c275e59d3",
+        "bytes": 593
+      },
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt": {
+        "sha256": "d807d9567981660ec38917730a816dfb012af4ce1458f1e22e019f9656f1e072",
+        "bytes": 5694
+      },
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/filters/unified/ObjectFilter.kt": {
+        "sha256": "d1bcb5712dc49a4ba1f23e063e6218072e96f4ece020b0b8a44bac9bacf59758",
+        "bytes": 70384
+      },
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/filters/unified/TargetFilter.kt": {
+        "sha256": "a2bd3fc86adfd349aaddf17477e98f7cc91cc629947a7c74366381d4c50fb5d4",
+        "bytes": 26650
+      },
+      "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/EntersAsCopyExceptionsSerializationTest.kt": {
+        "sha256": "bf8cede04fe4645ec8156565b526c6e1730fd5999f7f24c818146e25f3f128e6",
+        "bytes": 1778
+      },
+      "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt": {
+        "sha256": "067c92b5a6064abdb62d535fa5eaf0bcd17eb5766cbdb19c4677091a92c01248",
+        "bytes": 2487
+      },
+      "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt": {
+        "sha256": "52c38678adf07562eac22f5bf6f3b705a100eef38dfc6417d6f5b2a8bbd49d0c",
+        "bytes": 6365
+      },
+      "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt": {
+        "sha256": "79cce73283256e40f9bc0925e3fe058c7b4678d0b47ba7e64cec142579c409ee",
+        "bytes": 2088
+      },
+      "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationScenarioTest.kt": {
+        "sha256": "c5cc70b2d5c5933ffa908b855713dc37423a3429a84fcbfcf41be78b6e5ba565",
+        "bytes": 4562
+      },
+      "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationUnpaidScenarioTest.kt": {
+        "sha256": "8681ac15edd1d32b3556c74defd9e6f235c0db79ffc21c64b337cda264977bcd",
+        "bytes": 1978
+      },
+      "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt": {
+        "sha256": "db45d1b8e965b1d899941c9a2c13f0386df2736e0f658bcbedde184654ce6a8c",
+        "bytes": 2691
+      },
+      "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/PhyrexianMetamorph.kt": {
+        "sha256": "3b3abb2bf971d01067b23e891393588ae93b64a1a3e45a9cc6103377a5366c05",
+        "bytes": 3190
+      },
+      "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Spellskite.kt": {
+        "sha256": "81a5d3a29d4d2516e50b492ab403cc15c4f8850862f9674bee93dd1d5d528aa5",
+        "bytes": 2289
+      },
+      "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt": {
+        "sha256": "faf1e6697fac57805b89e6cb6bbf7b9b59f088f21e6932d1e5d8450eae3d7fcd",
+        "bytes": 2300
+      },
+      "mtg-sets/2008-2016/tests/build.gradle.kts": {
+        "sha256": "4ce4a3e83c462b54256c7dca22adff8ca61eb0f114b2950e804a02e6aa992026",
+        "bytes": 1465
+      },
+      "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CommanderManaRiderAdditionalTest.kt": {
+        "sha256": "d1426b57abe4303f303faa7e6234185f6c6cff5be94d7974804334a64da3e31d",
+        "bytes": 15244
+      },
+      "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CommanderManaRiderWitnessTest.kt": {
+        "sha256": "1a395925b3422f4d51d36a0aa15a8b3e0a48e5c6ebef567816d5dbff6b3a77f4",
+        "bytes": 26084
+      },
+      "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt": {
+        "sha256": "55820e9843618ae78f075e3aa195d018fd6a5f9e19596da20f668b5d36f73bde",
+        "bytes": 17854
+      },
+      "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt": {
+        "sha256": "8a8076c738da21bc4f3a5e433e8415b4465fb6e69aee38e70e3fae6b073bc65e",
+        "bytes": 20591
+      },
+      "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/cards/SpellskiteReprint.kt": {
+        "sha256": "5b3b864609c1d9afc9fcbbc138edd8f4e855a05b55d67e40c7449dfd6ba43c6a",
+        "bytes": 633
+      },
+      "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/war/cards/BoltBend.kt": {
+        "sha256": "464a256ad06df149e02fb5f7ba6f9ab3a3e4430769ffeae173df0dbb915a3667",
+        "bytes": 1968
+      },
+      "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/war/cards/FblthpTheLost.kt": {
+        "sha256": "9e9d0c90eff055ec5b44723307f9fa7b523592348459c46d2746415d6da3745f",
+        "bytes": 2609
+      },
+      "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FblthpTheLostScenarioTest.kt": {
+        "sha256": "94b86f63cec54a3bdbb8aa38b90a168ff6c80e8705f53def995dbb345e9a4226",
+        "bytes": 15774
+      },
+      "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpelunkingScenarioTest.kt": {
+        "sha256": "e31771be2fbb22030c7d8812e47bec68f34a9d401e717696f5e3a26919261530",
+        "bytes": 7010
+      },
+      "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt": {
+        "sha256": "f659920fc36d1737f22dd3679fcb6a62d0799767f66aec3770530f02db88381c",
+        "bytes": 10070
+      },
+      "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt": {
+        "sha256": "cd76d90cddd88ed3d8df810f7c85707b5b030fca981233f95fe4a98e040394a8",
+        "bytes": 58355
+      },
+      "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KambalProfiteeringMayorScenarioTest.kt": {
+        "sha256": "1247b9d9d96d5b0228719a150e634f8fe79072f03b13cf9603078bc6a7220fb1",
+        "bytes": 5341
+      },
+      "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MeathookMassacreIIScenarioTest.kt": {
+        "sha256": "534454beeee4f7bda852d1232b405003f360595049139b627c568032176a0740",
+        "bytes": 12379
+      },
+      "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ZodiarkUmbralGodScenarioTest.kt": {
+        "sha256": "82c5348242a5434c2c514f0fa1764a6679523b621e0a9301aa78ebea54953cb7",
+        "bytes": 7143
+      },
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/DiscipleOfFreyaliseRegistrationTest.kt": {
+        "sha256": "6ae195f9fa372876c892e467d1ba3718a24f8c84867cdc6818bc9d98478aa217",
+        "bytes": 4286
+      },
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/FacadeBoundaryTest.kt": {
+        "sha256": "2883e1fa0a9ac1bc08d5304d5bd7957d6c5d569b29512864ce15a559dde07178",
+        "bytes": 3503
+      },
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/FblthpSnapshotExportTest.kt": {
+        "sha256": "299164a63e96eeec8db07ccf1e1913afae91fb6c96105fd76714388e2bd18e14",
+        "bytes": 1124
+      },
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/OpalPalaceSnapshotExportTest.kt": {
+        "sha256": "db5bb247d0eb7426f140723cb0aee8706c0f6be5a9455ad16b09b3f1ea884eff",
+        "bytes": 1471
+      },
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/RecklessBushwhackerRegistrationTest.kt": {
+        "sha256": "7ab3bbb3433dc3fed13c9ea44c2232e3a476a4cdf962fc666d8a4eb66f616f65",
+        "bytes": 4537
+      },
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/SpellskiteRegistrationTest.kt": {
+        "sha256": "65cdcff2afe3d4caa2be670f208b027e63932add2daef6b7907675b8e3b997ab",
+        "bytes": 5281
+      },
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/SpellskiteSnapshotExportTest.kt": {
+        "sha256": "7201496895e25590ed1d7d734d5d63e462b4d49ed985572d6b2e6a41ded8d90b",
+        "bytes": 1058
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/AER.json": {
+        "sha256": "27117af7e19b672e2c3c5c5085ad5a5ff7181e0a0041201fbbeb335efd6158ba",
+        "bytes": 15507
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/BBD.json": {
+        "sha256": "9af62e2cc278388d184ffeef518f0379de04d7d14aa6cc89587f2a6ce5f8e86a",
+        "bytes": 1933
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/BFZ.json": {
+        "sha256": "a811c918d83dc5af4f3e376ba50cce88229e4a88feb701a47a634446cbe0519f",
+        "bytes": 146863
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/BRO.json": {
+        "sha256": "129b83cd9bfe378ae62ced662d2f59cb812a95ea54baf361a4cba0720701d02e",
+        "bytes": 81662
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/C13.json": {
+        "sha256": "068f044d60583fdb99d16d8ec39ecd9591f64cfdaf1dc33330180284027328af",
+        "bytes": 7822
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/CLB.json": {
+        "sha256": "bfa57f17dbb6bd134d7b510419bfb8c748932a85b9e999a9da63b9bbc9bd877b",
+        "bytes": 29849
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/CMD.json": {
+        "sha256": "ce85f3c61f7dd246f18ab4fb5874a9bbf64914170266cf9a6800078903d29efa",
+        "bytes": 13914
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/CMR.json": {
+        "sha256": "dfec4002fd39a31fc047ecabfc410f18111f6971deb7bdf1de0d245fada4575c",
+        "bytes": 31912
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/DIS.json": {
+        "sha256": "d3149e13d32964bdfcf9bde50f5af8363ab8cc4372a2072877c67c9f0103139f",
+        "bytes": 23487
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/DMU.json": {
+        "sha256": "541eeb8d9cb051923d12914f7fb2d853ab95b668110ab49a23b71421e7d87704",
+        "bytes": 105927
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/DTK.json": {
+        "sha256": "294f1e358afb56f70d575eec9337ab346a8b875d8fced63acf4baad034389fa2",
+        "bytes": 123043
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/EVE.json": {
+        "sha256": "692be2a085d8e437171461c33d479ebb83bc7382a482e569e5a82335e8dd6516",
+        "bytes": 9518
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/FRF.json": {
+        "sha256": "aaee05172b523b41782b6660449ae9dff58f789b730b603950d67108b19771c8",
+        "bytes": 25253
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/FUT.json": {
+        "sha256": "5a332c063abf9b6982afae1f84ab783aac8b7ff8fae7ea325dcf25acee83f0e7",
+        "bytes": 9290
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/GTC.json": {
+        "sha256": "f7dc28b24222ed7cdb5e842c38b0cf0ee382993685d3edca50a651b5f019bc81",
+        "bytes": 35892
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/LEA.json": {
+        "sha256": "9f18538dbf454ac507494077f9bc81c407d5a3c922a5c33592e90297e68858cf",
+        "bytes": 153287
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/MH3.json": {
+        "sha256": "be0fc81423d4e857bd5eefc2fd73d781da71eacad363f586b916dd37632bf7f2",
+        "bytes": 80402
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/MID.json": {
+        "sha256": "4c467aa53bf15494af96812b81154a9b00772396e2bba6a16d78aa3e7a29ad9e",
+        "bytes": 117412
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/NPH.json": {
+        "sha256": "9763d5f078c46ec32b7184aa7ccf0b5c68580934d2d80f11f30f0f14611db3d1",
+        "bytes": 18673
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/OGW.json": {
+        "sha256": "3f7a796872fdd0fa3b96234162fdadf6bbe397ff2cfb8c32b7b58bc6e356e7a4",
+        "bytes": 33161
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/PLC.json": {
+        "sha256": "6c254396dca8ee6f4a4fe22dda27e0d506c9be9467c901329fa551b8a17f66fc",
+        "bytes": 103063
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/ROE.json": {
+        "sha256": "6d0b2087dfdffc2a9bd1ee01234e488b17b096cd3ff4d2ded04773ec565026c7",
+        "bytes": 107706
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/THS.json": {
+        "sha256": "6550dde9214da4c5a7c3de232acad2fb6db8b289e7e9cbccff50cefd2e398e2a",
+        "bytes": 109734
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/WAR.json": {
+        "sha256": "9564b58258f712f3d36bf11fab8c7c1f72157d97a07f33f93a41df4063c58c49",
+        "bytes": 133528
+      },
+      "mtg-sets/src/test/resources/snapshots/cards/WWK.json": {
+        "sha256": "685aa03d147cd3e4c385277c858863c4464fa7f86626213439ff9f8c6272f2db",
+        "bytes": 37931
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Fidelity.kt": {
+        "sha256": "4e44da8fce9903749d24e51d0292d3c45a1326fd772e273321ca766fa29987dc",
+        "bytes": 33065
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Mtgish.kt": {
+        "sha256": "e9471a25cdd3cd100efdd0de636fb140c7599288359bbd8c6d4c81b4b19adb50",
+        "bytes": 3709
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/Support.kt": {
+        "sha256": "420f6b34909c3ab70e7c53b91d9491237cbf130b304d0b47470991239b98a532",
+        "bytes": 12481
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/bridge/DamageLifeAndCards.kt": {
+        "sha256": "5b6541bf2789bc7d85ac8d594e30347cac7d8374b6f5fe885616d52156ce6a9e",
+        "bytes": 11579
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/CardStructure.kt": {
+        "sha256": "3504875553db6611fe2efa122b6d9ab027030acffe3837fcf3cd31780ffc9de0",
+        "bytes": 279082
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/DamageDrawLifeHandlers.kt": {
+        "sha256": "2fcafae7ef1badb8d54fc04ab759f1225e3f7333d02359abc1bb61b178f852d6",
+        "bytes": 26697
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeFilters.kt": {
+        "sha256": "f5a1342c67bae355c38f8ab923596b4ef4352f8adb40aa164e25a6811cc81ebc",
+        "bytes": 1175
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/SpellShortcuts.kt": {
+        "sha256": "32336d6da51c13651854cb532349477700ec6ef61f62053955856f2334b84cc9",
+        "bytes": 8458
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/StaticAbilities.kt": {
+        "sha256": "5b3a93eb93d2aeea3f6cd621e5cf1c23473e00ac817465f56e2407c385ccaa32",
+        "bytes": 54892
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/TokenHandlers.kt": {
+        "sha256": "23ce19b0939969b0cc2b6c4f70d58330903bd94b4f5e467831d6eab6549f9602",
+        "bytes": 20962
+      },
+      "mtgish-tooling/src/main/kotlin/com/wingedsheep/tooling/coverage/emitter/ZoneHandlers.kt": {
+        "sha256": "74938eacb2f6f6b606d369ef809e6d787255db0fa59f95d82bec57d4f4a536d0",
+        "bytes": 79297
+      },
+      "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/FixedRecipientRetargetEmitterTest.kt": {
+        "sha256": "e9f1b7a03266b2f02fe8f3854afd13a69000820a389064fc31d49eeb7c606ccd",
+        "bytes": 4485
+      },
+      "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/GeneratorCalibrationRepairTest.kt": {
+        "sha256": "ece197cfaf0eb1cb9df795e5b603ad9b6134b0d1c32493d4161d7ec72b69d128",
+        "bytes": 5245
+      },
+      "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/HumanSubtypeCalibrationRepairTest.kt": {
+        "sha256": "ed1e04e6e3dba71fbaad3e44689b9e38a74f03ac16b715edd33163936e20853f",
+        "bytes": 3892
+      },
+      "mtgish-tooling/src/test/kotlin/com/wingedsheep/tooling/coverage/emitter/IsdGeneratorCalibrationRepairTest.kt": {
+        "sha256": "fd3a45ee63ca48476353ae288802b245c294a5f953060009ad5260490e733e18",
+        "bytes": 9500
+      },
+      "mtgish-tooling/src/test/resources/calibration-repair/current-ir.json": {
+        "sha256": "cf93ca420a62df0009038fbded67e4658eb8aaabb7f7327023478c0221a39cc1",
+        "bytes": 7782
+      },
+      "mtgish-tooling/src/test/resources/fixed-recipient/spellskite-ir.json": {
+        "sha256": "c0c87bb7af59fe6dde05327c911ecc13a6eb0d832b2f45b2e0971f068280ea6d",
+        "bytes": 1369
+      },
+      "mtgish-tooling/src/test/resources/human-filter-repair/current-ir.json": {
+        "sha256": "f1ac422ccacdcbaf885ea5abb73b2e37f1e92e45a53557e0c1d6f8e0b2d9b484",
+        "bytes": 4095
+      },
+      "mtgish-tooling/src/test/resources/isd-calibration-repair/current-ir.json": {
+        "sha256": "2221529e4c0fcf4e3e004b5a1c9ceda6b4ca49442d699164949657248e0e150d",
+        "bytes": 33712
+      },
+      "oracle-assay/src/main/kotlin/com/wingedsheep/assay/grammar/Library.kt": {
+        "sha256": "b613b4f958b1b6e1bd3e0ee482e6f9ac0f621b906e3299b46c482011ce46d6f3",
+        "bytes": 23719
+      },
+      "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/LibrarySearchTest.kt": {
+        "sha256": "83a17f53903dcd7f7f7da56fdec55e5d9f67170908b892f7aac8de8031d54d30",
+        "bytes": 5082
+      },
+      "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/ManaValuesTest.kt": {
+        "sha256": "ba4bf382b993989e57e2d29d0bf0abe884281c6136769148723ae3cc2fc9b111",
+        "bytes": 12692
+      },
+      "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/SubtypesTest.kt": {
+        "sha256": "f9099d9710a455743865928b87246e75a6febc89e7298704bea20ee25161bf69",
+        "bytes": 7154
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CardSpecificContinuations.kt": {
+        "sha256": "5f00c9d386adcddf1dbaa73dffb68e307fa4a4be14f674293fe6e9ee0b077738",
+        "bytes": 39891
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt": {
+        "sha256": "17993f805921b1494913404f6c59f610ab1243106fd1eed24f2343acdfc1032f",
+        "bytes": 30747
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/FixedRecipientChoiceContinuation.kt": {
+        "sha256": "e07cf94c752629a5ea1df498e3045277dd6cfe073abdaf69a6fdceaad47750f6",
+        "bytes": 371
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": {
+        "sha256": "0a5f08b5167f1c29a7c8d76f49a25a16b2b463304024ec1ec7e426d06226f3f8",
+        "bytes": 91745
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt": {
+        "sha256": "de2d0ae7bb8035da7fd70baf2fd89cfe5e897cdb18c6761eca1dd35d72ad6750",
+        "bytes": 37083
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": {
+        "sha256": "a1cb811b21bef008cbea02bd7ad64ceeb1b576a66d00127defc64b56b7c97056",
+        "bytes": 34462
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/EntryOrigin.kt": {
+        "sha256": "2ba38689b15ae9ffb8c3ed336429c8ab6c216bcab7689e912558201fc2667a79",
+        "bytes": 1049
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerContext.kt": {
+        "sha256": "151408c69151b793f3f70d644b37c287acfe2f4b09055e227c0ef5fd3ae4a626",
+        "bytes": 29990
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt": {
+        "sha256": "9aa2ceb8fda3d22d7dfb0bfda1ce16a8a631640002cb408be642c2b8a25c572a",
+        "bytes": 154892
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": {
+        "sha256": "3b4130a9d55a290b1aea25ccd86a751a8f3dc2b4f6050af4e8ca3fb7539acffb",
+        "bytes": 89120
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt": {
+        "sha256": "7dfa3a1c87caa77156d63694c3a1d811ec8aacc3cff7aac399a89248ec431919",
+        "bytes": 113451
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt": {
+        "sha256": "eacdce2350d5c6fc7e08b7ce1063d5f959ca42aca25549b8599ad13af1102b65",
+        "bytes": 40947
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt": {
+        "sha256": "4332fa35b5cb92292cdf66ab967e187b64cc81c7ae53545d2eda8b81a3d84e86",
+        "bytes": 142462
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": {
+        "sha256": "5fe904dcbffc79e6b3e943d88f83f9b0bc17f667eb449d01aac7cea9b07f6cc0",
+        "bytes": 178817
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt": {
+        "sha256": "609f0bb05e1b343a24a0dbf795ca1e90573bf56d009152d101ac04f614a925c6",
+        "bytes": 51925
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt": {
+        "sha256": "9148bf731484bccd7112a27bb3ca1df27d5fa36fba6dc864bb6a05677d87145f",
+        "bytes": 331517
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CardSpecificContinuationResumer.kt": {
+        "sha256": "beff0be2490afc6ace890a9d90931b8dfe3818606db69263883fc9b4227f8408",
+        "bytes": 11392
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": {
+        "sha256": "c0f75fa35bdf74ea367204ad41116c1daca798fb5ed078e421ecfa8e1e4f3cb6",
+        "bytes": 21135
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt": {
+        "sha256": "623b02e16b541dbaee67c40466adbb948935c346f53787cad5e1b29a8c42e1c9",
+        "bytes": 33877
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt": {
+        "sha256": "1e4e18cb374193d3ba56161017ed9a8d372aeb8331dd4fb09136694940a4ab79",
+        "bytes": 79495
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": {
+        "sha256": "45a7e1cc0bfaf0b03cfb079d624ba7c12cd71641dedbf3c725b7fb7672ee6e83",
+        "bytes": 94259
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ReplacementEffectUtils.kt": {
+        "sha256": "e973ebb94095d2ae0c3fa2046d1941fdff68a8c99fe8faba010db5cd13d0474b",
+        "bytes": 10364
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": {
+        "sha256": "4af1fca3ef37d4b6da44c98221e78bcd5ddcd16f933ff83f11ab09221f6c8973",
+        "bytes": 101511
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ChooseActionEffectExecutor.kt": {
+        "sha256": "50bc17a9ab63361315d7fcec77d30b2d0b9c1c7854a1a28f691e26332a5fad79",
+        "bytes": 5488
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ForEachExecutor.kt": {
+        "sha256": "6f3d4c197bee81186256eec04805db0434ee683d196267d6e4b4cad4e5895994",
+        "bytes": 15784
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ModalEffectExecutor.kt": {
+        "sha256": "96c016aa29d65914e99cccffe1eae406f6713d20c78bfe7d79c1b83c0158467a",
+        "bytes": 19399
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ReflexiveTriggerEffectExecutor.kt": {
+        "sha256": "d5218f6cca04cbd49121079cb2ae72948cff2f921b6f85119c83d896c2bf9f7c",
+        "bytes": 28629
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeSpellTargetExecutor.kt": {
+        "sha256": "ad74fab74685ff0f6f32766ee28ba5a7b6f8a980b25411a6cb1428f29593b4a5",
+        "bytes": 4368
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeTargetExecutor.kt": {
+        "sha256": "31083c95fa909bdd0e44bcc9119b1b3ddfce7d64984639477fcbcb4efb921bcd",
+        "bytes": 4101
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeTargetToExecutor.kt": {
+        "sha256": "7fd51f3aae66e6f14a9981c937e0286afc02950b6c70b8052bcd46f8116992d8",
+        "bytes": 1742
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/StackExecutors.kt": {
+        "sha256": "b3ce3b313b47df5a6381d4fe1b4abf77cf480ead7702d99074db5b2a1459a468",
+        "bytes": 1988
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt": {
+        "sha256": "7752a9a5610ccc2d731b32ae011cf154c1fefcc487af80cdc008fdc52fa4a794",
+        "bytes": 162778
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt": {
+        "sha256": "abd76d4fefad00adae41ccb8a5d3393c66fd5705f8c88290d30319c124699f8f",
+        "bytes": 100994
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+        "sha256": "56ab70cadce1de3114673b8fe9ba68870662699619ecd082d6ae5b365ba38b73",
+        "bytes": 238503
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/CurrentTargetPlan.kt": {
+        "sha256": "d35e9a3775c61cb356cf387c197f18ca0cc5a103e3af17c87b1d347e5fb02333",
+        "bytes": 9277
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/FixedRecipientChoice.kt": {
+        "sha256": "1d94e4b6f98c62cbaa78890794918c38fe332189069ad06382462fa084fb90f5",
+        "bytes": 1804
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/FixedRecipientRetargeting.kt": {
+        "sha256": "198539f8c045d873a525f0661b23cc91a85b2148791c19d676e0b50814db3a5c",
+        "bytes": 8271
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/GenericRetargeting.kt": {
+        "sha256": "73f9d96c1079e10428b5bac2d0bca2d2439a013ce47a70a44a98953890042be6",
+        "bytes": 5457
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetSlotPlan.kt": {
+        "sha256": "596b05a98191f056359b59c86e81871990c4ad995064b9bfab98a3cbc755c1c1",
+        "bytes": 4791
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt": {
+        "sha256": "561f2f25a6cfa18763591bc5fa91b738392744e0c487955deea62e1b5b5f7381",
+        "bytes": 59306
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/CommanderManaEntryCountersComponent.kt": {
+        "sha256": "e566fa1ba844f12a618e72368fd5ecb8f4aa3b9b5107ff470c6aea291a8d8cc6",
+        "bytes": 397
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt": {
+        "sha256": "017116b63427513a1bd3f3c033e97c6077e1b82f6718ffe1935cad822103242b",
+        "bytes": 19589
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": {
+        "sha256": "b5c612a5c403451916362078423792cb4f9de8eb47c84b975cfb619227667b79",
+        "bytes": 38028
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt": {
+        "sha256": "6bf8d0991d5a1e3f1c0b387e555a23485959ab056fc7533bc296d7ca09000d23",
+        "bytes": 15574
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/continuations/ModalTargetForcednessTest.kt": {
+        "sha256": "1b4e25786065f9a29fc2d686b1a673055837fc773d4e0afa7f96b5630ac02548",
+        "bytes": 5510
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt": {
+        "sha256": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee",
+        "bytes": 20190
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/mana/BoltBendCostPredicateTest.kt": {
+        "sha256": "19c30c95a657252a77c37a7a3122d30a0bc5b9a939efa927f4bee42ffe88145a",
+        "bytes": 2388
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/mana/BoltBendCostProjectionTest.kt": {
+        "sha256": "94bb7c1a32cdc32ab437297c4d865b054bd55c72d5c6eeb629154d160d868e67",
+        "bytes": 8129
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/layers/BattlefieldEntryProjectionTest.kt": {
+        "sha256": "621a7cf11307c7019c5a82496e5431a8cb0efe82b35a07c16f2ef49f31f1d9c9",
+        "bytes": 5950
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianBrowserFixtureTest.kt": {
+        "sha256": "1de88b7706ddbd7b6170b34dddce215a93ebbbbfb8ad606f138ce579aad92cfd",
+        "bytes": 3388
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianPaymentBoundaryTest.kt": {
+        "sha256": "7184a166d551d53f8410b2a5affbb313d1ceda3a0960d9bf642046cd0066dcc0",
+        "bytes": 12391
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianPaymentControlTest.kt": {
+        "sha256": "7c7cb52b8437d166b62e43b9d934fecea2882d3b43e195ba48f1c271132cb69e",
+        "bytes": 4533
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivatedPhyrexianPaymentDiagnosticTest.kt": {
+        "sha256": "250564a8e7c43dae1d363f20c1c63256159fed23a067deeb641c9ffbf0baeb4d",
+        "bytes": 3860
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt": {
+        "sha256": "9d44ddce1bd1e9b5d3baaf44b28df9ee427f61e039485f98eda88cbb71caf154",
+        "bytes": 18977
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableEntryValueScenarioTest.kt": {
+        "sha256": "e9b026e24f2c28304a25d6d7ca3778338f8d5b6ff291cf6f2dce5ce8ed4bc43b",
+        "bytes": 13168
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableFaceDownWardScenarioTest.kt": {
+        "sha256": "c6286ae3ec9980464ee975d7f58f6b1b2c390f38b02fffc713837fb1bd85354a",
+        "bytes": 5895
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiedAsEntersChoiceScenarioTest.kt": {
+        "sha256": "6b43b58b5a3f52405746be330dc5e885666227dadd1f3c46c9844645076b0a59",
+        "bytes": 10024
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CurrentTargetResolutionTest.kt": {
+        "sha256": "3be86f6ae1d06d04907b032382523c7da22da85461cfcd043eac3240bfd254fd",
+        "bytes": 15327
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeChoiceCaptureTest.kt": {
+        "sha256": "61b6ce64d54752a3988c79e01cbe2ee3097be60bd0befd7aae19e6455b01d5ed",
+        "bytes": 13188
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DepartureTimeNegativeWitnessTest.kt": {
+        "sha256": "75c4ebf4ea78ebe131da1a62f2849e38854695cbc2b8d2c738c4d4491b806a88",
+        "bytes": 4150
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DoubleCountersTest.kt": {
+        "sha256": "287f68904f3dd1947ca69e0a5dd3c81e09900150d7495a42c0515cfaae3fd64f",
+        "bytes": 7504
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EnterCounterObjectIdentityTest.kt": {
+        "sha256": "d5e0b4d8e8da2fa73e7398daebd40f36a8a5b300899a6da455224dc2997f39fd",
+        "bytes": 3853
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntersAsCopyExceptionsScenarioTest.kt": {
+        "sha256": "6386e50e4ebdb18f06878a80c97de0147fcc709162ac97c7ce0e3f3326fcc632",
+        "bytes": 10172
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterBoundaryScenarioTest.kt": {
+        "sha256": "a49156237003b9aacb2fde7e589748e8687abad0a735e50593eebe5f161cd08f",
+        "bytes": 8811
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterModifierSourceScenarioTest.kt": {
+        "sha256": "76a4ab181241eb106ba562e2cab4af7b475ff6cf400fdd62bdb096c9b8a29c54",
+        "bytes": 6719
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryEventTimeScenarioTest.kt": {
+        "sha256": "837b319a8c3b00aaaf4aa19e767c74237b20c37c1f6033d11856e7939ab702cf",
+        "bytes": 8549
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObservationLifetimeScenarioTest.kt": {
+        "sha256": "64288546f967a9407b8b8dee45060d972c8d0f3bc9b4a15c3c26e3fa18234552",
+        "bytes": 13096
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObserverBoundaryScenarioTest.kt": {
+        "sha256": "e3bbb873e1d97bdba3e00a204bab8ef4a72da51e411e07a6f30adc7872c072d2",
+        "bytes": 9170
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryOriginRuntimeTest.kt": {
+        "sha256": "ee7a6d940586d274cc22b65a3aed3dbc03971ef0e0a4015837582be7c2c7c3cf",
+        "bytes": 8596
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FaceDownEntryCounterScenarioTest.kt": {
+        "sha256": "2400867078401a51908bc3645e4429b63ae9785fde3b8f6dc0cfff5f71001a99",
+        "bytes": 2854
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientChoiceTest.kt": {
+        "sha256": "cd9e1e94cb218cb127776f2a22754b85fd5dce1e4305333ba97d69ab43a8405c",
+        "bytes": 32233
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientPlayerRelationTest.kt": {
+        "sha256": "6d664efb0683c35342e2a109ebd2da22e9d6ad0ec20b1d09bc4a9b40f08ebd68",
+        "bytes": 6009
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientRetargetingTest.kt": {
+        "sha256": "842087bb15985fe51d2f0d27314611ea79c793a9dbd0bf692d7b607367abf810",
+        "bytes": 12591
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FixedRecipientSourceContextTest.kt": {
+        "sha256": "ebf9a4801751fb223f6e7608f78438499194f7836a6adfff5265491afa303cbd",
+        "bytes": 11622
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ForEachCopyEntryBatchScenarioTest.kt": {
+        "sha256": "ab121b3c43906f8c616c873d6c0a413c34c03ed5513b1e90ff56d091abebca3e",
+        "bytes": 5611
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GenericRetargetContinuationTest.kt": {
+        "sha256": "7077c2578745594bee829811a8eee358143e63c64bb8a82929f844ac53c9f6dd",
+        "bytes": 16184
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GrantCounterPlacementModifierTest.kt": {
+        "sha256": "21b3aab896905813a1461f2fc328ece6a2cc8c32749ee468c9a43e4f3ddff160",
+        "bytes": 7551
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LegacyAbsenceChoiceCaptureTest.kt": {
+        "sha256": "f681d419bb72cbae27c47e013a41eae1e17c4671849bf9a2d4c03cbc79ef9722",
+        "bytes": 7647
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedSpellTriggerFinalizationTest.kt": {
+        "sha256": "127b7f57a8a4b2f323d32c6dc2998226bdde94bd29ab45408f4e0f122c9c30d1",
+        "bytes": 4399
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingCopyEntryScenarioTest.kt": {
+        "sha256": "b0acaa3edb30d44eb698518fcd76ce579c269103bbabcf3c5629078f1910a514",
+        "bytes": 14509
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingEntryObserverScenarioTest.kt": {
+        "sha256": "23179ac70a32b9feeedf8683de85b2af99f5875ec9ba9a101906448767551552",
+        "bytes": 5254
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingEntryReferenceScenarioTest.kt": {
+        "sha256": "844487e43a4654b86c9d77882f6495f22977db65e92f3ac92fcd73c89ef6c8fd",
+        "bytes": 6347
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PhyrexianMetamorphEntryScenarioTest.kt": {
+        "sha256": "10c5efbc582329f4cd5be55195d2d8d3214e89df286dfa2df0df8ed2123ee73d",
+        "bytes": 12640
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PhyrexianMetamorphScenarioTest.kt": {
+        "sha256": "17a207d908a91036b3b9c96022fb6cb12bf52dc09906b88ef996527f1072e745",
+        "bytes": 10728
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceBrowserFixtureTest.kt": {
+        "sha256": "d6aa57d16e82da6dbfc1ab7e1ab39b93225f7014fc1922c738b31b82f7ca1c38",
+        "bytes": 4593
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicOccurrenceMatrixTest.kt": {
+        "sha256": "c8aeff070da52a4f40a99d3d17bd19eb29d4247e916b31934bda9ff1c8869a7a",
+        "bytes": 23703
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfAlternativePaidChoiceScenarioTest.kt": {
+        "sha256": "811ce5c3882245fcd7e4c0792daabae8e51beb74adf0860f1ac5d4c9cbbf31fa",
+        "bytes": 12814
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureCharacteristicPreservationTest.kt": {
+        "sha256": "175a66763139b5c1db44448e53bf64725efdcaa0b9b0bbb9945fc8702ea4bc46",
+        "bytes": 4551
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureChoiceNegativeWitnessTest.kt": {
+        "sha256": "8feda12a28fe03fd54dd539dc822191e7bab69f09c32ff6d07985a09f54cd32a",
+        "bytes": 2919
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDepartureChoiceRepairTest.kt": {
+        "sha256": "afa112b2ad53fb0f97e47ce3b29238f98cf244c4e1abb9fd93a78c4c0beb3fb9",
+        "bytes": 16817
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceDeparturePaidChoiceDiagnosticTest.kt": {
+        "sha256": "38b8b90aace611743195fd37b6affcfed31afcdb49f18dd799eae091b31fa149",
+        "bytes": 5049
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SourceIdentityGroupExclusionTest.kt": {
+        "sha256": "b0df8549bf21e832f7d9a85734f1b3d6e749ff66860537e5874482f116beb9e5",
+        "bytes": 7007
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellskiteScenarioTest.kt": {
+        "sha256": "0bfd6033d1875e64cc6b1a001c3c27ddfaf3a7d96eadf1266eca37653f042b56",
+        "bytes": 33538
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackResolutionPriorityTest.kt": {
+        "sha256": "515a2da89211cb1cad0278bcd7c8c365cc611ab9e643d1fa05fcec670060ad63",
+        "bytes": 22457
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SurgeCostCompositionTest.kt": {
+        "sha256": "1774248629d3496ee7f9436f9ee40af1b29feb608a6171b0efaec26a819a80a1",
+        "bytes": 12598
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingScenarioTest.kt": {
+        "sha256": "e4d8ce58696a968126bb17d0e9403ff59ff99ce51e1efdba05a3c0ec846bfee5",
+        "bytes": 8016
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/LegacySuspensionMigrationTest.kt": {
+        "sha256": "142aa11bcc0d4d8b2673e62b09c776bd43d1bd1403a898a01e98c19666de7269",
+        "bytes": 17979
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/state/SuspensionTraceTest.kt": {
+        "sha256": "a3537c53372b08ba9e9d472b07f969f74e7e38f3e25c8fedd7e69c322c00dbd1",
+        "bytes": 6481
+      },
+      "rules-engine/src/test/kotlin/com/wingedsheep/engine/triggers/BecomesTargetPlayerAndAbilityAxesTest.kt": {
+        "sha256": "c8f6cac1fb574e10818d9e8de33af042bb12d9c6d6a6d7e8f07f395d359b97c0",
+        "bytes": 21825
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/README.md": {
+        "sha256": "4170739f52315073e916501712c83461a9a8ba135069f86469b073e5780d08d9",
+        "bytes": 2497
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/actions.json": {
+        "sha256": "d0ce4b42a040dcef4a714abf00f6d8047be8417baaa04f550a8325e0fb222ea9",
+        "bytes": 210
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/after-1.json": {
+        "sha256": "346ea03c14f1a63d91756f7a82eed68c2e8ecb83115dd0b81a2dc9e14221c69f",
+        "bytes": 18302
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/creation-events.json": {
+        "sha256": "dfd938e9b9fa80676c40f45a807a0ec9e6f18e478583f64743ea959de8d1b1d5",
+        "bytes": 1344
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/events-1.json": {
+        "sha256": "c85bb5a3218279be0ef4e22410747c43193724eec103ecfb95979f0eb94d426e",
+        "bytes": 1048
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/manifest.json": {
+        "sha256": "f2596a75117d1233f157bdf0d8430f438c9a092a89212fef0baf3512dd9235b9",
+        "bytes": 284
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/state.json": {
+        "sha256": "b2451003316d4f15e2e1e24e5bed0229b9029ea6ef3b134f7974688333441c33",
+        "bytes": 15248
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/actions.json": {
+        "sha256": "e8b3e39fbad309d9d7980599dd95b6529daa9c58df58e1df4b63d9f3acc74670",
+        "bytes": 456
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/after-1.json": {
+        "sha256": "0b9cc4e9eaf0b2cbf81f25f9b77115386f1c8a66a2f12e34dd6a60778adb71df",
+        "bytes": 15083
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/after-2.json": {
+        "sha256": "5b634610782c6f01d0ce8355a86bd62510e758331d2744ef3a3dbda627b6b51a",
+        "bytes": 15107
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/after-3.json": {
+        "sha256": "bd1f4671c7db217ad4209d93f51f12b0483749cfdea095e745589d5468059d5c",
+        "bytes": 13229
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/creation-events.json": {
+        "sha256": "a7d071a3c2b0c8af3ca5867ae76c973467a782d05857075a84c465f37fe087d1",
+        "bytes": 209
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/events-1.json": {
+        "sha256": "842e5a79b28db029d1dd22dd9053b151cb3c99152bb284b4c86a09768eda188f",
+        "bytes": 2445
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/events-2.json": {
+        "sha256": "3e6467b41d2d28e02746e1b32b26af7e268d14ff4dce8149fc1214dfba66c5fa",
+        "bytes": 86
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/events-3.json": {
+        "sha256": "99373e339c021db47f9c7b34b724c35b021053b69f94d5c7abb2d8116b2519d9",
+        "bytes": 2451
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/manifest.json": {
+        "sha256": "b9daf3456e033d348a22e93e56ef481582291f9ff129711da5a9701c5544c5aa",
+        "bytes": 259
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/state.json": {
+        "sha256": "b7b697d3f16d2f77e8129667a427bfcaa127e9d4b609d80e646836e7849643f0",
+        "bytes": 11679
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/nested-may/actions.json": {
+        "sha256": "a42edc8c7ef8049f3ccedc6425c1959ac9f35cd1048cf8aaa334cbbea0fb0f3f",
+        "bytes": 416
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/nested-may/after-1.json": {
+        "sha256": "d03884ac276e497d7c604bf8ea26a05761213f72b217cefd2502bca13cdcb0c4",
+        "bytes": 16025
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/nested-may/after-2.json": {
+        "sha256": "20217cf5e56ce3b2acfcd8aac1e6f7b9ac5e0bd7034c1509b1c6e8f886a5799b",
+        "bytes": 5799
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/nested-may/creation-events.json": {
+        "sha256": "ad98cd194edf0bc856568960fa786b62c3e182ce994947eaf5374160b95e18bf",
+        "bytes": 203
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/nested-may/events-1.json": {
+        "sha256": "53fb80ed304d3247013c90391562d364103ab2e3d971d3ed06b9e405927d2b17",
+        "bytes": 345
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/nested-may/events-2.json": {
+        "sha256": "18b6133ed9f52fceb5d55ddeac6fb375dce5a62500bef84b66b75ddbb348a9ee",
+        "bytes": 529
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/nested-may/manifest.json": {
+        "sha256": "0b04e7ca9bd01ae9b287e4933711d535c0888e07e8f095b792748036c3adc2fa",
+        "bytes": 226
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/nested-may/state.json": {
+        "sha256": "29bbdca79a50e55d84133a40cc68ab4556b6d51ce4b7a336e5103a1bc78fcac0",
+        "bytes": 15231
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/repeat-while/actions.json": {
+        "sha256": "56681c993f36979331d2b6abef5dddb6b52561270c576093651c2a08ff89f713",
+        "bytes": 417
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/repeat-while/after-1.json": {
+        "sha256": "0b6769d45b523b78916058e0ce795a2cabfad96d29d81e8cc25a54ab66138262",
+        "bytes": 17094
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/repeat-while/after-2.json": {
+        "sha256": "9c7837e79e279bdc9f6fa516c604cd3aa03c550c9e0d82319b36597af5366402",
+        "bytes": 5799
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/repeat-while/creation-events.json": {
+        "sha256": "b6b157d910fdd98eb29cb2a2f178dd537d42002dd431325cd1d3fa0e5135fea0",
+        "bytes": 380
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/repeat-while/events-1.json": {
+        "sha256": "08786cb3ea201e008fe06da8681e69b9fafba78fd50f8359f38bdde01cf99fa4",
+        "bytes": 531
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/repeat-while/events-2.json": {
+        "sha256": "d0dff41a3914cb8f2dbcdda78284d11d6cabd2aea7b36e5a34815363545ff3c8",
+        "bytes": 340
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/repeat-while/manifest.json": {
+        "sha256": "63d680ce4454553805f9ae1c19cec2556cc726c1080ce239c0afe08ef76eb0d5",
+        "bytes": 255
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/repeat-while/state.json": {
+        "sha256": "c39f22dea5c330089e87f9927d03778a4ef586841759e0499d41a9397a2d8467",
+        "bytes": 15140
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/actions.json": {
+        "sha256": "d6bbbf30f9b4a0767f2aa07cda358fc97a28c6416b3f5e005bcd4e6f829d802c",
+        "bytes": 544
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/after-1.json": {
+        "sha256": "4520ff201102a6eba80a7e328d8abc6a6dd00770b98d868aeec70f8a2b2f2bfc",
+        "bytes": 14630
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/after-2.json": {
+        "sha256": "115017459f09a675a3369834dc6eeb9d00d42358b42ae6b5fb8f4f98dd08bd83",
+        "bytes": 8208
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/creation-events.json": {
+        "sha256": "548f346cd656a27685e87a5e9e0e38a534b125f7f237d1392659f48aeb916790",
+        "bytes": 207
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/events-1.json": {
+        "sha256": "cffd6b016389d255e1a329b1cb50f1c4c62e76217c038c90de8c07eb2dd18ce4",
+        "bytes": 448
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/events-2.json": {
+        "sha256": "7a383c5193f6462f36d0d5d27a66f7833644c6392e3fed40af523ca19d732090",
+        "bytes": 333
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/manifest.json": {
+        "sha256": "1d4e6bc0d7935047e65096b3f4b967d890f34039af42c7829210b3bc21b83868",
+        "bytes": 279
+      },
+      "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/state.json": {
+        "sha256": "9e993d4468183f5f9021e1b680be78fe2dcb46f4ce32c5e29cd43e6b3ca52891",
+        "bytes": 21193
+      },
+      "rules-engine/src/test/resources/suspension-traces/README.md": {
+        "sha256": "df29d9ca5c55362a67c4741fd681f187b29a73c3bf96fb2936c3325e56070eba",
+        "bytes": 3108
+      },
+      "rules-engine/src/test/resources/suspension-traces/compact-cycling/actions.json": {
+        "sha256": "d0ce4b42a040dcef4a714abf00f6d8047be8417baaa04f550a8325e0fb222ea9",
+        "bytes": 210
+      },
+      "rules-engine/src/test/resources/suspension-traces/compact-cycling/after-1.json": {
+        "sha256": "fdcfe3467f7ea1df913e9d3c81b74ab6ac021f38ebf0ce59c8b6a5c405e75a20",
+        "bytes": 18325
+      },
+      "rules-engine/src/test/resources/suspension-traces/compact-cycling/creation-events.json": {
+        "sha256": "dfd938e9b9fa80676c40f45a807a0ec9e6f18e478583f64743ea959de8d1b1d5",
+        "bytes": 1344
+      },
+      "rules-engine/src/test/resources/suspension-traces/compact-cycling/events-1.json": {
+        "sha256": "c85bb5a3218279be0ef4e22410747c43193724eec103ecfb95979f0eb94d426e",
+        "bytes": 1048
+      },
+      "rules-engine/src/test/resources/suspension-traces/compact-cycling/manifest.json": {
+        "sha256": "55ca60cf5df3ea436fee1b69f80351995222eeae66cfe9a96379a837bf713433",
+        "bytes": 427
+      },
+      "rules-engine/src/test/resources/suspension-traces/compact-cycling/state.json": {
+        "sha256": "ae28e0981b9834ab4988bb251d1f8401af03bc1789b9abe0812354e3b0d0995d",
+        "bytes": 30798
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/actions.json": {
+        "sha256": "e8b3e39fbad309d9d7980599dd95b6529daa9c58df58e1df4b63d9f3acc74670",
+        "bytes": 456
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/after-1.json": {
+        "sha256": "108de802faf42302c19ed304b4479154cfdf8c52dee3b7554c82d31cf272e384",
+        "bytes": 15106
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/after-2.json": {
+        "sha256": "5e607495e770a6ff6c86e8053e0cad43b841b037a14901668755de41822f1547",
+        "bytes": 15130
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/after-3.json": {
+        "sha256": "ab9a44cad0b1a58c65fbf1058b4b8315df277d75115ff92fbdf374b1d40dc16e",
+        "bytes": 13252
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/creation-events.json": {
+        "sha256": "a7d071a3c2b0c8af3ca5867ae76c973467a782d05857075a84c465f37fe087d1",
+        "bytes": 209
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/events-1.json": {
+        "sha256": "842e5a79b28db029d1dd22dd9053b151cb3c99152bb284b4c86a09768eda188f",
+        "bytes": 2445
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/events-2.json": {
+        "sha256": "3e6467b41d2d28e02746e1b32b26af7e268d14ff4dce8149fc1214dfba66c5fa",
+        "bytes": 86
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/events-3.json": {
+        "sha256": "99373e339c021db47f9c7b34b724c35b021053b69f94d5c7abb2d8116b2519d9",
+        "bytes": 2451
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/manifest.json": {
+        "sha256": "2f21bafb20caca144eb7ba16ce20e850ac7f114aea1e8921a7d175a3ec572c18",
+        "bytes": 479
+      },
+      "rules-engine/src/test/resources/suspension-traces/free-cast-target/state.json": {
+        "sha256": "6b51f8d7b00d6773864bef00a0bd0520a048d0e476b275b9068e49479aa53834",
+        "bytes": 12489
+      },
+      "rules-engine/src/test/resources/suspension-traces/nested-may/actions.json": {
+        "sha256": "a42edc8c7ef8049f3ccedc6425c1959ac9f35cd1048cf8aaa334cbbea0fb0f3f",
+        "bytes": 416
+      },
+      "rules-engine/src/test/resources/suspension-traces/nested-may/after-1.json": {
+        "sha256": "7f8bbcdd5e20a57948921b7d698a2f0ce62e46f6f5ae49bf5f12cd71f9612fda",
+        "bytes": 16134
+      },
+      "rules-engine/src/test/resources/suspension-traces/nested-may/after-2.json": {
+        "sha256": "a865de864a987659863c6f84b8cfa14ccf85770f4dec42a51d13ebbcca000ef6",
+        "bytes": 5822
+      },
+      "rules-engine/src/test/resources/suspension-traces/nested-may/creation-events.json": {
+        "sha256": "ad98cd194edf0bc856568960fa786b62c3e182ce994947eaf5374160b95e18bf",
+        "bytes": 203
+      },
+      "rules-engine/src/test/resources/suspension-traces/nested-may/events-1.json": {
+        "sha256": "53fb80ed304d3247013c90391562d364103ab2e3d971d3ed06b9e405927d2b17",
+        "bytes": 345
+      },
+      "rules-engine/src/test/resources/suspension-traces/nested-may/events-2.json": {
+        "sha256": "18b6133ed9f52fceb5d55ddeac6fb375dce5a62500bef84b66b75ddbb348a9ee",
+        "bytes": 529
+      },
+      "rules-engine/src/test/resources/suspension-traces/nested-may/manifest.json": {
+        "sha256": "687136588849b116ccd0491ee15d8296d9681d3acd12c0b9a667c98cefd229fc",
+        "bytes": 446
+      },
+      "rules-engine/src/test/resources/suspension-traces/nested-may/state.json": {
+        "sha256": "ae638fb26065f17658d3ea14c9d8404cf3b1c0143181be2642597d51a2c884e4",
+        "bytes": 16873
+      },
+      "rules-engine/src/test/resources/suspension-traces/repeat-while/actions.json": {
+        "sha256": "56681c993f36979331d2b6abef5dddb6b52561270c576093651c2a08ff89f713",
+        "bytes": 417
+      },
+      "rules-engine/src/test/resources/suspension-traces/repeat-while/after-1.json": {
+        "sha256": "324a6fdf7e88697a3f28aef414a3d93e035fb606d862fdc8e59bdb695e2dacf2",
+        "bytes": 17207
+      },
+      "rules-engine/src/test/resources/suspension-traces/repeat-while/after-2.json": {
+        "sha256": "a90dc4c9552c9d1c8f3ad2618bf8ab253d6b8e3a1358f904aed6b87c097a3570",
+        "bytes": 5822
+      },
+      "rules-engine/src/test/resources/suspension-traces/repeat-while/creation-events.json": {
+        "sha256": "b6b157d910fdd98eb29cb2a2f178dd537d42002dd431325cd1d3fa0e5135fea0",
+        "bytes": 380
+      },
+      "rules-engine/src/test/resources/suspension-traces/repeat-while/events-1.json": {
+        "sha256": "08786cb3ea201e008fe06da8681e69b9fafba78fd50f8359f38bdde01cf99fa4",
+        "bytes": 531
+      },
+      "rules-engine/src/test/resources/suspension-traces/repeat-while/events-2.json": {
+        "sha256": "d0dff41a3914cb8f2dbcdda78284d11d6cabd2aea7b36e5a34815363545ff3c8",
+        "bytes": 340
+      },
+      "rules-engine/src/test/resources/suspension-traces/repeat-while/manifest.json": {
+        "sha256": "93930dccd945e3e445520b4de8e6a19fc84e0efac6833d4dc841553bcb2835e4",
+        "bytes": 475
+      },
+      "rules-engine/src/test/resources/suspension-traces/repeat-while/state.json": {
+        "sha256": "d1be0484e5c8b083ea727a1bc9ba8facc19963b7f91b40255fea19528b09287b",
+        "bytes": 17207
+      },
+      "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/actions.json": {
+        "sha256": "d6bbbf30f9b4a0767f2aa07cda358fc97a28c6416b3f5e005bcd4e6f829d802c",
+        "bytes": 544
+      },
+      "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/after-1.json": {
+        "sha256": "6b397ba4daeb71a3cf5a75c8ac3b49832c8ce3f35bd289cd56019e8565d94bdd",
+        "bytes": 14698
+      },
+      "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/after-2.json": {
+        "sha256": "98f8b9cbebc3cc09077379f79bb5b92a9ab29cd8b59a44340a68dd8975a775ba",
+        "bytes": 8231
+      },
+      "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/creation-events.json": {
+        "sha256": "548f346cd656a27685e87a5e9e0e38a534b125f7f237d1392659f48aeb916790",
+        "bytes": 207
+      },
+      "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/events-1.json": {
+        "sha256": "cffd6b016389d255e1a329b1cb50f1c4c62e76217c038c90de8c07eb2dd18ce4",
+        "bytes": 448
+      },
+      "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/events-2.json": {
+        "sha256": "7a383c5193f6462f36d0d5d27a66f7833644c6392e3fed40af523ca19d732090",
+        "bytes": 333
+      },
+      "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/manifest.json": {
+        "sha256": "0a914e60ccc5afc0808d38b7bfb4b798a4326c18dbe683259af02eb585a76a39",
+        "bytes": 499
+      },
+      "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/state.json": {
+        "sha256": "c2671964ac8cd0e904f5d87344ba0ebf95d333ee5c6bff6b97c3e30fa922474f",
+        "bytes": 24480
+      },
+      "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt": {
+        "sha256": "c7aba22d7937c395075c00f8710cb072a0ec1e3932a5fe55b441c9b1a7da0f71",
+        "bytes": 2064
+      },
+      "scripts/check-card-printing.py": {
+        "sha256": "b15380e3b9d8e8394bbea82ab7d902ced9a50e4b67d43060c95c7560310c4f90",
+        "bytes": 13319
+      },
+      "scripts/gradle-locked": {
+        "sha256": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1",
+        "bytes": 3018
+      },
+      "web-client/package-lock.json": {
+        "sha256": "025036f70ef42825102791289c938a118e3367fa784f14cc82a8b0f6268a7a80",
+        "bytes": 85572
+      },
+      "web-client/package.json": {
+        "sha256": "fbe46e5d61d85aff433eaaca5e153fe696356af76d2e35ac9dac6797dba4e91f",
+        "bytes": 1129
+      },
+      "web-client/src/components/decisions/ChooseOptionDecisionUI.tsx": {
+        "sha256": "5de7b94ffc7487a02712e7daef19bb6ba7ad96e08c827ac5d0e09faaed73d237",
+        "bytes": 9698
+      },
+      "web-client/src/components/decisions/DecisionUI.tsx": {
+        "sha256": "6f36736d7edca487daa12ec1e81654b009b65572246d9971ef22cc82dd2a69d2",
+        "bytes": 11504
+      },
+      "web-client/src/components/game/GameBoard.tsx": {
+        "sha256": "cfd6df99adbfd6231e55e2322d0c155f16620a7553ca4bb77c28ddd6bcd5e43b",
+        "bytes": 122548
+      },
+      "web-client/src/store/gameStore.ts": {
+        "sha256": "db2d72ad82137968c67bc9ca9bbc4ec21f78a2567be735c359baa2a18ecbdd62",
+        "bytes": 2027
+      },
+      "web-client/src/store/slices/gameplaySlice.ts": {
+        "sha256": "84149363cc1ff311e7df0392c4fe7c0e3acaa7bead3f5d9e1e48f94535de3973",
+        "bytes": 25388
+      },
+      "web-client/src/store/slices/handlers/gameplayHandlers.ts": {
+        "sha256": "04c4dbe3549c8945f885840e8ae3e9b4081761e94c97118cc2c64bd3cba48c74",
+        "bytes": 39968
+      },
+      "web-client/src/store/slices/liveInteraction.test.ts": {
+        "sha256": "8b0aafac27c88f7d5aee7e7e959fedf474a1ddbfa4c521d03a061b3892b9cbad",
+        "bytes": 23527
+      },
+      "web-client/src/store/slices/ui/pipelinePhases.ts": {
+        "sha256": "7a2f5294822f795d7db348de614da93b9598e1bb2083999fcdd4e3f9de2bd6bb",
+        "bytes": 51931
+      },
+      "web-client/src/store/slices/ui/pipelineSlice.ts": {
+        "sha256": "20302ff105d30f2e9a7399b3c65aff697b6e246fbcd6113d8676209b5da37384",
+        "bytes": 13678
+      },
+      "web-client/src/store/slices/ui/publicTargetGroups.test.ts": {
+        "sha256": "d55dc6eddf716a7f17193d0c67fb404afb41217c7147b336891afabed5c92f90",
+        "bytes": 4484
+      },
+      "web-client/src/store/slices/ui/selectionSlice.ts": {
+        "sha256": "02400a8ce7e585ef600ec48a301ae1719c1111a6a813b51c62f8a4e6695e043b",
+        "bytes": 32972
+      },
+      "web-client/src/store/slices/ui/targetingSlice.ts": {
+        "sha256": "6d4b246e35ce3c829028833d1419ebd8a8838b55388132b2798112e5422a5953",
+        "bytes": 7210
+      },
+      "web-client/src/utils/surgeActionTransport.test.ts": {
+        "sha256": "a0cba6d66c62a2914f2144d5ec453c481794be00f0465ce9e8adcff079b5082a",
+        "bytes": 5387
+      },
+      "web-client/vite.config.ts": {
+        "sha256": "cb298fcb474c5555d313f34c60d93b18fb4a7a9b1b95837eb606f4401171c221",
+        "bytes": 1581
+      }
+    },
+    "tracked_index_clean": true,
+    "host_preflight": "PASS",
+    "M01_bytes_unchanged": true,
+    "all_nonmechanical_source_bytes_unchanged": true,
+    "qualification_starts": 0,
+    "controls_commit": "de96f63a2f7d23d12ea5f2f8bdf57c4a9afb7812",
+    "controls_readback_commit": "095e402cdc328e159246ef45176869311e516215",
+    "controls_archive_sha256": "6da094ef5dc8c8e770acd0450243bba3bcb6763ded883e28541f9d51335ec0d3",
+    "control_cases": 84,
+    "required_rejection_categories": 28,
+    "authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
+    "owner": "manual-m02-m14-normalization-20261118-1795037127242",
+    "frozen_utc": "2026-11-18T21:32:30.519Z"
   }
 }
