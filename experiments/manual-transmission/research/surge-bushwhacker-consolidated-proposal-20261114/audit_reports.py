@@ -24,7 +24,38 @@ def xml_rows(directory):
             rows.append({'identity':ident,'skip':row.find('skipped') is not None,'failure':row.find('failure'),
                 'error':row.find('error'),'xml':rel})
     return rows
+# BEGIN EXACT M01 AUDIT EXCEPTION
+def check_m01_rows(directory,expected,skips,negative):
+    prefix='mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\t'
+    names=['RG01 OGW116 canonical discovery exactly once','RG02 printed fields match pinned source','RG03 snapshot preserves all existing OGW entries','RG04 serialized script matches exact surge composition','RG05 Manual registry resolves new card without official games']
+    identities=[prefix+n for n in names]
+    require(negative['witness']==identities[3] and negative['positive_control']==identities[1],'M01 exact controls')
+    require(Counter(expected)==Counter({identities[3]:1,identities[1]:1}) and not skips,'M01 selected contract')
+    commands=[c for c in read(Path(directory).parent/'COMMANDS.json') if c['name']=='M01-surge-price']
+    argv=['scripts/gradle-locked',':mtg-sets:cleanTest',':mtg-sets:test','--tests',prefix.split('\t')[1]+'.'+names[3],'--tests',prefix.split('\t')[1]+'.'+names[1],'--no-build-cache','--no-daemon','--console=plain','--stacktrace','--max-workers=2','-PkotlinCompileParallelism=1']
+    require(len(commands)==1 and commands[0]['argv']==argv and commands[0]['returncode']!=0,'M01 exact selected command')
+    rows=xml_rows(directory)
+    require(Counter(r['identity'] for r in rows)==Counter(identities),'M01 exact five raw identities')
+    require(Counter(r['identity'] for r in rows if r['skip'])==Counter([identities[0],identities[2],identities[4]]),'M01 exact framework skips')
+    require(not any(r['error'] is not None for r in rows),'M01 error rows')
+    failed=[r for r in rows if r['failure'] is not None]
+    require(len(failed)==1 and failed[0]['identity']==identities[3] and not failed[0]['skip'],'M01 sole executed RG04 failure')
+    positive=next(r for r in rows if r['identity']==identities[1])
+    require(not positive['skip'] and positive['failure'] is None,'M01 RG02 positive control')
+    failure=failed[0]['failure']
+    require(negative['expected_exception']=='org.opentest4j.AssertionFailedError' and failure.get('type')==negative['expected_exception'],'M01 assertion type')
+    require(negative['source_file']=='RecklessBushwhackerRegistrationTest.kt' and negative['source_line']==49,'M01 assertion location contract')
+    text=failure.get('message','')+'\n'+''.join(failure.itertext())
+    require('RecklessBushwhackerRegistrationTest.kt:49' in text,'M01 assertion location')
+    expected_value='SelfAlternativeCost(manaCost={1}{R}, additionalCosts=[], condition=PlayerCastSpellsThisTurn(player=You, filter=GameObjectFilter(cardPredicates=[], statePredicates=[], controllerPredicate=null, anyOf=[]), atLeast=1, fromZone=null, fromZoneOtherThan=null))'
+    actual_value='SelfAlternativeCost(manaCost={2}{R}, additionalCosts=[], condition=PlayerCastSpellsThisTurn(player=You, filter=GameObjectFilter(cardPredicates=[], statePredicates=[], controllerPredicate=null, anyOf=[]), atLeast=1, fromZone=null, fromZoneOtherThan=null))'
+    pairs=re.findall(r'^expected:<(SelfAlternativeCost\(.*\))> but was:<(SelfAlternativeCost\(.*\))>$',text,re.M)
+    require(bool(pairs) and all(pair==(expected_value,actual_value) for pair in pairs),'M01 exact directed structured values')
+    require(text.count('SelfAlternativeCost(')==2*len(pairs),'M01 unambiguous structured roles')
+    return {'rows':5,'executed':2,'skips':3,'failures':1}
+# END EXACT M01 AUDIT EXCEPTION
 def check_rows(directory,expected,skips=None,negative=None):
+    if negative is not None and negative.get('id')=='M01-surge-price':return check_m01_rows(directory,expected,skips,negative)
     rows=xml_rows(directory);actual=Counter(r['identity'] for r in rows)
     require(actual==Counter(expected),f'identity/multiplicity mismatch in {directory}: missing={Counter(expected)-actual}; extra={actual-Counter(expected)}')
     require(Counter(r['identity'] for r in rows if r['skip'])==Counter(skips or {}),f'skip drift in {directory}')
