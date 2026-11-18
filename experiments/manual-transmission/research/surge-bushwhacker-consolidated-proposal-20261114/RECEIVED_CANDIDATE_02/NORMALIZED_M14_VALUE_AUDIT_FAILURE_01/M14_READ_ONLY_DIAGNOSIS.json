@@ -1,0 +1,28 @@
+{
+  "state": "READ_ONLY_DIAGNOSIS_NO_REPAIR",
+  "failed_gate": "M14-copy-choice",
+  "classification": "FROZEN_M14_ACTUAL_VALUE_ASSERTION_TEXT_CONTRACT_FAILURE_NO_SOURCE_DEFECT_ESTABLISHED",
+  "raw_counts": {
+    "rows": 20,
+    "executed": 2,
+    "skips": 18,
+    "failures": 1,
+    "errors": 0
+  },
+  "witness": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP15 copied surge spell retains choice without another cast",
+  "positive_control": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP16 normal spell copy remains unmarked",
+  "positive_control_pass": true,
+  "expected_exception": "org.opentest4j.AssertionFailedError",
+  "observed_exception": "org.opentest4j.AssertionFailedError",
+  "source_location": "SurgeCostCompositionTest.kt:137",
+  "source_location_verified": true,
+  "normal_expected": "SELF_ALTERNATIVE",
+  "mutant_expected": null,
+  "exact_message": "org.opentest4j.AssertionFailedError: Expected SELF_ALTERNATIVE but actual was null",
+  "audit_failure": "wrong actual value /workspace/scratch/fa63fb5ba8be/manual-transmission/manual-surge-bushwhacker-evidence/M14-copy-choice",
+  "explanation": "Frozen labelled actual-value regex accepts but was or actual followed directly by the value; this original framework output says actual was null. The retained logic rejects that text. No audit change or retry is authorized after this gate failure.",
+  "audit_gate_pass": false,
+  "no_source_defect_established": true,
+  "qualification_remains_failed": true,
+  "no_further_audit_changes": true
+}

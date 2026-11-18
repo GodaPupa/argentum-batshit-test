@@ -1,0 +1,151 @@
+{
+  "state": "BLOCKED_M14_ACTUAL_VALUE_ASSERTION_TEXT_AUDIT_GATE_FAILURE",
+  "classification": "FROZEN_M14_ACTUAL_VALUE_ASSERTION_TEXT_CONTRACT_FAILURE_NO_SOURCE_DEFECT_ESTABLISHED",
+  "authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
+  "freeze_commit": "26d984dcbf17ebc2a414b3db98e58720aaa6d4f6",
+  "controls_commit": "de96f63a2f7d23d12ea5f2f8bdf57c4a9afb7812",
+  "controls_readback_commit": "095e402cdc328e159246ef45176869311e516215",
+  "start_commit": "42dda1828c8e8b27981057990bfd858fa828ec7e",
+  "source": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
+  "source_tree": "4fd6a9d3bed8f853c9373c613fc4e333a7b8b3b6",
+  "validation": "e90d46482a996fbf6e9f49246f3f07eccb8d5e2c",
+  "validation_tree": "79d7695dcd76a30ae3222286d022c0432b09cc1e",
+  "qualification_starts": 1,
+  "qualification_budget": 1,
+  "host_preflight": "PASS",
+  "audit_controls_passed": 84,
+  "required_rejection_categories_passed": 28,
+  "compile_forms_passed": 15,
+  "normal": {
+    "rows": 67,
+    "skips": 0,
+    "failures": 0
+  },
+  "mutant_gates_passed": 13,
+  "passed_mutants": {
+    "M01-surge-price": {
+      "rows": 5,
+      "executed": 2,
+      "skips": 3,
+      "failures": 1
+    },
+    "M02-red-payment": {
+      "rows": 20,
+      "executed": 2,
+      "skips": 18,
+      "failures": 1
+    },
+    "M03-paid-guard": {
+      "rows": 32,
+      "executed": 2,
+      "skips": 30,
+      "failures": 1
+    },
+    "M04-other-filter": {
+      "rows": 32,
+      "executed": 2,
+      "skips": 30,
+      "failures": 1
+    },
+    "M05-controller-filter": {
+      "rows": 32,
+      "executed": 2,
+      "skips": 30,
+      "failures": 1
+    },
+    "M06-toughness": {
+      "rows": 32,
+      "executed": 2,
+      "skips": 30,
+      "failures": 1
+    },
+    "M07-granted-haste": {
+      "rows": 32,
+      "executed": 2,
+      "skips": 30,
+      "failures": 1
+    },
+    "M08-duration": {
+      "rows": 32,
+      "executed": 2,
+      "skips": 30,
+      "failures": 1
+    },
+    "M09-intrinsic-haste": {
+      "rows": 32,
+      "executed": 2,
+      "skips": 30,
+      "failures": 1
+    },
+    "M10-entity-only-exclusion": {
+      "rows": 10,
+      "executed": 2,
+      "skips": 8,
+      "failures": 1
+    },
+    "M11-exclude-none": {
+      "rows": 10,
+      "executed": 2,
+      "skips": 8,
+      "failures": 1
+    },
+    "M12-followed-origin": {
+      "rows": 10,
+      "executed": 2,
+      "skips": 8,
+      "failures": 1
+    },
+    "M13-missing-choice": {
+      "rows": 32,
+      "executed": 2,
+      "skips": 30,
+      "failures": 1
+    }
+  },
+  "M14": {
+    "state": "READ_ONLY_DIAGNOSIS_NO_REPAIR",
+    "failed_gate": "M14-copy-choice",
+    "classification": "FROZEN_M14_ACTUAL_VALUE_ASSERTION_TEXT_CONTRACT_FAILURE_NO_SOURCE_DEFECT_ESTABLISHED",
+    "raw_counts": {
+      "rows": 20,
+      "executed": 2,
+      "skips": 18,
+      "failures": 1,
+      "errors": 0
+    },
+    "witness": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP15 copied surge spell retains choice without another cast",
+    "positive_control": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP16 normal spell copy remains unmarked",
+    "positive_control_pass": true,
+    "expected_exception": "org.opentest4j.AssertionFailedError",
+    "observed_exception": "org.opentest4j.AssertionFailedError",
+    "source_location": "SurgeCostCompositionTest.kt:137",
+    "source_location_verified": true,
+    "normal_expected": "SELF_ALTERNATIVE",
+    "mutant_expected": null,
+    "exact_message": "org.opentest4j.AssertionFailedError: Expected SELF_ALTERNATIVE but actual was null",
+    "audit_failure": "wrong actual value /workspace/scratch/fa63fb5ba8be/manual-transmission/manual-surge-bushwhacker-evidence/M14-copy-choice",
+    "explanation": "Frozen labelled actual-value regex accepts but was or actual followed directly by the value; this original framework output says actual was null. The retained logic rejects that text. No audit change or retry is authorized after this gate failure.",
+    "audit_gate_pass": false,
+    "no_source_defect_established": true,
+    "qualification_remains_failed": true,
+    "no_further_audit_changes": true
+  },
+  "fully_audited_negative_witnesses": 13,
+  "observed_designated_failure_rows": 14,
+  "positive_controls_observed_pass": 14,
+  "restored_behavioral_rows": 0,
+  "later_gates": "NOT_EXECUTED",
+  "source_restoration": "PASS",
+  "source_rebinding": "PASS",
+  "bindings": 376,
+  "tracked_index_clean": true,
+  "host_settings_restored": true,
+  "candidate01_ci_activations": 0,
+  "candidate02_ci_activations": 0,
+  "original_artifact_downloads": 0,
+  "candidate03_absent": true,
+  "admitted": false,
+  "phase2_seeds": 0,
+  "phase2_games": 0,
+  "all_prior_history_preserved": true
+}
