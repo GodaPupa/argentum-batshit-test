@@ -1,0 +1,86 @@
+{
+  "state": "PASS",
+  "qualification_starts": 0,
+  "jdk": {
+    "method": "provisioned JDK",
+    "vendor": "Eclipse Temurin",
+    "version": "21.0.13+9",
+    "source_url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jdk_x64_linux_hotspot_21.0.13_9.tar.gz",
+    "archive_bytes": 207858352,
+    "archive_sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c",
+    "publisher_digest_verified": true,
+    "jdk_root": "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery/jdk/jdk-21.0.13+9",
+    "versions": {
+      "java": {
+        "path": "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery/jdk/jdk-21.0.13+9/bin/java",
+        "stdout": "",
+        "stderr": "openjdk version \"21.0.13\" 2026-10-20 LTS\nOpenJDK Runtime Environment Temurin-21.0.13+9 (build 21.0.13+9-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.13+9 (build 21.0.13+9-LTS, mixed mode, sharing)\n"
+      },
+      "javac": {
+        "path": "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery/jdk/jdk-21.0.13+9/bin/javac",
+        "stdout": "javac 21.0.13\n",
+        "stderr": ""
+      }
+    },
+    "repository_source_changes": 0
+  },
+  "started_utc": "2026-11-18T19:54:39.372896+00:00",
+  "gradle_java21_compiler_discovery": "PASS",
+  "buildSrc_compileJava": "PASS",
+  "ended_utc": "2026-11-18T19:55:46.664788+00:00",
+  "bound_files": 376,
+  "all_bindings_match": true,
+  "tracked_index_clean": true,
+  "host_properties_restored": true,
+  "commands": [
+    {
+      "name": "javac-probe",
+      "argv": [
+        "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery/jdk/jdk-21.0.13+9/bin/javac",
+        "--release",
+        "21",
+        "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery/CompilerProbe.java"
+      ],
+      "cwd": "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery",
+      "returncode": 0
+    },
+    {
+      "name": "java-probe",
+      "argv": [
+        "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery/jdk/jdk-21.0.13+9/bin/java",
+        "-cp",
+        "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery",
+        "CompilerProbe"
+      ],
+      "cwd": "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery",
+      "returncode": 0
+    },
+    {
+      "name": "gradle-toolchain-compileJava",
+      "argv": [
+        "scripts/gradle-locked",
+        "-p",
+        "buildSrc",
+        "javaToolchains",
+        "compileJava",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "cwd": "/workspace/scratch/fa63fb5ba8be/manual-transmission",
+      "returncode": 0
+    }
+  ],
+  "authority_commit": "caacbeaddb7da3da715facb26ba85926f45d47f1",
+  "claim_commit": "ac1973672c36dcc98602d6a620015fa2e28ea82e",
+  "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
+  "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
+  "candidate02_ci_activations": 0,
+  "source_changes": 0,
+  "archive_bytes": 7792,
+  "archive_sha256": "9a08b69e913f0fc7e7274e36a1ae6e8027b1dfce0f833b7c4f12548ea58b78f5",
+  "archive_members": 13
+}
