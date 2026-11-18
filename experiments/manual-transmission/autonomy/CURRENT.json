@@ -38,9 +38,12 @@
     "expires_utc": "2026-11-19T01:25:27.242Z",
     "mode": "explicit_user_authorized_foreground",
     "authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
-    "sole_source_writer": true
+    "sole_source_writer": true,
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "scheduled_executor_enabled": false,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106"
   },
-  "summary": "One complete normalized Candidate02 qualification started from zero after exact freeze/readback and 84 controls; no CI.",
+  "summary": "Normalized Candidate02 complete qualification: 15/15 compile forms PASS; normal suite running. CI0, receiving0.",
   "next": {
     "next_executable_action": "Execute frozen qualify.py once from zero. Preserve/restore/release/STOP at first real failure; CI only after every local gate passes."
   },
@@ -1243,7 +1246,14 @@
     "local_qualification_starts": 1,
     "normalization_authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
     "controls_commit": "de96f63a2f7d23d12ea5f2f8bdf57c4a9afb7812",
-    "controls_readback_commit": "095e402cdc328e159246ef45176869311e516215"
+    "controls_readback_commit": "095e402cdc328e159246ef45176869311e516215",
+    "local_progress": {
+      "compile_forms_passed": 15,
+      "normal": "RUNNING",
+      "mutation": "NOT_STARTED",
+      "restored": "NOT_STARTED",
+      "later_gates": "NOT_STARTED"
+    }
   },
   "surge_candidate01_stale_foreground_closeout": {
     "authority": "Explicit user MANUAL TRANSMISSION CANDIDATE 01 HARD RESUME Phase 2, 2026-11-14 Pacific",
@@ -4922,6 +4932,8 @@
     "ci_activations": 0,
     "original_artifact_downloads": 0,
     "phase2_seeds": 0,
-    "phase2_games": 0
+    "phase2_games": 0,
+    "compile_forms_passed": 15,
+    "local_gate_progress": "NORMAL_RUNNING"
   }
 }
