@@ -2504,5 +2504,61 @@
     "archive_bytes": 4780757,
     "archive_sha256": "d33a191a57095cf26fbcdd272ddb04b107732e9a59120ccd0481bf78641bf7e7",
     "recorded_utc": "2026-11-17T21:08:14.833Z"
+  },
+  "surge_bushwhacker_m01_audit_contract_authorization": {
+    "state": "CANDIDATE02_M01_AUDIT_CONTRACT_EXCEPTION_AUTHORIZED",
+    "explicit_user_grant": true,
+    "predecessor_stop": "1690e061c3534ee711224cb1190ef7c09c4b8c42",
+    "prior_failure_evidence": "3a75d8294ea9131546d6b5d550dfe669cf7b0bed",
+    "prior_readback": "c260e2dac93aadfe310f624fe308a637b846b114",
+    "prior_source": "640b5bf917c84e0acffb186333ebd3f4c71145cd",
+    "prior_validation": "4b2e8b8deebbc9436e325f166c3135575c84d81f",
+    "existing_audit_blob": "5eec3e737f7383099d15257bad36cbbde6c79876",
+    "classification": "M01_AUDIT_CONTRACT_INCOMPATIBILITY_NO_MUTATION_OR_PRODUCTION_FAILURE",
+    "permitted_changes": [
+      "audit_reports.py",
+      "verify_dispatch.py",
+      "CANDIDATE_PINS.json",
+      "recovery CURRENT"
+    ],
+    "M01_raw_contract": {
+      "rows": 5,
+      "executed": 2,
+      "failures": 1,
+      "errors": 0,
+      "skips": 3,
+      "identities": {
+        "RG01": "skipped",
+        "RG02": "passed",
+        "RG03": "skipped",
+        "RG04": "failed",
+        "RG05": "skipped"
+      },
+      "selected_controls": [
+        "RG04",
+        "RG02"
+      ],
+      "negative_exception": "org.opentest4j.AssertionFailedError",
+      "source_location": "RecklessBushwhackerRegistrationTest.kt:49",
+      "structured_expected": "SelfAlternativeCost manaCost {1}{R}",
+      "structured_actual": "SelfAlternativeCost manaCost {2}{R}",
+      "directionality_required": true
+    },
+    "generic_behavior_unchanged": [
+      "normal",
+      "restored",
+      "cards",
+      "ordinary",
+      "M02-M14"
+    ],
+    "verifier_exception": "Exact six-path delta; only added audit_reports.py path; original/progenitor bytes immutable; pin exact amended audit; prove diff only M01 helper and dispatch; no wildcards or subset acceptance",
+    "production_tests_mappings_patches_qualify_unchanged": true,
+    "MANIFEST_GATES_PROTOCOL_unchanged": true,
+    "candidate03_prohibited": true,
+    "complete_local_qualification_budget": 1,
+    "ci_budget_after_all_local_gates_pass": 1,
+    "original_receiving_budget": 1,
+    "qualification_requires_committed_authority_and_exact_freeze_readback": true,
+    "recorded_utc": "2026-11-18T02:07:06.988Z"
   }
 }
