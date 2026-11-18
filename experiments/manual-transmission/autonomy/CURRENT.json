@@ -40,9 +40,9 @@
     "authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
     "sole_source_writer": true
   },
-  "summary": "Exact normalized Candidate02 frozen; pinned Java preflight PASS; 84 controls PASS and immutable readback PASS. One full qualification not yet started.",
+  "summary": "One complete normalized Candidate02 qualification started from zero after exact freeze/readback and 84 controls; no CI.",
   "next": {
-    "next_executable_action": "Read back freeze; fresh reconcile; record exactly one complete qualification start from zero."
+    "next_executable_action": "Execute frozen qualify.py once from zero. Preserve/restore/release/STOP at first real failure; CI only after every local gate passes."
   },
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
@@ -1227,7 +1227,7 @@
   "surge_bushwhacker_qualification": {
     "candidate_index": "02",
     "label": "Candidate02 M02–M14 targeted report normalization",
-    "state": "FROZEN_CONTROLS_PASS_BEFORE_ONE_COMPLETE_QUALIFICATION",
+    "state": "LOCAL_QUALIFICATION_STARTED",
     "source": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
     "source_tree": "4fd6a9d3bed8f853c9373c613fc4e333a7b8b3b6",
     "validation": "e90d46482a996fbf6e9f49246f3f07eccb8d5e2c",
@@ -1236,11 +1236,11 @@
     "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
     "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
     "candidate_pins_blob": "2233f823b2dcdda060b9efe55948625bb93b0b7d",
-    "local_gates": "NOT_STARTED",
+    "local_gates": "RUNNING",
     "ci_activations": 0,
     "original_received": false,
     "local_qualification_budget": 1,
-    "local_qualification_starts": 0,
+    "local_qualification_starts": 1,
     "normalization_authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
     "controls_commit": "de96f63a2f7d23d12ea5f2f8bdf57c4a9afb7812",
     "controls_readback_commit": "095e402cdc328e159246ef45176869311e516215"
@@ -4906,5 +4906,22 @@
     "authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
     "owner": "manual-m02-m14-normalization-20261118-1795037127242",
     "frozen_utc": "2026-11-18T21:32:30.519Z"
+  },
+  "surge_bushwhacker_targeted_report_qualification": {
+    "state": "CANDIDATE02_M02_M14_TARGETED_REPORT_NORMALIZED_QUALIFICATION_STARTED",
+    "started_utc": "2026-11-18T21:33:01.420Z",
+    "owner": "manual-m02-m14-normalization-20261118-1795037127242",
+    "authority_commit": "a30dd5f35f078b8ccd68a2619b93617a907d0907",
+    "freeze_commit": "26d984dcbf17ebc2a414b3db98e58720aaa6d4f6",
+    "source": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
+    "validation": "e90d46482a996fbf6e9f49246f3f07eccb8d5e2c",
+    "qualification_budget": 1,
+    "qualification_starts": 1,
+    "from_zero": true,
+    "prior_stopped_M02_not_reinterpreted_as_pass": true,
+    "ci_activations": 0,
+    "original_artifact_downloads": 0,
+    "phase2_seeds": 0,
+    "phase2_games": 0
   }
 }
