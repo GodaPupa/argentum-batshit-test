@@ -54,8 +54,48 @@ def check_m01_rows(directory,expected,skips,negative):
     require(text.count('SelfAlternativeCost(')==2*len(pairs),'M01 unambiguous structured roles')
     return {'rows':5,'executed':2,'skips':3,'failures':1}
 # END EXACT M01 AUDIT EXCEPTION
+# BEGIN EXACT M02 M14 TARGETED REPORT NORMALIZATION
+def check_targeted_class_rows(directory,expected,skips,negative):
+    module,klass,witness=negative['witness'].split('\t')
+    pm,pc,positive=negative['positive_control'].split('\t')
+    require((module,klass)==(pm,pc),'targeted witness/control class mismatch')
+    selected=[negative['witness'],negative['positive_control']]
+    require(len(set(selected))==2 and Counter(expected)==Counter(selected) and not skips,'targeted selected contract')
+    commands=[c for c in read(Path(directory).parent/'COMMANDS.json') if c['name']==negative['id']]
+    task=':'+module.replace('/',':')
+    argv=['scripts/gradle-locked',task+':cleanTest',task+':test','--tests',klass+'.'+witness,'--tests',pc+'.'+positive,'--no-build-cache','--no-daemon','--console=plain','--stacktrace','--max-workers=2','-PkotlinCompileParallelism=1']
+    require(len(commands)==1 and commands[0]['argv']==argv and commands[0]['returncode']!=0,'targeted exact selected command')
+    matrix=read(P/'TEST_MATRIX.json')
+    inventory=[r for r in matrix['rows'] if r['family']!='client' and (r['module'],r['classname'])==(module,klass)]
+    cardinalities={('rules-engine','com.wingedsheep.engine.scenarios.SurgeCostCompositionTest'):20,('mtg-sets/2008-2016/tests','com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest'):32,('rules-engine','com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest'):10}
+    require((module,klass) in cardinalities and len(inventory)==cardinalities[(module,klass)],'targeted frozen class cardinality')
+    identities=[r['identity'] for r in inventory]
+    require(len(set(identities))==len(identities) and all(r['multiplicity']==1 and r['identity']=='\t'.join([module,klass,r['name']]) for r in inventory),'targeted frozen identity multiplicities')
+    require(all(i in identities for i in selected),'targeted selectors outside frozen class')
+    rows=xml_rows(directory)
+    require(Counter(r['identity'] for r in rows)==Counter(identities),'targeted exact full-class identities')
+    require(Counter(r['identity'] for r in rows if not r['skip'])==Counter(selected),'targeted exactly two executed identities')
+    require(not any(r['error'] is not None for r in rows),'targeted error rows')
+    require(all(r['skip'] and r['failure'] is None and r['error'] is None for r in rows if r['identity'] not in selected),'targeted unselected rows must only skip')
+    control=next(r for r in rows if r['identity']==negative['positive_control'])
+    require(not control['skip'] and control['failure'] is None and control['error'] is None,'targeted positive control PASS')
+    failed=[r for r in rows if r['failure'] is not None]
+    require(len(failed)==1 and failed[0]['identity']==negative['witness'] and not failed[0]['skip'],'targeted sole executed witness failure')
+    failure=failed[0]['failure'];require(failure.get('type')==negative['expected_exception'],f'wrong assertion type in {directory}')
+    text=(failure.get('message','')+'\n'+''.join(failure.itertext()))
+    require(f"{negative['source_file']}:{negative['source_line']}" in text,f'wrong assertion line in {directory}')
+    require(re.search(re.escape(negative['source_file'])+':'+str(negative['source_line'])+r'(?![0-9])',text) is not None,f'nonexact assertion line in {directory}')
+    def literal(v):return str(v).lower() if v is None or isinstance(v,bool) else str(v)
+    expected='null' if negative['normal_expected'] is None else literal(negative['normal_expected'])
+    actual='null' if negative['mutant_expected'] is None else literal(negative['mutant_expected'])
+    # Preserve and inspect both labelled values, not just a generic assertion failure.
+    require(re.search(r'expected\s*:?\s*<?'+re.escape(expected)+r'>?',text,re.I) is not None,f'wrong expected value {directory}')
+    require(re.search(r'(?:but was|actual)\s*:?\s*<?'+re.escape(actual)+r'>?',text,re.I) is not None,f'wrong actual value {directory}')
+    return {'rows':len(rows),'executed':2,'skips':len(rows)-2,'failures':1}
+# END EXACT M02 M14 TARGETED REPORT NORMALIZATION
 def check_rows(directory,expected,skips=None,negative=None):
     if negative is not None and negative.get('id')=='M01-surge-price':return check_m01_rows(directory,expected,skips,negative)
+    if negative is not None and negative.get('id') in tuple(m['id'] for m in read(P/'COMPILE_WITNESSES.json')['mutants'][1:]):return check_targeted_class_rows(directory,expected,skips,negative)
     rows=xml_rows(directory);actual=Counter(r['identity'] for r in rows)
     require(actual==Counter(expected),f'identity/multiplicity mismatch in {directory}: missing={Counter(expected)-actual}; extra={actual-Counter(expected)}')
     require(Counter(r['identity'] for r in rows if r['skip'])==Counter(skips or {}),f'skip drift in {directory}')
