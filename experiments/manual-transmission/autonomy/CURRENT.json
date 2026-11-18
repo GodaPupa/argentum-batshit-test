@@ -30,11 +30,21 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "CANDIDATE02_M01_AUDIT_REPLACEMENT_QUALIFICATION_AUTHORIZED",
-  "owner": null,
-  "lease": null,
-  "summary": "Closed only the explicitly authorized stalled M01 audit foreground with no recorded qualification verdict. One exact frozen replacement qualification authorized; not started.",
-  "next": "Immutable authority readback, fresh reconciliation, sole foreground claim, exact source verification, then one complete replacement qualification from zero.",
+  "status": "WORKING",
+  "owner": "manual-m01-replacement-20261118-fa63fb5ba8be-1795024664088",
+  "lease": {
+    "owner": "manual-m01-replacement-20261118-fa63fb5ba8be-1795024664088",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "claimed_utc": "2026-11-18T17:57:44.088Z",
+    "expires_utc": "2026-11-18T21:57:44.088Z",
+    "sole_source_writer": true,
+    "scheduled_executor_enabled": false,
+    "scheduled_executor_disabled": true,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+    "authority_commit": "89072adf4f0cc6c76676290af39df2a89e3fdb93"
+  },
+  "summary": "Replacement authority immutably read back; sole foreground claimed for exact frozen-source verification. Replacement qualification not started.",
+  "next": "Verify exact source/validation, all 376 bindings and host state; record one replacement start before qualification.",
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
     "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
