@@ -43,8 +43,8 @@
     "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
     "authority_commit": "caacbeaddb7da3da715facb26ba85926f45d47f1"
   },
-  "summary": "Sole foreground claimed after immutable Java21 host-recovery authority readback. Host inspection next; no qualification started.",
-  "next": "Recover/verify one complete Java21 JDK and pass bounded compiler preflight; archive/read back evidence before one qualification.",
+  "summary": "Host Java21 JDK/compiler preflight PASS and immutable host evidence readback PASS. One complete qualification starts from zero against exact frozen audit Candidate02.",
+  "next": "Complete unchanged qualification; preserve/restore/rebind/release/STOP on any real or environmental failure. One-shot CI only if every local gate passes.",
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
     "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
@@ -1231,7 +1231,7 @@
   "surge_bushwhacker_qualification": {
     "candidate_index": "02",
     "label": "Candidate02 — M01 audit-contract final requalification",
-    "state": "BLOCKED_M01_AUDIT_REPLACEMENT_JAVA21_COMPILER_TOOLCHAIN_UNAVAILABLE",
+    "state": "CANDIDATE02_M01_AUDIT_POST_JDK_RECOVERY_QUALIFICATION_STARTED",
     "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
     "source_tree": "5e58df58826cfa24ab5dd967b1cea45778050a0f",
     "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
@@ -1240,7 +1240,7 @@
     "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
     "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
     "candidate_pins_blob": "d1897e2ce1023ed5178dbc64a88c3158ee723c72",
-    "local_gates": "STOP_COMPILE_NORMAL_ENVIRONMENT_FAILURE",
+    "local_gates": "PENDING_POST_JDK_RECOVERY_QUALIFICATION",
     "ci_activations": 0,
     "original_received": false,
     "local_qualification_budget": 1,
@@ -2878,7 +2878,7 @@
     "permitted_recovery": "Host only: existing full Java21 JDK, then existing cached JDK, then one provisioned JDK, preferably Temurin21.0.13+9. Session-local selection, outside repository; no repository source/configuration change.",
     "repository_source_changes": 0,
     "qualification_budget_after_host_preflight_pass": 1,
-    "qualification_starts": 0,
+    "qualification_starts": 1,
     "host_preflight_requires": [
       "java21 and javac21 from same JDK root",
       "Gradle Java21 compiler discovery",
@@ -2894,5 +2894,40 @@
     "source_tests_audit_verifier_qualify_mappings_patches_thresholds_frozen": true,
     "host_preflight_failure_action": "Preserve host evidence, restore settings, release foreground, STOP without consuming qualification budget.",
     "qualification_failure_action": "Preserve exact evidence, restore/rebind, release foreground, STOP; no opportunistic rerun or another toolchain."
+  },
+  "surge_bushwhacker_java21_host_recovery": {
+    "state": "PASS",
+    "authority_commit": "caacbeaddb7da3da715facb26ba85926f45d47f1",
+    "host_evidence_commit": "47f212e5528ad02ee9c404b2dc2cb2bd23794669",
+    "host_receipt": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/RECEIVED_CANDIDATE_02/JAVA21_HOST_RECOVERY_20261118/HOST_RECOVERY_RECEIPT.json",
+    "archive_bytes": 7792,
+    "archive_sha256": "9a08b69e913f0fc7e7274e36a1ae6e8027b1dfce0f833b7c4f12548ea58b78f5",
+    "immutable_readback": "PASS",
+    "jdk_vendor": "Eclipse Temurin",
+    "jdk_version": "21.0.13+9",
+    "jdk_root": "/workspace/scratch/fa63fb5ba8be/manual-java21-recovery/jdk/jdk-21.0.13+9",
+    "method": "provisioned JDK",
+    "jdk_archive_sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c",
+    "java_and_javac_same_root": true,
+    "gradle_java21_compiler_discovery": "PASS",
+    "buildSrc_compileJava": "PASS",
+    "source_unchanged": true,
+    "bindings": 376,
+    "tracked_index_clean": true,
+    "host_properties_restored": true
+  },
+  "surge_bushwhacker_post_jdk_qualification": {
+    "state": "CANDIDATE02_M01_AUDIT_POST_JDK_RECOVERY_QUALIFICATION_STARTED",
+    "qualification_starts": 1,
+    "budget": 1,
+    "started_utc": "2026-11-18T19:56:48.212Z",
+    "authority_commit": "caacbeaddb7da3da715facb26ba85926f45d47f1",
+    "host_evidence_commit": "47f212e5528ad02ee9c404b2dc2cb2bd23794669",
+    "host_evidence_readback": "PASS",
+    "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
+    "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
+    "verdict": null,
+    "ci_activations": 0,
+    "original_downloads": 0
   }
 }
