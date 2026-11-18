@@ -43,8 +43,8 @@
     "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
     "authority_commit": "89072adf4f0cc6c76676290af39df2a89e3fdb93"
   },
-  "summary": "Replacement authority immutably read back; sole foreground claimed for exact frozen-source verification. Replacement qualification not started.",
-  "next": "Verify exact source/validation, all 376 bindings and host state; record one replacement start before qualification.",
+  "summary": "Exact frozen source verification PASS (376 bindings), verifier PASS, archived controls15/15 integrity PASS. One complete replacement qualification starts from zero.",
+  "next": "Run unchanged qualification once; archive terminal evidence and restore/rebind; no rerun or source changes. CI only after every local gate passes.",
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
     "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
@@ -2722,7 +2722,7 @@
     "prior_candidate02_ci_activations": 0,
     "prior_artifact_downloads": 0,
     "replacement_qualification_budget": 1,
-    "qualification_starts": 0,
+    "qualification_starts": 1,
     "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
     "source_tree": "5e58df58826cfa24ab5dd967b1cea45778050a0f",
     "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
@@ -2742,5 +2742,31 @@
     "real_gate_failure_action": "Preserve exact evidence; restore/rebind; release foreground; STOP. No correction or rerun.",
     "external_interruption_action": "Preserve available evidence; restore source and host; no failed-candidate inference; release and STOP. No silent replacement.",
     "scope": "Only this exact stalled/no-verdict execution consumes the superseded start; all prior failed evidence and original audit contract remain intact."
+  },
+  "surge_bushwhacker_m01_audit_replacement_qualification": {
+    "state": "REPLACEMENT_LOCAL_QUALIFICATION_STARTED_ONCE",
+    "qualification_starts": 1,
+    "budget": 1,
+    "started_utc": "2026-11-18T17:59:37.972Z",
+    "authority_commit": "89072adf4f0cc6c76676290af39df2a89e3fdb93",
+    "claim_commit": "093f906ad9d11be5c92d55bf54bbb6bb98f508cc",
+    "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
+    "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
+    "source_preflight": {
+      "state": "PASS",
+      "bindings": 376,
+      "source_tree": "5e58df58826cfa24ab5dd967b1cea45778050a0f",
+      "validation_tree": "2ac3224b56c6d1bcc7b4d40c419ab4ca67e5c0b0",
+      "clean_tracked_index": true,
+      "host_properties_residue": false,
+      "verifier": "SOURCE_BINDING_PASS",
+      "controls": 15,
+      "controls_archive_and_manifest": "PASS",
+      "gradle": "9.6.1",
+      "java": "21.0.13"
+    },
+    "verdict": null,
+    "ci_activations": 0,
+    "original_downloads": 0
   }
 }
