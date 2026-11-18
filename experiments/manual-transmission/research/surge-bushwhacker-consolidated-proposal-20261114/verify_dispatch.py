@@ -42,7 +42,7 @@ def verify(envelope):
         check(audit_grant['explicit_user_grant'] is True and audit_grant['prior_source']=='640b5bf917c84e0acffb186333ebd3f4c71145cd','M01 audit authority')
         audit_path=RECORD+'/audit_reports.py'
         previous_audit=raw(audit_grant['prior_source'],audit_path)
-        amended_audit=raw(source,audit_path)
+        amended_audit=raw('942f9f37c14ecaf7cfd7a7609d3d69080392f2eb',audit_path)
         check(git('rev-parse',audit_grant['prior_source']+':'+audit_path)==audit_grant['existing_audit_blob']=='5eec3e737f7383099d15257bad36cbbde6c79876','M01 audit predecessor blob')
         check(digest(previous_audit)=='b094156d4b13e0eb2f2b06f0d52623fe4e79704791c74679cdc3ec61531da1cd','M01 audit predecessor hash')
         check(digest(amended_audit)=='6dd9feb17de5d9a8fcd406303b3bdab8b6550101f2cd6993b295591010e5838f','M01 exact amended audit hash')
@@ -52,10 +52,32 @@ def verify(envelope):
         check(digest(start+helper+end)=='bae703f765282c9d7819195c69e4d45ed7618c68fd82ec365f374cb24d9b7b23','M01 exact helper bytes')
         dispatch=b"    if negative is not None and negative.get('id')=='M01-surge-price':return check_m01_rows(directory,expected,skips,negative)\n"
         check(after.count(dispatch)==1 and before+after.replace(dispatch,b'')==previous_audit,'M01 generic audit bytes unchanged')
+    normalization_grant=None
+    if q['candidate_index']=='02':
+        normalization_grant=json.loads(raw('a30dd5f35f078b8ccd68a2619b93617a907d0907','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_m02_m14_report_normalization_authorization']
+        check(normalization_grant['explicit_user_grant'] is True and normalization_grant['prior_source']=='942f9f37c14ecaf7cfd7a7609d3d69080392f2eb','M02–M14 normalization authority')
+        check(git('rev-parse',normalization_grant['prior_source']+':'+audit_path)==normalization_grant['prior_audit_blob']=='b37acdf87b701aee1a817f562b2040b259b9bcdb','preserved M01 audit lineage')
+        normalized=raw(source,audit_path)
+        check(digest(normalized)=='ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d','exact normalized audit hash')
+        start=b'# BEGIN EXACT M02 M14 TARGETED REPORT NORMALIZATION\n';end=b'# END EXACT M02 M14 TARGETED REPORT NORMALIZATION\n'
+        check(normalized.count(start)==normalized.count(end)==1,'bounded M02–M14 helper')
+        before,rest=normalized.split(start);helper,after=rest.split(end)
+        check(digest(start+helper+end)=='7237e694c40a4762aff4c5761c3b9346df496fb5dff747409ec00ae286c5ef3c','exact M02–M14 helper bytes')
+        dispatch=b"    if negative is not None and negative.get('id') in tuple(m['id'] for m in read(P/'COMPILE_WITNESSES.json')['mutants'][1:]):return check_targeted_class_rows(directory,expected,skips,negative)\n"
+        check(after.count(dispatch)==1 and before+after.replace(dispatch,b'')==amended_audit,'M01 and generic audit byte-semantics unchanged')
+        mechanical={RECORD+'/'+n for n in ['audit_reports.py','verify_dispatch.py','CANDIDATE_PINS.json']}
+        check(set(normalization_grant['authorized_source_paths'])==mechanical,'exact normalization paths authority')
+        check(set(git('diff','--name-only',normalization_grant['prior_source'],source).splitlines())==mechanical,'exact three normalization paths; all other source frozen')
+        old_pins=json.loads(raw(normalization_grant['prior_source'],RECORD+'/CANDIDATE_PINS.json'))
+        new_pins=json.loads(raw(source,RECORD+'/CANDIDATE_PINS.json'))
+        check(set(new_pins)==set(old_pins)|{'targeted_report_normalization'},'mechanical successor pin metadata')
+        check(all(new_pins[k]==v for k,v in old_pins.items() if k!='bindings'),'unrelated pin metadata unchanged')
+        check(set(new_pins['bindings'])==set(old_pins['bindings']),'exact binding path set unchanged')
+        check({path for path in old_pins['bindings'] if old_pins['bindings'][path]!=new_pins['bindings'][path]}=={audit_path,RECORD+'/verify_dispatch.py'},'only audit/verifier pins changed')
     for name,pin in manifest['files'].items():
         check(digest(raw(proposal,RECORD+'/'+name))==pin['sha256'],'immutable proposal history '+name)
         if audit_grant is not None and name=='audit_reports.py':
-            check(digest(raw(source,RECORD+'/'+name))=='6dd9feb17de5d9a8fcd406303b3bdab8b6550101f2cd6993b295591010e5838f','amended audit proposal binding')
+            check(digest(raw(source,RECORD+'/'+name))=='ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d','amended audit proposal binding')
         elif mapping_grant is not None and name in mapping_grant['mapping_pins']:
             check(digest(raw(source,RECORD+'/'+name))==mapping_grant['mapping_pins'][name]['new_sha256'],'amended proposal binding '+name)
         else:check(digest(raw(source,RECORD+'/'+name))==pin['sha256'],'immutable proposal changed '+name)
@@ -119,6 +141,7 @@ def verify(envelope):
         check(current['surge_bushwhacker_second_fixture_binding_authorization']==second_grant,'second fixture grant changed')
         check(current['surge_bushwhacker_m01_mapping_binding_exception']==mapping_grant,'M01 mapping grant changed')
         check(current['surge_bushwhacker_m01_audit_contract_authorization']==audit_grant,'M01 audit grant changed')
+        check(current['surge_bushwhacker_m02_m14_report_normalization_authorization']==normalization_grant,'M02–M14 normalization grant changed')
         fixture_prior=fixture_grant['base_candidate02']
         check(pins['fixture_exception']['authorization_commit']=='a6fe1e604ed884413a147fba69653bc87a803c4b','fixture authorization pin')
         check(pins['fixture_exception']['prior_candidate02']==fixture_prior,'prior candidate02 evidence pins')
