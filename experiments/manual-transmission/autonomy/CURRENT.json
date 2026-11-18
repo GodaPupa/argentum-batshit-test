@@ -30,11 +30,21 @@
     "enabled_at_latest_readback": false,
     "latest_grant_resume_proof": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/GRANT_AND_EXECUTOR_RESUME_20261107.json"
   },
-  "status": "CANDIDATE02_M01_AUDIT_JAVA21_HOST_RECOVERY_AUTHORIZED",
-  "owner": null,
-  "lease": null,
-  "summary": "Host-only Java21 compiler recovery authorized after exact source/376-binding/prior-archive reconciliation. Qualification starts remain zero until compiler preflight and immutable host evidence readback PASS.",
-  "next": "Read back host-recovery authority; reconcile; claim sole foreground; inspect/recover one coherent full Java21 JDK; compiler preflight before qualification.",
+  "status": "WORKING",
+  "owner": "manual-java21-recovery-20261118-fa63fb5ba8be-1795031574003",
+  "lease": {
+    "owner": "manual-java21-recovery-20261118-fa63fb5ba8be-1795031574003",
+    "kind": "USER_AUTHORIZED_FOREGROUND_WORK",
+    "claimed_utc": "2026-11-18T19:52:54.003Z",
+    "expires_utc": "2026-11-18T23:52:54.003Z",
+    "sole_source_writer": true,
+    "scheduled_executor_enabled": false,
+    "scheduled_executor_disabled": true,
+    "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
+    "authority_commit": "caacbeaddb7da3da715facb26ba85926f45d47f1"
+  },
+  "summary": "Sole foreground claimed after immutable Java21 host-recovery authority readback. Host inspection next; no qualification started.",
+  "next": "Recover/verify one complete Java21 JDK and pass bounded compiler preflight; archive/read back evidence before one qualification.",
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
     "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
