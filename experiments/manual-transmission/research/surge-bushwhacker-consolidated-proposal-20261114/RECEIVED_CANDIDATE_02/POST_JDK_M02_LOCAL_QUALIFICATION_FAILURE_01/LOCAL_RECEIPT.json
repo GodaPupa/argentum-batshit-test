@@ -1,0 +1,179 @@
+{
+  "state": "BLOCKED_POST_JDK_M02_REPORT_IDENTITY_MULTIPLICITY_GATE_FAILURE",
+  "classification": "FROZEN_M02_RAW_REPORT_CONTRACT_FAILURE",
+  "authority_commit": "caacbeaddb7da3da715facb26ba85926f45d47f1",
+  "host_recovery_commit": "47f212e5528ad02ee9c404b2dc2cb2bd23794669",
+  "start_commit": "90eec6b836936cd90cdb5070cffd1696f101d8e6",
+  "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
+  "source_tree": "5e58df58826cfa24ab5dd967b1cea45778050a0f",
+  "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
+  "validation_tree": "2ac3224b56c6d1bcc7b4d40c419ab4ca67e5c0b0",
+  "host_recovery": "PASS Temurin21.0.13+9; java+javac; Gradle compiler discovery; buildSrc compileJava",
+  "qualification_starts": 1,
+  "qualification_budget": 1,
+  "compile_forms_passed": 15,
+  "normal": {
+    "rows": 67,
+    "skips": 0,
+    "failures": 0
+  },
+  "M01": {
+    "rows": 5,
+    "executed": 2,
+    "skips": 3,
+    "failures": 1
+  },
+  "M02": {
+    "gate_pass": false,
+    "reported_rows": 20,
+    "executed_rows": 2,
+    "skips": 18,
+    "failures": 1,
+    "errors": 0,
+    "failed_identity": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP03 red requirement cannot be paid by two colorless",
+    "positive_control": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP02 normal choice spends two generic and one red",
+    "positive_control_pass": true,
+    "exception": "org.opentest4j.AssertionFailedError",
+    "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+    "source_location_verified": true,
+    "extra_skipped_identities": [
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP01 explicit alternative spends one generic and one red",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP04 red only cannot pay unreduced surge",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP05 generic reduction preserves red and explicit choice",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP06 equal effective prices do not imply selected alternative",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP07 generic tax applies after alternative base",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP08 granted alternative does not mark surge",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP09 free cast does not mark surge",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP10 no prior history cannot self qualify during cast",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP11 sorcery timing still enforced",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP12 flash composition uses prior spell still on stack",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP13 serialized alternative action preserves discriminator",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP14 serialized cast history and stack preserve chosen cost",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP15 copied surge spell retains choice without another cast",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP16 normal spell copy remains unmarked",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP17 replay alternative payment and events exactly",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP18 wrong actor and stale eligibility reject atomically",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP19 cost composition JSON round trip",
+      "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP20 normal and alternative legal menus are nonmutating"
+    ],
+    "contract_rows": 2,
+    "contract_skips": 0,
+    "failure_gate": "audit_reports.py check_rows identity/multiplicity mismatch",
+    "later_value_assertion_not_reached_by_qualifier": true
+  },
+  "qualified_mutant_gates": 1,
+  "remaining_mutants_executed": 0,
+  "restored_behavioral_rows": 0,
+  "later_gates_executed": false,
+  "runner_exit": 1,
+  "source_restoration": {
+    "returncode": 1,
+    "ended_utc": "2026-11-18T20:21:18.883696+00:00",
+    "all_bindings_match": true,
+    "bound_files": 376,
+    "tracked_index_clean": true,
+    "task_gradle_properties_removed": true,
+    "global_gradle_properties_absent": true,
+    "failed_bindings": []
+  },
+  "source_defect_established": false,
+  "audit_changes": 0,
+  "source_changes": 0,
+  "qualification_reruns": 0,
+  "candidate03_prohibited": true,
+  "candidate01_ci_activations": 0,
+  "candidate02_ci_activations": 0,
+  "original_artifact_downloads": 0,
+  "admitted": false,
+  "phase2_seeds": 0,
+  "phase2_games": 0,
+  "archive": {
+    "kind": "LOCAL_POST_JDK_QUALIFICATION_NOT_GITHUB_ARTIFACT",
+    "archive_bytes": 4663364,
+    "archive_sha256": "797c97d73d7b3d22fcaed221ba2e215cdd3f54c4d1f58189ef638f302c7af7c5",
+    "members": 509,
+    "parts": [
+      {
+        "path": "archive.part0000.b64",
+        "decoded_bytes": 300000,
+        "sha256": "b843b5fbe05aafd373968f6905ae8de67df569476562af833cf6a7a2566e28a7"
+      },
+      {
+        "path": "archive.part0001.b64",
+        "decoded_bytes": 300000,
+        "sha256": "76fe4691d3a844bb8943388d921ceb1a12ff50a3fcb2c684e35e4c8621673dd0"
+      },
+      {
+        "path": "archive.part0002.b64",
+        "decoded_bytes": 300000,
+        "sha256": "82cd8b50057f5f7b2ae422bb84568926b3f3f9bc4e38191bf29628bddfd9b080"
+      },
+      {
+        "path": "archive.part0003.b64",
+        "decoded_bytes": 300000,
+        "sha256": "8b9030d076a426a1e748656b6091b067d7a14d9e144da3f393cc06607252d826"
+      },
+      {
+        "path": "archive.part0004.b64",
+        "decoded_bytes": 300000,
+        "sha256": "af441d3efc05d8190ceadcdeca52750c411252886690a95441395ee15ded3e32"
+      },
+      {
+        "path": "archive.part0005.b64",
+        "decoded_bytes": 300000,
+        "sha256": "a0b5c86a4753dd3132b96d71179890aaf0700224945b8bec3dff96c476e557df"
+      },
+      {
+        "path": "archive.part0006.b64",
+        "decoded_bytes": 300000,
+        "sha256": "0d3bcad17355051285754c409212c50fd13c125377dcda02b9ccb2f5352c7379"
+      },
+      {
+        "path": "archive.part0007.b64",
+        "decoded_bytes": 300000,
+        "sha256": "3082c59e60ad512d0f9eddcf86e3e7c9e697a43e5327e583a9eea50aedcb2911"
+      },
+      {
+        "path": "archive.part0008.b64",
+        "decoded_bytes": 300000,
+        "sha256": "370418c02c81bf806fcdeb3987873ba60bfaa2712dc7d404a87ffedab868c696"
+      },
+      {
+        "path": "archive.part0009.b64",
+        "decoded_bytes": 300000,
+        "sha256": "e9eef83a4c5390132c69e7c6290382d2c86dcc010729f980b1f778bb7ad886f5"
+      },
+      {
+        "path": "archive.part0010.b64",
+        "decoded_bytes": 300000,
+        "sha256": "04b8a6a4c00c93c792aa470db8e3b32696a781ddf1402f98ffe3ba41fa7dafb4"
+      },
+      {
+        "path": "archive.part0011.b64",
+        "decoded_bytes": 300000,
+        "sha256": "6fb168b1a96ecc68d80edc7d3ed751248c94e6456744570b910634134e63cacc"
+      },
+      {
+        "path": "archive.part0012.b64",
+        "decoded_bytes": 300000,
+        "sha256": "cf5976a4a309c9370925a69f5a8200507d6febe1a6ec2f20e32b2df74b708ce3"
+      },
+      {
+        "path": "archive.part0013.b64",
+        "decoded_bytes": 300000,
+        "sha256": "5227d770fd2cc80926d1652ff2e8daca478f31b4d24341c0f83dc907a4b376a9"
+      },
+      {
+        "path": "archive.part0014.b64",
+        "decoded_bytes": 300000,
+        "sha256": "f186ebbff423e7450e010d93b457a9ac194d9b67471ea5e09db9ec2efb04d386"
+      },
+      {
+        "path": "archive.part0015.b64",
+        "decoded_bytes": 163364,
+        "sha256": "d6945fdf247f4fd20f9542e6cdb8b7947f74623934309e82da7ad64556831013"
+      }
+    ]
+  },
+  "recorded_utc": "2026-11-18T20:22:17.932816+00:00"
+}
