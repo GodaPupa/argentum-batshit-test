@@ -43,8 +43,8 @@
     "writable_ref": "refs/heads/manual-transmission/quarantine-recovery-20261106",
     "authority_commit": "2d57983ddd0e78c1dc2e986d7df8f52ba83085b4"
   },
-  "summary": "Exact M01-only audit/verifier/pins frozen; 15 controls PASS and archived. Qualification starts=0 pending immutable freeze readback.",
-  "next": "STOP. No further qualification, rerun, source/test/contract/audit change, CI activation or admission under this exhausted execution authority.",
+  "summary": "Immutable audit authorization, source freeze, and control archive readbacks PASS. Single complete qualification starting from zero.",
+  "next": "Complete frozen qualification; preserve/rebind/release/stop on any real gate failure; one-shot CI only after all gates pass.",
   "safeguards": {
     "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
     "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
@@ -1231,7 +1231,7 @@
   "surge_bushwhacker_qualification": {
     "candidate_index": "02",
     "label": "Candidate02 — M01 audit-contract final requalification",
-    "state": "M01_AUDIT_FROZEN_PREQUALIFICATION",
+    "state": "M01_AUDIT_LOCAL_QUALIFICATION_STARTED_ONCE",
     "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
     "source_tree": "5e58df58826cfa24ab5dd967b1cea45778050a0f",
     "validation": "1a9e582bec0261941f83983d72dcca204dde0809",
@@ -1240,7 +1240,7 @@
     "workflow_blob": "1334156a3de4b5d91a584ba73ce23952ebfd2967",
     "workflow_sha256": "067aace8f54f2206d7499a236d59722cb1e643729efa1c385e6f7d37fd57aeff",
     "candidate_pins_blob": "d1897e2ce1023ed5178dbc64a88c3158ee723c72",
-    "local_gates": "NOT_STARTED",
+    "local_gates": "PENDING",
     "ci_activations": 0,
     "original_received": false,
     "local_qualification_budget": 1,
@@ -2604,8 +2604,8 @@
     "second_fixture_authorization_commit": "7cd66adaa102d3f6aca33bbf238d86493a0bce9a"
   },
   "surge_bushwhacker_m01_audit_requalification": {
-    "state": "FROZEN_AWAITING_EXACT_READBACK",
-    "qualification_starts": 0,
+    "state": "LOCAL_QUALIFICATION_STARTED_ONCE",
+    "qualification_starts": 1,
     "budget": 1,
     "authority_commit": "2d57983ddd0e78c1dc2e986d7df8f52ba83085b4",
     "source": "942f9f37c14ecaf7cfd7a7609d3d69080392f2eb",
@@ -2624,6 +2624,10 @@
     },
     "ci_activations": 0,
     "original_downloads": 0,
-    "recorded_utc": "2026-11-18T02:11:34.162Z"
+    "recorded_utc": "2026-11-18T02:11:34.162Z",
+    "freeze_commit": "7e4ecd8e1f633f705e9e3c5efb890b6081b1400a",
+    "freeze_readback": "PASS",
+    "controls_archive_readback": "PASS",
+    "started_utc": "2026-11-18T02:12:03.227Z"
   }
 }
