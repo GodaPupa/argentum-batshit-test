@@ -10,7 +10,7 @@
   "status": "QUALIFICATION_RUNNING",
   "owner": "manual-clean-room-foreground-20261124",
   "ownership_authority": "Current explicit user grant for this isolated recovery only",
-  "updated_utc": "2026-11-24T19:07:59.356731+00:00",
+  "updated_utc": "2026-11-24T19:18:40.352007+00:00",
   "historical_state": {
     "original_m14_failed_qualification": "CONSUMED_AND_PRESERVED",
     "earlier_m14_successor_allowance": "ZERO_STARTS_DURABLY_RECORDED_ACTUAL_EXECUTION_UNKNOWN",
@@ -68,7 +68,7 @@
       }
     }
   },
-  "next": "Continue this same qualification through all 14 mutation witnesses and controls, then restored and compatibility/client/metadata gates. All 15 compiles and67 normal rows passed.",
+  "next": "Continue this same qualification through restored behavior, full compatibility, client and metadata gates. All 15 compiles, 67 normal rows, and 14 mutation/control pairs passed their required audits.",
   "admitted": false,
   "preflight": {
     "archived_report_checks": 48,
@@ -98,14 +98,17 @@
   "launch_accounting": "The single attempt is durably consumed at this launch reservation. local_started records that single-use launch record; physical child invocation is separately recorded in LOCAL_LAUNCH.json. Never silently refund the reservation after loss of runtime state.",
   "local_process_invocations_observed": 1,
   "progress": {
-    "stage": "START M03-paid-guard",
+    "stage": "restored",
     "compile_forms_completed": 15,
     "normal_behavioral_rows_completed": 67,
     "source_binding": "PASS",
     "qualification_log": "START normal",
     "compile_first_receipt": "progress/COMPILE_FIRST.json",
     "normal_receipt": "progress/NORMAL_MILESTONE.json",
-    "mutation_witnesses_audited_at_least": 1,
-    "mutation_positive_controls_passed_at_least": 1
+    "mutation_witnesses_audited_at_least": 14,
+    "mutation_positive_controls_passed_at_least": 14,
+    "mutant_errors": 0,
+    "mutation_receipt": "progress/MUTATION_MILESTONE.json",
+    "M14": "FRESH_ORIGINAL_RAW_REPORT_AUDIT_PASS"
   }
 }
