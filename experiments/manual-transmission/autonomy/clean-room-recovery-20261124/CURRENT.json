@@ -7,10 +7,10 @@
   "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915",
   "base_checkpoint": "62b95ee8f854cb9a29830832c287106ad8baaac4",
   "source_basis": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
-  "status": "QUALIFICATION_RUNNING",
+  "status": "LOCAL_FAILED_EVIDENCE_PUBLICATION_PENDING",
   "owner": "manual-clean-room-foreground-20261124",
   "ownership_authority": "Current explicit user grant for this isolated recovery only",
-  "updated_utc": "2026-11-24T19:18:40.352007+00:00",
+  "updated_utc": "2026-11-24T19:22:17.272972+00:00",
   "historical_state": {
     "original_m14_failed_qualification": "CONSUMED_AND_PRESERVED",
     "earlier_m14_successor_allowance": "ZERO_STARTS_DURABLY_RECORDED_ACTUAL_EXECUTION_UNKNOWN",
@@ -21,7 +21,7 @@
   "attempts": {
     "local_reserved": 1,
     "local_started": 1,
-    "local_completed": 0,
+    "local_completed": 1,
     "ci_activated": 0,
     "original_artifact_downloads": 0
   },
@@ -68,7 +68,7 @@
       }
     }
   },
-  "next": "Continue this same qualification through restored behavior, full compatibility, client and metadata gates. All 15 compiles, 67 normal rows, and 14 mutation/control pairs passed their required audits.",
+  "next": "Publish the original terminal evidence and independent diagnosis, verify immutable and live publication readback, then close only this new recovery lease. This attempt is consumed; no rerun or CI activation is permitted by its failed result.",
   "admitted": false,
   "preflight": {
     "archived_report_checks": 48,
@@ -98,7 +98,7 @@
   "launch_accounting": "The single attempt is durably consumed at this launch reservation. local_started records that single-use launch record; physical child invocation is separately recorded in LOCAL_LAUNCH.json. Never silently refund the reservation after loss of runtime state.",
   "local_process_invocations_observed": 1,
   "progress": {
-    "stage": "restored",
+    "stage": "FAILED_CARDS_REGISTRY_ASSERTION",
     "compile_forms_completed": 15,
     "normal_behavioral_rows_completed": 67,
     "source_binding": "PASS",
@@ -109,6 +109,24 @@
     "mutation_positive_controls_passed_at_least": 14,
     "mutant_errors": 0,
     "mutation_receipt": "progress/MUTATION_MILESTONE.json",
-    "M14": "FRESH_ORIGINAL_RAW_REPORT_AUDIT_PASS"
+    "M14": "FRESH_ORIGINAL_RAW_REPORT_AUDIT_PASS",
+    "restored_behavioral_rows_completed": 67,
+    "registry_rows": 401,
+    "registry_passed": 400,
+    "registry_failures": 1,
+    "registry_errors": 0,
+    "registry_skips": 0
+  },
+  "local_result": {
+    "state": "FAILED_OR_INCOMPLETE_LOCAL_ORIGINAL_PRESERVED",
+    "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+    "qualifier_returncode": 1,
+    "blocker": "CardLintTest rejects undeclared SELF_ALTERNATIVE choice slot on Reckless Bushwhacker",
+    "archive_sha256": "f4c1c42b774217889dd3714f1c6dde2498d90339c3d44968991ed00ed8f9458a",
+    "archive_bytes": 4854439,
+    "immutable_readback": "PENDING",
+    "source_bindings_restored": 376,
+    "tracked_source_clean": true,
+    "host_properties_restored": true
   }
 }

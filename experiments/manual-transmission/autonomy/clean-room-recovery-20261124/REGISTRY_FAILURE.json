@@ -1,0 +1,48 @@
+{
+  "state": "REGISTRY_ASSERTION_FAILURE_ORIGINAL_PRESERVED",
+  "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "ended_utc": "2026-11-24T19:19:37.560827+00:00",
+  "gate": "cards",
+  "counts": {
+    "rows": 401,
+    "passed": 400,
+    "failures": 1,
+    "errors": 0,
+    "skips": 0
+  },
+  "class": "com.wingedsheep.mtg.sets.CardLintTest",
+  "test": "every card's pipeline variables, target bindings, and choice slots resolve",
+  "failure_type": "org.opentest4j.AssertionFailedError",
+  "original_message": "org.opentest4j.AssertionFailedError: List should be empty but has 1 elements, first being: \"[OGW] 'Reckless Bushwhacker': CastChoiceMade reads choice slot SELF_ALTERNATIVE, but nothing on the card declares it (EntersWithChoice / kicker / blight / sneak). The read would always come back empty.\"",
+  "source_line": "CardLintTest.kt:46",
+  "raw_report_sha256": "d69ea0ffdd8a00be22dfb6ab36ec1bb0942b94f6be13a77ade36e21b5c8175a9",
+  "completed": {
+    "compile_forms": 15,
+    "normal": 67,
+    "negative_witnesses": 14,
+    "positive_controls": 14,
+    "restored": 67,
+    "source_bindings": 376
+  },
+  "not_executed": [
+    "ordinary full suite",
+    "client install",
+    "focused client",
+    "full client",
+    "typecheck",
+    "metadata printing and image availability",
+    "Assay classification",
+    "CI activation",
+    "original CI artifact receiving"
+  ],
+  "qualification_starts": 1,
+  "all_source_bindings_restored": true,
+  "tracked_source_clean": true,
+  "host_properties_restored": true,
+  "original_archive_sha256": "f4c1c42b774217889dd3714f1c6dde2498d90339c3d44968991ed00ed8f9458a",
+  "original_archive_bytes": 4854439,
+  "archive_publication": "PENDING",
+  "admitted": false,
+  "phase2_games": 0,
+  "phase2_seeds": 0
+}
