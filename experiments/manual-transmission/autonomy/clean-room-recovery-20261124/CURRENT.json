@@ -1,0 +1,49 @@
+{
+  "schema": "manual-transmission/clean-room-current/v1",
+  "recovery_id": "manual-clean-room-20261124-01",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "branch": "manual-transmission/clean-room-recovery-20261124",
+  "charter": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/CHARTER.json",
+  "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915",
+  "base_checkpoint": "62b95ee8f854cb9a29830832c287106ad8baaac4",
+  "source_basis": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
+  "status": "PREFLIGHT_IN_PROGRESS",
+  "owner": "manual-clean-room-foreground-20261124",
+  "ownership_authority": "Current explicit user grant for this isolated recovery only",
+  "updated_utc": "2026-11-24T18:21:13.423180+00:00",
+  "historical_state": {
+    "original_m14_failed_qualification": "CONSUMED_AND_PRESERVED",
+    "earlier_m14_successor_allowance": "ZERO_STARTS_DURABLY_RECORDED_ACTUAL_EXECUTION_UNKNOWN",
+    "old_runtime_termination": "NOT_ATTESTED",
+    "old_owner_release": false,
+    "allowance_transferred_from_old_run": false
+  },
+  "attempts": {
+    "local_reserved": 0,
+    "local_started": 0,
+    "local_completed": 0,
+    "ci_activated": 0,
+    "original_artifact_downloads": 0
+  },
+  "safeguards": {
+    "phase2_games": 0,
+    "phase2_seeds": 0,
+    "reserved_precision_games": 2,
+    "protected_goldens": 23,
+    "legacy_saved_states": 82,
+    "original_protected_bindings": 144,
+    "deck_optimization": false,
+    "statistical_design_change": false,
+    "extra_spending": false,
+    "other_project_changes": false,
+    "main_or_old_branch_promotion": false,
+    "new_scheduled_automation": false,
+    "historical_automations_remain_paused": [
+      "6adbe33033e481918659ce578f64f31e",
+      "6adbad91b90881918859ad0cba22b881"
+    ]
+  },
+  "source_freeze": null,
+  "next": "Verify exact host prerequisites and source bindings; implement and regression-check the M14-only audit amendment; freeze and durably reserve the single new complete qualification before launch.",
+  "admitted": false
+}
