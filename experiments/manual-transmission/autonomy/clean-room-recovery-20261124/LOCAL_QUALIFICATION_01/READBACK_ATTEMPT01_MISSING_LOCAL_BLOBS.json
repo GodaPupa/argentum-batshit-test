@@ -1,0 +1,49 @@
+{
+  "admitted": false,
+  "branch": "refs/heads/manual-transmission/clean-room-recovery-20261124",
+  "checks": {
+    "immutable_commit": {
+      "state": "PASS"
+    },
+    "live_branch_readback": {
+      "state": "PASS"
+    },
+    "parts_index": {
+      "error": "read-only git operation failed (exit 128)",
+      "state": "FAIL"
+    },
+    "receipt_json": {
+      "error": "read-only git operation failed (exit 128)",
+      "state": "FAIL"
+    }
+  },
+  "ci_activations": 0,
+  "complete_readback": false,
+  "directory": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/LOCAL_QUALIFICATION_01",
+  "exact_original_archive_bytes_verified": false,
+  "expected_live_head": "31f917d635b206f72afab392f54406d21737ed92",
+  "expected_source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "finished_utc": "2026-11-24T19:26:41.965481+00:00",
+  "live_branch_verified": true,
+  "live_readback_utc": "2026-11-24T19:26:41.965422+00:00",
+  "nested_manifest_verified": false,
+  "observed_live_head": "31f917d635b206f72afab392f54406d21737ed92",
+  "original_ci_artifact_receives": 0,
+  "outer_manifest_verified": false,
+  "phase2_games": 0,
+  "phase2_seeds": 0,
+  "published_local_qualification_pass_validated": false,
+  "qualification_invocations": 0,
+  "raw_auditor_reexecuted": false,
+  "readback_program_sha256": "b536156ea87dd95c006caccbbb98ec0f908d720fa4d770732b1c336d3b490911",
+  "receipt_claim_verified": false,
+  "receipt_commit": "31f917d635b206f72afab392f54406d21737ed92",
+  "receipt_identity_verified": false,
+  "remote": "origin",
+  "schema": "manual-transmission/immutable-local-readback/v1",
+  "scientific_admission": false,
+  "source_bindings_reexecuted": false,
+  "started_utc": "2026-11-24T19:26:36.067192+00:00",
+  "state": "READBACK_INCOMPLETE_OR_INVALID",
+  "zip_members_and_crc_verified": false
+}

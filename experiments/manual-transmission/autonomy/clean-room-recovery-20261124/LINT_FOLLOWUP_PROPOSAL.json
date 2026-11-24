@@ -1,0 +1,64 @@
+{
+  "state": "REVIEWABLE_PROPOSAL_UNAPPLIED_UNEXECUTED",
+  "base_source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "patch_sha256": "2bab419c8cff73247321425ca56d1fc17a0e861cefbc859865423a62bc50ede3",
+  "patch_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/SELF_ALTERNATIVE_LINT_PROPOSAL.diff",
+  "source_paths": [
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt",
+    "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt"
+  ],
+  "production_lines_added": 5,
+  "new_regression_tests": 8,
+  "apply_check": "PASS_WITHOUT_APPLYING_PATCH",
+  "builds_or_tests_executed": 0,
+  "new_source_candidate_created": false,
+  "rule": "An actual JsonObject at a card or face script selfAlternativeCost declares SELF_ALTERNATIVE; absent or null values do not. Existing recursive slot collection and all other slot checks remain.",
+  "regression_identities": [
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts a SELF_ALTERNATIVE read with an unconditional self-alternative cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts a SELF_ALTERNATIVE read with a conditional self-alternative cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts an ETB intervening-if SELF_ALTERNATIVE read with its declared cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\trejects a SELF_ALTERNATIVE read when the cost is omitted",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\trejects a SELF_ALTERNATIVE read when the cost is explicitly null",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tdoes not declare KICKED from a self-alternative cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tdoes not declare SELF_ALTERNATIVE from a kicker cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tshares a front-face self-alternative declaration with a back-face reader"
+  ],
+  "prospective_inventory": {
+    "ordinary_total": 19429,
+    "ordinary_passed": 19386,
+    "historical_skips": 43,
+    "added_identities": 8,
+    "removed_or_renamed_original_identities": 0,
+    "registry": 401,
+    "normal": 67,
+    "restored": 67,
+    "negative_witnesses": 14,
+    "positive_controls": 14
+  },
+  "required_followup_scope": [
+    "Explicit bounded linter-source successor beyond the completed M14-only recovery.",
+    "Apply the two source/test changes and validate the new positive and negative lint controls.",
+    "Prospectively bind only the eight additive ordinary identities, revised source hashes, and necessary audit/verifier/launch/receiving metadata; retain every original identity and gate.",
+    "One new complete source-frozen qualification; conditional CI only after all local gates and evidence readback pass."
+  ],
+  "current_boundary": {
+    "source_amendment_paths": 3,
+    "completed_full_qualification_attempts": 1,
+    "remaining_attempts_in_this_recovery": 0,
+    "new_source_successors_in_this_recovery": 0,
+    "ci_activated": 0
+  },
+  "unchanged_by_proposal": [
+    "card definition",
+    "engine runtime behavior",
+    "existing test assertions",
+    "corpus lint assertion",
+    "lint allowlist",
+    "goldens",
+    "serialization schema",
+    "client code"
+  ],
+  "admitted": false,
+  "phase2_games": 0,
+  "phase2_seeds": 0
+}

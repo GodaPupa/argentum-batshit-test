@@ -7,10 +7,10 @@
   "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915",
   "base_checkpoint": "62b95ee8f854cb9a29830832c287106ad8baaac4",
   "source_basis": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
-  "status": "LOCAL_FAILED_EVIDENCE_PUBLICATION_PENDING",
-  "owner": "manual-clean-room-foreground-20261124",
+  "status": "LOCAL_FAILED_ARCHIVED_READBACK_VERIFIED",
+  "owner": null,
   "ownership_authority": "Current explicit user grant for this isolated recovery only",
-  "updated_utc": "2026-11-24T19:22:17.272972+00:00",
+  "updated_utc": "2026-11-24T19:32:27.018992+00:00",
   "historical_state": {
     "original_m14_failed_qualification": "CONSUMED_AND_PRESERVED",
     "earlier_m14_successor_allowance": "ZERO_STARTS_DURABLY_RECORDED_ACTUAL_EXECUTION_UNKNOWN",
@@ -68,7 +68,7 @@
       }
     }
   },
-  "next": "Publish the original terminal evidence and independent diagnosis, verify immutable and live publication readback, then close only this new recovery lease. This attempt is consumed; no rerun or CI activation is permitted by its failed result.",
+  "next": "Await a separately authorized, bounded linter repair and new source-frozen qualification. The current M14-only attempt is consumed and failed. The prepared proposal is unapplied; CI and Phase 2 remain unstarted.",
   "admitted": false,
   "preflight": {
     "archived_report_checks": 48,
@@ -80,13 +80,17 @@
     "build_toolchain": "PASS"
   },
   "lease": {
-    "owner": "manual-clean-room-foreground-20261124",
+    "owner": null,
     "claimed_utc": "2026-11-24T18:39:33.318831+00:00",
     "expires_utc": "2026-11-25T00:39:33.318831+00:00",
     "mode": "EXPLICIT_USER_AUTHORIZED_ISOLATED_FOREGROUND",
-    "sole_source_writer": true,
+    "sole_source_writer": false,
     "scheduled_executor_enabled": false,
-    "writable_ref": "refs/heads/manual-transmission/clean-room-recovery-20261124"
+    "writable_ref": "refs/heads/manual-transmission/clean-room-recovery-20261124",
+    "previous_owner": "manual-clean-room-foreground-20261124",
+    "status": "CLOSED",
+    "closed_utc": "2026-11-24T19:32:27.018992+00:00",
+    "close_reason": "Terminal local failure; original evidence preserved and immutable/live readback verified."
   },
   "host_ready": {
     "state": "PASS",
@@ -124,9 +128,18 @@
     "blocker": "CardLintTest rejects undeclared SELF_ALTERNATIVE choice slot on Reckless Bushwhacker",
     "archive_sha256": "f4c1c42b774217889dd3714f1c6dde2498d90339c3d44968991ed00ed8f9458a",
     "archive_bytes": 4854439,
-    "immutable_readback": "PENDING",
+    "immutable_readback": "PASS",
     "source_bindings_restored": 376,
     "tracked_source_clean": true,
-    "host_properties_restored": true
-  }
+    "host_properties_restored": true,
+    "receipt_commit": "31f917d635b206f72afab392f54406d21737ed92",
+    "receipt_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/LOCAL_QUALIFICATION_01/LOCAL_RECEIPT.json",
+    "readback_state": "ARCHIVE_READBACK_PASS_QUALIFICATION_FAILED",
+    "readback_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/LOCAL_QUALIFICATION_01/READBACK_VERIFICATION.json",
+    "archive_members": 583,
+    "original_archive_bytes_verified": true,
+    "qualification_pass": false
+  },
+  "new_recovery_lease_closed": true,
+  "followup_proposal": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/LINT_FOLLOWUP_PROPOSAL.json"
 }

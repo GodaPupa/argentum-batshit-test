@@ -1,0 +1,164 @@
+diff --git a/mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt b/mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt
+--- a/mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt
++++ b/mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt
+@@ -868,6 +868,11 @@
+                 if (element["kickerSpellEffect"] != null && element["kickerSpellEffect"] !is JsonNull) {
+                     slots.declared.add("KICKED")
+                 }
++                // A self-alternative cost is a concrete CardScript field, without a type tag.
++                // Only a real declaration, not its serialized null default, supplies this slot.
++                if ((element["script"] as? JsonObject)?.get("selfAlternativeCost") is JsonObject) {
++                    slots.declared.add("SELF_ALTERNATIVE")
++                }
+                 element.values.forEach { collectSlots(it, slots) }
+             }
+             is JsonArray -> element.forEach { collectSlots(it, slots) }
+diff --git a/mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt b/mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt
+new file mode 100644
+--- /dev/null
++++ b/mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt
+@@ -0,0 +1,144 @@
++package com.wingedsheep.sdk.serialization
++
++import com.wingedsheep.sdk.core.ManaCost
++import com.wingedsheep.sdk.core.TypeLine
++import com.wingedsheep.sdk.dsl.Conditions
++import com.wingedsheep.sdk.dsl.Effects
++import com.wingedsheep.sdk.dsl.Triggers
++import com.wingedsheep.sdk.model.CardDefinition
++import com.wingedsheep.sdk.model.CardScript
++import com.wingedsheep.sdk.model.CreatureStats
++import com.wingedsheep.sdk.scripting.ChoiceSlot
++import com.wingedsheep.sdk.scripting.KeywordAbility
++import com.wingedsheep.sdk.scripting.SelfAlternativeCost
++import com.wingedsheep.sdk.scripting.TriggeredAbility
++import com.wingedsheep.sdk.scripting.effects.ConditionalEffect
++import io.kotest.core.spec.style.FunSpec
++import io.kotest.matchers.collections.shouldBeEmpty
++import io.kotest.matchers.collections.shouldHaveSize
++import io.kotest.matchers.string.shouldContain
++import io.kotest.matchers.types.shouldBeInstanceOf
++
++/** Structural slot checks only; casting/payment behavior is covered in the engine tests. */
++class SelfAlternativeChoiceLintTest : FunSpec({
++    fun instant(name: String, script: CardScript) = CardDefinition(
++        name = name,
++        manaCost = ManaCost.parse("{2}{R}"),
++        typeLine = TypeLine.instant(),
++        script = script,
++    )
++
++    fun creature(name: String, script: CardScript, backFace: CardDefinition? = null) = CardDefinition(
++        name = name,
++        manaCost = ManaCost.parse("{2}{R}"),
++        typeLine = TypeLine.creature(),
++        creatureStats = CreatureStats(1, 1),
++        script = script,
++        backFace = backFace,
++    )
++
++    fun spellReader(slot: ChoiceSlot = ChoiceSlot.SELF_ALTERNATIVE) = ConditionalEffect(
++        condition = Conditions.CastChoiceMade(slot),
++        effect = Effects.DrawCards(1),
++    )
++
++    fun etbReader(cost: SelfAlternativeCost? = null) = CardScript(
++        selfAlternativeCost = cost,
++        triggeredAbilities = listOf(
++            TriggeredAbility.create(
++                trigger = Triggers.EntersBattlefield.event,
++                binding = Triggers.EntersBattlefield.binding,
++                interveningIf = Conditions.CastChoiceMade(ChoiceSlot.SELF_ALTERNATIVE),
++                effect = Effects.DrawCards(1),
++            ),
++        ),
++    )
++
++    fun shouldRejectSlot(card: CardDefinition, slot: ChoiceSlot) {
++        val findings = CardLinter.lint(card)
++        findings.shouldHaveSize(1)
++        findings.single().shouldBeInstanceOf<CardValidationError.UndeclaredChoiceSlotRead>()
++            .message shouldContain slot.name
++    }
++
++    test("accepts a SELF_ALTERNATIVE read with an unconditional self-alternative cost") {
++        val card = instant(
++            "Unconditional alternative",
++            CardScript(
++                selfAlternativeCost = SelfAlternativeCost(ManaCost.parse("{1}{R}")),
++                spellEffect = spellReader(),
++            ),
++        )
++        CardLinter.lint(card).shouldBeEmpty()
++    }
++
++    test("accepts a SELF_ALTERNATIVE read with a conditional self-alternative cost") {
++        val card = instant(
++            "Conditional alternative",
++            CardScript(
++                selfAlternativeCost = SelfAlternativeCost(
++                    ManaCost.parse("{1}{R}"),
++                    condition = Conditions.YouCastSpellsThisTurn(1),
++                ),
++                spellEffect = spellReader(),
++            ),
++        )
++        CardLinter.lint(card).shouldBeEmpty()
++    }
++
++    test("accepts an ETB intervening-if SELF_ALTERNATIVE read with its declared cost") {
++        val card = creature(
++            "Alternative ETB",
++            etbReader(
++                SelfAlternativeCost(
++                    ManaCost.parse("{1}{R}"),
++                    condition = Conditions.YouCastSpellsThisTurn(1),
++                ),
++            ),
++        )
++        CardLinter.lint(card).shouldBeEmpty()
++    }
++
++    test("rejects a SELF_ALTERNATIVE read when the cost is omitted") {
++        val card = instant("No alternative", CardScript(spellEffect = spellReader()))
++        shouldRejectSlot(card, ChoiceSlot.SELF_ALTERNATIVE)
++    }
++
++    test("rejects a SELF_ALTERNATIVE read when the cost is explicitly null") {
++        val card = instant(
++            "Null alternative",
++            CardScript(selfAlternativeCost = null, spellEffect = spellReader()),
++        )
++        shouldRejectSlot(card, ChoiceSlot.SELF_ALTERNATIVE)
++    }
++
++    test("does not declare KICKED from a self-alternative cost") {
++        val card = instant(
++            "Alternative is not kicker",
++            CardScript(
++                selfAlternativeCost = SelfAlternativeCost(ManaCost.parse("{1}{R}")),
++                spellEffect = spellReader(ChoiceSlot.KICKED),
++            ),
++        )
++        shouldRejectSlot(card, ChoiceSlot.KICKED)
++    }
++
++    test("does not declare SELF_ALTERNATIVE from a kicker cost") {
++        val card = instant("Kicker is not alternative", CardScript(spellEffect = spellReader())).copy(
++            keywordAbilities = listOf(
++                KeywordAbility.OptionalAdditionalCost(manaCost = ManaCost.parse("{1}")),
++            ),
++        )
++        shouldRejectSlot(card, ChoiceSlot.SELF_ALTERNATIVE)
++    }
++
++    test("shares a front-face self-alternative declaration with a back-face reader") {
++        val back = creature("Alternative back", etbReader())
++        val front = creature(
++            "Alternative front",
++            CardScript(selfAlternativeCost = SelfAlternativeCost(ManaCost.parse("{1}{R}"))),
++            backFace = back,
++        )
++        CardLinter.lint(front).shouldBeEmpty()
++    }
++})
