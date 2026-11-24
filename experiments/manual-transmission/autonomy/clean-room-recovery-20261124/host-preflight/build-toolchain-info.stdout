@@ -1,0 +1,25 @@
+Initialized native services in: /workspace/scratch/65bf30f1888a/manual-clean-room-host/gradle-user-home/native
+Initialized jansi services in: /workspace/scratch/65bf30f1888a/manual-clean-room-host/gradle-user-home/native
+The current JVM process isn't compatible with build requirement. The maximum heap size is insufficient.
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Starting process 'Gradle build daemon'. Working directory: /workspace/scratch/65bf30f1888a/manual-clean-room-host/gradle-user-home/daemon/9.6.1 Command: /workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED -XX:MaxMetaspaceSize=768m -XX:+UseSerialGC -Xmx4g -Dfile.encoding=UTF-8 -Djavax.net.ssl.trustStore=/workspace/scratch/65bf30f1888a/manual-clean-room-host/java-platform-cacerts -Duser.country -Duser.language=en -Duser.variant -cp /workspace/scratch/65bf30f1888a/manual-clean-room-host/gradle-user-home/wrapper/dists/gradle-9.6.1-bin/4ticwg1pgcbps2hj28r8so764/gradle-9.6.1/lib/gradle-daemon-main-9.6.1.jar -javaagent:/workspace/scratch/65bf30f1888a/manual-clean-room-host/gradle-user-home/wrapper/dists/gradle-9.6.1-bin/4ticwg1pgcbps2hj28r8so764/gradle-9.6.1/lib/agents/gradle-instrumentation-agent-9.6.1.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 9.6.1
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 1.216 secs.
+The client will now receive all logging from the daemon (pid: 51). The daemon log file: /workspace/scratch/65bf30f1888a/manual-clean-room-host/gradle-user-home/daemon/9.6.1/daemon-51.out.log
+Daemon will be stopped at the end of the build 
+Using 2 worker leases.
+Operational build model parameters: {cachingModelBuilding=false, configurationCache=false, configurationCacheDisabledReason=null, configurationCacheParallelLoad=false, configurationCacheParallelStore=false, configureOnDemand=false, invalidateCoupledProjects=false, isolatedProjects=false, isolatedProjectsDiagnostics=false, modelAsProjectDependency=false, modelBuilding=false, parallelModelBuilding=false, parallelProjectConfiguration=false, parallelProjectExecution=false, resilientModelBuilding=false, vintage=true}
+Received JVM installation metadata from '/workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9': {JAVA_HOME=/workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9, JAVA_VERSION=21.0.13, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=21.0.13+9-LTS, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=21.0.13+9-LTS, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+Watching the file system is configured to be enabled if available
+Not watching /workspace/scratch/65bf30f1888a/manual-candidate02-source/buildSrc since the file system is not supported
+File system watching is active
+Starting Build
+Settings evaluated using settings file '/workspace/scratch/65bf30f1888a/manual-candidate02-source/buildSrc/settings.gradle.kts'.
+Projects loaded. Root project using build file '/workspace/scratch/65bf30f1888a/manual-candidate02-source/buildSrc/build.gradle.kts'.
+Included projects: [root project 'buildSrc']
+
+> Configure project :
+Evaluating root project 'buildSrc' using build file '/workspace/scratch/65bf30f1888a/manual-candidate02-source/buildSrc/build.gradle.kts'.
+Resolved plugin [id: 'org.gradle.kotlin.kotlin-dsl', version: '6.6.4']
+Some of the file system contents retained in the virtual file system are on file systems that Gradle doesn't support watching. The relevant state was discarded to ensure changes to these locations are properly detected. You can override this by explicitly enabling file system watching.

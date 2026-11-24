@@ -1,0 +1,162 @@
+{
+  "state": "PASS",
+  "kind": "IMMUTABLE_SOURCE_AND_SIMULATED_LAUNCH_METADATA_CONTROLS",
+  "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "carrier": "47ed3739d176f9462fb5514ae24b9465d6fada91",
+  "qualification_starts": 0,
+  "behavioral_runs": 0,
+  "real_source_bindings_verified": 376,
+  "simulation": "Only a copy of CURRENT launch metadata is supplied in memory. The durable CURRENT remains zero reserved/started. No source/history bytes or refs are changed.",
+  "control_count": 26,
+  "controls": [
+    {
+      "name": "real frozen source, historical grants and all protected bindings",
+      "result": "PASS"
+    },
+    {
+      "name": "wrong-envelope-branch",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room identity"
+    },
+    {
+      "name": "wrong-envelope-recovery_id",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room identity"
+    },
+    {
+      "name": "wrong-envelope-charter_blob",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room charter identity"
+    },
+    {
+      "name": "wrong-envelope-charter_commit",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room charter identity"
+    },
+    {
+      "name": "wrong-envelope-attempt",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room attempt one only"
+    },
+    {
+      "name": "wrong-envelope-attempt_id",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room local attempt identity"
+    },
+    {
+      "name": "wrong-envelope-lane",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room execution lane"
+    },
+    {
+      "name": "wrong-owner",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room sole foreground owner"
+    },
+    {
+      "name": "scheduled-executor-enabled",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room foreground scope"
+    },
+    {
+      "name": "wrong-writable-ref",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room writable ref"
+    },
+    {
+      "name": "no-attempt-reservation",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room local launch durably reserved once"
+    },
+    {
+      "name": "second-attempt",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room local launch durably reserved once"
+    },
+    {
+      "name": "already-completed-local",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room local attempt identity"
+    },
+    {
+      "name": "premature-ci-activation",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room local attempt identity"
+    },
+    {
+      "name": "wrong-source-tree-freeze",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room exact prospective source freeze"
+    },
+    {
+      "name": "wrong-pins-freeze",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room exact prospective source freeze"
+    },
+    {
+      "name": "immutable-source-tree-mismatch",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "source tree"
+    },
+    {
+      "name": "immutable-source-pins-blob-mismatch",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "candidate pins blob"
+    },
+    {
+      "name": "phase2-game",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "clean-room safeguards unchanged"
+    },
+    {
+      "name": "removed-clean-room-cannot-fall-back",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "exact normalized audit hash"
+    },
+    {
+      "name": "fourth-source-path-rejected",
+      "result": "PASS",
+      "reason": "M14 exact three mechanical source paths"
+    },
+    {
+      "name": "binding-path-removed",
+      "result": "PASS",
+      "reason": "M14 all 376 binding paths preserved"
+    },
+    {
+      "name": "protected-binding-changed",
+      "result": "PASS",
+      "reason": "M14 only audit and verifier binding values changed"
+    },
+    {
+      "name": "changed-size-forged",
+      "result": "PASS",
+      "reason": "M14 exact derived hash and byte length experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py"
+    },
+    {
+      "name": "historical-metadata-changed",
+      "result": "PASS",
+      "reason": "M14 historical pin metadata unchanged"
+    }
+  ]
+}
