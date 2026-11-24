@@ -1,0 +1,418 @@
+#!/usr/bin/env python3
+"""Independently read back a published local evidence archive.
+
+Read-only Git operations; no checkout, extraction, qualification, source binding,
+archived-code execution, CI activation, artifact receiving, or publication.
+The original ZIP is assembled byte-for-byte in temporary scratch, never repacked.
+Run only after root review and publication of the terminal collection.
+
+Example:
+  python immutable_readback.py --repo CARRIER --receipt-commit FULL_SHA \
+    --directory experiments/manual-transmission/autonomy/clean-room-recovery-20261124/LOCAL_QUALIFICATION_01 \
+    --expected-live-head FULL_SHA --output-json /scratch/readback.json
+
+Exit 0 means complete archive/publication readback, including a declared failed
+qualification with intact manifests. It never admits the capability or Phase 2.
+Any missing/invalid manifest produces a nonzero exit while retaining successful
+part/archive/outer checks in the JSON report.
+"""
+import argparse
+import base64
+import datetime
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import stat
+import subprocess
+import tempfile
+import zipfile
+
+SOURCE = "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9"
+TREE = "632d9a579db3eea42a1bd1f2565685009627fdf5"
+LAUNCH = "26af7820ca0a83de6ef812e8c7dc6978284be22c"
+EPOCH = "manual-clean-room-20261124-01"
+BRANCH = "refs/heads/manual-transmission/clean-room-recovery-20261124"
+PASS = "ALL_LOCAL_GATES_PASS_ORIGINAL_RECEIVING_REQUIRED"
+FAIL = "FAILED_OR_INCOMPLETE_LOCAL_ORIGINAL_PRESERVED"
+CHARTER_SHA = "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915"
+PINS_SHA = "e810d5a7d68d6cfaaf05096c37ae25eed2b259f48278e39852971ed56d21e94a"
+AUDIT_SHA = "280a055eb671c18936bd2d4fd64dbe49dbdc68ae2a175a38d8567b612f92f275"
+PRESERVER_SHA = "b6df315f211a83a29955e5eafaa56d328a92f613a1936d4281b8dffecd53c517"
+CHUNK = 450000
+
+
+def need(condition, message):
+    if not condition:
+        raise ValueError(message)
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def exact_int(value, expected, name):
+    need(type(value) is int and value == expected, name)
+
+
+def digest_string(value):
+    return isinstance(value, str) and re.fullmatch(r"[0-9a-f]{64}", value) is not None
+
+
+def json_value(data):
+    def pairs(items):
+        result = {}
+        for key, value in items:
+            need(key not in result, "duplicate JSON key: " + key)
+            result[key] = value
+        return result
+    return json.loads(data.decode("utf-8"), object_pairs_hook=pairs,
+                      parse_constant=lambda _: (_ for _ in ()).throw(ValueError("non-finite JSON number")))
+
+
+def safe_name(name):
+    need(isinstance(name, str) and name, "empty/non-string member name")
+    need(not any(ord(c) < 32 or ord(c) == 127 for c in name), "control character in member name")
+    need("\\" not in name and ":" not in name, "unsafe member separator/drive")
+    need(all(p not in ("", ".", "..") for p in name.split("/")), "unsafe member path")
+    return name
+
+
+def manifest_value(data):
+    value = json_value(data)
+    need(isinstance(value, dict), "manifest must be a mapping")
+    for name, value_sha in value.items():
+        safe_name(name)
+        need(digest_string(value_sha), "invalid manifest SHA256: " + name)
+    return value
+
+
+def audit_counts(value):
+    mutants = {
+        "M01-surge-price": 5, "M02-red-payment": 20,
+        "M03-paid-guard": 32, "M04-other-filter": 32,
+        "M05-controller-filter": 32, "M06-toughness": 32,
+        "M07-granted-haste": 32, "M08-duration": 32,
+        "M09-intrinsic-haste": 32, "M10-entity-only-exclusion": 10,
+        "M11-exclude-none": 10, "M12-followed-origin": 10,
+        "M13-missing-choice": 32, "M14-copy-choice": 20,
+    }
+    need(isinstance(value, dict) and set(value) == set(mutants) | {"normal", "restored", "cards", "ordinary", "client"},
+         "raw audit exact gate set")
+    def row(name, expected):
+        observed = value[name]
+        need(isinstance(observed, dict) and set(observed) == set(expected), "raw audit fields: " + name)
+        for key, number in expected.items():
+            exact_int(observed[key], number, "raw audit count: " + name + "/" + key)
+    for name in ("normal", "restored"):
+        row(name, {"rows": 67, "skips": 0, "failures": 0})
+    row("cards", {"rows": 401, "skips": 0, "failures": 0})
+    row("ordinary", {"rows": 19421, "skips": 43, "failures": 0})
+    for name, count in mutants.items():
+        row(name, {"rows": count, "executed": 2, "skips": count - 2, "failures": 1})
+    client = value["client"]
+    need(isinstance(client, dict) and set(client) == {"focused", "full", "typecheck"}, "client audit fields")
+    exact_int(client["focused"], 70, "focused client count")
+    need(type(client["full"]) is int and client["full"] >= 70 and client["typecheck"] is True,
+         "full client/typecheck audit")
+
+
+class Reader:
+    def __init__(self, args):
+        self.args = args
+        self.report = {
+            "schema": "manual-transmission/immutable-local-readback/v1",
+            "readback_program_sha256": sha(Path(__file__).read_bytes()),
+            "started_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            "receipt_commit": args.receipt_commit, "directory": args.directory,
+            "expected_source": SOURCE, "expected_live_head": args.expected_live_head,
+            "remote": args.remote, "branch": BRANCH, "checks": {},
+            "qualification_invocations": 0, "raw_auditor_reexecuted": False,
+            "source_bindings_reexecuted": False, "ci_activations": 0,
+            "original_ci_artifact_receives": 0, "admitted": False,
+            "phase2_games": 0, "phase2_seeds": 0,
+        }
+        self.env = dict(os.environ, GIT_OPTIONAL_LOCKS="0", GIT_NO_LAZY_FETCH="1")
+
+    def git(self, *arguments):
+        result = subprocess.run(["git", "--no-replace-objects", "-C", str(self.args.repo), *arguments],
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=self.env, timeout=120)
+        need(result.returncode == 0, "read-only git operation failed (exit %d)" % result.returncode)
+        return result.stdout
+
+    def blob(self, name):
+        safe_name(name)
+        return self.git("show", "--no-ext-diff", "--no-textconv",
+                        self.args.receipt_commit + ":" + self.args.directory + "/" + name)
+
+    def stage(self, name, action):
+        try:
+            result = action()
+            self.report["checks"][name] = {"state": "PASS"}
+            return result
+        except Exception as exc:
+            self.report["checks"][name] = {"state": "FAIL", "error": str(exc)}
+            return None
+
+    def index(self):
+        data = self.blob("ARCHIVE_PARTS.json")
+        value = json_value(data)
+        need(isinstance(value, dict) and set(value) == {"bytes", "sha256", "parts"}, "part index fields")
+        need(type(value["bytes"]) is int and value["bytes"] > 0 and digest_string(value["sha256"]), "part index size/hash")
+        need(isinstance(value["parts"], list) and len(value["parts"]) == (value["bytes"] + CHUNK - 1) // CHUNK,
+             "part count")
+        for number, item in enumerate(value["parts"]):
+            need(isinstance(item, dict) and set(item) == {"file", "bytes", "sha256"}, "part fields")
+            need(item["file"] == f"original.part{number:04d}.b64", "canonical ordered part name")
+            exact_int(item["bytes"], min(CHUNK, value["bytes"] - number * CHUNK), "part size")
+            need(digest_string(item["sha256"]), "part SHA256")
+        self.report["parts_index_sha256"] = sha(data)
+        return value
+
+    def assemble(self, index, archive):
+        combined = hashlib.sha256()
+        total = 0
+        part_results = []
+        with archive.open("xb") as output:
+            for item in index["parts"]:
+                encoded = self.blob(item["file"])
+                need(encoded.endswith(b"\n"), "canonical base64 requires one terminal LF")
+                raw = base64.b64decode(encoded[:-1], validate=True)
+                need(base64.b64encode(raw) + b"\n" == encoded, "noncanonical base64: " + item["file"])
+                exact_int(len(raw), item["bytes"], "decoded part length")
+                need(sha(raw) == item["sha256"], "decoded part SHA256: " + item["file"])
+                output.write(raw)
+                combined.update(raw)
+                total += len(raw)
+                part_results.append(dict(item, encoded_sha256=sha(encoded), encoded_bytes=len(encoded)))
+        need(total == index["bytes"] and combined.hexdigest() == index["sha256"], "assembled original ZIP size/hash")
+        self.report["archive"] = {"bytes": total, "sha256": combined.hexdigest(), "repacked": False}
+        self.report["parts"] = part_results
+        return True
+
+    def zip_structure(self, archive):
+        hashes = {}
+        total = 0
+        with zipfile.ZipFile(archive) as z:
+            names = [safe_name(i.filename) for i in z.infolist()]
+            need(len(names) == len(set(names)), "duplicate ZIP member")
+            name_set = set(names)
+            for name in names:
+                components = name.split("/")
+                need(not any("/".join(components[:i]) in name_set for i in range(1, len(components))),
+                     "file/directory prefix collision")
+            for info in z.infolist():
+                mode = info.external_attr >> 16
+                need(not info.is_dir() and stat.S_IFMT(mode) in (0, stat.S_IFREG), "nonregular ZIP member")
+                need(not info.flag_bits & 1, "encrypted ZIP member")
+                digest = hashlib.sha256()
+                count = 0
+                with z.open(info) as member:
+                    for block in iter(lambda: member.read(1024 * 1024), b""):
+                        digest.update(block)
+                        count += len(block)
+                need(count == info.file_size, "ZIP member size mismatch")
+                hashes[info.filename] = digest.hexdigest()
+                total += count
+        self.report["zip"] = {"members": len(hashes), "uncompressed_bytes": total, "crc": "PASS",
+                              "safe_unique_regular_members": True}
+        return hashes
+
+    @staticmethod
+    def member(archive, name):
+        with zipfile.ZipFile(archive) as z:
+            return z.read(name)
+
+    def manifest(self, archive, hashes, prefix):
+        name = prefix + "MANIFEST.json"
+        manifest = manifest_value(self.member(archive, name))
+        actual = {key[len(prefix):]: value for key, value in hashes.items()
+                  if key.startswith(prefix) and key != name}
+        need(manifest == actual, name + " exact member set/hashes")
+        self.report["outer_manifest" if not prefix else "nested_manifest"] = {
+            "sha256": hashes[name], "members": len(manifest), "exact": True}
+        return True
+
+    def receipt(self):
+        data = self.blob("LOCAL_RECEIPT.json")
+        value = json_value(data)
+        need(isinstance(value, dict), "receipt must be an object")
+        self.report["local_receipt_sha256"] = sha(data)
+        self.report["qualification_receipt_state"] = value.get("state")
+        return value
+
+    def receipt_identity(self, value, index):
+        expected = {"schema": "manual-transmission/clean-room-local-receipt/v1",
+                    "source": SOURCE, "source_tree": TREE, "launch_commit": LAUNCH,
+                    "recovery_id": EPOCH, "attempt_id": EPOCH + "/local-01",
+                    "archive_origin": "FIRST_TERMINAL_LOCAL_EVIDENCE_COLLECTION_NOT_CI_ARTIFACT",
+                    "archive_name": "original.zip", "archive_sha256": index["sha256"]}
+        for key, wanted in expected.items():
+            need(value.get(key) == wanted, "receipt identity: " + key)
+        exact_int(value.get("archive_bytes"), index["bytes"], "receipt archive bytes")
+        need(value.get("state") in (PASS, FAIL), "unrecognized qualification receipt state")
+        need(value.get("admitted") is False and value.get("requires_immutable_and_live_publication_readback") is True,
+             "receipt admission/readback boundary")
+        for key in ("phase2_games", "phase2_seeds", "ci_activations", "original_artifact_downloads", "new_qualification_invocations"):
+            exact_int(value.get(key), 0, "receipt prohibited action count: " + key)
+        need(isinstance(value.get("errors"), list), "receipt errors field")
+        return True
+
+    def receipt_claim(self, value, archive, index, hashes):
+        if value["state"] == FAIL:
+            need(value.get("all_frozen_local_gates_pass") is False, "failed receipt must not claim local pass")
+            return True
+        need(value.get("all_frozen_local_gates_pass") is True and value["errors"] == [], "local pass/errors")
+        exact_int(value.get("source_bindings_verified"), 376, "receipt binding count")
+        exact_int(value.get("qualifier_returncode"), 0, "qualifier return code")
+        exact_int(value.get("original_qualification_invocations"), 1, "original qualification invocation count")
+        need(value.get("host_properties_restored") is True, "host restoration receipt")
+        need(value.get("preserver_sha256") == PRESERVER_SHA, "reviewed preserver identity")
+        checks = value.get("checks")
+        needed = {"immutable authority " + name for name in (
+            "CHARTER.json", "LAUNCH_CURRENT.json", "SOURCE_FREEZE.json", "run_local_qualification.py",
+            "CANDIDATE_PINS.json", "audit_reports.py", "qualify.py")}
+        needed |= {"immutable source and launch authority", "original terminal and invocation", "original inner manifest",
+                   "terminal source and copied original bindings", "host restoration evidence",
+                   "independent frozen raw-report audit", "first local archive CRC and member readback",
+                   "original archive part readback"}
+        need(isinstance(checks, dict) and needed <= set(checks), "required receipt checks")
+        need(all(isinstance(v, dict) and v.get("state") == "PASS" for v in checks.values()), "receipt check failure")
+        audit_counts(value.get("raw_audit"))
+        for key, wanted in (("archive_validation", {"crc": "PASS", "member_manifest": "PASS", "members": len(hashes),
+                                                   "bytes": index["bytes"], "sha256": index["sha256"]}),
+                            ("parts_readback", {"state": "PASS", "parts": len(index["parts"]),
+                                                "bytes": index["bytes"], "sha256": index["sha256"]})):
+            observed = value.get(key)
+            need(isinstance(observed, dict) and set(observed) == set(wanted), "receipt archive proof fields: " + key)
+            for field, expected in wanted.items():
+                if type(expected) is int:
+                    exact_int(observed[field], expected, "receipt archive proof count: " + field)
+                else:
+                    need(observed[field] == expected, "receipt archive proof: " + field)
+        def obj(name):
+            result = json_value(self.member(archive, name))
+            need(isinstance(result, dict), "archived JSON object: " + name)
+            return result
+        need(hashes.get("authority/CHARTER.json") == CHARTER_SHA and
+             hashes.get("authority/CANDIDATE_PINS.json") == PINS_SHA and
+             hashes.get("qualification/CANDIDATE_PINS.json") == PINS_SHA and
+             hashes.get("authority/audit_reports.py") == AUDIT_SHA and
+             hashes.get("authority/preserve_local.py") == PRESERVER_SHA, "archived authority hashes")
+        result = obj("qualification/RESULT.json")
+        need(result.get("state") == PASS and result.get("admitted") is False, "archived qualifier result")
+        first = obj("qualification/COMPILE_FIRST.json")
+        exact_int(first.get("forms"), 15, "archived compile-first forms")
+        need(first.get("all_compiled") is True, "archived compile-first result")
+        independent = obj("review/INDEPENDENT_AUDIT.json")
+        need(independent.get("state") == "PASS" and independent.get("auditor_sha256") == AUDIT_SHA and
+             independent.get("result") == value["raw_audit"], "archived independent audit agrees")
+        inner_proof = independent.get("original_inner_manifest")
+        need(isinstance(inner_proof, dict) and inner_proof.get("manifest_sha256") == hashes["qualification/MANIFEST.json"],
+             "independent audit inner-manifest identity")
+        exact_int(inner_proof.get("files"), sum(name.startswith("qualification/") for name in hashes) - 1,
+                  "independent audit inner-manifest member count")
+        preservation = obj("review/PRESERVATION_CHECKS.json")
+        need(preservation.get("errors") == [] and preservation.get("copied_originals_unchanged") is True and
+             preservation.get("admitted") is False, "archived preservation errors/boundary")
+        exact_int(preservation.get("qualification_invocations_started_by_this_script"), 0, "archived preservation invocation count")
+        exact_int(preservation.get("ci_downloads"), 0, "archived preservation CI downloads")
+        prior_checks = preservation.get("checks")
+        need(isinstance(prior_checks, dict) and prior_checks and
+             all(isinstance(check, dict) and check.get("state") == "PASS" for check in prior_checks.values()),
+             "archived pre-archive preservation checks")
+        terminal = obj("runtime/LOCAL_TERMINAL.json")
+        need(terminal.get("source") == SOURCE and terminal.get("launch_commit") == LAUNCH and
+             terminal.get("state") == "QUALIFICATION_FINISHED", "archived terminal identity")
+        for key, number in (("returncode", 0), ("qualification_invocations", 1), ("source_bindings_verified", 376),
+                            ("phase2_games", 0), ("phase2_seeds", 0), ("ci_activations", 0), ("original_artifact_downloads", 0)):
+            exact_int(terminal.get(key), number, "archived terminal count: " + key)
+        need(terminal.get("all_bindings_match") is True and terminal.get("failed_bindings") == [] and
+             terminal.get("tracked_index_clean") is True and terminal.get("host_properties_restored") is True and
+             terminal.get("admitted") is False, "archived terminal restoration/boundary")
+        rebound = obj("review/SOURCE_REBINDING.json")
+        need(rebound.get("source") == rebound.get("head") == SOURCE and rebound.get("failed_bindings") == [] and
+             rebound.get("tracked_index_clean") is True, "archived rebinding report")
+        exact_int(rebound.get("source_bindings_verified"), 376, "archived rebinding count")
+        exact_int(rebound.get("expected_bindings"), 376, "archived expected bindings")
+        need(obj("review/HOST_RESTORATION.json") == value.get("host_restoration_evidence_basis"), "host evidence agrees")
+        freeze = obj("authority/SOURCE_FREEZE.json")["qualification"]
+        need(freeze["source"] == SOURCE and freeze["source_tree"] == TREE, "archived source freeze")
+        exact_int(freeze["binding_count"], 376, "archived frozen binding count")
+        return True
+
+    def live_head(self):
+        data = self.git("ls-remote", "--exit-code", "--refs", self.args.remote, BRANCH).decode("ascii")
+        lines = [line.split("\t") for line in data.splitlines() if line]
+        need(len(lines) == 1 and len(lines[0]) == 2 and lines[0][1] == BRANCH, "exact live branch response")
+        observed = lines[0][0]
+        self.report["observed_live_head"] = observed
+        self.report["live_readback_utc"] = datetime.datetime.now(datetime.timezone.utc).isoformat()
+        need(observed == self.args.expected_live_head, "live branch head differs from caller's expected head")
+        return True
+
+    def run(self, archive):
+        committed = self.stage("immutable_commit", lambda: need(self.git("cat-file", "-t", self.args.receipt_commit).strip() == b"commit",
+                                                                "receipt object must be a commit") or True)
+        index = self.stage("parts_index", self.index) if committed else None
+        receipt = self.stage("receipt_json", self.receipt) if committed else None
+        assembled = self.stage("original_bytes", lambda: self.assemble(index, archive)) if index else None
+        hashes = self.stage("zip_structure_and_crc", lambda: self.zip_structure(archive)) if assembled else None
+        outer = self.stage("outer_manifest", lambda: self.manifest(archive, hashes, "")) if hashes else None
+        inner = self.stage("inner_manifest", lambda: self.manifest(archive, hashes, "qualification/")) if hashes else None
+        identity = self.stage("receipt_identity_and_archive", lambda: self.receipt_identity(receipt, index)) if receipt and index else None
+        claim = self.stage("qualification_receipt_claim", lambda: self.receipt_claim(receipt, archive, index, hashes)) if identity and hashes else None
+        # Deliberately last: separate live publication proof from immutable content.
+        live = self.stage("live_branch_readback", self.live_head)
+        complete = all((committed, index is not None, receipt is not None, assembled, hashes is not None,
+                        outer, inner, identity, claim, live))
+        local_pass = bool(complete and receipt["state"] == PASS)
+        self.report.update({
+            "exact_original_archive_bytes_verified": bool(assembled),
+            "zip_members_and_crc_verified": hashes is not None,
+            "outer_manifest_verified": bool(outer), "nested_manifest_verified": bool(inner),
+            "receipt_identity_verified": bool(identity), "receipt_claim_verified": bool(claim),
+            "live_branch_verified": bool(live), "complete_readback": bool(complete),
+            "published_local_qualification_pass_validated": local_pass,
+            "scientific_admission": False,
+            "state": ("ARCHIVE_READBACK_PASS_LOCAL_QUALIFICATION_PASS_CI_REQUIRED" if local_pass else
+                      "ARCHIVE_READBACK_PASS_QUALIFICATION_FAILED" if complete else "READBACK_INCOMPLETE_OR_INVALID"),
+            "finished_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+        })
+        return 0 if complete else 1
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--repo", type=Path, required=True)
+    parser.add_argument("--receipt-commit", required=True)
+    parser.add_argument("--directory", required=True)
+    parser.add_argument("--expected-live-head", required=True)
+    parser.add_argument("--remote", default="origin")
+    parser.add_argument("--output-json", type=Path, required=True)
+    args = parser.parse_args()
+    for value in (args.receipt_commit, args.expected_live_head):
+        need(re.fullmatch(r"[0-9a-f]{40}", value) is not None, "full lowercase Git object ID required")
+    safe_name(args.directory)
+    need(args.remote and not args.remote.startswith("-"), "invalid remote")
+    args.repo = args.repo.resolve()
+    output = args.output_json.resolve()
+    need(args.repo.is_dir(), "repository directory absent")
+    need(not output.is_relative_to(args.repo), "readback output must be outside the repository")
+    need(not output.exists(), "refusing to overwrite an existing readback report")
+    output.parent.mkdir(parents=True, exist_ok=True)
+    reader = Reader(args)
+    with tempfile.TemporaryDirectory(prefix="manual-immutable-readback-", dir=output.parent) as temporary:
+        exit_code = reader.run(Path(temporary) / "original.zip")
+    with output.open("x", encoding="utf-8") as report_file:
+        json.dump(reader.report, report_file, indent=2, sort_keys=True)
+        report_file.write("\n")
+    print(json.dumps({key: reader.report[key] for key in (
+        "state", "complete_readback", "published_local_qualification_pass_validated",
+        "exact_original_archive_bytes_verified", "nested_manifest_verified", "live_branch_verified")}))
+    return exit_code
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
