@@ -9,8 +9,103 @@ def raw(ref,path):return subprocess.check_output(['git','show',ref+':'+path],cwd
 def digest(b):return hashlib.sha256(b).hexdigest()
 def check(ok,label):
     if not ok:raise ValueError(label)
+
+# The old normalization proof remains bound to its original immutable source.
+# This separate authority grants one prospective clean-room qualification.
+NORMALIZED_SOURCE='3c7a9dd9a028b8644c92b67b3351ecf413eec484'
+HISTORICAL_CHECKPOINT='62b95ee8f854cb9a29830832c287106ad8baaac4'
+CLEAN_CHARTER_COMMIT='c943c4eb9859a59aa4f9c3c8ac492e6519ce7855'
+CLEAN_NAMESPACE='experiments/manual-transmission/autonomy/clean-room-recovery-20261124'
+CLEAN_CHARTER_PATH=CLEAN_NAMESPACE+'/CHARTER.json'
+CLEAN_CHARTER_BLOB='944b7989a6e8a2d8551cc0a322ee7ce1b8eee709'
+CLEAN_CHARTER_SHA256='0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915'
+CLEAN_BRANCH='manual-transmission/clean-room-recovery-20261124'
+CLEAN_EPOCH='manual-clean-room-20261124-01'
+CLEAN_OWNER='manual-clean-room-foreground-20261124'
+
+def verify_clean_room_authority(envelope):
+    c=envelope['clean_room']
+    check(c['recovery_id']==CLEAN_EPOCH and c['branch']==CLEAN_BRANCH,'clean-room identity')
+    check(c['charter_commit']==CLEAN_CHARTER_COMMIT and c['charter_blob']==CLEAN_CHARTER_BLOB,'clean-room charter identity')
+    check(c['attempt']==1 and envelope['attempt']==1,'clean-room attempt one only')
+    check(c['lane'] in ('local','ci'),'clean-room execution lane')
+    check(git('rev-parse',CLEAN_CHARTER_COMMIT+':'+CLEAN_CHARTER_PATH)==CLEAN_CHARTER_BLOB,'immutable clean-room charter blob')
+    charter_bytes=raw(CLEAN_CHARTER_COMMIT,CLEAN_CHARTER_PATH)
+    check(digest(charter_bytes)==CLEAN_CHARTER_SHA256,'immutable clean-room charter hash')
+    charter=json.loads(charter_bytes)
+    check(charter['authorization']['state']=='EXPLICIT_USER_GRANT','clean-room explicit authority')
+    check(charter['source_basis']==NORMALIZED_SOURCE and charter['base_checkpoint']==HISTORICAL_CHECKPOINT,'clean-room source basis')
+    check(charter['budgets']['fresh_complete_local_qualifications']==1 and not charter['budgets']['candidate03_allowed'],'clean-room finite allowance')
+    first=envelope['first_parent']
+    check(git('merge-base','--is-ancestor',CLEAN_CHARTER_COMMIT,first)=='','clean-room carrier lineage')
+    check(raw(first,CLEAN_CHARTER_PATH)==charter_bytes,'clean-room carrier charter unchanged')
+    historical_ledger='experiments/manual-transmission/autonomy/CURRENT.json'
+    check(raw(first,historical_ledger)==raw(HISTORICAL_CHECKPOINT,historical_ledger),'historical ledger preserved')
+    current=json.loads(raw(first,CLEAN_NAMESPACE+'/CURRENT.json'))
+    check(current['recovery_id']==CLEAN_EPOCH and current['branch']==CLEAN_BRANCH,'clean-room ledger identity')
+    check(current['charter']==CLEAN_CHARTER_PATH and current['charter_sha256']==CLEAN_CHARTER_SHA256,'clean-room ledger charter')
+    check(current['owner']==CLEAN_OWNER and current['lease']['owner']==CLEAN_OWNER,'clean-room sole foreground owner')
+    check(current['lease']['sole_source_writer'] is True and current['lease']['scheduled_executor_enabled'] is False,'clean-room foreground scope')
+    check(current['lease']['writable_ref']=='refs/heads/'+CLEAN_BRANCH,'clean-room writable ref')
+    check(current['status'] in ('QUALIFICATION_RESERVED','QUALIFICATION_RUNNING','CI_RESERVED'),'clean-room launch state')
+    check(current['safeguards']==charter['safeguards'],'clean-room safeguards unchanged')
+    check(current['safeguards']['phase2_games']==current['safeguards']['phase2_seeds']==0,'clean-room official counters')
+    a=current['attempts']
+    check(a['local_reserved']==a['local_started']==1,'clean-room local launch durably reserved once')
+    if c['lane']=='local':
+        check(c['attempt_id']==CLEAN_EPOCH+'/local-01' and a['local_completed']==a['ci_activated']==a['original_artifact_downloads']==0,'clean-room local attempt identity')
+        check(current['status'] in ('QUALIFICATION_RESERVED','QUALIFICATION_RUNNING'),'clean-room local state')
+    else:
+        check(c['attempt_id']==CLEAN_EPOCH+'/ci-01' and a['ci_activated']==1 and a['original_artifact_downloads']==0,'clean-room CI attempt identity')
+        check(current['status']=='CI_RESERVED' and a['local_completed']==1,'clean-room CI prerequisite state')
+        receipt=current['local_result']
+        check(receipt['state']=='ALL_LOCAL_GATES_PASS_ORIGINAL_RECEIVING_REQUIRED','clean-room CI all local gates prerequisite')
+        check(receipt['source']==envelope['source'] and receipt['immutable_readback']=='PASS','clean-room CI exact local source readback')
+        check(current['prior_candidate02_ci_activations']==0,'clean-room CI does not reset historical activations')
+    q=envelope['qualification'];freeze=current['source_freeze']
+    check(q==freeze,'clean-room exact prospective source freeze')
+    check(q['candidate_index']=='02' and q['source']==envelope['source'],'clean-room Candidate02 source identity')
+    check(q['source_basis']==NORMALIZED_SOURCE and q['binding_count']==376,'clean-room frozen basis and count')
+    check(current['admitted'] is False,'clean-room pre-admission only')
+    return current
+
+def verify_m14_successor(source):
+    names=['audit_reports.py','verify_dispatch.py','CANDIDATE_PINS.json']
+    mechanical={RECORD+'/'+n for n in names}
+    check(git('show','-s','--format=%P',source)==NORMALIZED_SOURCE,'M14 exact single normalized parent')
+    check(set(git('diff','--name-only',NORMALIZED_SOURCE,source).splitlines())==mechanical,'M14 exact three mechanical source paths')
+    previous=raw(NORMALIZED_SOURCE,RECORD+'/audit_reports.py')
+    check(digest(previous)=='ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d','M14 preserved normalized audit')
+    check(previous.count(M14_OLD_VALUE_CHECKS)==1,'M14 exact replacement location')
+    amended=previous.replace(M14_OLD_VALUE_CHECKS,M14_NEW_VALUE_CHECKS)
+    check(raw(source,RECORD+'/audit_reports.py')==amended,'M14 only exact directed-label amendment; all other audit bytes preserved')
+    old_pins=json.loads(raw(NORMALIZED_SOURCE,RECORD+'/CANDIDATE_PINS.json'))
+    new_pins=json.loads(raw(source,RECORD+'/CANDIDATE_PINS.json'))
+    check(set(new_pins)==set(old_pins)|{'clean_room_m14_syntax'},'M14 bounded pin metadata')
+    check(all(new_pins[k]==v for k,v in old_pins.items() if k!='bindings'),'M14 historical pin metadata unchanged')
+    check(set(new_pins['bindings'])==set(old_pins['bindings']) and len(new_pins['bindings'])==376,'M14 all 376 binding paths preserved')
+    changed={p for p in old_pins['bindings'] if old_pins['bindings'][p]!=new_pins['bindings'][p]}
+    check(changed=={RECORD+'/audit_reports.py',RECORD+'/verify_dispatch.py'},'M14 only audit and verifier binding values changed')
+    for path in changed:
+        content=raw(source,path)
+        check(new_pins['bindings'][path]=={'sha256':digest(content),'bytes':len(content)},'M14 exact derived hash and byte length '+path)
+    metadata=dict(recovery_id=CLEAN_EPOCH,branch=CLEAN_BRANCH,authorization_commit=CLEAN_CHARTER_COMMIT,
+                  charter_blob=CLEAN_CHARTER_BLOB,charter_sha256=CLEAN_CHARTER_SHA256,prior_source=NORMALIZED_SOURCE,
+                  prior_audit_sha256=digest(previous),audit_sha256=digest(amended),scope='M14-copy-choice exact directed labels only',
+                  normal_expected='SELF_ALTERNATIVE',mutant_expected=None,M01_M13_unchanged=True,
+                  all_semantic_inputs_unchanged=True,candidate03_prohibited=True)
+    check(new_pins['clean_room_m14_syntax']==metadata,'M14 exact derived amendment metadata')
+    return digest(amended)
+
+M14_OLD_VALUE_CHECKS=b"    require(re.search(r'expected\\s*:?\\s*<?'+re.escape(expected)+r'>?',text,re.I) is not None,f'wrong expected value {directory}')\n    require(re.search(r'(?:but was|actual)\\s*:?\\s*<?'+re.escape(actual)+r'>?',text,re.I) is not None,f'wrong actual value {directory}')\n"
+M14_NEW_VALUE_CHECKS=b"    if negative['id']=='M14-copy-choice':\n        require(expected=='SELF_ALTERNATIVE' and actual=='null','M14 frozen directed value contract')\n        value_pattern=(r'(?:org\\.opentest4j\\.AssertionFailedError:\\s*)?expected\\s*:?\\s*'\n                       r'(?:<SELF_ALTERNATIVE>|SELF_ALTERNATIVE)\\s+'\n                       r'(?:but\\s+was|(?:but\\s+)?actual(?:\\s+was)?)\\s*:?\\s*'\n                       r'(?:<null>|null)')\n        stack_lines=''.join(failure.itertext()).strip().splitlines()\n        require(bool(stack_lines),'M14 missing original assertion text')\n        value_lines=[failure.get('message','').strip(),stack_lines[0].strip()]\n        require(all(re.fullmatch(value_pattern,line,re.I) is not None for line in value_lines),\n                f'M14 wrong or ambiguous directed assertion values {directory}')\n    else:\n        require(re.search(r'expected\\s*:?\\s*<?'+re.escape(expected)+r'>?',text,re.I) is not None,f'wrong expected value {directory}')\n        require(re.search(r'(?:but was|actual)\\s*:?\\s*<?'+re.escape(actual)+r'>?',text,re.I) is not None,f'wrong actual value {directory}')\n"
+
 def verify(envelope):
     source=envelope['source'];q=envelope['qualification'];grant=envelope['grant']
+    clean_room='clean_room' in envelope
+    if clean_room:verify_clean_room_authority(envelope)
+    normalization_source=NORMALIZED_SOURCE if clean_room else source
+    amended_audit_sha='ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d'
     proposal='888ad9f24b0a6f9dc84376f0204ee24bf9538838'
     check(grant['explicit_user_grant'] is True and grant['proposal_commit']==proposal,'explicit grant')
     check(grant['protocol_blob']=='a2c26c3b31834a7182bbe0b3a6ceb83922443cd4','protocol grant pin')
@@ -57,7 +152,7 @@ def verify(envelope):
         normalization_grant=json.loads(raw('a30dd5f35f078b8ccd68a2619b93617a907d0907','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_m02_m14_report_normalization_authorization']
         check(normalization_grant['explicit_user_grant'] is True and normalization_grant['prior_source']=='942f9f37c14ecaf7cfd7a7609d3d69080392f2eb','M02–M14 normalization authority')
         check(git('rev-parse',normalization_grant['prior_source']+':'+audit_path)==normalization_grant['prior_audit_blob']=='b37acdf87b701aee1a817f562b2040b259b9bcdb','preserved M01 audit lineage')
-        normalized=raw(source,audit_path)
+        normalized=raw(normalization_source,audit_path)
         check(digest(normalized)=='ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d','exact normalized audit hash')
         start=b'# BEGIN EXACT M02 M14 TARGETED REPORT NORMALIZATION\n';end=b'# END EXACT M02 M14 TARGETED REPORT NORMALIZATION\n'
         check(normalized.count(start)==normalized.count(end)==1,'bounded M02–M14 helper')
@@ -67,17 +162,18 @@ def verify(envelope):
         check(after.count(dispatch)==1 and before+after.replace(dispatch,b'')==amended_audit,'M01 and generic audit byte-semantics unchanged')
         mechanical={RECORD+'/'+n for n in ['audit_reports.py','verify_dispatch.py','CANDIDATE_PINS.json']}
         check(set(normalization_grant['authorized_source_paths'])==mechanical,'exact normalization paths authority')
-        check(set(git('diff','--name-only',normalization_grant['prior_source'],source).splitlines())==mechanical,'exact three normalization paths; all other source frozen')
+        check(set(git('diff','--name-only',normalization_grant['prior_source'],normalization_source).splitlines())==mechanical,'exact three normalization paths; all other source frozen')
         old_pins=json.loads(raw(normalization_grant['prior_source'],RECORD+'/CANDIDATE_PINS.json'))
-        new_pins=json.loads(raw(source,RECORD+'/CANDIDATE_PINS.json'))
+        new_pins=json.loads(raw(normalization_source,RECORD+'/CANDIDATE_PINS.json'))
         check(set(new_pins)==set(old_pins)|{'targeted_report_normalization'},'mechanical successor pin metadata')
         check(all(new_pins[k]==v for k,v in old_pins.items() if k!='bindings'),'unrelated pin metadata unchanged')
         check(set(new_pins['bindings'])==set(old_pins['bindings']),'exact binding path set unchanged')
         check({path for path in old_pins['bindings'] if old_pins['bindings'][path]!=new_pins['bindings'][path]}=={audit_path,RECORD+'/verify_dispatch.py'},'only audit/verifier pins changed')
+    if clean_room:amended_audit_sha=verify_m14_successor(source)
     for name,pin in manifest['files'].items():
         check(digest(raw(proposal,RECORD+'/'+name))==pin['sha256'],'immutable proposal history '+name)
         if audit_grant is not None and name=='audit_reports.py':
-            check(digest(raw(source,RECORD+'/'+name))=='ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d','amended audit proposal binding')
+            check(digest(raw(source,RECORD+'/'+name))==amended_audit_sha,'amended audit proposal binding')
         elif mapping_grant is not None and name in mapping_grant['mapping_pins']:
             check(digest(raw(source,RECORD+'/'+name))==mapping_grant['mapping_pins'][name]['new_sha256'],'amended proposal binding '+name)
         else:check(digest(raw(source,RECORD+'/'+name))==pin['sha256'],'immutable proposal changed '+name)
@@ -131,10 +227,11 @@ def verify(envelope):
     if q['candidate_index']=='02':exceptions.add('rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt')
     for path,pin in protected['bindings'].items():
         if path not in exceptions:check(raw(source,path)==raw(reviewed,path),'protected original '+path)
-    current=json.loads(raw(envelope['first_parent'],'experiments/manual-transmission/autonomy/CURRENT.json'))
-    check(current['owner'] is not None and current['lease']['owner']==current['owner'],'sole foreground lease')
-    check(current['status']=='WORKING' and current['automation']['enabled_at_latest_readback'] is False,'execution state')
-    check(current['safeguards']['phase2_games']==current['safeguards']['phase2_seeds']==0,'official counters')
+    current=json.loads(raw(HISTORICAL_CHECKPOINT if clean_room else envelope['first_parent'],'experiments/manual-transmission/autonomy/CURRENT.json'))
+    if not clean_room:
+        check(current['owner'] is not None and current['lease']['owner']==current['owner'],'sole foreground lease')
+        check(current['status']=='WORKING' and current['automation']['enabled_at_latest_readback'] is False,'execution state')
+        check(current['safeguards']['phase2_games']==current['safeguards']['phase2_seeds']==0,'official counters')
     if q['candidate_index']=='02':
         check(current['surge_bushwhacker_candidate02_authorization']==current_authority,'successor grant changed')
         check(current['surge_bushwhacker_candidate02_fixture_exception']==fixture_grant,'fixture-only grant changed')
