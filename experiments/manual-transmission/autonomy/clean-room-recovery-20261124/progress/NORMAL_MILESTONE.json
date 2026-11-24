@@ -1,0 +1,47 @@
+{
+  "state": "NORMAL_67_PASS_MUTATION_GATES_RUNNING",
+  "observed_utc": "2026-11-24T19:07:59.356731+00:00",
+  "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "launch_commit": "26af7820ca0a83de6ef812e8c7dc6978284be22c",
+  "command": {
+    "name": "normal",
+    "argv": [
+      "scripts/gradle-locked",
+      ":rules-engine:cleanTest",
+      ":mtg-sets:2008-2016:tests:cleanTest",
+      ":mtg-sets:cleanTest",
+      ":rules-engine:test",
+      "--tests",
+      "com.wingedsheep.engine.scenarios.SurgeCostCompositionTest",
+      "--tests",
+      "com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest",
+      ":mtg-sets:2008-2016:tests:test",
+      "--tests",
+      "com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest",
+      ":mtg-sets:test",
+      "--tests",
+      "com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest",
+      "--no-build-cache",
+      "--no-daemon",
+      "--console=plain",
+      "--stacktrace",
+      "--max-workers=2",
+      "-PkotlinCompileParallelism=1"
+    ],
+    "cwd": "/workspace/scratch/65bf30f1888a/manual-candidate02-source",
+    "returncode": 0
+  },
+  "normal_rows": 67,
+  "passed": 67,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "frozen_qualifier_advanced_beyond_normal_audit": true,
+  "normal_xml_hashes": {
+    "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml": "06debcd3d635958b662952620d437475fe60fe5b5a53f5a7abcab2fad1f1f777",
+    "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest.xml": "2c5c4a4823a64477922414ed66ef2f1cd699eb918307f8324e8b55576b00f74c",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml": "1c45ef6793b364d4167fae4db537a9d18ae66b83f53f08fe96006ebf9904c889",
+    "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml": "0a53a2df92228a31082f6f0643ef793f6b658ecca34860cc862a1bf6ac57e761"
+  },
+  "admitted": false
+}
