@@ -1,0 +1,122 @@
+{
+  "schema": "manual-transmission/clean-room-local-receipt/v1",
+  "state": "FAILED_OR_INCOMPLETE_LOCAL_ORIGINAL_PRESERVED",
+  "preserver_sha256": "b6df315f211a83a29955e5eafaa56d328a92f613a1936d4281b8dffecd53c517",
+  "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "source_tree": "632d9a579db3eea42a1bd1f2565685009627fdf5",
+  "launch_commit": "26af7820ca0a83de6ef812e8c7dc6978284be22c",
+  "recovery_id": "manual-clean-room-20261124-01",
+  "attempt_id": "manual-clean-room-20261124-01/local-01",
+  "recorded_utc": "2026-11-24T19:21:10.769940+00:00",
+  "all_frozen_local_gates_pass": false,
+  "source_bindings_verified": 376,
+  "archive_origin": "FIRST_TERMINAL_LOCAL_EVIDENCE_COLLECTION_NOT_CI_ARTIFACT",
+  "archive_name": "original.zip",
+  "archive_bytes": 4854439,
+  "archive_sha256": "f4c1c42b774217889dd3714f1c6dde2498d90339c3d44968991ed00ed8f9458a",
+  "archive_validation": {
+    "crc": "PASS",
+    "member_manifest": "PASS",
+    "members": 583,
+    "bytes": 4854439,
+    "sha256": "f4c1c42b774217889dd3714f1c6dde2498d90339c3d44968991ed00ed8f9458a"
+  },
+  "parts_readback": {
+    "state": "PASS",
+    "parts": 11,
+    "bytes": 4854439,
+    "sha256": "f4c1c42b774217889dd3714f1c6dde2498d90339c3d44968991ed00ed8f9458a"
+  },
+  "qualifier_returncode": 1,
+  "original_qualification_invocations": 1,
+  "host_properties_restored": true,
+  "host_restoration_evidence_basis": {
+    "launcher_byte_equality_attested": true,
+    "post_terminal_properties_sha256": "ee4a7e6737cd0599e031ac472e8df5ea246878d01011220da7cbf3061f980c20",
+    "post_terminal_properties_bytes": 578,
+    "property_keys": [
+      "org.gradle.java.installations.auto-detect",
+      "org.gradle.java.installations.auto-download",
+      "org.gradle.java.installations.paths",
+      "systemProp.http.nonProxyHosts",
+      "systemProp.http.proxyHost",
+      "systemProp.http.proxyPort",
+      "systemProp.https.proxyHost",
+      "systemProp.https.proxyPort",
+      "systemProp.javax.net.ssl.trustStore"
+    ],
+    "restored_key_schema": true,
+    "environment_helper_sha256": "b265b23210cf9d3538661414845a9b89984134ffb276b184eebc72313c7968ec",
+    "independent_prelaunch_hash_available": false,
+    "scope": "Launcher terminal byte-equality attestation plus post-terminal hash and restored key schema; proxy values and full environment are not retained."
+  },
+  "checks": {
+    "immutable authority CHARTER.json": {
+      "state": "PASS"
+    },
+    "immutable authority LAUNCH_CURRENT.json": {
+      "state": "PASS"
+    },
+    "immutable authority SOURCE_FREEZE.json": {
+      "state": "PASS"
+    },
+    "immutable authority run_local_qualification.py": {
+      "state": "PASS"
+    },
+    "immutable authority CANDIDATE_PINS.json": {
+      "state": "PASS"
+    },
+    "immutable authority audit_reports.py": {
+      "state": "PASS"
+    },
+    "immutable authority qualify.py": {
+      "state": "PASS"
+    },
+    "immutable source and launch authority": {
+      "state": "PASS"
+    },
+    "original terminal and invocation": {
+      "state": "FAIL",
+      "error": "qualifier terminal return zero"
+    },
+    "original inner manifest": {
+      "state": "PASS"
+    },
+    "terminal source and copied original bindings": {
+      "state": "PASS"
+    },
+    "host restoration evidence": {
+      "state": "PASS"
+    },
+    "independent frozen raw-report audit": {
+      "state": "FAIL",
+      "error": "[Errno 2] No such file or directory: '/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/LOCAL_QUALIFICATION_01/extracted/qualification/RESULT.json'"
+    },
+    "first local archive CRC and member readback": {
+      "state": "PASS"
+    },
+    "original archive part readback": {
+      "state": "PASS"
+    }
+  },
+  "errors": [
+    {
+      "gate": "original terminal and invocation",
+      "error": "ValueError('qualifier terminal return zero')",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/preserve_local.py\", line 147, in gate\n    result=action();checks[name]={'state':'PASS'}\n           ^^^^^^^^\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/preserve_local.py\", line 190, in terminal_check\n    need(t['state']=='QUALIFICATION_FINISHED' and t['returncode']==0,'qualifier terminal return zero')\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/preserve_local.py\", line 39, in need\n    if not ok: raise ValueError(message)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: qualifier terminal return zero\n"
+    },
+    {
+      "gate": "independent frozen raw-report audit",
+      "error": "FileNotFoundError(2, 'No such file or directory')",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/preserve_local.py\", line 147, in gate\n    result=action();checks[name]={'state':'PASS'}\n           ^^^^^^^^\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/preserve_local.py\", line 272, in independent_audit\n    result=read(evidence/'RESULT.json')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/preserve_local.py\", line 57, in read\n    def read(path): return json.loads(Path(path).read_text())\n                                      ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1027, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/LOCAL_QUALIFICATION_01/extracted/qualification/RESULT.json'\n"
+    }
+  ],
+  "raw_audit": null,
+  "admitted": false,
+  "phase2_games": 0,
+  "phase2_seeds": 0,
+  "ci_activations": 0,
+  "original_artifact_downloads": 0,
+  "new_qualification_invocations": 0,
+  "requires_immutable_and_live_publication_readback": true
+}

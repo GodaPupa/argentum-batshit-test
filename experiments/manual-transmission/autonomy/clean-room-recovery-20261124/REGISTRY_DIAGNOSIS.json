@@ -1,0 +1,178 @@
+{
+  "schema": "manual-transmission/clean-room-registry-diagnosis/v1",
+  "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "source_tree": "632d9a579db3eea42a1bd1f2565685009627fdf5",
+  "classification": "NEW_CARD_EXPOSES_PREEXISTING_GENERIC_LINTER_DECLARATION_GAP",
+  "state": "READ_ONLY_DIAGNOSIS_NO_REPAIR_OR_RERUN",
+  "gate": "cards / :mtg-sets:test",
+  "raw_xml": {
+    "files": 22,
+    "tests": 401,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 400,
+    "header_count_mismatches": [],
+    "expected_identity_rows": 401,
+    "actual_identity_rows": 401,
+    "missing": {},
+    "extra": {}
+  },
+  "failure": [
+    {
+      "identity": "mtg-sets\tcom.wingedsheep.mtg.sets.CardLintTest\tevery card's pipeline variables, target bindings, and choice slots resolve",
+      "kind": "failure",
+      "exception": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: List should be empty but has 1 elements, first being: \"[OGW] 'Reckless Bushwhacker': CastChoiceMade reads choice slot SELF_ALTERNATIVE, but nothing on the card declares it (EntersWithChoice / kicker / blight / sneak). The read would always come back empty.\"",
+      "primary_frame": "at com.wingedsheep.mtg.sets.CardLintTest$1$1.invokeSuspend(CardLintTest.kt:46)",
+      "xml_path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardLintTest.xml",
+      "xml_bytes": 20870,
+      "xml_sha256": "d69ea0ffdd8a00be22dfb6ab36ec1bb0942b94f6be13a77ade36e21b5c8175a9"
+    }
+  ],
+  "primary_cause": "CardLinter.collectSlots does not declare SELF_ALTERNATIVE for an actual CardScript.selfAlternativeCost. The new card's CastChoiceMade(SELF_ALTERNATIVE) read is therefore classified UndeclaredChoiceSlotRead by checkSlots, causing the unchanged corpus-wide CardLintTest assertion at line46 to fail.",
+  "causal_source": [
+    {
+      "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt",
+      "lines": [
+        27,
+        32
+      ],
+      "finding": "A real selfAlternativeCost object is declared; ETB intervening-if reads SELF_ALTERNATIVE."
+    },
+    {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/OGW.json",
+      "finding": "Bushwhacker snapshot contains script.selfAlternativeCost object and CastChoiceMade SELF_ALTERNATIVE; that object has no type:SelfAlternativeCost tag."
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt",
+      "lines": [
+        85,
+        97,
+        765,
+        787,
+        834,
+        875,
+        1462,
+        1471
+      ],
+      "finding": "Defaults are materialized. Existing collector declares known typed nodes, Kicker and nonnull kickerSpellEffect, but no SELF_ALTERNATIVE rule; checkSlots rejects undeclared reads."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "lines": [
+        1582,
+        1586
+      ],
+      "finding": "Engine writes SELF_ALTERNATIVE Flag into the durable cast-choice bag when the spell explicitly selected AlternativeCostType.SELF_ALTERNATIVE."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+      "lines": [
+        626,
+        648
+      ],
+      "finding": "CastChoiceMade has explicit SELF_ALTERNATIVE handling with origin-generation-aware original-object information."
+    }
+  ],
+  "baseline_and_scope": {
+    "reviewed_source": "b50fcd351d78a9375646b72e0ffea3ba77334fd6",
+    "card_absent_at_reviewed_source": true,
+    "unchanged_linter_test_allowlist": {
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt": {
+        "blobs": {
+          "b50fcd351d78a9375646b72e0ffea3ba77334fd6": "cc7164e1e3a796530b87291d94769f1000092b87",
+          "3c7a9dd9a028b8644c92b67b3351ecf413eec484": "cc7164e1e3a796530b87291d94769f1000092b87",
+          "62b95ee8f854cb9a29830832c287106ad8baaac4": "cc7164e1e3a796530b87291d94769f1000092b87",
+          "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9": "cc7164e1e3a796530b87291d94769f1000092b87"
+        },
+        "all_equal": true,
+        "source_sha256": "84b71a4ba586586ac1e1148355fcd1a2a6e7c296f0c1cd1c03ab3bc313bdc5b4"
+      },
+      "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/CardLinterTest.kt": {
+        "blobs": {
+          "b50fcd351d78a9375646b72e0ffea3ba77334fd6": "725a55afdce7723c5dd80ab30605db59292290ee",
+          "3c7a9dd9a028b8644c92b67b3351ecf413eec484": "725a55afdce7723c5dd80ab30605db59292290ee",
+          "62b95ee8f854cb9a29830832c287106ad8baaac4": "725a55afdce7723c5dd80ab30605db59292290ee",
+          "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9": "725a55afdce7723c5dd80ab30605db59292290ee"
+        },
+        "all_equal": true,
+        "source_sha256": "4e182023f08dda58dc68b62e90a4c869cb33edbcdb54e29ab4fb4aaf4f4ba202"
+      },
+      "mtg-sets/src/test/kotlin/com/wingedsheep/mtg/sets/CardLintTest.kt": {
+        "blobs": {
+          "b50fcd351d78a9375646b72e0ffea3ba77334fd6": "d518badb870039cda072e10d81c0839560fb75b7",
+          "3c7a9dd9a028b8644c92b67b3351ecf413eec484": "d518badb870039cda072e10d81c0839560fb75b7",
+          "62b95ee8f854cb9a29830832c287106ad8baaac4": "d518badb870039cda072e10d81c0839560fb75b7",
+          "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9": "d518badb870039cda072e10d81c0839560fb75b7"
+        },
+        "all_equal": true,
+        "source_sha256": "66c4302ca8d0ace26c9ed18274dbbec83f2aae1f0c7588b13e0a794b2c4618d4"
+      },
+      "mtg-sets/src/test/resources/lint-allowlist.txt": {
+        "blobs": {
+          "b50fcd351d78a9375646b72e0ffea3ba77334fd6": "27bbb90b5f2eb685432e04dc55b8217f29f500d1",
+          "3c7a9dd9a028b8644c92b67b3351ecf413eec484": "27bbb90b5f2eb685432e04dc55b8217f29f500d1",
+          "62b95ee8f854cb9a29830832c287106ad8baaac4": "27bbb90b5f2eb685432e04dc55b8217f29f500d1",
+          "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9": "27bbb90b5f2eb685432e04dc55b8217f29f500d1"
+        },
+        "all_equal": true,
+        "source_sha256": "245dc21ffaebae886d2e48576d5aec44cfd6ed263819a3b6f43a6b1033a1d0cc"
+      }
+    },
+    "current_amendment_paths": [
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py",
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py",
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/CANDIDATE_PINS.json"
+    ],
+    "not_caused_by_M14_parser_amendment": true,
+    "linter_repair_outside_current_three_file_grant": true
+  },
+  "environment_classification": {
+    "primary_failure_is_assertion": true,
+    "compiler_error": false,
+    "junit_error_rows": 0,
+    "note": "Gradle reports failing tests and MarkedVerificationException; no host failure establishes this stop. The wrapper warning about shlock is not the primary cause; the frozen launcher held the standard exclusive Manual flock."
+  },
+  "console_count_limitation": {
+    "stderr_summary": "400 tests completed, 1 failed",
+    "audited_xml_rows": 401,
+    "resolution": "Use exact raw XML identities/multiplicities and internally consistent XML header counts. Cause of the Gradle console aggregate discrepancy was not investigated; no row is missing or extra against the frozen401-row inventory."
+  },
+  "next_step_proposal": {
+    "scope": "Prospective generic CardLinter support and additive dedicated regression tests only; retain original corpus assertion/allowlist and all semantic card/engine bytes.",
+    "rule": "A real nonnull selfAlternativeCost object owned by the card/face script may declare SELF_ALTERNATIVE; absence/null must not declare it.",
+    "controls": [
+      "unconditional and conditional real costs accepted",
+      "ETB intervening-if reader accepted",
+      "absent/null selfAlternativeCost read rejected",
+      "a real selfAlternativeCost does not declare KICKED",
+      "kicker-only must not declare SELF_ALTERNATIVE"
+    ],
+    "prohibited_shortcuts": [
+      "No card-specific lint allowlist entry",
+      "No changing CardLintTest.shouldBeEmpty",
+      "No skip, threshold relaxation or automatic rerun",
+      "No CI activation before every full local gate passes"
+    ],
+    "requires": "Separate bounded source/qualification authorization; current one-shot attempt remains consumed and failed."
+  },
+  "limits": [
+    "Proposed linter fix is not implemented or tested in this diagnosis.",
+    "This raw gate failure is not full experiment completion or Phase2 admission.",
+    "Other downstream qualification gates did not execute after cards failure; they remain unproven."
+  ],
+  "inputs": {
+    "cards.stdout": {
+      "bytes": 41582,
+      "sha256": "805b498f1ed49efb306591b0ac05d266ed8c17766d50c6b11f5ce1123f34b6cd"
+    },
+    "cards.stderr": {
+      "bytes": 16001,
+      "sha256": "e43d1eea50aa64f5323afb75110b91974717968e151bb1ff1f510b61ebf21e31"
+    }
+  },
+  "new_qualification_invocations": 0,
+  "source_edits": 0,
+  "tests_executed_for_diagnosis": 0
+}
