@@ -7,10 +7,10 @@
   "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915",
   "base_checkpoint": "62b95ee8f854cb9a29830832c287106ad8baaac4",
   "source_basis": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
-  "status": "PREFLIGHT_IN_PROGRESS",
+  "status": "SOURCE_FROZEN_HOST_PREFLIGHT",
   "owner": "manual-clean-room-foreground-20261124",
   "ownership_authority": "Current explicit user grant for this isolated recovery only",
-  "updated_utc": "2026-11-24T18:21:13.423180+00:00",
+  "updated_utc": "2026-11-24T18:29:04.027174+00:00",
   "historical_state": {
     "original_m14_failed_qualification": "CONSUMED_AND_PRESERVED",
     "earlier_m14_successor_allowance": "ZERO_STARTS_DURABLY_RECORDED_ACTUAL_EXECUTION_UNKNOWN",
@@ -43,7 +43,31 @@
       "6adbad91b90881918859ad0cba22b881"
     ]
   },
-  "source_freeze": null,
-  "next": "Verify exact host prerequisites and source bindings; implement and regression-check the M14-only audit amendment; freeze and durably reserve the single new complete qualification before launch.",
+  "source_freeze": {
+    "candidate_index": "02",
+    "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+    "source_tree": "632d9a579db3eea42a1bd1f2565685009627fdf5",
+    "source_basis": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
+    "candidate_pins_blob": "933c265ce8a6e8427148f422608b75e8246d7a51",
+    "binding_count": 376,
+    "amended_files": {
+      "audit_reports.py": {
+        "blob": "db08a67dfa55f84d72131d49407e2748ab1a868b",
+        "sha256": "280a055eb671c18936bd2d4fd64dbe49dbdc68ae2a175a38d8567b612f92f275",
+        "bytes": 16088
+      },
+      "verify_dispatch.py": {
+        "blob": "3162479f80b2ac4590e713cf9a021f3ea5d80177",
+        "sha256": "963d5d9c0cdd49794b440d9084e0c14f32b652667ea650945d2bc65d48e4167f",
+        "bytes": 26093
+      },
+      "CANDIDATE_PINS.json": {
+        "blob": "933c265ce8a6e8427148f422608b75e8246d7a51",
+        "sha256": "e810d5a7d68d6cfaaf05096c37ae25eed2b259f48278e39852971ed56d21e94a",
+        "bytes": 124715
+      }
+    }
+  },
+  "next": "Finish host/build-tool readiness and verifier rejection controls; then reserve and launch the single new full qualification.",
   "admitted": false
 }

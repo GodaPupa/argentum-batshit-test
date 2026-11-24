@@ -1,0 +1,291 @@
+{
+  "state": "PASS",
+  "kind": "ARCHIVED_REPORT_AND_STATIC_PREFLIGHT_ONLY",
+  "fresh_behavioral_runs": 0,
+  "historical_archive": {
+    "checkpoint": "62b95ee8f854cb9a29830832c287106ad8baaac4",
+    "bytes": 4842613,
+    "sha256": "4753016dfa370a4667300457b476f09dae03ff8f79dd791e22af93db3255c34b",
+    "members": 556,
+    "crc": "PASS",
+    "qualification_manifest": "PASS"
+  },
+  "old_failure_remains_failed": true,
+  "source_bindings_verified": 376,
+  "exact_source_delta": [
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/CANDIDATE_PINS.json",
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py",
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py"
+  ],
+  "controls": [
+    {
+      "name": "historical normal67 unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M01-surge-price historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M02-red-payment historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M03-paid-guard historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M04-other-filter historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M05-controller-filter historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M06-toughness historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M07-granted-haste historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M08-duration historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M09-intrinsic-haste historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M10-entity-only-exclusion historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M11-exclude-none historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M12-followed-origin historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "M13-missing-choice historical result unchanged",
+      "result": "PASS"
+    },
+    {
+      "name": "preserved old M14 audit stop reproduced",
+      "result": "PASS",
+      "original_error": "wrong actual value $CONTROL_ROOT/archived-reports/M14-copy-choice"
+    },
+    {
+      "name": "preserved M14 actual-was report accepted",
+      "result": "PASS",
+      "raw_counts": {
+        "rows": 20,
+        "executed": 2,
+        "skips": 18,
+        "failures": 1
+      }
+    },
+    {
+      "name": "prior-but-was",
+      "result": "PASS",
+      "expected": "accept",
+      "rejection": null
+    },
+    {
+      "name": "prior-actual",
+      "result": "PASS",
+      "expected": "accept",
+      "rejection": null
+    },
+    {
+      "name": "observed-label",
+      "result": "PASS",
+      "expected": "accept",
+      "rejection": null
+    },
+    {
+      "name": "reversed-values",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/reversed-values/M14-copy-choice"
+    },
+    {
+      "name": "wrong-expected",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/wrong-expected/M14-copy-choice"
+    },
+    {
+      "name": "wrong-actual",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/wrong-actual/M14-copy-choice"
+    },
+    {
+      "name": "actual-value-suffix",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/actual-value-suffix/M14-copy-choice"
+    },
+    {
+      "name": "expected-value-suffix",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/expected-value-suffix/M14-copy-choice"
+    },
+    {
+      "name": "actual-value-prefix",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/actual-value-prefix/M14-copy-choice"
+    },
+    {
+      "name": "unexpected-prefix",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/unexpected-prefix/M14-copy-choice"
+    },
+    {
+      "name": "unexpected-suffix",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/unexpected-suffix/M14-copy-choice"
+    },
+    {
+      "name": "unbalanced-brackets",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/unbalanced-brackets/M14-copy-choice"
+    },
+    {
+      "name": "two-value-pairs",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/two-value-pairs/M14-copy-choice"
+    },
+    {
+      "name": "later-line-decoy",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/later-line-decoy/M14-copy-choice"
+    },
+    {
+      "name": "disagreeing-message-and-stack",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "M14 wrong or ambiguous directed assertion values $CONTROL_ROOT/disagreeing-message-and-stack/M14-copy-choice"
+    },
+    {
+      "name": "wrong-exception",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "wrong assertion type in $CONTROL_ROOT/wrong-exception/M14-copy-choice"
+    },
+    {
+      "name": "wrong-source-line",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "nonexact assertion line in $CONTROL_ROOT/wrong-source-line/M14-copy-choice"
+    },
+    {
+      "name": "missing-row",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exact full-class identities"
+    },
+    {
+      "name": "duplicate-row",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exact full-class identities"
+    },
+    {
+      "name": "wrong-class",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exact full-class identities"
+    },
+    {
+      "name": "wrong-witness",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exact full-class identities"
+    },
+    {
+      "name": "witness-skipped",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exactly two executed identities"
+    },
+    {
+      "name": "positive-skipped",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exactly two executed identities"
+    },
+    {
+      "name": "positive-failed",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted positive control PASS"
+    },
+    {
+      "name": "positive-errored",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted error rows"
+    },
+    {
+      "name": "third-executed",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exactly two executed identities"
+    },
+    {
+      "name": "inconsistent-xml-count",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "XML count mismatch $CONTROL_ROOT/inconsistent-xml-count/M14-copy-choice/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml: tests"
+    },
+    {
+      "name": "masked-mutant-exit",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exact selected command"
+    },
+    {
+      "name": "swapped-selectors",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exact selected command"
+    },
+    {
+      "name": "wildcard-selector",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exact selected command"
+    },
+    {
+      "name": "third-selector",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exact selected command"
+    },
+    {
+      "name": "missing-command",
+      "result": "PASS",
+      "expected": "reject",
+      "rejection": "targeted exact selected command"
+    }
+  ],
+  "control_count": 48,
+  "new_source_hashes": {
+    "audit_reports.py": "280a055eb671c18936bd2d4fd64dbe49dbdc68ae2a175a38d8567b612f92f275",
+    "verify_dispatch.py": "963d5d9c0cdd49794b440d9084e0c14f32b652667ea650945d2bc65d48e4167f",
+    "CANDIDATE_PINS.json": "e810d5a7d68d6cfaaf05096c37ae25eed2b259f48278e39852971ed56d21e94a"
+  }
+}

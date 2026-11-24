@@ -1,0 +1,99 @@
+{
+  "schema": "manual-transmission/clean-room-host-preflight/v1",
+  "state": "RUNTIME_PREFLIGHT_PASS_BUILD_LOCK_STILL_REQUIRED",
+  "recorded_utc": "2026-11-24T18:24:50.403736+00:00",
+  "host_directory": "/workspace/scratch/65bf30f1888a/manual-clean-room-host",
+  "jdk": {
+    "state": "PASS",
+    "jdk_root": "/workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9",
+    "expected_bytes": 207858352,
+    "expected_sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c",
+    "actual_bytes": 207858352,
+    "actual_sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c"
+  },
+  "gradle": {
+    "state": "PASS",
+    "version": "9.6.1",
+    "check": "scripts/gradle-locked --version only; no build tasks",
+    "isolated_user_home": "/workspace/scratch/65bf30f1888a/manual-clean-room-host/gradle-user-home",
+    "preparation_failures_preserved": [
+      "gradle-version-preflight.json",
+      "gradle-proxy-version-preflight.json"
+    ],
+    "resolved_with": "standard environment HTTP(S) proxy and the environment-provided SSL_CERT_FILE CA added to a separate copy of the exact JDK trust store"
+  },
+  "node": {
+    "state": "PASS",
+    "node_root": "/workspace/scratch/65bf30f1888a/manual-clean-room-host/node/node-v22.23.5-linux-x64",
+    "archive_url": "https://nodejs.org/dist/v22.23.5/node-v22.23.5-linux-x64.tar.xz",
+    "publisher_checksums_url": "https://nodejs.org/dist/v22.23.5/SHASUMS256.txt",
+    "archive_bytes": 31062912,
+    "archive_sha256": "cdeb8670a0c81f51b4dc4ac61919f9b1ad917b304bf8221eb939570663d240f8",
+    "publisher_sha256_verified": true
+  },
+  "npm_registry": {
+    "state": "PASS",
+    "package_installations": 0
+  },
+  "build_locking": {
+    "just_present": false,
+    "shlock_present": false,
+    "flock_path": "/usr/bin/flock",
+    "apt_candidate_availability": "UNDETERMINED: empty apt-cache output with a permission warning; no installation attempted",
+    "requires_root_decision": "Use an authorized shared build semaphore before any heavy build; version-only wrapper invocation warned that shlock was absent."
+  },
+  "host_configuration": {
+    "environment_helper": "/workspace/scratch/65bf30f1888a/manual-clean-room-host/environment.py",
+    "gradle_properties": "/workspace/scratch/65bf30f1888a/manual-clean-room-host/gradle-user-home/gradle.properties",
+    "gradle_properties_sha256": "8559af54519bcf69b0a98556f5334492deccef26e8828ec574a8b7e114e16504",
+    "platform_trust_receipt": "java-platform-trust.json",
+    "repository_files_edited_by_this_agent": [],
+    "system_installations_or_edits": [],
+    "certificate_validation_disabled": false
+  },
+  "not_verified": [
+    "Gradle build dependencies",
+    "buildSrc compilation",
+    "Kotlin compilation",
+    "behavioral tests",
+    "npm ci or package test execution",
+    "full qualification"
+  ],
+  "qualification_starts": 0,
+  "behavioral_tests": 0,
+  "build_tasks": 0,
+  "receipt_files": {
+    "jdk-preflight.json": {
+      "sha256": "4d4cff8568862541a7bc0fbeda0e4ecb84e61a58a2025c0312c38b73943764aa",
+      "bytes": 2229
+    },
+    "gradle-version-preflight.json": {
+      "sha256": "47ef5e9bea9ba06a0dfaa28733bfcbd5d8bfe9dcc8f46796631d93e090fee0e9",
+      "bytes": 2926
+    },
+    "gradle-proxy-version-preflight.json": {
+      "sha256": "53253f2aea8e5ea9fe4e5dc8d50145146b4649b47e7145ebfb95ff1c4907237d",
+      "bytes": 5033
+    },
+    "gradle-platform-version-preflight.json": {
+      "sha256": "4cd574dd3d39939180e34b04f3797fbe0eb812b1021f4c7cf7f6729281c5dd43",
+      "bytes": 1901
+    },
+    "node22-preflight.json": {
+      "sha256": "e3ab0c1b9cd88ca65b58cd18c78cc361853939efded92450cf3a19d97a0608e3",
+      "bytes": 2103
+    },
+    "npm-registry-preflight.json": {
+      "sha256": "0eddb4e14fe44c3669eadaeefc2a505c097885d8bc5f71b8010529aad0961e3b",
+      "bytes": 634
+    },
+    "java-platform-trust.json": {
+      "sha256": "0209369dfb73040e8b2b39766d1fb3ecd87fd4e159f71b8e756b4cd61b9a0ba0",
+      "bytes": 480
+    },
+    "initial-tool-inspection.json": {
+      "sha256": "383a65d360a57332c62445c6495d762d333d1417d580f2050841fa6fc53f6b70",
+      "bytes": 1604
+    }
+  }
+}

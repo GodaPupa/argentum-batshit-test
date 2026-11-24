@@ -89,8 +89,20 @@ def check_targeted_class_rows(directory,expected,skips,negative):
     expected='null' if negative['normal_expected'] is None else literal(negative['normal_expected'])
     actual='null' if negative['mutant_expected'] is None else literal(negative['mutant_expected'])
     # Preserve and inspect both labelled values, not just a generic assertion failure.
-    require(re.search(r'expected\s*:?\s*<?'+re.escape(expected)+r'>?',text,re.I) is not None,f'wrong expected value {directory}')
-    require(re.search(r'(?:but was|actual)\s*:?\s*<?'+re.escape(actual)+r'>?',text,re.I) is not None,f'wrong actual value {directory}')
+    if negative['id']=='M14-copy-choice':
+        require(expected=='SELF_ALTERNATIVE' and actual=='null','M14 frozen directed value contract')
+        value_pattern=(r'(?:org\.opentest4j\.AssertionFailedError:\s*)?expected\s*:?\s*'
+                       r'(?:<SELF_ALTERNATIVE>|SELF_ALTERNATIVE)\s+'
+                       r'(?:but\s+was|(?:but\s+)?actual(?:\s+was)?)\s*:?\s*'
+                       r'(?:<null>|null)')
+        stack_lines=''.join(failure.itertext()).strip().splitlines()
+        require(bool(stack_lines),'M14 missing original assertion text')
+        value_lines=[failure.get('message','').strip(),stack_lines[0].strip()]
+        require(all(re.fullmatch(value_pattern,line,re.I) is not None for line in value_lines),
+                f'M14 wrong or ambiguous directed assertion values {directory}')
+    else:
+        require(re.search(r'expected\s*:?\s*<?'+re.escape(expected)+r'>?',text,re.I) is not None,f'wrong expected value {directory}')
+        require(re.search(r'(?:but was|actual)\s*:?\s*<?'+re.escape(actual)+r'>?',text,re.I) is not None,f'wrong actual value {directory}')
     return {'rows':len(rows),'executed':2,'skips':len(rows)-2,'failures':1}
 # END EXACT M02 M14 TARGETED REPORT NORMALIZATION
 def check_rows(directory,expected,skips=None,negative=None):

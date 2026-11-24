@@ -1,0 +1,61 @@
+{
+  "state": "PASS",
+  "started_utc": "2026-11-24T18:21:06.728069+00:00",
+  "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.13%2B9/OpenJDK21U-jdk_x64_linux_hotspot_21.0.13_9.tar.gz",
+  "expected_bytes": 207858352,
+  "expected_sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c",
+  "archive_path": "/workspace/scratch/65bf30f1888a/manual-clean-room-host/OpenJDK21U-jdk_x64_linux_hotspot_21.0.13_9.tar.gz",
+  "qualification_starts": 0,
+  "repository_source_changes": 0,
+  "download_returncode": 0,
+  "actual_bytes": 207858352,
+  "actual_sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c",
+  "jdk_root": "/workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9",
+  "commands": [
+    {
+      "name": "java-version",
+      "argv": [
+        "/workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9/bin/java",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "openjdk 21.0.13 2026-10-20 LTS\nOpenJDK Runtime Environment Temurin-21.0.13+9 (build 21.0.13+9-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.13+9 (build 21.0.13+9-LTS, mixed mode, sharing)\n",
+      "stderr": ""
+    },
+    {
+      "name": "javac-version",
+      "argv": [
+        "/workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9/bin/javac",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "javac 21.0.13\n",
+      "stderr": ""
+    },
+    {
+      "name": "javac-probe",
+      "argv": [
+        "/workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9/bin/javac",
+        "--release",
+        "21",
+        "/workspace/scratch/65bf30f1888a/manual-clean-room-host/probe/CompilerProbe.java"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "name": "java-probe",
+      "argv": [
+        "/workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9/bin/java",
+        "-cp",
+        "/workspace/scratch/65bf30f1888a/manual-clean-room-host/probe",
+        "CompilerProbe"
+      ],
+      "returncode": 0,
+      "stdout": "JAVA21_COMPILER_PROBE_OK\n",
+      "stderr": ""
+    }
+  ],
+  "ended_utc": "2026-11-24T18:21:26.482138+00:00"
+}
