@@ -1,0 +1,1711 @@
+{
+  "schema": "manual-transmission/clean-room-envelope-synthetic-controls/v1",
+  "state": "PASS",
+  "adapter_path": "/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/receive_clean_room.py",
+  "adapter_bytes": 18816,
+  "adapter_sha256": "efc6f911441c44b0b6e8ed4d2d878063364acfb3f144f26c1c816294f30969a2",
+  "synthetic_only": true,
+  "synthetic_id_note": "Repeated-hex object IDs and SYNTHETIC_* identifiers are fixtures, not real GitHub observations.",
+  "base_fixture": {
+    "repository": "GodaPupa/argentum-batshit-test",
+    "branch": "manual-transmission/clean-room-recovery-20261124",
+    "epoch": "manual-clean-room-20261124-01",
+    "candidate_index": "02",
+    "event": "2222222222222222222222222222222222222222",
+    "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+    "source_tree": "632d9a579db3eea42a1bd1f2565685009627fdf5",
+    "validation": "3333333333333333333333333333333333333333",
+    "validation_tree": "4444444444444444444444444444444444444444",
+    "workflow_blob": "5555555555555555555555555555555555555555",
+    "workflow_sha256": "abababababababababababababababababababababababababababababababab",
+    "protocol_blob": "a2c26c3b31834a7182bbe0b3a6ceb83922443cd4",
+    "candidate_pins_blob": "933c265ce8a6e8427148f422608b75e8246d7a51",
+    "run_id": "SYNTHETIC_RUN_0001",
+    "job_id": "SYNTHETIC_JOB_0001",
+    "artifact_id": "SYNTHETIC_ARTIFACT_0001",
+    "artifact_name": "manual-clean-room-candidate02-20261124-SYNTHETIC_RUN_0001",
+    "artifact_digest": "sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+    "artifact_size": 1234,
+    "attempt": 1,
+    "run_number": 1,
+    "status": "completed",
+    "job_status": "completed",
+    "conclusion": "success",
+    "job_conclusion": "success",
+    "already_received": false,
+    "fresh_reconciliation": true,
+    "sole_writer": true,
+    "automation_disabled": true,
+    "first_parent": "1111111111111111111111111111111111111111",
+    "workflow_path": ".github/workflows/manual-clean-room-surge-bushwhacker-20261124.yml",
+    "recovery_id": "manual-clean-room-20261124-01",
+    "charter_commit": "c943c4eb9859a59aa4f9c3c8ac492e6519ce7855",
+    "charter_blob": "944b7989a6e8a2d8551cc0a322ee7ce1b8eee709",
+    "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915",
+    "lane": "ci",
+    "attempt_id": "manual-clean-room-20261124-01/ci-01",
+    "prior_receipt_count": 0
+  },
+  "function_called": "envelope_scope_check",
+  "forbidden_functions_called": [],
+  "receiver_configured": false,
+  "topology_verified": false,
+  "real_downloads": 0,
+  "archive_unpack_or_receiving_operations": 0,
+  "qualification_starts": 0,
+  "cases_total": 146,
+  "cases_passed": 146,
+  "cases_failed": 0,
+  "categories": {
+    "positive": {
+      "cases": 1,
+      "passed": 1,
+      "failed": 0
+    },
+    "original_fields_mismatch": {
+      "cases": 19,
+      "passed": 19,
+      "failed": 0
+    },
+    "additional_independent_fields_mismatch": {
+      "cases": 19,
+      "passed": 19,
+      "failed": 0
+    },
+    "independent_expected_mismatch": {
+      "cases": 19,
+      "passed": 19,
+      "failed": 0
+    },
+    "matched_but_wrong_fixed_identity": {
+      "cases": 18,
+      "passed": 18,
+      "failed": 0
+    },
+    "matched_but_invalid_receiving_state": {
+      "cases": 12,
+      "passed": 12,
+      "failed": 0
+    },
+    "immutable_object_syntax": {
+      "cases": 5,
+      "passed": 5,
+      "failed": 0
+    },
+    "missing_required_field": {
+      "cases": 38,
+      "passed": 38,
+      "failed": 0
+    },
+    "counter_type_contract": {
+      "cases": 15,
+      "passed": 15,
+      "failed": 0
+    }
+  },
+  "cases": [
+    {
+      "name": "correct_synthetic_new_epoch",
+      "category": "positive",
+      "expected": "ACCEPT",
+      "observed": "ACCEPT",
+      "passed": true,
+      "exception": null
+    },
+    {
+      "name": "wrong_actual_repository",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong repository"
+      }
+    },
+    {
+      "name": "wrong_actual_branch",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong branch"
+      }
+    },
+    {
+      "name": "wrong_actual_epoch",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong epoch"
+      }
+    },
+    {
+      "name": "wrong_actual_candidate_index",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong candidate_index"
+      }
+    },
+    {
+      "name": "wrong_actual_event",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong event"
+      }
+    },
+    {
+      "name": "wrong_actual_source",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong source"
+      }
+    },
+    {
+      "name": "wrong_actual_source_tree",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong source_tree"
+      }
+    },
+    {
+      "name": "wrong_actual_validation",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong validation"
+      }
+    },
+    {
+      "name": "wrong_actual_validation_tree",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong validation_tree"
+      }
+    },
+    {
+      "name": "wrong_actual_workflow_blob",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong workflow_blob"
+      }
+    },
+    {
+      "name": "wrong_actual_workflow_sha256",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong workflow_sha256"
+      }
+    },
+    {
+      "name": "wrong_actual_protocol_blob",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong protocol_blob"
+      }
+    },
+    {
+      "name": "wrong_actual_candidate_pins_blob",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong candidate_pins_blob"
+      }
+    },
+    {
+      "name": "wrong_actual_run_id",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong run_id"
+      }
+    },
+    {
+      "name": "wrong_actual_job_id",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong job_id"
+      }
+    },
+    {
+      "name": "wrong_actual_artifact_id",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong artifact_id"
+      }
+    },
+    {
+      "name": "wrong_actual_artifact_name",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong artifact_name"
+      }
+    },
+    {
+      "name": "wrong_actual_artifact_digest",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong artifact_digest"
+      }
+    },
+    {
+      "name": "wrong_actual_artifact_size",
+      "category": "original_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong artifact_size"
+      }
+    },
+    {
+      "name": "wrong_actual_first_parent",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed first_parent"
+      }
+    },
+    {
+      "name": "wrong_actual_workflow_path",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed workflow_path"
+      }
+    },
+    {
+      "name": "wrong_actual_recovery_id",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed recovery_id"
+      }
+    },
+    {
+      "name": "wrong_actual_charter_commit",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed charter_commit"
+      }
+    },
+    {
+      "name": "wrong_actual_charter_blob",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed charter_blob"
+      }
+    },
+    {
+      "name": "wrong_actual_charter_sha256",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed charter_sha256"
+      }
+    },
+    {
+      "name": "wrong_actual_lane",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed lane"
+      }
+    },
+    {
+      "name": "wrong_actual_attempt_id",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed attempt_id"
+      }
+    },
+    {
+      "name": "wrong_actual_prior_receipt_count",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed prior_receipt_count"
+      }
+    },
+    {
+      "name": "wrong_actual_attempt",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "attempt/run number cap"
+      }
+    },
+    {
+      "name": "wrong_actual_run_number",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "attempt/run number cap"
+      }
+    },
+    {
+      "name": "wrong_actual_status",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "nonterminal original"
+      }
+    },
+    {
+      "name": "wrong_actual_job_status",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "nonterminal original"
+      }
+    },
+    {
+      "name": "wrong_actual_conclusion",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed conclusion"
+      }
+    },
+    {
+      "name": "wrong_actual_job_conclusion",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed job_conclusion"
+      }
+    },
+    {
+      "name": "wrong_actual_already_received",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "already received artifact"
+      }
+    },
+    {
+      "name": "wrong_actual_fresh_reconciliation",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "live receiving gate"
+      }
+    },
+    {
+      "name": "wrong_actual_sole_writer",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "live receiving gate"
+      }
+    },
+    {
+      "name": "wrong_actual_automation_disabled",
+      "category": "additional_independent_fields_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "live receiving gate"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_repository",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong repository"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_branch",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong branch"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_epoch",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong epoch"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_candidate_index",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong candidate_index"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_event",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong event"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_source",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong source"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_source_tree",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong source_tree"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_validation",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong validation"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_validation_tree",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong validation_tree"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_workflow_blob",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong workflow_blob"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_workflow_sha256",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong workflow_sha256"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_protocol_blob",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong protocol_blob"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_candidate_pins_blob",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong candidate_pins_blob"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_run_id",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong run_id"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_job_id",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong job_id"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_artifact_id",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong artifact_id"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_artifact_name",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong artifact_name"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_artifact_digest",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong artifact_digest"
+      }
+    },
+    {
+      "name": "wrong_independent_expected_artifact_size",
+      "category": "independent_expected_mismatch",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong artifact_size"
+      }
+    },
+    {
+      "name": "old_quarantine_branch",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "branch"
+      }
+    },
+    {
+      "name": "old_canonical_branch",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "branch"
+      }
+    },
+    {
+      "name": "old_epoch",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "epoch"
+      }
+    },
+    {
+      "name": "old_recovery_id",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room CI identity"
+      }
+    },
+    {
+      "name": "candidate01",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room Candidate02 only"
+      }
+    },
+    {
+      "name": "wrong_repository",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "repository"
+      }
+    },
+    {
+      "name": "stale_source",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room frozen source identity"
+      }
+    },
+    {
+      "name": "stale_source_tree",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room frozen source identity"
+      }
+    },
+    {
+      "name": "stale_candidate_pins",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room frozen source identity"
+      }
+    },
+    {
+      "name": "wrong_protocol",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "protocol"
+      }
+    },
+    {
+      "name": "stale_charter_commit",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room charter identity"
+      }
+    },
+    {
+      "name": "stale_charter_blob",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room charter identity"
+      }
+    },
+    {
+      "name": "wrong_charter_hash",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room charter identity"
+      }
+    },
+    {
+      "name": "old_workflow",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room workflow path"
+      }
+    },
+    {
+      "name": "local_lane",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room CI identity"
+      }
+    },
+    {
+      "name": "second_attempt_identity",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room CI attempt identity"
+      }
+    },
+    {
+      "name": "wrong_artifact_name",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room original artifact name"
+      }
+    },
+    {
+      "name": "artifact_run_name_mismatch",
+      "category": "matched_but_wrong_fixed_identity",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room original artifact name"
+      }
+    },
+    {
+      "name": "second_attempt",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "attempt/run number cap"
+      }
+    },
+    {
+      "name": "second_run",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "attempt/run number cap"
+      }
+    },
+    {
+      "name": "zero_attempt",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "attempt/run number cap"
+      }
+    },
+    {
+      "name": "zero_run",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "attempt/run number cap"
+      }
+    },
+    {
+      "name": "run_in_progress",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "nonterminal original"
+      }
+    },
+    {
+      "name": "job_queued",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "nonterminal original"
+      }
+    },
+    {
+      "name": "artifact_already_received",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "already received artifact"
+      }
+    },
+    {
+      "name": "positive_prior_receipt_count",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "prior clean-room receipt exists"
+      }
+    },
+    {
+      "name": "negative_prior_receipt_count",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "prior clean-room receipt exists"
+      }
+    },
+    {
+      "name": "stale_reconciliation",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "live receiving gate"
+      }
+    },
+    {
+      "name": "not_sole_writer",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "live receiving gate"
+      }
+    },
+    {
+      "name": "automation_enabled",
+      "category": "matched_but_invalid_receiving_state",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "live receiving gate"
+      }
+    },
+    {
+      "name": "malformed_object_first_parent",
+      "category": "immutable_object_syntax",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "invalid immutable object identity first_parent"
+      }
+    },
+    {
+      "name": "malformed_object_event",
+      "category": "immutable_object_syntax",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "invalid immutable object identity event"
+      }
+    },
+    {
+      "name": "malformed_object_validation",
+      "category": "immutable_object_syntax",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "invalid immutable object identity validation"
+      }
+    },
+    {
+      "name": "malformed_object_validation_tree",
+      "category": "immutable_object_syntax",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "invalid immutable object identity validation_tree"
+      }
+    },
+    {
+      "name": "malformed_object_workflow_blob",
+      "category": "immutable_object_syntax",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "invalid immutable object identity workflow_blob"
+      }
+    },
+    {
+      "name": "missing_required_repository",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'repository'"
+      }
+    },
+    {
+      "name": "missing_required_branch",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'branch'"
+      }
+    },
+    {
+      "name": "missing_required_epoch",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'epoch'"
+      }
+    },
+    {
+      "name": "missing_required_candidate_index",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'candidate_index'"
+      }
+    },
+    {
+      "name": "missing_required_event",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'event'"
+      }
+    },
+    {
+      "name": "missing_required_source",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'source'"
+      }
+    },
+    {
+      "name": "missing_required_source_tree",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'source_tree'"
+      }
+    },
+    {
+      "name": "missing_required_validation",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'validation'"
+      }
+    },
+    {
+      "name": "missing_required_validation_tree",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'validation_tree'"
+      }
+    },
+    {
+      "name": "missing_required_workflow_blob",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'workflow_blob'"
+      }
+    },
+    {
+      "name": "missing_required_workflow_sha256",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'workflow_sha256'"
+      }
+    },
+    {
+      "name": "missing_required_protocol_blob",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'protocol_blob'"
+      }
+    },
+    {
+      "name": "missing_required_candidate_pins_blob",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'candidate_pins_blob'"
+      }
+    },
+    {
+      "name": "missing_required_run_id",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'run_id'"
+      }
+    },
+    {
+      "name": "missing_required_job_id",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'job_id'"
+      }
+    },
+    {
+      "name": "missing_required_artifact_id",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'artifact_id'"
+      }
+    },
+    {
+      "name": "missing_required_artifact_name",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'artifact_name'"
+      }
+    },
+    {
+      "name": "missing_required_artifact_digest",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'artifact_digest'"
+      }
+    },
+    {
+      "name": "missing_required_artifact_size",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'artifact_size'"
+      }
+    },
+    {
+      "name": "missing_required_first_parent",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'first_parent'"
+      }
+    },
+    {
+      "name": "missing_required_workflow_path",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'workflow_path'"
+      }
+    },
+    {
+      "name": "missing_required_recovery_id",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'recovery_id'"
+      }
+    },
+    {
+      "name": "missing_required_charter_commit",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'charter_commit'"
+      }
+    },
+    {
+      "name": "missing_required_charter_blob",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'charter_blob'"
+      }
+    },
+    {
+      "name": "missing_required_charter_sha256",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'charter_sha256'"
+      }
+    },
+    {
+      "name": "missing_required_lane",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'lane'"
+      }
+    },
+    {
+      "name": "missing_required_attempt_id",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'attempt_id'"
+      }
+    },
+    {
+      "name": "missing_required_prior_receipt_count",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'prior_receipt_count'"
+      }
+    },
+    {
+      "name": "missing_required_attempt",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'attempt'"
+      }
+    },
+    {
+      "name": "missing_required_run_number",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'run_number'"
+      }
+    },
+    {
+      "name": "missing_required_status",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'status'"
+      }
+    },
+    {
+      "name": "missing_required_job_status",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'job_status'"
+      }
+    },
+    {
+      "name": "missing_required_conclusion",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'conclusion'"
+      }
+    },
+    {
+      "name": "missing_required_job_conclusion",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'job_conclusion'"
+      }
+    },
+    {
+      "name": "missing_required_already_received",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'already_received'"
+      }
+    },
+    {
+      "name": "missing_required_fresh_reconciliation",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'fresh_reconciliation'"
+      }
+    },
+    {
+      "name": "missing_required_sole_writer",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'sole_writer'"
+      }
+    },
+    {
+      "name": "missing_required_automation_disabled",
+      "category": "missing_required_field",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "KeyError",
+        "message": "'automation_disabled'"
+      }
+    },
+    {
+      "name": "boolean_attempt",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter attempt"
+      }
+    },
+    {
+      "name": "boolean_attempt_actual",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter attempt"
+      }
+    },
+    {
+      "name": "boolean_attempt_expected",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter attempt"
+      }
+    },
+    {
+      "name": "boolean_run_number",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter run_number"
+      }
+    },
+    {
+      "name": "boolean_run_number_actual",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter run_number"
+      }
+    },
+    {
+      "name": "boolean_run_number_expected",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter run_number"
+      }
+    },
+    {
+      "name": "floating_attempt",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter attempt"
+      }
+    },
+    {
+      "name": "floating_attempt_actual",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter attempt"
+      }
+    },
+    {
+      "name": "floating_attempt_expected",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter attempt"
+      }
+    },
+    {
+      "name": "floating_run_number",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter run_number"
+      }
+    },
+    {
+      "name": "floating_run_number_actual",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter run_number"
+      }
+    },
+    {
+      "name": "floating_run_number_expected",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter run_number"
+      }
+    },
+    {
+      "name": "boolean_prior_receipt_count",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter prior_receipt_count"
+      }
+    },
+    {
+      "name": "boolean_prior_receipt_count_actual",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter prior_receipt_count"
+      }
+    },
+    {
+      "name": "boolean_prior_receipt_count_expected",
+      "category": "counter_type_contract",
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "non-integer counter prior_receipt_count"
+      }
+    }
+  ]
+}

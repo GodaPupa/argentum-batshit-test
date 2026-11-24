@@ -1,0 +1,44 @@
+{
+  "state": "NO_ADDITIONAL_STATIC_BLOCKER_FOUND",
+  "reviewed_utc": "2026-11-24T19:05:50.054632+00:00",
+  "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "adapter_sha256": "efc6f911441c44b0b6e8ed4d2d878063364acfb3f144f26c1c816294f30969a2",
+  "workflow_sha256": "260c26412013f11fed3e95b1ea245a944db1081b2c773460a57acca9dbf7640d",
+  "receiver_dependency_hashes_match_immutable_source": {
+    "receive.py": true,
+    "audit_reports.py": true,
+    "verify_dispatch.py": true,
+    "CANDIDATE_PINS.json": true
+  },
+  "original_receive_file_unchanged_from_normalized_source": true,
+  "original_receive_function_byte_equal": true,
+  "source_delta": [
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/CANDIDATE_PINS.json",
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py",
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py"
+  ],
+  "historical_commit_references_reachable_from_carrier_or_source": true,
+  "historical_commit_reference_count": 21,
+  "consistent_topology": "Event E has ordered parents C,V; V has sole parent S; C->E and S->V each add only the new workflow. CI checks out V and reads operational authority through immutable C objects. Receiver independently verifies the same topology and exact workflow/template bytes.",
+  "consistent_envelope": "Both paths preserve original local source-freeze fields plus the same eight CI fields, and construct equal event/source/qualification/grant/clean_room fields. Artifact name prefix and run ID conventions agree.",
+  "required_local_result_fields": [
+    "state",
+    "source",
+    "immutable_readback",
+    "receipt_path",
+    "receipt_commit",
+    "archive_sha256"
+  ],
+  "required_original_local_receipt_fields": [
+    "state",
+    "source",
+    "all_frozen_local_gates_pass",
+    "source_bindings_verified",
+    "archive_sha256"
+  ],
+  "receiving_execution_requirement": "Run the adapter from the carrier and pass the restored S checkout as --source-root; the source/validation checkout intentionally lacks the new operational namespace.",
+  "limits": [
+    "Static review only; did not run configure, topology verification, receiving, builds, or qualification.",
+    "Prospective C/V/E and local pass receipt do not exist yet; successful dispatch and receiving still depend on constructing those exact records after the live local qualification passes."
+  ]
+}
