@@ -10,7 +10,7 @@
   "status": "QUALIFICATION_RUNNING",
   "owner": "manual-clean-room-foreground-20261124",
   "ownership_authority": "Current explicit user grant for this isolated recovery only",
-  "updated_utc": "2026-11-24T18:42:55.915944+00:00",
+  "updated_utc": "2026-11-24T19:04:51.402017+00:00",
   "historical_state": {
     "original_m14_failed_qualification": "CONSUMED_AND_PRESERVED",
     "earlier_m14_successor_allowance": "ZERO_STARTS_DURABLY_RECORDED_ACTUAL_EXECUTION_UNKNOWN",
@@ -68,7 +68,7 @@
       }
     }
   },
-  "next": "Continue this single running qualification; checkpoint observed stage completions. No relaunch, CI, or artifact receiving until its recorded result permits them.",
+  "next": "Continue this single running qualification through all frozen behavioral, client and metadata gates. The compile-first milestone is complete; no relaunch or CI activation.",
   "admitted": false,
   "preflight": {
     "archived_report_checks": 48,
@@ -98,10 +98,11 @@
   "launch_accounting": "The single attempt is durably consumed at this launch reservation. local_started records that single-use launch record; physical child invocation is separately recorded in LOCAL_LAUNCH.json. Never silently refund the reservation after loss of runtime state.",
   "local_process_invocations_observed": 1,
   "progress": {
-    "stage": "compile-normal",
-    "compile_forms_completed": 0,
+    "stage": "normal",
+    "compile_forms_completed": 15,
     "normal_behavioral_rows_completed": 0,
     "source_binding": "PASS",
-    "qualification_log": "Fresh unchanged qualify.py has emitted START compile-normal."
+    "qualification_log": "START normal",
+    "compile_first_receipt": "progress/COMPILE_FIRST.json"
   }
 }
