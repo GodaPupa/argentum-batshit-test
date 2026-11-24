@@ -1,0 +1,33 @@
+{
+  "kind": "BUILD_TOOLCHAIN_PREFLIGHT_ONLY",
+  "started_utc": "2026-11-24T18:36:57.185319+00:00",
+  "argv": [
+    "scripts/gradle-locked",
+    "-p",
+    "buildSrc",
+    "javaToolchains",
+    "compileJava",
+    "--no-build-cache",
+    "--no-daemon",
+    "--console=plain",
+    "--stacktrace",
+    "--max-workers=2",
+    "-PkotlinCompileParallelism=1"
+  ],
+  "qualification_starts": 0,
+  "behavioral_runs": 0,
+  "locking": "exclusive standard Manual flock, one locked Gradle invocation; repository wrapper unchanged",
+  "host_memory_settings": "Historical qualified host settings: 4g heap, SerialGC, in-process Kotlin compiler",
+  "returncode": 0,
+  "host_properties_restored": true,
+  "ended_utc": "2026-11-24T18:38:15.827662+00:00",
+  "state": "PASS",
+  "build-toolchain-ready.stdout": {
+    "bytes": 1263,
+    "sha256": "8b96e37a6407cd02e4164e3cf303a9bed44524d60e5093f9760bbe16a000b199"
+  },
+  "build-toolchain-ready.stderr": {
+    "bytes": 62,
+    "sha256": "325ce284fa8cb2606e3dbef5d9b291580505a4671c930caa0e6f983ed01d9df6"
+  }
+}

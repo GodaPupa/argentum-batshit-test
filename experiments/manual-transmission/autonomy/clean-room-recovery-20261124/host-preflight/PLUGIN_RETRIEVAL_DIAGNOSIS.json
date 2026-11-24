@@ -1,0 +1,125 @@
+{
+  "schema": "manual-transmission/clean-room-plugin-retrieval-diagnosis/v1",
+  "state": "RESOLVED_PLUGIN_METADATA_HELP_PASS",
+  "recorded_utc": "2026-11-24T18:36:56.120453+00:00",
+  "root_cause": "The platform HTTP(S) proxy port is invocation-local. Persisted Gradle systemProp proxyPort values came from an earlier executor invocation and differed from the current environment. They overrode freshly derived launcher proxy properties during Gradle plugin resolution.",
+  "evidence": {
+    "java_head_probe_property_equivalence": {
+      "javax.net.ssl.trustStore": true,
+      "http.proxyHost": true,
+      "http.proxyPort": false,
+      "https.proxyHost": true,
+      "https.proxyPort": false
+    },
+    "exact_plugin_marker_and_implementation_http_checks": [
+      {
+        "record": "plugin-marker-pom.json",
+        "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/kotlin-dsl/org.gradle.kotlin.kotlin-dsl.gradle.plugin/6.6.4/org.gradle.kotlin.kotlin-dsl.gradle.plugin-6.6.4.pom",
+        "method": "GET",
+        "status": 200,
+        "response_bytes": 681,
+        "response_sha256": "3e9412faf093fce6f9459837c8b3fd367ee3ffc2c77d0d7d343e13ecdd9075eb"
+      },
+      {
+        "record": "plugin-version-page.json",
+        "url": "https://plugins.gradle.org/plugin/org.gradle.kotlin.kotlin-dsl/6.6.4",
+        "method": "GET",
+        "status": 200,
+        "response_bytes": 52785,
+        "response_sha256": "f76cf30e9144f77a2e910954d262513e7e2c6d21a315dd52dcd2e4d027bd45e3"
+      },
+      {
+        "record": "plugin-implementation-pom.json",
+        "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/gradle-kotlin-dsl-plugins/6.6.4/gradle-kotlin-dsl-plugins-6.6.4.pom",
+        "method": "GET",
+        "status": 200,
+        "response_bytes": 2778,
+        "response_sha256": "76dfad2d2cf156c42c7d9ddab57874a35d84bb84a448e7885bf311f4dc3d7c4e"
+      },
+      {
+        "record": "plugin-implementation-module.json",
+        "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/gradle-kotlin-dsl-plugins/6.6.4/gradle-kotlin-dsl-plugins-6.6.4.module",
+        "method": "GET",
+        "status": 200,
+        "response_bytes": 6057,
+        "response_sha256": "f7d9c2cb045422afc8d0cdc1427a9cec1cd75b3d28675be50525490986eec453"
+      },
+      {
+        "record": "plugin-implementation-jar-head.json",
+        "url": "https://plugins.gradle.org/m2/org/gradle/kotlin/gradle-kotlin-dsl-plugins/6.6.4/gradle-kotlin-dsl-plugins-6.6.4.jar",
+        "method": "HEAD",
+        "status": 200,
+        "response_bytes": 2916,
+        "response_sha256": "fd11b86817158793c747c50294c5864a11b981c83a19763d1f5575bdb45886d6"
+      }
+    ],
+    "java_get_and_head_checks": "Exact Temurin JDK succeeded against the same official POM URLs with invocation-current proxy properties and the platform CA copy.",
+    "original_gradle_failures": [
+      "BUILD_TOOLCHAIN_PREFLIGHT.json",
+      "BUILD_TOOLCHAIN_INFO_PREFLIGHT.json"
+    ],
+    "corrected_probe": {
+      "kind": "PLUGIN_METADATA_HOST_PROBE_ONLY",
+      "started_utc": "2026-11-24T18:35:04.118390+00:00",
+      "argv": [
+        "scripts/gradle-locked",
+        "-p",
+        "buildSrc",
+        "help",
+        "--refresh-dependencies",
+        "--debug",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "qualification_starts": 0,
+      "behavioral_runs": 0,
+      "engine_build_tasks": 0,
+      "locking": "exclusive standard Manual flock",
+      "host_memory_settings": "Historical4g heap SerialGC in-process Kotlin",
+      "proxy_properties_refreshed_in_launch_process": true,
+      "previous_proxy_properties_sha256": "8559af54519bcf69b0a98556f5334492deccef26e8828ec574a8b7e114e16504",
+      "fresh_proxy_properties_sha256": "dbc700ed312cc856dcc8c36541c0940b874a672b01b93c66dbe4181b10c5d87e",
+      "returncode": 0,
+      "host_properties_restored": true,
+      "ended_utc": "2026-11-24T18:36:02.144436+00:00",
+      "state": "PASS",
+      "plugin-metadata-proxy-refresh.stdout": {
+        "bytes": 2240534,
+        "sha256": "3358857a5aa718711e53a3f6e2ea264b4de8a1f21f234ad176146c26c78ef4b7"
+      },
+      "plugin-metadata-proxy-refresh.stderr": {
+        "bytes": 62,
+        "sha256": "325ce284fa8cb2606e3dbef5d9b291580505a4671c930caa0e6f983ed01d9df6"
+      }
+    }
+  },
+  "correction": {
+    "file": "environment.py",
+    "new_entry_point": "prepare_environment()",
+    "behavior": "Derive current invocation proxy values and rewrite isolated Gradle host properties in the same process that launches Gradle, before temporary historical memory options are appended.",
+    "source_changes": 0,
+    "dependency_version_changes": 0,
+    "tls_validation_disabled": false,
+    "network_policy_bypassed": false,
+    "external_mirror_used": false
+  },
+  "continuation": {
+    "acquire_manual_lock_before_host_property_preparation": true,
+    "keep_launcher_exec_session_live": true,
+    "refresh_proxy_properties_each_executor_invocation": true,
+    "buildSrc_compileJava_still_requires_successful_root_preflight": true,
+    "engine_and_behavioral_qualification_not_run": true
+  },
+  "counters": {
+    "metadata_help_invocations_after_fix": 1,
+    "engine_build_tasks": 0,
+    "behavioral_runs": 0,
+    "qualification_starts": 0
+  },
+  "environment_helper_sha256": "b265b23210cf9d3538661414845a9b89984134ffb276b184eebc72313c7968ec",
+  "logs_policy": "Original logs retained host-only; debug log contains no user-facing publication and should be reviewed before any external attachment."
+}

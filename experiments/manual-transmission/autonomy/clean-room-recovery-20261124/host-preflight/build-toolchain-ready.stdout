@@ -1,0 +1,30 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Task :javaToolchains
+
+ + Options
+     | Auto-detection:     Disabled
+     | Auto-download:      Disabled
+
+ + Eclipse Temurin JDK 21 (21.0.13+9-LTS)
+     | Location:           /workspace/scratch/65bf30f1888a/manual-clean-room-host/jdk/jdk-21.0.13+9
+     | Language Version:   21
+     | Vendor:             Eclipse Temurin
+     | Architecture:       amd64
+     | Is JDK:             true
+     | Detected by:        Gradle property 'org.gradle.java.installations.paths'
+
+
+> Task :checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :generateExternalPluginSpecBuilders
+> Task :extractPrecompiledScriptPluginPlugins
+> Task :compilePluginsBlocks
+> Task :generateScriptPluginAdapters
+> Task :generatePrecompiledScriptPluginAccessors
+> Task :compileKotlin
+> Task :compileJava NO-SOURCE
+
+BUILD SUCCESSFUL in 1m 18s
+7 actionable tasks: 7 executed
+Consider enabling configuration cache to speed up this build: https://docs.gradle.org/9.6.1/userguide/configuration_cache_enabling.html

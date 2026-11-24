@@ -7,10 +7,10 @@
   "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915",
   "base_checkpoint": "62b95ee8f854cb9a29830832c287106ad8baaac4",
   "source_basis": "3c7a9dd9a028b8644c92b67b3351ecf413eec484",
-  "status": "HOST_PREFLIGHT_PROXY_CONFIGURATION_FIX",
+  "status": "QUALIFICATION_RESERVED",
   "owner": "manual-clean-room-foreground-20261124",
   "ownership_authority": "Current explicit user grant for this isolated recovery only",
-  "updated_utc": "2026-11-24T18:34:53.987512+00:00",
+  "updated_utc": "2026-11-24T18:39:33.318831+00:00",
   "historical_state": {
     "original_m14_failed_qualification": "CONSUMED_AND_PRESERVED",
     "earlier_m14_successor_allowance": "ZERO_STARTS_DURABLY_RECORDED_ACTUAL_EXECUTION_UNKNOWN",
@@ -19,8 +19,8 @@
     "allowance_transferred_from_old_run": false
   },
   "attempts": {
-    "local_reserved": 0,
-    "local_started": 0,
+    "local_reserved": 1,
+    "local_started": 1,
     "local_completed": 0,
     "ci_activated": 0,
     "original_artifact_downloads": 0
@@ -68,13 +68,33 @@
       }
     }
   },
-  "next": "Finish host-only dependency/build-tool readiness with current-session proxy properties, then durably reserve and run the single full fresh qualification.",
+  "next": "Launch frozen qualify.py exactly once using the pinned run_local_qualification.py; preserve all outputs and stop at the first real failure.",
   "admitted": false,
   "preflight": {
     "archived_report_checks": 48,
     "source_authority_checks": 26,
     "source_bindings_verified": 376,
     "candidate_behavioral_runs": 0,
-    "host_issue": "Gradle properties retained a proxy port from a prior exec invocation. Regenerate host proxy properties in the launching process; pinned dependencies and repository bytes remain fixed."
-  }
+    "host_issue": "RESOLVED: current invocation proxy properties are regenerated under the Manual lock",
+    "receiver_controls": 18,
+    "build_toolchain": "PASS"
+  },
+  "lease": {
+    "owner": "manual-clean-room-foreground-20261124",
+    "claimed_utc": "2026-11-24T18:39:33.318831+00:00",
+    "expires_utc": "2026-11-25T00:39:33.318831+00:00",
+    "mode": "EXPLICIT_USER_AUTHORIZED_ISOLATED_FOREGROUND",
+    "sole_source_writer": true,
+    "scheduled_executor_enabled": false,
+    "writable_ref": "refs/heads/manual-transmission/clean-room-recovery-20261124"
+  },
+  "host_ready": {
+    "state": "PASS",
+    "toolchain_receipt": "host-preflight/BUILD_TOOLCHAIN_READY_PREFLIGHT.json",
+    "jdk_sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c",
+    "environment_helper_sha256": "b265b23210cf9d3538661414845a9b89984134ffb276b184eebc72313c7968ec",
+    "proxy_refresh_required_per_invocation": true
+  },
+  "launch_accounting": "The single attempt is durably consumed at this launch reservation. local_started records that single-use launch record; physical child invocation is separately recorded in LOCAL_LAUNCH.json. Never silently refund the reservation after loss of runtime state.",
+  "local_process_invocations_observed": 0
 }
