@@ -8,9 +8,9 @@
   "charter_sha256": "5b4e30d8594b6c1e4a6d8f2ec2f4a0bdb0a6dba7e314e8deddffcad66b06f701",
   "base_checkpoint": "a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76",
   "source_basis": "82ec335573572edfd2a2e4d734d2f0d81801139f",
-  "status": "HOSTED_RUN_IN_PROGRESS",
+  "status": "ORIGINAL_ARTIFACT_DOWNLOAD_RESERVED",
   "owner": "manual-host-requalification-foreground-20261124",
-  "updated_utc": "2026-11-25T20:28:36.689742+00:00",
+  "updated_utc": "2026-11-25T21:23:51Z",
   "selected_plan": "B_HOSTED_ONCE",
   "execution_environment": "github_hosted",
   "local_pass": false,
@@ -34,7 +34,7 @@
     "qualification_reserved": 1,
     "qualification_started": null,
     "qualification_completed": null,
-    "original_artifact_downloads": 0,
+    "original_artifact_downloads": 1,
     "original_artifact_receives": 0,
     "local_started": 0
   },
@@ -131,8 +131,10 @@
     }
   },
   "reconciliation": {
-    "path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/PREACTIVATION_RECONCILIATION.json",
-    "state": "FRESH_PREACTIVATION_RECONCILIATION_PASSED",
+    "path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/CI_RECEIVE_PLAN_01/PRETRANSPORT_RECONCILIATION.json",
+    "sha256": "bafea30be030d85d94840d9ad9d84b55eb1268db2f2f63e36ca1ed0deb9f692a",
+    "observed_utc": "2026-11-25T21:23:51Z",
+    "state": "FRESH_PRETRANSPORT_RECONCILIATION_PASSED",
     "prior_candidate02_ci_activations": 0,
     "historical_automations_disabled": true,
     "historical_runtime_history": "UNKNOWN_UNCHANGED"
@@ -166,5 +168,17 @@
     "selected_plan": "B_HOSTED_ONCE",
     "retry_allowed": false
   },
-  "next": "Observe the single hosted run to completion; obtain actual runtime counters and results from its single original artifact. Do not rerun or download before a durable independent metadata claim."
+  "next": "Publish this exact claim D before the only original artifact transport. Original runtime counts are unknown until the original artifact is inspected; no retry is permitted.",
+  "ci_receiving_reservation": {
+    "run_id": 45695073375,
+    "job_id": 139490227770,
+    "artifact_id": 15063444055,
+    "artifact_digest": "sha256:499b2c7a84f5507adc4862a11f9a7c0c976e9ee54d3b9552f7a4be6adfd4f227",
+    "artifact_size": 8308418,
+    "attempt_id": "manual-host-requalification-20261124-01/ci-01",
+    "prior_receipt_count": 0,
+    "original_artifact_downloads": 1,
+    "expected_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/CI_RECEIVE_PLAN_01/EXPECTED.json",
+    "expected_sha256": "94d9453f55085b9c92697b8485c1e86dfe7cf37c1111d8bf8af7ac98037e1dbe"
+  }
 }
