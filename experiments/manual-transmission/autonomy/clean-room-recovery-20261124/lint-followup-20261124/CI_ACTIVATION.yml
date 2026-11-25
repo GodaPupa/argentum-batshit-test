@@ -1,0 +1,151 @@
+name: Manual Candidate02 lint followup 20261124
+on:
+  push:
+    branches: [manual-transmission/clean-room-recovery-20261124]
+    paths: ['.github/workflows/manual-lint-followup-surge-bushwhacker-20261124.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  RECORD: experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114
+  RECOVERY: experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124
+  WORKFLOW: .github/workflows/manual-lint-followup-surge-bushwhacker-20261124.yml
+  PYTHONDONTWRITEBYTECODE: '1'
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - name: Authenticate the new recovery and frozen original local pass
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json,os,subprocess
+          def git(*a):return subprocess.check_output(['git',*a],text=True).strip()
+          def raw(ref,path):return subprocess.check_output(['git','show',ref+':'+path])
+          def sha(b):return hashlib.sha256(b).hexdigest()
+          if any(value.startswith('PENDING_') for value in ('82ec335573572edfd2a2e4d734d2f0d81801139f','923ec79e1c867eedf35b408153bf60988fbd26b6','86450c1ecb227804dbd45acf5ba28689ce0c61bc','418fb7f5a0ebeed92582f8285e76305c39250efa','a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e','7e30df16c53a59358d507733b2a5443e2a3c9075')):
+              raise RuntimeError('Unfinalized lint-followup CI template')
+          source_basis='2059afe031fb33dbe43a4741a3ca25ed9a2fabd9'
+          branch='manual-transmission/clean-room-recovery-20261124'
+          epoch='manual-lint-followup-20261124-01'
+          record=os.environ['RECORD'];ns=os.environ['RECOVERY'];wf=os.environ['WORKFLOW']
+          event=os.environ['GITHUB_SHA'];ref=os.environ['GITHUB_REF']
+          assert os.environ['GITHUB_REPOSITORY']=='GodaPupa/argentum-batshit-test'
+          assert ref=='refs/heads/'+branch and os.environ['GITHUB_EVENT_NAME']=='push'
+          assert os.environ['GITHUB_RUN_NUMBER']==os.environ['GITHUB_RUN_ATTEMPT']=='1'
+          assert git('rev-parse','HEAD')==event
+          parents=git('show','-s','--format=%P',event).split();assert len(parents)==2
+          first,validation=parents
+          assert git('diff','--name-only',first,event)==wf
+          c=json.loads(raw(first,ns+'/CURRENT.json'))
+          assert c['branch']==branch and c['recovery_id']==epoch and c['status']=='CI_RESERVED'
+          assert c['owner']==c['lease']['owner']=='manual-lint-foreground-20261124'
+          assert c['lease']['sole_source_writer'] and c['lease']['scheduled_executor_enabled'] is False
+          assert c['lease']['writable_ref']==ref
+          a=c['attempts']
+          assert a['local_reserved']==a['local_started']==a['local_completed']==a['ci_activated']==1
+          assert a['original_artifact_downloads']==0 and c['prior_candidate02_ci_activations']==0
+          assert c['admitted'] is False
+          charter_path=ns+'/CHARTER.json';charter_commit='86450c1ecb227804dbd45acf5ba28689ce0c61bc'
+          assert git('rev-parse',charter_commit+':'+charter_path)=='418fb7f5a0ebeed92582f8285e76305c39250efa'
+          charter_bytes=raw(charter_commit,charter_path)
+          assert sha(charter_bytes)=='a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e'
+          assert raw(first,charter_path)==charter_bytes
+          charter=json.loads(charter_bytes)
+          assert c['safeguards']==charter['safeguards']
+          assert c['safeguards']['phase2_games']==c['safeguards']['phase2_seeds']==0
+          old_current='experiments/manual-transmission/autonomy/CURRENT.json'
+          historical=raw('62b95ee8f854cb9a29830832c287106ad8baaac4',old_current)
+          assert raw(first,old_current)==historical
+          grant=json.loads(historical)['surge_bushwhacker_production_authorization']
+          prior_path='experiments/manual-transmission/autonomy/clean-room-recovery-20261124/CURRENT.json'
+          assert raw(first,prior_path)==raw('618f562154ff10a9da082a144d43c2011703d2e0',prior_path)
+          q=c['source_freeze'];source=q['source']
+          assert source=='82ec335573572edfd2a2e4d734d2f0d81801139f' and q['source_basis']==source_basis
+          assert git('show','-s','--format=%P',source)==source_basis
+          assert q['candidate_index']=='02' and q['binding_count']==378
+          assert q['validation']==validation and q['workflow_path']==wf
+          assert git('show','-s','--format=%P',validation)==source
+          assert git('diff','--name-only',source,validation)==wf
+          assert git('rev-parse',source+'^{tree}')==q['source_tree']=='923ec79e1c867eedf35b408153bf60988fbd26b6'
+          assert git('rev-parse',validation+'^{tree}')==q['validation_tree']
+          assert git('rev-parse',source+':'+record+'/CANDIDATE_PINS.json')==q['candidate_pins_blob']=='7e30df16c53a59358d507733b2a5443e2a3c9075'
+          assert git('rev-parse',source+':'+record+'/PROTOCOL.json')==grant['protocol_blob']=='a2c26c3b31834a7182bbe0b3a6ceb83922443cd4'
+          workflow_bytes=Path(wf).read_bytes()
+          assert workflow_bytes==raw(first,ns+'/CI_ACTIVATION.yml')==raw(validation,wf)
+          assert git('rev-parse',event+':'+wf)==git('rev-parse',validation+':'+wf)==q['workflow_blob']
+          assert sha(workflow_bytes)==q['workflow_sha256']
+          local_freeze_bytes=raw(first,ns+'/SOURCE_FREEZE.json')
+          assert sha(local_freeze_bytes)==q['local_freeze_sha256']
+          local_freeze=json.loads(local_freeze_bytes)['qualification']
+          assert all(q[k]==v for k,v in local_freeze.items())
+          assert set(q)==set(local_freeze)|{'validation','validation_tree','workflow_path','workflow_blob','workflow_sha256','local_freeze_sha256','receiver_sha256','receiver_blob'}
+          assert sha(raw(first,ns+'/receive_clean_room.py'))==q['receiver_sha256']
+          assert git('rev-parse',first+':'+ns+'/receive_clean_room.py')==q['receiver_blob']
+          local=c['local_result']
+          assert local['state']=='ALL_LOCAL_GATES_PASS_ORIGINAL_RECEIVING_REQUIRED'
+          assert local['source']==source and local['immutable_readback']=='PASS'
+          assert local['receipt_path'].startswith(ns+'/LOCAL_QUALIFICATION_01/')
+          assert git('merge-base','--is-ancestor',local['receipt_commit'],first)==''
+          receipt=json.loads(raw(local['receipt_commit'],local['receipt_path']))
+          assert receipt['state']==local['state'] and receipt['source']==source
+          assert receipt['all_frozen_local_gates_pass'] is True and receipt['source_bindings_verified']==378
+          assert receipt['archive_sha256']==local['archive_sha256'] and receipt['source_basis']==source_basis
+          envelope=dict(event=event,first_parent=first,validation=validation,source=source,qualification=q,grant=grant,
+                        run=os.environ['GITHUB_RUN_ID'],attempt=1,lint_followup=dict(recovery_id=epoch,branch=branch,
+                        charter_commit=charter_commit,charter_blob='418fb7f5a0ebeed92582f8285e76305c39250efa',lane='ci',attempt=1,attempt_id=epoch+'/ci-01'))
+          Path(os.environ['RUNNER_TEMP'],'RECOVERY_EVENT.json').write_text(json.dumps(envelope,indent=2)+'\n')
+          subprocess.run(['git','checkout','--detach',validation],check=True)
+          PY
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21.0.13+9'}
+      - uses: actions/setup-node@v4
+        with: {node-version: '22.23.5'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Prepare the qualified host memory settings and build lock
+        shell: bash
+        run: |
+          set -euo pipefail
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum" "${GRADLE_USER_HOME:-$HOME/.gradle}"
+          cat >> "${GRADLE_USER_HOME:-$HOME/.gradle}/gradle.properties" <<'PROPERTIES'
+          org.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=768m -XX:+UseSerialGC
+          kotlin.compiler.execution.strategy=in-process
+          PROPERTIES
+      - name: Verify the frozen source and execute the full qualification once
+        run: |
+          python3 "$RECORD/verify_dispatch.py"
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" python3 "$RECORD/qualify.py"
+      - name: Preserve the original evidence even on failure
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os,shutil,json,hashlib
+          out=Path('manual-lint-followup-archive');out.mkdir(exist_ok=True)
+          evidence=Path('manual-surge-bushwhacker-evidence')
+          if evidence.is_dir():shutil.copytree(evidence,out/'qualification',dirs_exist_ok=True)
+          envelope=Path(os.environ['RUNNER_TEMP'],'RECOVERY_EVENT.json')
+          if envelope.is_file():shutil.copyfile(envelope,out/'RECOVERY_EVENT.json')
+          files={p.relative_to(out).as_posix():hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.rglob('*')) if p.is_file()}
+          (out/'MANIFEST.json').write_text(json.dumps(files,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-lint-followup-candidate02-20261124-${{ github.run_id }}
+          path: manual-lint-followup-archive/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90
+

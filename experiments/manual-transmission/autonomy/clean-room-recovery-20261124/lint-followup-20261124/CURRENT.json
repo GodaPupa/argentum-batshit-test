@@ -7,9 +7,9 @@
   "charter_sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e",
   "base_checkpoint": "618f562154ff10a9da082a144d43c2011703d2e0",
   "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
-  "status": "LINT_PREFLIGHT_PASSED_SOURCE_FREEZE_PENDING",
+  "status": "SOURCE_FROZEN",
   "owner": "manual-lint-foreground-20261124",
-  "updated_utc": "2026-11-25T02:38:02.488821+00:00",
+  "updated_utc": "2026-11-25T02:42:06.887327+00:00",
   "lease": {
     "owner": "manual-lint-foreground-20261124",
     "claimed_utc": "2026-11-25T02:17:30.012820+00:00",
@@ -29,7 +29,46 @@
     "ci_activated": 0,
     "original_artifact_downloads": 0
   },
-  "source_freeze": null,
+  "source_freeze": {
+    "candidate_index": "02",
+    "source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+    "source_tree": "923ec79e1c867eedf35b408153bf60988fbd26b6",
+    "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+    "candidate_pins_blob": "7e30df16c53a59358d507733b2a5443e2a3c9075",
+    "binding_count": 378,
+    "amended_files": {
+      "CardLinter.kt": {
+        "bytes": 82700,
+        "sha256": "c914ea3fd93bccdf4799825e133de809b38296191b121f61b0cd4b2f1f3eee86",
+        "blob": "d972e9e2b8fdcd95a36f717d3215f1902046426d",
+        "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt"
+      },
+      "SelfAlternativeChoiceLintTest.kt": {
+        "bytes": 5517,
+        "sha256": "cc203c2af5dfbf8755458e927a577ab1710995140bcb46aa623e93716930f2c7",
+        "blob": "e8bc9450276b30de20a44f4855af4fb7e96f0660",
+        "path": "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt"
+      },
+      "audit_reports.py": {
+        "bytes": 17257,
+        "sha256": "aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81",
+        "blob": "e04e119a4a24ba200f3d165ac94ac8688b6350ec",
+        "path": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py"
+      },
+      "verify_dispatch.py": {
+        "bytes": 57526,
+        "sha256": "23ea2debb05adc95194f2fcc41fc6c84ad3070d76987f5b6b96af061d3ddabb7",
+        "blob": "e9b680a3056c56eaced690b060852be215a441eb",
+        "path": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py"
+      },
+      "CANDIDATE_PINS.json": {
+        "bytes": 128405,
+        "sha256": "b0e8da912f98b75a35c44db4a3e9e3334d941af3891e0bb28281490ab01e7bbd",
+        "blob": "7e30df16c53a59358d507733b2a5443e2a3c9075",
+        "path": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/CANDIDATE_PINS.json"
+      }
+    }
+  },
   "prior_failure": {
     "archive_commit": "31f917d635b206f72afab392f54406d21737ed92",
     "readback_commit": "618f562154ff10a9da082a144d43c2011703d2e0",
@@ -59,7 +98,7 @@
     ]
   },
   "admitted": false,
-  "next": "Freeze the exact five-file source successor with 378 bindings, then authenticate and reserve the one complete qualification.",
+  "next": "Verify immutable source/preflight derivations, then durably reserve the one complete local qualification and authenticate its actual launch envelope.",
   "preflight_reservation": {
     "attempt_id": "manual-lint-followup-20261124-01/preflight-01",
     "launcher_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/run_lint_preflight.py",
@@ -92,5 +131,14 @@
     "jdk_sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c",
     "environment_helper_sha256": "7de471ef99f230f15e96565f3d3a07bc5e2f881d8df4d1810660c92a7ec5a7e3",
     "proxy_refresh_required_per_invocation": true
-  }
+  },
+  "preflight": {
+    "state": "PASS",
+    "receipt_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/PREFLIGHT_01/PREFLIGHT_RECEIPT.json",
+    "receipt_sha256": "dfbb642ced9da5fd1f077129f336ecd884bf2557ce817f17b7915a25d8a0d413",
+    "manifest_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/PREFLIGHT_01/MANIFEST.json",
+    "manifest_sha256": "cd2ba7dce7c0b5143e0725171b2b8b2af312de81f6c1d13099cbd87267fb931b",
+    "receipt_commit": "ea05bccb5b5a176456f7c0072431b0df32ef7c81"
+  },
+  "prior_candidate02_ci_activations": 0
 }

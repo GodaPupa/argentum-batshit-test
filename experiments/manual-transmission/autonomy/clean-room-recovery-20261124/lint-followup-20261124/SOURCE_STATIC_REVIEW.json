@@ -1,0 +1,52 @@
+{
+  "review_kind": "STATIC_SOURCE_AND_RECORD_COMPARISON_ONLY",
+  "audit_existing_helpers_byte_identical": [
+    "read",
+    "require",
+    "digest",
+    "xml_rows",
+    "check_m01_rows",
+    "check_targeted_class_rows",
+    "check_rows",
+    "client_rows"
+  ],
+  "audit_only_change": "One exact insertion after unchanged historical19421 count assertion; exactly8 new names, total19429, same43 skips.",
+  "verifier_existing_helpers_byte_identical": [
+    "git",
+    "raw",
+    "digest",
+    "check",
+    "verify_clean_room_authority",
+    "verify_m14_successor"
+  ],
+  "verifier_original_prefix_byte_identical": true,
+  "new_helpers": [
+    "lint_followup_metadata",
+    "lint_proposal_contents",
+    "verify_lint_followup_authority",
+    "verify_lint_preflight",
+    "verify_lint_successor"
+  ],
+  "new_binding_paths": [
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt",
+    "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt"
+  ],
+  "original_binding_paths_removed": [],
+  "original_binding_values_changed": [
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py",
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py"
+  ],
+  "historical_pin_metadata_byte_value_unchanged": true,
+  "charter_hash_and_exact_gate_derivation_match": true,
+  "actual_preflight_source_before_378_bindings_match": true,
+  "actual_preflight_tracked_diff_matches_exact_derived_hunk_context": true,
+  "actual_preflight_source_before_is_not_terminal_result": true,
+  "source_binding_count": 378,
+  "draft_file_hashes": {
+    "audit_reports.py": "aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81",
+    "verify_dispatch.py": "23ea2debb05adc95194f2fcc41fc6c84ad3070d76987f5b6b96af061d3ddabb7",
+    "CANDIDATE_PINS.json": "b0e8da912f98b75a35c44db4a3e9e3334d941af3891e0bb28281490ab01e7bbd"
+  },
+  "no_placeholder_authority_values": true,
+  "execution_scope": "AST parsing and literal byte/hash/schema comparisons only. Candidate validators, audit_all, tests, builds and Git-object creation were not invoked."
+}

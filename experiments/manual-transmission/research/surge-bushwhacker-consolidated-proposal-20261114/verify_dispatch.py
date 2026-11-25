@@ -100,11 +100,316 @@ def verify_m14_successor(source):
 M14_OLD_VALUE_CHECKS=b"    require(re.search(r'expected\\s*:?\\s*<?'+re.escape(expected)+r'>?',text,re.I) is not None,f'wrong expected value {directory}')\n    require(re.search(r'(?:but was|actual)\\s*:?\\s*<?'+re.escape(actual)+r'>?',text,re.I) is not None,f'wrong actual value {directory}')\n"
 M14_NEW_VALUE_CHECKS=b"    if negative['id']=='M14-copy-choice':\n        require(expected=='SELF_ALTERNATIVE' and actual=='null','M14 frozen directed value contract')\n        value_pattern=(r'(?:org\\.opentest4j\\.AssertionFailedError:\\s*)?expected\\s*:?\\s*'\n                       r'(?:<SELF_ALTERNATIVE>|SELF_ALTERNATIVE)\\s+'\n                       r'(?:but\\s+was|(?:but\\s+)?actual(?:\\s+was)?)\\s*:?\\s*'\n                       r'(?:<null>|null)')\n        stack_lines=''.join(failure.itertext()).strip().splitlines()\n        require(bool(stack_lines),'M14 missing original assertion text')\n        value_lines=[failure.get('message','').strip(),stack_lines[0].strip()]\n        require(all(re.fullmatch(value_pattern,line,re.I) is not None for line in value_lines),\n                f'M14 wrong or ambiguous directed assertion values {directory}')\n    else:\n        require(re.search(r'expected\\s*:?\\s*<?'+re.escape(expected)+r'>?',text,re.I) is not None,f'wrong expected value {directory}')\n        require(re.search(r'(?:but was|actual)\\s*:?\\s*<?'+re.escape(actual)+r'>?',text,re.I) is not None,f'wrong actual value {directory}')\n"
 
+LINT_PREDECESSOR='2059afe031fb33dbe43a4741a3ca25ed9a2fabd9'
+LINT_PREDECESSOR_TREE='632d9a579db3eea42a1bd1f2565685009627fdf5'
+LINT_PREDECESSOR_PINS_BLOB='933c265ce8a6e8427148f422608b75e8246d7a51'
+LINT_PREDECESSOR_AUDIT_SHA256='280a055eb671c18936bd2d4fd64dbe49dbdc68ae2a175a38d8567b612f92f275'
+LINT_PREDECESSOR_VERIFIER_SHA256='963d5d9c0cdd49794b440d9084e0c14f32b652667ea650945d2bc65d48e4167f'
+LINT_PREDECESSOR_PINS_SHA256='e810d5a7d68d6cfaaf05096c37ae25eed2b259f48278e39852971ed56d21e94a'
+LINT_PREDECESSOR_PRODUCTION_SHA256='84b71a4ba586586ac1e1148355fcd1a2a6e7c296f0c1cd1c03ab3bc313bdc5b4'
+LINT_CHECKPOINT='618f562154ff10a9da082a144d43c2011703d2e0'
+LINT_PATCH_PATH='experiments/manual-transmission/autonomy/clean-room-recovery-20261124/SELF_ALTERNATIVE_LINT_PROPOSAL.diff'
+LINT_PATCH_SHA256='2bab419c8cff73247321425ca56d1fc17a0e861cefbc859865423a62bc50ede3'
+LINT_PROPOSAL_PATH='experiments/manual-transmission/autonomy/clean-room-recovery-20261124/LINT_FOLLOWUP_PROPOSAL.json'
+LINT_PROPOSAL_SHA256='656f50f100f1eb25fb5dc38547edd4517e872b60341ae66519aece4306421d49'
+LINT_PRODUCTION_PATH='mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt'
+LINT_TEST_PATH='mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt'
+LINT_NAMESPACE='experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124'
+LINT_CHARTER_PATH='experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/CHARTER.json'
+LINT_CHARTER_COMMIT='86450c1ecb227804dbd45acf5ba28689ce0c61bc'
+LINT_CHARTER_BLOB='418fb7f5a0ebeed92582f8285e76305c39250efa'
+LINT_CHARTER_SHA256='a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e'
+LINT_EPOCH='manual-lint-followup-20261124-01'
+LINT_OWNER='manual-lint-foreground-20261124'
+LINT_REGRESSION_IDENTITIES=('mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts a SELF_ALTERNATIVE read with an unconditional self-alternative cost', 'mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts a SELF_ALTERNATIVE read with a conditional self-alternative cost', 'mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts an ETB intervening-if SELF_ALTERNATIVE read with its declared cost', 'mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\trejects a SELF_ALTERNATIVE read when the cost is omitted', 'mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\trejects a SELF_ALTERNATIVE read when the cost is explicitly null', 'mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tdoes not declare KICKED from a self-alternative cost', 'mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tdoes not declare SELF_ALTERNATIVE from a kicker cost', 'mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tshares a front-face self-alternative declaration with a back-face reader')
+LINT_ORDINARY_INVENTORY={'prior_total': 19421, 'prior_passed': 19378, 'total': 19429, 'passed': 19386, 'historical_skips': 43, 'added': 8, 'removed_or_renamed': 0}
+LINT_AUDIT_INSERTION_POINT=b"    require(sum(cards.values())==401 and sum(ordinary.values())==19421,'compatibility inventory count drift')\n"
+LINT_AUDIT_ADDITION=b"    # Exactly eight prospective ordinary regressions; historical identities/skips remain intact.\n    lint_names=(\n        'accepts a SELF_ALTERNATIVE read with an unconditional self-alternative cost',\n        'accepts a SELF_ALTERNATIVE read with a conditional self-alternative cost',\n        'accepts an ETB intervening-if SELF_ALTERNATIVE read with its declared cost',\n        'rejects a SELF_ALTERNATIVE read when the cost is omitted',\n        'rejects a SELF_ALTERNATIVE read when the cost is explicitly null',\n        'does not declare KICKED from a self-alternative cost',\n        'does not declare SELF_ALTERNATIVE from a kicker cost',\n        'shares a front-face self-alternative declaration with a back-face reader',\n    )\n    lint_rows=Counter({'mtg-sdk\\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\\t'+name:1 for name in lint_names})\n    require(len(lint_names)==len(lint_rows)==8 and not (set(lint_rows)&set(ordinary)),'lint exact eight additive ordinary identities')\n    ordinary.update(lint_rows)\n    require(sum(ordinary.values())==19429 and sum(baseline['ordinary']['skips'].values())==43,'lint compatibility inventory count drift')\n"
+
+# The lint followup has its own prospective authority. Its immutable predecessor
+# still satisfies every historical proof below; none of those grants is reused
+# as current launch authority, and actual bindings always name the new source.
+
+def lint_proposal_contents():
+    patch=raw(LINT_CHECKPOINT,LINT_PATCH_PATH)
+    check(digest(patch)==LINT_PATCH_SHA256,'lint immutable prepared patch')
+    proposal_bytes=raw(LINT_CHECKPOINT,LINT_PROPOSAL_PATH)
+    check(digest(proposal_bytes)==LINT_PROPOSAL_SHA256,'lint immutable prepared proposal')
+    proposal=json.loads(proposal_bytes)
+    check(proposal['base_source']==LINT_PREDECESSOR and proposal['patch_sha256']==LINT_PATCH_SHA256,'lint prepared predecessor and patch')
+    check(proposal['source_paths']==[LINT_PRODUCTION_PATH,LINT_TEST_PATH],'lint exact prepared source paths')
+    check(proposal['regression_identities']==list(LINT_REGRESSION_IDENTITIES),'lint exact eight prepared identities')
+    check(proposal['production_lines_added']==5 and proposal['new_regression_tests']==8,'lint prepared scope')
+    # This is the frozen two-hunk proposal, not a general patch interpreter.
+    production_header=('diff --git a/'+LINT_PRODUCTION_PATH+' b/'+LINT_PRODUCTION_PATH+'\n'
+                       '--- a/'+LINT_PRODUCTION_PATH+'\n+++ b/'+LINT_PRODUCTION_PATH+'\n@@ -868,6 +868,11 @@\n').encode()
+    test_header=('diff --git a/'+LINT_TEST_PATH+' b/'+LINT_TEST_PATH+'\nnew file mode 100644\n'
+                 '--- /dev/null\n+++ b/'+LINT_TEST_PATH+'\n@@ -0,0 +1,144 @@\n').encode()
+    check(patch.startswith(production_header) and patch.count(test_header)==1,'lint exact prepared hunk headers')
+    production_hunk,test_hunk=patch[len(production_header):].split(test_header)
+    lines=production_hunk.splitlines(keepends=True)
+    check(len(lines)==11 and sum(line.startswith(b'+') for line in lines)==5,'lint exactly five production additions')
+    check(all(line[:1] in (b' ',b'+') for line in lines),'lint no production deletion or other operation')
+    old_lines=raw(LINT_PREDECESSOR,LINT_PRODUCTION_PATH).splitlines(keepends=True)
+    check(digest(b''.join(old_lines))==LINT_PREDECESSOR_PRODUCTION_SHA256,'lint frozen original linter')
+    check(old_lines[867:873]==[line[1:] for line in lines if line.startswith(b' ')],'lint exact production context')
+    production=b''.join(old_lines[:867]+[line[1:] for line in lines]+old_lines[873:])
+    test_lines=test_hunk.splitlines(keepends=True)
+    check(len(test_lines)==144 and all(line.startswith(b'+') for line in test_lines),'lint exact new test file hunk')
+    tests=b''.join(line[1:] for line in test_lines)
+    check(git('ls-tree','-r','--name-only',LINT_PREDECESSOR,'--',LINT_TEST_PATH)=='','lint genuinely new regression path')
+    return {LINT_PRODUCTION_PATH:production,LINT_TEST_PATH:tests}
+
+def lint_followup_metadata(amended_audit):
+    return dict(recovery_id=LINT_EPOCH,branch=CLEAN_BRANCH,
+                authorization_commit=LINT_CHARTER_COMMIT,charter_blob=LINT_CHARTER_BLOB,
+                charter_sha256=LINT_CHARTER_SHA256,prior_source=LINT_PREDECESSOR,
+                prior_source_tree=LINT_PREDECESSOR_TREE,prior_pins_blob=LINT_PREDECESSOR_PINS_BLOB,
+                proposal_commit=LINT_CHECKPOINT,proposal_sha256=LINT_PROPOSAL_SHA256,
+                patch_path=LINT_PATCH_PATH,patch_sha256=LINT_PATCH_SHA256,
+                source_paths=[LINT_PRODUCTION_PATH,LINT_TEST_PATH],
+                regression_identities=list(LINT_REGRESSION_IDENTITIES),
+                ordinary_inventory=LINT_ORDINARY_INVENTORY,
+                prior_audit_sha256=LINT_PREDECESSOR_AUDIT_SHA256,audit_sha256=digest(amended_audit),
+                predecessor_binding_count=376,binding_count=378,
+                new_binding_paths=[LINT_PRODUCTION_PATH,LINT_TEST_PATH],
+                all_original_binding_paths_preserved=True,existing_test_assertions_unchanged=True,
+                existing_mutation_semantics_unchanged=True,all_other_source_paths_unchanged=True,
+                candidate03_prohibited=True)
+
+def verify_lint_successor(source):
+    check(git('rev-parse',LINT_PREDECESSOR+'^{tree}')==LINT_PREDECESSOR_TREE,'lint immutable predecessor tree')
+    check(git('rev-parse',LINT_PREDECESSOR+':'+RECORD+'/CANDIDATE_PINS.json')==LINT_PREDECESSOR_PINS_BLOB,'lint immutable predecessor pins blob')
+    for name,expected in [('audit_reports.py',LINT_PREDECESSOR_AUDIT_SHA256),
+                          ('verify_dispatch.py',LINT_PREDECESSOR_VERIFIER_SHA256),
+                          ('CANDIDATE_PINS.json',LINT_PREDECESSOR_PINS_SHA256)]:
+        check(digest(raw(LINT_PREDECESSOR,RECORD+'/'+name))==expected,'lint immutable predecessor '+name)
+    check(git('show','-s','--format=%P',source)==LINT_PREDECESSOR,'lint exact sole predecessor parent')
+    mechanical={RECORD+'/'+name for name in ['audit_reports.py','verify_dispatch.py','CANDIDATE_PINS.json']}
+    permitted=mechanical|{LINT_PRODUCTION_PATH,LINT_TEST_PATH}
+    check(set(git('diff','--name-only',LINT_PREDECESSOR,source).splitlines())==permitted,'lint exact five-file successor delta')
+    for path in permitted:
+        entry=git('ls-tree',source,'--',path).split('\t',1)
+        check(len(entry)==2 and entry[0].startswith('100644 blob ') and entry[1]==path,'lint regular source file '+path)
+    for path,expected in lint_proposal_contents().items():
+        check(raw(source,path)==expected,'lint exact prepared source bytes '+path)
+    previous=raw(LINT_PREDECESSOR,RECORD+'/audit_reports.py')
+    check(previous.count(LINT_AUDIT_INSERTION_POINT)==1,'lint unique historical inventory insertion point')
+    amended=previous.replace(LINT_AUDIT_INSERTION_POINT,LINT_AUDIT_INSERTION_POINT+LINT_AUDIT_ADDITION)
+    check(raw(source,RECORD+'/audit_reports.py')==amended,'lint exactly eight additive identities; all other audit bytes unchanged')
+    old_pins=json.loads(raw(LINT_PREDECESSOR,RECORD+'/CANDIDATE_PINS.json'))
+    new_pins=json.loads(raw(source,RECORD+'/CANDIDATE_PINS.json'))
+    check(set(new_pins)==set(old_pins)|{'lint_followup'},'lint exact additive pin metadata')
+    check(all(new_pins[key]==value for key,value in old_pins.items() if key!='bindings'),'lint all historical pin metadata unchanged')
+    additions={LINT_PRODUCTION_PATH,LINT_TEST_PATH}
+    check(not additions.intersection(old_pins['bindings']),'lint only newly bound paths')
+    check(len(old_pins['bindings'])==376 and len(new_pins['bindings'])==378,'lint exact source binding counts')
+    check(set(new_pins['bindings'])==set(old_pins['bindings'])|additions,'lint preserves every original binding path')
+    changed={path for path in old_pins['bindings'] if old_pins['bindings'][path]!=new_pins['bindings'][path]}
+    check(changed=={RECORD+'/audit_reports.py',RECORD+'/verify_dispatch.py'},'lint only two existing mechanical bindings change')
+    for path in changed|additions:
+        content=raw(source,path)
+        check(new_pins['bindings'][path]=={'sha256':digest(content),'bytes':len(content)},'lint exact derived source binding '+path)
+    check(new_pins['lint_followup']==lint_followup_metadata(amended),'lint exact derived amendment metadata')
+
+def verify_lint_preflight(current,first):
+    from collections import Counter
+    import base64,gzip,xml.etree.ElementTree as ET
+    binding=current['preflight']
+    directory=LINT_NAMESPACE+'/PREFLIGHT_01'
+    check(binding['state']=='PASS','lint immutable preflight required')
+    check(binding['receipt_path']==directory+'/PREFLIGHT_RECEIPT.json' and binding['manifest_path']==directory+'/MANIFEST.json','lint exact preflight evidence paths')
+    commit=binding['receipt_commit']
+    check(git('merge-base','--is-ancestor',LINT_CHARTER_COMMIT,commit)=='','lint preflight follows fresh authority')
+    check(git('merge-base','--is-ancestor',commit,first)=='','lint preflight archive precedes full launch')
+    check(git('diff','--name-only',commit,first,'--',directory)=='','lint original preflight evidence unchanged')
+    receipt_bytes=raw(commit,binding['receipt_path']);manifest_bytes=raw(commit,binding['manifest_path'])
+    check(digest(receipt_bytes)==binding['receipt_sha256'] and digest(manifest_bytes)==binding['manifest_sha256'],'lint exact immutable preflight receipt and manifest')
+    receipt=json.loads(receipt_bytes);manifest=json.loads(manifest_bytes)
+    check(manifest['schema']=='manual-transmission/preflight-files/v1','lint preflight manifest schema')
+    files=manifest['files']
+    check(all(name and not Path(name).is_absolute() and '..' not in Path(name).parts and Path(name).as_posix()==name and '\\' not in name for name in files),'lint safe preflight member paths')
+    listed=subprocess.check_output(['git','ls-tree','-rz','--name-only',commit,'--',directory],cwd=ROOT).decode().split('\0')
+    members={name[len(directory)+1:] for name in listed if name}
+    check(members==set(files)|{'MANIFEST.json'} and 'MANIFEST.json' not in files,'lint complete noncircular preflight manifest')
+    required={'PREFLIGHT_RECEIPT.json','PREFLIGHT_START.json','COMMANDS.json','source-before.json','source-after.json',
+              'sdk.stdout','sdk.stderr','registry.stdout','registry.stderr','AUTHORITY_CURRENT.json','AUTHORITY_CHARTER.json',
+              'run_lint_preflight.py','environment.py','EXPECTED_IDENTITIES.json','sdk-CHECK.json','registry-CHECK.json'}
+    check(required<=set(files),'lint original preflight outputs present')
+    contents={name:raw(commit,directory+'/'+name) for name in files}
+    check(all(files[name]=={'sha256':digest(content),'bytes':len(content)} for name,content in contents.items()),'lint all original preflight member hashes and sizes')
+    check(receipt['schema']=='manual-transmission/lint-followup-preflight/v1' and receipt['state']=='PASS','lint original preflight pass receipt')
+    check(receipt['recovery_id']==LINT_EPOCH and receipt['attempt_id']==LINT_EPOCH+'/preflight-01','lint preflight identity')
+    check(receipt['source_basis']==LINT_PREDECESSOR and receipt['prepared_patch_sha256']==LINT_PATCH_SHA256,'lint preflight exact prepared source')
+    check(receipt['preflight_invocations']==1 and receipt['full_qualification_invocations']==0 and receipt['gradle_commands_started']==2,'lint preflight is separate and complete')
+    check(receipt['source_exact_prepared_patch'] is True and receipt['source_unchanged'] is True and receipt['original_bindings_verified']==376,'lint preflight source checks')
+    check(receipt['host_properties_restored'] is True and receipt['failure'] is None,'lint preflight terminal restoration attestation')
+    check(receipt['admitted'] is False and receipt['ci_activations']==receipt['original_artifact_downloads']==receipt['phase2_games']==receipt['phase2_seeds']==0,'lint preflight cannot claim admission or CI')
+    check(receipt['manifest_path']=='MANIFEST.json','lint preflight manifest reference')
+    authority=receipt['authority_commit']
+    check(git('merge-base','--is-ancestor',LINT_CHARTER_COMMIT,authority)=='','lint preflight reservation follows charter')
+    check(git('merge-base','--is-ancestor',authority,commit)=='','lint preflight reservation precedes archive')
+    check(raw(authority,LINT_NAMESPACE+'/CURRENT.json')==contents['AUTHORITY_CURRENT.json'],'lint exact preflight reservation bytes')
+    check(raw(LINT_CHARTER_COMMIT,LINT_CHARTER_PATH)==contents['AUTHORITY_CHARTER.json'],'lint exact preflight charter bytes')
+    reserved=json.loads(contents['AUTHORITY_CURRENT.json'])
+    check(reserved['recovery_id']==LINT_EPOCH and reserved['branch']==CLEAN_BRANCH and reserved['status']=='LINT_PREFLIGHT_RESERVED','lint preflight reservation identity')
+    check(reserved['source_basis']==LINT_PREDECESSOR and reserved['source_freeze'] is None,'lint preflight before source freeze')
+    for name,value in dict(preflight_reserved=1,preflight_started=1,preflight_completed=0,local_reserved=0,local_started=0,local_completed=0,ci_activated=0,original_artifact_downloads=0).items():
+        check(type(reserved['attempts'][name]) is int and reserved['attempts'][name]==value,'lint preflight reserved counter '+name)
+    reservation=reserved['preflight_reservation']
+    check(reservation['attempt_id']==LINT_EPOCH+'/preflight-01' and reservation['source_basis']==LINT_PREDECESSOR and reservation['prepared_patch_sha256']==LINT_PATCH_SHA256,'lint preflight reservation source')
+    check(reservation['launcher_sha256']==digest(contents['run_lint_preflight.py']) and reservation['environment_helper_sha256']==digest(contents['environment.py']),'lint reserved preflight execution helpers')
+    before_bytes=contents['source-before.json'];after_bytes=contents['source-after.json']
+    check(before_bytes==after_bytes,'lint complete original preflight source restoration')
+    check(digest(before_bytes)==receipt['source_before_manifest_sha256'] and digest(after_bytes)==receipt['source_after_manifest_sha256'],'lint preflight source snapshot hashes')
+    before=json.loads(before_bytes)
+    check(before['source_basis']==before['head']==LINT_PREDECESSOR and before['head_tree']==LINT_PREDECESSOR_TREE,'lint preflight immutable source base')
+    patch_files={path:{'sha256':digest(content),'bytes':len(content)} for path,content in lint_proposal_contents().items()}
+    expected_files=dict(json.loads(raw(LINT_PREDECESSOR,RECORD+'/CANDIDATE_PINS.json'))['bindings']);expected_files.update(patch_files)
+    check(len(expected_files)==378 and before['files']==expected_files,'lint preflight all 376 original bindings plus exact two patch files')
+    check(before['patch_files']==receipt['patch_files']==patch_files,'lint preflight exact prepared patch file bindings')
+    check(before['status_porcelain_v1']==sorted([' M '+LINT_PRODUCTION_PATH,'?? '+LINT_TEST_PATH]) and before['untracked_paths']==[LINT_TEST_PATH],'lint preflight complete original source status')
+    tracked=before['tracked_diff'].encode()
+    check(digest(tracked)==before['tracked_diff_sha256'],'lint preflight complete tracked diff hash')
+    patch=raw(LINT_CHECKPOINT,LINT_PATCH_PATH)
+    production_patch=patch.split(('diff --git a/'+LINT_TEST_PATH+' b/'+LINT_TEST_PATH+'\n').encode())[0]
+    tracked_lines=tracked.splitlines(keepends=True)
+    check(len(tracked_lines)>2 and tracked_lines[1].startswith(b'index '),'lint preflight original Git diff index')
+    hunk=b'@@ -868,6 +868,11 @@\n'
+    check(production_patch.count(hunk)==1,'lint exact prepared production hunk')
+    # Git emits this exact containing-object context; the reviewed patch omits it.
+    expected_git_patch=production_patch.replace(hunk,b'@@ -868,6 +868,11 @@ object CardLinter {\n')
+    check(tracked_lines[0]+b''.join(tracked_lines[2:])==expected_git_patch,'lint preflight only exact five-line tracked addition and containing-object context')
+    old=raw(LINT_PREDECESSOR,LINT_PRODUCTION_PATH);new=lint_proposal_contents()[LINT_PRODUCTION_PATH]
+    def blob_id(content):return hashlib.sha1(b'blob '+str(len(content)).encode()+b'\0'+content).hexdigest()
+    index=tracked_lines[1].decode().strip().split(' ')
+    check(len(index)==3 and index[0]=='index' and index[2]=='100644','lint preflight original regular-file diff mode')
+    old_id,new_id=index[1].split('..')
+    check(7<=len(old_id)<=40 and 7<=len(new_id)<=40 and blob_id(old).startswith(old_id) and blob_id(new).startswith(new_id),'lint preflight exact original Git blob IDs')
+    baseline=json.loads(gzip.decompress(base64.b64decode(raw(LINT_PREDECESSOR,RECORD+'/ACCEPTED_INVENTORY.json.gz.b64'))))
+    matrix=json.loads(raw(LINT_PREDECESSOR,RECORD+'/TEST_MATRIX.json'))
+    registry=Counter(baseline['cards']['identities']);registry.update(row['identity'] for row in matrix['rows'] if row['family']=='registry')
+    expected={'sdk':Counter(LINT_REGRESSION_IDENTITIES),'registry':registry}
+    check(sum(registry.values())==401 and not baseline['cards']['skips'],'lint frozen preflight registry multiset')
+    check(json.loads(contents['EXPECTED_IDENTITIES.json'])=={name:dict(rows) for name,rows in expected.items()},'lint exact archived preflight expectations')
+    flags=['--no-build-cache','--no-daemon','--console=plain','--stacktrace','--max-workers=2','-PkotlinCompileParallelism=1']
+    argv={'sdk':['scripts/gradle-locked',':mtg-sdk:cleanTest',':mtg-sdk:test','--tests','com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest']+flags,
+          'registry':['scripts/gradle-locked',':mtg-sets:cleanTest',':mtg-sets:test']+flags}
+    commands=json.loads(contents['COMMANDS.json'])
+    check([entry['name'] for entry in commands]==['sdk','registry'],'lint exactly two preflight commands')
+    for entry in commands:
+        name=entry['name'];check(entry['argv']==argv[name] and entry['returncode']==0,'lint exact successful preflight command '+name)
+    for name,wanted in expected.items():
+        actual=[]
+        reports=[member for member in files if member.startswith(name+'/') and Path(member).name.startswith('TEST-') and member.endswith('.xml')]
+        check(bool(reports),'lint original preflight XML present '+name)
+        for member in reports:
+            relative=member[len(name)+1:]
+            check('/build/test-results/' in relative,'lint preflight raw module layout')
+            module=relative.split('/build/test-results/',1)[0]
+            root=ET.fromstring(contents[member]);check(root.tag=='testsuite','lint original preflight XML suite')
+            rows=list(root.iter('testcase'))
+            check(int(root.get('tests','-1'))==len(rows),'lint original preflight XML row count')
+            for attribute,tag in [('failures','failure'),('errors','error'),('skipped','skipped')]:
+                count=sum(row.find(tag) is not None for row in rows)
+                check(int(root.get(attribute,'-1'))==count==0,'lint original preflight XML zero '+attribute)
+            actual.extend('\t'.join([module,row.get('classname',''),row.get('name','')]) for row in rows)
+        check(Counter(actual)==wanted,'lint exact original preflight identity multiplicity '+name)
+        gate=receipt[name+'_gate']
+        check(gate==json.loads(contents[name+'-CHECK.json']),'lint preserved original gate result '+name)
+        check(gate['state']=='PASS' and gate['returncode']==0 and gate['exact_identity_multiplicities'] is True,'lint preflight exact successful gate '+name)
+        check(gate['rows']==gate['passed']==sum(wanted.values()) and gate['failures']==gate['errors']==gate['skips']==0,'lint preflight exact gate counts '+name)
+        check(gate['identities']==sorted(actual) and gate['raw_report_directory']==name,'lint preflight receipt matches original raw XML '+name)
+
+def verify_lint_followup_authority(envelope):
+    check('clean_room' not in envelope,'lint authority must not relabel the old recovery')
+    c=envelope['lint_followup']
+    check(c['recovery_id']==LINT_EPOCH and c['branch']==CLEAN_BRANCH,'lint followup identity')
+    check(c['charter_commit']==LINT_CHARTER_COMMIT and c['charter_blob']==LINT_CHARTER_BLOB,'lint charter identity')
+    check(type(c['attempt']) is int and c['attempt']==1 and type(envelope['attempt']) is int and envelope['attempt']==1,'lint single prospective attempt')
+    check(c['lane'] in ('local','ci'),'lint execution lane')
+    check(git('rev-parse',LINT_CHARTER_COMMIT+':'+LINT_CHARTER_PATH)==LINT_CHARTER_BLOB,'lint immutable charter blob')
+    charter_bytes=raw(LINT_CHARTER_COMMIT,LINT_CHARTER_PATH)
+    check(digest(charter_bytes)==LINT_CHARTER_SHA256,'lint immutable charter hash')
+    charter=json.loads(charter_bytes)
+    check(charter['authorization']['state']=='EXPLICIT_USER_GRANT','lint explicit fresh authority')
+    check(charter['recovery_id']==LINT_EPOCH and charter['branch']==CLEAN_BRANCH,'lint actual charter recovery')
+    check(charter['source_basis']==LINT_PREDECESSOR and charter['base_checkpoint']==LINT_CHECKPOINT,'lint frozen predecessor and checkpoint')
+    check(charter['source_basis_tree']==LINT_PREDECESSOR_TREE,'lint frozen predecessor tree authority')
+    permitted={RECORD+'/'+name for name in ['audit_reports.py','verify_dispatch.py','CANDIDATE_PINS.json']}|{LINT_PRODUCTION_PATH,LINT_TEST_PATH}
+    check(set(charter['source_amendment']['paths'])==permitted,'lint exact five-path authority')
+    amendment=charter['source_amendment']
+    check(amendment['prepared_patch_commit']==LINT_CHECKPOINT and amendment['prepared_patch_path']==LINT_PATCH_PATH and amendment['prepared_patch_sha256']==LINT_PATCH_SHA256,'lint exact prepared patch authority')
+    check(amendment['regression_identities']==list(LINT_REGRESSION_IDENTITIES),'lint exact eight-identity authority')
+    budgets=charter['budgets']
+    check(budgets['fresh_complete_local_qualifications']==1 and budgets['candidate03_allowed'] is False,'lint finite fresh allowance')
+    check(budgets['precisely_authorized_lint_source_successors']==1,'lint one exact source successor')
+    check(budgets['ci_activation_maximum']==budgets['ci_attempt']==budgets['original_artifact_receiving_maximum']==1,'lint bounded conditional CI')
+    old_charter=json.loads(raw(CLEAN_CHARTER_COMMIT,CLEAN_CHARTER_PATH))
+    required=dict(old_charter['required_gates'])
+    required.update(source_bindings=378,ordinary_total=19429,ordinary_passed=19386)
+    check(charter['required_gates']==required,'lint only additive inventory and binding gate changes')
+    check(charter['safeguards']==old_charter['safeguards'],'lint all original safeguards preserved')
+    first=envelope['first_parent']
+    check(git('merge-base','--is-ancestor',LINT_CHECKPOINT,first)=='','lint preserved carrier checkpoint lineage')
+    check(git('merge-base','--is-ancestor',LINT_CHARTER_COMMIT,first)=='','lint carrier charter lineage')
+    check(git('merge-base','--is-ancestor',envelope['source'],first)=='','lint carrier contains the frozen source')
+    check(raw(first,LINT_CHARTER_PATH)==charter_bytes,'lint current carrier charter unchanged')
+    old_delta=git('diff','--name-only',LINT_CHECKPOINT,first,'--',CLEAN_NAMESPACE).splitlines()
+    check(all(path.startswith(LINT_NAMESPACE+'/') for path in old_delta),'lint prior clean-room evidence and operational records unchanged')
+    historical_ledger='experiments/manual-transmission/autonomy/CURRENT.json'
+    check(raw(first,historical_ledger)==raw(HISTORICAL_CHECKPOINT,historical_ledger),'lint original historical ledger unchanged')
+    previous=json.loads(raw(LINT_CHECKPOINT,CLEAN_NAMESPACE+'/CURRENT.json'))
+    check(previous['status']=='LOCAL_FAILED_ARCHIVED_READBACK_VERIFIED' and previous['admitted'] is False,'lint preserved failed predecessor state')
+    check(previous['attempts']==dict(local_reserved=1,local_started=1,local_completed=1,ci_activated=0,original_artifact_downloads=0),'lint predecessor attempt remains consumed and undispatched')
+    prior_result=previous['local_result']
+    check(prior_result['source']==LINT_PREDECESSOR and prior_result['state']=='FAILED_OR_INCOMPLETE_LOCAL_ORIGINAL_PRESERVED','lint original failed source result')
+    check(prior_result['immutable_readback']=='PASS' and prior_result['qualification_pass'] is False,'lint preserved failure readback is not qualification success')
+    current=json.loads(raw(first,LINT_NAMESPACE+'/CURRENT.json'))
+    check(current['recovery_id']==LINT_EPOCH and current['branch']==CLEAN_BRANCH,'lint current ledger identity')
+    check(current['charter']==LINT_CHARTER_PATH and current['charter_sha256']==LINT_CHARTER_SHA256,'lint current charter pin')
+    check(current['source_basis']==LINT_PREDECESSOR and current['base_checkpoint']==LINT_CHECKPOINT and current['prior_failure']==charter['prior_failure'],'lint current immutable predecessor and failed evidence')
+    check(current['owner']==LINT_OWNER and current['lease']['owner']==LINT_OWNER,'lint sole foreground owner')
+    check(current['lease']['sole_source_writer'] is True and current['lease']['scheduled_executor_enabled'] is False,'lint foreground scope')
+    check(current['lease']['writable_ref']=='refs/heads/'+CLEAN_BRANCH,'lint exclusive writable ref')
+    check(current['status'] in ('QUALIFICATION_RESERVED','QUALIFICATION_RUNNING','CI_RESERVED'),'lint prospective launch state')
+    check(current['safeguards']==charter['safeguards'],'lint current safeguards unchanged')
+    check(current['safeguards']['phase2_games']==current['safeguards']['phase2_seeds']==0,'lint official counters remain zero')
+    a=current['attempts']
+    check(all(type(a[name]) is int and a[name]==1 for name in ['preflight_reserved','preflight_started','preflight_completed']),'lint successful preflight durably completed before full qualification')
+    check(a['local_reserved']==a['local_started']==1,'lint separate fresh attempt durably consumed once')
+    check(current['prior_candidate02_ci_activations']==0,'lint no historical CI allowance reset')
+    verify_lint_preflight(current,first)
+    if c['lane']=='local':
+        check(envelope['local_execution'] is True and all(envelope[name] is None for name in ['event','validation','run']),'lint local metadata cannot claim a CI event')
+        check(c['attempt_id']==LINT_EPOCH+'/local-01','lint local attempt identity')
+        check(a['local_completed']==a['ci_activated']==a['original_artifact_downloads']==0,'lint local launch counts')
+        check(current['status'] in ('QUALIFICATION_RESERVED','QUALIFICATION_RUNNING'),'lint local state')
+    else:
+        check(envelope.get('local_execution',False) is False and all(envelope.get(name) is not None for name in ['event','validation','run']),'lint CI metadata cannot claim local execution')
+        check(c['attempt_id']==LINT_EPOCH+'/ci-01','lint CI attempt identity')
+        check(a['local_completed']==a['ci_activated']==1 and a['original_artifact_downloads']==0,'lint CI one activation after local completion')
+        check(current['status']=='CI_RESERVED','lint CI reserved state')
+        receipt=current['local_result']
+        check(receipt['state']=='ALL_LOCAL_GATES_PASS_ORIGINAL_RECEIVING_REQUIRED','lint CI requires every local gate')
+        check(receipt['source']==envelope['source'] and receipt['immutable_readback']=='PASS','lint CI exact local source readback')
+    q=envelope['qualification']
+    check(q==current['source_freeze'],'lint exact prospective source freeze')
+    check(q['candidate_index']=='02' and q['source']==envelope['source'],'lint Candidate02 source identity')
+    check(q['source_basis']==LINT_PREDECESSOR and q['binding_count']==378,'lint frozen predecessor and 378 bindings')
+    check(current['admitted'] is False,'lint pre-admission only')
+    return current
+
+
 def verify(envelope):
     source=envelope['source'];q=envelope['qualification'];grant=envelope['grant']
     clean_room='clean_room' in envelope
-    if clean_room:verify_clean_room_authority(envelope)
-    normalization_source=NORMALIZED_SOURCE if clean_room else source
+    lint_followup='lint_followup' in envelope
+    if lint_followup:verify_lint_followup_authority(envelope)
+    elif clean_room:verify_clean_room_authority(envelope)
+    # Only historical proofs read S1; prospective authority and bindings read actual S2.
+    proof_source=LINT_PREDECESSOR if lint_followup else source
+    normalization_source=NORMALIZED_SOURCE if (clean_room or lint_followup) else source
     amended_audit_sha='ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d'
     proposal='888ad9f24b0a6f9dc84376f0204ee24bf9538838'
     check(grant['explicit_user_grant'] is True and grant['proposal_commit']==proposal,'explicit grant')
@@ -121,7 +426,7 @@ def verify(envelope):
         check(set(mapping_grant['mapping_pins'])=={'TEST_MATRIX.json','COMPILE_WITNESSES.json'},'exact mapping exception names')
         for name,mpin in mapping_grant['mapping_pins'].items():
             previous=raw(mapping_grant['prior_source'],RECORD+'/'+name)
-            amended=raw(source,RECORD+'/'+name)
+            amended=raw(proof_source,RECORD+'/'+name)
             check(digest(previous)==mpin['old_sha256'],'M01 predecessor bytes '+name)
             check(digest(amended)==mpin['new_sha256'],'M01 exact amended bytes '+name)
             expected=json.loads(previous);actual=json.loads(amended)
@@ -169,14 +474,15 @@ def verify(envelope):
         check(all(new_pins[k]==v for k,v in old_pins.items() if k!='bindings'),'unrelated pin metadata unchanged')
         check(set(new_pins['bindings'])==set(old_pins['bindings']),'exact binding path set unchanged')
         check({path for path in old_pins['bindings'] if old_pins['bindings'][path]!=new_pins['bindings'][path]}=={audit_path,RECORD+'/verify_dispatch.py'},'only audit/verifier pins changed')
-    if clean_room:amended_audit_sha=verify_m14_successor(source)
+    if clean_room or lint_followup:amended_audit_sha=verify_m14_successor(proof_source)
+    if lint_followup:verify_lint_successor(source)
     for name,pin in manifest['files'].items():
         check(digest(raw(proposal,RECORD+'/'+name))==pin['sha256'],'immutable proposal history '+name)
         if audit_grant is not None and name=='audit_reports.py':
-            check(digest(raw(source,RECORD+'/'+name))==amended_audit_sha,'amended audit proposal binding')
+            check(digest(raw(proof_source,RECORD+'/'+name))==amended_audit_sha,'amended audit proposal binding')
         elif mapping_grant is not None and name in mapping_grant['mapping_pins']:
-            check(digest(raw(source,RECORD+'/'+name))==mapping_grant['mapping_pins'][name]['new_sha256'],'amended proposal binding '+name)
-        else:check(digest(raw(source,RECORD+'/'+name))==pin['sha256'],'immutable proposal changed '+name)
+            check(digest(raw(proof_source,RECORD+'/'+name))==mapping_grant['mapping_pins'][name]['new_sha256'],'amended proposal binding '+name)
+        else:check(digest(raw(proof_source,RECORD+'/'+name))==pin['sha256'],'immutable proposal changed '+name)
     allowed={x['path'] for x in proto['shipping_production_paths']+proto['documentation']+proto['test_paths']}
     allowed.add(proto['snapshot_path']);allowed.add('experiments/manual-transmission/autonomy/CURRENT.json')
     allowed.update(RECORD+'/'+n for n in proto['infrastructure_exact_files'])
@@ -188,13 +494,13 @@ def verify(envelope):
         base='e24f71840d0144a781032b1c37ba988f1b6ca9d9'
         prior_source=fixture_grant['base_candidate02']['source']
         check(prior_source=='c4fc84437dd53a8d22d5f14e657178d0b492c7b0','prior candidate02 source')
-        check(git('merge-base','--is-ancestor',base,source)=='','fixture successor source lineage')
+        check(git('merge-base','--is-ancestor',base,proof_source)=='','fixture successor source lineage')
         fixture_path='mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt'
         check(fixture_grant['source_delta_paths']==[fixture_path],'one fixture path authority')
         allowed={fixture_path,RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json',RECORD+'/TEST_MATRIX.json',RECORD+'/COMPILE_WITNESSES.json'}
         allowed.add(RECORD+'/audit_reports.py')
         check(allowed==set(mapping_grant['exact_delta_paths'])|{RECORD+'/audit_reports.py'},'exact authorized six paths')
-        delta=set(git('diff','--name-only',base,source).splitlines())
+        delta=set(git('diff','--name-only',base,proof_source).splitlines())
         check(delta==allowed,'exact fixture and mechanical binding delta')
         second_grant=json.loads(raw('7cd66adaa102d3f6aca33bbf238d86493a0bce9a','experiments/manual-transmission/autonomy/CURRENT.json'))['surge_bushwhacker_second_fixture_binding_authorization']
         check(second_grant['explicit_user_grant'] is True and second_grant['exact_registration']=='cardRegistry.register(com.wingedsheep.mtg.sets.definitions.m10.cards.DoomBlade)','second fixture authority')
@@ -202,13 +508,13 @@ def verify(envelope):
         previous_pins=json.loads(raw(predecessor,RECORD+'/CANDIDATE_PINS.json'))
         for path,pin in previous_pins['bindings'].items():
             check(digest(raw(base,path))==pin['sha256'],'prior candidate02 correction preserved '+path)
-            if path not in allowed:check(raw(source,path)==raw(predecessor,path),'unchanged candidate02 source '+path)
+            if path not in allowed:check(raw(proof_source,path)==raw(predecessor,path),'unchanged candidate02 source '+path)
         old_fixture=raw(predecessor,fixture_path)
         old_line=b'        cardRegistry.register(requireNotNull(cardRegistry.getCard("Doom Blade#M10-93")))\n'
         new_line=b'        cardRegistry.register(com.wingedsheep.mtg.sets.definitions.m10.cards.DoomBlade)\n'
-        check(old_fixture.count(old_line)==1 and raw(source,fixture_path)==old_fixture.replace(old_line,new_line),'exact second fixture replacement; assertions unchanged')
+        check(old_fixture.count(old_line)==1 and raw(proof_source,fixture_path)==old_fixture.replace(old_line,new_line),'exact second fixture replacement; assertions unchanged')
     else:
-        delta=set(git('diff','--name-only',proposal,source).splitlines())
+        delta=set(git('diff','--name-only',proposal,proof_source).splitlines())
     # The sole intervening R2 publication readback is already inside the proposal commit.
     check(delta<=allowed,'unlisted source changes '+str(delta-allowed))
     check(not any(p.startswith('.github/workflows/') for p in delta),'workflow in source rather than validation')
@@ -227,8 +533,8 @@ def verify(envelope):
     if q['candidate_index']=='02':exceptions.add('rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt')
     for path,pin in protected['bindings'].items():
         if path not in exceptions:check(raw(source,path)==raw(reviewed,path),'protected original '+path)
-    current=json.loads(raw(HISTORICAL_CHECKPOINT if clean_room else envelope['first_parent'],'experiments/manual-transmission/autonomy/CURRENT.json'))
-    if not clean_room:
+    current=json.loads(raw(HISTORICAL_CHECKPOINT if (clean_room or lint_followup) else envelope['first_parent'],'experiments/manual-transmission/autonomy/CURRENT.json'))
+    if not (clean_room or lint_followup):
         check(current['owner'] is not None and current['lease']['owner']==current['owner'],'sole foreground lease')
         check(current['status']=='WORKING' and current['automation']['enabled_at_latest_readback'] is False,'execution state')
         check(current['safeguards']['phase2_games']==current['safeguards']['phase2_seeds']==0,'official counters')

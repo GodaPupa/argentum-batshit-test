@@ -159,6 +159,21 @@ def audit_all(evidence):
     require(len(r2['cases'])==24,'R2 normal inventory changed')
     ordinary.update({'rules-engine\tcom.wingedsheep.engine.scenarios.SelfAlternativePriorSpellEligibilityDiagnosticTest\t'+n:1 for n in r2['cases']})
     require(sum(cards.values())==401 and sum(ordinary.values())==19421,'compatibility inventory count drift')
+    # Exactly eight prospective ordinary regressions; historical identities/skips remain intact.
+    lint_names=(
+        'accepts a SELF_ALTERNATIVE read with an unconditional self-alternative cost',
+        'accepts a SELF_ALTERNATIVE read with a conditional self-alternative cost',
+        'accepts an ETB intervening-if SELF_ALTERNATIVE read with its declared cost',
+        'rejects a SELF_ALTERNATIVE read when the cost is omitted',
+        'rejects a SELF_ALTERNATIVE read when the cost is explicitly null',
+        'does not declare KICKED from a self-alternative cost',
+        'does not declare SELF_ALTERNATIVE from a kicker cost',
+        'shares a front-face self-alternative declaration with a back-face reader',
+    )
+    lint_rows=Counter({'mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\t'+name:1 for name in lint_names})
+    require(len(lint_names)==len(lint_rows)==8 and not (set(lint_rows)&set(ordinary)),'lint exact eight additive ordinary identities')
+    ordinary.update(lint_rows)
+    require(sum(ordinary.values())==19429 and sum(baseline['ordinary']['skips'].values())==43,'lint compatibility inventory count drift')
     result['cards']=check_rows(e/'cards',cards,baseline['cards']['skips'])
     result['ordinary']=check_rows(e/'ordinary',ordinary,baseline['ordinary']['skips'])
     contract=read(P.parent/'final-compatibility-inventory-r1-20261027'/'CLIENT64_CONTRACT.json')

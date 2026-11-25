@@ -270,8 +270,8 @@
       "bytes": 66624
     },
     "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py": {
-      "sha256": "280a055eb671c18936bd2d4fd64dbe49dbdc68ae2a175a38d8567b612f92f275",
-      "bytes": 16088
+      "sha256": "aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81",
+      "bytes": 17257
     },
     "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ogw-reckless-bushwhacker-printings-0.json": {
       "sha256": "f4478e061d99bb837e51ec28f191112f3b944cf40da036665732d9954eb9a40c",
@@ -302,8 +302,8 @@
       "bytes": 1438
     },
     "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py": {
-      "sha256": "963d5d9c0cdd49794b440d9084e0c14f32b652667ea650945d2bc65d48e4167f",
-      "bytes": 26093
+      "sha256": "23ea2debb05adc95194f2fcc41fc6c84ad3070d76987f5b6b96af061d3ddabb7",
+      "bytes": 57526
     },
     "game-server/src/main/kotlin/com/wingedsheep/gameserver/controller/ScenarioController.kt": {
       "sha256": "1fd401f38a218ded035b263ac57ea6962e12cbf65525a085a35f291bbf9b8927",
@@ -1508,6 +1508,14 @@
     "web-client/vite.config.ts": {
       "sha256": "cb298fcb474c5555d313f34c60d93b18fb4a7a9b1b95837eb606f4401171c221",
       "bytes": 1581
+    },
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt": {
+      "sha256": "c914ea3fd93bccdf4799825e133de809b38296191b121f61b0cd4b2f1f3eee86",
+      "bytes": 82700
+    },
+    "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt": {
+      "sha256": "cc203c2af5dfbf8755458e927a577ab1710995140bcb46aa623e93716930f2c7",
+      "bytes": 5517
     }
   },
   "workflow": {
@@ -1657,6 +1665,56 @@
     "mutant_expected": null,
     "M01_M13_unchanged": true,
     "all_semantic_inputs_unchanged": true,
+    "candidate03_prohibited": true
+  },
+  "lint_followup": {
+    "recovery_id": "manual-lint-followup-20261124-01",
+    "branch": "manual-transmission/clean-room-recovery-20261124",
+    "authorization_commit": "86450c1ecb227804dbd45acf5ba28689ce0c61bc",
+    "charter_blob": "418fb7f5a0ebeed92582f8285e76305c39250efa",
+    "charter_sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e",
+    "prior_source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+    "prior_source_tree": "632d9a579db3eea42a1bd1f2565685009627fdf5",
+    "prior_pins_blob": "933c265ce8a6e8427148f422608b75e8246d7a51",
+    "proposal_commit": "618f562154ff10a9da082a144d43c2011703d2e0",
+    "proposal_sha256": "656f50f100f1eb25fb5dc38547edd4517e872b60341ae66519aece4306421d49",
+    "patch_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/SELF_ALTERNATIVE_LINT_PROPOSAL.diff",
+    "patch_sha256": "2bab419c8cff73247321425ca56d1fc17a0e861cefbc859865423a62bc50ede3",
+    "source_paths": [
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt",
+      "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt"
+    ],
+    "regression_identities": [
+      "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts a SELF_ALTERNATIVE read with an unconditional self-alternative cost",
+      "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts a SELF_ALTERNATIVE read with a conditional self-alternative cost",
+      "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts an ETB intervening-if SELF_ALTERNATIVE read with its declared cost",
+      "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\trejects a SELF_ALTERNATIVE read when the cost is omitted",
+      "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\trejects a SELF_ALTERNATIVE read when the cost is explicitly null",
+      "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tdoes not declare KICKED from a self-alternative cost",
+      "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tdoes not declare SELF_ALTERNATIVE from a kicker cost",
+      "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tshares a front-face self-alternative declaration with a back-face reader"
+    ],
+    "ordinary_inventory": {
+      "prior_total": 19421,
+      "prior_passed": 19378,
+      "total": 19429,
+      "passed": 19386,
+      "historical_skips": 43,
+      "added": 8,
+      "removed_or_renamed": 0
+    },
+    "prior_audit_sha256": "280a055eb671c18936bd2d4fd64dbe49dbdc68ae2a175a38d8567b612f92f275",
+    "audit_sha256": "aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81",
+    "predecessor_binding_count": 376,
+    "binding_count": 378,
+    "new_binding_paths": [
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt",
+      "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt"
+    ],
+    "all_original_binding_paths_preserved": true,
+    "existing_test_assertions_unchanged": true,
+    "existing_mutation_semantics_unchanged": true,
+    "all_other_source_paths_unchanged": true,
     "candidate03_prohibited": true
   }
 }

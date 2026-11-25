@@ -1,0 +1,47 @@
+{
+  "scope": "STATIC_SOURCE_AND_AUTHORITY_REVIEW_ONLY",
+  "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "auditor_exact_additive_inventory_change": true,
+  "historical_helper_bodies_unchanged": [
+    "git",
+    "raw",
+    "digest",
+    "check",
+    "verify_clean_room_authority",
+    "verify_m14_successor"
+  ],
+  "historical_helper_count_excluding_verify": 6,
+  "added_helpers": [
+    "lint_followup_metadata",
+    "lint_proposal_contents",
+    "verify_lint_followup_authority",
+    "verify_lint_preflight",
+    "verify_lint_successor"
+  ],
+  "historical_pin_metadata_unchanged": true,
+  "bindings": 378,
+  "added_binding_paths": [
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt",
+    "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/SelfAlternativeChoiceLintTest.kt"
+  ],
+  "removed_binding_paths": [],
+  "changed_old_bindings": [
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py",
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py"
+  ],
+  "reviewed_verifier_sha256": "23ea2debb05adc95194f2fcc41fc6c84ad3070d76987f5b6b96af061d3ddabb7",
+  "reviewed_auditor_sha256": "aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81",
+  "reviewed_pins_sha256": "b0e8da912f98b75a35c44db4a3e9e3334d941af3891e0bb28281490ab01e7bbd",
+  "reviewed_pins_blob": "7e30df16c53a59358d507733b2a5443e2a3c9075",
+  "runtime_or_source_invocations": 0,
+  "behavioral_tests": 0,
+  "qualification_runs": 0,
+  "findings": [
+    "Fresh proxy preparation is inside launcher process under Manual flock; preserve that foreground invocation.",
+    "Use new honest BUILD_TOOLCHAIN_READY_PREFLIGHT.json, not an older host receipt.",
+    "Follow-up envelope exclusively uses lint_followup.",
+    "New lane-shape checks reject contradictory local/CI metadata.",
+    "Exact Git hunk function-context formatting mismatch was resolved without weakening patch-byte or blob-ID checks.",
+    "Original six helper bodies and historical authority paths remain unchanged."
+  ]
+}

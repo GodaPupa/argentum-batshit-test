@@ -868,6 +868,11 @@ object CardLinter {
                 if (element["kickerSpellEffect"] != null && element["kickerSpellEffect"] !is JsonNull) {
                     slots.declared.add("KICKED")
                 }
+                // A self-alternative cost is a concrete CardScript field, without a type tag.
+                // Only a real declaration, not its serialized null default, supplies this slot.
+                if ((element["script"] as? JsonObject)?.get("selfAlternativeCost") is JsonObject) {
+                    slots.declared.add("SELF_ALTERNATIVE")
+                }
                 element.values.forEach { collectSlots(it, slots) }
             }
             is JsonArray -> element.forEach { collectSlots(it, slots) }
