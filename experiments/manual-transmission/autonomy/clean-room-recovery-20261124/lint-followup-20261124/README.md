@@ -85,3 +85,9 @@ Using hosted qualification before a local pass requires a new, explicit process 
 References: [GitHub-hosted runner specifications](https://docs.github.com/en/actions/reference/runners/github-hosted-runners), [GitHub workflow container and service requirements](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax).
 
 CI activations and CI artifact downloads remain **zero**. Both historical automations remain paused. All previous failure records and counters remain intact. Phase 2 remains unadmitted, with **zero seeds and games**.
+
+## Reviewable continuation proposal
+
+[The complete continuation proposal](CONTINUATION_PROPOSAL.md) and [exact approval objects](CONTINUATION_APPROVAL_OBJECTS.json) describe two mutually exclusive choices. Recommended Option B grants one hosted readiness sequence and at most one full hosted qualification, with one original artifact download and receive. It explicitly replaces local-pass-before-CI and does not claim a successful local execution. Option A retains the original two-stage ordering on a separate Docker-capable foreground host. Both are proposals only; no source successor or new activation exists.
+
+[Post-publication verification](POST_READBACK_PUBLICATION_CHECK.json) checked 60 published files, preserved the original evidence, restricted changes to this namespace, and confirmed the live evidence checkpoint.

@@ -7,9 +7,9 @@
   "charter_sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e",
   "base_checkpoint": "618f562154ff10a9da082a144d43c2011703d2e0",
   "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
-  "status": "FAILED_ORDINARY_HOST_PREREQUISITES_ORIGINAL_READBACK_VERIFIED",
+  "status": "CLOSED_FAILED_HOST_PREREQUISITES_EVIDENCE_VERIFIED",
   "owner": "manual-lint-foreground-20261124",
-  "updated_utc": "2026-11-25T03:41:55.108422+00:00",
+  "updated_utc": "2026-11-25T03:52:02.037276+00:00",
   "lease": {
     "owner": "manual-lint-foreground-20261124",
     "claimed_utc": "2026-11-25T02:17:30.012820+00:00",
@@ -17,7 +17,10 @@
     "mode": "EXPLICIT_USER_AUTHORIZED_ISOLATED_FOREGROUND",
     "sole_source_writer": true,
     "scheduled_executor_enabled": false,
-    "writable_ref": "refs/heads/manual-transmission/clean-room-recovery-20261124"
+    "writable_ref": "refs/heads/manual-transmission/clean-room-recovery-20261124",
+    "state": "CLOSED",
+    "closed_utc": "2026-11-25T03:52:02.037276+00:00",
+    "foreground_qualification_running": false
   },
   "attempts": {
     "preflight_reserved": 1,
@@ -98,7 +101,7 @@
     ]
   },
   "admitted": false,
-  "next": "Review the bounded continuation proposal: a host with Docker is required; startup agent mitigation passed only a standalone probe. The single local attempt is consumed and the current local-pass-before-CI condition blocks activation.",
+  "next": "Await an explicit new selection of the published continuation proposal. RecommendedB uses one hosted readiness sequence/full qualification and changes the current local-pass-before-CI prerequisite. All original results are closed and preserved; no qualification or CI job is running.",
   "preflight_reservation": {
     "attempt_id": "manual-lint-followup-20261124-01/preflight-01",
     "launcher_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/run_lint_preflight.py",
@@ -190,7 +193,7 @@
     "qualification_restarted": false
   },
   "ci_preparation": {
-    "state": "REVIEWED_CONDITIONAL_ON_COMPLETE_LOCAL_PASS_AND_READBACK",
+    "state": "INACTIVE_BLOCKED_BY_FAILED_LOCAL_QUALIFICATION",
     "path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/CI_PREPARATION.json",
     "readback_sha256": "afe89b678e00dfb231fc02fbb76fc6cdc777ec1ae3fa28ab2f13d23a10f32410",
     "receiver_scope_controls": 15,
@@ -244,5 +247,21 @@
     "project_tests_rerun": 0,
     "full_qualifications_rerun": 0,
     "docker_available": false
+  },
+  "next_proposal": {
+    "state": "PROPOSED_NOT_AUTHORIZED",
+    "recommended": "B_HOSTED_ONCE",
+    "path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/CONTINUATION_PROPOSAL.md",
+    "approval_objects_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/CONTINUATION_APPROVAL_OBJECTS.json",
+    "replaces_local_pass_before_ci": true,
+    "source_amendment_paths": [
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py",
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/CANDIDATE_PINS.json"
+    ],
+    "full_hosted_qualification_maximum": 1,
+    "original_artifact_download_maximum": 1,
+    "original_artifact_receive_maximum": 1,
+    "new_source_created": false,
+    "new_run_started": false
   }
 }
