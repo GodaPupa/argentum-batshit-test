@@ -1,0 +1,40 @@
+[
+  {
+    "argv": [
+      "scripts/gradle-locked",
+      ":mtg-sdk:cleanTest",
+      ":mtg-sdk:test",
+      "--tests",
+      "com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest",
+      "--no-build-cache",
+      "--no-daemon",
+      "--console=plain",
+      "--stacktrace",
+      "--max-workers=2",
+      "-PkotlinCompileParallelism=1"
+    ],
+    "cwd": "/workspace/scratch/65bf30f1888a/manual-lint-source",
+    "ended_utc": "2026-11-25T02:34:47.678985+00:00",
+    "name": "sdk",
+    "returncode": 0,
+    "started_utc": "2026-11-25T02:29:23.971442+00:00"
+  },
+  {
+    "argv": [
+      "scripts/gradle-locked",
+      ":mtg-sets:cleanTest",
+      ":mtg-sets:test",
+      "--no-build-cache",
+      "--no-daemon",
+      "--console=plain",
+      "--stacktrace",
+      "--max-workers=2",
+      "-PkotlinCompileParallelism=1"
+    ],
+    "cwd": "/workspace/scratch/65bf30f1888a/manual-lint-source",
+    "ended_utc": "2026-11-25T02:37:21.256840+00:00",
+    "name": "registry",
+    "returncode": 0,
+    "started_utc": "2026-11-25T02:34:47.683031+00:00"
+  }
+]

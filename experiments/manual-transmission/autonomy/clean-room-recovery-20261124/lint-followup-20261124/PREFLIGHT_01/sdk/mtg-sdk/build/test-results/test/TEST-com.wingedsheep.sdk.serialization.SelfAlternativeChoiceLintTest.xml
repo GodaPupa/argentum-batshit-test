@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-11-25T02:34:45.563Z" hostname="2e5b8e93770a" time="1.426">
+  <properties/>
+  <testcase name="accepts a SELF_ALTERNATIVE read with an unconditional self-alternative cost" classname="com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest" time="1.008"/>
+  <testcase name="accepts a SELF_ALTERNATIVE read with a conditional self-alternative cost" classname="com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest" time="0.078"/>
+  <testcase name="accepts an ETB intervening-if SELF_ALTERNATIVE read with its declared cost" classname="com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest" time="0.12"/>
+  <testcase name="rejects a SELF_ALTERNATIVE read when the cost is omitted" classname="com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest" time="0.04"/>
+  <testcase name="rejects a SELF_ALTERNATIVE read when the cost is explicitly null" classname="com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest" time="0.003"/>
+  <testcase name="does not declare KICKED from a self-alternative cost" classname="com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest" time="0.002"/>
+  <testcase name="does not declare SELF_ALTERNATIVE from a kicker cost" classname="com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest" time="0.005"/>
+  <testcase name="shares a front-face self-alternative declaration with a back-face reader" classname="com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,21 @@
+{
+  "errors": 0,
+  "exact_identity_multiplicities": true,
+  "failures": 0,
+  "identities": [
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts a SELF_ALTERNATIVE read with a conditional self-alternative cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts a SELF_ALTERNATIVE read with an unconditional self-alternative cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\taccepts an ETB intervening-if SELF_ALTERNATIVE read with its declared cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tdoes not declare KICKED from a self-alternative cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tdoes not declare SELF_ALTERNATIVE from a kicker cost",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\trejects a SELF_ALTERNATIVE read when the cost is explicitly null",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\trejects a SELF_ALTERNATIVE read when the cost is omitted",
+    "mtg-sdk\tcom.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest\tshares a front-face self-alternative declaration with a back-face reader"
+  ],
+  "passed": 8,
+  "raw_report_directory": "sdk",
+  "returncode": 0,
+  "rows": 8,
+  "skips": 0,
+  "state": "PASS"
+}

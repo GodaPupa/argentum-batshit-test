@@ -1,0 +1,908 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :mtg-sets:cleanTest :mtg-sets:test
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:cleanTest UP-TO-DATE
+> Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:processResources
+> Task :mtg-sdk:processResources NO-SOURCE
+> Task :mtg-sdk:compileKotlin UP-TO-DATE
+> Task :mtg-sdk:compileJava NO-SOURCE
+> Task :mtg-sets:processTestResources
+> Task :mtg-sdk:classes UP-TO-DATE
+> Task :mtg-sdk:jar UP-TO-DATE
+> Task :mtg-sets:1993-1999:processResources NO-SOURCE
+> Task :mtg-sets:2000-2002:processResources NO-SOURCE
+> Task :mtg-sets:2003-2007:processResources NO-SOURCE
+> Task :mtg-sets:2008-2016:processResources NO-SOURCE
+> Task :mtg-sets:2017-2022:processResources NO-SOURCE
+> Task :mtg-sets:2023:processResources NO-SOURCE
+> Task :mtg-sets:2024:processResources NO-SOURCE
+> Task :mtg-sets:2025:processResources NO-SOURCE
+> Task :mtg-sets:2026:processResources NO-SOURCE
+> Task :mtg-sets:core:processResources
+> Task :mtg-sets:core:compileKotlin
+> Task :mtg-sets:core:compileJava NO-SOURCE
+> Task :mtg-sets:core:classes
+> Task :mtg-sets:core:jar
+> Task :mtg-sets:1993-1999:compileKotlin
+> Task :mtg-sets:1993-1999:compileJava NO-SOURCE
+> Task :mtg-sets:1993-1999:classes UP-TO-DATE
+> Task :mtg-sets:1993-1999:jar
+> Task :mtg-sets:2000-2002:compileKotlin
+> Task :mtg-sets:2000-2002:compileJava NO-SOURCE
+> Task :mtg-sets:2000-2002:classes UP-TO-DATE
+> Task :mtg-sets:2000-2002:jar
+> Task :mtg-sets:2003-2007:compileKotlin
+> Task :mtg-sets:2003-2007:compileJava NO-SOURCE
+> Task :mtg-sets:2003-2007:classes UP-TO-DATE
+> Task :mtg-sets:2003-2007:jar
+> Task :mtg-sets:2008-2016:compileKotlin
+> Task :mtg-sets:2008-2016:compileJava NO-SOURCE
+> Task :mtg-sets:2008-2016:classes UP-TO-DATE
+> Task :mtg-sets:2008-2016:jar
+> Task :mtg-sets:2017-2022:compileKotlin
+> Task :mtg-sets:2017-2022:compileJava NO-SOURCE
+> Task :mtg-sets:2017-2022:classes UP-TO-DATE
+> Task :mtg-sets:2017-2022:jar
+> Task :mtg-sets:2023:compileKotlin
+> Task :mtg-sets:2023:compileJava NO-SOURCE
+> Task :mtg-sets:2023:classes UP-TO-DATE
+> Task :mtg-sets:2023:jar
+> Task :mtg-sets:2024:compileKotlin
+> Task :mtg-sets:2024:compileJava NO-SOURCE
+> Task :mtg-sets:2024:classes UP-TO-DATE
+> Task :mtg-sets:2024:jar
+> Task :mtg-sets:2025:compileKotlin
+> Task :mtg-sets:2025:compileJava NO-SOURCE
+> Task :mtg-sets:2025:classes UP-TO-DATE
+> Task :mtg-sets:2025:jar
+> Task :mtg-sets:2026:compileKotlin
+> Task :mtg-sets:2026:compileJava NO-SOURCE
+> Task :mtg-sets:2026:classes UP-TO-DATE
+> Task :mtg-sets:2026:jar
+> Task :mtg-sets:compileKotlin
+> Task :mtg-sets:compileJava NO-SOURCE
+> Task :mtg-sets:classes
+> Task :mtg-sets:jar
+> Task :mtg-sets:compileTestKotlin
+> Task :mtg-sets:compileTestJava NO-SOURCE
+> Task :mtg-sets:testClasses
+
+> Task :mtg-sets:test
+
+BasicLandArtOrderTest > every set orders each basic land type standard-art first PASSED
+
+BasicLandArtOrderTest > sets that print both regular and special art lead with the regular art PASSED
+
+CardDefinitionSnapshotTest > LEA (Limited Edition Alpha): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > LEA (Limited Edition Alpha): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > LEB (Limited Edition Beta): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > LEB (Limited Edition Beta): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ARN (Arabian Nights): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ARN (Arabian Nights): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ATQ (Antiquities): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ATQ (Antiquities): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > LEG (Legends): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > LEG (Legends): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DRK (The Dark): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DRK (The Dark): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > FEM (Fallen Empires): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > FEM (Fallen Empires): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ICE (Ice Age): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ICE (Ice Age): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > HML (Homelands): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > HML (Homelands): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ALL (Alliances): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ALL (Alliances): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MIR (Mirage): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MIR (Mirage): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > VIS (Visions): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > VIS (Visions): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > POR (Portal): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > POR (Portal): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > WTH (Weatherlight): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > WTH (Weatherlight): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > TMP (Tempest): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > TMP (Tempest): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > STH (Stronghold): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > STH (Stronghold): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > EXO (Exodus): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > EXO (Exodus): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > P02 (Portal Second Age): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > P02 (Portal Second Age): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > USG (Urza's Saga): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > USG (Urza's Saga): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ULG (Urza's Legacy): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ULG (Urza's Legacy): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > PTK (Portal Three Kingdoms): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > PTK (Portal Three Kingdoms): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > UDS (Urza's Destiny): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > UDS (Urza's Destiny): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > S99 (Starter 1999): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > S99 (Starter 1999): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MMQ (Mercadian Masques): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MMQ (Mercadian Masques): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > NEM (Nemesis): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > NEM (Nemesis): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > PCY (Prophecy): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > PCY (Prophecy): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > INV (Invasion): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > INV (Invasion): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > PLS (Planeshift): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > PLS (Planeshift): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > APC (Apocalypse): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > APC (Apocalypse): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ODY (Odyssey): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ODY (Odyssey): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > TOR (Torment): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > TOR (Torment): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > JUD (Judgment): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > JUD (Judgment): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ONS (Onslaught): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ONS (Onslaught): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > LGN (Legions): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > LGN (Legions): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > SCG (Scourge): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > SCG (Scourge): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > 8ED (Eighth Edition): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > 8ED (Eighth Edition): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MRD (Mirrodin): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MRD (Mirrodin): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DST (Darksteel): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DST (Darksteel): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > 5DN (Fifth Dawn): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > 5DN (Fifth Dawn): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > CHK (Champions of Kamigawa): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > CHK (Champions of Kamigawa): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > BOK (Betrayers of Kamigawa): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > BOK (Betrayers of Kamigawa): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > SOK (Saviors of Kamigawa): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > SOK (Saviors of Kamigawa): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > RAV (Ravnica: City of Guilds): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > RAV (Ravnica: City of Guilds): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > GPT (Guildpact): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > GPT (Guildpact): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DIS (Dissension): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DIS (Dissension): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > CSP (Coldsnap): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > CSP (Coldsnap): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > TSP (Time Spiral): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > TSP (Time Spiral): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > PLC (Planar Chaos): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > PLC (Planar Chaos): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > FUT (Future Sight): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > FUT (Future Sight): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > 10E (Tenth Edition): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > 10E (Tenth Edition): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > LRW (Lorwyn): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > LRW (Lorwyn): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MOR (Morningtide): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MOR (Morningtide): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > SHM (Shadowmoor): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > SHM (Shadowmoor): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > EVE (Eventide): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > EVE (Eventide): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DRB (From the Vault: Dragons): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DRB (From the Vault: Dragons): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ALA (Shards of Alara): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ALA (Shards of Alara): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > CON (Conflux): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > CON (Conflux): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ARB (Alara Reborn): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ARB (Alara Reborn): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > M10 (Magic 2010): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > M10 (Magic 2010): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > HOP (Planechase): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > HOP (Planechase): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ZEN (Zendikar): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ZEN (Zendikar): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > WWK (Worldwake): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > WWK (Worldwake): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ROE (Rise of the Eldrazi): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ROE (Rise of the Eldrazi): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ARC (Archenemy): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ARC (Archenemy): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > M11 (Magic 2011): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > M11 (Magic 2011): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DDF (Duel Decks: Elspeth vs. Tezzeret): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DDF (Duel Decks: Elspeth vs. Tezzeret): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > SOM (Scars of Mirrodin): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > SOM (Scars of Mirrodin): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MBS (Mirrodin Besieged): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MBS (Mirrodin Besieged): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > NPH (New Phyrexia): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > NPH (New Phyrexia): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > CMD (Commander 2011): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > CMD (Commander 2011): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > M12 (Magic 2012): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > M12 (Magic 2012): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ISD (Innistrad): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ISD (Innistrad): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DKA (Dark Ascension): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DKA (Dark Ascension): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > AVR (Avacyn Restored): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > AVR (Avacyn Restored): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > PC2 (Planechase 2012): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > PC2 (Planechase 2012): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > M13 (Magic 2013): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > M13 (Magic 2013): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > RTR (Return to Ravnica): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > RTR (Return to Ravnica): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > GTC (Gatecrash): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > GTC (Gatecrash): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DGM (Dragon's Maze): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DGM (Dragon's Maze): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > M14 (Magic 2014): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > M14 (Magic 2014): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DDL (Duel Decks: Heroes vs. Monsters): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DDL (Duel Decks: Heroes vs. Monsters): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > THS (Theros): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > THS (Theros): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > C13 (Commander 2013): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > C13 (Commander 2013): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > BNG (Born of the Gods): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > BNG (Born of the Gods): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > JOU (Journey into Nyx): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > JOU (Journey into Nyx): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > M15 (Magic 2015): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > M15 (Magic 2015): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > KTK (Khans of Tarkir): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > KTK (Khans of Tarkir): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > C14 (Commander 2014): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > C14 (Commander 2014): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > FRF (Fate Reforged): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > FRF (Fate Reforged): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DTK (Dragons of Tarkir): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DTK (Dragons of Tarkir): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ORI (Magic Origins): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ORI (Magic Origins): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DDP (Duel Decks: Zendikar vs. Eldrazi): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DDP (Duel Decks: Zendikar vs. Eldrazi): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > BFZ (Battle for Zendikar): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > BFZ (Battle for Zendikar): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > C15 (Commander 2015): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > C15 (Commander 2015): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > OGW (Oath of the Gatewatch): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > OGW (Oath of the Gatewatch): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DDQ (Duel Decks: Blessed vs. Cursed): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DDQ (Duel Decks: Blessed vs. Cursed): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > SOI (Shadows over Innistrad): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > SOI (Shadows over Innistrad): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > EMN (Eldritch Moon): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > EMN (Eldritch Moon): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > KLD (Kaladesh): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > KLD (Kaladesh): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > C16 (Commander 2016): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > C16 (Commander 2016): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > PZ2 (Treasure Chest): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > PZ2 (Treasure Chest): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > AER (Aether Revolt): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > AER (Aether Revolt): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > AKH (Amonkhet): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > AKH (Amonkhet): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > HOU (Hour of Devastation): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > HOU (Hour of Devastation): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > C17 (Commander 2017): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > C17 (Commander 2017): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > XLN (Ixalan): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > XLN (Ixalan): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > RIX (Rivals of Ixalan): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > RIX (Rivals of Ixalan): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DOM (Dominaria): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DOM (Dominaria): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > BBD (Battlebond): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > BBD (Battlebond): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > GS1 (Global Series: Jiang Yanggu & Mu Yanling): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > GS1 (Global Series: Jiang Yanggu & Mu Yanling): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > M19 (Core Set 2019): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > M19 (Core Set 2019): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > OANA (Arena New Player Experience Cards): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > OANA (Arena New Player Experience Cards): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > GRN (Guilds of Ravnica): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > GRN (Guilds of Ravnica): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > RNA (Ravnica Allegiance): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > RNA (Ravnica Allegiance): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > WAR (War of the Spark): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > WAR (War of the Spark): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MH1 (Modern Horizons): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MH1 (Modern Horizons): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > M20 (Core Set 2020): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > M20 (Core Set 2020): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ELD (Throne of Eldraine): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ELD (Throne of Eldraine): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > THB (Theros Beyond Death): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > THB (Theros Beyond Death): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > C20 (Commander 2020): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > C20 (Commander 2020): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > IKO (Ikoria: Lair of Behemoths): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > IKO (Ikoria: Lair of Behemoths): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > M21 (Core Set 2021): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > M21 (Core Set 2021): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > JMP (Jumpstart): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > JMP (Jumpstart): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ANB (Arena Beginner Set): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ANB (Arena Beginner Set): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ZNR (Zendikar Rising): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ZNR (Zendikar Rising): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > CMR (Commander Legends): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > CMR (Commander Legends): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > KHC (Kaldheim Commander): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > KHC (Kaldheim Commander): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > KHM (Kaldheim): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > KHM (Kaldheim): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > STX (Strixhaven: School of Mages): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > STX (Strixhaven: School of Mages): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MH2 (Modern Horizons 2): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MH2 (Modern Horizons 2): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > AFR (Adventures in the Forgotten Realms): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > AFR (Adventures in the Forgotten Realms): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MID (Innistrad: Midnight Hunt): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MID (Innistrad: Midnight Hunt): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > VOC (Innistrad: Crimson Vow Commander): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > VOC (Innistrad: Crimson Vow Commander): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > VOW (Innistrad: Crimson Vow): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > VOW (Innistrad: Crimson Vow): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > NEO (Kamigawa: Neon Dynasty): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > NEO (Kamigawa: Neon Dynasty): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > NCC (New Capenna Commander): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > NCC (New Capenna Commander): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > SNC (Streets of New Capenna): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > SNC (Streets of New Capenna): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > CLB (Commander Legends: Battle for Baldur's Gate): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > CLB (Commander Legends: Battle for Baldur's Gate): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DMU (Dominaria United): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DMU (Dominaria United): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > BRO (The Brothers' War): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > BRO (The Brothers' War): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > J22 (Jumpstart 2022): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > J22 (Jumpstart 2022): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ONE (Phyrexia: All Will Be One): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ONE (Phyrexia: All Will Be One): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MOM (March of the Machine): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MOM (March of the Machine): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > LTR (The Lord of the Rings: Tales of Middle-earth): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > LTR (The Lord of the Rings: Tales of Middle-earth): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > WOE (Wilds of Eldraine): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > WOE (Wilds of Eldraine): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > LCI (The Lost Caverns of Ixalan): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > LCI (The Lost Caverns of Ixalan): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MKM (Murders at Karlov Manor): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MKM (Murders at Karlov Manor): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > BIG (The Big Score): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > BIG (The Big Score): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > OTJ (Outlaws of Thunder Junction): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > OTJ (Outlaws of Thunder Junction): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MH3 (Modern Horizons 3): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MH3 (Modern Horizons 3): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > BLB (Bloomburrow): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > BLB (Bloomburrow): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > BLC (Bloomburrow Commander): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > BLC (Bloomburrow Commander): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DSK (Duskmourn: House of Horror): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DSK (Duskmourn: House of Horror): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > FDN (Foundations): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > FDN (Foundations): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > INR (Innistrad Remastered): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > INR (Innistrad Remastered): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > DFT (Aetherdrift): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > DFT (Aetherdrift): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > TDM (Tarkir: Dragonstorm): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > TDM (Tarkir: Dragonstorm): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > FIN (Final Fantasy): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > FIN (Final Fantasy): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > EOE (Edge of Eternities): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > EOE (Edge of Eternities): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > SPM (Marvel's Spider-Man): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > SPM (Marvel's Spider-Man): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > TLA (Avatar: The Last Airbender): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > TLA (Avatar: The Last Airbender): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > TLE (Avatar: The Last Airbender Eternal): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > TLE (Avatar: The Last Airbender Eternal): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > ECL (Lorwyn Eclipsed): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > ECL (Lorwyn Eclipsed): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > TRC (Star Trek Commander): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > TRC (Star Trek Commander): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > TMC (Teenage Mutant Ninja Turtles Eternal): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > TMC (Teenage Mutant Ninja Turtles Eternal): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > TMT (Teenage Mutant Ninja Turtles): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > TMT (Teenage Mutant Ninja Turtles): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > SOS (Secrets of Strixhaven): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > SOS (Secrets of Strixhaven): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MSC (Marvel Super Heroes Commander): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MSC (Marvel Super Heroes Commander): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > MSH (Marvel Super Heroes): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > MSH (Marvel Super Heroes): cards survive a JSON round-trip PASSED
+
+CardDefinitionSnapshotTest > HOB (The Hobbit): card trees match golden PASSED
+
+CardDefinitionSnapshotTest > HOB (The Hobbit): cards survive a JSON round-trip PASSED
+
+CardLintTest > every card's pipeline variables, target bindings, and choice slots resolve PASSED
+
+CardLintTest > the lint allowlist contains no stale entries PASSED
+
+CardLintTest > print lint warnings for review (never fails) PASSED
+
+DiscipleOfFreyaliseRegistrationTest > DR01 exactly one canonical MH3 registration and no Garden singleton or reprint PASSED
+
+DiscipleOfFreyaliseRegistrationTest > DR02 canonical front and land back retain distinct characteristics PASSED
+
+DiscipleOfFreyaliseRegistrationTest > DR03 both faces use canonical collector artist rarity and exact original images PASSED
+
+DiscipleOfFreyaliseRegistrationTest > DR04 both faces retain the seven archived rulings PASSED
+
+DiscipleOfFreyaliseRegistrationTest > DR05 both face definitions survive export load and reexport PASSED
+
+DiscipleOfFreyaliseRegistrationTest > DR06 export additive MH3 candidate without rewriting protected original PASSED
+
+DoubleFacedPrintingArtTest > every printing of a two-faced card carries back-face art PASSED
+
+EquipQualityVariantTest > every equip ability is sorcery-speed and targets a single creature you control PASSED
+
+EquipQualityVariantTest > every equip ability renders as its printed 'Equip [quality] [cost]' line PASSED
+
+EquipQualityVariantTest > a target-restricted equip declares its quality — it is never restricted but unlabelled PASSED
+
+FacadeBoundaryTest > card definitions construct effects/costs via the Effects/Costs facades, not raw types PASSED
+
+FblthpSnapshotExportTest > export WAR candidate with exactly one canonical Fblthp PASSED
+
+InterveningIfClassificationTest > a printed intervening-"if" is modelled as interveningIf, not as a trigger restriction PASSED
+
+InterveningIfClassificationTest > the gate covers the cards it is supposed to cover PASSED
+
+MeldResultFlagTest > meld parts name their results (the derivation this test rests on) PASSED
+
+MeldResultFlagTest > every authored meld result is flagged meldResult PASSED
+
+MeldResultFlagTest > only meld results are flagged PASSED
+
+MtgSetCatalogTest > every <Name>Set.kt under definitions is discovered into MtgSetCatalog.all PASSED
+
+MtgSetCatalogTest > set codes are unique PASSED
+
+MtgSetCatalogTest > no registered set is hollow PASSED
+
+MtgSetCatalogTest > every Printing row in a set's package is exposed via MtgSet.printings PASSED
+
+MtgSetCatalogTest > no card name has a canonical CardDefinition in more than one set PASSED
+
+MtgSetCatalogTest > release dates, when present, are parseable ISO YYYY-MM-DD PASSED
+
+OpalPalaceSnapshotExportTest > Opal Palace canonical discovery and lossless snapshot candidate PASSED
+
+PatternsNamespaceTest > card definitions reach pattern recipes through the Patterns index, not the bare objects PASSED
+
+RecklessBushwhackerRegistrationTest > RG01 OGW116 canonical discovery exactly once PASSED
+
+RecklessBushwhackerRegistrationTest > RG02 printed fields match pinned source PASSED
+
+RecklessBushwhackerRegistrationTest > RG03 snapshot preserves all existing OGW entries PASSED
+
+RecklessBushwhackerRegistrationTest > RG04 serialized script matches exact surge composition PASSED
+
+RecklessBushwhackerRegistrationTest > RG05 Manual registry resolves new card without official games PASSED
+
+SpellskiteRegistrationTest > SR01 unique canonical discovery in NPH PASSED
+
+SpellskiteRegistrationTest > SR02 mechanics equal accepted test-local definition PASSED
+
+SpellskiteRegistrationTest > SR03 Phyrexian activation payment PASSED
+
+SpellskiteRegistrationTest > SR04 spell or ability target requirement PASSED
+
+SpellskiteRegistrationTest > SR05 fixed self recipient PASSED
+
+SpellskiteRegistrationTest > SR06 canonical metadata and characteristics PASSED
+
+SpellskiteRegistrationTest > SR07 CLB873 reprint discovered with exact metadata PASSED
+
+SpellskiteRegistrationTest > SR08 existing discovery control PASSED
+
+SpellskiteSnapshotExportTest > SR09 export discovered NPH and CLB card trees PASSED
+
+SuccessCriterionValidationTest > no registered card relies on SuccessCriterion.Auto's former fail-open default PASSED
+
+LorwynEclipsedVariantPrintingsTest > set opts into the booster variant slot at 15% PASSED
+
+LorwynEclipsedVariantPrintingsTest > contributes a non-empty pool of alternate-frame printings PASSED
+
+LorwynEclipsedVariantPrintingsTest > every variant printing is showcase or borderless PASSED
+
+LorwynEclipsedVariantPrintingsTest > every variant printing names a real ECL card and carries the set code PASSED
+
+LorwynEclipsedVariantPrintingsTest > excludes collector-only treatments: reversible shocklands, Japanese Showcase, Fracture Foil, serialized PASSED
+
+CardDiscoveryEquivalenceTest > CardDiscovery.findIn agrees with the non-basic part of every MtgSet.cards list PASSED
+
+CardDiscoveryEquivalenceTest > CardDiscovery.findBasicLandsIn agrees with every MtgSet.basicLands list PASSED
+
+CardDiscoveryTest > discovers a non-empty set of cards from the Scourge package PASSED
+
+CardDiscoveryTest > discovery matches the hand-maintained ScourgeSet.cards by name PASSED
+
+CardDiscoveryTest > discovery picks up Printing reprints declared in the cards package PASSED
+
+CardDiscoveryTest > discovery skips Printing-typed vals as cards (and vice versa) PASSED
+
+LegalityDataTest > buckets a..z when card name starts with an ASCII letter PASSED
+
+LegalityDataTest > non-ASCII first letters fall into the 'other' bucket PASSED
+
+LegalityDataTest > unknown card names resolve to no formats (not legal anywhere) PASSED
+
+LegalityDataTest > a known card from the bundled dataset returns its formats PASSED
+Kotlin build report is written to file:///workspace/scratch/65bf30f1888a/manual-lint-source/build/reports/kotlin-build/argentum-engine-build-2026-11-24-18-37-20-0.txt
+
+[Incubating] Problems report is available at: file:///workspace/scratch/65bf30f1888a/manual-lint-source/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 2m 33s
+39 actionable tasks: 27 executed, 12 up-to-date
+Configuration cache entry stored.

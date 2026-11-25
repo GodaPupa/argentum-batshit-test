@@ -1,0 +1,46 @@
+{
+  "attempt_id": "manual-lint-followup-20261124-01/preflight-01",
+  "authority_commit": "235f070b5b6e82ac3a334f86a770dd1af1361952",
+  "full_qualification_invocations": 0,
+  "lock": "standard exclusive Manual flock",
+  "planned_commands": [
+    {
+      "argv": [
+        "scripts/gradle-locked",
+        ":mtg-sdk:cleanTest",
+        ":mtg-sdk:test",
+        "--tests",
+        "com.wingedsheep.sdk.serialization.SelfAlternativeChoiceLintTest",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "name": "sdk"
+    },
+    {
+      "argv": [
+        "scripts/gradle-locked",
+        ":mtg-sets:cleanTest",
+        ":mtg-sets:test",
+        "--no-build-cache",
+        "--no-daemon",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "name": "registry"
+    }
+  ],
+  "preflight_invocations": 1,
+  "prepared_patch_sha256": "2bab419c8cff73247321425ca56d1fc17a0e861cefbc859865423a62bc50ede3",
+  "process_id": 2,
+  "recovery_id": "manual-lint-followup-20261124-01",
+  "schema": "manual-transmission/lint-followup-preflight-start/v1",
+  "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "started_utc": "2026-11-25T02:29:23.502448+00:00",
+  "state": "PREFLIGHT_STARTED"
+}

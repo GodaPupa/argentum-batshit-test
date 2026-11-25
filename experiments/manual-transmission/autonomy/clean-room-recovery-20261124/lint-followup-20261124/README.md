@@ -9,4 +9,4 @@ This separately authorized continuation repairs the generic SELF_ALTERNATIVE dec
 
 All original test identities and gates remain. The ordinary inventory grows to 19,429 rows, 19,386 passes and the same 43 historical skips; all 376 prior bindings plus the linter and new test are bound, totaling 378. Phase 2 remains unadmitted with zero games and seeds.
 
-Status: the targeted lint and full registry preflight is reserved; the complete qualification has not started.
+Status: preflight passed with exact 8/8 SDK regressions and 401/401 registry checks, zero failures/errors/skips, unchanged source and restored host properties. The complete qualification has not started.

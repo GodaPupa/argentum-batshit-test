@@ -7,9 +7,9 @@
   "charter_sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e",
   "base_checkpoint": "618f562154ff10a9da082a144d43c2011703d2e0",
   "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
-  "status": "LINT_PREFLIGHT_RESERVED",
+  "status": "LINT_PREFLIGHT_PASSED_SOURCE_FREEZE_PENDING",
   "owner": "manual-lint-foreground-20261124",
-  "updated_utc": "2026-11-25T02:28:44.213536+00:00",
+  "updated_utc": "2026-11-25T02:38:02.488821+00:00",
   "lease": {
     "owner": "manual-lint-foreground-20261124",
     "claimed_utc": "2026-11-25T02:17:30.012820+00:00",
@@ -22,7 +22,7 @@
   "attempts": {
     "preflight_reserved": 1,
     "preflight_started": 1,
-    "preflight_completed": 0,
+    "preflight_completed": 1,
     "local_reserved": 0,
     "local_started": 0,
     "local_completed": 0,
@@ -59,7 +59,7 @@
     ]
   },
   "admitted": false,
-  "next": "Run this one reserved preflight: exact eight new SDK lint cases, then all 401 registry rows. Preserve original raw reports and source/host restoration before the new source freeze.",
+  "next": "Freeze the exact five-file source successor with 378 bindings, then authenticate and reserve the one complete qualification.",
   "preflight_reservation": {
     "attempt_id": "manual-lint-followup-20261124-01/preflight-01",
     "launcher_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/run_lint_preflight.py",
@@ -70,5 +70,27 @@
     "output_directory": "/workspace/scratch/65bf30f1888a/manual-lint-preflight-01",
     "reserved_utc": "2026-11-25T02:28:44.213536+00:00",
     "full_qualification_invocations": 0
+  },
+  "preflight_result": {
+    "state": "PASS",
+    "sdk_rows": 8,
+    "registry_rows": 401,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "source_unchanged": true,
+    "host_properties_restored": true,
+    "receipt_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/PREFLIGHT_01/PREFLIGHT_RECEIPT.json",
+    "receipt_sha256": "dfbb642ced9da5fd1f077129f336ecd884bf2557ce817f17b7915a25d8a0d413",
+    "manifest_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/PREFLIGHT_01/MANIFEST.json",
+    "manifest_sha256": "cd2ba7dce7c0b5143e0725171b2b8b2af312de81f6c1d13099cbd87267fb931b",
+    "full_qualification_invocations": 0
+  },
+  "host_ready": {
+    "state": "PASS",
+    "toolchain_receipt": "host-preflight/BUILD_TOOLCHAIN_READY_PREFLIGHT.json",
+    "jdk_sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c",
+    "environment_helper_sha256": "7de471ef99f230f15e96565f3d3a07bc5e2f881d8df4d1810660c92a7ec5a7e3",
+    "proxy_refresh_required_per_invocation": true
   }
 }

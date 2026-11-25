@@ -1,0 +1,74 @@
+{
+  "schema": "manual-transmission/lint-followup-current/v1",
+  "recovery_id": "manual-lint-followup-20261124-01",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "branch": "manual-transmission/clean-room-recovery-20261124",
+  "charter": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/CHARTER.json",
+  "charter_sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e",
+  "base_checkpoint": "618f562154ff10a9da082a144d43c2011703d2e0",
+  "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "status": "LINT_PREFLIGHT_RESERVED",
+  "owner": "manual-lint-foreground-20261124",
+  "updated_utc": "2026-11-25T02:28:44.213536+00:00",
+  "lease": {
+    "owner": "manual-lint-foreground-20261124",
+    "claimed_utc": "2026-11-25T02:17:30.012820+00:00",
+    "expires_utc": "2026-11-25T08:17:30.012820+00:00",
+    "mode": "EXPLICIT_USER_AUTHORIZED_ISOLATED_FOREGROUND",
+    "sole_source_writer": true,
+    "scheduled_executor_enabled": false,
+    "writable_ref": "refs/heads/manual-transmission/clean-room-recovery-20261124"
+  },
+  "attempts": {
+    "preflight_reserved": 1,
+    "preflight_started": 1,
+    "preflight_completed": 0,
+    "local_reserved": 0,
+    "local_started": 0,
+    "local_completed": 0,
+    "ci_activated": 0,
+    "original_artifact_downloads": 0
+  },
+  "source_freeze": null,
+  "prior_failure": {
+    "archive_commit": "31f917d635b206f72afab392f54406d21737ed92",
+    "readback_commit": "618f562154ff10a9da082a144d43c2011703d2e0",
+    "archive_sha256": "f4c1c42b774217889dd3714f1c6dde2498d90339c3d44968991ed00ed8f9458a",
+    "archive_bytes": 4854439,
+    "archive_members": 583,
+    "state": "FAILED_REGISTRY_LINT_ORIGINAL_PRESERVED_READBACK_VERIFIED",
+    "qualification_attempt_consumed": true,
+    "source_restored_bindings": 376
+  },
+  "safeguards": {
+    "phase2_games": 0,
+    "phase2_seeds": 0,
+    "reserved_precision_games": 2,
+    "protected_goldens": 23,
+    "legacy_saved_states": 82,
+    "original_protected_bindings": 144,
+    "deck_optimization": false,
+    "statistical_design_change": false,
+    "extra_spending": false,
+    "other_project_changes": false,
+    "main_or_old_branch_promotion": false,
+    "new_scheduled_automation": false,
+    "historical_automations_remain_paused": [
+      "6adbe33033e481918659ce578f64f31e",
+      "6adbad91b90881918859ad0cba22b881"
+    ]
+  },
+  "admitted": false,
+  "next": "Run this one reserved preflight: exact eight new SDK lint cases, then all 401 registry rows. Preserve original raw reports and source/host restoration before the new source freeze.",
+  "preflight_reservation": {
+    "attempt_id": "manual-lint-followup-20261124-01/preflight-01",
+    "launcher_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/run_lint_preflight.py",
+    "launcher_sha256": "6f85a327c82702b08946b179e459b93d0ed51bab69e417d98ca54a61bb2d4c29",
+    "environment_helper_sha256": "7de471ef99f230f15e96565f3d3a07bc5e2f881d8df4d1810660c92a7ec5a7e3",
+    "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+    "prepared_patch_sha256": "2bab419c8cff73247321425ca56d1fc17a0e861cefbc859865423a62bc50ede3",
+    "output_directory": "/workspace/scratch/65bf30f1888a/manual-lint-preflight-01",
+    "reserved_utc": "2026-11-25T02:28:44.213536+00:00",
+    "full_qualification_invocations": 0
+  }
+}
