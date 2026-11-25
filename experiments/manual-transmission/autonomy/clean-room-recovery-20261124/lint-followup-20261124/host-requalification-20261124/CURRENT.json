@@ -8,9 +8,9 @@
   "charter_sha256": "5b4e30d8594b6c1e4a6d8f2ec2f4a0bdb0a6dba7e314e8deddffcad66b06f701",
   "base_checkpoint": "a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76",
   "source_basis": "82ec335573572edfd2a2e4d734d2f0d81801139f",
-  "status": "HOSTED_ACTIVATION_RESERVED",
+  "status": "HOSTED_RUN_IN_PROGRESS",
   "owner": "manual-host-requalification-foreground-20261124",
-  "updated_utc": "2026-11-25T20:23:25.299450+00:00",
+  "updated_utc": "2026-11-25T20:28:36.689742+00:00",
   "selected_plan": "B_HOSTED_ONCE",
   "execution_environment": "github_hosted",
   "local_pass": false,
@@ -29,17 +29,17 @@
   "attempts": {
     "hosted_activations": 1,
     "readiness_reserved": 1,
-    "readiness_started": 0,
-    "readiness_completed": 0,
+    "readiness_started": null,
+    "readiness_completed": null,
     "qualification_reserved": 1,
-    "qualification_started": 0,
-    "qualification_completed": 0,
+    "qualification_started": null,
+    "qualification_completed": null,
     "original_artifact_downloads": 0,
     "original_artifact_receives": 0,
     "local_started": 0
   },
   "prior_candidate02_ci_activations": 0,
-  "runtime_counts_pending_original_artifact": false,
+  "runtime_counts_pending_original_artifact": true,
   "source_freeze": {
     "candidate_index": "02",
     "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
@@ -138,12 +138,33 @@
     "historical_runtime_history": "UNKNOWN_UNCHANGED"
   },
   "activation": {
-    "state": "RESERVED_BEFORE_EVENT",
-    "actual_run_id": null,
-    "actual_job_id": null,
-    "event_commit": null,
-    "reservation_consumes_only_hosted_allowance": true,
-    "retry_permitted": false
+    "schema": "manual-transmission/hosted-activation-observation/v1",
+    "state": "ONE_HOSTED_ACTIVATION_OBSERVED",
+    "repository": "GodaPupa/argentum-batshit-test",
+    "branch": "manual-transmission/clean-room-recovery-20261124",
+    "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+    "validation": "5c4cc159e7094815b73395a82f1cc10cf0f2109f",
+    "carrier": "d886375c4d1a4022f4a72cbeb52e17b9a4d6f36d",
+    "event": "ce9020568ae3702f384d401fcdc2a4516c84aa0f",
+    "activated_utc": "2026-11-25 20:27:01 UTC",
+    "run_id": 45695073375,
+    "job_id": 139490227770,
+    "run_number": 1,
+    "run_attempt": 1,
+    "workflow_path": ".github/workflows/manual-host-requalification-surge-bushwhacker-20261124.yml",
+    "runner_labels": [
+      "ubuntu-24.04"
+    ],
+    "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/45695073375",
+    "actual_hosted_activations": 1,
+    "original_artifact_downloads": 0,
+    "original_artifact_receives": 0,
+    "qualification_result": "NOT_YET_AVAILABLE",
+    "runtime_counts": "AWAIT_ORIGINAL_ARTIFACT",
+    "execution_environment": "github_hosted",
+    "local_pass": false,
+    "selected_plan": "B_HOSTED_ONCE",
+    "retry_allowed": false
   },
-  "next": "Publish exactly one workflow-only event E with ordered parents C,V, then observe actual provider run metadata. Readiness is unexecuted; qualify once only after its real PASS. No original artifact has been downloaded or received."
+  "next": "Observe the single hosted run to completion; obtain actual runtime counters and results from its single original artifact. Do not rerun or download before a durable independent metadata claim."
 }

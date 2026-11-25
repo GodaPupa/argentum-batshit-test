@@ -1,0 +1,47 @@
+{
+  "schema": "manual-transmission/hosted-preactivation-authority-controls/v1",
+  "checked_utc": "2026-11-25T20:25:52.526235+00:00",
+  "state": "PASS",
+  "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+  "source_tree": "e6ec12d9a5b3c2d8ee344fe7a3ff403d2ef2256f",
+  "carrier": "d886375c4d1a4022f4a72cbeb52e17b9a4d6f36d",
+  "validation": "5c4cc159e7094815b73395a82f1cc10cf0f2109f",
+  "event": "ce9020568ae3702f384d401fcdc2a4516c84aa0f",
+  "verifier_sha256": "4a3570993ba9328dac7e3db94ac7daa12a24d547dd88a8ffb2246671bc7fbd1c",
+  "provider_identity": "DOES_NOT_EXIST_PREACTIVATION",
+  "provider_ids_are_synthetic_fixture_values": true,
+  "synthetic_run_id": "1",
+  "synthetic_job_id": 1,
+  "fixture_is_dispatchable": false,
+  "actual_workflow_activations": 0,
+  "actual_readiness_sequences": 0,
+  "actual_qualifier_invocations": 0,
+  "full_verify_invoked": false,
+  "authority_only_function": "verify_host_requalification_authority",
+  "immutable_source_worktree_clean": true,
+  "controls": [
+    {
+      "name": "actual_C_V_E_S3_authority_with_explicitly_synthetic_provider_ids",
+      "state": "PASS",
+      "accepted": true
+    },
+    {
+      "name": "validation_mistaken_for_event",
+      "state": "PASS",
+      "accepted": false,
+      "rejection": "host exact ordered event parents"
+    },
+    {
+      "name": "old_S2_substituted_for_S3",
+      "state": "PASS",
+      "accepted": false,
+      "rejection": "host actual S3 source and unchanged binding count"
+    },
+    {
+      "name": "different_readiness_helper_after_review",
+      "state": "PASS",
+      "accepted": false,
+      "rejection": "host exact carrier qualification freeze"
+    }
+  ]
+}

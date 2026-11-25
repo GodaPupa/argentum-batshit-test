@@ -1,3 +1,7 @@
+# Live hosted attempt
+
+**HOSTED_RUN_IN_PROGRESS.** Exactly one activation started at 2026-11-25T20:27:01Z. [Run 45695073375](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/45695073375), job 139490227770, uses ubuntu-24.04, run number 1 and attempt 1. Actual readiness and qualification counters will be read from the original runtime evidence. No original artifact has been downloaded or received. Local PASS remains false. No retry is authorized.
+
 # Candidate02: one authorized hosted qualification
 
 Status at this immutable carrier: **HOSTED_ACTIVATION_RESERVED**. The one hosted activation is reserved; no readiness or qualification has run at this checkpoint. Actual provider and runtime results will be recorded in this namespace.
