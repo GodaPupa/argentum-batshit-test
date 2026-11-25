@@ -9,4 +9,4 @@ This separately authorized continuation repairs the generic SELF_ALTERNATIVE dec
 
 All original test identities and gates remain. The ordinary inventory grows to 19,429 rows, 19,386 passes and the same 43 historical skips; all 376 prior bindings plus the linter and new test are bound, totaling 378. Phase 2 remains unadmitted with zero games and seeds.
 
-Status: preflight passed with exact 8/8 SDK regressions and 401/401 registry checks. Source `82ec335573572edfd2a2e4d734d2f0d81801139f` is frozen as the exact five-file successor. The complete qualification has not started.
+Status: original 8/8 and 401/401 preflight reports and all 378 source bindings independently verified from published bytes. The one complete local qualification is durably reserved for frozen source `82ec335573572edfd2a2e4d734d2f0d81801139f`.
