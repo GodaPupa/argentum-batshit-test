@@ -1,0 +1,101 @@
+{
+  "schema": "manual-transmission/lint-verifier-smoke/v1",
+  "scope": "FROZEN_VERIFIER_INPUT_REJECTION_ONLY",
+  "started_utc": "2026-11-25T02:46:38.310185+00:00",
+  "source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+  "first_parent": "9953c3e78c6f386f4284352f39ccf5d81554e10b",
+  "envelope_sha256": "cb74aa1c98442fd1e3d0bc46b09d32c748a11eb3df44978599d32f8f35cf597d",
+  "verifier_sha256": "23ea2debb05adc95194f2fcc41fc6c84ad3070d76987f5b6b96af061d3ddabb7",
+  "actual_finalized_envelope_used": true,
+  "simulated_reservation": false,
+  "module_monkeypatches": 0,
+  "source_modifications": 0,
+  "full_qualification_invocations": 0,
+  "behavioral_builds": 0,
+  "ci_activations": 0,
+  "original_artifact_receives": 0,
+  "controls": [
+    {
+      "name": "actual-finalized-local-envelope",
+      "result": "PASS",
+      "expected": "accept",
+      "bindings": 378
+    },
+    {
+      "name": "missing-new-authority-cannot-fall-back",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: exact normalized audit hash"
+    },
+    {
+      "name": "old-authority-key-cannot-relabel-followup",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: clean-room identity"
+    },
+    {
+      "name": "wrong-authority-lane",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: lint execution lane"
+    },
+    {
+      "name": "mixed-old-and-new-authorities",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: lint authority must not relabel the old recovery"
+    },
+    {
+      "name": "old-charter-cannot-authorize-followup",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: lint charter identity"
+    },
+    {
+      "name": "attempt-two",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: lint single prospective attempt"
+    },
+    {
+      "name": "local-envelope-cannot-claim-ci-identifiers",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: lint local metadata cannot claim a CI event"
+    },
+    {
+      "name": "ci-lane-cannot-claim-local-execution",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: lint CI metadata cannot claim local execution"
+    },
+    {
+      "name": "wrong-source",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: lint exact prospective source freeze"
+    },
+    {
+      "name": "wrong-source-tree",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: lint exact prospective source freeze"
+    },
+    {
+      "name": "wrong-binding-count",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "ValueError: lint exact prospective source freeze"
+    },
+    {
+      "name": "stale-carrier-before-new-authority",
+      "result": "PASS",
+      "expected": "reject",
+      "reason": "immutable ancestry rejected stale carrier",
+      "returncode": 1
+    }
+  ],
+  "frozen_verifier_and_head_unchanged": true,
+  "state": "PASS",
+  "finished_utc": "2026-11-25T02:47:39.355579+00:00"
+}

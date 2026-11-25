@@ -7,9 +7,9 @@
   "charter_sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e",
   "base_checkpoint": "618f562154ff10a9da082a144d43c2011703d2e0",
   "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
-  "status": "QUALIFICATION_RESERVED",
+  "status": "QUALIFICATION_RUNNING",
   "owner": "manual-lint-foreground-20261124",
-  "updated_utc": "2026-11-25T02:45:08.147105+00:00",
+  "updated_utc": "2026-11-25T02:49:58.880081+00:00",
   "lease": {
     "owner": "manual-lint-foreground-20261124",
     "claimed_utc": "2026-11-25T02:17:30.012820+00:00",
@@ -98,7 +98,7 @@
     ]
   },
   "admitted": false,
-  "next": "Authenticate this exact immutable launch envelope, then execute frozen qualify.py once. Preserve every original output and restoration result; CI requires all local gates plus independent immutable/live evidence readback.",
+  "next": "Finish the single running qualification; preserve original outputs, verify restoration and independently read published evidence. CI remains conditional on every local gate and readback passing.",
   "preflight_reservation": {
     "attempt_id": "manual-lint-followup-20261124-01/preflight-01",
     "launcher_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/run_lint_preflight.py",
@@ -158,5 +158,22 @@
     "prior_candidate02_ci_activations": 0,
     "historical_automations_disabled": true,
     "historical_runtime_history_unchanged": true
+  },
+  "launch_commit": "9953c3e78c6f386f4284352f39ccf5d81554e10b",
+  "qualification_runtime": {
+    "state": "RUNNING",
+    "attempt_id": "manual-lint-followup-20261124-01/local-01",
+    "qualification_invocations": 1,
+    "started_utc": "2026-11-25T02:48:45.188344+00:00",
+    "progress": "compile-normal started",
+    "final_result": null
+  },
+  "verification_controls": {
+    "state": "PASS",
+    "accepted_real_envelope": 1,
+    "rejected_altered_envelopes": 12,
+    "source_modifications": 0,
+    "full_qualification_invocations": 0,
+    "path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/VERIFIER_CONTROLS.json"
   }
 }
