@@ -1,0 +1,30 @@
+{
+  "preserve_local.py": {
+    "all_previous_guard_call_ASTs_retained": true,
+    "previous_guard_calls": 61,
+    "new_guard_calls": 69,
+    "missing_guard_count": 0
+  },
+  "immutable_readback.py": {
+    "all_previous_guard_call_ASTs_retained": true,
+    "previous_guard_calls": 89,
+    "new_guard_calls": 108,
+    "missing_guard_count": 0
+  },
+  "new_preserver_hash_bound_by_readback": true,
+  "auditor_P_dependent_read_expressions": [
+    "(P / 'ACCEPTED_INVENTORY.json.gz.b64').read_bytes()",
+    "read(P / 'COMPILE_WITNESSES.json')",
+    "read(P / 'TEST_MATRIX.json')",
+    "read(P.parent / 'final-compatibility-inventory-r1-20261027' / 'CLIENT64_CONTRACT.json')",
+    "read(P.parent / 'reckless-own-prior-spell-diagnostic-proposal-20261106' / 'PROTOCOL.json')"
+  ],
+  "helpers_imported_or_invoked": false,
+  "exact_metadata_input_count": 5,
+  "archived_frozen_source_verification": {
+    "exact_member_set": 378,
+    "member_hashes": "previously CRC-verified full ZIP SHA256 map against immutable pins",
+    "member_byte_lengths": "original ZipInfo.file_size against immutable pins",
+    "uses_active_source_worktree": false
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "schema": "manual-transmission/lint-operational-correction-root-review/v1",
+  "state": "REVIEWED_FOR_PUBLICATION_BEFORE_FIRST_PRESERVATION",
+  "reviewed_utc": "2026-11-25T03:11:04.984270+00:00",
+  "published_predecessor": "174401ff3ea2852ba89da55b481b91a38b4138bf",
+  "reason": "Frozen audit_all reads sibling R2 PROTOCOL absent from378 frozen-source bindings; old preserver sets __file__ inside that incomplete copy. Stage the exact six immutable S2 inputs separately and independently reexecute only the pinned auditor during readback.",
+  "source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+  "source_tree": "923ec79e1c867eedf35b408153bf60988fbd26b6",
+  "files": {
+    "preserve_local.py": {
+      "old_sha256": "59efa999a98975ee8b4e701c4d109271bd5e8bd4ce9f3aea30e3269f84a23a3d",
+      "new_sha256": "8775d77e96cd382afc348457fb77cb1744b578628bede0a265fec96eecb510ba",
+      "new_bytes": 25942
+    },
+    "immutable_readback.py": {
+      "old_sha256": "8a5c90efe3994ca18db9ddbf0379a41371aa3018bee69af648e5da76b6c5487c",
+      "new_sha256": "7ae884ab299cf04df48704c1efe51bd3cb2fb07541ff2467fc7a33893f653bf9",
+      "new_bytes": 34130
+    }
+  },
+  "all_old_guards_retained": true,
+  "source_and_semantic_gates_unchanged": true,
+  "original_qualification_evidence_modified": false,
+  "qualifications_started_by_correction": 0,
+  "helpers_invoked_before_correction": 0,
+  "ci_activations": 0,
+  "artifact_downloads": 0,
+  "root_review": "Reviewed full operational patch and independent AST review. Exact immutable audit dependency staging and archived378 member checks preserve original qualification bytes and acceptance requirements."
+}

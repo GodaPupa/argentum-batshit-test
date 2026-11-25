@@ -1,0 +1,105 @@
+{
+  "schema": "manual-transmission/lint-preservation-preparation-correction/v1",
+  "state": "DRAFT_ONLY_NOT_EXECUTED",
+  "reviewed_commit": "174401ff3ea2852ba89da55b481b91a38b4138bf",
+  "source_unchanged": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+  "source_tree_unchanged": "923ec79e1c867eedf35b408153bf60988fbd26b6",
+  "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+  "reason": "Frozen audit_all reads sibling R2 PROTOCOL absent from378 frozen-source bindings; old preserver sets __file__ inside that incomplete copy. Stage the exact six immutable S2 inputs separately and independently reexecute only the pinned auditor during readback.",
+  "audit_inputs": {
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py": {
+      "bytes": 17257,
+      "sha256": "aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81",
+      "blob": "e04e119a4a24ba200f3d165ac94ac8688b6350ec"
+    },
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/TEST_MATRIX.json": {
+      "bytes": 66624,
+      "sha256": "79389b761cd97a238d20c5d524a2083d16b9a325067772a85224c057b97e0494",
+      "blob": "fdf6986b134af8a849b5d3f9a4ddf6c91d7ed691"
+    },
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/COMPILE_WITNESSES.json": {
+      "bytes": 14045,
+      "sha256": "1a1833d56f44ff5fb6d0be6a97bf1ae42a9b68dfa5138bee5f927a24cd0cbd90",
+      "blob": "af53be2ee07bae95b76b4b63d424ee41a764e578"
+    },
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ACCEPTED_INVENTORY.json.gz.b64": {
+      "bytes": 648641,
+      "sha256": "e5d75cfdede337d11316546d3b733f42d427f6ff36c6c739e42be11a98d13499",
+      "blob": "0ffde46d47183dcfe0904e3dc6344b7525827d07"
+    },
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/PROTOCOL.json": {
+      "bytes": 15193,
+      "sha256": "77d7d24c092961ddc6803e41c90c13e84dfbcb3fe57827c04b1bbb930d8264fc",
+      "blob": "e5cb500bb419587f219c999ff133a40af8dd68fe"
+    },
+    "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/CLIENT64_CONTRACT.json": {
+      "bytes": 7346,
+      "sha256": "1a89fdb2d7e0580153bfb93e7e1babb99d64e8a1f87e53431724e2ee36dfff7f",
+      "blob": "cc710313ca994088495d713567df0300479c5316"
+    }
+  },
+  "input_count": 6,
+  "input_count_in_original_bindings": 5,
+  "unbound_input": "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/PROTOCOL.json",
+  "unbound_input_unchanged_from_S1": true,
+  "original_source_bindings": 378,
+  "ordinary_rows": 19429,
+  "ordinary_skips": 43,
+  "retained_boundaries": [
+    "S2 source and frozen auditor bytes unchanged",
+    "Original qualification copy and nested MANIFEST unchanged",
+    "No new source binding",
+    "All prior preserver/readback checks retained",
+    "Failed qualification archive still preserves failed state",
+    "Raw-audit-only reexecution at readback; no receiver/qualifier/build/test"
+  ],
+  "validation": "Both draft files parsed with ast.parse only; neither imported nor invoked. No synthetic or behavioral execution.",
+  "files": {
+    "preserve_local.py": {
+      "old_sha256": "59efa999a98975ee8b4e701c4d109271bd5e8bd4ce9f3aea30e3269f84a23a3d",
+      "new_sha256": "8775d77e96cd382afc348457fb77cb1744b578628bede0a265fec96eecb510ba",
+      "new_bytes": 25942
+    },
+    "immutable_readback.py": {
+      "old_sha256": "8a5c90efe3994ca18db9ddbf0379a41371aa3018bee69af648e5da76b6c5487c",
+      "new_sha256": "7ae884ab299cf04df48704c1efe51bd3cb2fb07541ff2467fc7a33893f653bf9",
+      "new_bytes": 34130
+    }
+  },
+  "patch": {
+    "path": "/workspace/scratch/65bf30f1888a/manual-lint-preservation-fix/operational-audit-dependency-fix.diff",
+    "sha256": "782163d81a69eb3eb8b7062e83ac089ed16720a55e26d4f7c6143b2738e69757",
+    "bytes": 19703
+  },
+  "static_review": {
+    "preserve_local.py": {
+      "all_previous_guard_call_ASTs_retained": true,
+      "previous_guard_calls": 61,
+      "new_guard_calls": 69,
+      "missing_guard_count": 0
+    },
+    "immutable_readback.py": {
+      "all_previous_guard_call_ASTs_retained": true,
+      "previous_guard_calls": 89,
+      "new_guard_calls": 108,
+      "missing_guard_count": 0
+    },
+    "new_preserver_hash_bound_by_readback": true,
+    "auditor_P_dependent_read_expressions": [
+      "(P / 'ACCEPTED_INVENTORY.json.gz.b64').read_bytes()",
+      "read(P / 'COMPILE_WITNESSES.json')",
+      "read(P / 'TEST_MATRIX.json')",
+      "read(P.parent / 'final-compatibility-inventory-r1-20261027' / 'CLIENT64_CONTRACT.json')",
+      "read(P.parent / 'reckless-own-prior-spell-diagnostic-proposal-20261106' / 'PROTOCOL.json')"
+    ],
+    "helpers_imported_or_invoked": false,
+    "exact_metadata_input_count": 5,
+    "archived_frozen_source_verification": {
+      "exact_member_set": 378,
+      "member_hashes": "previously CRC-verified full ZIP SHA256 map against immutable pins",
+      "member_byte_lengths": "original ZipInfo.file_size against immutable pins",
+      "uses_active_source_worktree": false
+    }
+  },
+  "focused_strengthening": "Local readback independently verifies exact set, SHA256 and original ZIP byte length of all378 archived frozen-source members before raw audit; no active source access."
+}

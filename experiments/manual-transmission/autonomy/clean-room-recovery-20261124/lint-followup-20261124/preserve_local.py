@@ -35,6 +35,39 @@ PASS='ALL_LOCAL_GATES_PASS_ORIGINAL_RECEIVING_REQUIRED'
 FAIL='FAILED_OR_INCOMPLETE_LOCAL_ORIGINAL_PRESERVED'
 SOURCE_BASIS='2059afe031fb33dbe43a4741a3ca25ed9a2fabd9'
 CHARTER_BLOB='418fb7f5a0ebeed92582f8285e76305c39250efa'
+AUDIT_SOURCE_ROOT = "review/immutable-audit-source"
+AUDIT_INPUTS = {
+    "experiments/manual-transmission/research/final-compatibility-inventory-r1-20261027/CLIENT64_CONTRACT.json": {
+        "blob": "cc710313ca994088495d713567df0300479c5316",
+        "bytes": 7346,
+        "sha256": "1a89fdb2d7e0580153bfb93e7e1babb99d64e8a1f87e53431724e2ee36dfff7f"
+    },
+    "experiments/manual-transmission/research/reckless-own-prior-spell-diagnostic-proposal-20261106/PROTOCOL.json": {
+        "blob": "e5cb500bb419587f219c999ff133a40af8dd68fe",
+        "bytes": 15193,
+        "sha256": "77d7d24c092961ddc6803e41c90c13e84dfbcb3fe57827c04b1bbb930d8264fc"
+    },
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ACCEPTED_INVENTORY.json.gz.b64": {
+        "blob": "0ffde46d47183dcfe0904e3dc6344b7525827d07",
+        "bytes": 648641,
+        "sha256": "e5d75cfdede337d11316546d3b733f42d427f6ff36c6c739e42be11a98d13499"
+    },
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/COMPILE_WITNESSES.json": {
+        "blob": "af53be2ee07bae95b76b4b63d424ee41a764e578",
+        "bytes": 14045,
+        "sha256": "1a1833d56f44ff5fb6d0be6a97bf1ae42a9b68dfa5138bee5f927a24cd0cbd90"
+    },
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/TEST_MATRIX.json": {
+        "blob": "fdf6986b134af8a849b5d3f9a4ddf6c91d7ed691",
+        "bytes": 66624,
+        "sha256": "79389b761cd97a238d20c5d524a2083d16b9a325067772a85224c057b97e0494"
+    },
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/audit_reports.py": {
+        "blob": "e04e119a4a24ba200f3d165ac94ac8688b6350ec",
+        "bytes": 17257,
+        "sha256": "aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81"
+    }
+}
 if any(str(value).startswith('PENDING_') for value in (SOURCE, SOURCE_TREE, LAUNCH, CHARTER, CHARTER_BLOB, CHARTER_SHA, PINS_SHA, AUDIT_SHA,)):
     raise RuntimeError('Unfinalized lint-followup draft: fill all pinned identities before use')
 
@@ -146,7 +179,7 @@ def main():
          'output must be outside the original source and runtime')
     out.mkdir(parents=True)
     stage=out/'extracted';stage.mkdir()
-    errors=[];checks={};audit_result=None;source_report={};host_report={}
+    errors=[];checks={};audit_result=None;source_report={};host_report={};audit_source_report={}
     def gate(name, action):
         try:
             result=action();checks[name]={'state':'PASS'}
@@ -269,13 +302,38 @@ def main():
         need(host_report['launcher_byte_equality_attested'] and schema_ok,'host restoration attestation/schema')
         return host_report
     gate('host restoration evidence',host_check)
+    def stage_immutable_audit_source():
+        nonlocal audit_source_report
+        need(pins is not None, 'immutable pins required before staging audit inputs')
+        audit_root=stage/AUDIT_SOURCE_ROOT
+        need(not audit_root.exists(), 'audit module tree must be fresh and separate')
+        for path,pin in AUDIT_INPUTS.items():
+            data=raw(SOURCE,path)
+            need(len(data)==pin['bytes'] and sha(data)==pin['sha256'], 'immutable audit input bytes '+path)
+            need(git('rev-parse',SOURCE+':'+path)==pin['blob'], 'immutable audit input blob '+path)
+            if path in pins['bindings']:
+                need(pins['bindings'][path]=={key:pin[key] for key in ('bytes','sha256')},
+                     'bound audit input differs from candidate pin '+path)
+            destination=audit_root/path
+            destination.parent.mkdir(parents=True,exist_ok=True)
+            destination.write_bytes(data)
+        need(len(AUDIT_INPUTS)==6 and sum(path in pins['bindings'] for path in AUDIT_INPUTS)==5,
+             'exact immutable audit dependency closure')
+        audit_source_report={'schema':'manual-transmission/immutable-audit-source/v1',
+                             'source':SOURCE,'source_tree':SOURCE_TREE,'root':AUDIT_SOURCE_ROOT,
+                             'inputs':AUDIT_INPUTS,'bound_input_count':5,'original_binding_count':378,
+                             'additional_source_bindings':0,'original_qualification_modified':False}
+        return audit_root
+    audit_root=gate('immutable audit dependency staging',stage_immutable_audit_source)
     def independent_audit():
         nonlocal audit_result
         need(pins is not None and manifest_result is not None,'pinned source and original inner manifest required')
         need(checks['terminal source and copied original bindings']['state']=='PASS','full frozen-source and terminal binding verification required')
         code=(authority/'audit_reports.py').read_bytes();need(sha(code)==AUDIT_SHA,'independent auditor hash')
+        need(audit_root is not None, 'immutable audit dependency staging required')
+        need((audit_root/RECORD/'audit_reports.py').read_bytes()==code, 'staged auditor differs from immutable authority')
         module=types.ModuleType('_independent_manual_local_auditor')
-        module.__file__=str(evidence/'frozen-source'/RECORD/'audit_reports.py')
+        module.__file__=str(audit_root/RECORD/'audit_reports.py')
         exec(compile(code,module.__file__,'exec'),module.__dict__)
         commands=read(evidence/'COMMANDS.json')
         need(len(commands)==len({row['name'] for row in commands}),'duplicate qualification command names')
@@ -289,8 +347,10 @@ def main():
     # All additional diagnostics are separate from unchanged original output trees.
     write(stage/'review/SOURCE_REBINDING.json',source_report)
     write(stage/'review/HOST_RESTORATION.json',host_report)
+    write(stage/'review/AUDIT_SOURCE.json',audit_source_report)
     write(stage/'review/INDEPENDENT_AUDIT.json',{'state':'PASS' if audit_result is not None else 'FAIL_OR_NOT_EXECUTED',
-          'auditor_sha256':AUDIT_SHA,'result':audit_result,'original_inner_manifest':manifest_result})
+          'auditor_sha256':AUDIT_SHA,'result':audit_result,'original_inner_manifest':manifest_result,
+          'audit_source':audit_source_report,'audit_source_manifest_sha256':digest(stage/'review/AUDIT_SOURCE.json')})
     write(stage/'review/PRESERVATION_CHECKS.json',{'checks':checks,'errors':errors,'copied_originals_unchanged':not any(e['gate']=='copy' for e in errors),
           'qualification_invocations_started_by_this_script':0,'ci_downloads':0,'admitted':False})
     manifest={p.relative_to(stage).as_posix():digest(p) for p in files(stage)}
