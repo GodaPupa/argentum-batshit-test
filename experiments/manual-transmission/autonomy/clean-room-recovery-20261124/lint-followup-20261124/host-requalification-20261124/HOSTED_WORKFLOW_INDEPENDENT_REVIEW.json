@@ -1,0 +1,52 @@
+{
+  "schema": "manual-transmission/hosted-workflow-independent-review/v1",
+  "state": "PASS",
+  "reviewed_utc": "2026-11-25T20:19:43.668188+00:00",
+  "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+  "source_tree": "e6ec12d9a5b3c2d8ee344fe7a3ff403d2ef2256f",
+  "actual_s3_successor_proof": "PASS",
+  "workflow_sha256": "a551cba7359af449daf6581d75bb352dbc1c34194275b7df8aa117c6ef5a4800",
+  "readiness_helper_sha256": "068db7e5f41fef9776ca4976c0d4fbd3a2deaa11d532d1f824601c5e577ff958",
+  "readiness_contract_sha256": "d261989c43b075cfde05b73ee36b4c8a2dff5a235e9f6186c11b3556cd9c6b3c",
+  "workflow_python_blocks_syntax_pass": 2,
+  "workflow_helper_invocation_call_sites": 1,
+  "qualifier_invocation_call_sites": 1,
+  "worker_identity_controls": 6,
+  "reviewed_controls_report": "/workspace/scratch/65bf30f1888a/manual-host-workflow-draft/READINESS_AUDIT_CONTROLS.json",
+  "readiness_controls_count": 20,
+  "findings": [
+    {
+      "issue": "Generic GradleWorkerMain was insufficient to identify an actual test executor",
+      "resolution": "Require one WorkerMain and one exact Gradle Test Executor numeric display-name argument, normalize only paired outer apostrophes, record and independently rederive the label",
+      "state": "RESOLVED"
+    }
+  ],
+  "checks": {
+    "exact_single_option_B_authority": true,
+    "source_verifier_final_readiness_prerequisite_compatible": true,
+    "actual_current_run_job_identity_resolved_by_rest": true,
+    "source_tree_pins_and_c_v_e_topology_authenticated": true,
+    "exact_startup_agent_applies_to_observed_actual_test_worker": true,
+    "all20_readiness_identities_required_with_zero_failures_errors_skips": true,
+    "original_s3_pins_git_blob_and_source_table_bound": true,
+    "readiness_failure_never_launches_qualifier": true,
+    "original_failure_evidence_preserved_without_fabricating_inner_manifest": true,
+    "one_artifact_upload_action": true,
+    "all_four_pinned_action_commits_use_node20": true
+  },
+  "official_gradle_sources": [
+    {
+      "url": "https://github.com/gradle/gradle/blob/v9.6.1/platforms/software/testing-base/src/main/java/org/gradle/api/internal/tasks/testing/worker/ForkingTestDefinitionProcessor.java",
+      "blob": "8b0660ad82f1764d4cce701bbb405e86ab6e8d52"
+    },
+    {
+      "url": "https://github.com/gradle/gradle/blob/v9.6.1/platforms/core-execution/worker-process-services/src/main/java/org/gradle/process/internal/worker/DefaultWorkerProcessBuilder.java",
+      "blob": "b69a8e2259cc4c40a9a8432010b829002e1e55ff"
+    }
+  ],
+  "actual_readiness_sequences": 0,
+  "actual_project_tests": 0,
+  "actual_qualification_invocations": 0,
+  "workflow_activations": 0,
+  "source_edits_for_this_review": 0
+}

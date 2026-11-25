@@ -401,15 +401,214 @@ def verify_lint_followup_authority(envelope):
     return current
 
 
+# BEGIN EXACT HOST REQUALIFICATION AUTHORITY
+# This is a new Candidate02 execution grant. The consumed local grant remains
+# failed, and all historical proofs continue to read their immutable sources.
+HOST_PREDECESSOR='82ec335573572edfd2a2e4d734d2f0d81801139f'
+HOST_PREDECESSOR_TREE='923ec79e1c867eedf35b408153bf60988fbd26b6'
+HOST_PREDECESSOR_PINS_BLOB='7e30df16c53a59358d507733b2a5443e2a3c9075'
+HOST_PREDECESSOR_VERIFIER_SHA256='23ea2debb05adc95194f2fcc41fc6c84ad3070d76987f5b6b96af061d3ddabb7'
+HOST_PREDECESSOR_PINS_SHA256='b0e8da912f98b75a35c44db4a3e9e3334d941af3891e0bb28281490ab01e7bbd'
+HOST_AUDIT_SHA256='aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81'
+HOST_CHECKPOINT='a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76'
+HOST_FAILED_READBACK='d53cbbd783d8252c03bd1747b031c791c0f45e07'
+HOST_NAMESPACE=LINT_NAMESPACE+'/host-requalification-20261124'
+HOST_CHARTER_PATH=HOST_NAMESPACE+'/CHARTER.json'
+HOST_CHARTER_COMMIT='bd1110a0fafcfe4039a432a9ad9e955166dbc523'
+HOST_CHARTER_BLOB='2b2a03f45c8d2b490720ce2c7ccb375b5157bcd5'
+HOST_CHARTER_SHA256='5b4e30d8594b6c1e4a6d8f2ec2f4a0bdb0a6dba7e314e8deddffcad66b06f701'
+HOST_EPOCH='manual-host-requalification-20261124-01'
+HOST_OWNER='manual-host-requalification-foreground-20261124'
+HOST_PLAN='B_HOSTED_ONCE'
+HOST_WORKFLOW_PATH='.github/workflows/manual-host-requalification-surge-bushwhacker-20261124.yml'
+HOST_READINESS_CONTRACT_PATH=HOST_NAMESPACE+'/READINESS_CONTRACT.json'
+HOST_ATTEMPTS=dict(hosted_activations=1,readiness_reserved=1,readiness_started=0,
+                   readiness_completed=0,qualification_reserved=1,qualification_started=0,
+                   qualification_completed=0,original_artifact_downloads=0,
+                   original_artifact_receives=0,local_started=0)
+HOST_BUDGETS=dict(fresh_complete_local_qualifications=0,hosted_activation_maximum=1,
+                  hosted_readiness_sequence_maximum=1,full_hosted_qualifications_maximum=1,
+                  total_full_qualification_invocations_maximum=1,original_artifact_download_maximum=1,
+                  original_artifact_receiving_maximum=1,precisely_authorized_source_successors=1,
+                  candidate03_allowed=False,hosted_run_number=1,hosted_run_attempt=1,
+                  readiness_failure_consumes_activation=True,qualification_starts_if_readiness_fails=0,
+                  prior_unused_ci_allowance_is_additive=False,retry_after_failure_allowed=False)
+HOST_Q_EXTENSIONS={'validation','validation_tree','workflow_path','workflow_blob','workflow_sha256',
+                   'source_freeze_sha256','receiver_sha256','receiver_blob','readback_sha256','readback_blob',
+                   'readiness_contract_sha256','readiness_helper_sha256','readiness_helper_blob'}
+HOST_VERIFY_ROUTE_REPLACEMENTS=(
+    ("    lint_followup='lint_followup' in envelope\n    if lint_followup:verify_lint_followup_authority(envelope)\n",
+     "    lint_followup='lint_followup' in envelope\n    host_requalification='host_requalification' in envelope\n    if host_requalification:verify_host_requalification_authority(envelope)\n    elif lint_followup:verify_lint_followup_authority(envelope)\n"),
+    ("    # Only historical proofs read S1; prospective authority and bindings read actual S2.\n    proof_source=LINT_PREDECESSOR if lint_followup else source\n    normalization_source=NORMALIZED_SOURCE if (clean_room or lint_followup) else source\n",
+     "    # Historical proofs still read S1; actual source bindings read S2 or the authorized S3.\n    proof_source=LINT_PREDECESSOR if (lint_followup or host_requalification) else source\n    normalization_source=NORMALIZED_SOURCE if (clean_room or lint_followup or host_requalification) else source\n"),
+    ("    if clean_room or lint_followup:amended_audit_sha=verify_m14_successor(proof_source)\n    if lint_followup:verify_lint_successor(source)\n",
+     "    if clean_room or lint_followup or host_requalification:amended_audit_sha=verify_m14_successor(proof_source)\n    if lint_followup or host_requalification:verify_lint_successor(HOST_PREDECESSOR if host_requalification else source)\n    if host_requalification:verify_host_successor(source)\n"),
+    ("    current=json.loads(raw(HISTORICAL_CHECKPOINT if (clean_room or lint_followup) else envelope['first_parent'],'experiments/manual-transmission/autonomy/CURRENT.json'))\n    if not (clean_room or lint_followup):\n",
+     "    current=json.loads(raw(HISTORICAL_CHECKPOINT if (clean_room or lint_followup or host_requalification) else envelope['first_parent'],'experiments/manual-transmission/autonomy/CURRENT.json'))\n    if not (clean_room or lint_followup or host_requalification):\n"),
+    ("    else:check(q['candidate_index']=='01','candidate cap')\n    return pins\n",
+     "    else:check(q['candidate_index']=='01','candidate cap')\n    if host_requalification:verify_host_runtime_readiness(envelope)\n    return pins\n"),
+)
+
+def host_requalification_metadata():
+    return dict(recovery_id=HOST_EPOCH,branch=CLEAN_BRANCH,selected_plan=HOST_PLAN,
+                authorization_commit=HOST_CHARTER_COMMIT,charter_blob=HOST_CHARTER_BLOB,
+                charter_sha256=HOST_CHARTER_SHA256,prior_source=HOST_PREDECESSOR,
+                prior_source_tree=HOST_PREDECESSOR_TREE,prior_pins_blob=HOST_PREDECESSOR_PINS_BLOB,
+                prior_verifier_sha256=HOST_PREDECESSOR_VERIFIER_SHA256,
+                prior_pins_sha256=HOST_PREDECESSOR_PINS_SHA256,
+                base_checkpoint=HOST_CHECKPOINT,failed_readback_checkpoint=HOST_FAILED_READBACK,
+                source_paths=[RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json'],
+                predecessor_binding_count=378,binding_count=378,
+                only_changed_binding=RECORD+'/verify_dispatch.py',audit_sha256=HOST_AUDIT_SHA256,
+                all_other_binding_values_unchanged=True,all_other_source_tree_entries_unchanged=True,
+                historical_verifier_helpers_unchanged=True,all_semantic_gates_unchanged=True,
+                execution_environment='github_hosted',local_pass=False,
+                replaces_local_pass_before_ci=True,readiness_required_before_qualification=True,
+                budgets=HOST_BUDGETS,candidate03_prohibited=True)
+
+def verify_host_successor(source):
+    check(git('rev-parse',HOST_PREDECESSOR+'^{tree}')==HOST_PREDECESSOR_TREE,'host immutable S2 tree')
+    check(git('rev-parse',HOST_PREDECESSOR+':'+RECORD+'/CANDIDATE_PINS.json')==HOST_PREDECESSOR_PINS_BLOB,'host immutable S2 pins')
+    previous_verifier=raw(HOST_PREDECESSOR,RECORD+'/verify_dispatch.py')
+    previous_pins=raw(HOST_PREDECESSOR,RECORD+'/CANDIDATE_PINS.json')
+    check(digest(previous_verifier)==HOST_PREDECESSOR_VERIFIER_SHA256,'host immutable S2 verifier')
+    check(digest(previous_pins)==HOST_PREDECESSOR_PINS_SHA256,'host immutable S2 pins bytes')
+    check(git('show','-s','--format=%P',source)==HOST_PREDECESSOR,'host exact sole S2 parent')
+    permitted={RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json'}
+    check(set(git('diff','--name-only',HOST_PREDECESSOR,source).splitlines())==permitted,'host exact two-file authority delta')
+    for path in permitted:
+        entry=git('ls-tree',source,'--',path).split('\t',1)
+        check(len(entry)==2 and entry[0].startswith('100644 blob ') and entry[1]==path,'host regular source file '+path)
+    check(digest(raw(source,RECORD+'/audit_reports.py'))==HOST_AUDIT_SHA256,'host frozen S2 raw auditor')
+    verifier=raw(source,RECORD+'/verify_dispatch.py')
+    start=b'# BEGIN EXACT HOST REQUALIFICATION AUTHORITY\n'
+    end=b'# END EXACT HOST REQUALIFICATION AUTHORITY\n'
+    check(verifier.count(start)==verifier.count(end)==1,'host one bounded added authority block')
+    before,rest=verifier.split(start);added,after=rest.split(end)
+    restored=before+after
+    for old,new in HOST_VERIFY_ROUTE_REPLACEMENTS:
+        check(restored.count(new.encode())==1,'host exact source routing replacement')
+        restored=restored.replace(new.encode(),old.encode())
+    check(restored==previous_verifier,'host all old verifier bytes preserved except explicit authority routing')
+    old_pins=json.loads(previous_pins);new_pins=json.loads(raw(source,RECORD+'/CANDIDATE_PINS.json'))
+    check(set(new_pins)==set(old_pins)|{'host_requalification'},'host one additive pin metadata object')
+    check(all(new_pins[k]==v for k,v in old_pins.items() if k!='bindings'),'host historical pin metadata unchanged')
+    check(set(new_pins['bindings'])==set(old_pins['bindings']) and len(new_pins['bindings'])==378,'host all 378 binding paths unchanged')
+    changed={path for path in old_pins['bindings'] if old_pins['bindings'][path]!=new_pins['bindings'][path]}
+    check(changed=={RECORD+'/verify_dispatch.py'},'host only verifier binding changed')
+    check(new_pins['bindings'][RECORD+'/verify_dispatch.py']==dict(sha256=digest(verifier),bytes=len(verifier)),'host actual derived verifier binding')
+    check(new_pins['host_requalification']==host_requalification_metadata(),'host exact selected-grant pin metadata')
+
+def verify_host_requalification_authority(envelope):
+    check(not ({'clean_room','lint_followup'}&set(envelope)),'host exclusive new authority route')
+    c=envelope['host_requalification']
+    expected=dict(recovery_id=HOST_EPOCH,branch=CLEAN_BRANCH,charter_commit=HOST_CHARTER_COMMIT,
+                  charter_blob=HOST_CHARTER_BLOB,lane='ci',attempt=1,attempt_id=HOST_EPOCH+'/ci-01',
+                  selected_plan=HOST_PLAN,execution_environment='github_hosted',local_pass=False)
+    check(c==expected,'host exact hosted-only authority identity')
+    check(type(c['attempt']) is int and type(envelope['attempt']) is int and envelope['attempt']==1,'host integer attempt one')
+    check(c['local_pass'] is False and envelope.get('local_execution') is False,'host never claims local execution or pass')
+    check(all(isinstance(envelope.get(k),str) and len(envelope[k])==40 and all(x in '0123456789abcdef' for x in envelope[k]) for k in ('source','first_parent','validation','event')),'host actual Git object identities')
+    check(isinstance(envelope.get('run'),str) and envelope['run'].isdecimal() and int(envelope['run'])>0,'host actual run identity')
+    check(type(envelope.get('job_id')) is int and envelope['job_id']>0,'host actual job identity')
+    check(git('rev-parse',HOST_CHARTER_COMMIT+':'+HOST_CHARTER_PATH)==HOST_CHARTER_BLOB,'host immutable new charter blob')
+    charter_bytes=raw(HOST_CHARTER_COMMIT,HOST_CHARTER_PATH)
+    check(digest(charter_bytes)==HOST_CHARTER_SHA256,'host immutable new charter hash')
+    charter=json.loads(charter_bytes)
+    check(charter['authorization']['state']=='EXPLICIT_USER_GRANT','host explicit fresh selected authority')
+    check(charter['recovery_id']==HOST_EPOCH and charter['repository']=='GodaPupa/argentum-batshit-test' and charter['branch']==CLEAN_BRANCH,'host new charter identity')
+    check(charter['source_basis']==HOST_PREDECESSOR and charter['source_basis_tree']==HOST_PREDECESSOR_TREE and charter['base_checkpoint']==HOST_CHECKPOINT,'host new charter fixed predecessor and checkpoint')
+    check(charter['selected_plan']==HOST_PLAN and charter['execution_environment']=='github_hosted' and charter['local_pass'] is False and charter['replaces_local_pass_before_ci'] is True,'host selected Option B only')
+    permitted={RECORD+'/verify_dispatch.py',RECORD+'/CANDIDATE_PINS.json'}
+    check(set(charter['source_amendment']['paths'])==permitted,'host exact two-path source authority')
+    check(charter['budgets']==HOST_BUDGETS and all(type(charter['budgets'][k]) is type(v) for k,v in HOST_BUDGETS.items()),'host new finite allowance without additive old CI')
+    old_charter=json.loads(raw(LINT_CHARTER_COMMIT,LINT_CHARTER_PATH))
+    check(charter['required_gates']==old_charter['required_gates'],'host every frozen semantic gate retained')
+    check(charter['safeguards']==old_charter['safeguards'],'host every historical safeguard retained')
+    first=envelope['first_parent'];source=envelope['source'];validation=envelope['validation'];event=envelope['event']
+    for ancestor in (HOST_CHECKPOINT,HOST_CHARTER_COMMIT,HOST_FAILED_READBACK,source):
+        check(git('merge-base','--is-ancestor',ancestor,first)=='','host carrier immutable lineage '+ancestor)
+    check(raw(first,HOST_CHARTER_PATH)==charter_bytes,'host carrier charter unchanged')
+    delta=set(git('diff','--name-only',HOST_CHECKPOINT,first).splitlines())
+    check(permitted<=delta and all(path in permitted or path.startswith(HOST_NAMESPACE+'/') for path in delta),'host earlier source and evidence unchanged outside new namespace')
+    previous=json.loads(raw(HOST_CHECKPOINT,LINT_NAMESPACE+'/CURRENT.json'))
+    check(previous['status']=='CLOSED_FAILED_HOST_PREREQUISITES_EVIDENCE_VERIFIED' and previous['admitted'] is False,'host old lint attempt stays closed failed')
+    check(previous['attempts']==dict(preflight_reserved=1,preflight_started=1,preflight_completed=1,local_reserved=1,local_started=1,local_completed=1,ci_activated=0,original_artifact_downloads=0),'host consumed historical attempts retained')
+    check(previous['local_result']['source']==HOST_PREDECESSOR and previous['local_result']['all_frozen_local_gates_pass'] is False and previous['local_result']['immutable_readback']=='PASS','host failed result readback is not local pass')
+    check(charter['prior_failure']==previous['local_result'],'host immutable failed-evidence reference')
+    check(raw(first,LINT_NAMESPACE+'/CURRENT.json')==raw(HOST_CHECKPOINT,LINT_NAMESPACE+'/CURRENT.json'),'host failed original ledger unchanged')
+    current=json.loads(raw(first,HOST_NAMESPACE+'/CURRENT.json'))
+    check(current['recovery_id']==HOST_EPOCH and current['branch']==CLEAN_BRANCH,'host current identity')
+    check(current['charter']==HOST_CHARTER_PATH and current['charter_sha256']==HOST_CHARTER_SHA256,'host current charter pin')
+    check(current['source_basis']==HOST_PREDECESSOR and current['base_checkpoint']==HOST_CHECKPOINT and current['prior_failure']==charter['prior_failure'],'host current frozen predecessor and failed evidence')
+    check(current['selected_plan']==HOST_PLAN and current['execution_environment']=='github_hosted' and current['local_pass'] is False,'host current selected hosted-only plan')
+    check(current['owner']==HOST_OWNER and current['lease']['owner']==HOST_OWNER,'host sole foreground owner')
+    check(current['lease']['sole_source_writer'] is True and current['lease']['scheduled_executor_enabled'] is False and current['lease']['writable_ref']=='refs/heads/'+CLEAN_BRANCH,'host exclusive writable branch and owner')
+    check(current['status']=='HOSTED_ACTIVATION_RESERVED','host one durably reserved activation')
+    check(current['attempts']==HOST_ATTEMPTS and all(type(current['attempts'][k]) is int for k in HOST_ATTEMPTS),'host reservations do not fabricate in-job starts or completion')
+    check(type(current['prior_candidate02_ci_activations']) is int and current['prior_candidate02_ci_activations']==0,'host no prior Candidate02 CI allowance reset')
+    check(current['safeguards']==charter['safeguards'] and current['safeguards']['phase2_games']==current['safeguards']['phase2_seeds']==0,'host frozen safeguards and zero official counters')
+    check(current['admitted'] is False,'host no advance admission')
+    q=envelope['qualification']
+    check(q==current['source_freeze'],'host exact carrier qualification freeze')
+    check(q['source']==source and q['source_basis']==HOST_PREDECESSOR and q['candidate_index']=='02' and q['binding_count']==378,'host actual S3 source and unchanged binding count')
+    check(q['validation']==validation and q['workflow_path']==HOST_WORKFLOW_PATH,'host frozen validation identity')
+    check(git('show','-s','--format=%P',event).split()==[first,validation],'host exact ordered event parents')
+    check(git('show','-s','--format=%P',validation)==source,'host validation sole S3 parent')
+    check(git('diff','--name-only',source,validation)==HOST_WORKFLOW_PATH and git('diff','--name-only',first,event)==HOST_WORKFLOW_PATH,'host workflow-only validation and event deltas')
+    check(git('rev-parse',source+'^{tree}')==q['source_tree'] and git('rev-parse',validation+'^{tree}')==q['validation_tree'],'host actual source and validation trees')
+    check(git('rev-parse',source+':'+RECORD+'/CANDIDATE_PINS.json')==q['candidate_pins_blob'],'host actual S3 pins blob')
+    workflow=raw(first,HOST_NAMESPACE+'/CI_ACTIVATION.yml')
+    check(raw(event,HOST_WORKFLOW_PATH)==raw(validation,HOST_WORKFLOW_PATH)==workflow,'host same frozen workflow bytes in C V E')
+    check(git('rev-parse',event+':'+HOST_WORKFLOW_PATH)==git('rev-parse',validation+':'+HOST_WORKFLOW_PATH)==q['workflow_blob'] and digest(workflow)==q['workflow_sha256'],'host actual workflow blob and hash')
+    freeze_bytes=raw(first,HOST_NAMESPACE+'/SOURCE_FREEZE.json')
+    check(digest(freeze_bytes)==q['source_freeze_sha256'],'host immutable base source freeze bytes')
+    base=json.loads(freeze_bytes)['qualification']
+    check(all(q[k]==v for k,v in base.items()) and set(q)==set(base)|HOST_Q_EXTENSIONS,'host exact base and operational freeze fields')
+    for name,path in [('receiver','receive_hosted.py'),('readback','immutable_hosted_readback.py'),('readiness_helper','hosted_runtime.py')]:
+        full=HOST_NAMESPACE+'/'+path;content=raw(first,full)
+        check(digest(content)==q[name+'_sha256'] and git('rev-parse',first+':'+full)==q[name+'_blob'],'host exact pre-event '+name+' bytes')
+    contract=raw(first,HOST_READINESS_CONTRACT_PATH)
+    check(charter['readiness']['contract_path']==HOST_READINESS_CONTRACT_PATH and digest(contract)==charter['readiness']['contract_sha256']==q['readiness_contract_sha256'],'host immutable readiness contract without a pre-event result')
+    check(raw(HOST_CHARTER_COMMIT,HOST_READINESS_CONTRACT_PATH)==contract,'host readiness contract fixed with charter')
+    check(git('ls-tree','-r','--name-only',first,'--',HOST_NAMESPACE+'/HOSTED_READINESS.json',HOST_NAMESPACE+'/HOSTED_RUN.json',HOST_NAMESPACE+'/RECEIVED_CI_01')=='','host no fabricated pre-event runtime or receipt')
+    return current
+
+def verify_host_runtime_readiness(envelope):
+    # The frozen qualifier calls verify() itself. This final prerequisite cannot
+    # be disabled by a dispatch flag; authority-only controls never launch it.
+    import importlib.util
+    q=envelope['qualification'];first=envelope['first_parent']
+    expected_env=dict(GITHUB_ACTIONS='true',GITHUB_REPOSITORY='GodaPupa/argentum-batshit-test',
+                      GITHUB_REF='refs/heads/'+CLEAN_BRANCH,GITHUB_EVENT_NAME='push',
+                      GITHUB_SHA=envelope['event'],GITHUB_RUN_ID=envelope['run'],
+                      GITHUB_RUN_ATTEMPT='1',GITHUB_RUN_NUMBER='1',GITHUB_JOB='verify')
+    check(all(os.environ.get(k)==v for k,v in expected_env.items()),'host actual one-shot GitHub execution environment')
+    check(git('rev-parse','HEAD')==envelope['validation'],'host actual qualification checkout V')
+    runtime=Path(os.environ['RUNNER_TEMP'])/'manual-host-requalification-runtime'
+    helper=Path(os.environ['RUNNER_TEMP'])/'manual-host-requalification-tools'/'hosted_runtime.py'
+    helper_bytes=raw(first,HOST_NAMESPACE+'/hosted_runtime.py')
+    check(helper.is_file() and not helper.is_symlink() and helper.read_bytes()==helper_bytes and digest(helper_bytes)==q['readiness_helper_sha256'],'host loaded readiness auditor is exact C helper')
+    contract_bytes=raw(first,HOST_READINESS_CONTRACT_PATH)
+    check((runtime/'READINESS_CONTRACT.json').read_bytes()==contract_bytes,'host runtime uses exact frozen readiness contract')
+    check(json.loads((runtime/'RECOVERY_EVENT.json').read_bytes())==envelope,'host runtime actual envelope equals qualification envelope')
+    spec=importlib.util.spec_from_file_location('_manual_host_readiness_frozen',helper)
+    check(spec is not None and spec.loader is not None,'host immutable readiness auditor import')
+    module=importlib.util.module_from_spec(spec);sys.modules[spec.name]=module;spec.loader.exec_module(module)
+    result=module.audit_readiness(runtime,json.loads(contract_bytes),envelope)
+    check(isinstance(result,dict) and result.get('state')=='READINESS_AUDIT_PASS','host actual MockK and nine Flyway cases passed before qualification')
+# END EXACT HOST REQUALIFICATION AUTHORITY
 def verify(envelope):
     source=envelope['source'];q=envelope['qualification'];grant=envelope['grant']
     clean_room='clean_room' in envelope
     lint_followup='lint_followup' in envelope
-    if lint_followup:verify_lint_followup_authority(envelope)
+    host_requalification='host_requalification' in envelope
+    if host_requalification:verify_host_requalification_authority(envelope)
+    elif lint_followup:verify_lint_followup_authority(envelope)
     elif clean_room:verify_clean_room_authority(envelope)
-    # Only historical proofs read S1; prospective authority and bindings read actual S2.
-    proof_source=LINT_PREDECESSOR if lint_followup else source
-    normalization_source=NORMALIZED_SOURCE if (clean_room or lint_followup) else source
+    # Historical proofs still read S1; actual source bindings read S2 or the authorized S3.
+    proof_source=LINT_PREDECESSOR if (lint_followup or host_requalification) else source
+    normalization_source=NORMALIZED_SOURCE if (clean_room or lint_followup or host_requalification) else source
     amended_audit_sha='ef6e33a446f30bd8d4e64bd5649baba9bc4a0c0e96b9e91057ff22fe4dfe7e9d'
     proposal='888ad9f24b0a6f9dc84376f0204ee24bf9538838'
     check(grant['explicit_user_grant'] is True and grant['proposal_commit']==proposal,'explicit grant')
@@ -474,8 +673,9 @@ def verify(envelope):
         check(all(new_pins[k]==v for k,v in old_pins.items() if k!='bindings'),'unrelated pin metadata unchanged')
         check(set(new_pins['bindings'])==set(old_pins['bindings']),'exact binding path set unchanged')
         check({path for path in old_pins['bindings'] if old_pins['bindings'][path]!=new_pins['bindings'][path]}=={audit_path,RECORD+'/verify_dispatch.py'},'only audit/verifier pins changed')
-    if clean_room or lint_followup:amended_audit_sha=verify_m14_successor(proof_source)
-    if lint_followup:verify_lint_successor(source)
+    if clean_room or lint_followup or host_requalification:amended_audit_sha=verify_m14_successor(proof_source)
+    if lint_followup or host_requalification:verify_lint_successor(HOST_PREDECESSOR if host_requalification else source)
+    if host_requalification:verify_host_successor(source)
     for name,pin in manifest['files'].items():
         check(digest(raw(proposal,RECORD+'/'+name))==pin['sha256'],'immutable proposal history '+name)
         if audit_grant is not None and name=='audit_reports.py':
@@ -533,8 +733,8 @@ def verify(envelope):
     if q['candidate_index']=='02':exceptions.add('rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt')
     for path,pin in protected['bindings'].items():
         if path not in exceptions:check(raw(source,path)==raw(reviewed,path),'protected original '+path)
-    current=json.loads(raw(HISTORICAL_CHECKPOINT if (clean_room or lint_followup) else envelope['first_parent'],'experiments/manual-transmission/autonomy/CURRENT.json'))
-    if not (clean_room or lint_followup):
+    current=json.loads(raw(HISTORICAL_CHECKPOINT if (clean_room or lint_followup or host_requalification) else envelope['first_parent'],'experiments/manual-transmission/autonomy/CURRENT.json'))
+    if not (clean_room or lint_followup or host_requalification):
         check(current['owner'] is not None and current['lease']['owner']==current['owner'],'sole foreground lease')
         check(current['status']=='WORKING' and current['automation']['enabled_at_latest_readback'] is False,'execution state')
         check(current['safeguards']['phase2_games']==current['safeguards']['phase2_seeds']==0,'official counters')
@@ -564,6 +764,7 @@ def verify(envelope):
         check(pins['predecessor']['source']=='2b195520143045981fe4fdb64a16169473f0dbde','predecessor identity')
         check(pins['predecessor']['archive_sha256']==prior['local_archive']['sha256'],'predecessor archive pin')
     else:check(q['candidate_index']=='01','candidate cap')
+    if host_requalification:verify_host_runtime_readiness(envelope)
     return pins
 if __name__=='__main__':
     path=Path(sys.argv[1]) if len(sys.argv)>1 else Path(os.environ['RUNNER_TEMP'])/'RECOVERY_EVENT.json'

@@ -1,0 +1,49 @@
+{
+  "schema": "manual-transmission/runtime-counter-observation-controls/v1",
+  "state": "PASS",
+  "observed_utc": "2026-11-25T20:21:03.125805+00:00",
+  "readback_sha256": "a7fe4419a3237bb9a432c14d38ab0381e62e6a10a3a5ec2ac217226daf0dce18",
+  "synthetic_counter_checks_only": true,
+  "checks": [
+    {
+      "name": "honest_unknowns_allowed_before_transport_with_true_marker",
+      "state": "PASS"
+    },
+    {
+      "name": "resolved_published_actual_counts_equal_original_run",
+      "state": "PASS"
+    },
+    {
+      "name": "null_without_pending_marker_rejected",
+      "state": "PASS"
+    },
+    {
+      "name": "boolean_count_rejected",
+      "state": "PASS"
+    },
+    {
+      "name": "over_budget_count_rejected",
+      "state": "PASS"
+    },
+    {
+      "name": "published_pending_counts_rejected",
+      "state": "PASS"
+    },
+    {
+      "name": "published_null_count_rejected",
+      "state": "PASS"
+    },
+    {
+      "name": "published_count_mismatching_original_rejected",
+      "state": "PASS"
+    },
+    {
+      "name": "known_pretransport_count_mismatching_original_rejected",
+      "state": "PASS"
+    }
+  ],
+  "receiver_invocations": 0,
+  "original_artifact_downloads": 0,
+  "qualification_invocations": 0,
+  "live_readbacks": 0
+}

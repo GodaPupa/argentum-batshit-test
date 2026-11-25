@@ -1,0 +1,173 @@
+{
+  "schema": "manual-transmission/hosted-readiness-auditor-controls/v1",
+  "state": "PASS",
+  "created_utc": "2026-11-25T20:18:29.226088+00:00",
+  "synthetic_fixtures_only": true,
+  "actual_readiness_sequences": 0,
+  "actual_project_tests": 0,
+  "full_qualification_invocations": 0,
+  "source_modified": false,
+  "helper_sha256": "068db7e5f41fef9776ca4976c0d4fbd3a2deaa11d532d1f824601c5e577ff958",
+  "controls": [
+    {
+      "name": "synthetic_consistent_readonly_fixture",
+      "expected": "accept",
+      "accepted": true,
+      "state": "PASS",
+      "reason": "READINESS_AUDIT_PASS",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "wrong_run_id",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness run/source binding",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "wrong_job_id",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness run/source binding",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "wrong_source",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness run/source binding",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "boolean_sequence",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness invocation count",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "extra_sequence",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness invocation count",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "missing_identity",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness exact identity multiset",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "duplicate_identity",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness exact identity multiset",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "skipped_identity",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness original XML outcomes",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "failed_identity",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness original XML outcomes",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "forged_self_consistent_binding_table",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness exact immutable S3 bindings",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "changed_agent_bytes",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Original startup agent bytes",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "no_actual_worker",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "No actual Gradle test worker observed",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "wrong_worker_agent",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Actual Test Executor startup settings",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "generic_gradle_worker_not_test_executor",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Actual Test Executor startup settings",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "worker_main_without_label",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Actual Test Executor startup settings",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "forged_test_executor_label",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Actual Test Executor startup settings",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "wrong_command",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness actual command",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "failed_command",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness actual command",
+      "evidence_unchanged": true
+    },
+    {
+      "name": "timeout_command",
+      "expected": "reject",
+      "accepted": false,
+      "state": "PASS",
+      "reason": "Readiness command timeout",
+      "evidence_unchanged": true
+    }
+  ]
+}

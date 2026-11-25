@@ -1,0 +1,188 @@
+{
+  "state": "STATIC_SOURCE_AUTHORITY_CONTROLS_PASS",
+  "source_basis": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+  "actual_successor_commit": "NOT_CREATED",
+  "positive_complete_launch_envelope_tested": false,
+  "historical_source_proofs_verified": true,
+  "structural_negative_envelopes": 18,
+  "qualification_invocations": 0,
+  "readiness_sequences": 0,
+  "workflow_activations": 0,
+  "all_old_helper_bodies_preserved": true,
+  "checks": [
+    {
+      "name": "one bounded added authority block",
+      "passed": true
+    },
+    {
+      "name": "one exact routing replacement 1",
+      "passed": true
+    },
+    {
+      "name": "one exact routing replacement 2",
+      "passed": true
+    },
+    {
+      "name": "one exact routing replacement 3",
+      "passed": true
+    },
+    {
+      "name": "one exact routing replacement 4",
+      "passed": true
+    },
+    {
+      "name": "one exact routing replacement 5",
+      "passed": true
+    },
+    {
+      "name": "exact old verifier restored after inverse routing and removal",
+      "passed": true
+    },
+    {
+      "name": "every historical helper body byte-identical",
+      "passed": true
+    },
+    {
+      "name": "exact two source paths changed",
+      "passed": true
+    },
+    {
+      "name": "all378 binding paths preserved",
+      "passed": true
+    },
+    {
+      "name": "other377 binding values unchanged",
+      "passed": true
+    },
+    {
+      "name": "all prior pin metadata preserved",
+      "passed": true
+    },
+    {
+      "name": "one exact new authority metadata key",
+      "passed": true
+    },
+    {
+      "name": "all378 actual working binding bytes match",
+      "passed": true
+    },
+    {
+      "name": "actual immutable charter bytes bound",
+      "passed": true
+    },
+    {
+      "name": "exact charter budget and types",
+      "passed": true
+    },
+    {
+      "name": "all frozen gates retained",
+      "passed": true
+    },
+    {
+      "name": "all frozen safeguards retained",
+      "passed": true
+    },
+    {
+      "name": "old failed local result referenced exactly",
+      "passed": true
+    },
+    {
+      "name": "immutable S1-to-S2 full derivation via unchanged helper",
+      "passed": true
+    },
+    {
+      "name": "historical M14 source derivation still uses immutable S1",
+      "passed": true
+    },
+    {
+      "name": "reject selected_plan=A_LOCAL_THEN_CI",
+      "passed": true,
+      "rejection": "host exact hosted-only authority identity"
+    },
+    {
+      "name": "reject lane=local",
+      "passed": true,
+      "rejection": "host exact hosted-only authority identity"
+    },
+    {
+      "name": "reject local_pass=True",
+      "passed": true,
+      "rejection": "host exact hosted-only authority identity"
+    },
+    {
+      "name": "reject execution_environment=local",
+      "passed": true,
+      "rejection": "host exact hosted-only authority identity"
+    },
+    {
+      "name": "reject attempt=2",
+      "passed": true,
+      "rejection": "host exact hosted-only authority identity"
+    },
+    {
+      "name": "reject attempt=True",
+      "passed": true,
+      "rejection": "host integer attempt one"
+    },
+    {
+      "name": "reject recovery_id=manual-lint-followup-20261124-01",
+      "passed": true,
+      "rejection": "host exact hosted-only authority identity"
+    },
+    {
+      "name": "reject attempt_id=manual-lint-followup-20261124-01/local-01",
+      "passed": true,
+      "rejection": "host exact hosted-only authority identity"
+    },
+    {
+      "name": "reject charter_blob=0000000000000000000000000000000000000000",
+      "passed": true,
+      "rejection": "host exact hosted-only authority identity"
+    },
+    {
+      "name": "reject branch=main",
+      "passed": true,
+      "rejection": "host exact hosted-only authority identity"
+    },
+    {
+      "name": "reject top-level attempt=2",
+      "passed": true,
+      "rejection": "host integer attempt one"
+    },
+    {
+      "name": "reject top-level attempt=True",
+      "passed": true,
+      "rejection": "host integer attempt one"
+    },
+    {
+      "name": "reject top-level local_execution=True",
+      "passed": true,
+      "rejection": "host never claims local execution or pass"
+    },
+    {
+      "name": "reject top-level job_id=True",
+      "passed": true,
+      "rejection": "host actual job identity"
+    },
+    {
+      "name": "reject top-level job_id=0",
+      "passed": true,
+      "rejection": "host actual job identity"
+    },
+    {
+      "name": "reject top-level run=0",
+      "passed": true,
+      "rejection": "host actual run identity"
+    },
+    {
+      "name": "reject mixed authority clean_room",
+      "passed": true,
+      "rejection": "host exclusive new authority route"
+    },
+    {
+      "name": "reject mixed authority lint_followup",
+      "passed": true,
+      "rejection": "host exclusive new authority route"
+    }
+  ]
+}

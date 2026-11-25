@@ -1,0 +1,27 @@
+{
+  "schema": "manual-transmission/hosted-test-worker-identity-review/v1",
+  "state": "PASS",
+  "gradle_version": "9.6.1",
+  "sources": [
+    {
+      "url": "https://github.com/gradle/gradle/blob/v9.6.1/platforms/software/testing-base/src/main/java/org/gradle/api/internal/tasks/testing/worker/ForkingTestDefinitionProcessor.java",
+      "git_blob": "8b0660ad82f1764d4cce701bbb405e86ab6e8d52",
+      "finding": "The test processor assigns Gradle Test Executor as the worker base name."
+    },
+    {
+      "url": "https://github.com/gradle/gradle/blob/v9.6.1/platforms/core-execution/worker-process-services/src/main/java/org/gradle/process/internal/worker/DefaultWorkerProcessBuilder.java",
+      "git_blob": "b69a8e2259cc4c40a9a8432010b829002e1e55ff",
+      "finding": "The process builder combines that base name with a numeric id and appends the display name with literal surrounding apostrophes as the worker main argument."
+    }
+  ],
+  "implementation": "test_executor_label requires exactly one GradleWorkerMain occurrence, exactly one trailing argument, normalizes only paired outer apostrophes, then full-matches Gradle Test Executor plus a numeric id. Both live observation and read-only audit apply the same matcher; audit also binds the separately recorded label to argv.",
+  "controls_added": [
+    "generic_gradle_worker_not_test_executor",
+    "worker_main_without_label",
+    "forged_test_executor_label"
+  ],
+  "frozen_contract_changed": false,
+  "workflow_changed": false,
+  "actual_readiness_sequences": 0,
+  "full_qualification_invocations": 0
+}

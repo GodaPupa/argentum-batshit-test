@@ -1,0 +1,39 @@
+{
+  "schema": "manual-transmission/early-failure-preservation-controls/v1",
+  "state": "PASS",
+  "observed_utc": "2026-11-25T20:21:03.438837+00:00",
+  "synthetic_evidence_only": true,
+  "receiver_sha256": "0a913cf180cd7877198174ba8f8a5e9770472751312bf5cf181d95dfc58e1711",
+  "readback_sha256": "a7fe4419a3237bb9a432c14d38ab0381e62e6a10a3a5ec2ac217226daf0dce18",
+  "checks": [
+    {
+      "name": "receiver_preserves_genuine_early_failure_context",
+      "state": "PASS"
+    },
+    {
+      "name": "no_missing_runtime_or_inner_manifest_fabricated",
+      "state": "PASS"
+    },
+    {
+      "name": "independent_readback_validates_available_context_and_reports_missing",
+      "state": "PASS"
+    },
+    {
+      "name": "false_early_failure_with_qualification_start_rejected",
+      "state": "PASS"
+    },
+    {
+      "name": "wrong_provider_event_rejected",
+      "state": "PASS"
+    },
+    {
+      "name": "fabricated_readiness_pass_rejected",
+      "state": "PASS"
+    }
+  ],
+  "receiver_invocations": 0,
+  "original_artifact_downloads": 0,
+  "qualification_invocations": 0,
+  "immutable_source_raw_auditor_invocations": 0,
+  "live_readbacks": 0
+}

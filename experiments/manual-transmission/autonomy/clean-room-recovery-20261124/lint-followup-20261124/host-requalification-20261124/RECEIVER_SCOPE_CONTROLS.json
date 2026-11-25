@@ -1,0 +1,125 @@
+{
+  "schema": "manual-transmission/hosted-receiver-scope-controls/v1",
+  "state": "PASS",
+  "observed_utc": "2026-11-25T20:16:39.989697+00:00",
+  "receiver_sha256": "0a913cf180cd7877198174ba8f8a5e9770472751312bf5cf181d95dfc58e1711",
+  "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+  "source_tree": "e6ec12d9a5b3c2d8ee344fe7a3ff403d2ef2256f",
+  "controls_are_synthetic_metadata_only": true,
+  "accepted_success_metadata": 1,
+  "accepted_failed_metadata_for_preservation": 1,
+  "rejected_controls": 21,
+  "results": [
+    {
+      "name": "old_source",
+      "state": "REJECTED",
+      "reason": "clean-room frozen source identity"
+    },
+    {
+      "name": "old_pins",
+      "state": "REJECTED",
+      "reason": "clean-room frozen source identity"
+    },
+    {
+      "name": "old_charter",
+      "state": "REJECTED",
+      "reason": "clean-room charter identity"
+    },
+    {
+      "name": "old_epoch",
+      "state": "REJECTED",
+      "reason": "epoch"
+    },
+    {
+      "name": "candidate03",
+      "state": "REJECTED",
+      "reason": "clean-room Candidate02 only"
+    },
+    {
+      "name": "optionA",
+      "state": "REJECTED",
+      "reason": "explicit hosted-only selected authority"
+    },
+    {
+      "name": "false_local_claim",
+      "state": "REJECTED",
+      "reason": "explicit hosted-only selected authority"
+    },
+    {
+      "name": "wrong_environment",
+      "state": "REJECTED",
+      "reason": "explicit hosted-only selected authority"
+    },
+    {
+      "name": "second_attempt",
+      "state": "REJECTED",
+      "reason": "attempt/run number cap"
+    },
+    {
+      "name": "boolean_attempt",
+      "state": "REJECTED",
+      "reason": "non-integer counter attempt"
+    },
+    {
+      "name": "second_run",
+      "state": "REJECTED",
+      "reason": "attempt/run number cap"
+    },
+    {
+      "name": "prior_receipt",
+      "state": "REJECTED",
+      "reason": "prior clean-room receipt exists"
+    },
+    {
+      "name": "boolean_prior_receipt",
+      "state": "REJECTED",
+      "reason": "non-integer counter prior_receipt_count"
+    },
+    {
+      "name": "string_run_id",
+      "state": "REJECTED",
+      "reason": "actual positive integer run_id"
+    },
+    {
+      "name": "zero_job",
+      "state": "REJECTED",
+      "reason": "actual positive integer job_id"
+    },
+    {
+      "name": "zero_artifact",
+      "state": "REJECTED",
+      "reason": "actual positive integer artifact_id"
+    },
+    {
+      "name": "zero_archive",
+      "state": "REJECTED",
+      "reason": "actual positive integer artifact_size"
+    },
+    {
+      "name": "missing_digest",
+      "state": "REJECTED",
+      "reason": "actual provider artifact digest"
+    },
+    {
+      "name": "wrong_branch",
+      "state": "REJECTED",
+      "reason": "branch"
+    },
+    {
+      "name": "unknown_field",
+      "state": "REJECTED",
+      "reason": "exact 41 metadata fields"
+    },
+    {
+      "name": "independent_metadata_mismatch",
+      "state": "REJECTED",
+      "reason": "wrong artifact_size"
+    }
+  ],
+  "original_receive_function_byte_identical": true,
+  "receiver_invocations": 0,
+  "original_artifact_downloads": 0,
+  "qualification_invocations": 0,
+  "workflow_activations": 0,
+  "source_mutations": 0
+}

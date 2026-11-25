@@ -1,0 +1,46 @@
+{
+  "schema": "manual-transmission/hosted-prelaunch-review/v1",
+  "state": "PREPARED_SOURCE_AND_HELPERS_REVIEWED",
+  "reviewed_utc": "2026-11-25T20:23:25.299450+00:00",
+  "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+  "source_tree": "e6ec12d9a5b3c2d8ee344fe7a3ff403d2ef2256f",
+  "validation": "5c4cc159e7094815b73395a82f1cc10cf0f2109f",
+  "validation_tree": "e7eb502a87ed254e45a90d3d8db65c40a3ccbee1",
+  "selected_plan": "B_HOSTED_ONCE",
+  "local_pass": false,
+  "execution_environment": "github_hosted",
+  "checks": {
+    "actual_immutable_source_two_file_successor": "PASS",
+    "historical_derivations": "PASS",
+    "source_bindings_378": "PASS",
+    "other377_binding_values_unchanged": "PASS",
+    "production_tests_auditor_qualifier_unchanged": "PASS",
+    "all_old_failed_evidence_and_counters_preserved": "PASS",
+    "new_charter_readback": "PASS",
+    "workflow_and_runtime_independent_review": "PASS",
+    "readiness_actual_test_worker_identity": "PASS",
+    "readiness_source_tables_bound_to_original_pins": "PASS",
+    "exact20_cases_and_no_skips": "FROZEN_NOT_YET_EXECUTED",
+    "original_receive_function_body_preserved": "PASS",
+    "failure_only_early_setup_receiving": "PASS",
+    "pretransport_runtime_unknowns_are_explicit": "PASS",
+    "same_source_and_host_settings_for_full_run": "REQUIRED",
+    "actual_C_V_E_positive_authority_check": "REQUIRED_BEFORE_ACTIVATION",
+    "original_artifact_raw_audit_and_live_readback": "REQUIRED_AFTER_TERMINAL_RUN"
+  },
+  "actual_executions": {
+    "readiness_sequences": 0,
+    "qualifications": 0,
+    "workflow_activations": 0,
+    "artifact_downloads": 0,
+    "receiver_invocations": 0
+  },
+  "controls_are_synthetic_and_not_project_test_results": true,
+  "helpers": {
+    "hosted_runtime.py": "068db7e5f41fef9776ca4976c0d4fbd3a2deaa11d532d1f824601c5e577ff958",
+    "CI_ACTIVATION.yml": "a551cba7359af449daf6581d75bb352dbc1c34194275b7df8aa117c6ef5a4800",
+    "receive_hosted.py": "0a913cf180cd7877198174ba8f8a5e9770472751312bf5cf181d95dfc58e1711",
+    "immutable_hosted_readback.py": "a7fe4419a3237bb9a432c14d38ab0381e62e6a10a3a5ec2ac217226daf0dce18",
+    "SOURCE_FREEZE.json": "86a9f83f0c19cc28882a1d6f8ed7494696dbbd807a5274b15baf17109a5788fd"
+  }
+}

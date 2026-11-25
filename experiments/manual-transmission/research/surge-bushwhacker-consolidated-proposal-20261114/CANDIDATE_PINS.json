@@ -302,8 +302,8 @@
       "bytes": 1438
     },
     "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py": {
-      "sha256": "23ea2debb05adc95194f2fcc41fc6c84ad3070d76987f5b6b96af061d3ddabb7",
-      "bytes": 57526
+      "sha256": "4a3570993ba9328dac7e3db94ac7daa12a24d547dd88a8ffb2246671bc7fbd1c",
+      "bytes": 78318
     },
     "game-server/src/main/kotlin/com/wingedsheep/gameserver/controller/ScenarioController.kt": {
       "sha256": "1fd401f38a218ded035b263ac57ea6962e12cbf65525a085a35f291bbf9b8927",
@@ -1715,6 +1715,55 @@
     "existing_test_assertions_unchanged": true,
     "existing_mutation_semantics_unchanged": true,
     "all_other_source_paths_unchanged": true,
+    "candidate03_prohibited": true
+  },
+  "host_requalification": {
+    "recovery_id": "manual-host-requalification-20261124-01",
+    "branch": "manual-transmission/clean-room-recovery-20261124",
+    "selected_plan": "B_HOSTED_ONCE",
+    "authorization_commit": "bd1110a0fafcfe4039a432a9ad9e955166dbc523",
+    "charter_blob": "2b2a03f45c8d2b490720ce2c7ccb375b5157bcd5",
+    "charter_sha256": "5b4e30d8594b6c1e4a6d8f2ec2f4a0bdb0a6dba7e314e8deddffcad66b06f701",
+    "prior_source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+    "prior_source_tree": "923ec79e1c867eedf35b408153bf60988fbd26b6",
+    "prior_pins_blob": "7e30df16c53a59358d507733b2a5443e2a3c9075",
+    "prior_verifier_sha256": "23ea2debb05adc95194f2fcc41fc6c84ad3070d76987f5b6b96af061d3ddabb7",
+    "prior_pins_sha256": "b0e8da912f98b75a35c44db4a3e9e3334d941af3891e0bb28281490ab01e7bbd",
+    "base_checkpoint": "a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76",
+    "failed_readback_checkpoint": "d53cbbd783d8252c03bd1747b031c791c0f45e07",
+    "source_paths": [
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py",
+      "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/CANDIDATE_PINS.json"
+    ],
+    "predecessor_binding_count": 378,
+    "binding_count": 378,
+    "only_changed_binding": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py",
+    "audit_sha256": "aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81",
+    "all_other_binding_values_unchanged": true,
+    "all_other_source_tree_entries_unchanged": true,
+    "historical_verifier_helpers_unchanged": true,
+    "all_semantic_gates_unchanged": true,
+    "execution_environment": "github_hosted",
+    "local_pass": false,
+    "replaces_local_pass_before_ci": true,
+    "readiness_required_before_qualification": true,
+    "budgets": {
+      "fresh_complete_local_qualifications": 0,
+      "hosted_activation_maximum": 1,
+      "hosted_readiness_sequence_maximum": 1,
+      "full_hosted_qualifications_maximum": 1,
+      "total_full_qualification_invocations_maximum": 1,
+      "original_artifact_download_maximum": 1,
+      "original_artifact_receiving_maximum": 1,
+      "precisely_authorized_source_successors": 1,
+      "candidate03_allowed": false,
+      "hosted_run_number": 1,
+      "hosted_run_attempt": 1,
+      "readiness_failure_consumes_activation": true,
+      "qualification_starts_if_readiness_fails": 0,
+      "prior_unused_ci_allowance_is_additive": false,
+      "retry_after_failure_allowed": false
+    },
     "candidate03_prohibited": true
   }
 }

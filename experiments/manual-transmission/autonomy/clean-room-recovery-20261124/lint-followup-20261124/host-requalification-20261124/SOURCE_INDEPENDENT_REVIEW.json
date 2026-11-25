@@ -1,0 +1,45 @@
+{
+  "schema": "manual-transmission/hosted-source-independent-review/v1",
+  "state": "PASS",
+  "observed_utc": "2026-11-25T20:15:26.848162+00:00",
+  "reviewer": "host_receiver_audit",
+  "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+  "source_tree": "e6ec12d9a5b3c2d8ee344fe7a3ff403d2ef2256f",
+  "verifier_sha256": "4a3570993ba9328dac7e3db94ac7daa12a24d547dd88a8ffb2246671bc7fbd1c",
+  "unchanged_historical_function_bodies": [
+    "check",
+    "digest",
+    "git",
+    "lint_followup_metadata",
+    "lint_proposal_contents",
+    "raw",
+    "verify_clean_room_authority",
+    "verify_lint_followup_authority",
+    "verify_lint_preflight",
+    "verify_lint_successor",
+    "verify_m14_successor"
+  ],
+  "historical_main_routing_only": true,
+  "old_pin_metadata_preserved": true,
+  "binding_paths": 378,
+  "changed_binding_paths": [
+    "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/verify_dispatch.py"
+  ],
+  "selected_authority": "B_HOSTED_ONCE",
+  "local_pass": false,
+  "checks": [
+    "Historical normalization and fixture proofs read S1",
+    "Historical S1-to-S2 five-file proof reads immutable S2",
+    "New source proves sole S2 parent and exact two-file delta",
+    "New charter pins B only and non-additive one-hosted activation budget",
+    "All old counters and evidence remain consumed/preserved",
+    "Carrier binds readiness contract and helpers without pre-event PASS",
+    "Exact C/V/E workflow-only validation topology retained",
+    "Frozen qualifier final verification requires actual live job and readonly readiness audit",
+    "No source tests, production, auditor, qualifier, inventory or semantic gate edits"
+  ],
+  "qualification_invocations": 0,
+  "workflow_activations": 0,
+  "original_artifact_downloads": 0,
+  "receiver_invocations": 0
+}
