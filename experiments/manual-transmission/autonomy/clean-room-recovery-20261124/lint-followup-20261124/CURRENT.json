@@ -9,7 +9,7 @@
   "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
   "status": "QUALIFICATION_RUNNING",
   "owner": "manual-lint-foreground-20261124",
-  "updated_utc": "2026-11-25T03:19:17.186438+00:00",
+  "updated_utc": "2026-11-25T03:24:31.794407+00:00",
   "lease": {
     "owner": "manual-lint-foreground-20261124",
     "claimed_utc": "2026-11-25T02:17:30.012820+00:00",
@@ -98,7 +98,7 @@
     ]
   },
   "admitted": false,
-  "next": "Finish the single running qualification; preserve original outputs, verify restoration and independently read published evidence. CI remains conditional on every local gate and readback passing.",
+  "next": "Await original qualification terminal and restoration; preserve original failed evidence and verify immutable/live readback. Diagnose JVM agent host setup. CI is blocked by the observed backend failure; no full rerun authorized by this single-use attempt.",
   "preflight_reservation": {
     "attempt_id": "manual-lint-followup-20261124-01/preflight-01",
     "launcher_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/run_lint_preflight.py",
@@ -165,7 +165,7 @@
     "attempt_id": "manual-lint-followup-20261124-01/local-01",
     "qualification_invocations": 1,
     "started_utc": "2026-11-25T02:48:45.188344+00:00",
-    "progress": "All15 compilation forms,67 normal,14 expected negative witnesses with14 passing controls,67 restored,401 registry rows passed. Ordinary backend suite running.",
+    "progress": "Ordinary gate still running after game-server reported118 failures from shared ByteBuddy external-attach failure; terminal and source/host restoration pending.",
     "final_result": null
   },
   "verification_controls": {
@@ -190,5 +190,18 @@
     "readback_sha256": "afe89b678e00dfb231fc02fbb76fc6cdc777ec1ae3fa28ab2f13d23a10f32410",
     "receiver_scope_controls": 15,
     "executing_actual_ci": false
+  },
+  "observed_failure": {
+    "gate": "ordinary",
+    "module": "game-server",
+    "state": "OBSERVED_NONTERMINAL",
+    "first_cause": "ByteBuddyAgent could not self-attach to current VM using external process",
+    "tests": 479,
+    "failures": 118,
+    "xml_errors": 0,
+    "skips": 13,
+    "snapshot_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/RAW_ORDINARY_FAILURE_SNAPSHOT_01.json",
+    "snapshot_sha256": "8ee53b4877e2290e62823ce998fe96cd477d498193e00c96b233adaf3e3c42d3",
+    "exact_lower_level_cause": "UNRESOLVED_WITHOUT_HOST_DIAGNOSTIC"
   }
 }

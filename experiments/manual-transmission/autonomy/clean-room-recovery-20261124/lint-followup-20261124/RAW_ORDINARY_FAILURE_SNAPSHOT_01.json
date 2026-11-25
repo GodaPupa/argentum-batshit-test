@@ -1,0 +1,2107 @@
+{
+  "schema": "manual-transmission/ordinary-raw-failure-snapshot/v1",
+  "state": "PROVISIONAL_MODULE_FAILURE_QUALIFIER_TERMINAL_NOT_YET_OBSERVED",
+  "observed_utc": "2026-11-25T03:23:43.835210+00:00",
+  "source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+  "attempt_id": "manual-lint-followup-20261124-01/local-01",
+  "module": "game-server",
+  "xml_reports": 83,
+  "declared_totals": {
+    "tests": 479,
+    "failures": 118,
+    "errors": 0,
+    "skipped": 13
+  },
+  "observed_totals": {
+    "tests": 479,
+    "failures": 118,
+    "errors": 0,
+    "skipped": 13
+  },
+  "passed": 348,
+  "failure_types": {
+    "java.lang.ExceptionInInitializerError": 1,
+    "java.lang.NoClassDefFoundError": 94,
+    "io.kotest.engine.extensions.ExtensionException$BeforeAnyException": 21,
+    "org.springframework.beans.BeanInstantiationException": 1,
+    "org.springframework.beans.factory.BeanCreationException": 1
+  },
+  "root_cause_classification_counts": {
+    "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION": 118
+  },
+  "affected_suites": {
+    "com.wingedsheep.gameserver.ai.AiControllerProviderTest": 7,
+    "com.wingedsheep.gameserver.auth.AdminAuthServiceTest": 4,
+    "com.wingedsheep.gameserver.auth.MagicLinkServiceTest": 7,
+    "com.wingedsheep.gameserver.friends.FriendsServiceTest": 14,
+    "com.wingedsheep.gameserver.priority.AutoPassManagerTest": 2,
+    "com.wingedsheep.gameserver.ranking.RankedResultSinkTest": 5,
+    "com.wingedsheep.gameserver.replay.CompactReplayReconstructionTest": 1,
+    "com.wingedsheep.gameserver.replay.ReplayDurabilityTest": 10,
+    "com.wingedsheep.gameserver.replay.ReplayStorageTest": 6,
+    "com.wingedsheep.gameserver.replay.ReplayTruncationTest": 4,
+    "com.wingedsheep.gameserver.scenarios.AshlingsCommandPriorityScenarioTest": 1,
+    "com.wingedsheep.gameserver.scenarios.BreOfClanStoutarmEndStepPriorityScenarioTest": 2,
+    "com.wingedsheep.gameserver.session.AiRuntimeSnapshotTest": 2,
+    "com.wingedsheep.gameserver.session.AiUndoDecisionFreshnessTest": 2,
+    "com.wingedsheep.gameserver.session.FfaSessionEliminationTest": 2,
+    "com.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest": 2,
+    "com.wingedsheep.gameserver.session.GameSessionBackstopTest": 3,
+    "com.wingedsheep.gameserver.session.GameSessionSpectatorTest": 5,
+    "com.wingedsheep.gameserver.session.LiveActionSubmissionTest": 4,
+    "com.wingedsheep.gameserver.session.MultiplayerSessionTest": 5,
+    "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest": 2,
+    "com.wingedsheep.gameserver.session.SeatDeckRetentionTest": 3,
+    "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest": 10,
+    "com.wingedsheep.gameserver.session.UndoDecisionFreshnessTest": 2,
+    "com.wingedsheep.gameserver.session.UndoFromDeclareAttackersTest": 3,
+    "com.wingedsheep.gameserver.stats.MatchResultSinkTest": 10
+  },
+  "earliest_observed_failure": {
+    "identity": "game-server\tcom.wingedsheep.gameserver.ai.AiControllerProviderTest\tan external mode is usable without an LLM key and receives honest placeholder context",
+    "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+    "element": "failure",
+    "exception_type": "java.lang.ExceptionInInitializerError",
+    "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION",
+    "suite_timestamp": "2026-11-25T03:18:34.952Z",
+    "stack_head": [
+      "java.lang.ExceptionInInitializerError",
+      "\tat com.wingedsheep.gameserver.ai.AiControllerProviderTestKt.manager$default(AiControllerProviderTest.kt:330)",
+      "\tat com.wingedsheep.gameserver.ai.AiControllerProviderTest$1$5.invokeSuspend(AiControllerProviderTest.kt:59)",
+      "\tat com.wingedsheep.gameserver.ai.AiControllerProviderTest$1$5.invoke(AiControllerProviderTest.kt)",
+      "\tat com.wingedsheep.gameserver.ai.AiControllerProviderTest$1$5.invoke(AiControllerProviderTest.kt)"
+    ],
+    "cause_stack": [
+      "Caused by: java.lang.IllegalStateException: Could not self-attach to current VM using external process - set a property net.bytebuddy.agent.attacher.dump to dump the process output to a file at the specified location",
+      "\tat net.bytebuddy.agent.ByteBuddyAgent.installExternal(ByteBuddyAgent.java:710)",
+      "\tat net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:615)",
+      "\tat net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:595)",
+      "\tat net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:547)",
+      "\tat net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:524)",
+      "\tat io.mockk.proxy.jvm.JvmMockKAgentFactory.initInstrumentation(JvmMockKAgentFactory.kt:135)",
+      "\tat io.mockk.proxy.jvm.JvmMockKAgentFactory.init(JvmMockKAgentFactory.kt:39)",
+      "\tat io.mockk.impl.JvmMockKGateway.<init>(JvmMockKGateway.kt:82)",
+      "\tat io.mockk.impl.JvmMockKGateway.<clinit>(JvmMockKGateway.kt:230)",
+      "\t... 132 more"
+    ]
+  },
+  "relation_to_lint_patch": {
+    "classification": "NO_DIRECT_CAUSAL_EVIDENCE_FOR_LINTER_CHANGE",
+    "reason": "All observed failure stacks identify ByteBuddy external agent attachment/MockK initialization, not CardLinter or SELF_ALTERNATIVE assertion behavior. The five-line linter declaration change does not configure JVM instrumentation. This is an evidence-based host/JVM failure inference, not proof of the exact OS/JVM cause or of eventual full qualification success."
+  },
+  "remaining_unknowns": [
+    "External attacher subprocess diagnostic output is not present in the inspected reports; exact attachment refusal cause is unestablished.",
+    "Full ordinary archived row totals and accepted-inventory overlap require terminal archive.",
+    "Later client/typecheck/metadata/assay gates are not established by this snapshot."
+  ],
+  "xml_evidence": [
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.AiAssistControllerTest.xml",
+      "bytes": 8469,
+      "sha256": "0b2e1f844493e0aa95419267ab496dd884c73a915a5d5963f214f1976157273a",
+      "suite_timestamp": "2026-11-25T03:17:00.073Z",
+      "declared": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 10
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.FreeForAllLobbyTest.xml",
+      "bytes": 342108,
+      "sha256": "6cc79433aacb5a26a28781e27ceea981085ddf8cf8634d0f6000ada2e8b86cb7",
+      "suite_timestamp": "2026-11-25T03:17:56.831Z",
+      "declared": {
+        "tests": 14,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 14
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.GameConnectionTest.xml",
+      "bytes": 62214,
+      "sha256": "2f79f468d7a3dfd3d5eccc57dd380bb8e645ea5f077589a676cc1c63b4240fcf",
+      "suite_timestamp": "2026-11-25T03:18:17.583Z",
+      "declared": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 9
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.GameFlowTest.xml",
+      "bytes": 48683,
+      "sha256": "94609e0cbaa7f0ce704a0901cb581a8241fbc18cd768a7637283d03413ae1e22",
+      "suite_timestamp": "2026-11-25T03:18:25.303Z",
+      "declared": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.GameMaskingTest.xml",
+      "bytes": 61588,
+      "sha256": "cd419d1502fda32d03efcaaed304836e45f42312b0f88923001cac0e7dc4c553",
+      "suite_timestamp": "2026-11-25T03:18:25.787Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.GameMulliganTest.xml",
+      "bytes": 88586,
+      "sha256": "61e232b50fb966de48d5c6b913e191c5045c7833c78506e8a1b311f75578a7f7",
+      "suite_timestamp": "2026-11-25T03:18:26.290Z",
+      "declared": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.QuickGameLobbyCommanderAiTest.xml",
+      "bytes": 33198,
+      "sha256": "8ccd210cafe96bc7f5cf0f6d838f888e338b96206ddbddefc4817752598d6206",
+      "suite_timestamp": "2026-11-25T03:18:27.032Z",
+      "declared": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.SealedTournamentReconnectionTest.xml",
+      "bytes": 150898,
+      "sha256": "886f071637d3a89a0b9afd4dcdd6bbb99bbbdc66a88db21e9f2f0430a2dc7c31",
+      "suite_timestamp": "2026-11-25T03:18:28.160Z",
+      "declared": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.SetCoverageStandardTest.xml",
+      "bytes": 4933,
+      "sha256": "3d784dda93435af4d3f5796e4a807f8ba317d9bfb8665368650e88430f4ae413",
+      "suite_timestamp": "2026-11-25T03:18:34.754Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+      "bytes": 203619,
+      "sha256": "7f15f121db9a1174733d0da2740bd6f6bd010a6af0966709df29c613e70b8260",
+      "suite_timestamp": "2026-11-25T03:18:34.952Z",
+      "declared": {
+        "tests": 11,
+        "failures": 7,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 11
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.EngineAiCracklingDoomTest.xml",
+      "bytes": 4070,
+      "sha256": "075eeef10a31eabf64ebba9b32486f476c77bd52bc7b12ab504daa9a65161899",
+      "suite_timestamp": "2026-11-25T03:18:45.646Z",
+      "declared": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 1
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.MultiColorLandManaTest.xml",
+      "bytes": 4618,
+      "sha256": "902e21baf1132dd777a4782b3509690f4db088427f1c2a5925c2460da33d0afd",
+      "suite_timestamp": "2026-11-25T03:18:45.802Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.RandomDeckResolverTest.xml",
+      "bytes": 37688,
+      "sha256": "c6f2d37d17f0ceb2ce35012f11ec49cadf9a81b3f911414edb4d91fcb4f6e8be",
+      "suite_timestamp": "2026-11-25T03:18:45.850Z",
+      "declared": {
+        "tests": 17,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 17
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.benchmark.AIBenchmark.xml",
+      "bytes": 3230,
+      "sha256": "7207c4e4cebb59d812454c687a958818438be1103c74e4cd59bac3a0041bfc98",
+      "suite_timestamp": "2026-11-25T03:18:49.237Z",
+      "declared": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "observed_testcases": 1
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.AdminAuthServiceTest.xml",
+      "bytes": 127091,
+      "sha256": "f679e071bb7e10624360a2934103bd517bd5a14d9bed3d651bf644021c1c4f92",
+      "suite_timestamp": "2026-11-25T03:18:49.258Z",
+      "declared": {
+        "tests": 9,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 9
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.AuthTokenServiceTest.xml",
+      "bytes": 5412,
+      "sha256": "10efe42d9d2ade90536c09613716b925cd4dd855bd8b9f83e7f7f50e97c332e9",
+      "suite_timestamp": "2026-11-25T03:18:49.284Z",
+      "declared": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.MagicLinkServiceTest.xml",
+      "bytes": 114348,
+      "sha256": "151031efdeb8e01cdc1ebbbd0be65a420a2b993c3159ab65895e5a78d79fdfd9",
+      "suite_timestamp": "2026-11-25T03:18:49.314Z",
+      "declared": {
+        "tests": 7,
+        "failures": 7,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 7
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.UserDtoSerializationTest.xml",
+      "bytes": 4583,
+      "sha256": "98bf2c57a8f52543e1bdaaa65cfe6dcde431ec8f8b2bd728fb7262cc8f89b8d8",
+      "suite_timestamp": "2026-11-25T03:18:49.339Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.config.GameBeansConfigBoosterPoolTest.xml",
+      "bytes": 7325,
+      "sha256": "7c961c5df54a2613e87442d99fe22c707b4673887e713d27200d7bbb81b4a987",
+      "suite_timestamp": "2026-11-25T03:18:49.653Z",
+      "declared": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 8
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.config.GameBeansConfigPrintingTest.xml",
+      "bytes": 4143,
+      "sha256": "ecca00929b5573ef7e21c6ecc1cf9a4e69f6a5df31935223cfe3282f0ef9942d",
+      "suite_timestamp": "2026-11-25T03:18:53.862Z",
+      "declared": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.controller.DevScenarioAiTest.xml",
+      "bytes": 15154,
+      "sha256": "caf53e6f3a35bcffee5447ecae97fcedf89a477e401f8d3a019f3725b20b7187",
+      "suite_timestamp": "2026-11-25T03:18:57.444Z",
+      "declared": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.controller.PrintingsControllerTest.xml",
+      "bytes": 7620,
+      "sha256": "84191664fc4fbb8d6ec1aeb57196fe8f40bc6923c43d9373388f6f38a08014e5",
+      "suite_timestamp": "2026-11-25T03:19:04.433Z",
+      "declared": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 9
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.controller.ScenarioControllerTest.xml",
+      "bytes": 6727,
+      "sha256": "cd98962dd5ba96585ab0484bde4717fe4869c141c862bb294569e1a6ae4f506e",
+      "suite_timestamp": "2026-11-25T03:19:04.473Z",
+      "declared": {
+        "tests": 10,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 10
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.coverage.SetCoverageServiceTest.xml",
+      "bytes": 14346,
+      "sha256": "93bc2b17e7872eaaf16fe53f11a2f088f8140172d2ffadcfd7be8f97d096a5bc",
+      "suite_timestamp": "2026-11-25T03:19:04.790Z",
+      "declared": {
+        "tests": 22,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 22
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.cube.CubeResolverTest.xml",
+      "bytes": 4994,
+      "sha256": "ac1d151d0e4a8e9a177ba2a47eff5d1afeb2edec301a55f9a6320a651c4c1663",
+      "suite_timestamp": "2026-11-25T03:19:05.363Z",
+      "declared": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 4
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.cube.CubeSetConfigTest.xml",
+      "bytes": 4542,
+      "sha256": "05430fa35e5102f5428643854d9d214a1c60510afd77789a315af0ac24f20fe2",
+      "suite_timestamp": "2026-11-25T03:19:05.390Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.deck.DeckValidatorTest.xml",
+      "bytes": 17936,
+      "sha256": "223496d6b625d764ed402d38c692eca3f59eb9b0ca71e87739c8f6ad74a18afe",
+      "suite_timestamp": "2026-11-25T03:19:05.408Z",
+      "declared": {
+        "tests": 31,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 31
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.deck.EasterEggDeckInjectorTest.xml",
+      "bytes": 7636,
+      "sha256": "1a377ff819152de01109cd68314fcad4edd8917f8387997077fdb0afcb534733",
+      "suite_timestamp": "2026-11-25T03:19:05.478Z",
+      "declared": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 8
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.deck.GeneratedCommanderDeckLegalityTest.xml",
+      "bytes": 10110,
+      "sha256": "1458e021018fc714c858f5b3b4a28229fc3d3b8e967d331858085e2e2d346897",
+      "suite_timestamp": "2026-11-25T03:19:05.497Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.deck.MtgaDeckFormatTest.xml",
+      "bytes": 9333,
+      "sha256": "cdb4eb703d5985ea2f2657d1cce22bf078be065a3d334b6cf03990b2fb9cf037",
+      "suite_timestamp": "2026-11-25T03:19:06.573Z",
+      "declared": {
+        "tests": 13,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 13
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.deck.SideboardDerivationTest.xml",
+      "bytes": 5551,
+      "sha256": "237489266f40f085507052e7e369b6e33b258a6a890a6c76f7e0049cb179188f",
+      "suite_timestamp": "2026-11-25T03:19:06.600Z",
+      "declared": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.deck.SideboardSanitizerTest.xml",
+      "bytes": 4991,
+      "sha256": "4802682068621eb45e9a8b891c00ff68a1187770e57c019b414bca5806d237d1",
+      "suite_timestamp": "2026-11-25T03:19:06.612Z",
+      "declared": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 4
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "bytes": 225662,
+      "sha256": "c1826f24b08aa25d30ab0d743c9a9f761b0b94b242fdbda10256a338435a1661",
+      "suite_timestamp": "2026-11-25T03:19:06.623Z",
+      "declared": {
+        "tests": 14,
+        "failures": 14,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 14
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.lobby.CommanderPodLobbyTest.xml",
+      "bytes": 5590,
+      "sha256": "e084ec6bc1fd12bc5a1158412ccf35948d05ed314ddacc5d2137c67777a1506d",
+      "suite_timestamp": "2026-11-25T03:19:06.662Z",
+      "declared": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.lobby.CubePoolPlayTest.xml",
+      "bytes": 8706,
+      "sha256": "19643dc6260858c6e2aa6abd4e07b760ce84c1444725c7c2b59b2001d5f5eb17",
+      "suite_timestamp": "2026-11-25T03:19:06.679Z",
+      "declared": {
+        "tests": 12,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 12
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.lobby.EvenTeamsTest.xml",
+      "bytes": 6417,
+      "sha256": "f564790e81a268b316d908557fdabb1053080283d247e8884a85b92d1300c3c2",
+      "suite_timestamp": "2026-11-25T03:19:06.725Z",
+      "declared": {
+        "tests": 7,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 7
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.lobby.GameRulesAxisTest.xml",
+      "bytes": 5527,
+      "sha256": "fbea2e7b7c722df812d6891625432568fc8275233979aaf7e3980eda2e40a806",
+      "suite_timestamp": "2026-11-25T03:19:06.744Z",
+      "declared": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.lobby.MomirBasicSetupTest.xml",
+      "bytes": 5979,
+      "sha256": "0e0e2360bb5a173e35bf4c6a9802fa9346ab610738d40248b55a82dca4f480d1",
+      "suite_timestamp": "2026-11-25T03:19:06.765Z",
+      "declared": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 6
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.lobby.TournamentLobbyCubeTest.xml",
+      "bytes": 6036,
+      "sha256": "ebe8638d9b3b33dc01daf285ee62c64267916d662bb292f29ae6f56ba7d94888",
+      "suite_timestamp": "2026-11-25T03:19:07.054Z",
+      "declared": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 6
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.lobby.TournamentRandomSetTest.xml",
+      "bytes": 7067,
+      "sha256": "c494c0d337b810a456b9ede6321dbc088c90d42f584e0215a72f99ae3f3674f8",
+      "suite_timestamp": "2026-11-25T03:19:07.073Z",
+      "declared": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 8
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.lobby.TwoHeadedGiantLobbyTest.xml",
+      "bytes": 4568,
+      "sha256": "6eecbfa6f322682d6592fb38e8dfeedf30c35d7fbdfc57eedd1f62f604bf0e58",
+      "suite_timestamp": "2026-11-25T03:19:07.089Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.persistence.FlywayMigrationTest.xml",
+      "bytes": 6631,
+      "sha256": "a6d4a480ec05e422a5ffe9a23e1b9dfbf7a456aecb881e96b82ce2db2e505bd4",
+      "suite_timestamp": "2026-11-25T03:19:07.103Z",
+      "declared": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 9
+      },
+      "observed_testcases": 9
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.persistence.GameStatePersistenceFormatTest.xml",
+      "bytes": 4223,
+      "sha256": "d3040b2620e6750ed1901fcf5f45392ddcaba4725989334ab3936718f000c668",
+      "suite_timestamp": "2026-11-25T03:19:07.514Z",
+      "declared": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.persistence.LegacyGameStatePersistenceTest.xml",
+      "bytes": 3702,
+      "sha256": "3a364e7fcda705da8a1de5098feed1e19799b57789db99912e638b04d50f1409",
+      "suite_timestamp": "2026-11-25T03:19:07.574Z",
+      "declared": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 1
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.priority.AutoPassManagerTest.xml",
+      "bytes": 40223,
+      "sha256": "022c5c99a38ec386a4098d237a89935ce9ec765fc9b6f2de2d626a1e5bddd8bd",
+      "suite_timestamp": "2026-11-25T03:19:07.588Z",
+      "declared": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ranking.EloTest.xml",
+      "bytes": 7331,
+      "sha256": "a688a694f72d02b05123408955bea6709b8edb6ae3e662080f17e8d4feaf6d71",
+      "suite_timestamp": "2026-11-25T03:19:07.596Z",
+      "declared": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 9
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ranking.RankedResultSinkTest.xml",
+      "bytes": 109342,
+      "sha256": "1017ef0fa2d49efe464359c3698f79f88ae7238ce55177c75c8d5fecc223f9e8",
+      "suite_timestamp": "2026-11-25T03:19:07.622Z",
+      "declared": {
+        "tests": 5,
+        "failures": 5,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.CompactReplayReconstructionTest.xml",
+      "bytes": 19190,
+      "sha256": "a0bdcff116ca861faa5e3bb343674d6804742de7dbd0155bc01186f84c352002",
+      "suite_timestamp": "2026-11-25T03:19:07.641Z",
+      "declared": {
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark.xml",
+      "bytes": 3674,
+      "sha256": "7e9b5c00905dddc0c1846993277c66bb57092a414ec880b1f1d282a1693a692c",
+      "suite_timestamp": "2026-11-25T03:19:07.679Z",
+      "declared": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 1
+      },
+      "observed_testcases": 1
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest.xml",
+      "bytes": 3898,
+      "sha256": "ed1aad52abb3e4384cc8f0816ead4025686b5473bc5faa595762c61078f99766",
+      "suite_timestamp": "2026-11-25T03:19:07.712Z",
+      "declared": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 2
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "bytes": 157010,
+      "sha256": "0293a417b8ab27141cdc7961e4a5546c6c0c0bfdae940b5c6fb6873a63c31f8b",
+      "suite_timestamp": "2026-11-25T03:19:07.745Z",
+      "declared": {
+        "tests": 13,
+        "failures": 10,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 13
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayLegacyKickerDecodeTest.xml",
+      "bytes": 4600,
+      "sha256": "9cb95657fd5604cb9f11eb250443feb157694416d847f4399ea5cfaa679b1ed0",
+      "suite_timestamp": "2026-11-25T03:19:07.831Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayStorageTest.xml",
+      "bytes": 141198,
+      "sha256": "64f8de7a20b282f7b9048fbb5fe06935ac0467bdcf85f730dfbb05e88d43fb75",
+      "suite_timestamp": "2026-11-25T03:19:07.850Z",
+      "declared": {
+        "tests": 8,
+        "failures": 6,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 8
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayTruncationTest.xml",
+      "bytes": 64239,
+      "sha256": "f6fbe0b5caaf4b94065ae382816f7144b3cc78b71fe4586ee6b676c75f8345b9",
+      "suite_timestamp": "2026-11-25T03:19:07.893Z",
+      "declared": {
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 4
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenario.AssayCardServiceTest.xml",
+      "bytes": 6110,
+      "sha256": "332f87d809fa0af12bc462a370c28c160a9c861ec6a932e44146d5634adc3da0",
+      "suite_timestamp": "2026-11-25T03:19:07.925Z",
+      "declared": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 6
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenario.CustomCardPlayableTest.xml",
+      "bytes": 3639,
+      "sha256": "ed6b2ddb9a4dd3d98a6e6b44e076b65464d3f69286f41d6727206791c986f139",
+      "suite_timestamp": "2026-11-25T03:19:08.320Z",
+      "declared": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 1
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenario.TwoHeadedGiantScenarioTest.xml",
+      "bytes": 6020,
+      "sha256": "22f4b18b6cbcc9695ec54ec114773a8126d951b8af8a6866aca047c37fa8b705",
+      "suite_timestamp": "2026-11-25T03:19:08.391Z",
+      "declared": {
+        "tests": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenarios.AshlingsCommandPriorityScenarioTest.xml",
+      "bytes": 19432,
+      "sha256": "5dfb176ec89c172b1b913282feaf203730ba032506d03ac419f13e3508770d50",
+      "suite_timestamp": "2026-11-25T03:19:08.430Z",
+      "declared": {
+        "tests": 2,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenarios.BreOfClanStoutarmEndStepPriorityScenarioTest.xml",
+      "bytes": 34084,
+      "sha256": "61b6d5aa0a0d8758987c09c791d8431bb7520075f9a32e27f153aa32a43056e6",
+      "suite_timestamp": "2026-11-25T03:19:08.532Z",
+      "declared": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenarios.RovingActuatorScenarioTest.xml",
+      "bytes": 4615,
+      "sha256": "19f5288dd0c72c3a9254fb1c84c900f2c61b6b8565da2cd3b86013ac4231a40d",
+      "suite_timestamp": "2026-11-25T03:19:08.568Z",
+      "declared": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenarios.ZeroPointBalladScenarioTest.xml",
+      "bytes": 5116,
+      "sha256": "3b71865aee373e94a8c14a7b8aea5a165a858befec2341049d953833f0a2513f",
+      "suite_timestamp": "2026-11-25T03:19:08.636Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.AiRuntimeSnapshotTest.xml",
+      "bytes": 34384,
+      "sha256": "debe5d39c0ee214d0740a6ccdbcd9ff1dc329c684e8d6beee9c87a87501366da",
+      "suite_timestamp": "2026-11-25T03:19:08.698Z",
+      "declared": {
+        "tests": 3,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.AiUndoDecisionFreshnessTest.xml",
+      "bytes": 64599,
+      "sha256": "ece27853251451422a6623924b792b80c3c77b8e55bb70d11b8b64173745ac9c",
+      "suite_timestamp": "2026-11-25T03:19:08.731Z",
+      "declared": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest.xml",
+      "bytes": 3706,
+      "sha256": "a725d408f1ca9db8bd947311f0c1dff467fdc5041f7127f5d5b95902d89762c6",
+      "suite_timestamp": "2026-11-25T03:19:08.766Z",
+      "declared": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 1
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.CombatDamageMaskingEnricherTest.xml",
+      "bytes": 3653,
+      "sha256": "a56e65367c59b412dc0796fa2f89c8562777d7fbd23d39413455e4d98cb691e1",
+      "suite_timestamp": "2026-11-25T03:19:08.780Z",
+      "declared": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 1
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.EliminationNoticeTest.xml",
+      "bytes": 5449,
+      "sha256": "78e4e98f6abcfd56f204776480306b0c1b7b2dfa457cb94114411d0c09781b5d",
+      "suite_timestamp": "2026-11-25T03:19:08.835Z",
+      "declared": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 4
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.FfaSessionEliminationTest.xml",
+      "bytes": 33981,
+      "sha256": "da0c242cc96869bec0d04bc3504908423cb366f9d777c4e6cccf66e18ebe5954",
+      "suite_timestamp": "2026-11-25T03:19:08.863Z",
+      "declared": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest.xml",
+      "bytes": 65792,
+      "sha256": "635b72cf95b9eaa0b85b21aef8a4c36df2da94f54ec338c252b181596e83d0e2",
+      "suite_timestamp": "2026-11-25T03:19:08.888Z",
+      "declared": {
+        "tests": 4,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 4
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionBackstopTest.xml",
+      "bytes": 49144,
+      "sha256": "eca08dc244509d6ee153d941a6074bb32414ab99a8b4d90605b09414d3e8fd9e",
+      "suite_timestamp": "2026-11-25T03:19:08.937Z",
+      "declared": {
+        "tests": 3,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionSpectatorTest.xml",
+      "bytes": 78817,
+      "sha256": "4399ee44d6ec01e37eba391aa273535962335a4e9c2660417e121b698566b8b1",
+      "suite_timestamp": "2026-11-25T03:19:08.966Z",
+      "declared": {
+        "tests": 5,
+        "failures": 5,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameStallGuardTest.xml",
+      "bytes": 7019,
+      "sha256": "386104e63b50281c2ee280c5ffd799c50b4d4ac10e887fc7213453906ef4e2b2",
+      "suite_timestamp": "2026-11-25T03:19:08.989Z",
+      "declared": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 8
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.LiveActionSubmissionTest.xml",
+      "bytes": 64074,
+      "sha256": "c5ff86c94c9c5ba775dd69b2dc7f60402717e302d153d522e680971a0ea0d669",
+      "suite_timestamp": "2026-11-25T03:19:09.011Z",
+      "declared": {
+        "tests": 4,
+        "failures": 4,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 4
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.MultiplayerSessionTest.xml",
+      "bytes": 79590,
+      "sha256": "2d6babe7cf38a4fb00eb96b8ed98a4146f7d6ed0bebcc0f0c371cd4cf5308dc3",
+      "suite_timestamp": "2026-11-25T03:19:09.047Z",
+      "declared": {
+        "tests": 5,
+        "failures": 5,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 5
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest.xml",
+      "bytes": 33863,
+      "sha256": "1e4661b7ebee11ccb0f453482c9d3812fde5f9133aba4602b6102c2468d089e2",
+      "suite_timestamp": "2026-11-25T03:19:09.089Z",
+      "declared": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.SeatDeckRetentionTest.xml",
+      "bytes": 49132,
+      "sha256": "59299a9203dc33d4b5387cdcc972d54d43de3123df15fa55b31f83a806d92a91",
+      "suite_timestamp": "2026-11-25T03:19:09.130Z",
+      "declared": {
+        "tests": 3,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "bytes": 155786,
+      "sha256": "4af3684c2fc38334a86178aa14454f8ada955f054da33a084177a7ff02c6fc35",
+      "suite_timestamp": "2026-11-25T03:19:09.164Z",
+      "declared": {
+        "tests": 10,
+        "failures": 10,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 10
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.UndoDecisionFreshnessTest.xml",
+      "bytes": 33777,
+      "sha256": "f9a14cc1d2815126d7baa789b921f64cffe189652f75ae9db790c8f665ec93ec",
+      "suite_timestamp": "2026-11-25T03:19:09.226Z",
+      "declared": {
+        "tests": 2,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 2
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.UndoFromDeclareAttackersTest.xml",
+      "bytes": 48925,
+      "sha256": "7aec0ab2efb48aa82f2aee5be5398b3e5fe45cf4cf3428dcffb884f9670342a6",
+      "suite_timestamp": "2026-11-25T03:19:09.255Z",
+      "declared": {
+        "tests": 3,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.DeckProfilerTest.xml",
+      "bytes": 4985,
+      "sha256": "2efdbc90975afadb689cbefbd9468f49c3c387226f121f779ec781d1a07d2446",
+      "suite_timestamp": "2026-11-25T03:19:09.292Z",
+      "declared": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 4
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "bytes": 307327,
+      "sha256": "9eb315be78d28e63eb63e8973c1199bf735e941c639bff9b075d1d2aae346ab2",
+      "suite_timestamp": "2026-11-25T03:19:09.304Z",
+      "declared": {
+        "tests": 10,
+        "failures": 10,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 10
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.tournament.AiMatchSimulationTest.xml",
+      "bytes": 8778,
+      "sha256": "cbeffa8030a01cdfacf5f91bf06d75f60971cde768c4a2a22d575225166c6316",
+      "suite_timestamp": "2026-11-25T03:19:09.336Z",
+      "declared": {
+        "tests": 6,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 6
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.tournament.TournamentProgressionTest.xml",
+      "bytes": 13690,
+      "sha256": "ef1fac51196008c206dc388a4cbe9b1aa635bed714532fd6f0adc52ed437ea3c",
+      "suite_timestamp": "2026-11-25T03:19:09.353Z",
+      "declared": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 9
+    },
+    {
+      "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.tournament.TournamentStandingsTest.xml",
+      "bytes": 9936,
+      "sha256": "8ae87ed130f95ecc11c37aebb50bc85216a8aaa62d518e91069cbf9c52067d51",
+      "suite_timestamp": "2026-11-25T03:19:09.374Z",
+      "declared": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "observed_testcases": 3
+    }
+  ],
+  "failed_rows": [
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ai.AiControllerProviderTest\tan external mode is usable without an LLM key and receives honest placeholder context",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.ExceptionInInitializerError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ai.AiControllerProviderTest\ta game-attached external controller receives the session's consistent runtime snapshot",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ai.AiControllerProviderTest\ta model override cannot bypass the LLM credential gate when creating an identity",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ai.AiControllerProviderTest\ta credentialed model override deliberately selects the built-in LLM",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ai.AiControllerProviderTest\tan uncredentialed restored model override is dropped instead of failing recovery",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ai.AiControllerProviderTest\tan uncredentialed model override is dropped instead of failing match wiring",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ai.AiControllerProviderTest\tan unregistered mode fails at startup rather than silently disabling the AI",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.AdminAuthServiceTest\tan admin account's token authorizes",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.AdminAuthServiceTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.AdminAuthServiceTest\ta non-admin account's token is rejected",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.AdminAuthServiceTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.AdminAuthServiceTest\tan invalid token is rejected",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.AdminAuthServiceTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.AdminAuthServiceTest\tisConfigured is true when accounts are enabled even without a password",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.AdminAuthServiceTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.MagicLinkServiceTest\trequestLogin creates a new account and emails a link",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.MagicLinkServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.MagicLinkServiceTest\trequestLogin reuses an existing account",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.MagicLinkServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.MagicLinkServiceTest\trequestLogin rejects an invalid email",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.MagicLinkServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.MagicLinkServiceTest\tverify consumes a valid token and issues an auth token",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.MagicLinkServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.MagicLinkServiceTest\tverify rejects an expired token",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.MagicLinkServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.MagicLinkServiceTest\tverify rejects an already-used token",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.MagicLinkServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.auth.MagicLinkServiceTest\tverify rejects an unknown token",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.auth.MagicLinkServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\tcannot friend yourself",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\tunknown target is rejected",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\ta fresh request is created and the target is notified",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\tan existing accepted friendship reports AlreadyFriends",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\ta duplicate outgoing request reports AlreadyRequested",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\ta reverse pending request points you at accepting theirs",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\tthe addressee can accept a pending request; presence is exchanged",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\ta non-addressee cannot accept",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\teither party can remove a pending request",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\tan unrelated user cannot remove a request",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\tunfriend deletes an accepted pair in either direction",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\tunfriend on a still-pending pair is a no-op",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\tlistFriends reports each friend's visible-online status",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.friends.FriendsServiceTest\tsetHidePresence persists the flag and rebroadcasts presence",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.friends.FriendsServiceTest.xml",
+      "element": "failure",
+      "exception_type": "io.kotest.engine.extensions.ExtensionException$BeforeAnyException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.priority.AutoPassManagerTest\tBeanCreationException",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.priority.AutoPassManagerTest.xml",
+      "element": "failure",
+      "exception_type": "org.springframework.beans.BeanInstantiationException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.priority.AutoPassManagerTest\texecutionError",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.priority.AutoPassManagerTest.xml",
+      "element": "failure",
+      "exception_type": "org.springframework.beans.factory.BeanCreationException",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ranking.RankedResultSinkTest\tequal new players: winner gains, loser loses the provisional half-K",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ranking.RankedResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ranking.RankedResultSinkTest\ta draw leaves equal players unchanged and records DRAW for both",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ranking.RankedResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ranking.RankedResultSinkTest\thistory rows attribute the opponent and game",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ranking.RankedResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ranking.RankedResultSinkTest\ta game with the same account on both seats is ignored",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ranking.RankedResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.ranking.RankedResultSinkTest\tan existing rating is carried forward, not reset",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ranking.RankedResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.CompactReplayReconstructionTest\ta recorded game reconstructs to a byte-identical final state and full frame stream",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.CompactReplayReconstructionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\ta recorded game re-simulates byte-identically after its cards are changed underneath it",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\ta faithful reconstruction with checkpoints reports EXACT and the full frame stream",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\ta checkpoint that no longer matches stops the replay instead of rendering a wrong game",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\ta replay that no longer re-simulates is served from the archive, not truncated",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\ta diverged replay with no archive degrades to the truncated stream, flagged",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\ta faithful replay is served from the re-simulation, with scenario sharing intact",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\ta v1 record (no checkpoints) still reconstructs, reported as unverified",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\tpins round-trip through their own write-once column encoding",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\tthe durable codec round-trips every v2 field",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayDurabilityTest\ta record written before v2 decodes with the new fields defaulted",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayDurabilityTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayStorageTest\tan abandoned recording is promoted to a finished, watchable replay",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayStorageTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayStorageTest\ta flush that lands after game over cannot downgrade the finished record",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayStorageTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayStorageTest\tan in-progress record stranded by a crash is finalized on the first sweep",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayStorageTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayStorageTest\ta flush snapshot's fingerprint is the position its own action log produces",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayStorageTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayStorageTest\ta recording whose flush captured the live position resumes",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayStorageTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayStorageTest\ta recording that trails the recovered state stops rather than splicing onto a stale prefix",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayStorageTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayTruncationTest\tthe flag survives the store's gzip+base64 round trip",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayTruncationTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayTruncationTest\ta record written before the flag existed reads as the complete game it was",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayTruncationTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayTruncationTest\tthe viewer is told the recording stops before the game did",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayTruncationTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.replay.ReplayTruncationTest\tan untruncated replay is served without a caveat",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.replay.ReplayTruncationTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.scenarios.AshlingsCommandPriorityScenarioTest\tGameSession auto-pass loop stops on Bob's priority with Ashling's Command on stack",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenarios.AshlingsCommandPriorityScenarioTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.scenarios.BreOfClanStoutarmEndStepPriorityScenarioTest\tthe end-step auto-pass loop stops on the 'you may cast' prompt and the cast resolves",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenarios.BreOfClanStoutarmEndStepPriorityScenarioTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.scenarios.BreOfClanStoutarmEndStepPriorityScenarioTest\tfull turn: ending the turn from the main phase still surfaces the cast prompt",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.scenarios.BreOfClanStoutarmEndStepPriorityScenarioTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.AiRuntimeSnapshotTest\ta recorded game reports its state with a complete history",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.AiRuntimeSnapshotTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.AiRuntimeSnapshotTest\tan injected session still reports its live state, with the history typed as missing",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.AiRuntimeSnapshotTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.AiUndoDecisionFreshnessTest\tan actual delayed AI callback cannot answer the replacement Closet trigger order after undo",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.AiUndoDecisionFreshnessTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.AiUndoDecisionFreshnessTest\tundo after a current AI action fails abandons its fallback and rejection bookkeeping",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.AiUndoDecisionFreshnessTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.FfaSessionEliminationTest\tmid-game concede continues a 3-player game and is recorded in elimination order",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.FfaSessionEliminationTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.FfaSessionEliminationTest\ttwo-player degenerate case: a single concede ends the game",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.FfaSessionEliminationTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest\tlive occurrence transport preserves owner tokens replay and nested index 0",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest\tlive occurrence transport preserves owner tokens replay and nested index 1",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.FixedRecipientChoiceTransportTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.GameSessionBackstopTest\tthe replay recording freezes at its cap, and the game plays on",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionBackstopTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.GameSessionBackstopTest\ta game that stops making progress is ended as a draw that explains itself",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionBackstopTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.GameSessionBackstopTest\tan ordinary game is neither truncated nor called stalled",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionBackstopTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.GameSessionSpectatorTest\ta spectator reconnecting on a new socket is listed once, on the live socket",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionSpectatorTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.GameSessionSpectatorTest\tcleanup for a socket the spectator already replaced doesn't evict their live session",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionSpectatorTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.GameSessionSpectatorTest\tstopping spectating on the current socket removes the spectator",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionSpectatorTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.GameSessionSpectatorTest\ta spectator whose socket closed is not counted, and is pruned",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionSpectatorTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.GameSessionSpectatorTest\tdistinct spectators are all listed",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.GameSessionSpectatorTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.LiveActionSubmissionTest\tordinary browser actions require their original timeline and rejection does not consume a message id",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.LiveActionSubmissionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.LiveActionSubmissionTest\tbrowser and AI adapters record the same canonical actions from equivalent snapshots",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.LiveActionSubmissionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.LiveActionSubmissionTest\tobsolete decision routing in either transport leaves another player's undo checkpoint intact",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.LiveActionSubmissionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.LiveActionSubmissionTest\trejection accounting and its concession are refused on an abandoned timeline",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.LiveActionSubmissionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.MultiplayerSessionTest\ta four-player session seats all four players and reports three opponents each",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.MultiplayerSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.MultiplayerSessionTest\tseat roster is the turn order with the viewer's own seat flagged",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.MultiplayerSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.MultiplayerSessionTest\teach recipient sees only their own hand; every opponent hand is masked",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.MultiplayerSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.MultiplayerSessionTest\tspectator state carries the full seat roster and masks all hands",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.MultiplayerSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.MultiplayerSessionTest\ttwo-player is the degenerate case: one opponent, two seats",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.MultiplayerSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest\tGS-PB01 both defending teammates get their own declaration without ordinary priority",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest\tGS-PB02 block-tax payment exposes only the payer's mana actions before declarations resume",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.SeatDeckRetentionTest\treseating a reconnecting player keeps their deck and sideboard",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.SeatDeckRetentionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.SeatDeckRetentionTest\tevery seat still reports its starting deck after the whole pod reconnects",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.SeatDeckRetentionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.SeatDeckRetentionTest\ta seat un-seated mid-game keeps its deck; before the game starts it hands it back",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.SeatDeckRetentionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\tseat roster carries each seat's team index, with teammates in adjacent seats (CR 805.1)",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\tboth heads of the surviving team are winners, not just the representative (CR 810.8a)",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\ta teammate is not an opponent (CR 810): getOpponentIds returns only the other team",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\tlife totals are the shared team total for both teammates, not each raw component",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\ta player sees their teammate's hand but not an opponent's (CR 810.2)",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\tthe seat roster carries the shared-turn flag, which the client needs to answer \"may I act?\"",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\ta teammate is offered their OWN actions while their partner holds the baton (CR 805.5)",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\ta Free-for-All pod stays one seat at a time \u2014 only the baton holder is offered actions",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\ta revealed card in an opponent's hand still reaches the viewer, count and all",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest\tnon-team game is unchanged: no team index, every other seat is an opponent",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.UndoDecisionFreshnessTest\ta reply retained before undo cannot answer another land's live decision",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.UndoDecisionFreshnessTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.UndoDecisionFreshnessTest\tsession tokens isolate equal engine snapshots and preserve trusted engine-ID consumers",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.UndoDecisionFreshnessTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.UndoFromDeclareAttackersTest\tAP can undo back to precombat main after auto-passing into declare-attackers",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.UndoFromDeclareAttackersTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.UndoFromDeclareAttackersTest\tAP cannot undo once real attackers have been declared",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.UndoFromDeclareAttackersTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.session.UndoFromDeclareAttackersTest\tDP cannot undo once real blockers have been declared",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.UndoFromDeclareAttackersTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\tAI-only games are not recorded",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\ta game with a human seat is recorded with its deck cards",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\tguest-only games (no AI, no account) are still recorded for global stats",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\trecordStarted persists an in-progress row for a human seat but skips AI-only",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\trecordStarted is idempotent \u2014 a second start for the same lobby does not insert again",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\trecordCompleted upserts the in-progress row, preserving its id and start time",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\trecordProgress refreshes an in-progress row's standings, keeping its id and start time",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\trecordProgress does not resurrect a completed or abandoned tournament, nor create a missing one",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\trecordProgress skips AI-only tournaments",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    },
+    {
+      "identity": "game-server\tcom.wingedsheep.gameserver.stats.MatchResultSinkTest\trecordAbandoned flips only in-progress rows to ABANDONED",
+      "report": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.stats.MatchResultSinkTest.xml",
+      "element": "failure",
+      "exception_type": "java.lang.NoClassDefFoundError",
+      "classification": "BYTEBUDDY_EXTERNAL_ATTACH_MOCKK_INITIALIZATION"
+    }
+  ],
+  "log_snapshots": [
+    {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-source/manual-surge-bushwhacker-evidence/ordinary.stdout",
+      "bytes_at_snapshot": 257679,
+      "sha256_at_snapshot": "15c0ccf66df24b99c01fd84b6d6c5e48d2ffbba230bd67df69fa968456a0465c",
+      "line_count": 4730,
+      "excerpts": [
+        {
+          "line": 4462,
+          "text": "> Task :game-server:test FAILED"
+        },
+        {
+          "line": 2927,
+          "text": "AiControllerProviderTest > duplicate provider modes fail instead of depending on bean order PASSED"
+        },
+        {
+          "line": 2928,
+          "text": ""
+        },
+        {
+          "line": 2929,
+          "text": "AiControllerProviderTest > an external mode is usable without an LLM key and receives honest placeholder context FAILED"
+        },
+        {
+          "line": 2930,
+          "text": "    java.lang.ExceptionInInitializerError at AiControllerProviderTest.kt:59"
+        },
+        {
+          "line": 2931,
+          "text": "        Caused by: java.lang.IllegalStateException at AiControllerProviderTest.kt:59"
+        },
+        {
+          "line": 2932,
+          "text": ""
+        },
+        {
+          "line": 2933,
+          "text": "AiControllerProviderTest > a game-attached external controller receives the session's consistent runtime snapshot FAILED"
+        },
+        {
+          "line": 2934,
+          "text": "    java.lang.NoClassDefFoundError at AiControllerProviderTest.kt:293"
+        },
+        {
+          "line": 2935,
+          "text": "        Caused by: java.lang.NoClassDefFoundError at AiControllerProviderTest.kt:293"
+        }
+      ],
+      "tail": [
+        "",
+        "PestControlTierOneMonoBlueTerrorOfficialInitializationBoundaryTest > disabled initializer implementation is not a public API and initialize stays private PASSED",
+        "",
+        "PestControlTierOneMonoBlueTerrorOfficialInitializationBoundaryTest > runner and preflight failures remain contract errors PASSED"
+      ]
+    },
+    {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-source/manual-surge-bushwhacker-evidence/ordinary.stderr",
+      "bytes_at_snapshot": 1607,
+      "sha256_at_snapshot": "983d9f34c90b2cafd97035dcce461c35b0eacedbdb6ebeae26b37325da643830",
+      "line_count": 8,
+      "excerpts": [
+        {
+          "line": 8,
+          "text": "479 tests completed, 118 failed, 13 skipped"
+        }
+      ],
+      "tail": [
+        "Picked up JAVA_TOOL_OPTIONS: -Dorg.gradle.daemon=false -Djavax.net.ssl.trustStore=/workspace/scratch/65bf30f1888a/manual-lint-host/java-platform-cacerts '-Dhttp.nonProxyHosts=localhost|127.*|[::1]' -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=46159 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=46159",
+        "Picked up JAVA_TOOL_OPTIONS: -Dorg.gradle.daemon=false -Djavax.net.ssl.trustStore=/workspace/scratch/65bf30f1888a/manual-lint-host/java-platform-cacerts '-Dhttp.nonProxyHosts=localhost|127.*|[::1]' -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=46159 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=46159",
+        "",
+        "479 tests completed, 118 failed, 13 skipped"
+      ]
+    },
+    {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-runtime-01/qualification.log",
+      "bytes_at_snapshot": 1693,
+      "sha256_at_snapshot": "d056322817e95adfea228318a268cd0fc0ca2ee7bdb9782e613e6f1cc1a62065",
+      "line_count": 65,
+      "excerpts": [
+        {
+          "line": 65,
+          "text": "START ordinary"
+        }
+      ],
+      "tail": [
+        "END restored 0",
+        "START cards",
+        "END cards 0",
+        "START ordinary"
+      ]
+    }
+  ],
+  "operations": {
+    "xml_and_log_reads_only": true,
+    "source_edits": 0,
+    "host_edits": 0,
+    "builds_or_tests": 0,
+    "auditor_invocations": 0,
+    "qualification_reruns": 0,
+    "archive_receiving": 0
+  }
+}
