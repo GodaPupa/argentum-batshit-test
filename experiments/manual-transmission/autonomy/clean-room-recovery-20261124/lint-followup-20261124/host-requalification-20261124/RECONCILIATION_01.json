@@ -1,0 +1,99 @@
+{
+  "schema": "manual-transmission/host-requalification-reconciliation/v1",
+  "observed_utc": "2026-11-25 20:05:52 UTC",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "branch": "manual-transmission/clean-room-recovery-20261124",
+  "live_head": "a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76",
+  "base_checkpoint": "a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76",
+  "historical_head": "62b95ee8f854cb9a29830832c287106ad8baaac4",
+  "automations": [
+    {
+      "id": "6adbe33033e481918659ce578f64f31e",
+      "title": "Manual Work Continuation",
+      "is_enabled": false,
+      "last_run_time": "2026-11-07T11:45:58.637141+00:00",
+      "updated_at": "2026-11-18T22:13:45.009608+00:00"
+    },
+    {
+      "id": "6adbad91b90881918859ad0cba22b881",
+      "title": "Manual Execution Continuation",
+      "is_enabled": false,
+      "last_run_time": "2026-10-23T19:28:13.134005+00:00",
+      "updated_at": "2026-10-23T19:56:24.427412+00:00"
+    }
+  ],
+  "new_branch_runs": {
+    "total_count": 0,
+    "workflow_runs": []
+  },
+  "historical_branch_runs": [
+    {
+      "id": 42500269970,
+      "name": "Manual quarantine own-prior-spell diagnostic R2",
+      "head_sha": "cdf7181813d04ed9042f73b1d4efd5c7d5cc5949",
+      "head_branch": "manual-transmission/quarantine-recovery-20261106",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1,
+      "run_attempt": 1,
+      "event": "push",
+      "path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r2.yml"
+    },
+    {
+      "id": 42495425777,
+      "name": "Manual quarantine own-prior-spell diagnostic R1",
+      "head_sha": "f57acf02f21ed386a2a410abb69e648d9b40c049",
+      "head_branch": "manual-transmission/quarantine-recovery-20261106",
+      "status": "completed",
+      "conclusion": "failure",
+      "run_number": 1,
+      "run_attempt": 1,
+      "event": "push",
+      "path": ".github/workflows/manual-quarantine-prior-spell-diagnostic-r1.yml"
+    },
+    {
+      "id": 42291240756,
+      "name": "Manual quarantine legacy-absence full compatibility R2",
+      "head_sha": "f49d76803e5282eed26e3eceb91159b59bcf87b7",
+      "head_branch": "manual-transmission/quarantine-recovery-20261106",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1,
+      "run_attempt": 1,
+      "event": "push",
+      "path": ".github/workflows/manual-quarantine-legacy-absence-full-r2.yml"
+    },
+    {
+      "id": 42282738984,
+      "name": "Manual departure-time legacy-absence R2 quarantine qualification",
+      "head_sha": "abdbd2282adf092ac5225604e0edcaf8ff4efd68",
+      "head_branch": "manual-transmission/quarantine-recovery-20261106",
+      "status": "completed",
+      "conclusion": "success",
+      "run_number": 1,
+      "run_attempt": 1,
+      "event": "push",
+      "path": ".github/workflows/manual-quarantine-legacy-absence-r2.yml"
+    }
+  ],
+  "active_runs_total": 0,
+  "unrelated_queued_runs_observed": [
+    {
+      "id": 34749202144,
+      "head_branch": "pest-control/lab",
+      "status": "queued",
+      "path": ".github/workflows/ci.yml",
+      "action_taken": "NONE_OUTSIDE_MANUAL_SCOPE"
+    }
+  ],
+  "prior_candidate02_ci_activations": 0,
+  "prior_original_artifact_downloads": 0,
+  "historical_runtime_history": "UNKNOWN_UNCHANGED",
+  "isolation": "New grant and namespace on existing isolated branch; no old VM recovery or old owner release claim.",
+  "user_authorization": {
+    "user_text": "I authorize",
+    "selected_plan": "B_HOSTED_ONCE",
+    "prior_proposal_checkpoint": "a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76"
+  },
+  "status": "FRESH_METADATA_OBSERVATION_NO_EXECUTION_OR_TRANSPORT"
+}
