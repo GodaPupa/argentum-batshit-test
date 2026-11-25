@@ -1,0 +1,37 @@
+{
+  "state": "PASS",
+  "started_utc": "2026-11-25T02:13:23.921536+00:00",
+  "ended_utc": "2026-11-25T02:13:41.269430+00:00",
+  "source_commit": "618f562154ff10a9da082a144d43c2011703d2e0",
+  "archive_url": "https://nodejs.org/dist/v22.23.5/node-v22.23.5-linux-x64.tar.xz",
+  "publisher_checksums_url": "https://nodejs.org/dist/v22.23.5/SHASUMS256.txt",
+  "archive_bytes": 31062912,
+  "expected_bytes": 31062912,
+  "archive_sha256": "cdeb8670a0c81f51b4dc4ac61919f9b1ad917b304bf8221eb939570663d240f8",
+  "expected_sha256": "cdeb8670a0c81f51b4dc4ac61919f9b1ad917b304bf8221eb939570663d240f8",
+  "publisher_sha256_verified": true,
+  "node_root": "/workspace/scratch/65bf30f1888a/manual-lint-host/node/node-v22.23.5-linux-x64",
+  "version_commands": [
+    {
+      "argv": [
+        "/workspace/scratch/65bf30f1888a/manual-lint-host/node/node-v22.23.5-linux-x64/bin/node",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "v22.23.5\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/workspace/scratch/65bf30f1888a/manual-lint-host/node/node-v22.23.5-linux-x64/bin/npm",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": "10.9.9\n",
+      "stderr": "(node:49) [UNDICI-EHPA] Warning: EnvHttpProxyAgent is experimental, expect them to change at any time.\n(Use `node --trace-warnings ...` to show where the warning was created)\n"
+    }
+  ],
+  "qualification_starts": 0,
+  "package_installations": 0,
+  "repository_source_changes": 0
+}

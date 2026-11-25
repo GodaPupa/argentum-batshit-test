@@ -1,0 +1,122 @@
+{
+  "schema": "manual-transmission/lint-follow-up-host-provisioning/v1",
+  "state": "HOST_RUNTIME_AND_CONFIGURATION_READY_GRADLE_NOT_RUN",
+  "recorded_utc": "2026-11-25T02:14:53.587384+00:00",
+  "host_directory": "/workspace/scratch/65bf30f1888a/manual-lint-host",
+  "historical_receipt_commit": "618f562154ff10a9da082a144d43c2011703d2e0",
+  "historical_receipt_namespace": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/host-preflight",
+  "jdk": {
+    "state": "PASS",
+    "root": "/workspace/scratch/65bf30f1888a/manual-lint-host/jdk/jdk-21.0.13+9",
+    "bytes": 207858352,
+    "sha256": "d7f5d5cf865a2902b70ff549b97586a7d3f234e016f041ab447ea740c7d66d1c",
+    "java_version": "openjdk 21.0.13 2026-10-20 LTS\nOpenJDK Runtime Environment Temurin-21.0.13+9 (build 21.0.13+9-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.13+9 (build 21.0.13+9-LTS, mixed mode, sharing)",
+    "javac_version": "javac 21.0.13",
+    "archive_verified_before_extraction": true
+  },
+  "node": {
+    "state": "PASS",
+    "root": "/workspace/scratch/65bf30f1888a/manual-lint-host/node/node-v22.23.5-linux-x64",
+    "bytes": 31062912,
+    "sha256": "cdeb8670a0c81f51b4dc4ac61919f9b1ad917b304bf8221eb939570663d240f8",
+    "node_version": "v22.23.5",
+    "npm_version": "10.9.9",
+    "publisher_checksums_url": "https://nodejs.org/dist/v22.23.5/SHASUMS256.txt",
+    "publisher_sha256_verified": true,
+    "archive_verified_before_extraction": true
+  },
+  "trust": {
+    "state": "PASS",
+    "source_path": "/usr/local/share/ca-certificates/nebula-dns.crt",
+    "source_sha256": "7fa2d7d439db8bfa7c191457e61af5e3f4eb412314eb148766ac09e93786e4c3",
+    "certificates": 1,
+    "trust_store": "/workspace/scratch/65bf30f1888a/manual-lint-host/java-platform-cacerts",
+    "trust_store_base": "exact Temurin archive lib/security/cacerts",
+    "trust_store_base_sha256": "628b436e6698c364c5498a32c5bff91806bea7a9b501f75e2289ddc60b4ca7ef",
+    "certificate_validation_disabled": false,
+    "trust_store_sha256": "ee3821ca4895a6454c022d086533d1b42af67ce0bfa02862149e6d12f4365960",
+    "original_jdk_trust_store_modified": false
+  },
+  "host_configuration": {
+    "environment_helper": "/workspace/scratch/65bf30f1888a/manual-lint-host/environment.py",
+    "helper_sha256": "7de471ef99f230f15e96565f3d3a07bc5e2f881d8df4d1810660c92a7ec5a7e3",
+    "gradle_user_home": "/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home",
+    "gradle_properties": "/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/gradle.properties",
+    "java_discovery_exact_pinned_path": true,
+    "java_auto_detect_disabled": true,
+    "java_auto_download_disabled": true,
+    "proxy_current_invocation_check": {
+      "http": {
+        "configured": true,
+        "hostname_matches_current_invocation": true,
+        "port_matches_current_invocation": true,
+        "credentials_copied": false
+      },
+      "https": {
+        "configured": true,
+        "hostname_matches_current_invocation": true,
+        "port_matches_current_invocation": true,
+        "credentials_copied": false
+      }
+    },
+    "required_usage": "Call prepare_environment() inside the same live executor command/process that launches Gradle, under the shared Manual lock, before temporary memory overrides. Do not detach or reuse saved proxy properties.",
+    "proxy_credentials_logged": false,
+    "global_configuration_modified": false
+  },
+  "gradle": {
+    "state": "NOT_RUN",
+    "expected_distribution": "9.6.1",
+    "owner": "root",
+    "qualification_starts": 0
+  },
+  "repository_source_writes": 0,
+  "gradle_invocations": 0,
+  "build_tasks": 0,
+  "candidate_tests": 0,
+  "compiler_probes": 0,
+  "qualification_starts": 0,
+  "npm_package_installations": 0,
+  "automation_operations": 0,
+  "files": {
+    "provision_host.py": {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/provision_host.py",
+      "bytes": 9063,
+      "sha256": "8d4598f22d3dc7b6327eb2807dd8ee044f8d1a1c6fa5224086f57374e6226e49"
+    },
+    "environment.py": {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/environment.py",
+      "bytes": 5447,
+      "sha256": "7de471ef99f230f15e96565f3d3a07bc5e2f881d8df4d1810660c92a7ec5a7e3"
+    },
+    "jdk-preflight.json": {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/jdk-preflight.json",
+      "bytes": 1501,
+      "sha256": "2558e05396307f6d837d6fafc9c26db080027e1562d72530881ccd7187e48578"
+    },
+    "node22-preflight.json": {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/node22-preflight.json",
+      "bytes": 1473,
+      "sha256": "8ecf6e649242b8c728ffc0e0817ecc727c0ee479c6e3264c47e013c7df902026"
+    },
+    "java-platform-trust.json": {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/java-platform-trust.json",
+      "bytes": 636,
+      "sha256": "31e8d88055bf972b50398a3b1c1cf3a5f74d09823f0f84a9a0d6510433e08344"
+    },
+    "DOWNLOADS.json": {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/DOWNLOADS.json",
+      "bytes": 1552,
+      "sha256": "9d31c71a20e0345c60309f491e990e22d49547bc7cbde4f29277754839aa45ca"
+    },
+    "gradle-user-home/gradle.properties": {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/gradle.properties",
+      "bytes": 570,
+      "sha256": "44ce65061cd1901d33b7325c9da719b9678d2fba4416ce59b71985d474e9c0bc"
+    },
+    "node-SHASUMS256.txt": {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/node-SHASUMS256.txt",
+      "bytes": 3981,
+      "sha256": "658770bd465343e4bf441d22e89e7d944244b37041695f3f2a85b53d1a84b53f"
+    }
+  }
+}
