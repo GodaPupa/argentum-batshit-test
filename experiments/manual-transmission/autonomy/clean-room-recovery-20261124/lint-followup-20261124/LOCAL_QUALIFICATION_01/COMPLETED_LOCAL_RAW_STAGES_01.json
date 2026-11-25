@@ -1,0 +1,732 @@
+{
+  "schema": "manual-transmission/completed-local-raw-stages/v1",
+  "state": "RAW_COMPLETED_STAGE_COUNTS_AND_IDENTITIES_MATCH",
+  "observed_utc": "2026-11-25T03:26:27.208773+00:00",
+  "source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+  "attempt_id": "manual-lint-followup-20261124-01/local-01",
+  "qualification_pass": false,
+  "ordinary_terminal_pending": true,
+  "immutable_inputs": [
+    {
+      "commit": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+      "path": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/TEST_MATRIX.json",
+      "sha256": "79389b761cd97a238d20c5d524a2083d16b9a325067772a85224c057b97e0494"
+    },
+    {
+      "commit": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+      "path": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/COMPILE_WITNESSES.json",
+      "sha256": "1a1833d56f44ff5fb6d0be6a97bf1ae42a9b68dfa5138bee5f927a24cd0cbd90"
+    },
+    {
+      "commit": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+      "path": "experiments/manual-transmission/research/surge-bushwhacker-consolidated-proposal-20261114/ACCEPTED_INVENTORY.json.gz.b64",
+      "sha256": "e5d75cfdede337d11316546d3b733f42d427f6ff36c6c739e42be11a98d13499"
+    }
+  ],
+  "compile": {
+    "forms": 15,
+    "successful_recorded_command_exits": 15,
+    "compile_first": {
+      "forms": 15,
+      "all_compiled": true
+    },
+    "recorded_compile_checks_match": true
+  },
+  "command_snapshot": {
+    "path": "/workspace/scratch/65bf30f1888a/manual-lint-source/manual-surge-bushwhacker-evidence/COMMANDS.json",
+    "sha256": "83c3b3ad50e42ab9e927b7deec3d6e2fb336762fb82c4b932748d310fea83450",
+    "entries": 33
+  },
+  "compile_first_sha256": "49be90ae36a0bfd50a0ec1846532f5d79bd0e93dd39d206e4330a6a38728598c",
+  "stages": [
+    {
+      "stage": "normal",
+      "rows": 67,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "executed": 67,
+      "passed": 67,
+      "command_returncode": 0,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "normal/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 5495,
+          "sha256": "f03cd5972f086ba01d6213ee138242003a7e37c12a0cb87dec215cc36757e288"
+        },
+        {
+          "path": "normal/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest.xml",
+          "bytes": 1136,
+          "sha256": "339b87db3d9f55e6f8210d4c501b6b6626dcc9e902719ca20df8f371beb17d08"
+        },
+        {
+          "path": "normal/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml",
+          "bytes": 1976,
+          "sha256": "a832583f1adc80336622dd6e5519d37d472ca77cf2474c9b0a71451e16591a0e"
+        },
+        {
+          "path": "normal/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml",
+          "bytes": 3437,
+          "sha256": "2d7ccc2ae51ecc95645d0c836565b80dfe00867a797e82cca15c564de66db127"
+        }
+      ],
+      "exact_expected_identity_multiset": true,
+      "missing": {},
+      "extra": {},
+      "raw_stage_match": true
+    },
+    {
+      "stage": "restored",
+      "rows": 67,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "executed": 67,
+      "passed": 67,
+      "command_returncode": 0,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "restored/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 5494,
+          "sha256": "eb558fc0baf01bc8b765a66da4b92e7715e7c3c4dd03a6862251acc1b1c52520"
+        },
+        {
+          "path": "restored/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest.xml",
+          "bytes": 1136,
+          "sha256": "06698e38dcc1ebd7b7dee270350f6ff37a54e106d998b789174462cfcf0701f9"
+        },
+        {
+          "path": "restored/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml",
+          "bytes": 1975,
+          "sha256": "76c81ef97365f316051d8c0b62b5238bb0c444f0b5a45009b4c6f99543f95d3c"
+        },
+        {
+          "path": "restored/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml",
+          "bytes": 3437,
+          "sha256": "583547ffa65b0dd185967acd55c33a98f1063cb57cc4717a6802366cc1bf771e"
+        }
+      ],
+      "exact_expected_identity_multiset": true,
+      "missing": {},
+      "extra": {},
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M01-surge-price",
+      "rows": 5,
+      "failures": 1,
+      "errors": 0,
+      "skips": 3,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M01-surge-price/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest.xml",
+          "bytes": 15561,
+          "sha256": "4759cb8703dac2c45e6d446fe25e0b02b814c7aa0293da8d911d0fa7c33da25a"
+        }
+      ],
+      "expected_witness": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG04 serialized script matches exact surge composition",
+      "observed_failed_identities": [
+        "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG04 serialized script matches exact surge composition"
+      ],
+      "positive_control": "mtg-sets\tcom.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest\tRG02 printed fields match pinned source",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "RecklessBushwhackerRegistrationTest.kt:49)",
+      "source_frame_present": true,
+      "expected_normal_value": true,
+      "expected_mutant_value": false,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: data class diff for com.wingedsheep.sdk.scripting.SelfAlternativeCost\n\u2514 manaCost: data class diff for com.wingedsheep.sdk.core.ManaCost\n   \u2514 symbols: Element differ at index: [0]\n\nThe following element(s) differ:\nindex 0: data class diff for com.wingedsheep.sdk.core.ManaSymbol.Generic\n\u2514 amount: expected:<1> but was:<2>\n\nexpected:<[{1}, {R}]> but was:<[{2}, {R}]>\n\nexpected:<SelfAlternativeCost(manaCost={1}{R}, additionalCosts=[], condition=PlayerCastSpellsThisTurn(player=You, filter=GameObjectFilter(cardPredicates=[], statePredicates=[], controllerPredicate=null, anyOf=[]), atLeast=1, fromZone=null, fromZoneOtherThan=null))> but was:<SelfAlternativeCost(manaCost={2}{R}, additionalCosts=[], condition=PlayerCastSpellsThisTurn(player=You, filter=GameObjectFilter(cardPredicates=[], statePredicates=[], controllerPredicate=null, anyOf=[]), atLeast=1, fromZone=null, fromZoneOtherThan=null))>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M02-red-payment",
+      "rows": 20,
+      "failures": 1,
+      "errors": 0,
+      "skips": 18,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M02-red-payment/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml",
+          "bytes": 16841,
+          "sha256": "56a5e264e9961539a414d4781c8375a4ed394c1d04edb2ff846a241107173145"
+        }
+      ],
+      "expected_witness": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP03 red requirement cannot be paid by two colorless",
+      "observed_failed_identities": [
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP03 red requirement cannot be paid by two colorless"
+      ],
+      "positive_control": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP02 normal choice spends two generic and one red",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "SurgeCostCompositionTest.kt:60)",
+      "source_frame_present": true,
+      "expected_normal_value": false,
+      "expected_mutant_value": true,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M03-paid-guard",
+      "rows": 32,
+      "failures": 1,
+      "errors": 0,
+      "skips": 30,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M03-paid-guard/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 19238,
+          "sha256": "eec855cf641e023b08a97afd975d2efe5ffcc83e3d8d2588237b9c24c8d2ce39"
+        }
+      ],
+      "expected_witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump",
+      "observed_failed_identities": [
+        "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump"
+      ],
+      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "RecklessBushwhackerScenarioTest.kt:52)",
+      "source_frame_present": true,
+      "expected_normal_value": 2,
+      "expected_mutant_value": 3,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<3>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M04-other-filter",
+      "rows": 32,
+      "failures": 1,
+      "errors": 0,
+      "skips": 30,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M04-other-filter/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 19245,
+          "sha256": "5c745830b7cf83626983a994d4e20f73c8a22e0bd6dbf595f04607c8dec5c87d"
+        }
+      ],
+      "expected_witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
+      "observed_failed_identities": [
+        "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only"
+      ],
+      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW03 opponent creatures are unaffected",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "RecklessBushwhackerScenarioTest.kt:60)",
+      "source_frame_present": true,
+      "expected_normal_value": 2,
+      "expected_mutant_value": 3,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<3>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M05-controller-filter",
+      "rows": 32,
+      "failures": 1,
+      "errors": 0,
+      "skips": 30,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M05-controller-filter/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 19240,
+          "sha256": "44cccb555917cb475005484eea37a751f3377a3908e9f7b799c2cfdfaaa1268f"
+        }
+      ],
+      "expected_witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW03 opponent creatures are unaffected",
+      "observed_failed_identities": [
+        "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW03 opponent creatures are unaffected"
+      ],
+      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "RecklessBushwhackerScenarioTest.kt:69)",
+      "source_frame_present": true,
+      "expected_normal_value": 2,
+      "expected_mutant_value": 3,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<3>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M06-toughness",
+      "rows": 32,
+      "failures": 1,
+      "errors": 0,
+      "skips": 30,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M06-toughness/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 19240,
+          "sha256": "050c24d7e30fb876a41258c014a2878150c575368bf4cddc79ba10f4287d892b"
+        }
+      ],
+      "expected_witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
+      "observed_failed_identities": [
+        "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only"
+      ],
+      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "RecklessBushwhackerScenarioTest.kt:63)",
+      "source_frame_present": true,
+      "expected_normal_value": 2,
+      "expected_mutant_value": 3,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<3>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M07-granted-haste",
+      "rows": 32,
+      "failures": 1,
+      "errors": 0,
+      "skips": 30,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M07-granted-haste/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 19254,
+          "sha256": "e1da2b1cc9fb2e479b90707c366c65e35f032b2018281d25b498b269dfdb057f"
+        }
+      ],
+      "expected_witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
+      "observed_failed_identities": [
+        "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only"
+      ],
+      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "RecklessBushwhackerScenarioTest.kt:64)",
+      "source_frame_present": true,
+      "expected_normal_value": true,
+      "expected_mutant_value": false,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M08-duration",
+      "rows": 32,
+      "failures": 1,
+      "errors": 0,
+      "skips": 30,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M08-duration/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 19243,
+          "sha256": "74bf81d59e1fc829cc4aa21c9f6d3d70e868da504446a4f18bb3a5ed8900ebe0"
+        }
+      ],
+      "expected_witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW20 temporary grants survive end step and end at cleanup",
+      "observed_failed_identities": [
+        "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW20 temporary grants survive end step and end at cleanup"
+      ],
+      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "RecklessBushwhackerScenarioTest.kt:169)",
+      "source_frame_present": true,
+      "expected_normal_value": 2,
+      "expected_mutant_value": 3,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<2> but was:<3>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M09-intrinsic-haste",
+      "rows": 32,
+      "failures": 1,
+      "errors": 0,
+      "skips": 30,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M09-intrinsic-haste/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 19254,
+          "sha256": "d41966f432d5ead315ea68c223eefe8fe7c85b0657134b4197b77c54aeadd91a"
+        }
+      ],
+      "expected_witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump",
+      "observed_failed_identities": [
+        "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump"
+      ],
+      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW03 opponent creatures are unaffected",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "RecklessBushwhackerScenarioTest.kt:50)",
+      "source_frame_present": true,
+      "expected_normal_value": true,
+      "expected_mutant_value": false,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M10-entity-only-exclusion",
+      "rows": 10,
+      "failures": 1,
+      "errors": 0,
+      "skips": 8,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M10-entity-only-exclusion/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml",
+          "bytes": 15165,
+          "sha256": "5d1bec5d58ae4ebc15dcee2712a5a34b3cf33eb7045d5e1dc0359854b0f4709e"
+        }
+      ],
+      "expected_witness": "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX02 returned source generation is included",
+      "observed_failed_identities": [
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX02 returned source generation is included"
+      ],
+      "positive_control": "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX01 current origin is excluded",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "SourceIdentityGroupExclusionTest.kt:40)",
+      "source_frame_present": true,
+      "expected_normal_value": true,
+      "expected_mutant_value": false,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M11-exclude-none",
+      "rows": 10,
+      "failures": 1,
+      "errors": 0,
+      "skips": 8,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M11-exclude-none/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml",
+          "bytes": 15165,
+          "sha256": "9b4e0eca83844953c699ca161b327a8e00d83c7290762beb478850de65b591b8"
+        }
+      ],
+      "expected_witness": "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX01 current origin is excluded",
+      "observed_failed_identities": [
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX01 current origin is excluded"
+      ],
+      "positive_control": "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX02 returned source generation is included",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "SourceIdentityGroupExclusionTest.kt:34)",
+      "source_frame_present": true,
+      "expected_normal_value": false,
+      "expected_mutant_value": true,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M12-followed-origin",
+      "rows": 10,
+      "failures": 1,
+      "errors": 0,
+      "skips": 8,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M12-followed-origin/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest.xml",
+          "bytes": 15167,
+          "sha256": "ecec4d4aeeb0cc8f299a149b6122b373ffdbed975df4d3690c267bda445ba35a"
+        }
+      ],
+      "expected_witness": "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX09 permitted move does not redefine original other",
+      "observed_failed_identities": [
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX09 permitted move does not redefine original other"
+      ],
+      "positive_control": "rules-engine\tcom.wingedsheep.engine.scenarios.SourceIdentityGroupExclusionTest\tGX01 current origin is excluded",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "SourceIdentityGroupExclusionTest.kt:84)",
+      "source_frame_present": true,
+      "expected_normal_value": true,
+      "expected_mutant_value": false,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M13-missing-choice",
+      "rows": 32,
+      "failures": 1,
+      "errors": 0,
+      "skips": 30,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M13-missing-choice/mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml",
+          "bytes": 19240,
+          "sha256": "d9c47eecceb4b960e274377ba068a21c0dc059419c9bb47f84bd3ba5ec4ab9f5"
+        }
+      ],
+      "expected_witness": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only",
+      "observed_failed_identities": [
+        "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW02 surge cast pumps other creatures only"
+      ],
+      "positive_control": "mtg-sets/2008-2016/tests\tcom.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest\tBW01 normal cast has intrinsic haste without pump",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "RecklessBushwhackerScenarioTest.kt:62)",
+      "source_frame_present": true,
+      "expected_normal_value": 3,
+      "expected_mutant_value": 2,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: expected:<3> but was:<2>",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "M14-copy-choice",
+      "rows": 20,
+      "failures": 1,
+      "errors": 0,
+      "skips": 18,
+      "executed": 2,
+      "passed": 1,
+      "command_returncode": 1,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "M14-copy-choice/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SurgeCostCompositionTest.xml",
+          "bytes": 16850,
+          "sha256": "8a96520a83e60743f23abe6c1bd1f69834673ed875fa6237560667b58f0cabc1"
+        }
+      ],
+      "expected_witness": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP15 copied surge spell retains choice without another cast",
+      "observed_failed_identities": [
+        "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP15 copied surge spell retains choice without another cast"
+      ],
+      "positive_control": "rules-engine\tcom.wingedsheep.engine.scenarios.SurgeCostCompositionTest\tSP16 normal spell copy remains unmarked",
+      "positive_control_pass": true,
+      "exact_executed_pair": true,
+      "exact_class_identity_multiset": true,
+      "exception_type": "org.opentest4j.AssertionFailedError",
+      "expected_exception": "org.opentest4j.AssertionFailedError",
+      "exact_source_frame": "SurgeCostCompositionTest.kt:137)",
+      "source_frame_present": true,
+      "expected_normal_value": "SELF_ALTERNATIVE",
+      "expected_mutant_value": null,
+      "raw_failure_message": "org.opentest4j.AssertionFailedError: Expected SELF_ALTERNATIVE but actual was null",
+      "raw_stage_match": true
+    },
+    {
+      "stage": "cards",
+      "rows": 401,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "executed": 401,
+      "passed": 401,
+      "command_returncode": 0,
+      "xml_declared_counts_match": true,
+      "xml_files": [
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-Gradle-Test-Run--mtg-sets-test.xml",
+          "bytes": 411,
+          "sha256": "947cd8ca81bdc99b74b7e03ba41464572069a1c8b19f3f88ce311e2e47690ba6"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.BasicLandArtOrderTest.xml",
+          "bytes": 650,
+          "sha256": "cc6688a9739cafa8e366ab3db83084ba4855480fc67c221e4e8fccda5222048a"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+          "bytes": 51192,
+          "sha256": "229e6effc671c57a9e4c73514d9cad4ea378e4f4b095b5abf81a716bee96e8ba"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardLintTest.xml",
+          "bytes": 7809,
+          "sha256": "923abbb7ee2741ff1ff2aba64aa0dc86ca3ac16d55ef613c800440a94e83c620"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.DiscipleOfFreyaliseRegistrationTest.xml",
+          "bytes": 1397,
+          "sha256": "81201d63f5912f130f531addf259d29ae76cc5e9d03d1b1559a4a0cd8fe00cf0"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.DoubleFacedPrintingArtTest.xml",
+          "bytes": 494,
+          "sha256": "2ff4a3abb9ef48df682437d4d6a6660ee596c41c10f601ae987a069d0422f43c"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.EquipQualityVariantTest.xml",
+          "bytes": 861,
+          "sha256": "d65658e29058ada467a122997cfa1bb6ebe795f3ea3232d8c2203442ea18a83d"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.FacadeBoundaryTest.xml",
+          "bytes": 506,
+          "sha256": "e39bdaf57787a5e1e3aca5a37fb12ae519b9ffc3205262db3952329311c02c4a"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.FblthpSnapshotExportTest.xml",
+          "bytes": 488,
+          "sha256": "175d44779c2e192ecf35eaf4f6372a28ca88eb93e2d0fd448ff5f54ca09de1eb"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.InterveningIfClassificationTest.xml",
+          "bytes": 740,
+          "sha256": "15cfcf266dcba65399d192b463a8e34947dbd9406bf38cd8ec1fd3bd810f2896"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.MeldResultFlagTest.xml",
+          "bytes": 744,
+          "sha256": "07be14d7fbbc7b68aaf8f8f9760610335a90d71485278cee6315fa6d1779a749"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.MtgSetCatalogTest.xml",
+          "bytes": 1186,
+          "sha256": "52c4e14aa3ae52017b417cf9329ce072b408db0cd0ad4565498e235e1bd6e395"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.OpalPalaceSnapshotExportTest.xml",
+          "bytes": 505,
+          "sha256": "0488d2d9d3f2c85d333c13587b63c39d6b787df87c583d020c28d2246b999fb6"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.PatternsNamespaceTest.xml",
+          "bytes": 515,
+          "sha256": "f8d8fa01af8e2edefa2a95b6080ed362d813cf3d462804d11e3e5272c7e0f419"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.RecklessBushwhackerRegistrationTest.xml",
+          "bytes": 1132,
+          "sha256": "343deeca483b28872936c30df9ece228a3428122cbd6f9ceec24bd1e375b0d4e"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.SpellskiteRegistrationTest.xml",
+          "bytes": 1440,
+          "sha256": "9cc52d395f29b35547b3ceea3a93fba69426c78855211b0428d859e16e60b8ce"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.SpellskiteSnapshotExportTest.xml",
+          "bytes": 487,
+          "sha256": "1112d21792440e99f242b1259da9d7c60e6ad4ab6ebf13384e42984bb7337fb3"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.SuccessCriterionValidationTest.xml",
+          "bytes": 523,
+          "sha256": "a66d935a0f4bff3914c4ed2b6ac887a6b3ae6017f56ebe107d03bc487fb5ea16"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.definitions.ecl.LorwynEclipsedVariantPrintingsTest.xml",
+          "bytes": 1292,
+          "sha256": "a47696a1d56c0d45886ccbd4f795525f50c974b9899f5634628188528cb8fcbf"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.discovery.CardDiscoveryEquivalenceTest.xml",
+          "bytes": 722,
+          "sha256": "160e9fe648366bd91d249e549b618beb59b16f51ae0ad12adbfa64c533e35c4d"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.discovery.CardDiscoveryTest.xml",
+          "bytes": 983,
+          "sha256": "914c82be1c19bbd4d7431c58eeee79a5e2a82234a40869df5b4fc02cf3b73ce5"
+        },
+        {
+          "path": "cards/mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.legality.LegalityDataTest.xml",
+          "bytes": 952,
+          "sha256": "4959ff3d03054718ff76e02746a1d5f6c30fee35520bbd12979fdbfaca44374c"
+        }
+      ],
+      "exact_expected_identity_multiset": true,
+      "missing": {},
+      "extra": {},
+      "raw_stage_match": true
+    }
+  ],
+  "summary": {
+    "normal_passed": 67,
+    "restored_passed": 67,
+    "mutant_witnesses": 14,
+    "positive_controls_passed": 14,
+    "registry_passed": 401
+  },
+  "limits": [
+    "Counts/identity/type/frame comparison only; no qualifier, frozen auditor, build, or test was invoked.",
+    "Original failure messages are preserved; the original audit remains authoritative for its exact directed-value parser.",
+    "These successful stages do not qualify the failed ordinary gate or establish later gates, CI, admission, or Phase2."
+  ]
+}

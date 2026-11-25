@@ -1,0 +1,128 @@
+{
+  "schema": "manual-transmission/raw-qualification-failure-findings/v1",
+  "state": "FAILED_ORDINARY_WITH_PARTIAL_COMPATIBILITY_INVENTORY",
+  "observed_utc": "2026-11-25T03:30:18.721535+00:00",
+  "source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+  "attempt_id": "manual-lint-followup-20261124-01/local-01",
+  "terminal_returncode": 1,
+  "terminal_ended_utc": "2026-11-25T03:25:49.540718+00:00",
+  "successful_completed_stages": {
+    "compile_forms": 15,
+    "normal_exact_identities_passed": 67,
+    "restored_exact_identities_passed": 67,
+    "mutant_expected_witness_failures": 14,
+    "mutant_positive_controls_passed": 14,
+    "registry_exact_identities_passed": 401,
+    "new_lint_regressions_passed_in_ordinary": 8
+  },
+  "ordinary_raw": {
+    "rows": 2297,
+    "passed": 2130,
+    "failures": 118,
+    "errors": 0,
+    "skipped": 49,
+    "expected_rows": 19429,
+    "shared_expected_rows": 2295,
+    "missing_expected_rows": 17134,
+    "unexpected_rows": 2,
+    "absent_expected_modules": 16,
+    "module_counts": {
+      "ai": {
+        "expected_rows": 746,
+        "rows": 746,
+        "passed": 745,
+        "skips": 1
+      },
+      "game-server": {
+        "expected_rows": 565,
+        "rows": 479,
+        "passed": 348,
+        "failures": 118,
+        "skips": 13
+      },
+      "gym": {
+        "expected_rows": 535,
+        "rows": 535,
+        "passed": 500,
+        "skips": 35
+      },
+      "mtg-sdk": {
+        "expected_rows": 537,
+        "rows": 537,
+        "passed": 537
+      }
+    }
+  },
+  "first_failure": {
+    "suite_timestamp": "2026-11-25T03:18:34.952Z",
+    "identity": "game-server\tcom.wingedsheep.gameserver.ai.AiControllerProviderTest\tan external mode is usable without an LLM key and receives honest placeholder context",
+    "exception": "java.lang.ExceptionInInitializerError",
+    "cause": "java.lang.IllegalStateException: Could not self-attach to current VM using external process",
+    "stack_path": [
+      "net.bytebuddy.agent.ByteBuddyAgent.installExternal(ByteBuddyAgent.java:710)",
+      "io.mockk.proxy.jvm.JvmMockKAgentFactory.initInstrumentation(JvmMockKAgentFactory.kt:135)",
+      "io.mockk.impl.JvmMockKGateway.<clinit>(JvmMockKGateway.kt:230)"
+    ],
+    "all_118_failure_stacks_share_cause": true,
+    "underlying_attachment_refusal_reason": "Not exposed by the preserved external-attacher diagnostics in the inspected reports."
+  },
+  "inventory_effects": {
+    "auto_pass_expected_rows_missing": 88,
+    "auto_pass_framework_failure_rows": [
+      "BeanCreationException",
+      "executionError"
+    ],
+    "other_expected_module_rows_missing": 17046,
+    "expected_skip_rows_observed": 40,
+    "newly_skipped_flyway_rows": 9,
+    "expected_tooling_skip_rows_absent": 3,
+    "skip_multiset_matches": false
+  },
+  "second_observed_host_problem": {
+    "category": "TESTCONTAINERS_NO_VALID_DOCKER_ENVIRONMENT",
+    "effect": "All nine FlywayMigrationTest cases are recorded as skipped, whereas the accepted inventory requires them to execute.",
+    "evidence_path": "/workspace/scratch/65bf30f1888a/manual-lint-source/manual-surge-bushwhacker-evidence/ordinary/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.persistence.FlywayMigrationTest.xml",
+    "evidence_sha256": "a6d4a480ec05e422a5ffe9a23e1b9dfbf7a456aecb881e96b82ce2db2e505bd4",
+    "exact_log_lines": [
+      "2026-11-24T19:19:07.502-08:00 ERROR 69078 --- [argentum-game-server] [r @coroutine#43] o.t.d.DockerClientProviderStrategy       : Could not find a valid Docker environment. Please check configuration. Attempted configurations were:",
+      "\tUnixSocketClientProviderStrategy: failed with exception InvalidConfigurationException (Could not find unix domain socket). Root cause NoSuchFileException (/var/run/docker.sock)",
+      "\tDockerDesktopClientProviderStrategy: failed with exception NullPointerException (Cannot invoke \"java.nio.file.Path.toString()\" because the return value of \"org.testcontainers.dockerclient.DockerDesktopClientProviderStrategy.getSocketPath()\" is null)As no valid configuration was found, execution cannot continue."
+    ]
+  },
+  "source_change_relation": {
+    "supported": "All eight new linter regressions pass; normal/restored/card gates pass. Every failure stack traces MockK instrumentation initialization, and Flyway logs report a missing Docker socket. No linter assertion failure was observed.",
+    "inference": "The observed blockers are host/test-environment failures, not evidence of a semantic regression from the five-line linter amendment.",
+    "limit": "This does not establish full source compatibility; most ordinary inventory and all later gates were not completed."
+  },
+  "post_ordinary_gates": "No focused/full client, typecheck, metadata-printing, final assay, original CI, or admission was completed by this attempt. Absence of later output is not a passing result.",
+  "terminal_restoration": {
+    "source_bindings": 378,
+    "all_bindings_match": true,
+    "tracked_index_clean": true,
+    "host_properties_restored": true
+  },
+  "ci_activations": 0,
+  "original_artifact_downloads": 0,
+  "admitted": false,
+  "phase2_games": 0,
+  "phase2_seeds": 0,
+  "references": [
+    {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-ops-draft/RAW_ORDINARY_FAILURE_SNAPSHOT_01.json",
+      "sha256": "8ee53b4877e2290e62823ce998fe96cd477d498193e00c96b233adaf3e3c42d3"
+    },
+    {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-ops-draft/COMPLETED_LOCAL_RAW_STAGES_01.json",
+      "sha256": "5d20c214c17497c21cf992c6049ee5d112293773587fbd14c352d6a0eff76c6d"
+    },
+    {
+      "path": "/workspace/scratch/65bf30f1888a/manual-lint-ops-draft/TERMINAL_ORDINARY_RAW_ANALYSIS_01.json",
+      "sha256": "60527251cf6e5b9209e57bfc2a521089f04287fc9f2fabae950b4f848313dd3f"
+    }
+  ],
+  "limits": [
+    "Earlier normal/restored/registry evidence must not substitute for missing ordinary compatibility rows.",
+    "The single qualification invocation remains consumed; this report does not authorize another attempt.",
+    "Analysis read only original logs/XML and immutable reference inputs; no test/build/auditor/receiver/qualification execution occurred."
+  ]
+}

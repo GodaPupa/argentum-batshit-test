@@ -1,0 +1,64 @@
+{
+  "checks": {
+    "immutable authority CHARTER.json": {
+      "state": "PASS"
+    },
+    "immutable authority LAUNCH_CURRENT.json": {
+      "state": "PASS"
+    },
+    "immutable authority SOURCE_FREEZE.json": {
+      "state": "PASS"
+    },
+    "immutable authority run_local_qualification.py": {
+      "state": "PASS"
+    },
+    "immutable authority CANDIDATE_PINS.json": {
+      "state": "PASS"
+    },
+    "immutable authority audit_reports.py": {
+      "state": "PASS"
+    },
+    "immutable authority qualify.py": {
+      "state": "PASS"
+    },
+    "immutable source and launch authority": {
+      "state": "PASS"
+    },
+    "original terminal and invocation": {
+      "state": "FAIL",
+      "error": "qualifier terminal return zero"
+    },
+    "original inner manifest": {
+      "state": "PASS"
+    },
+    "terminal source and copied original bindings": {
+      "state": "PASS"
+    },
+    "host restoration evidence": {
+      "state": "PASS"
+    },
+    "immutable audit dependency staging": {
+      "state": "PASS"
+    },
+    "independent frozen raw-report audit": {
+      "state": "FAIL",
+      "error": "[Errno 2] No such file or directory: '/workspace/scratch/65bf30f1888a/manual-lint-local-preservation-01/extracted/qualification/RESULT.json'"
+    }
+  },
+  "errors": [
+    {
+      "gate": "original terminal and invocation",
+      "error": "ValueError('qualifier terminal return zero')",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/preserve_local.py\", line 185, in gate\n    result=action();checks[name]={'state':'PASS'}\n           ^^^^^^^^\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/preserve_local.py\", line 233, in terminal_check\n    need(t['state']=='QUALIFICATION_FINISHED' and t['returncode']==0,'qualifier terminal return zero')\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/preserve_local.py\", line 77, in need\n    if not ok: raise ValueError(message)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: qualifier terminal return zero\n"
+    },
+    {
+      "gate": "independent frozen raw-report audit",
+      "error": "FileNotFoundError(2, 'No such file or directory')",
+      "traceback": "Traceback (most recent call last):\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/preserve_local.py\", line 185, in gate\n    result=action();checks[name]={'state':'PASS'}\n           ^^^^^^^^\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/preserve_local.py\", line 340, in independent_audit\n    result=read(evidence/'RESULT.json')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/preserve_local.py\", line 95, in read\n    def read(path): return json.loads(Path(path).read_text())\n                                      ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1027, in read_text\n    with self.open(mode='r', encoding=encoding, errors=errors) as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/lib/python3.12/pathlib.py\", line 1013, in open\n    return io.open(self, mode, buffering, encoding, errors, newline)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace/scratch/65bf30f1888a/manual-lint-local-preservation-01/extracted/qualification/RESULT.json'\n"
+    }
+  ],
+  "copied_originals_unchanged": true,
+  "qualification_invocations_started_by_this_script": 0,
+  "ci_downloads": 0,
+  "admitted": false
+}

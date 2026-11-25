@@ -7,9 +7,9 @@
   "charter_sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e",
   "base_checkpoint": "618f562154ff10a9da082a144d43c2011703d2e0",
   "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
-  "status": "QUALIFICATION_RUNNING",
+  "status": "FAILED_ORDINARY_HOST_ATTACH_ORIGINAL_PRESERVED_READBACK_PENDING",
   "owner": "manual-lint-foreground-20261124",
-  "updated_utc": "2026-11-25T03:24:31.794407+00:00",
+  "updated_utc": "2026-11-25T03:29:11.194280+00:00",
   "lease": {
     "owner": "manual-lint-foreground-20261124",
     "claimed_utc": "2026-11-25T02:17:30.012820+00:00",
@@ -25,7 +25,7 @@
     "preflight_completed": 1,
     "local_reserved": 1,
     "local_started": 1,
-    "local_completed": 0,
+    "local_completed": 1,
     "ci_activated": 0,
     "original_artifact_downloads": 0
   },
@@ -98,7 +98,7 @@
     ]
   },
   "admitted": false,
-  "next": "Await original qualification terminal and restoration; preserve original failed evidence and verify immutable/live readback. Diagnose JVM agent host setup. CI is blocked by the observed backend failure; no full rerun authorized by this single-use attempt.",
+  "next": "Complete immutable/live readback of this original failed archive and the bounded host diagnostic. No CI activation or second full qualification is authorized by this consumed single-use attempt.",
   "preflight_reservation": {
     "attempt_id": "manual-lint-followup-20261124-01/preflight-01",
     "launcher_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/run_lint_preflight.py",
@@ -161,12 +161,17 @@
   },
   "launch_commit": "9953c3e78c6f386f4284352f39ccf5d81554e10b",
   "qualification_runtime": {
-    "state": "RUNNING",
+    "state": "FINISHED",
     "attempt_id": "manual-lint-followup-20261124-01/local-01",
     "qualification_invocations": 1,
     "started_utc": "2026-11-25T02:48:45.188344+00:00",
-    "progress": "Ordinary gate still running after game-server reported118 failures from shared ByteBuddy external-attach failure; terminal and source/host restoration pending.",
-    "final_result": null
+    "progress": "Finished with ordinary backend failure; all378 source bindings and host properties restored. Original952-member archive preserved; immutable/live readback pending.",
+    "final_result": "FAILED_OR_INCOMPLETE_LOCAL_ORIGINAL_PRESERVED",
+    "returncode": 1,
+    "ended_utc": "2026-11-25T03:25:49.540718+00:00",
+    "source_bindings_verified": 378,
+    "source_restored": true,
+    "host_properties_restored": true
   },
   "verification_controls": {
     "state": "PASS",
@@ -194,7 +199,7 @@
   "observed_failure": {
     "gate": "ordinary",
     "module": "game-server",
-    "state": "OBSERVED_NONTERMINAL",
+    "state": "TERMINAL_ORDINARY_GATE_FAILED",
     "first_cause": "ByteBuddyAgent could not self-attach to current VM using external process",
     "tests": 479,
     "failures": 118,
@@ -202,6 +207,32 @@
     "skips": 13,
     "snapshot_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/RAW_ORDINARY_FAILURE_SNAPSHOT_01.json",
     "snapshot_sha256": "8ee53b4877e2290e62823ce998fe96cd477d498193e00c96b233adaf3e3c42d3",
-    "exact_lower_level_cause": "UNRESOLVED_WITHOUT_HOST_DIAGNOSTIC"
+    "exact_lower_level_cause": "UNRESOLVED_WITHOUT_HOST_DIAGNOSTIC",
+    "secondary_host_blocker": "Nine Flyway migration tests newly skipped: no valid Docker environment; /var/run/docker.sock absent in raw Testcontainers log."
+  },
+  "local_result": {
+    "state": "FAILED_OR_INCOMPLETE_LOCAL_ORIGINAL_PRESERVED",
+    "source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+    "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+    "archive_bytes": 5961295,
+    "archive_sha256": "6179df2fed79eea77c5bb7fa696a17e0998923780d4315001667f02a4242c264",
+    "archive_members": 952,
+    "receipt_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/LOCAL_QUALIFICATION_01/LOCAL_RECEIPT.json",
+    "immutable_readback": "PENDING",
+    "original_qualification_invocations": 1,
+    "all_frozen_local_gates_pass": false,
+    "source_bindings_verified": 378,
+    "host_properties_restored": true,
+    "ordinary_observed": {
+      "rows": 2297,
+      "passed": 2130,
+      "failures": 118,
+      "xml_errors": 0,
+      "skipped": 49,
+      "expected_rows_missing": 17134,
+      "unexpected_framework_rows": 2,
+      "new_flyway_skips": 9,
+      "expected_historical_skips": 43
+    }
   }
 }
