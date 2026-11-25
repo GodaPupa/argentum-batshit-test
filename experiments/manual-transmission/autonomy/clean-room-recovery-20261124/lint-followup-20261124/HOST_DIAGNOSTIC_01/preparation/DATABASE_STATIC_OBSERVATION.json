@@ -1,0 +1,62 @@
+{
+  "container_environment_presence": {
+    "DOCKER_CERT_PATH": false,
+    "DOCKER_CONTEXT": false,
+    "DOCKER_HOST": false,
+    "DOCKER_TLS_VERIFY": false,
+    "TESTCONTAINERS_DOCKER_SOCKET_OVERRIDE": false,
+    "TESTCONTAINERS_HOST_OVERRIDE": false
+  },
+  "executables": {
+    "docker": null,
+    "dockerd": null,
+    "initdb": null,
+    "pg_ctl": null,
+    "podman": null,
+    "postgres": null,
+    "psql": null
+  },
+  "executed_service_or_container_commands": 0,
+  "observed_utc": "2026-11-25T03:32:04.783516+00:00",
+  "observed_xml": {
+    "bytes": 6631,
+    "docker_log_lines": [
+      "2026-11-24T19:19:07.502-08:00  INFO 69078 --- [argentum-game-server] [r @coroutine#43] .t.d.DockerMachineClientProviderStrategy : docker-machine executable was not found on PATH ([/workspace/scratch/65bf30f1888a/manual-lint-host/jdk/jdk-21.0.13+9/bin, /workspace/scratch/65bf30f1888a/manual-lint-host/node/node-v22.23.5-linux-x64/bin, /opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override, /opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin, /opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin, /opt/codex/runtimes/codex-primary-runtime/dependencies/bin, /opt/codex/bin, /usr/local/sbin, /usr/local/bin, /usr/sbin, /usr/bin, /sbin, /bin, /home/agent/.local/bin, /opt/codex/runtimes/codex-primary-runtime/dependencies/bin/fallback])",
+      "2026-11-24T19:19:07.502-08:00 ERROR 69078 --- [argentum-game-server] [r @coroutine#43] o.t.d.DockerClientProviderStrategy       : Could not find a valid Docker environment. Please check configuration. Attempted configurations were:",
+      "\tUnixSocketClientProviderStrategy: failed with exception InvalidConfigurationException (Could not find unix domain socket). Root cause NoSuchFileException (/var/run/docker.sock)",
+      "\tDockerDesktopClientProviderStrategy: failed with exception NullPointerException (Cannot invoke \"java.nio.file.Path.toString()\" because the return value of \"org.testcontainers.dockerclient.DockerDesktopClientProviderStrategy.getSocketPath()\" is null)As no valid configuration was found, execution cannot continue."
+    ],
+    "path": "/workspace/scratch/65bf30f1888a/manual-lint-source/manual-surge-bushwhacker-evidence/ordinary/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.persistence.FlywayMigrationTest.xml",
+    "sha256": "a6d4a480ec05e422a5ffe9a23e1b9dfbf7a456aecb881e96b82ce2db2e505bd4",
+    "skipped_names": [
+      "migrations apply and support account/deck/stats round-trips",
+      "V2 migration adds the stats schema and supports its aggregate queries",
+      "V5 migration adds game_replays and supports the history replay join",
+      "V6 migrates BIGINT account ids to UUID, preserving rows and foreign keys",
+      "V7 friends schema supports the request/accept round-trip and cascades",
+      "databaseStats reports per-table row counts and sizes",
+      "V9 adds tournament status and allows null ended_at for in-progress rows",
+      "V10 makes game_replays the only replay home, seat-indexed and status-aware",
+      "V11 gives pins a write-once column that the flush update leaves alone"
+    ],
+    "suite": {
+      "errors": "0",
+      "failures": "0",
+      "hostname": "2e5b8e93770a",
+      "name": "com.wingedsheep.gameserver.persistence.FlywayMigrationTest",
+      "skipped": "9",
+      "tests": "9",
+      "time": "0.41",
+      "timestamp": "2026-11-25T03:19:07.103Z"
+    }
+  },
+  "schema": "manual-transmission/database-host-static-observation/v1",
+  "socket_paths": {
+    "/run/docker.sock": {
+      "exists": false
+    },
+    "/var/run/docker.sock": {
+      "exists": false
+    }
+  }
+}

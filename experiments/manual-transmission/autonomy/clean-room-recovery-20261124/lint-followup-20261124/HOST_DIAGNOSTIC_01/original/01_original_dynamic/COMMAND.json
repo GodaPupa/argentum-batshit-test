@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "/workspace/scratch/65bf30f1888a/manual-lint-host/jdk/jdk-21.0.13+9/bin/java",
+    "-Dnet.bytebuddy.agent.attacher.dump=/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/01_original_dynamic/attacher.dump",
+    "-cp",
+    "/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/classes:/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.18.10/9426d28828bdcdf42666bb7a68c468279ea78f59/byte-buddy-agent-1.18.10.jar",
+    "AttachProbe",
+    "dynamic"
+  ],
+  "cwd": "/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/01_original_dynamic",
+  "java_tool_options": "-Dorg.gradle.daemon=false -Djavax.net.ssl.trustStore=/workspace/scratch/65bf30f1888a/manual-lint-host/java-platform-cacerts '-Dhttp.nonProxyHosts=localhost|127.*|[::1]' -Dhttp.proxyHost=127.0.0.1 -Dhttp.proxyPort=44473 -Dhttps.proxyHost=127.0.0.1 -Dhttps.proxyPort=44473",
+  "label": "01_original_dynamic",
+  "owned_process_group": 29,
+  "pid": 29,
+  "started_utc": "2026-11-25T03:34:46.167817Z",
+  "stderr": "stderr.log",
+  "stdout": "stdout.log",
+  "timeout_seconds": 30
+}

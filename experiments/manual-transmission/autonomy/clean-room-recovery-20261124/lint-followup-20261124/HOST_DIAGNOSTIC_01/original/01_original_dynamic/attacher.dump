@@ -1,0 +1,22 @@
+/workspace/scratch/65bf30f1888a/manual-lint-host/jdk/jdk-21.0.13+9/bin/java
+-Dnet.bytebuddy.agent.attacher.dump=/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/01_original_dynamic/attacher.dump
+-cp
+/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.18.10/9426d28828bdcdf42666bb7a68c468279ea78f59/byte-buddy-agent-1.18.10.jar
+net.bytebuddy.agent.Attacher
+com.sun.tools.attach.VirtualMachine
+29
+/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.18.10/9426d28828bdcdf42666bb7a68c468279ea78f59/byte-buddy-agent-1.18.10.jar
+false
+
+
+java.lang.reflect.InvocationTargetException
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:118)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at net.bytebuddy.agent.Attacher.install(Attacher.java:103)
+	at net.bytebuddy.agent.Attacher.main(Attacher.java:65)
+Caused by: com.sun.tools.attach.AttachNotSupportedException: Unable to open socket file /proc/29/root/tmp/.java_pid29: target process 29 doesn't respond within 10500ms or HotSpot VM not loaded
+	at jdk.attach/sun.tools.attach.VirtualMachineImpl.<init>(VirtualMachineImpl.java:113)
+	at jdk.attach/sun.tools.attach.AttachProviderImpl.attachVirtualMachine(AttachProviderImpl.java:58)
+	at jdk.attach/com.sun.tools.attach.VirtualMachine.attach(VirtualMachine.java:207)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	... 3 more

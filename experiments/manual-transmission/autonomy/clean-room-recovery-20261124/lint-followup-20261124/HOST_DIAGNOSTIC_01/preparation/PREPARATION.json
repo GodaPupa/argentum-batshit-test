@@ -1,0 +1,69 @@
+{
+  "agent_api_methods": [
+    {
+      "descriptor": "()Ljava/lang/instrument/Instrumentation;",
+      "flags": "0x9",
+      "name": "getInstrumentation"
+    },
+    {
+      "descriptor": "()Ljava/lang/instrument/Instrumentation;",
+      "flags": "0x9",
+      "name": "install"
+    },
+    {
+      "descriptor": "(Lnet/bytebuddy/agent/ByteBuddyAgent$AttachmentProvider;)Ljava/lang/instrument/Instrumentation;",
+      "flags": "0x9",
+      "name": "install"
+    },
+    {
+      "descriptor": "(Lnet/bytebuddy/agent/ByteBuddyAgent$ProcessProvider;)Ljava/lang/instrument/Instrumentation;",
+      "flags": "0x9",
+      "name": "install"
+    },
+    {
+      "descriptor": "(Lnet/bytebuddy/agent/ByteBuddyAgent$AttachmentProvider;Lnet/bytebuddy/agent/ByteBuddyAgent$ProcessProvider;)Ljava/lang/instrument/Instrumentation;",
+      "flags": "0x29",
+      "name": "install"
+    },
+    {
+      "descriptor": "(Lnet/bytebuddy/agent/ByteBuddyAgent$AttachmentProvider;Ljava/lang/String;Ljava/lang/String;Lnet/bytebuddy/agent/ByteBuddyAgent$AgentProvider;Z)V",
+      "flags": "0xa",
+      "name": "install"
+    }
+  ],
+  "docker_or_service_operations": 0,
+  "files": {
+    "AttachProbe.java": {
+      "bytes": 6133,
+      "sha256": "3cfdbe76b80416ef2d4057e74eaa6ab150a94a9ee1bb739b05084e0ee0bd8767"
+    },
+    "DATABASE_STATIC_OBSERVATION.json": {
+      "bytes": 3648,
+      "sha256": "6e1134234ce013c7fe62aad953682963f1ed21468bb6b2dec2309a0661b2be78"
+    },
+    "HOST_INPUTS.json": {
+      "bytes": 1981,
+      "sha256": "830dedcad580d0127cbb43e966ea972c5485b12641150a91e92da4cda32d7d18"
+    },
+    "OBSERVATION.json": {
+      "bytes": 3252,
+      "sha256": "ff07bc2fe3c866ed635ea60bf21b04cc928d3e43ed546bc51aceeea024b32c42"
+    },
+    "PLAN.md": {
+      "bytes": 9361,
+      "sha256": "defdce49831ebc5349215a62bf4fb1f492ff6257fdde3ae44e566634f4bf9772"
+    },
+    "run_attach_probe.py": {
+      "bytes": 13293,
+      "sha256": "ec798146b7ef052bdd2e5a7678b01f89833bcc380f22bb27a796bf73a22902fc"
+    }
+  },
+  "java_compiler_invocations": 0,
+  "java_probe_invocations": 0,
+  "java_static_review": "Required zero-argument ByteBuddyAgent public static API descriptors exist in exact cached 1.18.10 class bytes; Java source not compiled",
+  "prepared_utc": "2026-11-25T03:34:54.990850+00:00",
+  "python_syntax_review": "AST parse and compile only; wrapper not imported or invoked",
+  "repository_or_qualification_invocations": 0,
+  "schema": "manual-transmission/host-diagnostic-preparation/v1",
+  "state": "PREPARED_NOT_EXECUTED"
+}

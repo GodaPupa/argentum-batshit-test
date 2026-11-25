@@ -1,0 +1,36 @@
+{
+  "schema": "manual-transmission/host-diagnostic-findings/v1",
+  "state": "STARTUP_AGENT_PROBE_PASSED_DOCKER_PREREQUISITE_UNAVAILABLE",
+  "source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+  "original_qualification_archive_commit": "18168564399e67612f3b4e1a4d98c76ccf0f2d38",
+  "original_qualification_pass": false,
+  "case_outcomes": {
+    "01_original_dynamic": "FAIL",
+    "02_dynamic_without_proxy_properties": "FAIL",
+    "03_startup_agent_original_properties": "PASS"
+  },
+  "observed_attachment_error": "AttachNotSupportedException: Unable to open socket file /proc/<PID>/root/tmp/.java_pid<PID>; target process does not respond within10500ms.",
+  "underlying_kernel_or_namespace_cause": "Not established by this diagnostic.",
+  "proxy_result": "Removing only the HTTP(S) JVM proxy properties did not resolve dynamic attach.",
+  "startup_agent_result": {
+    "present_before_install": true,
+    "same_instrumentation_reused": true,
+    "redefine_supported": true,
+    "retransform_supported": true,
+    "actual_mockk_tests_rerun": false
+  },
+  "database_result": "Original Testcontainers output and independent host observations show no available Docker socket or configured Docker endpoint; all9 Flyway rows were skipped. No service/container provisioned.",
+  "host_inputs_and_gradle_properties_unchanged": true,
+  "owned_helpers_remaining": 0,
+  "qualification_invocations": 0,
+  "repository_test_invocations": 0,
+  "ci_activations": 0,
+  "artifact_downloads": 0,
+  "admitted": false,
+  "remaining_requirements": [
+    "Docker-capable execution host with working database container prerequisite",
+    "Fresh actual MockK/Flyway readiness preflight without missing or extra skipped rows",
+    "Explicit additional run authority preserving both consumed local attempts and all original evidence",
+    "Complete unchanged qualification and original evidence readback before bounded admission"
+  ]
+}

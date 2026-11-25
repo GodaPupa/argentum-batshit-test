@@ -1,0 +1,63 @@
+{
+  "agent": {
+    "bytes": 267556,
+    "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.18.10/9426d28828bdcdf42666bb7a68c468279ea78f59/byte-buddy-agent-1.18.10.jar",
+    "sha256": "9cfa3c71c8f07bfb5f4c3c68db7715940d792801eba82d346fc343f7bd7c2401"
+  },
+  "failure_elements_containing_same_external_attach_cause": 118,
+  "first_cause_chain": [
+    "Caused by: java.lang.IllegalStateException: Could not self-attach to current VM using external process - set a property net.bytebuddy.agent.attacher.dump to dump the process output to a file at the specified location",
+    "\tat net.bytebuddy.agent.ByteBuddyAgent.installExternal(ByteBuddyAgent.java:710)",
+    "\tat net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:615)",
+    "\tat net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:595)",
+    "\tat net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:547)",
+    "\tat net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:524)",
+    "\tat io.mockk.proxy.jvm.JvmMockKAgentFactory.initInstrumentation(JvmMockKAgentFactory.kt:135)",
+    "\tat io.mockk.proxy.jvm.JvmMockKAgentFactory.init(JvmMockKAgentFactory.kt:39)",
+    "\tat io.mockk.impl.JvmMockKGateway.<init>(JvmMockKGateway.kt:82)",
+    "\tat io.mockk.impl.JvmMockKGateway.<clinit>(JvmMockKGateway.kt:230)",
+    "\t... 132 more"
+  ],
+  "first_failed_case": {
+    "classname": "com.wingedsheep.gameserver.ai.AiControllerProviderTest",
+    "name": "an external mode is usable without an LLM key and receives honest placeholder context",
+    "time": "10.65"
+  },
+  "first_suite": {
+    "errors": "0",
+    "failures": "7",
+    "hostname": "2e5b8e93770a",
+    "name": "com.wingedsheep.gameserver.ai.AiControllerProviderTest",
+    "skipped": "0",
+    "tests": "11",
+    "time": "10.693",
+    "timestamp": "2026-11-25T03:18:34.952Z"
+  },
+  "first_xml": {
+    "bytes": 203619,
+    "path": "/workspace/scratch/65bf30f1888a/manual-lint-source/game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.ai.AiControllerProviderTest.xml",
+    "sha256": "7f15f121db9a1174733d0da2740bd6f6bd010a6af0966709df29c613e70b8260"
+  },
+  "game_server_failure_elements": 118,
+  "inference": "The 10.65-second first failure is consistent with the pinned JDK default 10000ms socket attach timeout; no helper dump exists to establish the exact OS/permission/socket cause.",
+  "java_processes_launched_by_this_agent": 0,
+  "observed_utc": "2026-11-25T03:32:04.782774+00:00",
+  "ordinary_logs": {
+    "ordinary.stderr": {
+      "bytes": 20247,
+      "sha256": "1ab5a38a7a5b5a9926bbb866110dd6b549ba59ba31dd2304bb50368a6258f0b0"
+    },
+    "ordinary.stdout": {
+      "bytes": 286787,
+      "sha256": "7ceea32a64f31c691b9b26f7b7d52a9e4cc58f92d0433bcfe60f31153130043a"
+    }
+  },
+  "qualifications_or_tests_run_by_this_agent": 0,
+  "schema": "manual-transmission/mockk-attach-observation/v1",
+  "state": "READ_ONLY_DIAGNOSIS",
+  "worker_classpath": {
+    "bytes": 38895,
+    "path": "/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/.tmp/gradle-worker-classpath15738059840782678223txt",
+    "sha256": "37f837f6188da0f0ea073cdb72289724442a478c497f81b63a2773148043f6b2"
+  }
+}

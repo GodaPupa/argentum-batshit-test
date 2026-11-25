@@ -1,0 +1,8 @@
+Picked up JAVA_TOOL_OPTIONS: -Dorg.gradle.daemon=false -Djavax.net.ssl.trustStore=/workspace/scratch/65bf30f1888a/manual-lint-host/java-platform-cacerts '-Dhttp.nonProxyHosts=localhost|127.*|[::1]'
+java.lang.IllegalStateException: Could not self-attach to current VM using external process - set a property net.bytebuddy.agent.attacher.dump to dump the process output to a file at the specified location
+	at net.bytebuddy.agent.ByteBuddyAgent.installExternal(ByteBuddyAgent.java:710)
+	at net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:615)
+	at net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:595)
+	at net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:547)
+	at net.bytebuddy.agent.ByteBuddyAgent.install(ByteBuddyAgent.java:524)
+	at AttachProbe.main(AttachProbe.java:90)

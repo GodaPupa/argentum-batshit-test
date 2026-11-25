@@ -1,0 +1,116 @@
+{
+  "argv": [
+    "/workspace/scratch/65bf30f1888a/manual-lint-host/jdk/jdk-21.0.13+9/bin/java",
+    "-Dnet.bytebuddy.agent.attacher.dump=/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/02_dynamic_without_proxy_properties/attacher.dump",
+    "-cp",
+    "/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/classes:/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.18.10/9426d28828bdcdf42666bb7a68c468279ea78f59/byte-buddy-agent-1.18.10.jar",
+    "AttachProbe",
+    "dynamic"
+  ],
+  "cleanup": {
+    "live_members_after_cleanup": [],
+    "live_members_before_cleanup": []
+  },
+  "cwd": "/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/02_dynamic_without_proxy_properties",
+  "elapsed_seconds": 10.743554,
+  "java_tool_options": "-Dorg.gradle.daemon=false -Djavax.net.ssl.trustStore=/workspace/scratch/65bf30f1888a/manual-lint-host/java-platform-cacerts '-Dhttp.nonProxyHosts=localhost|127.*|[::1]'",
+  "label": "02_dynamic_without_proxy_properties",
+  "no_live_owned_helpers_remain": true,
+  "owned_process_group": 74,
+  "pid": 74,
+  "probe_result": {
+    "agent_code_source": "file:/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.18.10/9426d28828bdcdf42666bb7a68c468279ea78f59/byte-buddy-agent-1.18.10.jar",
+    "effective_vm_flags": {
+      "DisableAttachMechanism": {
+        "origin": "DEFAULT",
+        "value": "false"
+      },
+      "EnableDynamicAgentLoading": {
+        "origin": "DEFAULT",
+        "value": "true"
+      }
+    },
+    "elapsed_milliseconds": 10690,
+    "failure_message": "Could not self-attach to current VM using external process - set a property net.bytebuddy.agent.attacher.dump to dump the process output to a file at the specified location",
+    "failure_type": "java.lang.IllegalStateException",
+    "instrumentation_present_before_install": false,
+    "java.home": "/workspace/scratch/65bf30f1888a/manual-lint-host/jdk/jdk-21.0.13+9",
+    "java.io.tmpdir": "/tmp",
+    "java.runtime.version": "21.0.13+9-LTS",
+    "java.version": "21.0.13",
+    "java.vm.name": "OpenJDK 64-Bit Server VM",
+    "java.vm.version": "21.0.13+9-LTS",
+    "jdk.attach.allowAttachSelf": null,
+    "mode": "dynamic",
+    "net.bytebuddy.agent.attacher.dump": "/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/02_dynamic_without_proxy_properties/attacher.dump",
+    "parent_pid": 2,
+    "pid": 74,
+    "process_observation": {
+      "CapEff": "0000000000000000",
+      "Gid": "1000\t1000\t1000\t1000",
+      "NSpid": "74",
+      "NoNewPrivs": "1",
+      "Seccomp": "2",
+      "Uid": "1000\t1000\t1000\t1000",
+      "pid_namespace": "pid:[4026532381]"
+    },
+    "runtime_input_arguments": [
+      "-Dorg.gradle.daemon=false",
+      "-Djavax.net.ssl.trustStore=/workspace/scratch/65bf30f1888a/manual-lint-host/java-platform-cacerts",
+      "-Dhttp.nonProxyHosts=localhost|127.*|[::1]",
+      "-Dnet.bytebuddy.agent.attacher.dump=/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/02_dynamic_without_proxy_properties/attacher.dump"
+    ],
+    "started_utc": "2026-11-25T03:34:56.998755832Z",
+    "state": "FAIL",
+    "sun.tools.attach.attachTimeout": null,
+    "terminal_utc": "2026-11-25T03:35:07.689601308Z"
+  },
+  "probe_start": {
+    "agent_code_source": "file:/workspace/scratch/65bf30f1888a/manual-lint-host/gradle-user-home/caches/modules-2/files-2.1/net.bytebuddy/byte-buddy-agent/1.18.10/9426d28828bdcdf42666bb7a68c468279ea78f59/byte-buddy-agent-1.18.10.jar",
+    "effective_vm_flags": {
+      "DisableAttachMechanism": {
+        "origin": "DEFAULT",
+        "value": "false"
+      },
+      "EnableDynamicAgentLoading": {
+        "origin": "DEFAULT",
+        "value": "true"
+      }
+    },
+    "java.home": "/workspace/scratch/65bf30f1888a/manual-lint-host/jdk/jdk-21.0.13+9",
+    "java.io.tmpdir": "/tmp",
+    "java.runtime.version": "21.0.13+9-LTS",
+    "java.version": "21.0.13",
+    "java.vm.name": "OpenJDK 64-Bit Server VM",
+    "java.vm.version": "21.0.13+9-LTS",
+    "jdk.attach.allowAttachSelf": null,
+    "mode": "dynamic",
+    "net.bytebuddy.agent.attacher.dump": "/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/02_dynamic_without_proxy_properties/attacher.dump",
+    "parent_pid": 2,
+    "pid": 74,
+    "process_observation": {
+      "CapEff": "0000000000000000",
+      "Gid": "1000\t1000\t1000\t1000",
+      "NSpid": "74",
+      "NoNewPrivs": "1",
+      "Seccomp": "2",
+      "Uid": "1000\t1000\t1000\t1000",
+      "pid_namespace": "pid:[4026532381]"
+    },
+    "runtime_input_arguments": [
+      "-Dorg.gradle.daemon=false",
+      "-Djavax.net.ssl.trustStore=/workspace/scratch/65bf30f1888a/manual-lint-host/java-platform-cacerts",
+      "-Dhttp.nonProxyHosts=localhost|127.*|[::1]",
+      "-Dnet.bytebuddy.agent.attacher.dump=/workspace/scratch/65bf30f1888a/manual-mockk-host-probe-01/02_dynamic_without_proxy_properties/attacher.dump"
+    ],
+    "started_utc": "2026-11-25T03:34:56.998755832Z",
+    "sun.tools.attach.attachTimeout": null
+  },
+  "returncode": 1,
+  "started_utc": "2026-11-25T03:34:56.968140Z",
+  "stderr": "stderr.log",
+  "stdout": "stdout.log",
+  "terminal_utc": "2026-11-25T03:35:07.711780Z",
+  "timed_out": false,
+  "timeout_seconds": 30
+}
