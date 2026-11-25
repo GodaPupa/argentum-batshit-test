@@ -7,9 +7,9 @@
   "charter_sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e",
   "base_checkpoint": "618f562154ff10a9da082a144d43c2011703d2e0",
   "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
-  "status": "PREPARING_AUTHORIZED_LINT_FOLLOWUP",
+  "status": "LINT_PREFLIGHT_RESERVED",
   "owner": "manual-lint-foreground-20261124",
-  "updated_utc": "2026-11-25T02:17:30.012820+00:00",
+  "updated_utc": "2026-11-25T02:28:44.213536+00:00",
   "lease": {
     "owner": "manual-lint-foreground-20261124",
     "claimed_utc": "2026-11-25T02:17:30.012820+00:00",
@@ -20,8 +20,8 @@
     "writable_ref": "refs/heads/manual-transmission/clean-room-recovery-20261124"
   },
   "attempts": {
-    "preflight_reserved": 0,
-    "preflight_started": 0,
+    "preflight_reserved": 1,
+    "preflight_started": 1,
     "preflight_completed": 0,
     "local_reserved": 0,
     "local_started": 0,
@@ -59,5 +59,16 @@
     ]
   },
   "admitted": false,
-  "next": "Apply the prepared two-file patch in an isolated source worktree; validate8 new lint cases and full401-row registry; finalize mechanical inventory/verifier/pins, freeze source, then reserve one complete qualification."
+  "next": "Run this one reserved preflight: exact eight new SDK lint cases, then all 401 registry rows. Preserve original raw reports and source/host restoration before the new source freeze.",
+  "preflight_reservation": {
+    "attempt_id": "manual-lint-followup-20261124-01/preflight-01",
+    "launcher_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/run_lint_preflight.py",
+    "launcher_sha256": "6f85a327c82702b08946b179e459b93d0ed51bab69e417d98ca54a61bb2d4c29",
+    "environment_helper_sha256": "7de471ef99f230f15e96565f3d3a07bc5e2f881d8df4d1810660c92a7ec5a7e3",
+    "source_basis": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+    "prepared_patch_sha256": "2bab419c8cff73247321425ca56d1fc17a0e861cefbc859865423a62bc50ede3",
+    "output_directory": "/workspace/scratch/65bf30f1888a/manual-lint-preflight-01",
+    "reserved_utc": "2026-11-25T02:28:44.213536+00:00",
+    "full_qualification_invocations": 0
+  }
 }
