@@ -1,0 +1,92 @@
+{
+  "schema": "manual-transmission/independent-ci-readback-static-review/v1",
+  "state": "STATIC_REVIEW_PASS_NO_EXECUTION",
+  "helper_path": "/workspace/scratch/65bf30f1888a/manual-ci-readback-draft/immutable_ci_readback.py",
+  "helper_sha256": "afe89b678e00dfb231fc02fbb76fc6cdc777ec1ae3fa28ab2f13d23a10f32410",
+  "bytes": 51555,
+  "ast_syntax": "PASS",
+  "metadata_contract_fields": 38,
+  "pin_checks": [
+    {
+      "check": "finalized carrier receive_clean_room.py",
+      "state": "PASS",
+      "sha256": "93a44ed39d2d75996cda6629f9b477ae343c06c1c633d744325928354a5d3ee5"
+    },
+    {
+      "check": "finalized carrier CI_ACTIVATION.yml",
+      "state": "PASS",
+      "sha256": "27952f8595294538394573675f6f41c25c7487996aabbd622a390614810b83ce"
+    },
+    {
+      "check": "finalized carrier SOURCE_FREEZE.json",
+      "state": "PASS",
+      "sha256": "9311d1579f8de17772aa139073602999999d343bc1e9083b7d45f0719828902d"
+    },
+    {
+      "check": "finalized carrier CHARTER.json",
+      "state": "PASS",
+      "sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e"
+    },
+    {
+      "check": "immutable S2 audit_reports.py",
+      "state": "PASS",
+      "sha256": "aed497bac5eafd80fc141557768c7697472324d5da087cf1fe3fb66741075e81"
+    },
+    {
+      "check": "immutable S2 verify_dispatch.py",
+      "state": "PASS",
+      "sha256": "23ea2debb05adc95194f2fcc41fc6c84ad3070d76987f5b6b96af061d3ddabb7"
+    },
+    {
+      "check": "immutable S2 qualify.py",
+      "state": "PASS",
+      "sha256": "ac04c813d78d83c0b1e7f4b1d48adac960cca1b7dcef01f62370e84e3bc812a4"
+    },
+    {
+      "check": "immutable S2 receive.py",
+      "state": "PASS",
+      "sha256": "00be55d69206bae346f602c3a633a2056fe77de59c3e0691e689001bc101fbd6"
+    },
+    {
+      "check": "immutable S2 CANDIDATE_PINS.json",
+      "state": "PASS",
+      "sha256": "b0e8da912f98b75a35c44db4a3e9e3334d941af3891e0bb28281490ab01e7bbd"
+    }
+  ],
+  "reviewed_dimensions": [
+    "exact C/V/E topology and S2 lineage",
+    "independent pretransport D metadata/API and download reservation",
+    "exact original parts/base64/size/hash and API digest agreement",
+    "safe ZIP staging, CRC, both manifests, exclusive CI envelope and378 frozen source bindings",
+    "fresh immutable S2 audit dependency staging and equality to both original audit results",
+    "actual local immutable-readback schema and successful-state checks",
+    "post-activation namespace-only publication and immutable/live blob+mode identity",
+    "failure preservation separate from success/admission"
+  ],
+  "review_fixes_applied": [
+    "Partial archive reports claim published-metadata equality; independently API-bound bytes require API and pretransport provenance checks.",
+    "Publication scope checks include D->receipt and receipt->expected live head.",
+    "Git explicitly disables lazy fetch.",
+    "Assembly stage label explicitly says metadata-bound; independent API binding is reported only after provenance and API checks pass."
+  ],
+  "helper_invocations": 0,
+  "receiver_invocations": 0,
+  "auditor_invocations": 0,
+  "source_verifier_invocations": 0,
+  "builds_or_tests": 0,
+  "active_source_access": false,
+  "downloads": 0,
+  "ci_activations": 0,
+  "publication": 0,
+  "remaining_blockers": [],
+  "receiver_controls_evidence": {
+    "new_epoch_result_found": false,
+    "new_charter_explicit_repeat_or_count_requirement_found": false,
+    "historical_result_path": "/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/RECEIVER_ENVELOPE_CONTROLS.json",
+    "historical_cases_passed": 146,
+    "historical_adapter_sha256": "efc6f911441c44b0b6e8ed4d2d878063364acfb3f144f26c1c816294f30969a2",
+    "current_adapter_sha256": "93a44ed39d2d75996cda6629f9b477ae343c06c1c633d744325928354a5d3ee5",
+    "historical_result_is_new_adapter_validation": false,
+    "recommendation": "Before C, bounded pure envelope_scope_check controls against finalized new adapter identity and independent metadata. No configure/receive/unpack/audit/transport or qualification is needed."
+  }
+}

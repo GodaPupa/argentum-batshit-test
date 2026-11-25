@@ -12,3 +12,5 @@ All original test identities and gates remain. The ordinary inventory grows to 1
 Status: the single complete local qualification is running from immutable launch `9953c3e78c6f386f4284352f39ccf5d81554e10b`, started 2026-11-25T02:48:45Z (November 24, 6:48 p.m. Pacific). All 13 actual-source authority controls passed. CI remains unactivated.
 
 Evidence preservation preparation: [reviewed audit dependency correction](OPERATIONAL_CORRECTION_01/ROOT_REVIEW.json). The original source and qualification remain unchanged; the independent checker receives the exact immutable audit inputs outside the original evidence tree.
+
+Observed progress:15 compilation forms,67 normal rows,14 negative witnesses with14 passing controls,67 restored rows and401 registry rows passed. The ordinary backend suite is running. [Prospective CI evidence checker and focused receiver metadata controls](CI_PREPARATION.json) are reviewed; CI activation remains conditional on the complete local pass and immutable/live evidence readback.

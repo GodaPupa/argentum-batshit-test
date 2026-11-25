@@ -1,0 +1,37 @@
+{
+  "schema": "manual-transmission/lint-followup-receiver-control-preparation/v1",
+  "state": "PREPARED_NOT_RUN",
+  "driver": "/workspace/scratch/65bf30f1888a/manual-lint-receiver-controls-draft/test_lint_receiver_scope.py",
+  "driver_sha256": "077b828f5145447ac7289712d7b66d0b54388e6c388494d6827b9d3d82d78e94",
+  "driver_bytes": 9044,
+  "adapter_sha256": "93a44ed39d2d75996cda6629f9b477ae343c06c1c633d744325928354a5d3ee5",
+  "planned_cases": 15,
+  "planned_positive_cases": 1,
+  "planned_rejections": 14,
+  "changed_fields": [
+    "epoch",
+    "recovery_id",
+    "source",
+    "source_tree",
+    "candidate_pins_blob",
+    "charter_commit",
+    "charter_blob",
+    "charter_sha256",
+    "workflow_path",
+    "attempt_id",
+    "artifact_name"
+  ],
+  "scope": "exact new metadata identity only; historical146 and source-verifier controls distinct",
+  "validation": "ast.parse only; neither adapter nor driver imported or invoked",
+  "forbidden_actions_performed": {
+    "adapter_imports": 0,
+    "envelope_scope_calls": 0,
+    "configure_calls": 0,
+    "receiver_calls": 0,
+    "source_verifier_calls": 0,
+    "downloads": 0,
+    "builds": 0,
+    "qualification_starts": 0,
+    "carrier_source_runtime_writes": 0
+  }
+}

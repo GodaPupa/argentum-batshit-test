@@ -1,0 +1,317 @@
+{
+  "schema": "manual-transmission/lint-followup-receiver-scope-controls/v1",
+  "state": "PASS",
+  "adapter_path": "/workspace/scratch/65bf30f1888a/manual-transmission-clean-room/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/receive_clean_room.py",
+  "adapter_sha256": "93a44ed39d2d75996cda6629f9b477ae343c06c1c633d744325928354a5d3ee5",
+  "adapter_bytes": 19843,
+  "driver_sha256": "077b828f5145447ac7289712d7b66d0b54388e6c388494d6827b9d3d82d78e94",
+  "synthetic_only": true,
+  "fixture_note": "SYNTHETIC_* IDs and repeated-hex C/V/E objects are fixtures, never real GitHub observations; fixed S2/charter values are independently literal expectations.",
+  "scope": "Changed lint-followup identity metadata only; no repeat of the historical146 or source-verifier controls.",
+  "function_called": "envelope_scope_check",
+  "forbidden_functions_called": [],
+  "receiver_configured": false,
+  "adapter_unchanged": true,
+  "topology_verified": false,
+  "source_verifier_calls": 0,
+  "archive_unpack_or_receive_calls": 0,
+  "real_downloads": 0,
+  "ci_activations": 0,
+  "qualification_starts": 0,
+  "build_or_test_tasks": 0,
+  "real_future_receiving_budget_consumed": 0,
+  "base_fixture": {
+    "repository": "GodaPupa/argentum-batshit-test",
+    "branch": "manual-transmission/clean-room-recovery-20261124",
+    "epoch": "manual-lint-followup-20261124-01",
+    "candidate_index": "02",
+    "event": "2222222222222222222222222222222222222222",
+    "source": "82ec335573572edfd2a2e4d734d2f0d81801139f",
+    "source_tree": "923ec79e1c867eedf35b408153bf60988fbd26b6",
+    "validation": "3333333333333333333333333333333333333333",
+    "validation_tree": "4444444444444444444444444444444444444444",
+    "workflow_blob": "5555555555555555555555555555555555555555",
+    "workflow_sha256": "abababababababababababababababababababababababababababababababab",
+    "protocol_blob": "a2c26c3b31834a7182bbe0b3a6ceb83922443cd4",
+    "candidate_pins_blob": "7e30df16c53a59358d507733b2a5443e2a3c9075",
+    "run_id": "SYNTHETIC_RUN_METADATA_ONLY_0001",
+    "job_id": "SYNTHETIC_JOB_METADATA_ONLY_0001",
+    "artifact_id": "SYNTHETIC_ARTIFACT_METADATA_ONLY_0001",
+    "artifact_name": "manual-lint-followup-candidate02-20261124-SYNTHETIC_RUN_METADATA_ONLY_0001",
+    "artifact_digest": "sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+    "artifact_size": 1234,
+    "attempt": 1,
+    "run_number": 1,
+    "status": "completed",
+    "job_status": "completed",
+    "conclusion": "success",
+    "job_conclusion": "success",
+    "already_received": false,
+    "fresh_reconciliation": true,
+    "sole_writer": true,
+    "automation_disabled": true,
+    "first_parent": "1111111111111111111111111111111111111111",
+    "workflow_path": ".github/workflows/manual-lint-followup-surge-bushwhacker-20261124.yml",
+    "recovery_id": "manual-lint-followup-20261124-01",
+    "charter_commit": "86450c1ecb227804dbd45acf5ba28689ce0c61bc",
+    "charter_blob": "418fb7f5a0ebeed92582f8285e76305c39250efa",
+    "charter_sha256": "a9a2f3b775c6231d1a520679492aba4d2bf3bdea0f1b0abe3fc47be39ef0087e",
+    "lane": "ci",
+    "attempt_id": "manual-lint-followup-20261124-01/ci-01",
+    "prior_receipt_count": 0
+  },
+  "cases_total": 15,
+  "cases_passed": 15,
+  "cases_failed": 0,
+  "cases": [
+    {
+      "name": "accept_current_lint_followup_synthetic_metadata",
+      "actual_changes": {},
+      "expected_changes": {},
+      "expected": "ACCEPT",
+      "observed": "ACCEPT",
+      "passed": true,
+      "exception": null
+    },
+    {
+      "name": "reject_prior_clean_room_epoch",
+      "actual_changes": {
+        "epoch": "manual-clean-room-20261124-01"
+      },
+      "expected_changes": {
+        "epoch": "manual-clean-room-20261124-01"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "epoch"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_recovery_id",
+      "actual_changes": {
+        "recovery_id": "manual-clean-room-20261124-01"
+      },
+      "expected_changes": {
+        "recovery_id": "manual-clean-room-20261124-01"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room CI identity"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_source",
+      "actual_changes": {
+        "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9"
+      },
+      "expected_changes": {
+        "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room frozen source identity"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_source_tree",
+      "actual_changes": {
+        "source_tree": "632d9a579db3eea42a1bd1f2565685009627fdf5"
+      },
+      "expected_changes": {
+        "source_tree": "632d9a579db3eea42a1bd1f2565685009627fdf5"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room frozen source identity"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_candidate_pins_blob",
+      "actual_changes": {
+        "candidate_pins_blob": "933c265ce8a6e8427148f422608b75e8246d7a51"
+      },
+      "expected_changes": {
+        "candidate_pins_blob": "933c265ce8a6e8427148f422608b75e8246d7a51"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room frozen source identity"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_charter_commit",
+      "actual_changes": {
+        "charter_commit": "c943c4eb9859a59aa4f9c3c8ac492e6519ce7855"
+      },
+      "expected_changes": {
+        "charter_commit": "c943c4eb9859a59aa4f9c3c8ac492e6519ce7855"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room charter identity"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_charter_blob",
+      "actual_changes": {
+        "charter_blob": "944b7989a6e8a2d8551cc0a322ee7ce1b8eee709"
+      },
+      "expected_changes": {
+        "charter_blob": "944b7989a6e8a2d8551cc0a322ee7ce1b8eee709"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room charter identity"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_charter_sha256",
+      "actual_changes": {
+        "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915"
+      },
+      "expected_changes": {
+        "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room charter identity"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_workflow_path",
+      "actual_changes": {
+        "workflow_path": ".github/workflows/manual-clean-room-surge-bushwhacker-20261124.yml"
+      },
+      "expected_changes": {
+        "workflow_path": ".github/workflows/manual-clean-room-surge-bushwhacker-20261124.yml"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room workflow path"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_attempt_id",
+      "actual_changes": {
+        "attempt_id": "manual-clean-room-20261124-01/ci-01"
+      },
+      "expected_changes": {
+        "attempt_id": "manual-clean-room-20261124-01/ci-01"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room CI attempt identity"
+      }
+    },
+    {
+      "name": "reject_prior_clean_room_artifact_name",
+      "actual_changes": {
+        "artifact_name": "manual-clean-room-candidate02-20261124-SYNTHETIC_RUN_METADATA_ONLY_0001"
+      },
+      "expected_changes": {
+        "artifact_name": "manual-clean-room-candidate02-20261124-SYNTHETIC_RUN_METADATA_ONLY_0001"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "clean-room original artifact name"
+      }
+    },
+    {
+      "name": "reject_coherent_prior_clean_room_metadata",
+      "actual_changes": {
+        "epoch": "manual-clean-room-20261124-01",
+        "recovery_id": "manual-clean-room-20261124-01",
+        "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+        "source_tree": "632d9a579db3eea42a1bd1f2565685009627fdf5",
+        "candidate_pins_blob": "933c265ce8a6e8427148f422608b75e8246d7a51",
+        "charter_commit": "c943c4eb9859a59aa4f9c3c8ac492e6519ce7855",
+        "charter_blob": "944b7989a6e8a2d8551cc0a322ee7ce1b8eee709",
+        "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915",
+        "workflow_path": ".github/workflows/manual-clean-room-surge-bushwhacker-20261124.yml",
+        "attempt_id": "manual-clean-room-20261124-01/ci-01",
+        "artifact_name": "manual-clean-room-candidate02-20261124-SYNTHETIC_RUN_METADATA_ONLY_0001"
+      },
+      "expected_changes": {
+        "epoch": "manual-clean-room-20261124-01",
+        "recovery_id": "manual-clean-room-20261124-01",
+        "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9",
+        "source_tree": "632d9a579db3eea42a1bd1f2565685009627fdf5",
+        "candidate_pins_blob": "933c265ce8a6e8427148f422608b75e8246d7a51",
+        "charter_commit": "c943c4eb9859a59aa4f9c3c8ac492e6519ce7855",
+        "charter_blob": "944b7989a6e8a2d8551cc0a322ee7ce1b8eee709",
+        "charter_sha256": "0795eedb0206add384500f6555698a43dbca06f907a0e2ef7ebaeffe99c79915",
+        "workflow_path": ".github/workflows/manual-clean-room-surge-bushwhacker-20261124.yml",
+        "attempt_id": "manual-clean-room-20261124-01/ci-01",
+        "artifact_name": "manual-clean-room-candidate02-20261124-SYNTHETIC_RUN_METADATA_ONLY_0001"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "epoch"
+      }
+    },
+    {
+      "name": "reject_independently_expected_prior_source",
+      "actual_changes": {},
+      "expected_changes": {
+        "source": "2059afe031fb33dbe43a4741a3ca25ed9a2fabd9"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong source"
+      }
+    },
+    {
+      "name": "reject_independently_expected_prior_charter",
+      "actual_changes": {},
+      "expected_changes": {
+        "charter_commit": "c943c4eb9859a59aa4f9c3c8ac492e6519ce7855"
+      },
+      "expected": "REJECT",
+      "observed": "REJECT",
+      "passed": true,
+      "exception": {
+        "type": "ValueError",
+        "message": "wrong independently observed charter_commit"
+      }
+    }
+  ]
+}
