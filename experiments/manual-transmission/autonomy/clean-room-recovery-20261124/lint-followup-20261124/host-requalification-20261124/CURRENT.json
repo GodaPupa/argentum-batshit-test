@@ -8,9 +8,9 @@
   "charter_sha256": "5b4e30d8594b6c1e4a6d8f2ec2f4a0bdb0a6dba7e314e8deddffcad66b06f701",
   "base_checkpoint": "a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76",
   "source_basis": "82ec335573572edfd2a2e4d734d2f0d81801139f",
-  "status": "RECOVERY_REVIEW_COMPLETE_PUBLICATION_READBACK_PENDING",
+  "status": "RECOVERY_REVIEW_COMPLETE_QUALIFICATION_FAILED_FORMAL_RECEIPT_INCOMPLETE",
   "owner": "manual-host-requalification-foreground-20261124",
-  "updated_utc": "2026-11-26T06:04:04.324289+00:00",
+  "updated_utc": "2026-11-26T06:06:53.816717+00:00",
   "selected_plan": "B_HOSTED_ONCE",
   "execution_environment": "github_hosted",
   "local_pass": false,
@@ -168,7 +168,7 @@
     "selected_plan": "B_HOSTED_ONCE",
     "retry_allowed": false
   },
-  "next": "Complete publication readback, then await a separately authorized bounded chosen-face cost correction and new validation; no reruns or repairs currently authorized.",
+  "next": "Await separately authorized chosen-face spell-cost correction, bounded regressions, integrity bindings and new validation. Recovery evidence review is complete; frozen formal receipt/readback remain administratively incompatible. No further transport, receiving, test, qualification, CI, or Phase 2 execution is authorized.",
   "ci_receiving_reservation": {
     "run_id": 45695073375,
     "job_id": 139490227770,
@@ -197,7 +197,13 @@
     "proposal": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/CORRECTION_PROPOSAL.md",
     "runtime_evidence": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/HOSTED_RUNTIME_OBSERVATION.json",
     "foreground_review_state": "COMPLETED_NO_ACTIVE_TEST_WORKER",
-    "original_owner_record": "PRESERVED_WITHOUT_HISTORICAL_CLOSEOUT"
+    "original_owner_record": "PRESERVED_WITHOUT_HISTORICAL_CLOSEOUT",
+    "publication_readback": "PASS",
+    "publication_readback_record": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/PUBLICATION_READBACK.json",
+    "evidence_commit": "d4e91b9fa7cea9eb798ee23590de52111a169fd8",
+    "review_closed": true,
+    "remaining_downloads": 0,
+    "remaining_receiving_invocations": 0
   },
   "qualification_outcome": "UNSUCCESSFUL_ORDINARY_ASSERTION_AND_INCOMPLETE_INVENTORY"
 }
