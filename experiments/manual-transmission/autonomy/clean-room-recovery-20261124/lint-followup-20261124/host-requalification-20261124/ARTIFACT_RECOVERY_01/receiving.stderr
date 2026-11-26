@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py", line 433, in <module>
+    result = receive(args.archive, read(args.metadata), read(args.expected), args.destination)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py", line 404, in receive
+    envelope_check(metadata,expected);require(not destination.exists(),'already received candidate')
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py", line 317, in envelope_check
+    envelope_scope_check(actual, expected)
+  File "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py", line 214, in envelope_scope_check
+    require(type(envelope[key]) is int, 'non-integer counter ' + key)
+  File "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py", line 110, in require
+    raise ValueError(message)
+ValueError: non-integer counter prior_receipt_count

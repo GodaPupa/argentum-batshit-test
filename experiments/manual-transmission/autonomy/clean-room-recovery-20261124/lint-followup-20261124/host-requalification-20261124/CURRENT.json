@@ -8,9 +8,9 @@
   "charter_sha256": "5b4e30d8594b6c1e4a6d8f2ec2f4a0bdb0a6dba7e314e8deddffcad66b06f701",
   "base_checkpoint": "a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76",
   "source_basis": "82ec335573572edfd2a2e4d734d2f0d81801139f",
-  "status": "ORIGINAL_ARTIFACT_DOWNLOAD_RESERVED",
+  "status": "RECOVERY_ZIP_VERIFIED_AUDIT_PENDING",
   "owner": "manual-host-requalification-foreground-20261124",
-  "updated_utc": "2026-11-25T21:23:51Z",
+  "updated_utc": "2026-11-26T05:58:40.735779+00:00",
   "selected_plan": "B_HOSTED_ONCE",
   "execution_environment": "github_hosted",
   "local_pass": false,
@@ -168,7 +168,7 @@
     "selected_plan": "B_HOSTED_ONCE",
     "retry_allowed": false
   },
-  "next": "Publish this exact claim D before the only original artifact transport. Original runtime counts are unknown until the original artifact is inspected; no retry is permitted.",
+  "next": "Read-only independent original-report audit and diagnosis, preserving frozen receiver administrative rejection; no test or qualification rerun.",
   "ci_receiving_reservation": {
     "run_id": 45695073375,
     "job_id": 139490227770,
@@ -180,5 +180,16 @@
     "original_artifact_downloads": 1,
     "expected_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/CI_RECEIVE_PLAN_01/EXPECTED.json",
     "expected_sha256": "94d9453f55085b9c92697b8485c1e86dfe7cf37c1111d8bf8af7ac98037e1dbe"
+  },
+  "artifact_recovery_01": {
+    "authorization": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/AUTHORIZATION.json",
+    "state_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/STATE.json",
+    "download_invocations": 1,
+    "receiving_invocations": 1,
+    "zip_integrity_verified": true,
+    "formal_receipt_accepted": false,
+    "historical_transport_execution": "UNKNOWN_UNCHANGED",
+    "historical_receiving_execution": "UNKNOWN_UNCHANGED",
+    "foreground_session": "6afe2f08-d3f4-83e9-a188-96ea6a8fa020"
   }
 }

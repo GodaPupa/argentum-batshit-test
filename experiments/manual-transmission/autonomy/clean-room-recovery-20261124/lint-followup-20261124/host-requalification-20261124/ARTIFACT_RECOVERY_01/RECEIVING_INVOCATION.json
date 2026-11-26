@@ -1,0 +1,24 @@
+{
+  "schema": "manual-transmission/recovery-receiving-invocation/v1",
+  "actual_invocations": 1,
+  "started_utc": "2026-11-26T05:57:35.598883+00:00",
+  "prior_receipt_count": null,
+  "already_received": null,
+  "historical_execution": "UNKNOWN_UNCHANGED",
+  "frozen_receiver_sha256": "0a913cf180cd7877198174ba8f8a5e9770472751312bf5cf181d95dfc58e1711",
+  "argv": [
+    "python3",
+    "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py",
+    "--source-root",
+    "/workspace/scratch/eb9839d43aec/manual-evidence",
+    "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/original.zip",
+    "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/META.json",
+    "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/EXPECTED.json",
+    "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/FORMAL_RECEIVER_OUTPUT"
+  ],
+  "returncode": 1,
+  "completed_utc": "2026-11-26T05:57:35.741236+00:00",
+  "completed": true,
+  "formal_receipt_exists": false,
+  "stderr": "Traceback (most recent call last):\n  File \"/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py\", line 433, in <module>\n    result = receive(args.archive, read(args.metadata), read(args.expected), args.destination)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py\", line 404, in receive\n    envelope_check(metadata,expected);require(not destination.exists(),'already received candidate')\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py\", line 317, in envelope_check\n    envelope_scope_check(actual, expected)\n  File \"/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py\", line 214, in envelope_scope_check\n    require(type(envelope[key]) is int, 'non-integer counter ' + key)\n  File \"/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/receive_hosted.py\", line 110, in require\n    raise ValueError(message)\nValueError: non-integer counter prior_receipt_count\n"
+}

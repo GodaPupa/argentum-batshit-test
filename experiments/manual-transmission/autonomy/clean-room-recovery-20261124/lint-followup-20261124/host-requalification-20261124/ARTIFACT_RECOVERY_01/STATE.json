@@ -1,19 +1,22 @@
 {
   "schema": "manual-transmission/artifact-recovery-current/v1",
-  "state": "RECOVERY_ALLOWANCES_RESERVED",
+  "state": "ZIP_VERIFIED_RECEIVER_ADMINISTRATIVE_REJECTION_AUDIT_PENDING",
   "authorization": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/AUTHORIZATION.json",
   "download": {
     "allowance": 1,
     "reserved": 1,
-    "invocations": 0,
-    "completed": 0,
-    "verified": 0
+    "invocations": 1,
+    "completed": 1,
+    "verified": 1
   },
   "receiving": {
     "allowance": 1,
     "reserved": 1,
-    "invocations": 0,
-    "completed": 0
+    "invocations": 1,
+    "completed": 1,
+    "accepted": 0,
+    "formal_receipt_created": false,
+    "blocker": "non-integer counter prior_receipt_count"
   },
   "historical_transport_execution": "UNKNOWN_UNCHANGED",
   "historical_receiving_execution": "UNKNOWN_UNCHANGED",
