@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/../immutable_hosted_readback.py", line 789, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ^^^^^^
+  File "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/../immutable_hosted_readback.py", line 772, in main
+    need(args.directory==DIRECTORY,'readback limited to the frozen new-epoch original CI directory')
+  File "/workspace/scratch/eb9839d43aec/manual-evidence/experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/../immutable_hosted_readback.py", line 114, in need
+    if not condition:raise ValueError(message)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+ValueError: readback limited to the frozen new-epoch original CI directory

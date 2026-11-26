@@ -1,0 +1,130 @@
+{
+  "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+  "files": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+      "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+      "blob": "2c1c6bd2a806e7684d282335bf8cd05907dca45c",
+      "bytes": 100994,
+      "sha256": "abd76d4fefad00adae41ccb8a5d3393c66fd5705f8c88290d30319c124699f8f",
+      "excerpts": [
+        {
+          "first_line": 265,
+          "last_line": 308,
+          "text": "     * Whether [cardDef] (cast by [casterId]) is a target of [target] for the given\n     * [sourceId] permanent on the battlefield (or null for self-cast).\n     */\n    private fun targetMatchesSpell(\n        target: SpellCostTarget,\n        cardDef: CardDefinition,\n        casterId: EntityId,\n        sourceId: EntityId,\n        state: GameState,\n        chosenTargets: List<EntityId> = emptyList(),\n        fromZone: Zone? = null,\n    ): Boolean {\n        return when (target) {\n            SpellCostTarget.SelfCast -> false\n            is SpellCostTarget.YouCast -> {\n                val controller = sourceController(state, sourceId)\n                controller == casterId &&\n                    matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)\n            }\n            is SpellCostTarget.AnyCaster -> matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)\n            is SpellCostTarget.AnyCasterTargeting ->\n                castTargetingMatches(state, sourceId, target.targetFilter, chosenTargets)\n            is SpellCostTarget.OpponentsCastTargeting ->\n                opponentsCastTargetingMatches(state, casterId, sourceId, target.targetFilter, chosenTargets)\n            is SpellCostTarget.OpponentsCastFromZones -> {\n                // Source must be controlled by an opponent of the caster, the spell must be cast\n                // from one of the named zones, and the card must match the filter.\n                if (fromZone == null || fromZone !in target.zones) return false\n                val sourceController = sourceController(state, sourceId) ?: return false\n                if (sourceController == casterId) return false\n                matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)\n            }\n            is SpellCostTarget.YouCastFromZones -> {\n                // Source must be controlled by the caster, the spell must be cast from one of the\n                // named zones, and the card must match the filter (Doc Aurlock).\n                if (fromZone == null || fromZone !in target.zones) return false\n                val sourceController = sourceController(state, sourceId) ?: return false\n                if (sourceController != casterId) return false\n                matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)\n            }\n            // FaceDown / Morph targets are spell-cast modifiers only when applied to a face-down cast.\n            // calculateEffectiveCost is only called for face-up casts; face-down handling is in\n            // calculateFaceDownCost / calculateMorphCostIncrease.\n            SpellCostTarget.FaceDownYouCast -> false"
+        },
+        {
+          "first_line": 1282,
+          "last_line": 1324,
+          "text": "    private fun matchesCardDefinition(\n        cardDef: CardDefinition,\n        filter: GameObjectFilter,\n        sourceEntityId: EntityId? = null,\n        state: GameState? = null,\n        projectedState: com.wingedsheep.engine.mechanics.layers.ProjectedState? = null\n    ): Boolean {\n        if (filter.cardPredicates.isEmpty() && filter.anyOf.isEmpty()) return true\n        // Conjunction over card predicates; OR lives inside a CardPredicate.Or.\n        if (!filter.cardPredicates.all { matchesCardPredicate(cardDef, it, sourceEntityId, state, projectedState) }) return false\n        // Recursive union (`or` infix): match if any branch matches.\n        if (filter.anyOf.isNotEmpty()) {\n            return filter.anyOf.any { matchesCardDefinition(cardDef, it, sourceEntityId, state, projectedState) }\n        }\n        return true\n    }\n\n    private fun matchesCardPredicate(\n        cardDef: CardDefinition,\n        predicate: CardPredicate,\n        sourceEntityId: EntityId? = null,\n        state: GameState? = null,\n        projectedState: com.wingedsheep.engine.mechanics.layers.ProjectedState? = null\n    ): Boolean {\n        val typeLine = cardDef.typeLine\n        return when (predicate) {\n            CardPredicate.IsCreature -> typeLine.isCreature\n            CardPredicate.IsLand -> typeLine.isLand\n            CardPredicate.IsArtifact -> typeLine.isArtifact\n            CardPredicate.IsEnchantment -> typeLine.isEnchantment\n            CardPredicate.IsPlaneswalker -> CardType.PLANESWALKER in typeLine.cardTypes\n            CardPredicate.IsInstant -> typeLine.isInstant\n            CardPredicate.IsSorcery -> typeLine.isSorcery\n            CardPredicate.HasAdventure -> cardDef.isAdventure\n            CardPredicate.IsDoubleFaced -> cardDef.isDoubleFaced\n            CardPredicate.HasNoAbilities -> cardDef.oracleText.isBlank()\n            // Cost calculation has no resolution-time chosenValues. This predicate is only\n            // meaningful inside effect pipelines (e.g. Winding Way), so fail closed here.\n            is CardPredicate.HasCardTypeFromVariable -> false\n            CardPredicate.IsBasicLand -> typeLine.isBasicLand\n            CardPredicate.IsPermanent -> typeLine.isPermanent\n            CardPredicate.IsNonland -> !typeLine.isLand\n            CardPredicate.IsNoncreature -> !typeLine.isCreature"
+        },
+        {
+          "first_line": 1839,
+          "last_line": 1906,
+          "text": "    /**\n     * Calculate the effective cost of casting a spell using an alternative base cost.\n     * Applies applicable battlefield generic increases and reductions to that base,\n     * preserving its colored requirements. Caster-aware modifiers use the same target\n     * and gating checks as normal spell costs. Stack-source taxes retain their existing path.\n     */\n    fun calculateEffectiveCostWithAlternativeBase(\n        state: GameState,\n        cardDef: CardDefinition,\n        alternativeCost: ManaCost,\n        casterId: EntityId? = null,\n        chosenTargets: List<EntityId> = emptyList(),\n    ): ManaCost {\n        var totalIncrease = 0\n        var totalReduction = 0\n        for ((sourceId, ability) in scanBattlefieldModifySpellCost(state)) {\n            if (casterId != null) {\n                if (!targetMatchesSpell(ability.target, cardDef, casterId, sourceId, state, chosenTargets)) continue\n                if (!gatingApplies(state, casterId, cardDef, ability)) continue\n            } else {\n                // Legacy callers without a caster retain their existing global-tax behavior.\n                val target = ability.target as? SpellCostTarget.AnyCaster ?: continue\n                if (!matchesCardDefinition(cardDef, target.filter, sourceId, state, state.projectedState)) continue\n            }\n            when (val mod = ability.modification) {\n                is CostModification.IncreaseGeneric -> totalIncrease += mod.amount\n                is CostModification.IncreaseGenericBy -> {\n                    if (casterId != null) {\n                        totalIncrease += evaluateReduction(\n                            state, mod.source, casterId, abilitySourceId = sourceId\n                        )\n                    }\n                }\n                is CostModification.IncreaseGenericPerOtherSpellThisTurn -> {\n                    if (casterId != null) {\n                        val spellsCast = state.playerSpellsCastThisTurn[casterId] ?: 0\n                        totalIncrease += spellsCast * mod.amountPerSpell\n                    }\n                }\n                is CostModification.ReduceGeneric -> {\n                    if (casterId != null) totalReduction += mod.amount\n                }\n                is CostModification.ReduceGenericBy -> {\n                    if (casterId != null) {\n                        totalReduction += evaluateReduction(\n                            state, mod.source, casterId, chosenTargets, sourceId, cardDef\n                        )\n                    }\n                }\n                else -> { /* This path composes generic battlefield modifiers only. */ }\n            }\n        }\n        // Stack-native targeting taxes also apply to alternative/free base costs.\n        if (casterId != null) {\n            for ((sourceId, ability) in scanStackModifySpellCost(state)) {\n                if (!targetMatchesSpell(ability.target, cardDef, casterId, sourceId, state, chosenTargets)) continue\n                when (val mod = ability.modification) {\n                    is CostModification.IncreaseGeneric -> totalIncrease += mod.amount\n                    is CostModification.IncreaseGenericBy ->\n                        totalIncrease += evaluateReduction(state, mod.source, casterId, chosenTargets, sourceId, cardDef)\n                    is CostModification.IncreaseGenericPerOtherSpellThisTurn -> {\n                        val spellsCast = state.playerSpellsCastThisTurn[casterId] ?: 0\n                        totalIncrease += spellsCast * mod.amountPerSpell\n                    }\n                    else -> { /* Batch U needs only generic stack-source increases. */ }\n                }\n            }\n        }"
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+      "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+      "blob": "e6216b851da7a1fbcfcfab7746d65f4cae6277ac",
+      "bytes": 331517,
+      "sha256": "9148bf731484bccd7112a27bb3ca1df27d5fa36fba6dc864bb6a05677d87145f",
+      "excerpts": [
+        {
+          "first_line": 1075,
+          "last_line": 1100,
+          "text": "        state: GameState,\n        action: CastSpell,\n        cardDef: com.wingedsheep.sdk.model.CardDefinition?,\n        cardComponent: CardComponent,\n        playForFree: Boolean,\n        castingFromCommandZone: Boolean\n    ): ComputedCastCost? {\n        // Split-layout (CR 709.3a) \u2014 only the chosen half is evaluated for legality. When\n        // `faceIndex` is set, the cost is the face's printed mana cost passed through the\n        // standard battlefield cost-modifier pipeline (CR 118.9a applies cost modifiers to\n        // the chosen half just like to a normal cast).\n        val faceManaCostOverride: ManaCost? = action.faceIndex?.let { idx ->\n            cardDef?.cardFaces?.getOrNull(idx)?.manaCost\n        }\n        val chosenTargetIds = action.targets.map { it.toEntityId() }\n        var effectiveCost = if (playForFree) {\n            if (cardDef != null) costCalculator.calculateEffectiveCostWithAlternativeBase(\n                state, cardDef, ManaCost.ZERO, action.playerId, chosenTargetIds\n            ) else ManaCost.ZERO\n        } else if (faceManaCostOverride != null && cardDef != null) {\n            costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, faceManaCostOverride, action.playerId, chosenTargetIds)\n        } else if (action.castForPrototype && !action.useAlternativeCost && cardDef != null) {\n            val prototype = cardDef.keywordAbilities\n                .filterIsInstance<KeywordAbility.Prototype>()\n                .firstOrNull()\n                ?: return null"
+        },
+        {
+          "first_line": 2549,
+          "last_line": 2565,
+          "text": "        // MayCastWithoutPayingManaCost battlefield source (e.g. Weftwalking) is the chosen alt).\n        // Mutual-exclusion + gate already enforced in validate().\n        val playForFreeFromComponentExecute = zoneResolver.hasPlayWithoutPayingCost(currentState, action.playerId, action.cardId)\n        val playForFreeInExecute = playForFreeFromComponentExecute || action.useWithoutPayingManaCost\n        // Split-layout (CR 709.3a) \u2014 see validate() for the rationale. Mirror the override here.\n        val faceManaCostOverrideExecute: ManaCost? = action.faceIndex?.let { idx ->\n            cardDef?.cardFaces?.getOrNull(idx)?.manaCost\n        }\n        val chosenTargetIdsForPayment = action.targets.map { it.toEntityId() }\n        var effectiveCost = if (playForFreeInExecute) {\n            if (cardDef != null) costCalculator.calculateEffectiveCostWithAlternativeBase(\n                currentState, cardDef, ManaCost.ZERO, action.playerId, chosenTargetIdsForPayment\n            ) else ManaCost.ZERO\n        } else if (faceManaCostOverrideExecute != null && cardDef != null) {\n            costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, faceManaCostOverrideExecute, action.playerId, chosenTargetIdsForPayment)\n        } else if (action.castForPrototype && !action.useAlternativeCost && cardDef != null) {\n            val prototype = cardDef.keywordAbilities"
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+      "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+      "blob": "6b3cf0ad94061464d76c87564b44bc2ef200704b",
+      "bytes": 204446,
+      "sha256": "ace1583a401b0f1875d499670e51e4ac10c48b0096155c01102be704a0205c52",
+      "excerpts": [
+        {
+          "first_line": 3335,
+          "last_line": 3368,
+          "text": "\n    private fun enumerateSecondaryFace(\n        context: EnumerationContext,\n        cardId: EntityId,\n        cardDef: CardDefinition,\n        cardComponent: CardComponent,\n        result: MutableList<LegalAction>,\n        primaryFaceAffordable: Boolean,\n    ): Boolean {\n        val state = context.state\n        val playerId = context.playerId\n        val face = cardDef.cardFaces.firstOrNull() ?: return false\n        state.getEntity(playerId) ?: return false\n\n        val isInstantAdventure = face.typeLine.isInstant\n        if (!isInstantAdventure && !context.canPlaySorcerySpeed) return false\n\n        val effectiveCost = context.costCalculator\n            .calculateEffectiveCostWithAlternativeBase(state, cardDef, face.manaCost, playerId)\n        val cachedSources = context.availableManaSources\n        // Same payment context `CastSpellHandler.validatePayment` builds for this cast, so\n        // conditional mana (\"spend only to cast \u2026\") is judged identically on both sides and the\n        // X ceiling below can never offer more than validation will accept.\n        val spellContext = spellPaymentContextFor(cardComponent)\n        val canAfford = context.manaSolver\n            .canPay(state, playerId, effectiveCost, precomputedSources = cachedSources, spellContext = spellContext)\n        if (!canAfford) {\n            // Secondary face is unaffordable. If the primary face is affordable, still surface\n            // this face as a grayed-out option so the drag-to-play menu presents both and the\n            // player can choose deliberately or cancel (rather than auto-firing the primary).\n            if (primaryFaceAffordable) {\n                result.add(\n                    LegalAction(\n                        actionType = \"CastSpell\","
+        }
+      ]
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt",
+      "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+      "blob": "2145cae496683983b94722aa24080daec8dca63b",
+      "bytes": 162778,
+      "sha256": "7752a9a5610ccc2d731b32ae011cf154c1fefcc487af80cdc008fdc52fa4a794",
+      "excerpts": [
+        {
+          "first_line": 469,
+          "last_line": 508,
+          "text": "                    // Prepare-spell copy (Secrets of Strixhaven): this exiled copy is cast as the\n                    // card's prepare spell \u2014 face index 0. Read the face's script for timing,\n                    // restrictions, cost, and targets, and thread faceIndex onto the CastSpell so\n                    // the handler/resolver use the prepare spell's characteristics.\n                    //\n                    // The same face-swap covers any permission that authorizes an alternative\n                    // face rather than the card's primary characteristics \u2014 \"you may cast it\n                    // from your graveyard as an Adventure\" (Mosswood Dreadknight, CR 715.3)\n                    // grants `castFaceIndex = 0`, so only the Adventure half is offered and the\n                    // creature half stays uncastable from the graveyard.\n                    val prepareCopyFaceIndex: Int? =\n                        if (container.has<com.wingedsheep.engine.state.components.battlefield.PreparedSpellCopyComponent>() &&\n                            cardDef?.layout == com.wingedsheep.sdk.model.CardLayout.PREPARE\n                        ) 0\n                        else permissions.firstNotNullOfOrNull { it.castFaceIndex }\n                            ?.takeIf { cardDef?.cardFaces?.getOrNull(it) != null }\n                    val prepareFace = prepareCopyFaceIndex?.let { cardDef?.cardFaces?.getOrNull(it) }\n                    // \"You may cast red spells from among them\" (Chandra, Dressed to Kill \u22127): the\n                    // colour is checked against the face actually being cast, not the exiled card,\n                    // so a red MDFC's blue back face stays uncastable through this permission. A\n                    // permission with no restriction authorizes any colour, and only *one* of the\n                    // applicable permissions needs to authorize the cast.\n                    val castColors = prepareFace?.manaCost?.colors ?: cardDef?.colors ?: cardComponent.manaCost.colors\n                    if (permissions.none { it.castColorRestriction == null || it.castColorRestriction in castColors }) {\n                        continue\n                    }\n                    val castName = prepareFace?.name ?: cardComponent.name\n                    val effectiveScript = prepareFace?.script ?: cardDef?.script\n                    val effectiveTypeLine = prepareFace?.typeLine ?: cardComponent.typeLine\n                    val isInstant = effectiveTypeLine.isInstant\n                    // A may-play permission with an \"as though it had flash\" rider (Azula, Cunning\n                    // Usurper) unlocks instant-speed casting of even a sorcery/creature exiled with it.\n                    val grantsFlashTiming = permissions.any { it.asThoughFlash }\n                    val hasCorrectTiming = isInstant || grantsFlashTiming || context.canPlaySorcerySpeed\n                    val castRestrictions = effectiveScript?.castRestrictions ?: emptyList()\n                    val meetsRestrictions = context.castPermissionUtils.checkCastRestrictions(state, playerId, castRestrictions)\n                    val baseEffectiveCost = if (cardDef != null && prepareFace != null) {\n                        context.costCalculator.calculateEffectiveCostWithAlternativeBase(state, cardDef, prepareFace.manaCost, playerId)\n                    } else if (cardDef != null) {\n                        context.costCalculator.calculateEffectiveCost(state, cardDef, playerId)"
+        }
+      ]
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WoeCardsBatch12ScenarioTest.kt",
+      "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+      "blob": "58252fbcc73768564bedab65796d79f0a19a4338",
+      "bytes": 23470,
+      "sha256": "ad3f203cd51c025c6c1f20557e3f4a0017942a5584ef11932632aa8e1024b349",
+      "excerpts": [
+        {
+          "first_line": 58,
+          "last_line": 68,
+          "text": "    private fun TestGame.castAdventure(\n        cardName: String,\n        targets: List<ChosenTarget> = emptyList()\n    ) = execute(\n        CastSpell(\n            playerId = player1Id,\n            cardId = findCardsInHand(1, cardName).first(),\n            targets = targets,\n            faceIndex = 0,\n        )\n    )"
+        },
+        {
+          "first_line": 148,
+          "last_line": 182,
+          "text": "            test(\"the Adventure half of an adventurer gets no discount \u2014 it is not a permanent spell\") {\n                fun ripTheSeams(plains: Int) = scenario()\n                    .withPlayers(\"Player1\", \"Player2\")\n                    .withCardOnBattlefield(1, \"Beluna Grandsquall\", summoningSickness = false)\n                    .withCardInHand(1, \"Threadbind Clique\")\n                    .withCardOnBattlefield(2, \"Grizzly Bears\", tapped = true)\n                    // Rip the Seams is {2}{W} \u2014 three mana, discounted or not.\n                    .withLandsOnBattlefield(1, \"Plains\", plains)\n                    .withCardInLibrary(1, \"Forest\")\n                    .withCardInLibrary(2, \"Forest\")\n                    .withActivePlayer(1)\n                    .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)\n                    .build()\n\n                val short = ripTheSeams(plains = 2)\n                val bearsShort = short.findPermanent(\"Grizzly Bears\").shouldNotBeNull()\n                withClue(\"two mana must not be enough: Beluna's {1} may not reach an Adventure spell\") {\n                    short.castAdventure(\n                        \"Threadbind Clique\",\n                        listOf(ChosenTarget.Permanent(bearsShort))\n                    ).error shouldNotBe null\n                    short.isOnBattlefield(\"Grizzly Bears\") shouldBe true\n                }\n\n                val full = ripTheSeams(plains = 3)\n                val bearsFull = full.findPermanent(\"Grizzly Bears\").shouldNotBeNull()\n                withClue(\"the same cast at full price resolves \u2014 the failure above was the cost, not the target\") {\n                    full.castAdventure(\n                        \"Threadbind Clique\",\n                        listOf(ChosenTarget.Permanent(bearsFull))\n                    ).error shouldBe null\n                    full.resolveStack()\n                    full.isInGraveyard(2, \"Grizzly Bears\") shouldBe true\n                }\n            }"
+        }
+      ]
+    },
+    {
+      "path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/woe/cards/BelunaGrandsquall.kt",
+      "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+      "blob": "0149a348752011693bb0a841cca07ef09e2fb409",
+      "bytes": 5571,
+      "sha256": "a6ef2efb23e033cdd03c927791c4bde8d71b88260d17608cebf556558c25af6b",
+      "excerpts": [
+        {
+          "first_line": 29,
+          "last_line": 42,
+          "text": " * The discount is `YouCast(Permanent \u2227 HasAdventure)` + [CostModification.ReduceGeneric] \u2014 \"permanent\n * spells\" is the load-bearing half of the wording. An adventurer card cast as its Adventure is an\n * instant or sorcery spell with only the Adventure's characteristics (CR 715.3b), so the discount must\n * not touch it.\n *\n * What actually keeps it off is the engine's *pricing path*, not the [Filters.Permanent] predicate:\n * cost filters are matched against the card definition (`CostCalculator.matchesCardDefinition`), i.e.\n * the front face, which is a permanent either way. Secondary faces price through\n * `calculateEffectiveCostWithAlternativeBase`, which consults only `AnyCaster` *increases* and never\n * `YouCast` reductions \u2014 an engine-wide simplification that CR 118.9d does not license in general.\n * `WoeCardsBatch12ScenarioTest` therefore pins the outcome (\"Rip the Seams still costs {2}{W} with\n * Beluna out\"), so closing that gap turns a silent rules break into a red test. The creature half cast\n * from hand \u2014 or cast from exile after its Adventure resolved \u2014 goes through the normal path with the\n * adventurer card's own type line, so it gets the {1}."
+        },
+        {
+          "first_line": 65,
+          "last_line": 72,
+          "text": "    staticAbility {\n        ability = ModifySpellCost(\n            target = SpellCostTarget.YouCast(\n                Filters.Permanent.withCardPredicate(CardPredicate.HasAdventure),\n            ),\n            modification = CostModification.ReduceGeneric(1),\n        )\n    }"
+        }
+      ]
+    },
+    {
+      "path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/woe/cards/ThreadbindClique.kt",
+      "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
+      "blob": "00d1da868b17a14a795dc718a7a46760b10e7691",
+      "bytes": 2304,
+      "sha256": "8a4d6ab2dd4bd31009159058b2925717027cf739229ab0e24be770fe395ccc26",
+      "excerpts": [
+        {
+          "first_line": 31,
+          "last_line": 52,
+          "text": "val ThreadbindClique = card(\"Threadbind Clique\") {\n    manaCost = \"{3}{U}\"\n    colorIdentity = \"UW\"\n    typeLine = \"Creature \u2014 Faerie\"\n    power = 3\n    toughness = 3\n    oracleText = \"Flying\"\n\n    keywords(Keyword.FLYING)\n\n    adventure(\"Rip the Seams\") {\n        manaCost = \"{2}{W}\"\n        typeLine = \"Instant \u2014 Adventure\"\n        oracleText = \"Destroy target tapped creature. \" +\n            \"(Then exile this card. You may cast the creature later from exile.)\"\n        spell {\n            val victim = target(\n                \"target tapped creature\",\n                TargetCreature(filter = TargetFilter.TappedCreature),\n            )\n            effect = Effects.Destroy(victim)\n        }"
+        }
+      ]
+    }
+  ],
+  "generic_reduction_introduced_by": "87f2824f6f44ca29492ba498e831b4d5e07954bf",
+  "reasoning_type": "Original XML observation plus static immutable-source trace; no reproduction"
+}

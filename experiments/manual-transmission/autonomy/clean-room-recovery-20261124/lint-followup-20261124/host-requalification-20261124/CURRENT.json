@@ -8,9 +8,9 @@
   "charter_sha256": "5b4e30d8594b6c1e4a6d8f2ec2f4a0bdb0a6dba7e314e8deddffcad66b06f701",
   "base_checkpoint": "a6dd2a6d84a9b046a7f77ac426c5dcbe9bb47b76",
   "source_basis": "82ec335573572edfd2a2e4d734d2f0d81801139f",
-  "status": "RECOVERY_ZIP_VERIFIED_AUDIT_PENDING",
+  "status": "RECOVERY_REVIEW_COMPLETE_PUBLICATION_READBACK_PENDING",
   "owner": "manual-host-requalification-foreground-20261124",
-  "updated_utc": "2026-11-26T05:58:40.735779+00:00",
+  "updated_utc": "2026-11-26T06:04:04.324289+00:00",
   "selected_plan": "B_HOSTED_ONCE",
   "execution_environment": "github_hosted",
   "local_pass": false,
@@ -29,17 +29,17 @@
   "attempts": {
     "hosted_activations": 1,
     "readiness_reserved": 1,
-    "readiness_started": null,
-    "readiness_completed": null,
+    "readiness_started": 1,
+    "readiness_completed": 1,
     "qualification_reserved": 1,
-    "qualification_started": null,
-    "qualification_completed": null,
+    "qualification_started": 1,
+    "qualification_completed": 1,
     "original_artifact_downloads": 1,
     "original_artifact_receives": 0,
     "local_started": 0
   },
   "prior_candidate02_ci_activations": 0,
-  "runtime_counts_pending_original_artifact": true,
+  "runtime_counts_pending_original_artifact": false,
   "source_freeze": {
     "candidate_index": "02",
     "source": "9ae883029afe28e1969179b00343e2ebafc836e8",
@@ -168,7 +168,7 @@
     "selected_plan": "B_HOSTED_ONCE",
     "retry_allowed": false
   },
-  "next": "Read-only independent original-report audit and diagnosis, preserving frozen receiver administrative rejection; no test or qualification rerun.",
+  "next": "Complete publication readback, then await a separately authorized bounded chosen-face cost correction and new validation; no reruns or repairs currently authorized.",
   "ci_receiving_reservation": {
     "run_id": 45695073375,
     "job_id": 139490227770,
@@ -190,6 +190,14 @@
     "formal_receipt_accepted": false,
     "historical_transport_execution": "UNKNOWN_UNCHANGED",
     "historical_receiving_execution": "UNKNOWN_UNCHANGED",
-    "foreground_session": "6afe2f08-d3f4-83e9-a188-96ea6a8fa020"
-  }
+    "foreground_session": "6afe2f08-d3f4-83e9-a188-96ea6a8fa020",
+    "audit_completed": true,
+    "audit_result": "FAIL",
+    "diagnosis": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/DIAGNOSIS.md",
+    "proposal": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/CORRECTION_PROPOSAL.md",
+    "runtime_evidence": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/ARTIFACT_RECOVERY_01/HOSTED_RUNTIME_OBSERVATION.json",
+    "foreground_review_state": "COMPLETED_NO_ACTIVE_TEST_WORKER",
+    "original_owner_record": "PRESERVED_WITHOUT_HISTORICAL_CLOSEOUT"
+  },
+  "qualification_outcome": "UNSUCCESSFUL_ORDINARY_ASSERTION_AND_INCOMPLETE_INVENTORY"
 }

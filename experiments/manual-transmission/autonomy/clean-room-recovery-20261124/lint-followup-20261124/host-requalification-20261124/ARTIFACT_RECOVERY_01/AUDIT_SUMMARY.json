@@ -1,0 +1,223 @@
+{
+  "state": "INDEPENDENT_READ_ONLY_AUDIT_COMPLETED_QUALIFICATION_FAIL",
+  "full_frozen_audit": "FAIL",
+  "first_failed_audit_gate": "ordinary identity/multiplicity inventory",
+  "ordinary": {
+    "expected_rows": 19429,
+    "expected_passes": 19386,
+    "expected_skips": 43,
+    "observed_rows": 14356,
+    "passed": 14312,
+    "failures": 1,
+    "errors": 0,
+    "skips": 43,
+    "missing_historical_skips": {},
+    "extra_skips": {}
+  },
+  "missing_count": 5073,
+  "extra_count": 0,
+  "missing_by_module": {
+    "mtg-sets/2026/tests": 1328,
+    "mtg-sets/2025/tests": 1606,
+    "mtg-sets/2024/tests": 2139
+  },
+  "failures": [
+    {
+      "identity": "mtg-sets/2023/tests\tcom.wingedsheep.engine.scenarios.WoeCardsBatch12ScenarioTest\tthe Adventure half of an adventurer gets no discount \u2014 it is not a permanent spell",
+      "xml": "mtg-sets/2023/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.WoeCardsBatch12ScenarioTest.xml",
+      "kind": "failure",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: two mana must not be enough: Beluna's {1} may not reach an Adventure spell\n<null> should not equal <null>"
+    }
+  ],
+  "compile_forms_passed": 15,
+  "raw_gate_audits": {
+    "normal": {
+      "state": "PASS",
+      "result": {
+        "rows": 67,
+        "skips": 0,
+        "failures": 0
+      }
+    },
+    "restored": {
+      "state": "PASS",
+      "result": {
+        "rows": 67,
+        "skips": 0,
+        "failures": 0
+      }
+    },
+    "M01-surge-price": {
+      "state": "PASS",
+      "result": {
+        "rows": 5,
+        "executed": 2,
+        "skips": 3,
+        "failures": 1
+      }
+    },
+    "M02-red-payment": {
+      "state": "PASS",
+      "result": {
+        "rows": 20,
+        "executed": 2,
+        "skips": 18,
+        "failures": 1
+      }
+    },
+    "M03-paid-guard": {
+      "state": "PASS",
+      "result": {
+        "rows": 32,
+        "executed": 2,
+        "skips": 30,
+        "failures": 1
+      }
+    },
+    "M04-other-filter": {
+      "state": "PASS",
+      "result": {
+        "rows": 32,
+        "executed": 2,
+        "skips": 30,
+        "failures": 1
+      }
+    },
+    "M05-controller-filter": {
+      "state": "PASS",
+      "result": {
+        "rows": 32,
+        "executed": 2,
+        "skips": 30,
+        "failures": 1
+      }
+    },
+    "M06-toughness": {
+      "state": "PASS",
+      "result": {
+        "rows": 32,
+        "executed": 2,
+        "skips": 30,
+        "failures": 1
+      }
+    },
+    "M07-granted-haste": {
+      "state": "PASS",
+      "result": {
+        "rows": 32,
+        "executed": 2,
+        "skips": 30,
+        "failures": 1
+      }
+    },
+    "M08-duration": {
+      "state": "PASS",
+      "result": {
+        "rows": 32,
+        "executed": 2,
+        "skips": 30,
+        "failures": 1
+      }
+    },
+    "M09-intrinsic-haste": {
+      "state": "PASS",
+      "result": {
+        "rows": 32,
+        "executed": 2,
+        "skips": 30,
+        "failures": 1
+      }
+    },
+    "M10-entity-only-exclusion": {
+      "state": "PASS",
+      "result": {
+        "rows": 10,
+        "executed": 2,
+        "skips": 8,
+        "failures": 1
+      }
+    },
+    "M11-exclude-none": {
+      "state": "PASS",
+      "result": {
+        "rows": 10,
+        "executed": 2,
+        "skips": 8,
+        "failures": 1
+      }
+    },
+    "M12-followed-origin": {
+      "state": "PASS",
+      "result": {
+        "rows": 10,
+        "executed": 2,
+        "skips": 8,
+        "failures": 1
+      }
+    },
+    "M13-missing-choice": {
+      "state": "PASS",
+      "result": {
+        "rows": 32,
+        "executed": 2,
+        "skips": 30,
+        "failures": 1
+      }
+    },
+    "M14-copy-choice": {
+      "state": "PASS",
+      "result": {
+        "rows": 20,
+        "executed": 2,
+        "skips": 18,
+        "failures": 1
+      }
+    },
+    "cards": {
+      "state": "PASS",
+      "result": {
+        "rows": 401,
+        "skips": 0,
+        "failures": 0
+      }
+    }
+  },
+  "negative_witnesses": 14,
+  "positive_controls": 14,
+  "mutant_errors": 0,
+  "source_bindings_verified": 378,
+  "source_restored": true,
+  "readiness": {
+    "rows": 20,
+    "passed": 20,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "mockk": 11,
+    "flyway": 9
+  },
+  "not_reached": [
+    "client-install",
+    "client-focused",
+    "client-full",
+    "client-typecheck",
+    "metadata-printing",
+    "metadata-assay",
+    "ASSAY_CLASSIFICATION",
+    "final successful AUDIT/RESULT"
+  ],
+  "cause_classification": "PRODUCTION_CODE_CHOSEN_FACE_COST_FILTER_MISMATCH",
+  "unresolved": [
+    "No runtime payment trace; precise discounted cost inferred from immutable source",
+    "5073 absent ordinary identities and all later stages untested",
+    "Historical original download/receiving activity remains unknown"
+  ],
+  "formal_receiver": "REJECTED_UNKNOWN_PRIOR_RECEIPT_COUNTER",
+  "formal_readback": "REJECTED_RECOVERY_DIRECTORY",
+  "qualification_successful": false,
+  "admitted": false,
+  "new_test_executions": 0,
+  "phase2_seeds": 0,
+  "phase2_games": 0
+}
