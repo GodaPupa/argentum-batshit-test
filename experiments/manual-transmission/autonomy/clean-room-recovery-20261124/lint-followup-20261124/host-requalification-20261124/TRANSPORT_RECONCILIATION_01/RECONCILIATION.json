@@ -1,0 +1,136 @@
+{
+  "schema": "manual-transmission/hosted-receipt-continuation-gap/v1",
+  "state": "BLOCKED_ORIGINAL_ARTIFACT_TRANSPORT_HISTORY_UNVERIFIED",
+  "observed_utc": "2026-11-26T01:19:45Z",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "branch": "manual-transmission/clean-room-recovery-20261124",
+  "recovery_id": "manual-host-requalification-20261124-01",
+  "anchor_head": "6fb8cc3d5d5e1d0f182fad6902958e9c9c4820a4",
+  "anchor_current_blob": "9d58b74a8157c113c3a007d0bb854617c39c538f",
+  "recorded_owner": "manual-host-requalification-foreground-20261124",
+  "recorded_lease": {
+    "owner": "manual-host-requalification-foreground-20261124",
+    "claimed_utc": "2026-11-25T20:23:25.299450+00:00",
+    "expires_utc": "2026-11-26T04:23:25.299450+00:00",
+    "mode": "EXPLICIT_USER_AUTHORIZED_SINGLE_HOSTED_ATTEMPT",
+    "state": "ACTIVE",
+    "sole_source_writer": true,
+    "scheduled_executor_enabled": false,
+    "writable_ref": "refs/heads/manual-transmission/clean-room-recovery-20261124",
+    "historical_runtime_history": "UNKNOWN_UNCHANGED"
+  },
+  "continuing_session": "6afe2f08-d3f4-83e9-a188-96ea6a8fa020",
+  "current_host": "36512674cad8",
+  "authority": "Explicit user continuation instruction in this conversation. Evidence preservation and readback only at this boundary. No additional qualification, transport or receiving allowance.",
+  "reservation": {
+    "run_id": 45695073375,
+    "job_id": 139490227770,
+    "artifact_id": 15063444055,
+    "artifact_digest": "sha256:499b2c7a84f5507adc4862a11f9a7c0c976e9ee54d3b9552f7a4be6adfd4f227",
+    "artifact_size": 8308418,
+    "attempt_id": "manual-host-requalification-20261124-01/ci-01",
+    "prior_receipt_count": 0,
+    "original_artifact_downloads": 1,
+    "expected_path": "experiments/manual-transmission/autonomy/clean-room-recovery-20261124/lint-followup-20261124/host-requalification-20261124/CI_RECEIVE_PLAN_01/EXPECTED.json",
+    "expected_sha256": "94d9453f55085b9c92697b8485c1e86dfe7cf37c1111d8bf8af7ac98037e1dbe"
+  },
+  "durable_attempts": {
+    "hosted_activations": 1,
+    "readiness_reserved": 1,
+    "readiness_started": null,
+    "readiness_completed": null,
+    "qualification_reserved": 1,
+    "qualification_started": null,
+    "qualification_completed": null,
+    "original_artifact_downloads": 1,
+    "original_artifact_receives": 0,
+    "local_started": 0
+  },
+  "actual_transport_state": "UNKNOWN",
+  "actual_receiving_state": "UNKNOWN_BEYOND_DURABLE_ZERO_RECEIPTS",
+  "this_continuation": {
+    "artifact_download_invocations": 0,
+    "receiver_invocations": 0,
+    "readiness_invocations": 0,
+    "qualification_invocations": 0,
+    "test_invocations": 0,
+    "source_edits": 0,
+    "owner_claims": 0
+  },
+  "evidence": {
+    "required_records_read": [
+      "CURRENT.json",
+      "CHARTER.json",
+      "SOURCE_FREEZE.json",
+      "CI_RECEIVE_PLAN_01/EXPECTED.json",
+      "CI_RECEIVE_PLAN_01/PRETRANSPORT_RECONCILIATION.json"
+    ],
+    "remote_original_artifact": {
+      "id": 15063444055,
+      "expired": false,
+      "bytes": 8308418,
+      "sha256": "499b2c7a84f5507adc4862a11f9a7c0c976e9ee54d3b9552f7a4be6adfd4f227",
+      "meaning": "Fresh provider metadata only. Original ZIP bytes have not been obtained by this continuation."
+    },
+    "run": {
+      "id": 45695073375,
+      "job": 139490227770,
+      "event": "ce9020568ae3702f384d401fcdc2a4516c84aa0f",
+      "number": 1,
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "active_branch_workflows": 0
+    },
+    "original_artifact_transport_record": "No execution result or reusable ZIP reference recovered from the available conversation context, local files or persistent files.",
+    "saved_zip_search": "No matching copy located in accessible workspace paths or persistent files. This does not establish that prior transport was unattempted.",
+    "receipt_publication": "No RECEIVED_CI_01 directory at anchor head.",
+    "historical_automations": [
+      {
+        "id": "6adbe33033e481918659ce578f64f31e",
+        "enabled": false
+      },
+      {
+        "id": "6adbad91b90881918859ad0cba22b881",
+        "enabled": false
+      }
+    ],
+    "log_observations": {
+      "readiness_reported": {
+        "total": 20,
+        "passed": 20,
+        "failures": 0,
+        "errors": 0,
+        "skips": 0
+      },
+      "normal_command_exit": 0,
+      "restored_command_exit": 0,
+      "cards_command_exit": 0,
+      "ordinary_command_exit": 1,
+      "ordinary_end_utc": "2026-11-25T21:22:23.3903731Z",
+      "mutant_commands_observed": 14,
+      "mutant_witnesses_independently_verified": null,
+      "exact_ordinary_test_identities": null,
+      "ordinary_assertions_or_errors": null,
+      "ordinary_inventory_counts": null,
+      "supported_cause": "Ordinary command unsuccessful. Exact cause is unavailable in these logs.",
+      "raw_report_audit_completed": false
+    }
+  },
+  "required_recovery_evidence": [
+    "Original transport invocation record showing it was never attempted, or its completed result with access to exact original ZIP bytes.",
+    "Original receiving-invocation status and any preserved outputs, sufficient to avoid a second invocation.",
+    "Existing foreground execution status sufficient to resume receipt without competing work."
+  ],
+  "next_action": "Recover the original transport/receipt execution record or exact existing ZIP plus receipt history. If unavailable, request a specifically bounded artifact-recovery authorization that explicitly accounts for unknown prior transport/receiving activity. Preserve the original reservation and consumed attempt.",
+  "qualification": "UNSUCCESSFUL",
+  "admitted": false,
+  "phase2": {
+    "seeds": 0,
+    "games": 0
+  },
+  "original_artifact_integrity_verified": false,
+  "independent_original_audit_completed": false,
+  "original_artifact_publication_readback_completed": false,
+  "scope_of_this_publication": "Administrative gap evidence and provider observations only."
+}

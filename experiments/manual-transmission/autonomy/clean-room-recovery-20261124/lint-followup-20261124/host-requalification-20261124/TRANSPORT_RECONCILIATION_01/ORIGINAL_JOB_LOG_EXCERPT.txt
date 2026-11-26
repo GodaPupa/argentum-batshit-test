@@ -1,0 +1,77 @@
+2026-11-25T20:27:50.8577082Z START HOSTED_READINESS: 11 actual MockK-class cases and 9 Docker/Flyway cases
+2026-11-25T20:37:45.7602553Z PASS HOSTED_READINESS: 20 exact identities, 20 passes, zero failures/errors/skips
+2026-11-25T20:37:45.7609196Z START HOSTED_QUALIFICATION: one unchanged frozen invocation
+2026-11-25T20:37:51.9971851Z START compile-normal
+2026-11-25T20:44:03.9745141Z END compile-normal 0
+2026-11-25T20:44:04.0967254Z START compile-M01-surge-price
+2026-11-25T20:44:30.7254570Z END compile-M01-surge-price 0
+2026-11-25T20:44:30.8511516Z START compile-M02-red-payment
+2026-11-25T20:45:00.1312924Z END compile-M02-red-payment 0
+2026-11-25T20:45:00.2578259Z START compile-M03-paid-guard
+2026-11-25T20:45:31.4179083Z END compile-M03-paid-guard 0
+2026-11-25T20:45:31.5419599Z START compile-M04-other-filter
+2026-11-25T20:45:57.8945064Z END compile-M04-other-filter 0
+2026-11-25T20:45:58.0162990Z START compile-M05-controller-filter
+2026-11-25T20:46:25.0667896Z END compile-M05-controller-filter 0
+2026-11-25T20:46:25.1915723Z START compile-M06-toughness
+2026-11-25T20:46:52.3694467Z END compile-M06-toughness 0
+2026-11-25T20:46:52.4990464Z START compile-M07-granted-haste
+2026-11-25T20:47:19.6117560Z END compile-M07-granted-haste 0
+2026-11-25T20:47:19.7349151Z START compile-M08-duration
+2026-11-25T20:47:46.8711020Z END compile-M08-duration 0
+2026-11-25T20:47:46.9929610Z START compile-M09-intrinsic-haste
+2026-11-25T20:48:13.8617083Z END compile-M09-intrinsic-haste 0
+2026-11-25T20:48:13.9876960Z START compile-M10-entity-only-exclusion
+2026-11-25T20:48:45.0928603Z END compile-M10-entity-only-exclusion 0
+2026-11-25T20:48:45.2178242Z START compile-M11-exclude-none
+2026-11-25T20:49:14.6383188Z END compile-M11-exclude-none 0
+2026-11-25T20:49:14.7623816Z START compile-M12-followed-origin
+2026-11-25T20:49:43.0754846Z END compile-M12-followed-origin 0
+2026-11-25T20:49:43.2043047Z START compile-M13-missing-choice
+2026-11-25T20:50:19.9233095Z END compile-M13-missing-choice 0
+2026-11-25T20:50:20.0439607Z START compile-M14-copy-choice
+2026-11-25T20:50:56.8144544Z END compile-M14-copy-choice 0
+2026-11-25T20:50:57.2895566Z START normal
+2026-11-25T20:52:33.5951963Z END normal 0
+2026-11-25T20:52:34.0732603Z START M01-surge-price
+2026-11-25T20:53:00.3735186Z END M01-surge-price 1
+2026-11-25T20:53:00.8433913Z START M02-red-payment
+2026-11-25T20:54:08.1878365Z END M02-red-payment 1
+2026-11-25T20:54:08.6656506Z START M03-paid-guard
+2026-11-25T20:54:51.8379128Z END M03-paid-guard 1
+2026-11-25T20:54:52.3113670Z START M04-other-filter
+2026-11-25T20:55:36.1344770Z END M04-other-filter 1
+2026-11-25T20:55:36.6101760Z START M05-controller-filter
+2026-11-25T20:56:20.7561389Z END M05-controller-filter 1
+2026-11-25T20:56:21.2295785Z START M06-toughness
+2026-11-25T20:57:03.8602767Z END M06-toughness 1
+2026-11-25T20:57:04.3290382Z START M07-granted-haste
+2026-11-25T20:57:41.2021677Z END M07-granted-haste 1
+2026-11-25T20:57:41.6736155Z START M08-duration
+2026-11-25T20:58:25.0613395Z END M08-duration 1
+2026-11-25T20:58:25.5337998Z START M09-intrinsic-haste
+2026-11-25T20:59:08.4229083Z END M09-intrinsic-haste 1
+2026-11-25T20:59:08.8928010Z START M10-entity-only-exclusion
+2026-11-25T21:00:16.7311233Z END M10-entity-only-exclusion 1
+2026-11-25T21:00:17.2083821Z START M11-exclude-none
+2026-11-25T21:01:19.8183523Z END M11-exclude-none 1
+2026-11-25T21:01:20.2912434Z START M12-followed-origin
+2026-11-25T21:02:25.5085671Z END M12-followed-origin 1
+2026-11-25T21:02:25.9849540Z START M13-missing-choice
+2026-11-25T21:03:12.2812901Z END M13-missing-choice 1
+2026-11-25T21:03:12.7587692Z START M14-copy-choice
+2026-11-25T21:04:24.2514586Z END M14-copy-choice 1
+2026-11-25T21:04:24.7192908Z START restored
+2026-11-25T21:05:50.6160339Z END restored 0
+2026-11-25T21:05:51.0244402Z START cards
+2026-11-25T21:06:48.8436102Z END cards 0
+2026-11-25T21:06:49.1965011Z START ordinary
+2026-11-25T21:22:23.3903731Z END ordinary 1
+2026-11-25T21:22:24.0442812Z Traceback (most recent call last):
+2026-11-25T21:22:24.0443970Z   File "/home/runner/work/_temp/manual-host-requalification-tools/hosted_runtime.py", line 395, in run_hosted
+2026-11-25T21:22:24.0445532Z     require(qualification_result['returncode'] == 0 and not qualification_result['timed_out'], 'Hosted qualification failed')
+2026-11-25T21:22:24.0446963Z   File "/home/runner/work/_temp/manual-host-requalification-tools/hosted_runtime.py", line 34, in require
+2026-11-25T21:22:24.0447847Z     raise RuntimeError(message)
+2026-11-25T21:22:24.0448383Z RuntimeError: Hosted qualification failed
+2026-11-25T21:22:24.0448749Z 
+2026-11-25T21:22:24.1119411Z ##[error]Process completed with exit code 1.
